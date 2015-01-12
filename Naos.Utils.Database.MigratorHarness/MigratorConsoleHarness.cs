@@ -7,6 +7,7 @@
 namespace Naos.Utils.Database.MigratorHarness
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -28,7 +29,7 @@ namespace Naos.Utils.Database.MigratorHarness
         /// <param name="connectionString">The connection string to the target database.</param>
         /// <param name="databaseName">The database name to target.</param>
         /// <param name="assemblyPath">The path to the assembly that the migration lives in.</param>
-        /// <param name="timeoutInSeconds">The timeout (in seconds) for the command(s) that are executed as part of the migration.</param>
+        /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context.</param>
         [Verb(Aliases = "Up", Description = "Perform a migration up.")]
         public static void Up(
@@ -36,9 +37,14 @@ namespace Naos.Utils.Database.MigratorHarness
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
             [Required] [Aliases("")] [Description("The path to the assembly that contains the migration.")] string assemblyPath,
-            [DefaultValue(30)] [Aliases("")] [Description("The timeout (in seconds) for the command(s) that are executed as part of the migration.")] int timeoutInSeconds,
+            [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext)
         {
+            if (!File.Exists(assemblyPath))
+            {
+                throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", "assemblyPath");
+            }
+
             var assembly = Assembly.LoadFile(assemblyPath);
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
@@ -63,7 +69,7 @@ namespace Naos.Utils.Database.MigratorHarness
         /// <param name="connectionString">The connection string to the target database.</param>
         /// <param name="databaseName">The database name to target.</param>
         /// <param name="assemblyPath">The path to the assembly that the migration lives in.</param>
-        /// <param name="timeoutInSeconds">The timeout (in seconds) for the command(s) that are executed as part of the migration.</param>
+        /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context.</param>
         [Verb(Aliases = "Down", Description = "Perform a migration down.")]
         public static void Down(
@@ -71,7 +77,7 @@ namespace Naos.Utils.Database.MigratorHarness
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
             [Required] [Aliases("")] [Description("The path to the assembly that contains the migration.")] string assemblyPath,
-            [DefaultValue(30)] [Aliases("")] [Description("The timeout (in seconds) for the command(s) that are executed as part of the migration.")] int timeoutInSeconds,
+            [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext)
         {
             var assembly = Assembly.LoadFile(assemblyPath);

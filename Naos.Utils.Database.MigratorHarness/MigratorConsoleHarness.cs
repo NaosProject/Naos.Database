@@ -7,6 +7,7 @@
 namespace Naos.Utils.Database.MigratorHarness
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -39,6 +40,11 @@ namespace Naos.Utils.Database.MigratorHarness
             [DefaultValue(30)] [Aliases("")] [Description("The timeout (in seconds) for the command(s) that are executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext)
         {
+            if (!File.Exists(assemblyPath))
+            {
+                throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", "assemblyPath");
+            }
+
             var assembly = Assembly.LoadFile(assemblyPath);
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 

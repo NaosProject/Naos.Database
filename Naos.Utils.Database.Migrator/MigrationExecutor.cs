@@ -45,7 +45,7 @@ namespace Naos.Utils.Database.Migrator
         /// <param name="targetVersion">The version to migrate up to.</param>
         /// <param name="direction">The direction of migration.</param>
         /// <param name="announcer">Lambda to pass announcements out during process (string messages of progress and status).</param>
-        /// <param name="timeout">The timeout for the command(s) that are executed as part of the migration.</param>
+        /// <param name="timeout">The command timeout for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context (default is null).</param>
         /// <param name="useAutomaticTransactionManagement">Optional whether or not to use automatic transaction management (default is true).</param>
         public static void Migrate(

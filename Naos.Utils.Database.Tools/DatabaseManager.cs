@@ -222,30 +222,42 @@ namespace Naos.Utils.Database.Tools
             {
                 connection.Open();
 
-                var renameDatabaseText = @"ALTER DATABASE " + currentConfiguration.DatabaseName + " MODIFY NAME = " + newConfiguration.DatabaseName;
-                connection.Execute(renameDatabaseText, null, null, (int?)timeout.TotalSeconds);
+                if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
+                {
+                    var renameDatabaseText = @"ALTER DATABASE " + currentConfiguration.DatabaseName + " MODIFY NAME = "
+                                             + newConfiguration.DatabaseName;
+                    connection.Execute(renameDatabaseText, null, null, (int?)timeout.TotalSeconds);
+                }
 
-                var updateDataFileText = string.Format(
-                    @"ALTER DATABASE {0} MODIFY FILE (
+                if ((currentConfiguration.DataFileLogicalName != newConfiguration.DataFileLogicalName)
+                    && (currentConfiguration.DataFilePath != newConfiguration.DataFilePath))
+                {
+                    var updateDataFileText = string.Format(
+                        @"ALTER DATABASE {0} MODIFY FILE (
                         NAME = '{1}',
                         NEWNAME = '{2}',
                         FILENAME = '{3}')",
-                                                newConfiguration.DatabaseName,
-                                                currentConfiguration.DataFileLogicalName,
-                                                newConfiguration.DataFileLogicalName,
-                                                newConfiguration.DataFilePath);
-                connection.Execute(updateDataFileText, null, null, (int?)timeout.TotalSeconds);
+                        newConfiguration.DatabaseName,
+                        currentConfiguration.DataFileLogicalName,
+                        newConfiguration.DataFileLogicalName,
+                        newConfiguration.DataFilePath);
+                    connection.Execute(updateDataFileText, null, null, (int?)timeout.TotalSeconds);
+                }
 
-                var updateLogFileText = string.Format(
-                    @"ALTER DATABASE {0} MODIFY FILE (
+                if ((currentConfiguration.LogFileLogicalName != newConfiguration.LogFileLogicalName)
+                    && (currentConfiguration.LogFilePath != newConfiguration.LogFilePath))
+                {
+                    var updateLogFileText = string.Format(
+                        @"ALTER DATABASE {0} MODIFY FILE (
                         NAME = '{1}',
                         NEWNAME = '{2}',
                         FILENAME = '{3}')",
-                                                newConfiguration.DatabaseName,
-                                                currentConfiguration.LogFileLogicalName,
-                                                newConfiguration.LogFileLogicalName,
-                                                newConfiguration.LogFilePath);
-                connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
+                        newConfiguration.DatabaseName,
+                        currentConfiguration.LogFileLogicalName,
+                        newConfiguration.LogFileLogicalName,
+                        newConfiguration.LogFilePath);
+                    connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
+                }
 
                 connection.Close();
             }

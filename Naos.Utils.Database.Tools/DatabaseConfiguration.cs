@@ -94,6 +94,18 @@ namespace Naos.Utils.Database.Tools
                        };
         }
 
+        /// <summary>
+        /// Creates a copy of the current object while also updating the database name to the new value.
+        /// </summary>
+        /// <param name="newDatabaseName">New database name to be updated in the cloned object.</param>
+        /// <returns>A copy of the current object with the new database name assigned.</returns>
+        public DatabaseConfiguration CloneWithNewDatabaseName(string newDatabaseName)
+        {
+            var clone = this.Clone();
+            clone.DatabaseName = newDatabaseName;
+            return clone;
+        }
+
         #endregion
     }
 }

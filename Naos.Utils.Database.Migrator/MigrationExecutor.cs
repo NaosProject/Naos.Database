@@ -72,7 +72,11 @@ namespace Naos.Utils.Database.Migrator
                 ShowSql = true
             };
 
-            var options = new MigrationOptions { PreviewOnly = false, Timeout = 600 };
+            var options = new MigrationOptions
+                              {
+                                  PreviewOnly = false, 
+                                  Timeout = (int)timeout.TotalSeconds
+                              };
 
             var migrationContext = new RunnerContext(fluentMigratorAnnouncer)
             {

@@ -213,7 +213,7 @@ namespace Naos.Utils.Database.Tools
             {
                 connection.Open();
 
-                PutDatabaseInSingleUserMode(connection, currentConfiguration.DatabaseName);
+                PutDatabaseInSingleUserMode(connection, currentConfiguration.DatabaseName, timeout);
 
                 if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
                 {
@@ -252,7 +252,7 @@ namespace Naos.Utils.Database.Tools
                     connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
                 }
 
-                PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName);
+                PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName, timeout);
 
                 connection.Close();
             }
@@ -271,13 +271,12 @@ namespace Naos.Utils.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, "master"); // make sure it's not trying to connect to an old db...
-            TakeDatabaseOffline(realConnectionString, databaseName);
-
             SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName); // make sure it's going to take the only connection when it goes in single user
             var commandText = "DROP DATABASE " + databaseName;
             using (var connection = new SqlConnection(realConnectionString))
             {
+                PutDatabaseInSingleUserMode(connection, databaseName, timeout);
                 connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
                 connection.Close();

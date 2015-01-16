@@ -207,7 +207,7 @@ namespace Naos.Utils.Database.Tools
             ThrowIfBad(currentConfiguration);
             ThrowIfBad(newConfiguration);
 
-            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, "master"); // make sure it's not trying to connect to an old db...
+            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user
 
             using (var connection = new SqlConnection(realConnectionString))
             {

@@ -7,6 +7,7 @@
 namespace Naos.Utils.Database.Tools
 {
     using System;
+    using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
 
@@ -27,17 +28,12 @@ namespace Naos.Utils.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void PutDatabaseInSingleUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            if (timeout == default(TimeSpan))
-            {
-                timeout = TimeSpan.FromSeconds(30);
-            }
-
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
-            var commandText = "ALTER DATABASE " + databaseName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
+                
+                PutDatabaseInSingleUserMode(connection, databaseName, timeout);
+
                 connection.Close();
             }
         }
@@ -50,17 +46,12 @@ namespace Naos.Utils.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void PutDatabaseIntoMultiUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            if (timeout == default(TimeSpan))
-            {
-                timeout = TimeSpan.FromSeconds(30);
-            }
-
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
-            var commandText = "ALTER DATABASE " + databaseName + " SET MULTI_USER WITH ROLLBACK IMMEDIATE";
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
+
+                PutDatabaseIntoMultiUserMode(connection, databaseName, timeout);
+                
                 connection.Close();
             }
         }
@@ -216,11 +207,13 @@ namespace Naos.Utils.Database.Tools
             ThrowIfBad(currentConfiguration);
             ThrowIfBad(newConfiguration);
 
-            PutDatabaseInSingleUserMode(connectionString, currentConfiguration.DatabaseName);
+            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, "master"); // make sure it's not trying to connect to an old db...
 
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(realConnectionString))
             {
                 connection.Open();
+
+                PutDatabaseInSingleUserMode(connection, currentConfiguration.DatabaseName);
 
                 if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
                 {
@@ -259,10 +252,10 @@ namespace Naos.Utils.Database.Tools
                     connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
                 }
 
+                PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName);
+
                 connection.Close();
             }
-
-            PutDatabaseIntoMultiUserMode(connectionString, newConfiguration.DatabaseName);
         }
 
         /// <summary>
@@ -278,11 +271,12 @@ namespace Naos.Utils.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            PutDatabaseInSingleUserMode(connectionString, databaseName);
+            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, "master"); // make sure it's not trying to connect to an old db...
+            TakeDatabaseOffline(realConnectionString, databaseName);
 
             SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
             var commandText = "DROP DATABASE " + databaseName;
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(realConnectionString))
             {
                 connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
@@ -291,7 +285,7 @@ namespace Naos.Utils.Database.Tools
         }
 
         /// <summary>
-        /// Retrieves the default location that the server will save data files when creating a new database.
+        /// Retrieves the default location that the server will save data files when creating a new database (Only works on MS SQL Server 2012 and higher, otherwise null).
         /// </summary>
         /// <param name="connectionString">Connection string to the intended database server.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
@@ -315,7 +309,7 @@ namespace Naos.Utils.Database.Tools
         }
 
         /// <summary>
-        /// Retrieves the default location that the server will save log files when creating a new database.
+        /// Retrieves the default location that the server will save log files when creating a new database (Only works on MS SQL Server 2012 and higher, otherwise null).
         /// </summary>
         /// <param name="connectionString">Connection string to the intended database server.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
@@ -351,6 +345,29 @@ namespace Naos.Utils.Database.Tools
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);
         }
 
+        private static void PutDatabaseInSingleUserMode(IDbConnection connection, string databaseName, TimeSpan timeout = default(TimeSpan))
+        {
+            if (timeout == default(TimeSpan))
+            {
+                timeout = TimeSpan.FromSeconds(30);
+            }
+
+            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            var commandText = "ALTER DATABASE " + databaseName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
+            connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
+        }
+
+        private static void PutDatabaseIntoMultiUserMode(IDbConnection connection, string databaseName, TimeSpan timeout = default(TimeSpan))
+        {
+            if (timeout == default(TimeSpan))
+            {
+                timeout = TimeSpan.FromSeconds(30);
+            }
+
+            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            var commandText = "ALTER DATABASE " + databaseName + " SET MULTI_USER WITH ROLLBACK IMMEDIATE";
+            connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
+        }
         #endregion
     }
 }

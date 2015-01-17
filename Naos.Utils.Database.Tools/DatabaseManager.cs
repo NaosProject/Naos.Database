@@ -273,7 +273,7 @@ namespace Naos.Utils.Database.Tools
 
             SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName); // make sure it's going to take the only connection when it goes in single user
-            var commandText = "DROP DATABASE " + databaseName;
+            var commandText = "USE master; DROP DATABASE " + databaseName;
             using (var connection = new SqlConnection(realConnectionString))
             {
                 PutDatabaseInSingleUserMode(connection, databaseName, timeout);

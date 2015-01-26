@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MigratorConsoleHarness.cs" company="Naos">
-//   Copyright 2014 Naos
+//   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Utils.Database.MigratorHarness
+namespace Naos.Database.MigratorHarness
 {
     using System;
     using System.IO;
@@ -13,7 +13,7 @@ namespace Naos.Utils.Database.MigratorHarness
 
     using CLAP;
 
-    using Naos.Utils.Database.Migrator;
+    using Naos.Database.Migrator;
 
     using OBeautifulCode.Libs.Collections;
 
@@ -25,20 +25,20 @@ namespace Naos.Utils.Database.MigratorHarness
         /// <summary>
         /// The entry point to run migration up.
         /// </summary>
-        /// <param name="targetVersion">The version to migrate up to.</param>
-        /// <param name="connectionString">The connection string to the target database.</param>
-        /// <param name="databaseName">The database name to target.</param>
-        /// <param name="assemblyPath">The path to the assembly that the migration lives in.</param>
-        /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
+        /// <param name="connectionString">Connection string to the target database.</param>
+        /// <param name="databaseName">Database name to target.</param>
+        /// <param name="assemblyPath">Path to the assembly that the migration lives in.</param>
+        /// <param name="timeoutInSeconds">Command timeout (in seconds) for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context.</param>
+        /// <param name="targetVersion">Optional version to migrate up to, default is latest.</param>
         [Verb(Aliases = "Up", Description = "Perform a migration up.")]
         public static void Up(
-            [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion,
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
             [Required] [Aliases("")] [Description("The path to the assembly that contains the migration.")] string assemblyPath,
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
-            [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext)
+            [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
+            [DefaultValue(null)] [Aliases("")] [Description("Optional version to migrate to, default is latest.")] long? targetVersion)
         {
             if (!File.Exists(assemblyPath))
             {
@@ -57,7 +57,7 @@ namespace Naos.Utils.Database.MigratorHarness
             Console.WriteLine("                   timeout: " + timeout);
             Console.WriteLine(string.Empty);
 
-            MigrationExecutor.Migrate(assembly, connectionString, databaseName, targetVersion, MigrationExecutor.MigrationDirection.Up, Console.WriteLine, timeout, applicationContext);
+            MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
 
             Console.WriteLine("Done");
         }
@@ -65,20 +65,20 @@ namespace Naos.Utils.Database.MigratorHarness
         /// <summary>
         /// The entry point to run migration down.
         /// </summary>
-        /// <param name="targetVersion">The version to migrate up to.</param>
         /// <param name="connectionString">The connection string to the target database.</param>
         /// <param name="databaseName">The database name to target.</param>
         /// <param name="assemblyPath">The path to the assembly that the migration lives in.</param>
         /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context.</param>
+        /// <param name="targetVersion">The version to migrate up to.</param>
         [Verb(Aliases = "Down", Description = "Perform a migration down.")]
         public static void Down(
-            [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion,
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
             [Required] [Aliases("")] [Description("The path to the assembly that contains the migration.")] string assemblyPath,
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
-            [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext)
+            [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
+            [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion)
         {
             var assembly = Assembly.LoadFile(assemblyPath);
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
@@ -92,7 +92,7 @@ namespace Naos.Utils.Database.MigratorHarness
             Console.WriteLine("                   timeout: " + timeout);
             Console.WriteLine(string.Empty);
 
-            MigrationExecutor.Migrate(assembly, connectionString, databaseName, targetVersion, MigrationExecutor.MigrationDirection.Down, Console.WriteLine, timeout, applicationContext);
+            MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
 
             Console.WriteLine("Done");
         }

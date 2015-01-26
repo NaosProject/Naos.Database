@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DatabaseConfiguration.cs" company="Naos">
-//   Copyright 2014 Naos
+//   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Utils.Database.Tools
+namespace Naos.Database.Tools
 {
     /// <summary>
     /// Detailed information about the database's configuration (file size and name type stuff).

@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MigrationOptions.cs" company="Naos">
-//   Copyright 2014 Naos
+//   Copyright 2015 Naos
 // </copyright>
 // <summary>
 //   Class to pass necessary options to runner.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Utils.Database.Migrator
+namespace Naos.Database.Migrator
 {
     using FluentMigrator;
 

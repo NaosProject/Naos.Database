@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Naos">
-//   Copyright 2014 Naos
+//   Copyright 2015 Naos
 // </copyright>
 // <summary>
 //   The assembly information.
@@ -14,11 +14,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Naos.Utils.Database.Migrator")]
+[assembly: AssemblyTitle("Naos.Database.Migrator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Naos.Utils.Database.Migrator")]
+[assembly: AssemblyProduct("Naos.Database.Migrator")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

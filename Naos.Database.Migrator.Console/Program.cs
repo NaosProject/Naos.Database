@@ -1,13 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Program.cs" company="Naos">
-//   Copyright 2014 Naos
+//   Copyright 2015 Naos
 // </copyright>
 // <summary>
 //   The program entry point.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Utils.Database.MigratorHarness
+namespace Naos.Database.MigratorHarness
 {
     using System;
 

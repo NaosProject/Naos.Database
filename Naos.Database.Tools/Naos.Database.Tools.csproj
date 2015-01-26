@@ -7,8 +7,8 @@
     <ProjectGuid>{CF5080FD-F812-4C3D-808A-86F16E598D68}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Naos.Utils.Database.Tools</RootNamespace>
-    <AssemblyName>Naos.Utils.Database.Tools</AssemblyName>
+    <RootNamespace>Naos.Database.Tools</RootNamespace>
+    <AssemblyName>Naos.Database.Tools</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Naos.Utils.Database.Tools.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Naos.Database.Tools.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,7 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Naos.Utils.Database.Tools.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Naos.Database.Tools.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CuttingEdge.Conditions">

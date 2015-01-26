@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Utils.Database.Tools", "Naos.Utils.Database.Tools\Naos.Utils.Database.Tools.csproj", "{CF5080FD-F812-4C3D-808A-86F16E598D68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Tools", "Naos.Database.Tools\Naos.Database.Tools.csproj", "{CF5080FD-F812-4C3D-808A-86F16E598D68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Utils.Database.Migrator", "Naos.Utils.Database.Migrator\Naos.Utils.Database.Migrator.csproj", "{7FC1AA8E-A703-4E6E-AD4D-00FE0F1B910D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Migrator", "Naos.Database.Migrator\Naos.Database.Migrator.csproj", "{7FC1AA8E-A703-4E6E-AD4D-00FE0F1B910D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Utils.Database.MigratorHarness", "Naos.Utils.Database.MigratorHarness\Naos.Utils.Database.MigratorHarness.csproj", "{29DAC7A4-FC7C-473D-BCE8-BEEFC215B08E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Migrator.Console", "Naos.Database.Migrator.Console\Naos.Database.Migrator.Console.csproj", "{29DAC7A4-FC7C-473D-BCE8-BEEFC215B08E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

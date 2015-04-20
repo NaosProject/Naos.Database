@@ -12,13 +12,13 @@ namespace Naos.Database.Tools
     public enum DatabaseType
     {
         /// <summary>
-        /// A system database.
-        /// </summary>
-        System = 1,
-
-        /// <summary>
         /// A user database.
         /// </summary>
-        User = 2        
+        User = 0,
+
+        /// <summary>
+        /// A system database.
+        /// </summary>
+        System = 1,        
     }
 }

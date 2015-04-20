@@ -113,7 +113,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            ThrowIfBadOnModify(configuration);
+            ThrowIfBadOnCreateOrModify(configuration);
             var commandText = string.Format(
                 @"CREATE DATABASE {0}
                         ON
@@ -205,8 +205,8 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            ThrowIfBadOnModify(currentConfiguration);
-            ThrowIfBadOnModify(newConfiguration);
+            ThrowIfBadOnCreateOrModify(currentConfiguration);
+            ThrowIfBadOnCreateOrModify(newConfiguration);
 
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user
 
@@ -341,7 +341,7 @@ namespace Naos.Database.Tools
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);            
         }
 
-        private static void ThrowIfBadOnModify(DatabaseConfiguration configuration)
+        private static void ThrowIfBadOnCreateOrModify(DatabaseConfiguration configuration)
         {
             ThrowIfBad(configuration);
             if (configuration.DatabaseType == DatabaseType.System)

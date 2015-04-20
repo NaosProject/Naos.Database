@@ -113,7 +113,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            ThrowIfBad(configuration);
+            ThrowIfBadOnModify(configuration);
             var commandText = string.Format(
                 @"CREATE DATABASE {0}
                         ON
@@ -161,13 +161,16 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            var query = @"
+            // using the database name is the only good way to differentiate System from User databases
+            // see: http://stackoverflow.com/a/9682659/356790.  This is how the SMO does it.
+            const string Query = @"
                 SELECT
                     d.name as DatabaseName,
                     df.name as DataFileLogicalName,
                     df.physical_name as DataFilePath,
                     lf.name as LogFileLogicalName,
-                    lf.physical_name as LogFilePath
+                    lf.physical_name as LogFilePath,
+                    case when d.name in ('master','model','msdb','tempdb') then 'System' else 'User' end as DatabaseType
                 FROM sys.databases d 
                 INNER JOIN sys.master_files df
                     ON d.database_id = df.database_id AND df.type = 0
@@ -177,7 +180,7 @@ namespace Naos.Database.Tools
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                var ret = connection.Query<DatabaseConfiguration>(query, null, null, true, (int?)timeout.TotalSeconds).ToArray();
+                var ret = connection.Query<DatabaseConfiguration>(Query, null, null, true, (int?)timeout.TotalSeconds).ToArray();
                 connection.Close();
 
                 return ret;
@@ -202,8 +205,8 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            ThrowIfBad(currentConfiguration);
-            ThrowIfBad(newConfiguration);
+            ThrowIfBadOnModify(currentConfiguration);
+            ThrowIfBadOnModify(newConfiguration);
 
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user
 
@@ -328,14 +331,23 @@ namespace Naos.Database.Tools
 
             return ret;
         }
-
+        
         private static void ThrowIfBad(DatabaseConfiguration configuration)
         {
             SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.DatabaseName);
             SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.DataFileLogicalName);
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.DataFilePath);
             SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.LogFileLogicalName);
-            SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);
+            SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);            
+        }
+
+        private static void ThrowIfBadOnModify(DatabaseConfiguration configuration)
+        {
+            ThrowIfBad(configuration);
+            if (configuration.DatabaseType == DatabaseType.System)
+            {
+                throw new InvalidOperationException("Cannot modify system databases.");
+            }
         }
 
         private static void PutDatabaseInSingleUserMode(IDbConnection connection, string databaseName, TimeSpan timeout = default(TimeSpan))

@@ -17,6 +17,11 @@ namespace Naos.Database.Tools
         public string DatabaseName { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of database.
+        /// </summary>
+        public DatabaseType DatabaseType { get; set; }
+
+        /// <summary>
         /// Gets or sets the metadata name of the data file.
         /// </summary>
         public string DataFileLogicalName { get; set; }

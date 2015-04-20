@@ -18,8 +18,6 @@ namespace Naos.Database.Tools
     /// </summary>
     public static class DatabaseManager
     {
-        #region Public Methods
-
         /// <summary>
         /// Puts the database into single user mode.
         /// </summary>
@@ -331,10 +329,6 @@ namespace Naos.Database.Tools
             return ret;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void ThrowIfBad(DatabaseConfiguration configuration)
         {
             SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.DatabaseName);
@@ -367,6 +361,5 @@ namespace Naos.Database.Tools
             var commandText = "ALTER DATABASE " + databaseName + " SET MULTI_USER WITH ROLLBACK IMMEDIATE";
             connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
         }
-        #endregion
     }
 }

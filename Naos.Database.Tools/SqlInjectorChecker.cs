@@ -16,8 +16,6 @@ namespace Naos.Database.Tools
     /// </summary>
     public class SqlInjectorChecker
     {
-        #region Public Methods
-
         /// <summary>
         /// Throws an ArgumentException if input is not an alpha numeric string.
         /// </summary>
@@ -50,7 +48,5 @@ namespace Naos.Database.Tools
                 throw new ArgumentException("The provided path: " + pathToCheck + " contains either quotes or single quotes or semicolons which are not allowed.");
             }
         }
-
-        #endregion
     }
 }

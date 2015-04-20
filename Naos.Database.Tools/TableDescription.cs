@@ -13,8 +13,6 @@ namespace Naos.Database.Tools
     /// </summary>
     public class TableDescription
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the name of the database the table is from.
         /// </summary>
@@ -34,7 +32,5 @@ namespace Naos.Database.Tools
         /// Gets or sets the columns descriptions of the table.
         /// </summary>
         public ColumnDescription[] Columns { get; set; }
-
-        #endregion
     }
 }

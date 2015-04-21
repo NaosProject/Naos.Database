@@ -11,8 +11,6 @@ namespace Naos.Database.Tools
     /// </summary>
     public class ColumnDescription
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the name of the column.
         /// </summary>
@@ -37,7 +35,5 @@ namespace Naos.Database.Tools
         /// Gets or sets the data type of the column.
         /// </summary>
         public string DataType { get; set; }
-
-        #endregion
     }
 }

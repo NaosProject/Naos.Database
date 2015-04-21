@@ -11,12 +11,15 @@ namespace Naos.Database.Tools
     /// </summary>
     public class DatabaseConfiguration
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the name of database.
         /// </summary>
         public string DatabaseName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of database.
+        /// </summary>
+        public DatabaseType DatabaseType { get; set; }
 
         /// <summary>
         /// Gets or sets the metadata name of the data file.
@@ -68,10 +71,6 @@ namespace Naos.Database.Tools
         /// </summary>
         public long LogFileGrowthSizeInKb { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Creates a copy of the current object.
         /// </summary>
@@ -105,7 +104,5 @@ namespace Naos.Database.Tools
             clone.DatabaseName = newDatabaseName;
             return clone;
         }
-
-        #endregion
     }
 }

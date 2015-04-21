@@ -13,8 +13,6 @@ namespace Naos.Database.Tools
     /// </summary>
     public class ConnectionStringHelper
     {
-        #region Public Methods
-
         /// <summary>
         /// Will add replace the initial catalog in the connection string as the provided database name.
         /// </summary>
@@ -30,7 +28,5 @@ namespace Naos.Database.Tools
 
             return builder.ConnectionString;
         }
-
-        #endregion
     }
 }

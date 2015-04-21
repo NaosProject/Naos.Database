@@ -17,8 +17,6 @@ namespace Naos.Database.Tools
     /// </summary>
     public static class DatabaseDescriber
     {
-        #region Public Methods
-
         /// <summary>
         /// Get detailed information about a table's makeup.
         /// </summary>
@@ -80,7 +78,5 @@ namespace Naos.Database.Tools
                           };
             return ret;
         }
-
-        #endregion
     }
 }

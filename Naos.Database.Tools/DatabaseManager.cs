@@ -346,7 +346,7 @@ namespace Naos.Database.Tools
             ThrowIfBad(configuration);
             if (configuration.DatabaseType == DatabaseType.System)
             {
-                throw new InvalidOperationException("Cannot modify system databases.");
+                throw new InvalidOperationException("Cannot create nor modify system databases.");
             }
         }
 

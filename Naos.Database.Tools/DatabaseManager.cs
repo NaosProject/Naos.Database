@@ -487,7 +487,7 @@ namespace Naos.Database.Tools
                     throw new NotSupportedException("This encryptor is not supported: " + backupDetails.Encryptor);
                 }
 
-                string encryption = string.Format("ENCRYPTION ( ALGORITHM = {0}, {1} = '{2}')", cipher, encryptor, backupDetails.EncryptorName);
+                string encryption = string.Format("ENCRYPTION ( ALGORITHM = {0}, {1} = {2})", cipher, encryptor, backupDetails.EncryptorName);
                 withOptions.Add(encryption);
             }
 

@@ -12,6 +12,11 @@ namespace Naos.Database.Tools.Backup
     public enum Encryptor
     {
         /// <summary>
+        /// No encryptor.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// Backup using a server certificate.
         /// </summary>
         ServerCertificate,

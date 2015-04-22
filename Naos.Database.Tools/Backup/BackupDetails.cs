@@ -6,16 +6,23 @@
 
 namespace Naos.Database.Tools.Backup
 {
+    using System;
+
     /// <summary>
     /// Captures the details of a backup operation.
     /// </summary>
     public class BackupDetails
     {
         /// <summary>
+        /// Gets or sets the location at which to save the backup (i.e. file path or URL)
+        /// </summary>
+        public Uri BackupTo { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to enable checksums.
         /// </summary>
         public ChecksumOption ChecksumOption { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the cipher to use when encrypting the backup.
         /// </summary>
@@ -54,6 +61,6 @@ namespace Naos.Database.Tools.Backup
         /// <summary>
         /// Gets or sets the name of the backup.
         /// </summary>
-        public string Name { get; set; }        
+        public string Name { get; set; }
     }
 }

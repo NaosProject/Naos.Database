@@ -474,11 +474,11 @@ namespace Naos.Database.Tools
                 }
 
                 string encryptor;
-                if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
+                if (backupDetails.Encryptor == Encryptor.ServerCertificate)
                 {
                     encryptor = "SERVER CERTIFICATE";
                 }
-                else if (backupDetails.Encryptor == Encryptor.ServerCertificate)
+                else if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
                 {
                     encryptor = "SERVER ASYMMETRIC KEY";
                 }

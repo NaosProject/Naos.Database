@@ -73,7 +73,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET offline WITH ROLLBACK IMMEDIATE";
             using (var connection = new SqlConnection(connectionString))
             {
@@ -96,7 +96,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET online";
             using (var connection = new SqlConnection(connectionString))
             {
@@ -278,7 +278,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName); // make sure it's going to take the only connection when it goes in single user
             var commandText = "USE master; DROP DATABASE " + databaseName;
             using (var connection = new SqlConnection(realConnectionString))
@@ -345,7 +345,8 @@ namespace Naos.Database.Tools
         /// During a full or differential database backup, SQL Server backs up enough of the transaction log to produce a consistent database when the backup is restored.
         /// When you restore a backup created by BACKUP DATABASE (a data backup), the entire backup is restored. Only a log backup can be restored to a specific time or transaction within the backup
         /// This method does not support appending a backup to an existing file nor any of the methods to age/overwrite backups in an existing file.
-        /// This method will always overwrite an existing file.
+        /// This method will always overwrite an existing file.  It's more difficult to get SQL Server to emit an error if a file already exists.  
+        /// See: <a href="http://dba.stackexchange.com/questions/98536/how-to-generate-an-error-when-backing-up-to-an-existing-file"/>
         /// </remarks>
         /// <param name="connectionString">Connection string to the intended database server.</param>
         /// <param name="databaseName">Name of the database to backup.</param>
@@ -474,11 +475,11 @@ namespace Naos.Database.Tools
                 }
 
                 string encryptor;
-                if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
+                if (backupDetails.Encryptor == Encryptor.ServerCertificate)
                 {
                     encryptor = "SERVER CERTIFICATE";
                 }
-                else if (backupDetails.Encryptor == Encryptor.ServerCertificate)
+                else if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
                 {
                     encryptor = "SERVER ASYMMETRIC KEY";
                 }
@@ -487,7 +488,7 @@ namespace Naos.Database.Tools
                     throw new NotSupportedException("This encryptor is not supported: " + backupDetails.Encryptor);
                 }
 
-                string encryption = string.Format("ENCRYPTION ( ALGORITHM = {0}, {1} = '{2}')", cipher, encryptor, backupDetails.EncryptorName);
+                string encryption = string.Format("ENCRYPTION ( ALGORITHM = {0}, {1} = {2})", cipher, encryptor, backupDetails.EncryptorName);
                 withOptions.Add(encryption);
             }
 
@@ -517,10 +518,10 @@ namespace Naos.Database.Tools
 
         private static void ThrowIfBad(DatabaseConfiguration configuration)
         {
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.DatabaseName);
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.DataFileLogicalName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.DatabaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.DataFileLogicalName);
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.DataFilePath);
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.LogFileLogicalName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.LogFileLogicalName);
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);            
         }
 
@@ -540,7 +541,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
             connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
         }
@@ -552,7 +553,7 @@ namespace Naos.Database.Tools
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumeric(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET MULTI_USER WITH ROLLBACK IMMEDIATE";
             connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
         }

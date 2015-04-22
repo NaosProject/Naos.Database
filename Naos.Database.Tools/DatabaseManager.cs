@@ -7,11 +7,17 @@
 namespace Naos.Database.Tools
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
+    using System.Text;
+
+    using CuttingEdge.Conditions;
 
     using Dapper;
+
+    using Naos.Database.Tools.Backup;
 
     /// <summary>
     /// Class with tools for adding, removing, and updating databases.
@@ -331,7 +337,184 @@ namespace Naos.Database.Tools
 
             return ret;
         }
-        
+
+        /// <summary>
+        /// Perform a full (non-differential) database backup.
+        /// </summary>
+        /// <remarks>
+        /// During a full or differential database backup, SQL Server backs up enough of the transaction log to produce a consistent database when the backup is restored.
+        /// When you restore a backup created by BACKUP DATABASE (a data backup), the entire backup is restored. Only a log backup can be restored to a specific time or transaction within the backup
+        /// This method does not support appending a backup to an existing file nor any of the methods to age/overwrite backups in an existing file.
+        /// This method will always overwrite an existing file.
+        /// </remarks>
+        /// <param name="connectionString">Connection string to the intended database server.</param>
+        /// <param name="databaseName">Name of the database to backup.</param>
+        /// <param name="backupDetails">The details of how to perform the backup.</param>
+        /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        /// <param name="serverMessageHandler">Optional handler for messages emitted by the server in the process of performing a backup.</param>
+        public static void BackupFull(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan), Action<string> serverMessageHandler = null)
+        {
+            // check parameters
+            Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
+            Condition.Requires(databaseName, "databaseName").IsNotNullOrWhiteSpace();
+            Condition.Requires(backupDetails, "backupDetails").IsNotNull();
+            backupDetails.ThrowIfInvalid();
+
+            // construct the non-options portion of the backup command
+            var commandBuilder = new StringBuilder();
+            string backupDatabase = string.Format("BACKUP DATABASE [{0}]", databaseName);
+            commandBuilder.AppendLine(backupDatabase);
+
+            string deviceName;
+            string backupLocation;
+            if (backupDetails.Device == Device.Disk)
+            {
+                deviceName = "DISK";
+                backupLocation = backupDetails.BackupTo.LocalPath;
+            }
+            else if (backupDetails.Device == Device.Url)
+            {
+                deviceName = "URL";
+                backupLocation = backupDetails.BackupTo.ToString();
+            }
+            else
+            {
+                throw new NotSupportedException("This device is not supported: " + backupDetails.Device);
+            }
+
+            string backupTo = string.Format("TO {0} = '{1}'", deviceName, backupLocation);
+            commandBuilder.AppendLine(backupTo);
+
+            // construct the WITH options
+            commandBuilder.AppendLine("WITH");
+            var withOptions = new List<string>();
+
+            string checksumOption;
+            if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
+            {
+                checksumOption = "CHECKSUM";
+                withOptions.Add(checksumOption);
+
+                string errorHandling;
+                if (backupDetails.ErrorHandling == ErrorHandling.ContinueAfterError)
+                {
+                    errorHandling = "CONTINUE_AFTER_ERROR";
+                }
+                else if (backupDetails.ErrorHandling == ErrorHandling.StopOnError)
+                {
+                    errorHandling = "STOP_ON_ERROR";
+                }
+                else
+                {
+                    throw new NotSupportedException("This error handling option is not supported: " + backupDetails.ErrorHandling);
+                }
+
+                withOptions.Add(errorHandling);
+            }
+            else if (backupDetails.ChecksumOption == ChecksumOption.NoChecksum)
+            {
+                checksumOption = "NO_CHECKSUM";
+                withOptions.Add(checksumOption);
+            }
+            else
+            {
+                throw new NotSupportedException("This checksum option is not supported: " + backupDetails.ChecksumOption);
+            }
+
+            string compressionOption;
+            if (backupDetails.CompressionOption == CompressionOption.Compression)
+            {
+                compressionOption = "COMPRESSION";
+            }
+            else if (backupDetails.CompressionOption == CompressionOption.NoCompression)
+            {
+                compressionOption = "NO_COMPRESSION";
+            }
+            else
+            {
+                throw new NotSupportedException("This compression option is not supported: " + backupDetails.CompressionOption);
+            }
+
+            withOptions.Add(compressionOption);
+            
+            if (!string.IsNullOrWhiteSpace(backupDetails.Name))
+            {
+                string name = string.Format("NAME = '{0}'", backupDetails.Name);
+                withOptions.Add(name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(backupDetails.Description))
+            {
+                string description = string.Format("DESCRIPTION = '{0}'", backupDetails.Description);
+                withOptions.Add(description);
+            }
+
+            if (backupDetails.Cipher != Cipher.NoEncryption)
+            {
+                string cipher;
+                if (backupDetails.Cipher == Cipher.Aes128)
+                {
+                    cipher = "AES_128";
+                }
+                else if (backupDetails.Cipher == Cipher.Aes192)
+                {
+                    cipher = "AES_192";
+                }
+                else if (backupDetails.Cipher == Cipher.Aes256)
+                {
+                    cipher = "AES_256";
+                }
+                else if (backupDetails.Cipher == Cipher.TripleDes3Key)
+                {
+                    cipher = "TRIPLE_DES_3KEY";
+                }
+                else
+                {
+                    throw new NotSupportedException("This cipher is not supported: " + backupDetails.Cipher);
+                }
+
+                string encryptor;
+                if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
+                {
+                    encryptor = "SERVER CERTIFICATE";
+                }
+                else if (backupDetails.Encryptor == Encryptor.ServerCertificate)
+                {
+                    encryptor = "SERVER ASYMMETRIC KEY";
+                }
+                else
+                {
+                    throw new NotSupportedException("This encryptor is not supported: " + backupDetails.Encryptor);
+                }
+
+                string encryption = string.Format("ENCRYPTION ( ALGORITHM = {0}, {1} = '{2}')", cipher, encryptor, backupDetails.EncryptorName);
+                withOptions.Add(encryption);
+            }
+
+            withOptions.Add("FORMAT");
+
+            // append the WITH options
+            string withOptionsCsv = withOptions.Aggregate((current, next) => current + "," + Environment.NewLine + next);
+            commandBuilder.AppendLine(withOptionsCsv);
+
+            // execute the backup
+            string command = commandBuilder.ToString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                if (serverMessageHandler != null)
+                {
+                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    {
+                        serverMessageHandler(e.Message);
+                    };
+                }
+
+                connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
+                connection.Close();
+            }
+        }
+
         private static void ThrowIfBad(DatabaseConfiguration configuration)
         {
             SqlInjectorChecker.ThrowIfNotAlphanumeric(configuration.DatabaseName);

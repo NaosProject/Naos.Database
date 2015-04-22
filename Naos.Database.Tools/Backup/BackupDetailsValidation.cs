@@ -51,7 +51,7 @@ namespace Naos.Database.Tools.Backup
                     throw new ArgumentException("EncryptorName is required when any Cipher != NoEncryption.");
                 }
 
-                SqlInjectorChecker.ThrowIfNotAlphanumeric(backupDetails.EncryptorName);
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.EncryptorName);
             }
 
             if (backupDetails.ChecksumOption == ChecksumOption.Checksum)

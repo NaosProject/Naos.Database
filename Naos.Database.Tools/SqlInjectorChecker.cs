@@ -8,8 +8,9 @@ namespace Naos.Database.Tools
 {
     using System;
     using System.IO;
+    using System.Text.RegularExpressions;
 
-    using OBeautifulCode.Libs.String;
+    using CuttingEdge.Conditions;
 
     /// <summary>
     /// Utility methods to guard against SQL Injection.
@@ -17,12 +18,15 @@ namespace Naos.Database.Tools
     public class SqlInjectorChecker
     {
         /// <summary>
-        /// Throws an ArgumentException if input is not an alpha numeric string.
+        /// Throws an ArgumentException if input has any characters that are not alpha-numeric nor the space character.
         /// </summary>
         /// <param name="textToCheck">Text to check.</param>
-        public static void ThrowIfNotAlphanumeric(string textToCheck)
+        public static void ThrowIfNotAlphanumericOrSpace(string textToCheck)
         {
-            if (!textToCheck.IsAlphanumeric())
+            Condition.Requires(textToCheck).IsNotNull();
+            const string Pattern = @"[a-zA-Z0-9 ]*";
+            Match match = Regex.Match(textToCheck, Pattern);
+            if (match.Value != textToCheck)
             {
                 throw new ArgumentException("The provided input: " + textToCheck + " is not alphanumeric and is not valid.");
             }

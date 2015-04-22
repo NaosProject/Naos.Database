@@ -61,6 +61,16 @@ namespace Naos.Database.Tools.Backup
                     throw new ArgumentException("ErrorHandling cannot be None when using checksum.");
                 }
             }
+
+            if (!string.IsNullOrWhiteSpace(backupDetails.Name))
+            {
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(backupDetails.Description))
+            {
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Description);
+            }
         }
     }
 }

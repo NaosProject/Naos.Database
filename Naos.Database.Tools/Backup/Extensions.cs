@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BackupDetailsValidation.cs" company="Naos">
+// <copyright file="Extensions.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,9 +11,9 @@ namespace Naos.Database.Tools.Backup
     using CuttingEdge.Conditions;
 
     /// <summary>
-    /// Validates a <see cref="BackupDetails"/>
+    /// Extension methods for types in the namespace.
     /// </summary>
-    public static class BackupDetailsValidation
+    public static class Extensions
     {
         /// <summary>
         /// Throws an exception if the <see cref="BackupDetails"/> is invalid.
@@ -71,6 +71,15 @@ namespace Naos.Database.Tools.Backup
             {
                 SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Description);
             }
+        }
+
+        /// <summary>
+        /// Throws an exception if the <see cref="RestoreDetails"/> is invalid.
+        /// </summary>
+        /// <param name="restoreDetails">The restore details to validate.</param>
+        public static void ThrowIfInvalid(this RestoreDetails restoreDetails)
+        {
+            Condition.Requires(restoreDetails.BackupTo, "backupDetails.BackupTo").IsNotNull();
         }
     }
 }

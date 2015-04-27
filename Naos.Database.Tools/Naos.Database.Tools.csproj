@@ -49,13 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup\BackupDetails.cs" />
-    <Compile Include="Backup\BackupDetailsValidation.cs" />
     <Compile Include="Backup\ChecksumOption.cs" />
     <Compile Include="Backup\CompressionOption.cs" />
     <Compile Include="Backup\Device.cs" />
     <Compile Include="Backup\Cipher.cs" />
     <Compile Include="Backup\Encryptor.cs" />
     <Compile Include="Backup\ErrorHandling.cs" />
+    <Compile Include="Backup\Extensions.cs" />
+    <Compile Include="Backup\RestoreDetails.cs" />
     <Compile Include="ColumnDescription.cs" />
     <Compile Include="ConnectionStringHelper.cs" />
     <Compile Include="Constants.cs" />

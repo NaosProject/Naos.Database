@@ -390,6 +390,12 @@ namespace Naos.Database.Tools
             commandBuilder.AppendLine("WITH");
             var withOptions = new List<string>();
 
+            if (!string.IsNullOrWhiteSpace(backupDetails.Credential))
+            {
+                string credential = string.Format("CREDENTIAL = '{0}'", backupDetails.Credential);
+                withOptions.Add(credential);
+            }
+
             string checksumOption;
             if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
             {
@@ -499,6 +505,176 @@ namespace Naos.Database.Tools
             commandBuilder.AppendLine(withOptionsCsv);
 
             // execute the backup
+            string command = commandBuilder.ToString();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                if (serverMessageHandler != null)
+                {
+                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    {
+                        serverMessageHandler(e.Message);
+                    };
+                }
+
+                connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
+                connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Restores an entire database from a full database backup.
+        /// </summary>
+        /// <param name="connectionString">Connection string to the intended database server.</param>
+        /// <param name="databaseName">Name of the database to restore.</param>
+        /// <param name="restoreDetails">The details of how to perform the restore.</param>
+        /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        /// <param name="serverMessageHandler">Optional handler for messages emitted by the server in the process of performing a backup.</param>
+        public static void RestoreFull(string connectionString, string databaseName, RestoreDetails restoreDetails, TimeSpan timeout = default(TimeSpan), Action<string> serverMessageHandler = null)
+        {
+            // check parameters
+            Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
+            Condition.Requires(databaseName, "databaseName").IsNotNullOrWhiteSpace();
+            Condition.Requires(restoreDetails, "restoreDetails").IsNotNull();
+
+            restoreDetails.ThrowIfInvalid();
+
+            // construct the non-options portion of the backup command
+            var commandBuilder = new StringBuilder();
+            string backupDatabase = string.Format("RESTORE DATABASE [{0}]", databaseName);
+            commandBuilder.AppendLine(backupDatabase);
+
+            string deviceName;
+            string backupLocation;
+            if (restoreDetails.Device == Device.Disk)
+            {
+                deviceName = "DISK";
+                backupLocation = restoreDetails.RestoreFrom.LocalPath;
+            }
+            else if (restoreDetails.Device == Device.Url)
+            {
+                deviceName = "URL";
+                backupLocation = restoreDetails.RestoreFrom.ToString();
+            }
+            else
+            {
+                throw new NotSupportedException("This device is not supported: " + restoreDetails.Device);
+            }
+
+            string restoreFrom = string.Format("FROM {0} = '{1}'", deviceName, backupLocation);
+            commandBuilder.AppendLine(restoreFrom);
+
+            // construct the WITH options
+            commandBuilder.AppendLine("WITH");
+            var withOptions = new List<string>();
+            withOptions.Add("RECOVERY");
+
+            if (!string.IsNullOrWhiteSpace(restoreDetails.Credential))
+            {
+                string credential = string.Format("CREDENTIAL = '{0}'", restoreDetails.Credential);
+                withOptions.Add(credential);
+            }
+
+            // should the backup be restored to a specific path?
+            bool useSpecifiedDataFilePath = !string.IsNullOrWhiteSpace(restoreDetails.DataFilePath);
+            bool useSpecifiedLogFilePath = !string.IsNullOrWhiteSpace(restoreDetails.LogFilePath);
+            if (useSpecifiedDataFilePath || useSpecifiedLogFilePath)
+            {
+                string fileListCommand = "RESTORE FILELISTONLY " + restoreFrom;
+                List<RestoreFile> restoreFiles;
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    restoreFiles = connection.Query<RestoreFile>(fileListCommand, commandTimeout: (int?)timeout.TotalSeconds).ToList();
+                    connection.Close();
+                }
+
+                if (useSpecifiedDataFilePath)
+                {
+                    IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.Type == "D").ToList();
+                    if (dataFiles.Count() != 1)
+                    {
+                        throw new InvalidOperationException("Cannot restore from a backup with multiple data files when the file path to restore the data to is specified in the restore details.");
+                    }
+
+                    string moveTo = string.Format("MOVE '{0}' TO '{1}'", dataFiles.First().LogicalName, restoreDetails.DataFilePath);
+                    withOptions.Add(moveTo);
+                }
+
+                if (useSpecifiedLogFilePath)
+                {
+                    IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.Type == "L").ToList();
+                    if (logFiles.Count() != 1)
+                    {
+                        throw new InvalidOperationException("Cannot restore from a backup with multiple log files when the file path to restore the log to is specified in the restore details.");
+                    }
+
+                    string moveTo = string.Format("MOVE '{0}' TO '{1}'", logFiles.First().LogicalName, restoreDetails.LogFilePath);
+                    withOptions.Add(moveTo);
+                }
+            }
+
+            string checksumOption;
+            if (restoreDetails.ChecksumOption == ChecksumOption.Checksum)
+            {
+                checksumOption = "CHECKSUM";
+                withOptions.Add(checksumOption);
+
+                string errorHandling;
+                if (restoreDetails.ErrorHandling == ErrorHandling.ContinueAfterError)
+                {
+                    errorHandling = "CONTINUE_AFTER_ERROR";
+                }
+                else if (restoreDetails.ErrorHandling == ErrorHandling.StopOnError)
+                {
+                    errorHandling = "STOP_ON_ERROR";
+                }
+                else
+                {
+                    throw new NotSupportedException("This error handling option is not supported: " + restoreDetails.ErrorHandling);
+                }
+
+                withOptions.Add(errorHandling);
+            }
+            else if (restoreDetails.ChecksumOption == ChecksumOption.NoChecksum)
+            {
+                checksumOption = "NO_CHECKSUM";
+                withOptions.Add(checksumOption);
+            }
+            else
+            {
+                throw new NotSupportedException("This checksum option is not supported: " + restoreDetails.ChecksumOption);
+            }
+
+            if (restoreDetails.RestrictedUserOption == RestrictedUserOption.Normal)
+            {
+            }
+            else if (restoreDetails.RestrictedUserOption == RestrictedUserOption.RestrictedUser)
+            {
+                withOptions.Add("RESTRICTED_USER");
+            }
+            else
+            {
+                throw new NotSupportedException("This restricted user option is not supported: " + restoreDetails.RestrictedUserOption);
+            }
+
+            if (restoreDetails.ReplaceOption == ReplaceOption.DoNotReplaceExistingDatabaseAndThrow)
+            {
+            }
+            else if (restoreDetails.ReplaceOption == ReplaceOption.ReplaceExistingDatabase)
+            {
+                withOptions.Add("REPLACE");
+            }
+            else
+            {
+                throw new NotSupportedException("This replace option is not supported: " + restoreDetails.ReplaceOption);
+            }
+
+            // append the WITH options
+            string withOptionsCsv = withOptions.Aggregate((current, next) => current + "," + Environment.NewLine + next);
+            commandBuilder.AppendLine(withOptionsCsv);
+
+            // execute the restore
             string command = commandBuilder.ToString();
             using (var connection = new SqlConnection(connectionString))
             {

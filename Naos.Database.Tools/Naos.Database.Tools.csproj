@@ -49,13 +49,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup\BackupDetails.cs" />
-    <Compile Include="Backup\BackupDetailsValidation.cs" />
     <Compile Include="Backup\ChecksumOption.cs" />
     <Compile Include="Backup\CompressionOption.cs" />
     <Compile Include="Backup\Device.cs" />
     <Compile Include="Backup\Cipher.cs" />
     <Compile Include="Backup\Encryptor.cs" />
     <Compile Include="Backup\ErrorHandling.cs" />
+    <Compile Include="Backup\Extensions.cs" />
+    <Compile Include="Backup\RecoveryOption.cs" />
+    <Compile Include="Backup\ReplaceOption.cs" />
+    <Compile Include="Backup\RestoreDetails.cs" />
+    <Compile Include="Backup\RestrictedUserOption.cs" />
     <Compile Include="ColumnDescription.cs" />
     <Compile Include="ConnectionStringHelper.cs" />
     <Compile Include="Constants.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="DatabaseManager.cs" />
     <Compile Include="DatabaseType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestoreFile.cs" />
     <Compile Include="SqlInjectorChecker.cs" />
     <Compile Include="TableDescription.cs" />
   </ItemGroup>

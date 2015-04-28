@@ -34,6 +34,11 @@ namespace Naos.Database.Tools.Backup
         public CompressionOption CompressionOption { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the credential to use when backing up to a URL.
+        /// </summary>
+        public string Credential { get; set; }
+
+        /// <summary>
         /// Gets or sets a description of the backup.
         /// </summary>
         public string Description { get; set; }

@@ -23,6 +23,16 @@ namespace Naos.Database.Tools.Backup
         {
             Condition.Requires(backupDetails.BackupTo, "backupDetails.BackupTo").IsNotNull();
 
+            if (backupDetails.Device == Device.Url)
+            {
+                if (string.IsNullOrWhiteSpace(backupDetails.Credential))
+                {
+                    throw new ArgumentException("Credential cannot be null or whitespace when Device is URL");
+                }
+
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Credential);
+            }
+
             if (!string.IsNullOrWhiteSpace(backupDetails.Name))
             {
                 if (backupDetails.Name.Length > 128)

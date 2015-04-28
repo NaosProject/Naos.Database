@@ -390,6 +390,12 @@ namespace Naos.Database.Tools
             commandBuilder.AppendLine("WITH");
             var withOptions = new List<string>();
 
+            if (!string.IsNullOrWhiteSpace(backupDetails.Credential))
+            {
+                string credential = string.Format("CREDENTIAL = '{0}'", backupDetails.Credential);
+                withOptions.Add(credential);
+            }
+
             string checksumOption;
             if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
             {

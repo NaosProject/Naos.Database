@@ -365,7 +365,7 @@ namespace Naos.Database.Tools
             var commandBuilder = new StringBuilder();
             string backupDatabase = string.Format("BACKUP DATABASE [{0}]", databaseName);
             commandBuilder.AppendLine(backupDatabase);
-
+            
             string deviceName;
             string backupLocation;
             if (backupDetails.Device == Device.Disk)
@@ -382,7 +382,7 @@ namespace Naos.Database.Tools
             {
                 throw new NotSupportedException("This device is not supported: " + backupDetails.Device);
             }
-
+            
             string backupTo = string.Format("TO {0} = '{1}'", deviceName, backupLocation);
             commandBuilder.AppendLine(backupTo);
 

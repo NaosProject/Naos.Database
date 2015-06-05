@@ -14,22 +14,23 @@ namespace Naos.Database.Tools.Backup
     public class BackupDetails
     {
         /// <summary>
-        /// Gets or sets the location at which to save the backup (i.e. file path or URL)
+        /// Gets or sets the location at which to save the backup (i.e. file path or URL).
+        /// For local/network storage, must be a file and NOT a directory (i.e. <code>c:\MyBackups\TodayBackup.bak</code>, not <code>c:\MyBackups</code>)
         /// </summary>
         public Uri BackupTo { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to enable checksums.
+        /// Gets or sets an enum value indicating whether to enable checksums.
         /// </summary>
         public ChecksumOption ChecksumOption { get; set; }
 
         /// <summary>
-        /// Gets or sets the cipher to use when encrypting the backup.
+        /// Gets or sets an enum value for the cipher to use when encrypting the backup.
         /// </summary>
         public Cipher Cipher { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to compress the backup.
+        /// Gets or sets an enum value indicating whether to compress the backup.
         /// </summary>
         public CompressionOption CompressionOption { get; set; }
 
@@ -44,12 +45,12 @@ namespace Naos.Database.Tools.Backup
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the device to backup to.
+        /// Gets or sets an enum value indicating the device to backup to.
         /// </summary>
         public Device Device { get; set; }
 
         /// <summary>
-        /// Gets or sets the encryptor to use when encrypting the backup.
+        /// Gets or sets an enum value for the encryptor to use when encrypting the backup.
         /// </summary>
         public Encryptor Encryptor { get; set; }
 
@@ -59,12 +60,14 @@ namespace Naos.Database.Tools.Backup
         public string EncryptorName { get; set; }
 
         /// <summary>
-        /// Gets or sets the error handling method to use.
+        /// Gets or sets an enum value indicating the error handling method to use.
         /// </summary>
         public ErrorHandling ErrorHandling { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the backup.
+        /// Gets or sets the name of the backup (not the name of the backup file,
+        /// but rather the name of the backup set identifying the backup within the file).
+        /// If not specified, it is blank.
         /// </summary>
         public string Name { get; set; }
     }

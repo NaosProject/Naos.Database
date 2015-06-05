@@ -8,6 +8,7 @@
       <Value>pluralization</Value>
       <Value>json</Value>
       <Value>encryptor</Value>
+      <Value>enum</Value>
     </CollectionProperty>
     <CollectionProperty Name="DeprecatedWords">
       <Value>preprocessor,pre-processor</Value>

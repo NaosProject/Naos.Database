@@ -7,6 +7,7 @@
 namespace Naos.Database.MessageBus.Handlers
 {
     using System;
+    using System.IO;
 
     using Its.Configuration;
 
@@ -26,10 +27,11 @@ namespace Naos.Database.MessageBus.Handlers
             Action<string> logAction = s => { };
 
             var settings = Settings.Get<MessageHandlerSettings>();
+            var backupFileName = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
             var backupDetails = new BackupDetails()
                                     {
                                         Name = message.BackupName,
-                                        BackupTo = new Uri(settings.BackupDirectory),
+                                        BackupTo = new Uri(backupFileName),
                                         ChecksumOption = ChecksumOption.Checksum,
                                         Cipher = Cipher.NoEncryption,
                                         CompressionOption = CompressionOption.NoCompression,

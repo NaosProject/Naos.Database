@@ -24,14 +24,15 @@ namespace Naos.Database.MessageBus.Handlers
         /// <inheritdoc />
         public void Handle(BackupDatabaseMessage message)
         {
-            Action<string> logAction = s => { };
+            Action<string> logAction = Console.WriteLine;
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var backupFileName = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
+            var backupFileNameUri = new Uri(backupFileName);
             var backupDetails = new BackupDetails()
                                     {
                                         Name = message.BackupName,
-                                        BackupTo = new Uri(backupFileName),
+                                        BackupTo = backupFileNameUri,
                                         ChecksumOption = ChecksumOption.Checksum,
                                         Cipher = Cipher.NoEncryption,
                                         CompressionOption = CompressionOption.NoCompression,

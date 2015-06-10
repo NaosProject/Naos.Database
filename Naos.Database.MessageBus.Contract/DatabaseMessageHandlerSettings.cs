@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MessageHandlerSettings.cs" company="Naos">
+// <copyright file="DatabaseMessageHandlerSettings.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ namespace Naos.Database.MessageBus.Contract
     /// <summary>
     /// Model object for Its.Configuration providing settings for the MessageHandlers.
     /// </summary>
-    public class MessageHandlerSettings
+    public class DatabaseMessageHandlerSettings
     {
         /// <summary>
         /// Gets or sets the connection string to use for local host database operations.

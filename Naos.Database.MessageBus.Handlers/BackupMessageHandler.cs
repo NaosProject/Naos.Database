@@ -26,7 +26,7 @@ namespace Naos.Database.MessageBus.Handlers
         {
             Action<string> logAction = s => { };
 
-            var settings = Settings.Get<MessageHandlerSettings>();
+            var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var backupFileName = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
             var backupDetails = new BackupDetails()
                                     {

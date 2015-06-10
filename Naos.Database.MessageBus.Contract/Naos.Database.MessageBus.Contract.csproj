@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupDatabaseMessage.cs" />
-    <Compile Include="MessageHandlerSettings.cs" />
+    <Compile Include="DatabaseMessageHandlerSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

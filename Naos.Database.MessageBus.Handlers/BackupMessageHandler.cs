@@ -7,6 +7,7 @@
 namespace Naos.Database.MessageBus.Handlers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using Its.Configuration;
@@ -14,12 +15,13 @@ namespace Naos.Database.MessageBus.Handlers
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
     using Naos.Database.Tools.Backup;
+    using Naos.FileJanitor.MessageBus.Contract;
     using Naos.MessageBus.HandlingContract;
 
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
     /// </summary>
-    public class BackupMessageHandler : IHandleMessages<BackupDatabaseMessage>
+    public class BackupMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath
     {
         /// <inheritdoc />
         public void Handle(BackupDatabaseMessage message)
@@ -27,12 +29,12 @@ namespace Naos.Database.MessageBus.Handlers
             Action<string> logAction = Console.WriteLine;
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            var backupFileName = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
-            var backupFileNameUri = new Uri(backupFileName);
+            var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
+            var backupFilePathUri = new Uri(backupFilePath);
             var backupDetails = new BackupDetails()
                                     {
                                         Name = message.BackupName,
-                                        BackupTo = backupFileNameUri,
+                                        BackupTo = backupFilePathUri,
                                         ChecksumOption = ChecksumOption.Checksum,
                                         Cipher = Cipher.NoEncryption,
                                         CompressionOption = CompressionOption.NoCompression,
@@ -47,6 +49,11 @@ namespace Naos.Database.MessageBus.Handlers
                 backupDetails,
                 settings.DefaultTimeout,
                 logAction);
+
+            this.FilePath = backupFilePath;
         }
+
+        /// <inheritdoc />
+        public string FilePath { get; set; }
     }
 }

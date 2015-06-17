@@ -7,7 +7,6 @@
 namespace Naos.Database.MessageBus.Handlers
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
 
     using Its.Configuration;

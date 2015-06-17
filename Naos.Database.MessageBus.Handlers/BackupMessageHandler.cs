@@ -27,8 +27,18 @@ namespace Naos.Database.MessageBus.Handlers
         public void Handle(BackupDatabaseMessage message)
         {
             Action<string> logAction = Console.WriteLine;
-
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
+            this.Handle(message, settings, logAction);
+        }
+
+        /// <summary>
+        /// Handles a BackupDatabaseMessage.
+        /// </summary>
+        /// <param name="message">Message to handle.</param>
+        /// <param name="settings">Needed settings to handle messages.</param>
+        /// <param name="logAction">Action for logging notifications.</param>
+        public void Handle(BackupDatabaseMessage message, DatabaseMessageHandlerSettings settings, Action<string> logAction)
+        {
             var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
             var backupFilePathUri = new Uri(backupFilePath);
             var backupDetails = new BackupDetails()

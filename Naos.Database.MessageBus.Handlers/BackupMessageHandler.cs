@@ -38,7 +38,13 @@ namespace Naos.Database.MessageBus.Handlers
         /// <param name="logAction">Action for logging notifications.</param>
         public void Handle(BackupDatabaseMessage message, DatabaseMessageHandlerSettings settings, Action<string> logAction)
         {
-            var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + ".bak";
+            // must have a date that is strictly alphanumeric...
+            var datePart =
+                DateTime.UtcNow.ToString("u")
+                    .Replace("-", string.Empty)
+                    .Replace(":", string.Empty)
+                    .Replace(" ", string.Empty);
+            var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + "TakenOn" + datePart + ".bak";
             var backupFilePathUri = new Uri(backupFilePath);
             var backupDetails = new BackupDetails()
                                     {

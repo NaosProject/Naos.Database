@@ -13,6 +13,8 @@ namespace Naos.Database.MigratorHarness
 
     using CLAP;
 
+    using Naos.Database.Migrator.Console;
+
     /// <summary>
     /// The program.
     /// </summary>

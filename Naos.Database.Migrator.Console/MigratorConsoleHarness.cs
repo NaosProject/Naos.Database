@@ -4,9 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.MigratorHarness
+namespace Naos.Database.Migrator.Console
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -22,24 +23,23 @@ namespace Naos.Database.MigratorHarness
     /// </summary>
     public class MigratorConsoleHarness
     {
-        /// <summary>
-        /// The entry point to run migration up.
-        /// </summary>
-        /// <param name="connectionString">Connection string to the target database.</param>
-        /// <param name="databaseName">Database name to target.</param>
-        /// <param name="assemblyPath">Path to the assembly that the migration lives in.</param>
-        /// <param name="timeoutInSeconds">Command timeout (in seconds) for the command(s) executed as part of the migration.</param>
-        /// <param name="applicationContext">Optional application context.</param>
-        /// <param name="targetVersion">Optional version to migrate up to, default is latest.</param>
         [Verb(Aliases = "Up", Description = "Perform a migration up.")]
+#pragma warning disable 1591
         public static void Up(
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
             [Required] [Aliases("")] [Description("The path to the assembly that contains the migration.")] string assemblyPath,
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
-            [DefaultValue(null)] [Aliases("")] [Description("Optional version to migrate to, default is latest.")] long? targetVersion)
+            [DefaultValue(null)] [Aliases("")] [Description("Optional version to migrate to, default is latest.")] long? targetVersion,
+            [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool startDebugger)
+#pragma warning restore 1591
         {
+            if (startDebugger)
+            {
+                Debugger.Launch();
+            }
+
             if (!File.Exists(assemblyPath))
             {
                 throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", "assemblyPath");

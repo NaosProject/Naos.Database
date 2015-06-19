@@ -62,24 +62,23 @@ namespace Naos.Database.Migrator.Console
             Console.WriteLine("Done");
         }
 
-        /// <summary>
-        /// The entry point to run migration down.
-        /// </summary>
-        /// <param name="connectionString">The connection string to the target database.</param>
-        /// <param name="databaseName">The database name to target.</param>
-        /// <param name="assemblyPath">The path to the assembly that the migration lives in.</param>
-        /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
-        /// <param name="applicationContext">Optional application context.</param>
-        /// <param name="targetVersion">The version to migrate up to.</param>
         [Verb(Aliases = "Down", Description = "Perform a migration down.")]
+#pragma warning disable 1591
         public static void Down(
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
             [Required] [Aliases("")] [Description("The path to the assembly that contains the migration.")] string assemblyPath,
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
-            [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion)
+            [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion,
+            [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool startDebugger)
+#pragma warning restore 1591
         {
+            if (startDebugger)
+            {
+                Debugger.Launch();
+            }
+
             var assembly = Assembly.LoadFile(assemblyPath);
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 

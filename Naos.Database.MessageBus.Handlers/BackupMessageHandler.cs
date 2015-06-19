@@ -53,7 +53,7 @@ namespace Naos.Database.MessageBus.Handlers
                                         ChecksumOption = ChecksumOption.Checksum,
                                         Cipher = Cipher.NoEncryption,
                                         CompressionOption = CompressionOption.NoCompression,
-                                        Description = message.Description,
+                                        Description = message.BackupDescription,
                                         Device = Device.Disk,
                                         ErrorHandling = ErrorHandling.StopOnError,
                                     };

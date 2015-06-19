@@ -25,5 +25,10 @@ namespace Naos.Database.MessageBus.Contract
         /// Gets or sets the name to use on a backup.
         /// </summary>
         public string BackupName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description to use on a backup.
+        /// </summary>
+        public string BackupDescription { get; set; }
     }
 }

@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.MessageBus.Handlers
+namespace Naos.Database.MessageBus.Handler
 {
     using System;
     using System.IO;

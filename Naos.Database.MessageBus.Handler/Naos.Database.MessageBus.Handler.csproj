@@ -7,8 +7,8 @@
     <ProjectGuid>{AA549B15-265C-4BF4-9EB3-FBD3D3280F94}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Naos.Database.MessageBus.Handlers</RootNamespace>
-    <AssemblyName>Naos.Database.MessageBus.Handlers</AssemblyName>
+    <RootNamespace>Naos.Database.MessageBus.Handler</RootNamespace>
+    <AssemblyName>Naos.Database.MessageBus.Handler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Naos.Database.MessageBus.Handlers.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Naos.Database.MessageBus.Handler.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +31,7 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Naos.Database.MessageBus.Handlers.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Naos.Database.MessageBus.Handler.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Its.Configuration">

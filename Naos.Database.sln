@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Tools.Test", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Contract", "Naos.Database.MessageBus.Contract\Naos.Database.MessageBus.Contract.csproj", "{FCF5A964-EE1D-41B8-9F55-DB6FA9FBBFE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Handlers", "Naos.Database.MessageBus.Handlers\Naos.Database.MessageBus.Handlers.csproj", "{AA549B15-265C-4BF4-9EB3-FBD3D3280F94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Handler", "Naos.Database.MessageBus.Handler\Naos.Database.MessageBus.Handler.csproj", "{AA549B15-265C-4BF4-9EB3-FBD3D3280F94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

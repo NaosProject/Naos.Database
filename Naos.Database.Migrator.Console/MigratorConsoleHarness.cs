@@ -16,7 +16,7 @@ namespace Naos.Database.Migrator.Console
 
     using Naos.Database.Migrator;
 
-    using OBeautifulCode.Libs.Collections;
+    using OBeautifulCode.Collection;
 
     /// <summary>
     /// The wrapper class for CLAP that is responsible for performing the act of migrating a database.

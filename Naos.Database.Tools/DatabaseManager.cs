@@ -13,7 +13,7 @@ namespace Naos.Database.Tools
     using System.Linq;
     using System.Text;
 
-    using CuttingEdge.Conditions;
+    using Conditions;
 
     using Dapper;
 

@@ -8,7 +8,7 @@ namespace Naos.Database.Tools.Backup
 {
     using System;
 
-    using CuttingEdge.Conditions;
+    using Conditions;
 
     /// <summary>
     /// Extension methods for types in the namespace.

@@ -10,7 +10,7 @@ namespace Naos.Database.Tools
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using CuttingEdge.Conditions;
+    using Conditions;
 
     /// <summary>
     /// Utility methods to guard against SQL Injection.

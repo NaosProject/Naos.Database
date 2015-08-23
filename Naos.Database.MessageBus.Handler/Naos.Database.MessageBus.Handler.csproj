@@ -37,17 +37,17 @@
     <Reference Include="Its.Configuration">
       <HintPath>..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.22.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.22\lib\45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.24\lib\45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.MessageBus.DataContract, Version=1.0.66.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Naos.MessageBus.DataContract, Version=1.0.68.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.MessageBus.DataContract.1.0.66\lib\45\Naos.MessageBus.DataContract.dll</HintPath>
+      <HintPath>..\packages\Naos.MessageBus.DataContract.1.0.68\lib\45\Naos.MessageBus.DataContract.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.MessageBus.HandlingContract, Version=1.0.66.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Naos.MessageBus.HandlingContract, Version=1.0.68.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.MessageBus.HandlingContract.1.0.66\lib\45\Naos.MessageBus.HandlingContract.dll</HintPath>
+      <HintPath>..\packages\Naos.MessageBus.HandlingContract.1.0.68\lib\45\Naos.MessageBus.HandlingContract.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RestoreMessageHandler.cs" />
     <Compile Include="BackupMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

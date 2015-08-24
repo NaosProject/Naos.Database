@@ -7,6 +7,7 @@
 namespace Naos.Database.MessageBus.Handler
 {
     using System;
+    using System.IO;
 
     using Its.Configuration;
 
@@ -23,6 +24,11 @@ namespace Naos.Database.MessageBus.Handler
         /// <inheritdoc />
         public void Handle(RestoreDatabaseMessage message)
         {
+            if (!File.Exists(message.FilePath))
+            {
+                throw new FileNotFoundException("Could not find file to restore", message.FilePath);
+            }
+
             Action<string> logAction = Console.WriteLine;
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             this.Handle(message, settings, logAction);

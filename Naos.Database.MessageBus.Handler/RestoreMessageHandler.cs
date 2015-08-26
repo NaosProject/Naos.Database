@@ -48,7 +48,7 @@ namespace Naos.Database.MessageBus.Handler
             var restoreFileUri = new Uri(message.FilePath);
             var restoreDetails = new RestoreDetails
             {
-                ChecksumOption = ChecksumOption.Checksum,
+                ChecksumOption = message.RunChecksum ? ChecksumOption.Checksum : ChecksumOption.NoChecksum,
                 Device = Device.Disk,
                 ErrorHandling = ErrorHandling.StopOnError,
                 DataFilePath = dataFilePath,

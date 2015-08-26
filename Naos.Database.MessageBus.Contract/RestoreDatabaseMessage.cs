@@ -22,6 +22,11 @@ namespace Naos.Database.MessageBus.Contract
         /// </summary>
         public string DatabaseName { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to run a checksum on the restore.
+        /// </summary>
+        public bool RunChecksum { get; set; }
+
         /// <inheritdoc />
         public string FilePath { get; set; }
     }

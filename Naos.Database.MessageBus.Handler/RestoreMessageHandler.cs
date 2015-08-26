@@ -73,12 +73,16 @@ namespace Naos.Database.MessageBus.Handler
                     settings.LocalhostConnectionString,
                     "master");
 
+            DatabaseManager.PutDatabaseInSingleUserMode(settings.LocalhostConnectionString, message.DatabaseName);
+            DatabaseManager.TakeDatabaseOffline(settings.LocalhostConnectionString, message.DatabaseName);
+            DatabaseManager.BringDatabaseOnline(settings.LocalhostConnectionString, message.DatabaseName);
             DatabaseManager.RestoreFull(
                 masterConnectionString,
                 message.DatabaseName,
                 restoreDetails,
                 settings.DefaultTimeout,
                 logAction);
+            DatabaseManager.PutDatabaseIntoMultiUserMode(settings.LocalhostConnectionString, message.DatabaseName);
         }
     }
 }

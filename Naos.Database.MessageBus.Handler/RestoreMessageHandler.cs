@@ -61,8 +61,14 @@ namespace Naos.Database.MessageBus.Handler
                     RestrictedUserOption.Normal
             };
 
+            // use this to avoid issues while bringing database online...
+            var masterConnectionString =
+                ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
+                    settings.LocalhostConnectionString,
+                    "master");
+
             DatabaseManager.RestoreFull(
-                settings.LocalhostConnectionString,
+                masterConnectionString,
                 message.DatabaseName,
                 restoreDetails,
                 settings.DefaultTimeout,

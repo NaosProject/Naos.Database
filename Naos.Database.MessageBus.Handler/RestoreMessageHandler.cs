@@ -8,6 +8,7 @@ namespace Naos.Database.MessageBus.Handler
 {
     using System;
     using System.IO;
+    using System.Linq;
 
     using Its.Configuration;
 
@@ -42,8 +43,13 @@ namespace Naos.Database.MessageBus.Handler
         /// <param name="logAction">Action for logging notifications.</param>
         public void Handle(RestoreDatabaseMessage message, DatabaseMessageHandlerSettings settings, Action<string> logAction)
         {
-            var dataFilePath = DatabaseManager.GetInstanceDefaultDataPath(settings.LocalhostConnectionString);
-            var logFilePath = DatabaseManager.GetInstanceDefaultLogPath(settings.LocalhostConnectionString);
+            var existingDatabase =
+                DatabaseManager.Retrieve(settings.LocalhostConnectionString)
+                    .SingleOrDefault(_ => _.DatabaseName == message.DatabaseName);
+            if (existingDatabase == null)
+            {
+                throw new ArgumentException("Could not find expected existing database named: " + message.DatabaseName);
+            }
 
             var restoreFileUri = new Uri(message.FilePath);
             var restoreDetails = new RestoreDetails
@@ -51,8 +57,8 @@ namespace Naos.Database.MessageBus.Handler
                 ChecksumOption = message.RunChecksum ? ChecksumOption.Checksum : ChecksumOption.NoChecksum,
                 Device = Device.Disk,
                 ErrorHandling = ErrorHandling.StopOnError,
-                DataFilePath = dataFilePath,
-                LogFilePath = logFilePath,
+                DataFilePath = existingDatabase.DataFilePath,
+                LogFilePath = existingDatabase.LogFilePath,
                 RecoveryOption = RecoveryOption.NoRecovery,
                 ReplaceOption =
                     ReplaceOption.ReplaceExistingDatabase,

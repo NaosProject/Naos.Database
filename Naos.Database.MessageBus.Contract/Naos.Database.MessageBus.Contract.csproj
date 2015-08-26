@@ -34,9 +34,9 @@
     <DocumentationFile>bin\Release\Naos.Database.MessageBus.Contract.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.31.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.26\lib\45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.31\lib\45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Naos.MessageBus.DataContract, Version=1.0.68.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

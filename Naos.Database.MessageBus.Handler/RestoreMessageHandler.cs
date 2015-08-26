@@ -45,7 +45,7 @@ namespace Naos.Database.MessageBus.Handler
         {
             var existingDatabase =
                 DatabaseManager.Retrieve(settings.LocalhostConnectionString)
-                    .SingleOrDefault(_ => _.DatabaseName == message.DatabaseName);
+                    .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
             if (existingDatabase == null)
             {
                 throw new ArgumentException("Could not find expected existing database named: " + message.DatabaseName);
@@ -73,12 +73,16 @@ namespace Naos.Database.MessageBus.Handler
                     settings.LocalhostConnectionString,
                     "master");
 
+            DatabaseManager.PutDatabaseInSingleUserMode(masterConnectionString, message.DatabaseName);
+            DatabaseManager.TakeDatabaseOffline(masterConnectionString, message.DatabaseName);
+            DatabaseManager.BringDatabaseOnline(masterConnectionString, message.DatabaseName);
             DatabaseManager.RestoreFull(
                 masterConnectionString,
                 message.DatabaseName,
                 restoreDetails,
                 settings.DefaultTimeout,
                 logAction);
+            DatabaseManager.PutDatabaseIntoMultiUserMode(masterConnectionString, message.DatabaseName);
         }
     }
 }

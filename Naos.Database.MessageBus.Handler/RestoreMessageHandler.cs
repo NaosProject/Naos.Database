@@ -45,7 +45,7 @@ namespace Naos.Database.MessageBus.Handler
         {
             var existingDatabase =
                 DatabaseManager.Retrieve(settings.LocalhostConnectionString)
-                    .SingleOrDefault(_ => _.DatabaseName == message.DatabaseName);
+                    .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
             if (existingDatabase == null)
             {
                 throw new ArgumentException("Could not find expected existing database named: " + message.DatabaseName);

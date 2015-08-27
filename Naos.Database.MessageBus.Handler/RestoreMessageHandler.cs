@@ -11,6 +11,7 @@ namespace Naos.Database.MessageBus.Handler
     using System.Linq;
 
     using Its.Configuration;
+    using Its.Log.Instrumentation;
 
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
@@ -41,48 +42,70 @@ namespace Naos.Database.MessageBus.Handler
         /// <param name="message">Message to handle.</param>
         /// <param name="settings">Needed settings to handle messages.</param>
         /// <param name="logAction">Action for logging notifications.</param>
-        public void Handle(RestoreDatabaseMessage message, DatabaseMessageHandlerSettings settings, Action<string> logAction)
+        public void Handle(
+            RestoreDatabaseMessage message,
+            DatabaseMessageHandlerSettings settings,
+            Action<string> logAction)
         {
-            var existingDatabase =
-                DatabaseManager.Retrieve(settings.LocalhostConnectionString)
-                    .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
-            if (existingDatabase == null)
+            using (var activity = Log.Enter(() => message))
             {
-                throw new ArgumentException("Could not find expected existing database named: " + message.DatabaseName);
+                {
+                    activity.Trace(() => "Connection to database to get existing file paths to use.");
+                    var existingDatabase =
+                        DatabaseManager.Retrieve(settings.LocalhostConnectionString)
+                            .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
+                    if (existingDatabase == null)
+                    {
+                        throw new ArgumentException(
+                            "Could not find expected existing database named: " + message.DatabaseName);
+                    }
+
+                    activity.Trace(
+                        () =>
+                        string.Format(
+                            "Using data path: {0}, log path: {1}",
+                            existingDatabase.DataFilePath,
+                            existingDatabase.LogFilePath));
+
+                    var restoreFileUri = new Uri(message.FilePath);
+                    var restoreDetails = new RestoreDetails
+                                             {
+                                                 ChecksumOption =
+                                                     message.RunChecksum
+                                                         ? ChecksumOption.Checksum
+                                                         : ChecksumOption.NoChecksum,
+                                                 Device = Device.Disk,
+                                                 ErrorHandling = ErrorHandling.StopOnError,
+                                                 DataFilePath = existingDatabase.DataFilePath,
+                                                 LogFilePath = existingDatabase.LogFilePath,
+                                                 RecoveryOption = RecoveryOption.NoRecovery,
+                                                 ReplaceOption = ReplaceOption.ReplaceExistingDatabase,
+                                                 RestoreFrom = restoreFileUri,
+                                                 RestrictedUserOption = RestrictedUserOption.Normal
+                                             };
+
+                    // use this to avoid issues while bringing database online...
+                    var masterConnectionString =
+                        ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
+                            settings.LocalhostConnectionString,
+                            "master");
+
+                    activity.Trace(() => "Putting database into single user mode.");
+                    DatabaseManager.PutDatabaseInSingleUserMode(masterConnectionString, message.DatabaseName);
+
+                    activity.Trace(() => "Starting restore.");
+                    DatabaseManager.RestoreFull(
+                        masterConnectionString,
+                        message.DatabaseName,
+                        restoreDetails,
+                        settings.DefaultTimeout,
+                        logAction);
+
+                    activity.Trace(() => "Finished restore, putting back into multi user mode.");
+                    DatabaseManager.PutDatabaseIntoMultiUserMode(masterConnectionString, message.DatabaseName);
+                    activity.Trace(() => "Completed successfully.");
+                }
             }
-
-            var restoreFileUri = new Uri(message.FilePath);
-            var restoreDetails = new RestoreDetails
-            {
-                ChecksumOption = message.RunChecksum ? ChecksumOption.Checksum : ChecksumOption.NoChecksum,
-                Device = Device.Disk,
-                ErrorHandling = ErrorHandling.StopOnError,
-                DataFilePath = existingDatabase.DataFilePath,
-                LogFilePath = existingDatabase.LogFilePath,
-                RecoveryOption = RecoveryOption.NoRecovery,
-                ReplaceOption =
-                    ReplaceOption.ReplaceExistingDatabase,
-                RestoreFrom = restoreFileUri,
-                RestrictedUserOption =
-                    RestrictedUserOption.Normal
-            };
-
-            // use this to avoid issues while bringing database online...
-            var masterConnectionString =
-                ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                    settings.LocalhostConnectionString,
-                    "master");
-
-            DatabaseManager.PutDatabaseInSingleUserMode(masterConnectionString, message.DatabaseName);
-            DatabaseManager.TakeDatabaseOffline(masterConnectionString, message.DatabaseName);
-            DatabaseManager.BringDatabaseOnline(masterConnectionString, message.DatabaseName);
-            DatabaseManager.RestoreFull(
-                masterConnectionString,
-                message.DatabaseName,
-                restoreDetails,
-                settings.DefaultTimeout,
-                logAction);
-            DatabaseManager.PutDatabaseIntoMultiUserMode(masterConnectionString, message.DatabaseName);
         }
     }
 }

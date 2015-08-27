@@ -31,9 +31,8 @@ namespace Naos.Database.MessageBus.Handler
                 throw new FileNotFoundException("Could not find file to restore", message.FilePath);
             }
 
-            Action<string> logAction = Console.WriteLine;
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            this.Handle(message, settings, logAction);
+            this.Handle(message, settings);
         }
 
         /// <summary>
@@ -41,16 +40,14 @@ namespace Naos.Database.MessageBus.Handler
         /// </summary>
         /// <param name="message">Message to handle.</param>
         /// <param name="settings">Needed settings to handle messages.</param>
-        /// <param name="logAction">Action for logging notifications.</param>
         public void Handle(
             RestoreDatabaseMessage message,
-            DatabaseMessageHandlerSettings settings,
-            Action<string> logAction)
+            DatabaseMessageHandlerSettings settings)
         {
-            using (var activity = Log.Enter(() => message))
+            using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName, FilePath = message.FilePath }))
             {
                 {
-                    activity.Trace(() => "Connection to database to get existing file paths to use.");
+                    activity.Trace(() => "Connecting to database to get existing file paths to use.");
                     var existingDatabase =
                         DatabaseManager.Retrieve(settings.LocalhostConnectionString)
                             .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
@@ -78,8 +75,8 @@ namespace Naos.Database.MessageBus.Handler
                                                  ErrorHandling = ErrorHandling.StopOnError,
                                                  DataFilePath = existingDatabase.DataFilePath,
                                                  LogFilePath = existingDatabase.LogFilePath,
-                                                 RecoveryOption = RecoveryOption.NoRecovery,
-                                                 ReplaceOption = ReplaceOption.ReplaceExistingDatabase,
+                                                 RecoveryOption = RecoveryOption.Recovery,
+                                                 ReplaceOption = ReplaceOption.DoNotReplaceExistingDatabaseAndThrow,
                                                  RestoreFrom = restoreFileUri,
                                                  RestrictedUserOption = RestrictedUserOption.Normal
                                              };
@@ -93,16 +90,19 @@ namespace Naos.Database.MessageBus.Handler
                     activity.Trace(() => "Putting database into single user mode.");
                     DatabaseManager.PutDatabaseInSingleUserMode(masterConnectionString, message.DatabaseName);
 
+                    activity.Trace(() => "Deleting existing database before restore.");
+                    DatabaseManager.Delete(masterConnectionString, message.DatabaseName);
+
                     activity.Trace(() => "Starting restore.");
                     DatabaseManager.RestoreFull(
                         masterConnectionString,
                         message.DatabaseName,
                         restoreDetails,
-                        settings.DefaultTimeout,
-                        logAction);
+                        settings.DefaultTimeout);
 
                     activity.Trace(() => "Finished restore, putting back into multi user mode.");
                     DatabaseManager.PutDatabaseIntoMultiUserMode(masterConnectionString, message.DatabaseName);
+
                     activity.Trace(() => "Completed successfully.");
                 }
             }

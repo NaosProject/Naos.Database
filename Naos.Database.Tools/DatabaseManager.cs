@@ -17,6 +17,8 @@ namespace Naos.Database.Tools
 
     using Dapper;
 
+    using Its.Log.Instrumentation;
+
     using Naos.Database.Tools.Backup;
 
     /// <summary>
@@ -352,173 +354,184 @@ namespace Naos.Database.Tools
         /// <param name="databaseName">Name of the database to backup.</param>
         /// <param name="backupDetails">The details of how to perform the backup.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
-        /// <param name="serverMessageHandler">Optional handler for messages emitted by the server in the process of performing a backup.</param>
-        public static void BackupFull(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan), Action<string> serverMessageHandler = null)
+        public static void BackupFull(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan))
         {
-            // check parameters
-            Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
-            Condition.Requires(databaseName, "databaseName").IsNotNullOrWhiteSpace();
-            Condition.Requires(backupDetails, "backupDetails").IsNotNull();
-            backupDetails.ThrowIfInvalid();
-
-            // construct the non-options portion of the backup command
-            var commandBuilder = new StringBuilder();
-            string backupDatabase = string.Format("BACKUP DATABASE [{0}]", databaseName);
-            commandBuilder.AppendLine(backupDatabase);
-            
-            string deviceName;
-            string backupLocation;
-            if (backupDetails.Device == Device.Disk)
+            using (var activity = Log.Enter(() => new { Database = databaseName, BackupDetails = backupDetails }))
             {
-                deviceName = "DISK";
-                backupLocation = backupDetails.BackupTo.LocalPath;
-            }
-            else if (backupDetails.Device == Device.Url)
-            {
-                deviceName = "URL";
-                backupLocation = backupDetails.BackupTo.ToString();
-            }
-            else
-            {
-                throw new NotSupportedException("This device is not supported: " + backupDetails.Device);
-            }
-            
-            string backupTo = string.Format("TO {0} = '{1}'", deviceName, backupLocation);
-            commandBuilder.AppendLine(backupTo);
+                // check parameters
+                Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
+                Condition.Requires(databaseName, "databaseName").IsNotNullOrWhiteSpace();
+                Condition.Requires(backupDetails, "backupDetails").IsNotNull();
+                backupDetails.ThrowIfInvalid();
 
-            // construct the WITH options
-            commandBuilder.AppendLine("WITH");
-            var withOptions = new List<string>();
+                // construct the non-options portion of the backup command
+                var commandBuilder = new StringBuilder();
+                string backupDatabase = string.Format("BACKUP DATABASE [{0}]", databaseName);
+                commandBuilder.AppendLine(backupDatabase);
 
-            if (!string.IsNullOrWhiteSpace(backupDetails.Credential))
-            {
-                string credential = string.Format("CREDENTIAL = '{0}'", backupDetails.Credential);
-                withOptions.Add(credential);
-            }
-
-            string checksumOption;
-            if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
-            {
-                checksumOption = "CHECKSUM";
-                withOptions.Add(checksumOption);
-
-                string errorHandling;
-                if (backupDetails.ErrorHandling == ErrorHandling.ContinueAfterError)
+                string deviceName;
+                string backupLocation;
+                if (backupDetails.Device == Device.Disk)
                 {
-                    errorHandling = "CONTINUE_AFTER_ERROR";
+                    deviceName = "DISK";
+                    backupLocation = backupDetails.BackupTo.LocalPath;
                 }
-                else if (backupDetails.ErrorHandling == ErrorHandling.StopOnError)
+                else if (backupDetails.Device == Device.Url)
                 {
-                    errorHandling = "STOP_ON_ERROR";
+                    deviceName = "URL";
+                    backupLocation = backupDetails.BackupTo.ToString();
                 }
                 else
                 {
-                    throw new NotSupportedException("This error handling option is not supported: " + backupDetails.ErrorHandling);
+                    throw new NotSupportedException("This device is not supported: " + backupDetails.Device);
                 }
 
-                withOptions.Add(errorHandling);
-            }
-            else if (backupDetails.ChecksumOption == ChecksumOption.NoChecksum)
-            {
-                checksumOption = "NO_CHECKSUM";
-                withOptions.Add(checksumOption);
-            }
-            else
-            {
-                throw new NotSupportedException("This checksum option is not supported: " + backupDetails.ChecksumOption);
-            }
+                string backupTo = string.Format("TO {0} = '{1}'", deviceName, backupLocation);
+                commandBuilder.AppendLine(backupTo);
 
-            string compressionOption;
-            if (backupDetails.CompressionOption == CompressionOption.Compression)
-            {
-                compressionOption = "COMPRESSION";
-            }
-            else if (backupDetails.CompressionOption == CompressionOption.NoCompression)
-            {
-                compressionOption = "NO_COMPRESSION";
-            }
-            else
-            {
-                throw new NotSupportedException("This compression option is not supported: " + backupDetails.CompressionOption);
-            }
+                // construct the WITH options
+                commandBuilder.AppendLine("WITH");
+                var withOptions = new List<string>();
 
-            withOptions.Add(compressionOption);
-            
-            if (!string.IsNullOrWhiteSpace(backupDetails.Name))
-            {
-                string name = string.Format("NAME = '{0}'", backupDetails.Name);
-                withOptions.Add(name);
-            }
-
-            if (!string.IsNullOrWhiteSpace(backupDetails.Description))
-            {
-                string description = string.Format("DESCRIPTION = '{0}'", backupDetails.Description);
-                withOptions.Add(description);
-            }
-
-            if (backupDetails.Cipher != Cipher.NoEncryption)
-            {
-                string cipher;
-                if (backupDetails.Cipher == Cipher.Aes128)
+                if (!string.IsNullOrWhiteSpace(backupDetails.Credential))
                 {
-                    cipher = "AES_128";
-                }
-                else if (backupDetails.Cipher == Cipher.Aes192)
-                {
-                    cipher = "AES_192";
-                }
-                else if (backupDetails.Cipher == Cipher.Aes256)
-                {
-                    cipher = "AES_256";
-                }
-                else if (backupDetails.Cipher == Cipher.TripleDes3Key)
-                {
-                    cipher = "TRIPLE_DES_3KEY";
-                }
-                else
-                {
-                    throw new NotSupportedException("This cipher is not supported: " + backupDetails.Cipher);
+                    string credential = string.Format("CREDENTIAL = '{0}'", backupDetails.Credential);
+                    withOptions.Add(credential);
                 }
 
-                string encryptor;
-                if (backupDetails.Encryptor == Encryptor.ServerCertificate)
+                string checksumOption;
+                if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
                 {
-                    encryptor = "SERVER CERTIFICATE";
-                }
-                else if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
-                {
-                    encryptor = "SERVER ASYMMETRIC KEY";
-                }
-                else
-                {
-                    throw new NotSupportedException("This encryptor is not supported: " + backupDetails.Encryptor);
-                }
+                    checksumOption = "CHECKSUM";
+                    withOptions.Add(checksumOption);
 
-                string encryption = string.Format("ENCRYPTION ( ALGORITHM = {0}, {1} = {2})", cipher, encryptor, backupDetails.EncryptorName);
-                withOptions.Add(encryption);
-            }
-
-            withOptions.Add("FORMAT");
-
-            // append the WITH options
-            string withOptionsCsv = withOptions.Aggregate((current, next) => current + "," + Environment.NewLine + next);
-            commandBuilder.AppendLine(withOptionsCsv);
-
-            // execute the backup
-            string command = commandBuilder.ToString();
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                if (serverMessageHandler != null)
-                {
-                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    string errorHandling;
+                    if (backupDetails.ErrorHandling == ErrorHandling.ContinueAfterError)
                     {
-                        serverMessageHandler(e.Message);
-                    };
+                        errorHandling = "CONTINUE_AFTER_ERROR";
+                    }
+                    else if (backupDetails.ErrorHandling == ErrorHandling.StopOnError)
+                    {
+                        errorHandling = "STOP_ON_ERROR";
+                    }
+                    else
+                    {
+                        throw new NotSupportedException(
+                            "This error handling option is not supported: " + backupDetails.ErrorHandling);
+                    }
+
+                    withOptions.Add(errorHandling);
+                }
+                else if (backupDetails.ChecksumOption == ChecksumOption.NoChecksum)
+                {
+                    checksumOption = "NO_CHECKSUM";
+                    withOptions.Add(checksumOption);
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        "This checksum option is not supported: " + backupDetails.ChecksumOption);
                 }
 
-                connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
-                connection.Close();
+                string compressionOption;
+                if (backupDetails.CompressionOption == CompressionOption.Compression)
+                {
+                    compressionOption = "COMPRESSION";
+                }
+                else if (backupDetails.CompressionOption == CompressionOption.NoCompression)
+                {
+                    compressionOption = "NO_COMPRESSION";
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        "This compression option is not supported: " + backupDetails.CompressionOption);
+                }
+
+                withOptions.Add(compressionOption);
+
+                if (!string.IsNullOrWhiteSpace(backupDetails.Name))
+                {
+                    string name = string.Format("NAME = '{0}'", backupDetails.Name);
+                    withOptions.Add(name);
+                }
+
+                if (!string.IsNullOrWhiteSpace(backupDetails.Description))
+                {
+                    string description = string.Format("DESCRIPTION = '{0}'", backupDetails.Description);
+                    withOptions.Add(description);
+                }
+
+                if (backupDetails.Cipher != Cipher.NoEncryption)
+                {
+                    string cipher;
+                    if (backupDetails.Cipher == Cipher.Aes128)
+                    {
+                        cipher = "AES_128";
+                    }
+                    else if (backupDetails.Cipher == Cipher.Aes192)
+                    {
+                        cipher = "AES_192";
+                    }
+                    else if (backupDetails.Cipher == Cipher.Aes256)
+                    {
+                        cipher = "AES_256";
+                    }
+                    else if (backupDetails.Cipher == Cipher.TripleDes3Key)
+                    {
+                        cipher = "TRIPLE_DES_3KEY";
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("This cipher is not supported: " + backupDetails.Cipher);
+                    }
+
+                    string encryptor;
+                    if (backupDetails.Encryptor == Encryptor.ServerCertificate)
+                    {
+                        encryptor = "SERVER CERTIFICATE";
+                    }
+                    else if (backupDetails.Encryptor == Encryptor.ServerAsymmetricKey)
+                    {
+                        encryptor = "SERVER ASYMMETRIC KEY";
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("This encryptor is not supported: " + backupDetails.Encryptor);
+                    }
+
+                    string encryption = string.Format(
+                        "ENCRYPTION ( ALGORITHM = {0}, {1} = {2})",
+                        cipher,
+                        encryptor,
+                        backupDetails.EncryptorName);
+                    withOptions.Add(encryption);
+                }
+
+                withOptions.Add("FORMAT");
+
+                // append the WITH options
+                string withOptionsCsv =
+                    withOptions.Aggregate((current, next) => current + "," + Environment.NewLine + next);
+                commandBuilder.AppendLine(withOptionsCsv);
+
+                // execute the backup
+                string command = commandBuilder.ToString();
+                activity.Trace(() => "Running command: " + command);
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                        {
+                            Log.Write(() => string.Format("Server Message: {0}", e.Message));
+                        };
+
+                    connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
+                    connection.Close();
+                }
+
+                activity.Trace(() => "Completed successfully.");
             }
         }
 
@@ -529,8 +542,11 @@ namespace Naos.Database.Tools
         /// <param name="databaseName">Name of the database to restore.</param>
         /// <param name="restoreDetails">The details of how to perform the restore.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
-        /// <param name="serverMessageHandler">Optional handler for messages emitted by the server in the process of performing a backup.</param>
-        public static void RestoreFull(string connectionString, string databaseName, RestoreDetails restoreDetails, TimeSpan timeout = default(TimeSpan), Action<string> serverMessageHandler = null)
+        public static void RestoreFull(
+            string connectionString,
+            string databaseName,
+            RestoreDetails restoreDetails,
+            TimeSpan timeout = default(TimeSpan))
         {
             // check parameters
             Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
@@ -539,156 +555,187 @@ namespace Naos.Database.Tools
 
             restoreDetails.ThrowIfInvalid();
 
-            // construct the non-options portion of the backup command
-            var commandBuilder = new StringBuilder();
-            string backupDatabase = string.Format("RESTORE DATABASE [{0}]", databaseName);
-            commandBuilder.AppendLine(backupDatabase);
-
-            string deviceName;
-            string backupLocation;
-            if (restoreDetails.Device == Device.Disk)
+            using (var activity = Log.Enter(() => new { Database = databaseName, RestoreDetails = restoreDetails }))
             {
-                deviceName = "DISK";
-                backupLocation = restoreDetails.RestoreFrom.LocalPath;
-            }
-            else if (restoreDetails.Device == Device.Url)
-            {
-                deviceName = "URL";
-                backupLocation = restoreDetails.RestoreFrom.ToString();
-            }
-            else
-            {
-                throw new NotSupportedException("This device is not supported: " + restoreDetails.Device);
-            }
+                // construct the non-options portion of the backup command
+                var commandBuilder = new StringBuilder();
+                string backupDatabase = string.Format("RESTORE DATABASE [{0}]", databaseName);
+                commandBuilder.AppendLine(backupDatabase);
 
-            string restoreFrom = string.Format("FROM {0} = '{1}'", deviceName, backupLocation);
-            commandBuilder.AppendLine(restoreFrom);
-
-            // construct the WITH options
-            commandBuilder.AppendLine("WITH");
-            var withOptions = new List<string>();
-            withOptions.Add("RECOVERY");
-
-            if (!string.IsNullOrWhiteSpace(restoreDetails.Credential))
-            {
-                string credential = string.Format("CREDENTIAL = '{0}'", restoreDetails.Credential);
-                withOptions.Add(credential);
-            }
-
-            // should the backup be restored to a specific path?
-            bool useSpecifiedDataFilePath = !string.IsNullOrWhiteSpace(restoreDetails.DataFilePath);
-            bool useSpecifiedLogFilePath = !string.IsNullOrWhiteSpace(restoreDetails.LogFilePath);
-            if (useSpecifiedDataFilePath || useSpecifiedLogFilePath)
-            {
-                string fileListCommand = "RESTORE FILELISTONLY " + restoreFrom;
-                List<RestoreFile> restoreFiles;
-                using (var connection = new SqlConnection(connectionString))
+                string deviceName;
+                string backupLocation;
+                if (restoreDetails.Device == Device.Disk)
                 {
-                    connection.Open();
-                    restoreFiles = connection.Query<RestoreFile>(fileListCommand, commandTimeout: (int?)timeout.TotalSeconds).ToList();
-                    connection.Close();
+                    deviceName = "DISK";
+                    backupLocation = restoreDetails.RestoreFrom.LocalPath;
                 }
-
-                if (useSpecifiedDataFilePath)
+                else if (restoreDetails.Device == Device.Url)
                 {
-                    IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.Type == "D").ToList();
-                    if (dataFiles.Count() != 1)
-                    {
-                        throw new InvalidOperationException("Cannot restore from a backup with multiple data files when the file path to restore the data to is specified in the restore details.");
-                    }
-
-                    string moveTo = string.Format("MOVE '{0}' TO '{1}'", dataFiles.First().LogicalName, restoreDetails.DataFilePath);
-                    withOptions.Add(moveTo);
-                }
-
-                if (useSpecifiedLogFilePath)
-                {
-                    IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.Type == "L").ToList();
-                    if (logFiles.Count() != 1)
-                    {
-                        throw new InvalidOperationException("Cannot restore from a backup with multiple log files when the file path to restore the log to is specified in the restore details.");
-                    }
-
-                    string moveTo = string.Format("MOVE '{0}' TO '{1}'", logFiles.First().LogicalName, restoreDetails.LogFilePath);
-                    withOptions.Add(moveTo);
-                }
-            }
-
-            string checksumOption;
-            if (restoreDetails.ChecksumOption == ChecksumOption.Checksum)
-            {
-                checksumOption = "CHECKSUM";
-                withOptions.Add(checksumOption);
-
-                string errorHandling;
-                if (restoreDetails.ErrorHandling == ErrorHandling.ContinueAfterError)
-                {
-                    errorHandling = "CONTINUE_AFTER_ERROR";
-                }
-                else if (restoreDetails.ErrorHandling == ErrorHandling.StopOnError)
-                {
-                    errorHandling = "STOP_ON_ERROR";
+                    deviceName = "URL";
+                    backupLocation = restoreDetails.RestoreFrom.ToString();
                 }
                 else
                 {
-                    throw new NotSupportedException("This error handling option is not supported: " + restoreDetails.ErrorHandling);
+                    throw new NotSupportedException("This device is not supported: " + restoreDetails.Device);
                 }
 
-                withOptions.Add(errorHandling);
-            }
-            else if (restoreDetails.ChecksumOption == ChecksumOption.NoChecksum)
-            {
-                checksumOption = "NO_CHECKSUM";
-                withOptions.Add(checksumOption);
-            }
-            else
-            {
-                throw new NotSupportedException("This checksum option is not supported: " + restoreDetails.ChecksumOption);
-            }
+                string restoreFrom = string.Format("FROM {0} = '{1}'", deviceName, backupLocation);
+                commandBuilder.AppendLine(restoreFrom);
 
-            if (restoreDetails.RestrictedUserOption == RestrictedUserOption.Normal)
-            {
-            }
-            else if (restoreDetails.RestrictedUserOption == RestrictedUserOption.RestrictedUser)
-            {
-                withOptions.Add("RESTRICTED_USER");
-            }
-            else
-            {
-                throw new NotSupportedException("This restricted user option is not supported: " + restoreDetails.RestrictedUserOption);
-            }
+                // construct the WITH options
+                commandBuilder.AppendLine("WITH");
+                var withOptions = new List<string>();
 
-            if (restoreDetails.ReplaceOption == ReplaceOption.DoNotReplaceExistingDatabaseAndThrow)
-            {
-            }
-            else if (restoreDetails.ReplaceOption == ReplaceOption.ReplaceExistingDatabase)
-            {
-                withOptions.Add("REPLACE");
-            }
-            else
-            {
-                throw new NotSupportedException("This replace option is not supported: " + restoreDetails.ReplaceOption);
-            }
-
-            // append the WITH options
-            string withOptionsCsv = withOptions.Aggregate((current, next) => current + "," + Environment.NewLine + next);
-            commandBuilder.AppendLine(withOptionsCsv);
-
-            // execute the restore
-            string command = commandBuilder.ToString();
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                if (serverMessageHandler != null)
+                switch (restoreDetails.RecoveryOption)
                 {
-                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
-                    {
-                        serverMessageHandler(e.Message);
-                    };
+                    case RecoveryOption.Recovery:
+                        withOptions.Add("RECOVERY");
+                        break;
+                    case RecoveryOption.NoRecovery:
+                        withOptions.Add("NORECOVERY");
+                        break;
+                    default:
+                        throw new ArgumentException("Unsupported recovery option: " + restoreDetails.RecoveryOption);
                 }
 
-                connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
-                connection.Close();
+                if (!string.IsNullOrWhiteSpace(restoreDetails.Credential))
+                {
+                    string credential = string.Format("CREDENTIAL = '{0}'", restoreDetails.Credential);
+                    withOptions.Add(credential);
+                }
+
+                // should the backup be restored to a specific path?
+                bool useSpecifiedDataFilePath = !string.IsNullOrWhiteSpace(restoreDetails.DataFilePath);
+                bool useSpecifiedLogFilePath = !string.IsNullOrWhiteSpace(restoreDetails.LogFilePath);
+                if (useSpecifiedDataFilePath || useSpecifiedLogFilePath)
+                {
+                    activity.Trace(() => "Confirming that the specific file is in the server file list.");
+                    string fileListCommand = "RESTORE FILELISTONLY " + restoreFrom;
+                    List<RestoreFile> restoreFiles;
+                    using (var connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        restoreFiles =
+                            connection.Query<RestoreFile>(fileListCommand, commandTimeout: (int?)timeout.TotalSeconds)
+                                .ToList();
+                        connection.Close();
+                    }
+
+                    if (useSpecifiedDataFilePath)
+                    {
+                        IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.Type == "D").ToList();
+                        if (dataFiles.Count() != 1)
+                        {
+                            throw new InvalidOperationException(
+                                "Cannot restore from a backup with multiple data files when the file path to restore the data to is specified in the restore details.");
+                        }
+
+                        string moveTo = string.Format(
+                            "MOVE '{0}' TO '{1}'",
+                            dataFiles.First().LogicalName,
+                            restoreDetails.DataFilePath);
+                        withOptions.Add(moveTo);
+                    }
+
+                    if (useSpecifiedLogFilePath)
+                    {
+                        IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.Type == "L").ToList();
+                        if (logFiles.Count() != 1)
+                        {
+                            throw new InvalidOperationException(
+                                "Cannot restore from a backup with multiple log files when the file path to restore the log to is specified in the restore details.");
+                        }
+
+                        string moveTo = string.Format(
+                            "MOVE '{0}' TO '{1}'",
+                            logFiles.First().LogicalName,
+                            restoreDetails.LogFilePath);
+                        withOptions.Add(moveTo);
+                    }
+                }
+
+                string checksumOption;
+                if (restoreDetails.ChecksumOption == ChecksumOption.Checksum)
+                {
+                    checksumOption = "CHECKSUM";
+                    withOptions.Add(checksumOption);
+
+                    string errorHandling;
+                    if (restoreDetails.ErrorHandling == ErrorHandling.ContinueAfterError)
+                    {
+                        errorHandling = "CONTINUE_AFTER_ERROR";
+                    }
+                    else if (restoreDetails.ErrorHandling == ErrorHandling.StopOnError)
+                    {
+                        errorHandling = "STOP_ON_ERROR";
+                    }
+                    else
+                    {
+                        throw new NotSupportedException(
+                            "This error handling option is not supported: " + restoreDetails.ErrorHandling);
+                    }
+
+                    withOptions.Add(errorHandling);
+                }
+                else if (restoreDetails.ChecksumOption == ChecksumOption.NoChecksum)
+                {
+                    checksumOption = "NO_CHECKSUM";
+                    withOptions.Add(checksumOption);
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        "This checksum option is not supported: " + restoreDetails.ChecksumOption);
+                }
+
+                if (restoreDetails.RestrictedUserOption == RestrictedUserOption.Normal)
+                {
+                }
+                else if (restoreDetails.RestrictedUserOption == RestrictedUserOption.RestrictedUser)
+                {
+                    withOptions.Add("RESTRICTED_USER");
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        "This restricted user option is not supported: " + restoreDetails.RestrictedUserOption);
+                }
+
+                if (restoreDetails.ReplaceOption == ReplaceOption.DoNotReplaceExistingDatabaseAndThrow)
+                {
+                }
+                else if (restoreDetails.ReplaceOption == ReplaceOption.ReplaceExistingDatabase)
+                {
+                    withOptions.Add("REPLACE");
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                        "This replace option is not supported: " + restoreDetails.ReplaceOption);
+                }
+
+                // append the WITH options
+                string withOptionsCsv =
+                    withOptions.Aggregate((current, next) => current + "," + Environment.NewLine + next);
+                commandBuilder.AppendLine(withOptionsCsv);
+
+                // execute the restore
+                string command = commandBuilder.ToString();
+                activity.Trace(() => "Running command: " + command);
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                        {
+                            Log.Write(() => string.Format("Server Message: {0}", e.Message));
+                        };
+
+                    connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
+                    connection.Close();
+                }
+
+                activity.Trace(() => "Completed successfully.");
             }
         }
 

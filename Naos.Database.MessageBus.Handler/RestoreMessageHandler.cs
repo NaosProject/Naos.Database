@@ -87,9 +87,6 @@ namespace Naos.Database.MessageBus.Handler
                             settings.LocalhostConnectionString,
                             "master");
 
-                    activity.Trace(() => "Putting database into single user mode.");
-                    DatabaseManager.PutDatabaseInSingleUserMode(masterConnectionString, message.DatabaseName);
-
                     activity.Trace(() => "Deleting existing database before restore.");
                     DatabaseManager.Delete(masterConnectionString, message.DatabaseName);
 
@@ -99,9 +96,6 @@ namespace Naos.Database.MessageBus.Handler
                         message.DatabaseName,
                         restoreDetails,
                         settings.DefaultTimeout);
-
-                    activity.Trace(() => "Finished restore, putting back into multi user mode.");
-                    DatabaseManager.PutDatabaseIntoMultiUserMode(masterConnectionString, message.DatabaseName);
 
                     activity.Trace(() => "Completed successfully.");
                 }

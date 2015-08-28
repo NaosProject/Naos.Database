@@ -59,15 +59,15 @@ namespace Naos.Database.MessageBus.Handler
                             .Replace(":", string.Empty)
                             .Replace(" ", string.Empty);
 
-                    var fileNameAddIn = "_dat_UsingBackupRestoredOn_" + datePart;
+                    var fileNameAddIn = "UsingBackupRestoredOn" + datePart;
 
                     var dataFilePath = Path.Combine(
                         settings.DataDirectory,
-                        message.DatabaseName + fileNameAddIn + ".mdf");
+                        message.DatabaseName + "Dat" + fileNameAddIn + ".mdf");
 
                     var logFilePath = Path.Combine(
                         settings.DataDirectory,
-                        message.DatabaseName + fileNameAddIn + ".ldf");
+                        message.DatabaseName + "Log" + fileNameAddIn + ".ldf");
 
                     activity.Trace(
                         () => string.Format("Using data path: {0}, log path: {1}", dataFilePath, logFilePath));

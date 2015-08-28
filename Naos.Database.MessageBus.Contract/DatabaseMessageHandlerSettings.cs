@@ -24,7 +24,12 @@ namespace Naos.Database.MessageBus.Contract
         public TimeSpan DefaultTimeout { get; set; }
 
         /// <summary>
-        /// Gets or sets the location on disk to stage backups.
+        /// Gets or sets the location on disk for backups.
+        /// </summary>
+        public string DataDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the location on disk for backups.
         /// </summary>
         public string BackupDirectory { get; set; }
     }

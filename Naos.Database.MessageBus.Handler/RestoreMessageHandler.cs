@@ -89,8 +89,16 @@ namespace Naos.Database.MessageBus.Handler
                                                  RestrictedUserOption = RestrictedUserOption.Normal
                                              };
 
-                    activity.Trace(() => "Deleting existing database before restore.");
-                    DatabaseManager.Delete(masterConnectionString, message.DatabaseName);
+                    var existingDatabases = DatabaseManager.Retrieve(masterConnectionString);
+                    if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, message.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        activity.Trace(() => "Deleting existing database before restore.");
+                        DatabaseManager.Delete(masterConnectionString, message.DatabaseName);
+                    }
+                    else
+                    {
+                        activity.Trace(() => "No existing database found to delete.");
+                    }
 
                     activity.Trace(() => "Starting restore.");
                     DatabaseManager.RestoreFull(

@@ -47,9 +47,15 @@ namespace Naos.Database.MessageBus.Handler
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName, FilePath = message.FilePath }))
             {
                 {
+                    // use this to avoid issues with database not there or going offline
+                    var masterConnectionString =
+                        ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
+                            settings.LocalhostConnectionString,
+                            "master");
+
                     activity.Trace(() => "Connecting to database to get existing file paths to use.");
                     var existingDatabase =
-                        DatabaseManager.Retrieve(settings.LocalhostConnectionString)
+                        DatabaseManager.Retrieve(masterConnectionString)
                             .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
                     if (existingDatabase == null)
                     {
@@ -80,12 +86,6 @@ namespace Naos.Database.MessageBus.Handler
                                                  RestoreFrom = restoreFileUri,
                                                  RestrictedUserOption = RestrictedUserOption.Normal
                                              };
-
-                    // use this to avoid issues while bringing database online...
-                    var masterConnectionString =
-                        ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                            settings.LocalhostConnectionString,
-                            "master");
 
                     activity.Trace(() => "Deleting existing database before restore.");
                     DatabaseManager.Delete(masterConnectionString, message.DatabaseName);

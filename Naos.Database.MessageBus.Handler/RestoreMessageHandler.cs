@@ -47,22 +47,30 @@ namespace Naos.Database.MessageBus.Handler
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName, FilePath = message.FilePath }))
             {
                 {
-                    activity.Trace(() => "Connecting to database to get existing file paths to use.");
-                    var existingDatabase =
-                        DatabaseManager.Retrieve(settings.LocalhostConnectionString)
-                            .SingleOrDefault(_ => _.DatabaseName.ToLower() == message.DatabaseName.ToLower());
-                    if (existingDatabase == null)
-                    {
-                        throw new ArgumentException(
-                            "Could not find expected existing database named: " + message.DatabaseName);
-                    }
+                    // use this to avoid issues with database not there or going offline
+                    var masterConnectionString =
+                        ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
+                            settings.LocalhostConnectionString,
+                            "master");
+
+                    var datePart =
+                        DateTime.UtcNow.ToString("u")
+                            .Replace("-", string.Empty)
+                            .Replace(":", string.Empty)
+                            .Replace(" ", string.Empty);
+
+                    var fileNameAddIn = "_dat_UsingBackupRestoredOn_" + datePart;
+
+                    var dataFilePath = Path.Combine(
+                        settings.DataDirectory,
+                        message.DatabaseName + fileNameAddIn + ".mdf");
+
+                    var logFilePath = Path.Combine(
+                        settings.DataDirectory,
+                        message.DatabaseName + fileNameAddIn + ".ldf");
 
                     activity.Trace(
-                        () =>
-                        string.Format(
-                            "Using data path: {0}, log path: {1}",
-                            existingDatabase.DataFilePath,
-                            existingDatabase.LogFilePath));
+                        () => string.Format("Using data path: {0}, log path: {1}", dataFilePath, logFilePath));
 
                     var restoreFileUri = new Uri(message.FilePath);
                     var restoreDetails = new RestoreDetails
@@ -73,19 +81,13 @@ namespace Naos.Database.MessageBus.Handler
                                                          : ChecksumOption.NoChecksum,
                                                  Device = Device.Disk,
                                                  ErrorHandling = ErrorHandling.StopOnError,
-                                                 DataFilePath = existingDatabase.DataFilePath,
-                                                 LogFilePath = existingDatabase.LogFilePath,
+                                                 DataFilePath = dataFilePath,
+                                                 LogFilePath = logFilePath,
                                                  RecoveryOption = RecoveryOption.Recovery,
                                                  ReplaceOption = ReplaceOption.DoNotReplaceExistingDatabaseAndThrow,
                                                  RestoreFrom = restoreFileUri,
                                                  RestrictedUserOption = RestrictedUserOption.Normal
                                              };
-
-                    // use this to avoid issues while bringing database online...
-                    var masterConnectionString =
-                        ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                            settings.LocalhostConnectionString,
-                            "master");
 
                     activity.Trace(() => "Deleting existing database before restore.");
                     DatabaseManager.Delete(masterConnectionString, message.DatabaseName);

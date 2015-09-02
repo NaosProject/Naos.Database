@@ -22,7 +22,7 @@ namespace Naos.Database.MessageBus.Handler
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
     /// </summary>
-    public class BackupDatabaseMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath
+    public class BackupDatabaseMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
         public void Handle(BackupDatabaseMessage message)
@@ -71,6 +71,7 @@ namespace Naos.Database.MessageBus.Handler
                     settings.DefaultTimeout);
 
                 this.FilePath = backupFilePath;
+                this.DatabaseName = message.DatabaseName;
 
                 activity.Trace(() => "Completed successfully.");
             }
@@ -78,5 +79,8 @@ namespace Naos.Database.MessageBus.Handler
 
         /// <inheritdoc />
         public string FilePath { get; set; }
+
+        /// <inheritdoc />
+        public string DatabaseName { get; set; }
     }
 }

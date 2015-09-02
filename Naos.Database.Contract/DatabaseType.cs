@@ -1,29 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Encryptor.cs" company="Naos">
+// <copyright file="DatabaseType.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools.Backup
+namespace Naos.Database.Contract
 {
     /// <summary>
-    /// Specifies the encryptor to use when encrypting backups.
+    /// Represents the type of database: system or user.
     /// </summary>
-    public enum Encryptor
+    public enum DatabaseType
     {
         /// <summary>
-        /// No encryptor.
+        /// A user database.
         /// </summary>
-        None,
+        User = 0,
 
         /// <summary>
-        /// Backup using a server certificate.
+        /// A system database.
         /// </summary>
-        ServerCertificate,
-
-        /// <summary>
-        /// Backup using an asymmetric key.
-        /// </summary>
-        ServerAsymmetricKey
+        System = 1,        
     }
 }

@@ -17,12 +17,13 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
     using Naos.Database.Tools.Backup;
+    using Naos.FileJanitor.MessageBus.Contract;
     using Naos.MessageBus.HandlingContract;
 
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
     /// </summary>
-    public class RestoreDatabaseMessageHandler : IHandleMessages<RestoreDatabaseMessage>
+    public class RestoreDatabaseMessageHandler : IHandleMessages<RestoreDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
         public void Handle(RestoreDatabaseMessage message)
@@ -106,9 +107,18 @@ namespace Naos.Database.MessageBus.Handler
                         restoreDetails,
                         settings.DefaultTimeout);
 
+                    this.DatabaseName = message.DatabaseName;
+                    this.FilePath = message.FilePath;
+
                     activity.Trace(() => "Completed successfully.");
                 }
             }
         }
+
+        /// <inheritdoc />
+        public string FilePath { get; set; }
+
+        /// <inheritdoc />
+        public string DatabaseName { get; set; }
     }
 }

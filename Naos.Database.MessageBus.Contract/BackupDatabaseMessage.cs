@@ -12,7 +12,7 @@ namespace Naos.Database.MessageBus.Contract
     /// <summary>
     /// Message to initiate a database backup on the server the handler is on.
     /// </summary>
-    public class BackupDatabaseMessage : IMessage
+    public class BackupDatabaseMessage : IMessage, IShareDatabaseName
     {
         /// <inheritdoc />
         public string Description { get; set; }

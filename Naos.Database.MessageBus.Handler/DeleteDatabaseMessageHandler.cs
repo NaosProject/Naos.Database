@@ -19,7 +19,7 @@ namespace Naos.Database.MessageBus.Handler
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
     /// </summary>
-    public class DeleteDatabaseMessageHandler : IHandleMessages<DeleteDatabaseMessage>
+    public class DeleteDatabaseMessageHandler : IHandleMessages<DeleteDatabaseMessage>, IShareDatabaseName
     {
         /// <inheritdoc />
         public void Handle(DeleteDatabaseMessage message)
@@ -57,9 +57,14 @@ namespace Naos.Database.MessageBus.Handler
                         activity.Trace(() => "No existing database found to delete.");
                     }
 
+                    this.DatabaseName = message.DatabaseName;
+
                     activity.Trace(() => "Completed successfully.");
                 }
             }
         }
+
+        /// <inheritdoc />
+        public string DatabaseName { get; set; }
     }
 }

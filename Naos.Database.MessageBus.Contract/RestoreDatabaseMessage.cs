@@ -13,7 +13,7 @@ namespace Naos.Database.MessageBus.Contract
     /// <summary>
     /// Message to initiate a database restore on the server the handler is on.
     /// </summary>
-    public class RestoreDatabaseMessage : IMessage, IShareFilePath
+    public class RestoreDatabaseMessage : IMessage, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
         public string Description { get; set; }

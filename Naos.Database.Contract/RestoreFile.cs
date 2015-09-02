@@ -4,12 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools
+namespace Naos.Database.Contract
 {
     /// <summary>
     /// Represents a file to restore.
     /// </summary>
-    internal class RestoreFile
+    public class RestoreFile
     {
         /// <summary>
         /// Gets or sets the metadata name of the file.

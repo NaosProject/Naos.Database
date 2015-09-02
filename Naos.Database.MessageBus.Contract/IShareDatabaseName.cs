@@ -1,24 +1,21 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Device.cs" company="Naos">
+// <copyright file="IShareDatabaseName.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools.Backup
+namespace Naos.Database.MessageBus.Contract
 {
+    using Naos.MessageBus.DataContract;
+
     /// <summary>
-    /// The device to backup to or restore from.
+    /// Interface to share database name with other messages in a sequence.
     /// </summary>
-    public enum Device
+    public interface IShareDatabaseName : IShare
     {
         /// <summary>
-        /// Backup to or restore from disk.
+        /// Gets or sets the name of the database to delete.
         /// </summary>
-        Disk,
-
-        /// <summary>
-        /// Backup to or restore from a blob store.
-        /// </summary>
-        Url
+        string DatabaseName { get; set; }
     }
 }

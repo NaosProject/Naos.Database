@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateDatabaseMessageHandler.cs" />
+    <Compile Include="ShareDatabaseNameMessageHandler.cs" />
     <Compile Include="DeleteDatabaseMessageHandler.cs" />
     <Compile Include="RestoreDatabaseMessageHandler.cs" />
     <Compile Include="BackupDatabaseMessageHandler.cs" />

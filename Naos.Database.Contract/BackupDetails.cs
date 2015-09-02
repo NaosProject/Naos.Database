@@ -4,11 +4,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools.Backup
+namespace Naos.Database.Contract
 {
     using System;
-
-    using Naos.Database.Contract;
 
     /// <summary>
     /// Captures the details of a backup operation.

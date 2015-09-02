@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools
+namespace Naos.Database.Contract
 {
     /// <summary>
     /// Detailed information about the database's configuration (file size and name type stuff).

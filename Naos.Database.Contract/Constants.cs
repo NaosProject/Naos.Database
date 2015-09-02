@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools
+namespace Naos.Database.Contract
 {
     /// <summary>
     /// Constants used in project.

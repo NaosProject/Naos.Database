@@ -4,10 +4,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools
+namespace Naos.Database.Contract
 {
-    using System.Globalization;
-
     /// <summary>
     /// Detailed information about the table.
     /// </summary>

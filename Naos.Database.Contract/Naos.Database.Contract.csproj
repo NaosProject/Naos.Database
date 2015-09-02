@@ -43,14 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupDetails.cs" />
     <Compile Include="ChecksumOption.cs" />
     <Compile Include="Cipher.cs" />
+    <Compile Include="ColumnDescription.cs" />
     <Compile Include="CompressionOption.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DatabaseConfiguration.cs" />
+    <Compile Include="DatabaseType.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="Encryptor.cs" />
     <Compile Include="ErrorHandling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecoveryOption.cs" />
     <Compile Include="ReplaceOption.cs" />
+    <Compile Include="RestoreDetails.cs" />
+    <Compile Include="RestoreFile.cs" />
     <Compile Include="RestrictedUserOption.cs" />
+    <Compile Include="TableDescription.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Settings.StyleCop" />

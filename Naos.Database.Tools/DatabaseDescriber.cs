@@ -12,6 +12,8 @@ namespace Naos.Database.Tools
 
     using Dapper;
 
+    using Naos.Database.Contract;
+
     /// <summary>
     /// Utility to retrieve information about a database and its contents.
     /// </summary>

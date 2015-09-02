@@ -36,6 +36,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Naos.MessageBus.DataContract">
+      <HintPath>..\packages\Naos.MessageBus.DataContract.1.0.71\lib\45\Naos.MessageBus.DataContract.dll</HintPath>
+    </Reference>
+    <Reference Include="Naos.MessageBus.HandlingContract">
+      <HintPath>..\packages\Naos.MessageBus.HandlingContract.1.0.71\lib\45\Naos.MessageBus.HandlingContract.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShareDatabaseNameMessageHandlerTest.cs" />
     <Compile Include="SqlInjectorCheckerTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +68,14 @@
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Naos.Database.MessageBus.Contract\Naos.Database.MessageBus.Contract.csproj">
+      <Project>{FCF5A964-EE1D-41B8-9F55-DB6FA9FBBFE8}</Project>
+      <Name>Naos.Database.MessageBus.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Naos.Database.MessageBus.Handler\Naos.Database.MessageBus.Handler.csproj">
+      <Project>{AA549B15-265C-4BF4-9EB3-FBD3D3280F94}</Project>
+      <Name>Naos.Database.MessageBus.Handler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Naos.Database.Tools\Naos.Database.Tools.csproj">
       <Project>{CF5080FD-F812-4C3D-808A-86F16E598D68}</Project>
       <Name>Naos.Database.Tools</Name>

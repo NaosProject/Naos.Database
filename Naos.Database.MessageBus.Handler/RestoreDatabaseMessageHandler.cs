@@ -13,6 +13,7 @@ namespace Naos.Database.MessageBus.Handler
     using Its.Configuration;
     using Its.Log.Instrumentation;
 
+    using Naos.Database.Contract;
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
     using Naos.Database.Tools.Backup;
@@ -76,18 +77,15 @@ namespace Naos.Database.MessageBus.Handler
                     var restoreFileUri = new Uri(message.FilePath);
                     var restoreDetails = new RestoreDetails
                                              {
-                                                 ChecksumOption =
-                                                     message.RunChecksum
-                                                         ? ChecksumOption.Checksum
-                                                         : ChecksumOption.NoChecksum,
+                                                 ChecksumOption = message.ChecksumOption,
                                                  Device = Device.Disk,
-                                                 ErrorHandling = ErrorHandling.StopOnError,
+                                                 ErrorHandling = message.ErrorHandling,
                                                  DataFilePath = dataFilePath,
                                                  LogFilePath = logFilePath,
-                                                 RecoveryOption = RecoveryOption.Recovery,
-                                                 ReplaceOption = ReplaceOption.DoNotReplaceExistingDatabaseAndThrow,
+                                                 RecoveryOption = message.RecoveryOption,
+                                                 ReplaceOption = message.ReplaceOption,
                                                  RestoreFrom = restoreFileUri,
-                                                 RestrictedUserOption = RestrictedUserOption.Normal
+                                                 RestrictedUserOption = message.RestrictedUserOption
                                              };
 
                     var existingDatabases = DatabaseManager.Retrieve(masterConnectionString);

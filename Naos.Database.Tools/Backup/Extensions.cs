@@ -10,6 +10,8 @@ namespace Naos.Database.Tools.Backup
 
     using Conditions;
 
+    using Naos.Database.Contract;
+
     /// <summary>
     /// Extension methods for types in the namespace.
     /// </summary>

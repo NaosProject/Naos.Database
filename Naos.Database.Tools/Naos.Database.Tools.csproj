@@ -53,17 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup\BackupDetails.cs" />
-    <Compile Include="Backup\ChecksumOption.cs" />
-    <Compile Include="Backup\CompressionOption.cs" />
     <Compile Include="Backup\Device.cs" />
-    <Compile Include="Backup\Cipher.cs" />
     <Compile Include="Backup\Encryptor.cs" />
-    <Compile Include="Backup\ErrorHandling.cs" />
     <Compile Include="Backup\Extensions.cs" />
-    <Compile Include="Backup\RecoveryOption.cs" />
-    <Compile Include="Backup\ReplaceOption.cs" />
     <Compile Include="Backup\RestoreDetails.cs" />
-    <Compile Include="Backup\RestrictedUserOption.cs" />
     <Compile Include="ColumnDescription.cs" />
     <Compile Include="ConnectionStringHelper.cs" />
     <Compile Include="Constants.cs" />
@@ -79,6 +72,12 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Naos.Database.Contract\Naos.Database.Contract.csproj">
+      <Project>{484A1706-0975-4905-AB9C-B0418B83BE7D}</Project>
+      <Name>Naos.Database.Contract</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

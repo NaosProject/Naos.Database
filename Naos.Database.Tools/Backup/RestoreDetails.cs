@@ -8,6 +8,8 @@ namespace Naos.Database.Tools.Backup
 {
     using System;
 
+    using Naos.Database.Contract;
+
     /// <summary>
     /// Captures the details of a restore operation.
     /// </summary>

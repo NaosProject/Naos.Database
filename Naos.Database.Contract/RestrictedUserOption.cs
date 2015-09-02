@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools.Backup
+namespace Naos.Database.Contract
 {
     /// <summary>
     /// Determines whether to put the database into restricted user mode after a restore.

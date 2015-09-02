@@ -19,6 +19,7 @@ namespace Naos.Database.Tools
 
     using Its.Log.Instrumentation;
 
+    using Naos.Database.Contract;
     using Naos.Database.Tools.Backup;
 
     /// <summary>

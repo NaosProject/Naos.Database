@@ -6,6 +6,7 @@
 
 namespace Naos.Database.MessageBus.Contract
 {
+    using Naos.Database.Contract;
     using Naos.FileJanitor.MessageBus.Contract;
     using Naos.MessageBus.DataContract;
 
@@ -22,12 +23,32 @@ namespace Naos.Database.MessageBus.Contract
         /// </summary>
         public string DatabaseName { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not to run a checksum on the restore.
-        /// </summary>
-        public bool RunChecksum { get; set; }
-
         /// <inheritdoc />
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the checksum option to use.
+        /// </summary>
+        public ChecksumOption ChecksumOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error handling to use.
+        /// </summary>
+        public ErrorHandling ErrorHandling { get; set; }
+
+        /// <summary>
+        /// Gets or sets the recovery option to use.
+        /// </summary>
+        public RecoveryOption RecoveryOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the replace to use.
+        /// </summary>
+        public ReplaceOption ReplaceOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the restricted user option to use.
+        /// </summary>
+        public RestrictedUserOption RestrictedUserOption { get; set; }
     }
 }

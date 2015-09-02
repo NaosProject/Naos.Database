@@ -1,24 +1,24 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompressionOption.cs" company="Naos">
+// <copyright file="ReplaceOption.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools.Backup
+namespace Naos.Database.Contract
 {
     /// <summary>
-    /// Specifies whether backup compression is performed.
+    /// Determines what to do if restoring a database that already exists.
     /// </summary>
-    public enum CompressionOption
+    public enum ReplaceOption
     {
         /// <summary>
-        /// Explicitly disable backup compression.
+        /// Existing database is not replaced and the system should throw.
         /// </summary>
-        NoCompression,
+        DoNotReplaceExistingDatabaseAndThrow,
 
         /// <summary>
-        /// Explicitly enable backup compression.
+        /// Replace the existing database.
         /// </summary>
-        Compression
+        ReplaceExistingDatabase,
     }
 }

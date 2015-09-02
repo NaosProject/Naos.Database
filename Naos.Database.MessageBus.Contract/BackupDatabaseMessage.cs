@@ -6,6 +6,7 @@
 
 namespace Naos.Database.MessageBus.Contract
 {
+    using Naos.Database.Contract;
     using Naos.MessageBus.DataContract;
 
     /// <summary>
@@ -30,5 +31,25 @@ namespace Naos.Database.MessageBus.Contract
         /// Gets or sets the description to use on a backup.
         /// </summary>
         public string BackupDescription { get; set; }
+
+        /// <summary>
+        /// Gets or sets the checksum option to use.
+        /// </summary>
+        public ChecksumOption ChecksumOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the error handling to use.
+        /// </summary>
+        public ErrorHandling ErrorHandling { get; set; }
+
+        /// <summary>
+        /// Gets or sets the cipher to use.
+        /// </summary>
+        public Cipher Cipher { get; set; }
+
+        /// <summary>
+        /// Gets or sets the compression option to use.
+        /// </summary>
+        public CompressionOption CompressionOption { get; set; }
     }
 }

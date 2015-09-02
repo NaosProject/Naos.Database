@@ -12,6 +12,7 @@ namespace Naos.Database.MessageBus.Handler
     using Its.Configuration;
     using Its.Log.Instrumentation;
 
+    using Naos.Database.Contract;
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
     using Naos.Database.Tools.Backup;
@@ -52,12 +53,12 @@ namespace Naos.Database.MessageBus.Handler
                                         {
                                             Name = message.BackupName,
                                             BackupTo = backupFilePathUri,
-                                            ChecksumOption = ChecksumOption.Checksum,
-                                            Cipher = Cipher.NoEncryption,
-                                            CompressionOption = CompressionOption.NoCompression,
+                                            ChecksumOption = message.ChecksumOption,
+                                            Cipher = message.Cipher,
+                                            CompressionOption = message.CompressionOption,
                                             Description = message.BackupDescription,
                                             Device = Device.Disk,
-                                            ErrorHandling = ErrorHandling.StopOnError,
+                                            ErrorHandling = message.ErrorHandling,
                                         };
 
                 activity.Trace(

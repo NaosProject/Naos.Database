@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteDatabaseMessage.cs" />
     <Compile Include="RestoreDatabaseMessage.cs" />
     <Compile Include="BackupDatabaseMessage.cs" />
     <Compile Include="DatabaseMessageHandlerSettings.cs" />

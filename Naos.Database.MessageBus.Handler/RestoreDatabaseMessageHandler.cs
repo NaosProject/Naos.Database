@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RestoreMessageHandler.cs" company="Naos">
+// <copyright file="RestoreDatabaseMessageHandler.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace Naos.Database.MessageBus.Handler
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
     /// </summary>
-    public class RestoreMessageHandler : IHandleMessages<RestoreDatabaseMessage>
+    public class RestoreDatabaseMessageHandler : IHandleMessages<RestoreDatabaseMessage>
     {
         /// <inheritdoc />
         public void Handle(RestoreDatabaseMessage message)
@@ -60,6 +60,7 @@ namespace Naos.Database.MessageBus.Handler
                             .Replace(" ", string.Empty);
 
                     var fileNameAddIn = "UsingBackupRestoredOn" + datePart;
+                    fileNameAddIn = string.Empty;
 
                     var dataFilePath = Path.Combine(
                         settings.DataDirectory,

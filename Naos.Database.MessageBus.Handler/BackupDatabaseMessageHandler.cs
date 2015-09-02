@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BackupMessageHandler.cs" company="Naos">
+// <copyright file="BackupDatabaseMessageHandler.cs" company="Naos">
 //   Copyright 2015 Naos
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ namespace Naos.Database.MessageBus.Handler
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
     /// </summary>
-    public class BackupMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath
+    public class BackupDatabaseMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath
     {
         /// <inheritdoc />
         public void Handle(BackupDatabaseMessage message)

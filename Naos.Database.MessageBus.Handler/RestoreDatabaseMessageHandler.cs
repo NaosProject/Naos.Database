@@ -62,7 +62,6 @@ namespace Naos.Database.MessageBus.Handler
                             .Replace(" ", string.Empty);
 
                     var fileNameAddIn = "UsingBackupRestoredOn" + datePart;
-                    fileNameAddIn = string.Empty;
 
                     var dataFilePath = Path.Combine(
                         settings.DataDirectory,

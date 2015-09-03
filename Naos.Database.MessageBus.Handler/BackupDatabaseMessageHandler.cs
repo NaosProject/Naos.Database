@@ -8,6 +8,7 @@ namespace Naos.Database.MessageBus.Handler
 {
     using System;
     using System.IO;
+    using System.Threading.Tasks;
 
     using Its.Configuration;
     using Its.Log.Instrumentation;
@@ -25,10 +26,10 @@ namespace Naos.Database.MessageBus.Handler
     public class BackupDatabaseMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
-        public void Handle(BackupDatabaseMessage message)
+        public async Task Handle(BackupDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            this.Handle(message, settings);
+            await Task.Run(() => this.Handle(message, settings));
         }
 
         /// <summary>

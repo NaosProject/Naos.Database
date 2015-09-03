@@ -9,6 +9,7 @@ namespace Naos.Database.MessageBus.Handler
     using System;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Its.Configuration;
     using Its.Log.Instrumentation;
@@ -16,7 +17,6 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.Contract;
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
-    using Naos.Database.Tools.Backup;
     using Naos.FileJanitor.MessageBus.Contract;
     using Naos.MessageBus.HandlingContract;
 
@@ -26,7 +26,7 @@ namespace Naos.Database.MessageBus.Handler
     public class RestoreDatabaseMessageHandler : IHandleMessages<RestoreDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
-        public void Handle(RestoreDatabaseMessage message)
+        public async Task Handle(RestoreDatabaseMessage message)
         {
             if (!File.Exists(message.FilePath))
             {
@@ -34,7 +34,7 @@ namespace Naos.Database.MessageBus.Handler
             }
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            this.Handle(message, settings);
+            await Task.Run(() => this.Handle(message, settings));
         }
 
         /// <summary>
@@ -55,22 +55,13 @@ namespace Naos.Database.MessageBus.Handler
                             settings.LocalhostConnectionString,
                             "master");
 
-                    var datePart =
-                        DateTime.UtcNow.ToString("u")
-                            .Replace("-", string.Empty)
-                            .Replace(":", string.Empty)
-                            .Replace(" ", string.Empty);
-
-                    var fileNameAddIn = "UsingBackupRestoredOn" + datePart;
-                    fileNameAddIn = string.Empty;
-
                     var dataFilePath = Path.Combine(
                         settings.DataDirectory,
-                        message.DatabaseName + "Dat" + fileNameAddIn + ".mdf");
+                        message.DatabaseName + "Dat.mdf");
 
                     var logFilePath = Path.Combine(
                         settings.DataDirectory,
-                        message.DatabaseName + "Log" + fileNameAddIn + ".ldf");
+                        message.DatabaseName + "Log.ldf");
 
                     activity.Trace(
                         () => string.Format("Using data path: {0}, log path: {1}", dataFilePath, logFilePath));

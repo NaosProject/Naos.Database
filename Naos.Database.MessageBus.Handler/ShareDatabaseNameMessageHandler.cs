@@ -6,6 +6,8 @@
 
 namespace Naos.Database.MessageBus.Handler
 {
+    using System.Threading.Tasks;
+
     using Its.Log.Instrumentation;
 
     using Naos.Database.MessageBus.Contract;
@@ -17,12 +19,12 @@ namespace Naos.Database.MessageBus.Handler
     public class ShareDatabaseNameMessageHandler : IHandleMessages<ShareDatabaseNameMessage>, IShareDatabaseName
     {
         /// <inheritdoc />
-        public void Handle(ShareDatabaseNameMessage message)
+        public async Task Handle(ShareDatabaseNameMessage message)
         {
             using (var log = Log.Enter(() => new { Message = message, DatabaseNameToShare = message.DatabaseNameToShare }))
             {
                 log.Trace(() => "Sharing database name: " + message.DatabaseNameToShare);
-                this.DatabaseName = message.DatabaseNameToShare;
+                this.DatabaseName = await Task.FromResult(message.DatabaseNameToShare);
             }
         }
 

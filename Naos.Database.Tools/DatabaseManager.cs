@@ -12,6 +12,7 @@ namespace Naos.Database.Tools
     using System.Data.SqlClient;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
 
     using Conditions;
 
@@ -355,7 +356,31 @@ namespace Naos.Database.Tools
         /// <param name="databaseName">Name of the database to backup.</param>
         /// <param name="backupDetails">The details of how to perform the backup.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
-        public static void BackupFull(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan))
+        public static void BackupFull(
+            string connectionString,
+            string databaseName,
+            BackupDetails backupDetails,
+            TimeSpan timeout = default(TimeSpan))
+        {
+            BackupFullAsync(connectionString, databaseName, backupDetails, timeout).Wait();
+        }
+
+        /// <summary>
+        /// Perform a full (non-differential) database backup.
+        /// </summary>
+        /// <remarks>
+        /// During a full or differential database backup, SQL Server backs up enough of the transaction log to produce a consistent database when the backup is restored.
+        /// When you restore a backup created by BACKUP DATABASE (a data backup), the entire backup is restored. Only a log backup can be restored to a specific time or transaction within the backup
+        /// This method does not support appending a backup to an existing file nor any of the methods to age/overwrite backups in an existing file.
+        /// This method will always overwrite an existing file.  It's more difficult to get SQL Server to emit an error if a file already exists.  
+        /// See: <a href="http://dba.stackexchange.com/questions/98536/how-to-generate-an-error-when-backing-up-to-an-existing-file"/>
+        /// </remarks>
+        /// <param name="connectionString">Connection string to the intended database server.</param>
+        /// <param name="databaseName">Name of the database to backup.</param>
+        /// <param name="backupDetails">The details of how to perform the backup.</param>
+        /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        /// <returns>Task to support async await calling.</returns>
+        public static async Task BackupFullAsync(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan))
         {
             using (var activity = Log.Enter(() => new { Database = databaseName, BackupDetails = backupDetails }))
             {
@@ -528,7 +553,7 @@ namespace Naos.Database.Tools
                             Log.Write(() => string.Format("Server Message: {0}", e.Message));
                         };
 
-                    connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
+                    await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
                     connection.Close();
                 }
 
@@ -544,6 +569,23 @@ namespace Naos.Database.Tools
         /// <param name="restoreDetails">The details of how to perform the restore.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void RestoreFull(
+            string connectionString,
+            string databaseName,
+            RestoreDetails restoreDetails,
+            TimeSpan timeout = default(TimeSpan))
+        {
+            RestoreFullAsync(connectionString, databaseName, restoreDetails, timeout).Wait();
+        }
+
+        /// <summary>
+        /// Restores an entire database from a full database backup.
+        /// </summary>
+        /// <param name="connectionString">Connection string to the intended database server.</param>
+        /// <param name="databaseName">Name of the database to restore.</param>
+        /// <param name="restoreDetails">The details of how to perform the restore.</param>
+        /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        /// <returns>Task to support async await calling.</returns>
+        public static async Task RestoreFullAsync(
             string connectionString,
             string databaseName,
             RestoreDetails restoreDetails,
@@ -732,7 +774,7 @@ namespace Naos.Database.Tools
                             Log.Write(() => string.Format("Server Message: {0}", e.Message));
                         };
 
-                    connection.ExecuteScalar(command, commandTimeout: (int?)timeout.TotalSeconds);
+                    await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
                     connection.Close();
                 }
 

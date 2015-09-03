@@ -34,7 +34,7 @@ namespace Naos.Database.MessageBus.Handler
             }
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            await Task.Run(() => this.Handle(message, settings));
+            await this.HandleAsync(message, settings);
         }
 
         /// <summary>
@@ -42,13 +42,17 @@ namespace Naos.Database.MessageBus.Handler
         /// </summary>
         /// <param name="message">Message to handle.</param>
         /// <param name="settings">Needed settings to handle messages.</param>
-        public void Handle(
+        /// <returns>Task to support async await calling.</returns>
+        public async Task HandleAsync(
             RestoreDatabaseMessage message,
             DatabaseMessageHandlerSettings settings)
         {
-            using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName, FilePath = message.FilePath }))
+            using (var activity = Log.Enter(() => new { Message = message, message.DatabaseName, message.FilePath }))
             {
                 {
+                    this.DatabaseName = message.DatabaseName;
+                    this.FilePath = message.FilePath;
+
                     // use this to avoid issues with database not there or going offline
                     var masterConnectionString =
                         ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
@@ -57,16 +61,16 @@ namespace Naos.Database.MessageBus.Handler
 
                     var dataFilePath = Path.Combine(
                         settings.DataDirectory,
-                        message.DatabaseName + "Dat.mdf");
+                        this.DatabaseName + "Dat.mdf");
 
                     var logFilePath = Path.Combine(
                         settings.DataDirectory,
-                        message.DatabaseName + "Log.ldf");
+                        this.DatabaseName + "Log.ldf");
 
                     activity.Trace(
                         () => string.Format("Using data path: {0}, log path: {1}", dataFilePath, logFilePath));
 
-                    var restoreFileUri = new Uri(message.FilePath);
+                    var restoreFileUri = new Uri(this.FilePath);
                     var restoreDetails = new RestoreDetails
                                              {
                                                  ChecksumOption = message.ChecksumOption,
@@ -81,10 +85,10 @@ namespace Naos.Database.MessageBus.Handler
                                              };
 
                     var existingDatabases = DatabaseManager.Retrieve(masterConnectionString);
-                    if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, message.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
+                    if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, this.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
                     {
                         activity.Trace(() => "Deleting existing database before restore.");
-                        DatabaseManager.Delete(masterConnectionString, message.DatabaseName);
+                        DatabaseManager.Delete(masterConnectionString, this.DatabaseName);
                     }
                     else
                     {
@@ -92,14 +96,11 @@ namespace Naos.Database.MessageBus.Handler
                     }
 
                     activity.Trace(() => "Starting restore.");
-                    DatabaseManager.RestoreFull(
+                    await DatabaseManager.RestoreFullAsync(
                         masterConnectionString,
-                        message.DatabaseName,
+                        this.DatabaseName,
                         restoreDetails,
                         settings.DefaultTimeout);
-
-                    this.DatabaseName = message.DatabaseName;
-                    this.FilePath = message.FilePath;
 
                     activity.Trace(() => "Completed successfully.");
                 }

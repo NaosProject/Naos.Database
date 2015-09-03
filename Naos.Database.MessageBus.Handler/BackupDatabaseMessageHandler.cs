@@ -29,7 +29,7 @@ namespace Naos.Database.MessageBus.Handler
         public async Task HandleAsync(BackupDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            await Task.Run(() => this.Handle(message, settings));
+            await this.HandleAsync(message, settings);
         }
 
         /// <summary>
@@ -37,7 +37,8 @@ namespace Naos.Database.MessageBus.Handler
         /// </summary>
         /// <param name="message">Message to handle.</param>
         /// <param name="settings">Needed settings to handle messages.</param>
-        public void Handle(BackupDatabaseMessage message, DatabaseMessageHandlerSettings settings)
+        /// <returns>Task to support async await calling.</returns>
+        public async Task HandleAsync(BackupDatabaseMessage message, DatabaseMessageHandlerSettings settings)
         {
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {
@@ -47,9 +48,12 @@ namespace Naos.Database.MessageBus.Handler
                         .Replace("-", string.Empty)
                         .Replace(":", string.Empty)
                         .Replace(" ", string.Empty);
-                var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + "TakenOn" + datePart
-                                     + ".bak";
-                var backupFilePathUri = new Uri(backupFilePath);
+                var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + "TakenOn" + datePart + ".bak";
+
+                this.FilePath = backupFilePath;
+                this.DatabaseName = message.DatabaseName;
+
+                var backupFilePathUri = new Uri(this.FilePath);
                 var backupDetails = new BackupDetails()
                                         {
                                             Name = message.BackupName,
@@ -63,16 +67,13 @@ namespace Naos.Database.MessageBus.Handler
                                         };
 
                 activity.Trace(
-                    () => string.Format("Backing up database {0} to {1}", message.DatabaseName, backupFilePath));
+                    () => string.Format("Backing up database {0} to {1}", this.DatabaseName, backupFilePath));
 
-                DatabaseManager.BackupFull(
+                await DatabaseManager.BackupFullAsync(
                     settings.LocalhostConnectionString,
-                    message.DatabaseName,
+                    this.DatabaseName,
                     backupDetails,
                     settings.DefaultTimeout);
-
-                this.FilePath = backupFilePath;
-                this.DatabaseName = message.DatabaseName;
 
                 activity.Trace(() => "Completed successfully.");
             }

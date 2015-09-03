@@ -25,7 +25,7 @@ namespace Naos.Database.MessageBus.Handler
     public class CreateDatabaseMessageHandler : IHandleMessages<CreateDatabaseMessage>, IShareDatabaseName
     {
         /// <inheritdoc />
-        public async Task Handle(CreateDatabaseMessage message)
+        public async Task HandleAsync(CreateDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             await Task.Run(() => this.Handle(message, settings));

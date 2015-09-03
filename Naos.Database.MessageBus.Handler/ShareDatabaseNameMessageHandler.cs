@@ -19,7 +19,7 @@ namespace Naos.Database.MessageBus.Handler
     public class ShareDatabaseNameMessageHandler : IHandleMessages<ShareDatabaseNameMessage>, IShareDatabaseName
     {
         /// <inheritdoc />
-        public async Task Handle(ShareDatabaseNameMessage message)
+        public async Task HandleAsync(ShareDatabaseNameMessage message)
         {
             using (var log = Log.Enter(() => new { Message = message, DatabaseNameToShare = message.DatabaseNameToShare }))
             {

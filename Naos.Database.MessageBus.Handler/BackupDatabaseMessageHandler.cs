@@ -26,7 +26,7 @@ namespace Naos.Database.MessageBus.Handler
     public class BackupDatabaseMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
-        public async Task Handle(BackupDatabaseMessage message)
+        public async Task HandleAsync(BackupDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             await Task.Run(() => this.Handle(message, settings));

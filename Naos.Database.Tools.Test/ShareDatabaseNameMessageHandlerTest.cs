@@ -22,7 +22,7 @@ namespace Naos.Database.Tools.Test
             var handler = new ShareDatabaseNameMessageHandler();
 
             // act
-            handler.Handle(message);
+            handler.HandleAsync(message).Wait();
 
             // assert
             Assert.Equal(testName, message.DatabaseNameToShare);

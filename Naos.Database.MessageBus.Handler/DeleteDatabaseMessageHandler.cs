@@ -23,7 +23,7 @@ namespace Naos.Database.MessageBus.Handler
     public class DeleteDatabaseMessageHandler : IHandleMessages<DeleteDatabaseMessage>, IShareDatabaseName
     {
         /// <inheritdoc />
-        public async Task Handle(DeleteDatabaseMessage message)
+        public async Task HandleAsync(DeleteDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             await Task.Run(() => this.Handle(message, settings));

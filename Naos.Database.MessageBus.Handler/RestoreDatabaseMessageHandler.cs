@@ -26,7 +26,7 @@ namespace Naos.Database.MessageBus.Handler
     public class RestoreDatabaseMessageHandler : IHandleMessages<RestoreDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
         /// <inheritdoc />
-        public async Task Handle(RestoreDatabaseMessage message)
+        public async Task HandleAsync(RestoreDatabaseMessage message)
         {
             if (!File.Exists(message.FilePath))
             {

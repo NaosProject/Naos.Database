@@ -9,6 +9,7 @@ namespace Naos.Database.MessageBus.Handler
     using System;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Its.Configuration;
     using Its.Log.Instrumentation;
@@ -24,10 +25,10 @@ namespace Naos.Database.MessageBus.Handler
     public class CreateDatabaseMessageHandler : IHandleMessages<CreateDatabaseMessage>, IShareDatabaseName
     {
         /// <inheritdoc />
-        public void Handle(CreateDatabaseMessage message)
+        public async Task Handle(CreateDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            this.Handle(message, settings);
+            await Task.Run(() => this.Handle(message, settings));
         }
 
         /// <summary>

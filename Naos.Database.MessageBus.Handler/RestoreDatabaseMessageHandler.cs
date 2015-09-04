@@ -8,7 +8,6 @@ namespace Naos.Database.MessageBus.Handler
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Its.Configuration;
@@ -83,17 +82,6 @@ namespace Naos.Database.MessageBus.Handler
                                                  RestoreFrom = restoreFileUri,
                                                  RestrictedUserOption = message.RestrictedUserOption
                                              };
-
-                    var existingDatabases = DatabaseManager.Retrieve(masterConnectionString);
-                    if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, this.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
-                    {
-                        activity.Trace(() => "Deleting existing database before restore.");
-                        DatabaseManager.Delete(masterConnectionString, this.DatabaseName);
-                    }
-                    else
-                    {
-                        activity.Trace(() => "No existing database found to delete.");
-                    }
 
                     activity.Trace(() => "Starting restore.");
                     await DatabaseManager.RestoreFullAsync(

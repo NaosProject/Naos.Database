@@ -40,9 +40,9 @@
     <Reference Include="Its.Log">
       <HintPath>..\packages\Its.Log.2.8.3\lib\net40\Its.Log.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.55.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.60.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.55\lib\45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.60\lib\45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Naos.MessageBus.DataContract, Version=1.0.75.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

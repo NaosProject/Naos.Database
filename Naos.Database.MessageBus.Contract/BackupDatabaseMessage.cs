@@ -7,7 +7,7 @@
 namespace Naos.Database.MessageBus.Contract
 {
     using Naos.Database.Contract;
-    using Naos.MessageBus.DataContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Message to initiate a database backup on the server the handler is on.

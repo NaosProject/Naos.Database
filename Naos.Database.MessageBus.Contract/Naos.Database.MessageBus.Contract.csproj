@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Naos.Database.MessageBus.Contract</RootNamespace>
     <AssemblyName>Naos.Database.MessageBus.Contract</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,13 +35,25 @@
     <DocumentationFile>bin\Release\Naos.Database.MessageBus.Contract.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.65.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.65\lib\net45\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
+    <Reference Include="Naos.Cron, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Cron.1.0.10\lib\net45\Naos.Cron.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Naos.MessageBus.DataContract, Version=1.0.123.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Naos.MessageBus.DataContract.1.0.123\lib\net45\Naos.MessageBus.DataContract.dll</HintPath>
+    <Reference Include="Naos.Diagnostics.Domain, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Diagnostics.Domain.1.0.2\lib\net45\Naos.Diagnostics.Domain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.66-csharp4dot6andnewmes\lib\net461\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Naos.MessageBus.Domain, Version=1.0.135.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.MessageBus.Domain.1.0.135-addseparatejobtracki\lib\net461\Naos.MessageBus.Domain.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

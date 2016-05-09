@@ -17,7 +17,7 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.Contract;
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
-    using Naos.MessageBus.HandlingContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Naos.MessageBus handler for CreateDatabaseMessages.

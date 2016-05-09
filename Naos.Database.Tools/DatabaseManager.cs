@@ -124,31 +124,28 @@ namespace Naos.Database.Tools
             }
 
             ThrowIfBadOnCreateOrModify(configuration);
-            var commandText = string.Format(
-                @"CREATE DATABASE {0}
+            var databaseFileMaxSize = configuration.DataFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : configuration.DataFileMaxSizeInKb + "KB";
+            var logFileMaxSize = configuration.LogFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : configuration.LogFileMaxSizeInKb + "KB";
+            var commandText =
+                $@"CREATE DATABASE {configuration.DatabaseName}
                         ON
-                        ( NAME = '{1}',
-                        FILENAME = '{2}',
-                        SIZE = {3}KB,
-                        MAXSIZE = {4},
-                        FILEGROWTH = {5}KB )
+                        ( NAME = '{
+                    configuration.DataFileLogicalName}',
+                        FILENAME = '{configuration.DataFilePath}',
+                        SIZE = {
+                    configuration.DataFileCurrentSizeInKb}KB,
+                        MAXSIZE = {databaseFileMaxSize},
+                        FILEGROWTH = {
+                    configuration.DataFileGrowthSizeInKb}KB )
                         LOG ON
-                        ( NAME = '{6}',
-                        FILENAME = '{7}',
-                        SIZE = {8}KB,
-                        MAXSIZE = {9},
-                        FILEGROWTH = {10}KB )",
-                        configuration.DatabaseName,
-                        configuration.DataFileLogicalName,
-                        configuration.DataFilePath,
-                        configuration.DataFileCurrentSizeInKb,
-                        configuration.DataFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : configuration.DataFileMaxSizeInKb + "KB",
-                        configuration.DataFileGrowthSizeInKb,
-                        configuration.LogFileLogicalName,
-                        configuration.LogFilePath,
-                        configuration.LogFileCurrentSizeInKb,
-                        configuration.LogFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : configuration.LogFileMaxSizeInKb + "KB",
-                        configuration.LogFileGrowthSizeInKb); 
+                        ( NAME = '{
+                    configuration.LogFileLogicalName}',
+                        FILENAME = '{configuration.LogFilePath}',
+                        SIZE = {
+                    configuration.LogFileCurrentSizeInKb}KB,
+                        MAXSIZE = {logFileMaxSize},
+                        FILEGROWTH = {
+                    configuration.LogFileGrowthSizeInKb}KB )";
             
             using (var connection = new SqlConnection(connectionString))
             {
@@ -236,30 +233,26 @@ namespace Naos.Database.Tools
                 if ((currentConfiguration.DataFileLogicalName != newConfiguration.DataFileLogicalName)
                     && (currentConfiguration.DataFilePath != newConfiguration.DataFilePath))
                 {
-                    var updateDataFileText = string.Format(
-                        @"ALTER DATABASE {0} MODIFY FILE (
-                        NAME = '{1}',
-                        NEWNAME = '{2}',
-                        FILENAME = '{3}')",
-                        newConfiguration.DatabaseName,
-                        currentConfiguration.DataFileLogicalName,
-                        newConfiguration.DataFileLogicalName,
-                        newConfiguration.DataFilePath);
+                    var updateDataFileText =
+                        $@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
+                        NAME = '{
+                            currentConfiguration.DataFileLogicalName}',
+                        NEWNAME = '{newConfiguration.DataFileLogicalName
+                            }',
+                        FILENAME = '{newConfiguration.DataFilePath}')";
                     connection.Execute(updateDataFileText, null, null, (int?)timeout.TotalSeconds);
                 }
 
                 if ((currentConfiguration.LogFileLogicalName != newConfiguration.LogFileLogicalName)
                     && (currentConfiguration.LogFilePath != newConfiguration.LogFilePath))
                 {
-                    var updateLogFileText = string.Format(
-                        @"ALTER DATABASE {0} MODIFY FILE (
-                        NAME = '{1}',
-                        NEWNAME = '{2}',
-                        FILENAME = '{3}')",
-                        newConfiguration.DatabaseName,
-                        currentConfiguration.LogFileLogicalName,
-                        newConfiguration.LogFileLogicalName,
-                        newConfiguration.LogFilePath);
+                    var updateLogFileText =
+                        $@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
+                        NAME = '{
+                            currentConfiguration.LogFileLogicalName}',
+                        NEWNAME = '{newConfiguration.LogFileLogicalName
+                            }',
+                        FILENAME = '{newConfiguration.LogFilePath}')";
                     connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
                 }
 
@@ -392,7 +385,7 @@ namespace Naos.Database.Tools
 
                 // construct the non-options portion of the backup command
                 var commandBuilder = new StringBuilder();
-                string backupDatabase = string.Format("BACKUP DATABASE [{0}]", databaseName);
+                string backupDatabase = $"BACKUP DATABASE [{databaseName}]";
                 commandBuilder.AppendLine(backupDatabase);
 
                 string deviceName;
@@ -412,7 +405,7 @@ namespace Naos.Database.Tools
                     throw new NotSupportedException("This device is not supported: " + backupDetails.Device);
                 }
 
-                string backupTo = string.Format("TO {0} = '{1}'", deviceName, backupLocation);
+                string backupTo = $"TO {deviceName} = '{backupLocation}'";
                 commandBuilder.AppendLine(backupTo);
 
                 // construct the WITH options
@@ -421,7 +414,7 @@ namespace Naos.Database.Tools
 
                 if (!string.IsNullOrWhiteSpace(backupDetails.Credential))
                 {
-                    string credential = string.Format("CREDENTIAL = '{0}'", backupDetails.Credential);
+                    string credential = $"CREDENTIAL = '{backupDetails.Credential}'";
                     withOptions.Add(credential);
                 }
 
@@ -478,13 +471,13 @@ namespace Naos.Database.Tools
 
                 if (!string.IsNullOrWhiteSpace(backupDetails.Name))
                 {
-                    string name = string.Format("NAME = '{0}'", backupDetails.Name);
+                    string name = $"NAME = '{backupDetails.Name}'";
                     withOptions.Add(name);
                 }
 
                 if (!string.IsNullOrWhiteSpace(backupDetails.Description))
                 {
-                    string description = string.Format("DESCRIPTION = '{0}'", backupDetails.Description);
+                    string description = $"DESCRIPTION = '{backupDetails.Description}'";
                     withOptions.Add(description);
                 }
 
@@ -526,11 +519,7 @@ namespace Naos.Database.Tools
                         throw new NotSupportedException("This encryptor is not supported: " + backupDetails.Encryptor);
                     }
 
-                    string encryption = string.Format(
-                        "ENCRYPTION ( ALGORITHM = {0}, {1} = {2})",
-                        cipher,
-                        encryptor,
-                        backupDetails.EncryptorName);
+                    string encryption = $"ENCRYPTION ( ALGORITHM = {cipher}, {encryptor} = {backupDetails.EncryptorName})";
                     withOptions.Add(encryption);
                 }
 
@@ -550,7 +539,7 @@ namespace Naos.Database.Tools
                     connection.Open();
                     connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
                         {
-                            Log.Write(() => string.Format("Server Message: {0}", e.Message));
+                            Log.Write(() => $"Server Message: {e.Message}");
                         };
 
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
@@ -602,7 +591,7 @@ namespace Naos.Database.Tools
             {
                 // construct the non-options portion of the backup command
                 var commandBuilder = new StringBuilder();
-                string backupDatabase = string.Format("RESTORE DATABASE [{0}]", databaseName);
+                string backupDatabase = $"RESTORE DATABASE [{databaseName}]";
                 commandBuilder.AppendLine(backupDatabase);
 
                 string deviceName;
@@ -622,7 +611,7 @@ namespace Naos.Database.Tools
                     throw new NotSupportedException("This device is not supported: " + restoreDetails.Device);
                 }
 
-                string restoreFrom = string.Format("FROM {0} = '{1}'", deviceName, backupLocation);
+                string restoreFrom = $"FROM {deviceName} = '{backupLocation}'";
                 commandBuilder.AppendLine(restoreFrom);
 
                 // construct the WITH options
@@ -643,7 +632,7 @@ namespace Naos.Database.Tools
 
                 if (!string.IsNullOrWhiteSpace(restoreDetails.Credential))
                 {
-                    string credential = string.Format("CREDENTIAL = '{0}'", restoreDetails.Credential);
+                    string credential = $"CREDENTIAL = '{restoreDetails.Credential}'";
                     withOptions.Add(credential);
                 }
 
@@ -673,10 +662,7 @@ namespace Naos.Database.Tools
                                 "Cannot restore from a backup with multiple data files when the file path to restore the data to is specified in the restore details.");
                         }
 
-                        string moveTo = string.Format(
-                            "MOVE '{0}' TO '{1}'",
-                            dataFiles.First().LogicalName,
-                            restoreDetails.DataFilePath);
+                        string moveTo = $"MOVE '{dataFiles.First().LogicalName}' TO '{restoreDetails.DataFilePath}'";
                         withOptions.Add(moveTo);
                     }
 
@@ -689,10 +675,7 @@ namespace Naos.Database.Tools
                                 "Cannot restore from a backup with multiple log files when the file path to restore the log to is specified in the restore details.");
                         }
 
-                        string moveTo = string.Format(
-                            "MOVE '{0}' TO '{1}'",
-                            logFiles.First().LogicalName,
-                            restoreDetails.LogFilePath);
+                        string moveTo = $"MOVE '{logFiles.First().LogicalName}' TO '{restoreDetails.LogFilePath}'";
                         withOptions.Add(moveTo);
                     }
                 }
@@ -771,7 +754,7 @@ namespace Naos.Database.Tools
                     connection.Open();
                     connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
                         {
-                            Log.Write(() => string.Format("Server Message: {0}", e.Message));
+                            Log.Write(() => $"Server Message: {e.Message}");
                         };
 
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);

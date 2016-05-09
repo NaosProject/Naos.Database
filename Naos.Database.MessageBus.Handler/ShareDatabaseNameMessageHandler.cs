@@ -11,7 +11,7 @@ namespace Naos.Database.MessageBus.Handler
     using Its.Log.Instrumentation;
 
     using Naos.Database.MessageBus.Contract;
-    using Naos.MessageBus.HandlingContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Naos.MessageBus handler for Share.

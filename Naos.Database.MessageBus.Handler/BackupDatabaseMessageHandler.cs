@@ -16,9 +16,8 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.Contract;
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
-    using Naos.Database.Tools.Backup;
     using Naos.FileJanitor.MessageBus.Contract;
-    using Naos.MessageBus.HandlingContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
@@ -67,7 +66,7 @@ namespace Naos.Database.MessageBus.Handler
                                         };
 
                 activity.Trace(
-                    () => string.Format("Backing up database {0} to {1}", this.DatabaseName, backupFilePath));
+                    () => $"Backing up database {this.DatabaseName} to {backupFilePath}");
 
                 await DatabaseManager.BackupFullAsync(
                     settings.LocalhostConnectionString,

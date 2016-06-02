@@ -8,7 +8,7 @@ namespace Naos.Database.MessageBus.Contract
 {
     using Naos.Database.Contract;
     using Naos.FileJanitor.MessageBus.Contract;
-    using Naos.MessageBus.DataContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Message to initiate a database restore on the server the handler is on.

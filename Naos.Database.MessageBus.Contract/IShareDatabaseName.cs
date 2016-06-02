@@ -6,7 +6,7 @@
 
 namespace Naos.Database.MessageBus.Contract
 {
-    using Naos.MessageBus.DataContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Interface to share database name with other messages in a sequence.

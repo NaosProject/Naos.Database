@@ -17,7 +17,7 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.MessageBus.Contract;
     using Naos.Database.Tools;
     using Naos.FileJanitor.MessageBus.Contract;
-    using Naos.MessageBus.HandlingContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
@@ -67,7 +67,7 @@ namespace Naos.Database.MessageBus.Handler
                         this.DatabaseName + "Log.ldf");
 
                     activity.Trace(
-                        () => string.Format("Using data path: {0}, log path: {1}", dataFilePath, logFilePath));
+                        () => $"Using data path: {dataFilePath}, log path: {logFilePath}");
 
                     var restoreFileUri = new Uri(this.FilePath);
                     var restoreDetails = new RestoreDetails

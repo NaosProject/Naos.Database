@@ -6,7 +6,7 @@
 
 namespace Naos.Database.MessageBus.Contract
 {
-    using Naos.MessageBus.DataContract;
+    using Naos.MessageBus.Domain;
 
     /// <summary>
     /// Message to delete a database on the server the handler is on.

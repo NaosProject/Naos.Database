@@ -8,6 +8,8 @@ namespace Naos.Database.Tools.Test
 {
     using System;
 
+    using Naos.Database.Contract;
+
     using Xunit;
 
     /// <summary>

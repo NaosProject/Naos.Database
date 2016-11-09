@@ -151,6 +151,12 @@ namespace Naos.Database.Tools
             {
                 connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
+
+                if (configuration.RecoveryMode != RecoveryMode.Unspecified)
+                {
+                    SetRecoveryModeAsync(connection, configuration.DatabaseName, configuration.RecoveryMode, timeout).Wait();
+                }
+
                 connection.Close();
             }
         }
@@ -177,6 +183,7 @@ namespace Naos.Database.Tools
                     df.physical_name as DataFilePath,
                     lf.name as LogFileLogicalName,
                     lf.physical_name as LogFilePath,
+                    REPLACE(d.recovery_model_desc, '_', '') as RecoveryMode,
                     case when d.name in ('master','model','msdb','tempdb') then 'System' else 'User' end as DatabaseType
                 FROM sys.databases d 
                 INNER JOIN sys.master_files df
@@ -254,6 +261,11 @@ namespace Naos.Database.Tools
                             }',
                         FILENAME = '{newConfiguration.LogFilePath}')";
                     connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
+                }
+
+                if ((newConfiguration.RecoveryMode != RecoveryMode.Unspecified) && (currentConfiguration.RecoveryMode != newConfiguration.RecoveryMode))
+                {
+                    SetRecoveryModeAsync(connection, newConfiguration.DatabaseName, newConfiguration.RecoveryMode, timeout).Wait();
                 }
 
                 PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName, timeout);
@@ -543,6 +555,7 @@ namespace Naos.Database.Tools
                         };
 
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
+
                     connection.Close();
                 }
 
@@ -763,6 +776,87 @@ namespace Naos.Database.Tools
 
                 activity.Trace(() => "Completed successfully.");
             }
+        }
+
+        /// <summary>
+        /// Sets the recovery mode of the database.
+        /// </summary>
+        /// <param name="connectionString">Connection string to the intended database server.</param>
+        /// <param name="databaseName">Name of the database to restore.</param>
+        /// <param name="recoveryMode">Recovery mode to set database to.</param>
+        /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        /// <returns>Task for async.</returns>
+        public static async Task SetRecoveryModeAsync(string connectionString, string databaseName, RecoveryMode recoveryMode, TimeSpan timeout = default(TimeSpan))
+        {
+            if (timeout == default(TimeSpan))
+            {
+                timeout = TimeSpan.FromSeconds(30);
+            }
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    {
+                        Log.Write(() => $"Server Message: {e.Message}");
+                    };
+
+                await SetRecoveryModeAsync(connection, databaseName, recoveryMode, timeout);
+                connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Gets the recovery mode of the database.
+        /// </summary>
+        /// <param name="connectionString">Connection string to the intended database server.</param>
+        /// <param name="databaseName">Name of the database to restore.</param>
+        /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        /// <returns>Recovery mode.</returns>
+        public static async Task<RecoveryMode> GetRecoveryModeAsync(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
+        {
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+
+            var commandText = $"SELECT recovery_model_desc FROM sys.databases WHERE name = '{databaseName}'";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
+                    {
+                        Log.Write(() => $"Server Message: {e.Message}");
+                    };
+
+                var recoveryModeRaw = await connection.ExecuteScalarAsync<string>(commandText, commandTimeout: (int?)timeout.TotalSeconds);
+                connection.Close();
+
+                var recoveryMode = Enum.Parse(typeof(RecoveryMode), recoveryModeRaw.ToUpperInvariant().Replace("_", string.Empty), true);
+                return (RecoveryMode)recoveryMode;
+            }
+        }
+
+        private static async Task SetRecoveryModeAsync(IDbConnection connection, string databaseName, RecoveryMode recoveryMode, TimeSpan timeout)
+        {
+            string modeMixIn;
+            switch (recoveryMode)
+            {
+                case RecoveryMode.Simple:
+                    modeMixIn = "SIMPLE";
+                    break;
+                case RecoveryMode.Full:
+                    modeMixIn = "FULL";
+                    break;
+                case RecoveryMode.BulkLogged:
+                    modeMixIn = "BULK_LOGGED";
+                    break;
+                default:
+                    throw new NotSupportedException($"Unsupported recovery mode to set: {recoveryMode}");
+            }
+
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+
+            var commandText = "ALTER DATABASE " + databaseName + " SET RECOVERY " + modeMixIn;
+
+            await connection.ExecuteScalarAsync(commandText, commandTimeout: (int?)timeout.TotalSeconds);
         }
 
         private static void ThrowIfBad(DatabaseConfiguration configuration)

@@ -22,6 +22,11 @@ namespace Naos.Database.Contract
         public DatabaseType DatabaseType { get; set; }
 
         /// <summary>
+        /// Gets or sets the recovery mode.
+        /// </summary>
+        public RecoveryMode RecoveryMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the metadata name of the data file.
         /// </summary>
         public string DataFileLogicalName { get; set; }
@@ -79,6 +84,7 @@ namespace Naos.Database.Contract
         {
             return new DatabaseConfiguration()
                        {
+                           DatabaseType = this.DatabaseType,
                            DatabaseName = this.DatabaseName,
                            DataFileLogicalName = this.DataFileLogicalName,
                            DataFilePath = this.DataFilePath,
@@ -90,6 +96,7 @@ namespace Naos.Database.Contract
                            LogFileCurrentSizeInKb = this.LogFileCurrentSizeInKb,
                            LogFileMaxSizeInKb = this.LogFileMaxSizeInKb,
                            LogFileGrowthSizeInKb = this.LogFileGrowthSizeInKb,
+                           RecoveryMode = this.RecoveryMode
                        };
         }
 

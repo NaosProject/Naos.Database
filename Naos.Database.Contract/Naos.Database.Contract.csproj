@@ -52,6 +52,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DatabaseConfiguration.cs" />
     <Compile Include="DatabaseType.cs" />
+    <Compile Include="RecoveryMode.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Encryptor.cs" />
     <Compile Include="ErrorHandling.cs" />

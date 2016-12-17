@@ -8,9 +8,9 @@ namespace Naos.Database.Tools.Backup
 {
     using System;
 
-    using Conditions;
-
     using Naos.Database.Contract;
+
+    using Spritely.Recipes;
 
     /// <summary>
     /// Extension methods for types in the namespace.
@@ -23,7 +23,7 @@ namespace Naos.Database.Tools.Backup
         /// <param name="backupDetails">The backup details to validate.</param>
         public static void ThrowIfInvalid(this BackupDetails backupDetails)
         {
-            Condition.Requires(backupDetails.BackupTo, "backupDetails.BackupTo").IsNotNull();
+            new { backupDetails, backupDetails.BackupTo }.Must().NotBeNull().OrThrow();
 
             if (backupDetails.Device == Device.Url)
             {
@@ -91,7 +91,7 @@ namespace Naos.Database.Tools.Backup
         /// <param name="restoreDetails">The restore details to validate.</param>
         public static void ThrowIfInvalid(this RestoreDetails restoreDetails)
         {
-            Condition.Requires(restoreDetails.RestoreFrom, "backupDetails.RestoreFrom").IsNotNull();
+            new { restoreDetails, restoreDetails.RestoreFrom }.Must().NotBeNull().OrThrow();
 
             if (restoreDetails.Device == Device.Url)
             {

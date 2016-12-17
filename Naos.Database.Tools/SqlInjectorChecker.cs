@@ -10,7 +10,7 @@ namespace Naos.Database.Tools
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Conditions;
+    using Spritely.Recipes;
 
     /// <summary>
     /// Utility methods to guard against SQL Injection.
@@ -23,7 +23,8 @@ namespace Naos.Database.Tools
         /// <param name="textToCheck">Text to check.</param>
         public static void ThrowIfNotAlphanumericOrSpace(string textToCheck)
         {
-            Condition.Requires(textToCheck).IsNotNull();
+            new { textToCheck }.Must().NotBeNull().OrThrow();
+
             const string Pattern = @"[a-zA-Z0-9 ]*";
             Match match = Regex.Match(textToCheck, Pattern);
             if (match.Value != textToCheck)
@@ -40,6 +41,7 @@ namespace Naos.Database.Tools
         {
             try
             {
+                // ReSharper disable once ObjectCreationAsStatement - not using return just letting it get disposed...
                 new FileInfo(pathToCheck);
             }
             catch (Exception)

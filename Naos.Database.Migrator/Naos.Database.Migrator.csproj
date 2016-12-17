@@ -33,10 +33,6 @@
     <DocumentationFile>bin\Release\Naos.Database.Migrator.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentMigrator.1.6.2\lib\40\FluentMigrator.dll</HintPath>
       <Private>True</Private>
@@ -54,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include=".Naos.Recipes\Dapper\SqlMapper.cs" />
+    <Compile Include=".Naos.Recipes\Dapper\SqlMapperAsync.cs" />
     <Compile Include="MigrationExecutor.cs" />
     <Compile Include="MigrationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

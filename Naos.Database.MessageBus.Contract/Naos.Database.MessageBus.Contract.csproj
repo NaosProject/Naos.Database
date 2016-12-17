@@ -47,8 +47,8 @@
       <HintPath>..\packages\Naos.Diagnostics.Domain.1.0.8\lib\net45\Naos.Diagnostics.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.103.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.103\lib\net461\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.105.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.105\lib\net461\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Naos.MessageBus.Domain, Version=1.0.225.0, Culture=neutral, processorArchitecture=MSIL">

@@ -14,14 +14,14 @@ namespace Naos.Database.Tools
     using System.Text;
     using System.Threading.Tasks;
 
-    using Conditions;
-
     using Dapper;
 
     using Its.Log.Instrumentation;
 
     using Naos.Database.Contract;
     using Naos.Database.Tools.Backup;
+
+    using Spritely.Recipes;
 
     /// <summary>
     /// Class with tools for adding, removing, and updating databases.
@@ -390,9 +390,9 @@ namespace Naos.Database.Tools
             using (var activity = Log.Enter(() => new { Database = databaseName, BackupDetails = backupDetails }))
             {
                 // check parameters
-                Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
-                Condition.Requires(databaseName, "databaseName").IsNotNullOrWhiteSpace();
-                Condition.Requires(backupDetails, "backupDetails").IsNotNull();
+                new { connectionString, databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+                new { backupDetails }.Must().NotBeNull().OrThrow();
+
                 backupDetails.ThrowIfInvalid();
 
                 // construct the non-options portion of the backup command
@@ -594,9 +594,8 @@ namespace Naos.Database.Tools
             TimeSpan timeout = default(TimeSpan))
         {
             // check parameters
-            Condition.Requires(connectionString, "connectionString").IsNotNullOrWhiteSpace();
-            Condition.Requires(databaseName, "databaseName").IsNotNullOrWhiteSpace();
-            Condition.Requires(restoreDetails, "restoreDetails").IsNotNull();
+            new { connectionString, databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { restoreDetails }.Must().NotBeNull().OrThrow();
 
             restoreDetails.ThrowIfInvalid();
 

@@ -21,7 +21,7 @@ namespace Spritely.Recipes
     /// <summary>
     ///     Contains built-in Must Rules.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -276,7 +276,7 @@ namespace Spritely.Recipes
                 .Because($"Value must be greater than or equal to {requirement}.");
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

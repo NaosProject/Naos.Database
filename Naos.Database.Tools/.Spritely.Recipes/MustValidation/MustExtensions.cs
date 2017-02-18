@@ -61,7 +61,7 @@ namespace Spritely.Recipes
     /// <summary>
     ///     Contains Must extension methods.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -822,7 +822,7 @@ namespace Spritely.Recipes
             return rules == null ? new List<Rule>() : rules.Where(r => r != null);
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

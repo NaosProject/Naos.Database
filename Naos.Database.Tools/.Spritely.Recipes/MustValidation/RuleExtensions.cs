@@ -21,7 +21,7 @@ namespace Spritely.Recipes
     /// <summary>
     ///     Contains built-in extensions for Must Rules.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -295,7 +295,7 @@ namespace Spritely.Recipes
             return ValidateArgumentsAndAppendRule(validationPlan, Rules.BeGreaterThanOrEqualTo(requirement));
         }
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

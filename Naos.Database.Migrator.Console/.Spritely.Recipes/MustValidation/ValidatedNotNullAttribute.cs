@@ -15,7 +15,7 @@ namespace Spritely.Recipes
     /// <summary>
     ///     Attribute for telling Code Analysis to ignore anything managed by Must validation.
     /// </summary>
-#if !RecipesProject
+#if !SpritelyRecipesProject
     [System.Diagnostics.DebuggerStepThrough]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Spritely.Recipes", "See package version number")]
@@ -25,7 +25,7 @@ namespace Spritely.Recipes
     {
         // From: http://esmithy.net/2011/03/15/suppressing-ca1062/
     }
-#if !RecipesProject
+#if !SpritelyRecipesProject
 #pragma warning restore 0436
 #endif
 }

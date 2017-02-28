@@ -32,6 +32,7 @@ namespace Naos.Database.Migrator.Console
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
             [DefaultValue(null)] [Aliases("")] [Description("Optional version to migrate to, default is latest.")] long? targetVersion,
+            [DefaultValue(null)] [Aliases("")] [Description("Optional path to load depedendant assemblies from, default is none.")] string dependantAssemblyPath,
             [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool startDebugger)
 #pragma warning restore 1591
         {
@@ -55,9 +56,10 @@ namespace Naos.Database.Migrator.Console
             Console.WriteLine("                  assembly: " + assembly);
             Console.WriteLine("        timeout in seconds: " + timeoutInSeconds);
             Console.WriteLine("                   timeout: " + timeout);
+            Console.WriteLine("     dependantAssemblyPath: " + dependantAssemblyPath);
             Console.WriteLine(string.Empty);
 
-            MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
+            MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext, dependantAssemblyPath);
 
             Console.WriteLine("Done");
         }
@@ -71,6 +73,7 @@ namespace Naos.Database.Migrator.Console
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
             [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion,
+            [DefaultValue(null)] [Aliases("")] [Description("Optional path to load depedendant assemblies from, default is none.")] string dependantAssemblyPath,
             [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool startDebugger)
 #pragma warning restore 1591
         {
@@ -89,9 +92,10 @@ namespace Naos.Database.Migrator.Console
             Console.WriteLine("                  assembly: " + assembly);
             Console.WriteLine("        timeout in seconds: " + timeoutInSeconds);
             Console.WriteLine("                   timeout: " + timeout);
+            Console.WriteLine("     dependantAssemblyPath: " + dependantAssemblyPath);
             Console.WriteLine(string.Empty);
 
-            MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
+            MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext, dependantAssemblyPath);
 
             Console.WriteLine("Done");
         }

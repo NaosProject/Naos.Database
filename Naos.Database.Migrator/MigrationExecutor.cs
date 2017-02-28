@@ -71,7 +71,7 @@ namespace Naos.Database.Migrator
             string dependantAssemblyPath = null,
             bool useAutomaticTransactionManagement = true)
         {
-            var runner = GetMigrationRunner(
+            Func<MigrationRunner> getRunner = () => GetMigrationRunner(
                 migrationAssembly,
                 connectionString,
                 databaseName,
@@ -81,6 +81,7 @@ namespace Naos.Database.Migrator
 
             if (string.IsNullOrEmpty(dependantAssemblyPath))
             {
+                var runner = getRunner();
                 if (targetVersion == null)
                 {
                     runner.MigrateUp(useAutomaticTransactionManagement);
@@ -118,6 +119,7 @@ namespace Naos.Database.Migrator
 
                 AppDomain.CurrentDomain.AssemblyResolve += resolve;
 
+                var runner = getRunner();
                 if (targetVersion == null)
                 {
                     runner.MigrateUp(useAutomaticTransactionManagement);
@@ -154,10 +156,11 @@ namespace Naos.Database.Migrator
             string dependantAssemblyPath = null,
             bool useAutomaticTransactionManagement = true)
         {
-            var runner = GetMigrationRunner(migrationAssembly, connectionString, databaseName, announcer, timeout, applicationContext);
+            Func<MigrationRunner> getRunner = () => GetMigrationRunner(migrationAssembly, connectionString, databaseName, announcer, timeout, applicationContext);
 
             if (string.IsNullOrEmpty(dependantAssemblyPath))
             {
+                var runner = getRunner();
                 runner.MigrateDown(targetVersion, useAutomaticTransactionManagement);
             }
             else
@@ -188,6 +191,7 @@ namespace Naos.Database.Migrator
 
                 AppDomain.CurrentDomain.AssemblyResolve += resolve;
 
+                var runner = getRunner();
                 runner.MigrateDown(targetVersion, useAutomaticTransactionManagement);
 
                 AppDomain.CurrentDomain.AssemblyResolve -= resolve;

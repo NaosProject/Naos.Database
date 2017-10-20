@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DatabaseConfiguration.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -44,16 +44,19 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Gets or sets the current size of data file in kilobytes.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Kb", Justification = "Spelling/name is correct.")]
         public long DataFileCurrentSizeInKb { get; set; }
 
         /// <summary>
         /// Gets or sets the max size of data file in kilobytes.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Kb", Justification = "Spelling/name is correct.")]
         public long DataFileMaxSizeInKb { get; set; }
 
         /// <summary>
         /// Gets or sets the size of growth interval of data file in kilobytes.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Kb", Justification = "Spelling/name is correct.")]
         public long DataFileGrowthSizeInKb { get; set; }
 
         /// <summary>
@@ -64,16 +67,19 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Gets or sets the current size of log file in kilobytes.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Kb", Justification = "Spelling/name is correct.")]
         public long LogFileCurrentSizeInKb { get; set; }
 
         /// <summary>
         /// Gets or sets the max size of data file in kilobytes.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Kb", Justification = "Spelling/name is correct.")]
         public long LogFileMaxSizeInKb { get; set; }
 
         /// <summary>
         /// Gets or sets the size of growth interval of log file in kilobytes.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Kb", Justification = "Spelling/name is correct.")]
         public long LogFileGrowthSizeInKb { get; set; }
 
         /// <summary>
@@ -96,7 +102,7 @@ namespace Naos.Database.Contract
                            LogFileCurrentSizeInKb = this.LogFileCurrentSizeInKb,
                            LogFileMaxSizeInKb = this.LogFileMaxSizeInKb,
                            LogFileGrowthSizeInKb = this.LogFileGrowthSizeInKb,
-                           RecoveryMode = this.RecoveryMode
+                           RecoveryMode = this.RecoveryMode,
                        };
         }
 

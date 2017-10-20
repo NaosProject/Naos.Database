@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DeleteDatabaseMessageHandler.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,13 +17,15 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.Tools;
     using Naos.MessageBus.Domain;
 
+    using Spritely.Recipes;
+
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
     /// </summary>
-    public class DeleteDatabaseMessageHandler : IHandleMessages<DeleteDatabaseMessage>, IShareDatabaseName
+    public class DeleteDatabaseMessageHandler : MessageHandlerBase<DeleteDatabaseMessage>, IShareDatabaseName
     {
-        /// <inheritdoc />
-        public async Task HandleAsync(DeleteDatabaseMessage message)
+        /// <inheritdoc cref="MessageHandlerBase{T}" />
+        public override async Task HandleAsync(DeleteDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             await Task.Run(() => this.Handle(message, settings));
@@ -38,6 +40,9 @@ namespace Naos.Database.MessageBus.Handler
             DeleteDatabaseMessage message,
             DatabaseMessageHandlerSettings settings)
         {
+            new { message }.Must().NotBeNull().OrThrowFirstFailure();
+            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {
                 {

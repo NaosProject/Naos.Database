@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RecoveryMode.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -39,6 +39,6 @@ namespace Naos.Database.Contract
         /// An adjunct of the full recovery model that permits high-performance bulk copy operations.
         /// Reduces log space usage by using minimal logging for most bulk operations.
         /// </summary>
-        BulkLogged
+        BulkLogged,
     }
 }

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CompressionOption.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,6 +19,6 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Explicitly enable backup compression.
         /// </summary>
-        Compression
+        Compression,
     }
 }

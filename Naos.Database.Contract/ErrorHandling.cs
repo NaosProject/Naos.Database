@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ErrorHandling.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,6 +24,6 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Continue despite encountering errors such as invalid checksums or torn pages.
         /// </summary>
-        ContinueAfterError
+        ContinueAfterError,
     }
 }

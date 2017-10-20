@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DatabaseDescriber.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -55,21 +55,18 @@ namespace Naos.Database.Tools
 						WHEN 'YES' THEN 1 ELSE 0 END) as IsNullable,
                         DATA_TYPE as DataType
                 FROM INFORMATION_SCHEMA.COLUMNS
-                WHERE 
+                WHERE
                     TABLE_CATALOG   = @DatabaseName
                     AND TABLE_SCHEMA= @Schema
                     AND TABLE_NAME  = @TableName
                 ORDER BY ORDINAL_POSITION";
 
-            ColumnDescription[] columns;
-            var targetedDatabaseConnectionString =
-                ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName);
-            using (var connection = new SqlConnection(targetedDatabaseConnectionString))
-            {
-                connection.Open();
-                columns = connection.Query<ColumnDescription>(commandText, sqlParams, null, true, (int?)timeout.TotalSeconds).ToArray();
-                connection.Close();
-            }
+            var columns = new ColumnDescription[0];
+            var targetedDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName);
+
+            DatabaseManager.RunOperationOnDatabase(
+                connection => columns = connection.Query<ColumnDescription>(commandText, sqlParams, null, true, (int?)timeout.TotalSeconds).ToArray(),
+                targetedDatabaseConnectionString);
 
             var ret = new TableDescription()
                           {

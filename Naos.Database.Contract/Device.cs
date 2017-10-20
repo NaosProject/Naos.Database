@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Device.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,6 +19,6 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Backup to or restore from a blob store.
         /// </summary>
-        Url
+        Url,
     }
 }

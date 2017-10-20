@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DatabaseManager.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,15 +19,82 @@ namespace Naos.Database.Tools
     using Its.Log.Instrumentation;
 
     using Naos.Database.Contract;
-    using Naos.Database.Tools.Backup;
 
     using Spritely.Recipes;
+
+    using static System.FormattableString;
 
     /// <summary>
     /// Class with tools for adding, removing, and updating databases.
     /// </summary>
     public static class DatabaseManager
     {
+        /// <summary>
+        /// Event handler to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Want this to be read only field.")]
+        public static readonly SqlInfoMessageEventHandler SqlInfoMessageEventHandlerToItsLog = (sender, e) => Log.Write(() => Invariant($"SQL Server Message: {e.Message}"));
+
+        /// <summary>
+        /// Open a connection to the database and optional wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event.
+        /// </summary>
+        /// <param name="connectionString">Database connection string.</param>
+        /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
+        /// <returns>Open connection.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Connection creation method, expect disposal in consumer.")]
+        public static SqlConnection OpenConnection(string connectionString, bool logServerInfoMessages = true)
+        {
+            var connection = new SqlConnection(connectionString);
+            if (logServerInfoMessages)
+            {
+                connection.InfoMessage += SqlInfoMessageEventHandlerToItsLog;
+            }
+
+            connection.Open();
+
+            return connection;
+        }
+
+        /// <summary>
+        /// Runs the provided action with a new <see cref="SqlConnection" /> and then closes it.
+        /// </summary>
+        /// <param name="action">Action to run.</param>
+        /// <param name="connectionString">Database connection string.</param>
+        /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Object is disposed correctly.")]
+        public static void RunOperationOnDatabase(this Action<SqlConnection> action, string connectionString, bool logServerInfoMessages = true)
+        {
+            new { action }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
+            using (var connection = OpenConnection(connectionString, logServerInfoMessages))
+            {
+                action(connection);
+
+                connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Runs the provided action with a new <see cref="SqlConnection" /> and then closes it.
+        /// </summary>
+        /// <param name="asyncAction">Asynchronous action to run.</param>
+        /// <param name="connectionString">Database connection string.</param>
+        /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
+        /// <returns>Task for async.</returns>
+        public static async Task RunOperationOnDatabaseAsync(this Func<SqlConnection, Task> asyncAction, string connectionString, bool logServerInfoMessages = true)
+        {
+            new { asyncAction }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
+            using (var connection = OpenConnection(connectionString, logServerInfoMessages))
+            {
+                await asyncAction(connection);
+
+                connection.Close();
+            }
+        }
+
         /// <summary>
         /// Puts the database into single user mode.
         /// </summary>
@@ -36,14 +103,15 @@ namespace Naos.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void PutDatabaseInSingleUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                
-                PutDatabaseInSingleUserMode(connection, databaseName, timeout);
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
 
-                connection.Close();
+            void Logic(SqlConnection connection)
+            {
+                PutDatabaseInSingleUserMode(connection, databaseName, timeout);
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
         }
 
         /// <summary>
@@ -52,16 +120,19 @@ namespace Naos.Database.Tools
         /// <param name="connectionString">The connection string to the intended server.</param>
         /// <param name="databaseName">The name of the target database.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Multi", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "MultiUser", Justification = "Spelling/name is correct.")]
         public static void PutDatabaseIntoMultiUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
 
+            void Logic(SqlConnection connection)
+            {
                 PutDatabaseIntoMultiUserMode(connection, databaseName, timeout);
-                
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
         }
 
         /// <summary>
@@ -72,6 +143,9 @@ namespace Naos.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void TakeDatabaseOffline(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -79,12 +153,13 @@ namespace Naos.Database.Tools
 
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET offline WITH ROLLBACK IMMEDIATE";
-            using (var connection = new SqlConnection(connectionString))
+
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
         }
 
         /// <summary>
@@ -95,6 +170,9 @@ namespace Naos.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void BringDatabaseOnline(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -102,12 +180,13 @@ namespace Naos.Database.Tools
 
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET online";
-            using (var connection = new SqlConnection(connectionString))
+
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
         }
 
         /// <summary>
@@ -118,6 +197,9 @@ namespace Naos.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void Create(string connectionString, DatabaseConfiguration configuration, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { configuration }.Must().NotBeNull().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -127,38 +209,31 @@ namespace Naos.Database.Tools
             var databaseFileMaxSize = configuration.DataFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : configuration.DataFileMaxSizeInKb + "KB";
             var logFileMaxSize = configuration.LogFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : configuration.LogFileMaxSizeInKb + "KB";
             var commandText =
-                $@"CREATE DATABASE {configuration.DatabaseName}
+                Invariant($@"CREATE DATABASE {configuration.DatabaseName}
                         ON
-                        ( NAME = '{
-                    configuration.DataFileLogicalName}',
+                        ( NAME = '{configuration.DataFileLogicalName}',
                         FILENAME = '{configuration.DataFilePath}',
-                        SIZE = {
-                    configuration.DataFileCurrentSizeInKb}KB,
+                        SIZE = {configuration.DataFileCurrentSizeInKb}KB,
                         MAXSIZE = {databaseFileMaxSize},
-                        FILEGROWTH = {
-                    configuration.DataFileGrowthSizeInKb}KB )
+                        FILEGROWTH = {configuration.DataFileGrowthSizeInKb}KB )
                         LOG ON
-                        ( NAME = '{
-                    configuration.LogFileLogicalName}',
+                        ( NAME = '{configuration.LogFileLogicalName}',
                         FILENAME = '{configuration.LogFilePath}',
-                        SIZE = {
-                    configuration.LogFileCurrentSizeInKb}KB,
+                        SIZE = {configuration.LogFileCurrentSizeInKb}KB,
                         MAXSIZE = {logFileMaxSize},
-                        FILEGROWTH = {
-                    configuration.LogFileGrowthSizeInKb}KB )";
-            
-            using (var connection = new SqlConnection(connectionString))
+                        FILEGROWTH = {configuration.LogFileGrowthSizeInKb}KB )");
+
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
 
                 if (configuration.RecoveryMode != RecoveryMode.Unspecified)
                 {
                     SetRecoveryModeAsync(connection, configuration.DatabaseName, configuration.RecoveryMode, timeout).Wait();
                 }
-
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
         }
 
         /// <summary>
@@ -169,6 +244,8 @@ namespace Naos.Database.Tools
         /// <returns>All databases from server.</returns>
         public static DatabaseConfiguration[] Retrieve(string connectionString, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -191,14 +268,14 @@ namespace Naos.Database.Tools
                 INNER JOIN sys.master_files lf
                     ON d.database_id = lf.database_id AND lf.type = 1";
 
-            using (var connection = new SqlConnection(connectionString))
+            DatabaseConfiguration[] ret = new DatabaseConfiguration[0];
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
-                var ret = connection.Query<DatabaseConfiguration>(Query, null, null, true, (int?)timeout.TotalSeconds).ToArray();
-                connection.Close();
-
-                return ret;
+                ret = connection.Query<DatabaseConfiguration>(Query, null, null, true, (int?)timeout.TotalSeconds).ToArray();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
+            return ret;
         }
 
         /// <summary>
@@ -214,6 +291,10 @@ namespace Naos.Database.Tools
             DatabaseConfiguration newConfiguration,
             TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { currentConfiguration }.Must().NotBeNull().OrThrowFirstFailure();
+            new { newConfiguration }.Must().NotBeNull().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -222,14 +303,8 @@ namespace Naos.Database.Tools
             ThrowIfBadOnCreateOrModify(currentConfiguration);
             ThrowIfBadOnCreateOrModify(newConfiguration);
 
-            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user
-
-            using (var connection = new SqlConnection(realConnectionString))
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
-
-                PutDatabaseInSingleUserMode(connection, currentConfiguration.DatabaseName, timeout);
-
                 if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
                 {
                     var renameDatabaseText = @"ALTER DATABASE " + currentConfiguration.DatabaseName + " MODIFY NAME = "
@@ -241,12 +316,10 @@ namespace Naos.Database.Tools
                     && (currentConfiguration.DataFilePath != newConfiguration.DataFilePath))
                 {
                     var updateDataFileText =
-                        $@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
-                        NAME = '{
-                            currentConfiguration.DataFileLogicalName}',
-                        NEWNAME = '{newConfiguration.DataFileLogicalName
-                            }',
-                        FILENAME = '{newConfiguration.DataFilePath}')";
+                        Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
+                        NAME = '{currentConfiguration.DataFileLogicalName}',
+                        NEWNAME = '{newConfiguration.DataFileLogicalName}',
+                        FILENAME = '{newConfiguration.DataFilePath}')");
                     connection.Execute(updateDataFileText, null, null, (int?)timeout.TotalSeconds);
                 }
 
@@ -254,12 +327,10 @@ namespace Naos.Database.Tools
                     && (currentConfiguration.LogFilePath != newConfiguration.LogFilePath))
                 {
                     var updateLogFileText =
-                        $@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
-                        NAME = '{
-                            currentConfiguration.LogFileLogicalName}',
-                        NEWNAME = '{newConfiguration.LogFileLogicalName
-                            }',
-                        FILENAME = '{newConfiguration.LogFilePath}')";
+                        Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
+                        NAME = '{currentConfiguration.LogFileLogicalName}',
+                        NEWNAME = '{newConfiguration.LogFileLogicalName}',
+                        FILENAME = '{newConfiguration.LogFilePath}')");
                     connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
                 }
 
@@ -269,9 +340,10 @@ namespace Naos.Database.Tools
                 }
 
                 PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName, timeout);
-
-                connection.Close();
             }
+
+            var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user
+            RunOperationOnDatabase(Logic, realConnectionString);
         }
 
         /// <summary>
@@ -282,6 +354,9 @@ namespace Naos.Database.Tools
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void Delete(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -290,13 +365,14 @@ namespace Naos.Database.Tools
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName); // make sure it's going to take the only connection when it goes in single user
             var commandText = "USE master; DROP DATABASE " + databaseName;
-            using (var connection = new SqlConnection(realConnectionString))
+
+            void Logic(SqlConnection connection)
             {
                 PutDatabaseInSingleUserMode(connection, databaseName, timeout);
-                connection.Open();
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, realConnectionString);
         }
 
         /// <summary>
@@ -307,18 +383,20 @@ namespace Naos.Database.Tools
         /// <returns>Default location that the server will save data files to.</returns>
         public static string GetInstanceDefaultDataPath(string connectionString, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            string ret;
-            using (var connection = new SqlConnection(connectionString))
+            string ret = null;
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
                 ret = connection.ExecuteScalar<string>("SELECT CONVERT(sysname, SERVERPROPERTY('InstanceDefaultDataPath'))", null, null, (int?)timeout.TotalSeconds);
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
 
             return ret;
         }
@@ -331,18 +409,20 @@ namespace Naos.Database.Tools
         /// <returns>Default location that the server will save log files to.</returns>
         public static string GetInstanceDefaultLogPath(string connectionString, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            string ret;
-            using (var connection = new SqlConnection(connectionString))
+            string ret = null;
+            void Logic(SqlConnection connection)
             {
-                connection.Open();
                 ret = connection.ExecuteScalar<string>("SELECT CONVERT(sysname, SERVERPROPERTY('InstanceDefaultLogPath'))", null, null, (int?)timeout.TotalSeconds);
-                connection.Close();
             }
+
+            RunOperationOnDatabase(Logic, connectionString);
 
             return ret;
         }
@@ -354,7 +434,7 @@ namespace Naos.Database.Tools
         /// During a full or differential database backup, SQL Server backs up enough of the transaction log to produce a consistent database when the backup is restored.
         /// When you restore a backup created by BACKUP DATABASE (a data backup), the entire backup is restored. Only a log backup can be restored to a specific time or transaction within the backup
         /// This method does not support appending a backup to an existing file nor any of the methods to age/overwrite backups in an existing file.
-        /// This method will always overwrite an existing file.  It's more difficult to get SQL Server to emit an error if a file already exists.  
+        /// This method will always overwrite an existing file.  It's more difficult to get SQL Server to emit an error if a file already exists.
         /// See: <a href="http://dba.stackexchange.com/questions/98536/how-to-generate-an-error-when-backing-up-to-an-existing-file"/>
         /// </remarks>
         /// <param name="connectionString">Connection string to the intended database server.</param>
@@ -367,6 +447,10 @@ namespace Naos.Database.Tools
             BackupDetails backupDetails,
             TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { backupDetails }.Must().NotBeNull().OrThrowFirstFailure();
+
             BackupFullAsync(connectionString, databaseName, backupDetails, timeout).Wait();
         }
 
@@ -377,7 +461,7 @@ namespace Naos.Database.Tools
         /// During a full or differential database backup, SQL Server backs up enough of the transaction log to produce a consistent database when the backup is restored.
         /// When you restore a backup created by BACKUP DATABASE (a data backup), the entire backup is restored. Only a log backup can be restored to a specific time or transaction within the backup
         /// This method does not support appending a backup to an existing file nor any of the methods to age/overwrite backups in an existing file.
-        /// This method will always overwrite an existing file.  It's more difficult to get SQL Server to emit an error if a file already exists.  
+        /// This method will always overwrite an existing file.  It's more difficult to get SQL Server to emit an error if a file already exists.
         /// See: <a href="http://dba.stackexchange.com/questions/98536/how-to-generate-an-error-when-backing-up-to-an-existing-file"/>
         /// </remarks>
         /// <param name="connectionString">Connection string to the intended database server.</param>
@@ -387,6 +471,10 @@ namespace Naos.Database.Tools
         /// <returns>Task to support async await calling.</returns>
         public static async Task BackupFullAsync(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { backupDetails }.Must().NotBeNull().OrThrowFirstFailure();
+
             using (var activity = Log.Enter(() => new { Database = databaseName, BackupDetails = backupDetails }))
             {
                 // check parameters
@@ -546,18 +634,12 @@ namespace Naos.Database.Tools
                 string command = commandBuilder.ToString();
                 activity.Trace(() => "Running command: " + command);
 
-                using (var connection = new SqlConnection(connectionString))
+                async Task Logic(SqlConnection connection)
                 {
-                    connection.Open();
-                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
-                        {
-                            Log.Write(() => $"Server Message: {e.Message}");
-                        };
-
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
-
-                    connection.Close();
                 }
+
+                await RunOperationOnDatabaseAsync(Logic, connectionString);
 
                 activity.Trace(() => "Completed successfully.");
             }
@@ -576,6 +658,10 @@ namespace Naos.Database.Tools
             RestoreDetails restoreDetails,
             TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { restoreDetails }.Must().NotBeNull().OrThrowFirstFailure();
+
             RestoreFullAsync(connectionString, databaseName, restoreDetails, timeout).Wait();
         }
 
@@ -593,6 +679,10 @@ namespace Naos.Database.Tools
             RestoreDetails restoreDetails,
             TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { restoreDetails }.Must().NotBeNull().OrThrowFirstFailure();
+
             // check parameters
             new { connectionString, databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
             new { restoreDetails }.Must().NotBeNull().OrThrow();
@@ -655,19 +745,18 @@ namespace Naos.Database.Tools
                 {
                     activity.Trace(() => "Confirming that the specific file is in the server file list.");
                     string fileListCommand = "RESTORE FILELISTONLY " + restoreFrom;
-                    List<RestoreFile> restoreFiles;
-                    using (var connection = new SqlConnection(connectionString))
+                    List<RestoreFile> restoreFiles = new List<RestoreFile>();
+
+                    void QueryRestoreFilesLogic(SqlConnection connection)
                     {
-                        connection.Open();
-                        restoreFiles =
-                            connection.Query<RestoreFile>(fileListCommand, commandTimeout: (int?)timeout.TotalSeconds)
-                                .ToList();
-                        connection.Close();
+                        restoreFiles = connection.Query<RestoreFile>(fileListCommand, commandTimeout: (int?)timeout.TotalSeconds).ToList();
                     }
+
+                    RunOperationOnDatabase(QueryRestoreFilesLogic, connectionString);
 
                     if (useSpecifiedDataFilePath)
                     {
-                        IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.Type == "D").ToList();
+                        IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.FileType == "D").ToList();
                         if (dataFiles.Count() != 1)
                         {
                             throw new InvalidOperationException(
@@ -680,7 +769,7 @@ namespace Naos.Database.Tools
 
                     if (useSpecifiedLogFilePath)
                     {
-                        IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.Type == "L").ToList();
+                        IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.FileType == "L").ToList();
                         if (logFiles.Count() != 1)
                         {
                             throw new InvalidOperationException(
@@ -761,17 +850,12 @@ namespace Naos.Database.Tools
                 string command = commandBuilder.ToString();
                 activity.Trace(() => "Running command: " + command);
 
-                using (var connection = new SqlConnection(connectionString))
+                async Task RestoreLogic(SqlConnection connection)
                 {
-                    connection.Open();
-                    connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
-                        {
-                            Log.Write(() => $"Server Message: {e.Message}");
-                        };
-
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
-                    connection.Close();
                 }
+
+                await RunOperationOnDatabaseAsync(RestoreLogic, connectionString);
 
                 activity.Trace(() => "Completed successfully.");
             }
@@ -787,22 +871,21 @@ namespace Naos.Database.Tools
         /// <returns>Task for async.</returns>
         public static async Task SetRecoveryModeAsync(string connectionString, string databaseName, RecoveryMode recoveryMode, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { recoveryMode }.Must().NotBeEqualTo(RecoveryMode.Unspecified).OrThrowFirstFailure();
+
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            using (var connection = new SqlConnection(connectionString))
+            async Task Logic(SqlConnection connection)
             {
-                connection.Open();
-                connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
-                    {
-                        Log.Write(() => $"Server Message: {e.Message}");
-                    };
-
                 await SetRecoveryModeAsync(connection, databaseName, recoveryMode, timeout);
-                connection.Close();
             }
+
+            await RunOperationOnDatabaseAsync(Logic, connectionString);
         }
 
         /// <summary>
@@ -814,23 +897,23 @@ namespace Naos.Database.Tools
         /// <returns>Recovery mode.</returns>
         public static async Task<RecoveryMode> GetRecoveryModeAsync(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
+            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
 
             var commandText = $"SELECT recovery_model_desc FROM sys.databases WHERE name = '{databaseName}'";
-            using (var connection = new SqlConnection(connectionString))
+            RecoveryMode recoveryMode = RecoveryMode.Unspecified;
+            async Task Logic(SqlConnection connection)
             {
-                connection.Open();
-                connection.InfoMessage += delegate(object sender, SqlInfoMessageEventArgs e)
-                    {
-                        Log.Write(() => $"Server Message: {e.Message}");
-                    };
-
                 var recoveryModeRaw = await connection.ExecuteScalarAsync<string>(commandText, commandTimeout: (int?)timeout.TotalSeconds);
-                connection.Close();
 
-                var recoveryMode = Enum.Parse(typeof(RecoveryMode), recoveryModeRaw.ToUpperInvariant().Replace("_", string.Empty), true);
-                return (RecoveryMode)recoveryMode;
+                recoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode), recoveryModeRaw.ToUpperInvariant().Replace("_", string.Empty), true);
             }
+
+            await RunOperationOnDatabaseAsync(Logic, connectionString);
+
+            return recoveryMode;
         }
 
         private static async Task SetRecoveryModeAsync(IDbConnection connection, string databaseName, RecoveryMode recoveryMode, TimeSpan timeout)
@@ -864,7 +947,7 @@ namespace Naos.Database.Tools
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.DataFileLogicalName);
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.DataFilePath);
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.LogFileLogicalName);
-            SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);            
+            SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);
         }
 
         private static void ThrowIfBadOnCreateOrModify(DatabaseConfiguration configuration)

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MigratorConsoleHarness.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,14 +17,35 @@ namespace Naos.Database.Migrator.Console
     using Naos.Database.Migrator;
 
     using OBeautifulCode.Collection;
+    using OBeautifulCode.Reflection.Recipes;
+
+    using Spritely.Recipes;
+
+    using static System.FormattableString;
 
     /// <summary>
     /// The wrapper class for CLAP that is responsible for performing the act of migrating a database.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1053:StaticHolderTypesShouldNotHaveConstructors", Justification = "Gets newed up by CLAP.")]
     public class MigratorConsoleHarness
     {
+        /// <summary>
+        /// Migrate up to a version.
+        /// </summary>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="databaseName">The database name to target.</param>
+        /// <param name="assemblyPath">The path to the assembly that contains the migration.</param>
+        /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
+        /// <param name="applicationContext">Optional application context.</param>
+        /// <param name="targetVersion">The version to migrate to.</param>
+        /// <param name="dependentAssemblyPath">Optional path to load depedendant assemblies from, default is none.</param>
+        /// <param name="launchDebugger">Launches the debugger.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile", Justification = "Need to load the file.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "assemblyPath", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "targetVersion", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "dependentAssemblyPath", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "connectionString", Justification = "Spelling/name is correct.")]
         [Verb(Aliases = "Up", Description = "Perform a migration up.")]
-#pragma warning disable 1591
         public static void Up(
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
@@ -32,40 +53,69 @@ namespace Naos.Database.Migrator.Console
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
             [DefaultValue(null)] [Aliases("")] [Description("Optional version to migrate to, default is latest.")] long? targetVersion,
-            [DefaultValue(null)] [Aliases("")] [Description("Optional path to load depedendant assemblies from, default is none.")] string dependantAssemblyPath,
-            [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool startDebugger)
-#pragma warning restore 1591
+            [DefaultValue(null)] [Aliases("")] [Description("Optional path to load depedendant assemblies from, default is none.")] string dependentAssemblyPath,
+            [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool launchDebugger)
         {
-            if (startDebugger)
+            if (launchDebugger)
             {
                 Debugger.Launch();
             }
 
             if (!File.Exists(assemblyPath))
             {
-                throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", "assemblyPath");
+                throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", nameof(assemblyPath));
             }
 
-            var assembly = Assembly.LoadFile(assemblyPath);
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
             Console.WriteLine("PARAMETERS:");
             Console.WriteLine("             targetVersion: " + targetVersion);
             Console.WriteLine("          connectionString: " + connectionString);
             Console.WriteLine("              assemblyPath: " + assemblyPath);
-            Console.WriteLine("                  assembly: " + assembly);
             Console.WriteLine("        timeout in seconds: " + timeoutInSeconds);
             Console.WriteLine("                   timeout: " + timeout);
-            Console.WriteLine("     dependantAssemblyPath: " + dependantAssemblyPath);
+            Console.WriteLine("     dependentAssemblyPath: " + dependentAssemblyPath);
             Console.WriteLine(string.Empty);
 
-            MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext, dependantAssemblyPath);
+            if (string.IsNullOrEmpty(dependentAssemblyPath))
+            {
+                using (var loader = AssemblyLoader.CreateAndLoadFromDirectory(dependentAssemblyPath))
+                {
+                    foreach (var fileToAssembly in loader.FilePathToAssemblyMap)
+                    {
+                        Console.WriteLine(Invariant($"Loaded - {fileToAssembly.Key} - {fileToAssembly.Value}"));
+                    }
+
+                    var assembly = Assembly.LoadFile(assemblyPath);
+                    MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
+                }
+            }
+            else
+            {
+                var assembly = Assembly.LoadFile(assemblyPath);
+                MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
+            }
 
             Console.WriteLine("Done");
         }
 
+        /// <summary>
+        /// Migrate down to a version.
+        /// </summary>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="databaseName">The database name to target.</param>
+        /// <param name="assemblyPath">The path to the assembly that contains the migration.</param>
+        /// <param name="timeoutInSeconds">The command timeout (in seconds) for the command(s) executed as part of the migration.</param>
+        /// <param name="applicationContext">Optional application context.</param>
+        /// <param name="targetVersion">The version to migrate to.</param>
+        /// <param name="dependentAssemblyPath">Optional path to load depedendant assemblies from, default is none.</param>
+        /// <param name="launchDebugger">Launches the debugger.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.Reflection.Assembly.LoadFile", Justification = "Need to load the file.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "dependentAssemblyPath", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "assemblyPath", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "connectionString", Justification = "Spelling/name is correct.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "targetVersion", Justification = "Spelling/name is correct.")]
         [Verb(Aliases = "Down", Description = "Perform a migration down.")]
-#pragma warning disable 1591
         public static void Down(
             [Required] [Aliases("")] [Description("The connection string to the database.")] string connectionString,
             [Required] [Aliases("")] [Description("The database name to target.")] string databaseName,
@@ -73,29 +123,48 @@ namespace Naos.Database.Migrator.Console
             [DefaultValue(30)] [Aliases("")] [Description("The command timeout (in seconds) for the command(s) executed as part of the migration.")] int timeoutInSeconds,
             [DefaultValue(null)] [Aliases("")] [Description("Optional application context.")] string applicationContext,
             [Required] [Aliases("")] [Description("The version to migrate to.")] long targetVersion,
-            [DefaultValue(null)] [Aliases("")] [Description("Optional path to load depedendant assemblies from, default is none.")] string dependantAssemblyPath,
-            [Aliases("")] [Description("Start the debugger.")] [DefaultValue(false)] bool startDebugger)
-#pragma warning restore 1591
+            [DefaultValue(null)] [Aliases("")] [Description("Optional path to load depedendant assemblies from, default is none.")] string dependentAssemblyPath,
+            [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool launchDebugger)
         {
-            if (startDebugger)
+            if (launchDebugger)
             {
                 Debugger.Launch();
             }
 
-            var assembly = Assembly.LoadFile(assemblyPath);
+            if (!File.Exists(assemblyPath))
+            {
+                throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", nameof(assemblyPath));
+            }
+
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
             Console.WriteLine("PARAMETERS:");
             Console.WriteLine("             targetVersion: " + targetVersion);
             Console.WriteLine("          connectionString: " + connectionString);
             Console.WriteLine("              assemblyPath: " + assemblyPath);
-            Console.WriteLine("                  assembly: " + assembly);
             Console.WriteLine("        timeout in seconds: " + timeoutInSeconds);
             Console.WriteLine("                   timeout: " + timeout);
-            Console.WriteLine("     dependantAssemblyPath: " + dependantAssemblyPath);
+            Console.WriteLine("     dependentAssemblyPath: " + dependentAssemblyPath);
             Console.WriteLine(string.Empty);
 
-            MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext, dependantAssemblyPath);
+            if (string.IsNullOrEmpty(dependentAssemblyPath))
+            {
+                using (var loader = AssemblyLoader.CreateAndLoadFromDirectory(dependentAssemblyPath))
+                {
+                    foreach (var fileToAssembly in loader.FilePathToAssemblyMap)
+                    {
+                        Console.WriteLine(Invariant($"Loaded - {fileToAssembly.Key} - {fileToAssembly.Value}"));
+                    }
+
+                    var assembly = Assembly.LoadFile(assemblyPath);
+                    MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
+                }
+            }
+            else
+            {
+                var assembly = Assembly.LoadFile(assemblyPath);
+                MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
+            }
 
             Console.WriteLine("Done");
         }
@@ -104,11 +173,14 @@ namespace Naos.Database.Migrator.Console
         /// The print help method.
         /// </summary>
         /// <param name="help">The generated help text.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames", MessageId = "0#", Justification = "Spelling/name is correct.")]
         [Empty]
         [Help(Aliases = "h,?,-h,-help")]
         [Verb(IsDefault = true)]
         public static void Help(string help)
         {
+            new { help }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             Console.WriteLine("   Usage");
             Console.Write("   -----");
 
@@ -125,11 +197,13 @@ namespace Naos.Database.Migrator.Console
         [Error]
         public static void Error(ExceptionContext context)
         {
+            new { context }.Must().NotBeNull().OrThrowFirstFailure();
+
             // change color to red
             var originalColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
 
-            // parser exception or 
+            // parser exception or
             if (context.Exception is CommandLineParserException)
             {
                 Console.WriteLine("I don't understand.  Run the exe with the 'help' command for usage.");

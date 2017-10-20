@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BackupDetails.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -52,11 +52,13 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Gets or sets an enum value for the encryptor to use when encrypting the backup.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Encryptor", Justification = "Spelling/name is correct.")]
         public Encryptor Encryptor { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the encryptor (i.e. server certificate name or asymmetric key name)
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Encryptor", Justification = "Spelling/name is correct.")]
         public string EncryptorName { get; set; }
 
         /// <summary>

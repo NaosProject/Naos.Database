@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ShareDatabaseNameMessageHandler.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ namespace Naos.Database.MessageBus.Handler
     /// <summary>
     /// Naos.MessageBus handler for Share.
     /// </summary>
-    public class ShareDatabaseNameMessageHandler : IHandleMessages<ShareDatabaseNameMessage>, IShareDatabaseName
+    public class ShareDatabaseNameMessageHandler : MessageHandlerBase<ShareDatabaseNameMessage>, IShareDatabaseName
     {
-        /// <inheritdoc />
-        public async Task HandleAsync(ShareDatabaseNameMessage message)
+        /// <inheritdoc cref="MessageHandlerBase{T}" />
+        public override async Task HandleAsync(ShareDatabaseNameMessage message)
         {
             using (var log = Log.Enter(() => new { Message = message, DatabaseNameToShare = message.DatabaseNameToShare }))
             {

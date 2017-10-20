@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Constants.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,12 +14,12 @@ namespace Naos.Database.Contract
         /// <summary>
         /// The extension (WITHOUT the PERIOD) of an MS SQL Server Data File
         /// </summary>
-        public const string MsSqlDataFileExtension = "mdf";
+        public const string MicrosoftSqlDataFileExtension = "mdf";
 
         /// <summary>
         /// The extension (WITHOUT the PERIOD) of an MS SQL Server Log File
         /// </summary>
-        public const string MsSqlLogFileExtension = "ldf";
+        public const string MicrosoftSqlLogFileExtension = "ldf";
 
         /// <summary>
         /// The value to be specified for unlimited file growth in an MS SQL Server file.

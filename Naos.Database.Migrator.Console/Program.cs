@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Program.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // <summary>
 //   The program entry point.
@@ -18,7 +18,7 @@ namespace Naos.Database.MigratorHarness
     /// <summary>
     /// The program.
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// The program entry point.

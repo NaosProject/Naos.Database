@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="MigrationExecutor.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,10 +8,6 @@ namespace Naos.Database.Migrator
 {
     using System;
     using System.Data.SqlClient;
-    using static System.FormattableString;
-    using System.IO;
-
-    using System.Linq;
     using System.Reflection;
 
     using FluentMigrator.Runner;
@@ -33,7 +29,6 @@ namespace Naos.Database.Migrator
         /// <param name="announcer">Optional lambda to pass announcements out during process (string messages of progress and status), default is Console.WriteLine.</param>
         /// <param name="timeout">Command timeout for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context (default is null).</param>
-        /// <param name="dependantAssemblyPath">Optional path to load dependant assemblies from, default is none.</param>
         /// <param name="useAutomaticTransactionManagement">Optional whether or not to use automatic transaction management (default is true).</param>
         public static void Up(
             Assembly migrationAssembly,
@@ -42,10 +37,14 @@ namespace Naos.Database.Migrator
             Action<string> announcer = null,
             TimeSpan timeout = default(TimeSpan),
             object applicationContext = null,
-            string dependantAssemblyPath = null,
             bool useAutomaticTransactionManagement = true)
         {
-            Up(migrationAssembly, connectionString, databaseName, null, announcer, timeout, applicationContext, dependantAssemblyPath);
+            void NullAnnouncer(string message)
+            {
+                /* no-op */
+            }
+
+            Up(migrationAssembly, connectionString, databaseName, null, announcer ?? NullAnnouncer, timeout, applicationContext, useAutomaticTransactionManagement);
         }
 
         /// <summary>
@@ -58,7 +57,6 @@ namespace Naos.Database.Migrator
         /// <param name="announcer">Optional lambda to pass announcements out during process (string messages of progress and status), default is Console.WriteLine.</param>
         /// <param name="timeout">Command timeout for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context (default is null).</param>
-        /// <param name="dependantAssemblyPath">Optional path to load dependant assemblies from, default is none.</param>
         /// <param name="useAutomaticTransactionManagement">Optional whether or not to use automatic transaction management (default is true).</param>
         public static void Up(
             Assembly migrationAssembly,
@@ -68,68 +66,21 @@ namespace Naos.Database.Migrator
             Action<string> announcer = null,
             TimeSpan timeout = default(TimeSpan),
             object applicationContext = null,
-            string dependantAssemblyPath = null,
             bool useAutomaticTransactionManagement = true)
         {
-            Func<MigrationRunner> getRunner = () => GetMigrationRunner(
-                migrationAssembly,
-                connectionString,
-                databaseName,
-                announcer,
-                timeout,
-                applicationContext);
-
-            if (string.IsNullOrEmpty(dependantAssemblyPath))
+            void NullAnnouncer(string message)
             {
-                var runner = getRunner();
-                if (targetVersion == null)
-                {
-                    runner.MigrateUp(useAutomaticTransactionManagement);
-                }
-                else
-                {
-                    runner.MigrateUp((long)targetVersion, useAutomaticTransactionManagement);
-                }
+                /* no-op */
+            }
+
+            var runner = GetMigrationRunner(migrationAssembly, connectionString, databaseName, announcer ?? NullAnnouncer, timeout, applicationContext);
+            if (targetVersion == null)
+            {
+                runner.MigrateUp(useAutomaticTransactionManagement);
             }
             else
             {
-                var allFilePaths = Directory.GetFiles(dependantAssemblyPath, "*", SearchOption.AllDirectories);
-                ResolveEventHandler resolve = (sender, args) =>
-                {
-                    var dllNameWithoutExtension = args.Name.Split(',')[0];
-                    var dllName = dllNameWithoutExtension + ".dll";
-                    var fullDllPath = allFilePaths.FirstOrDefault(_ => _.EndsWith(dllName));
-                    if (fullDllPath == null)
-                    {
-                        var message = Invariant($"Assembly not found Name: {args.Name}, Requesting Assembly FullName: {args.RequestingAssembly?.FullName}");
-                        throw new TypeInitializationException(message, null);
-                    }
-
-                    // since the assembly might have been already loaded as a depdendency of another assembly...
-                    var pathAsUri = new Uri(fullDllPath).ToString();
-                    var alreadyLoaded =
-                        AppDomain.CurrentDomain.GetAssemblies()
-                            .Where(a => !a.IsDynamic)
-                            .SingleOrDefault(_ => _.CodeBase == pathAsUri || _.Location == pathAsUri);
-
-                    var ret = alreadyLoaded ?? Assembly.LoadFrom(fullDllPath);
-
-                    return ret;
-                };
-
-                AppDomain.CurrentDomain.AssemblyResolve += resolve;
-
-                var runner = getRunner();
-                if (targetVersion == null)
-                {
-                    runner.MigrateUp(useAutomaticTransactionManagement);
-                }
-                else
-                {
-                    runner.MigrateUp((long)targetVersion, useAutomaticTransactionManagement);
-                }
-
-                AppDomain.CurrentDomain.AssemblyResolve -= resolve;
+                runner.MigrateUp((long)targetVersion, useAutomaticTransactionManagement);
             }
         }
 
@@ -143,7 +94,6 @@ namespace Naos.Database.Migrator
         /// <param name="announcer">Lambda to pass announcements out during process (string messages of progress and status).</param>
         /// <param name="timeout">The command timeout for the command(s) executed as part of the migration.</param>
         /// <param name="applicationContext">Optional application context (default is null).</param>
-        /// <param name="dependantAssemblyPath">Optional path to load dependant assemblies from, default is none.</param>
         /// <param name="useAutomaticTransactionManagement">Optional whether or not to use automatic transaction management (default is true).</param>
         public static void Down(
             Assembly migrationAssembly,
@@ -153,49 +103,15 @@ namespace Naos.Database.Migrator
             Action<string> announcer = null,
             TimeSpan timeout = default(TimeSpan),
             object applicationContext = null,
-            string dependantAssemblyPath = null,
             bool useAutomaticTransactionManagement = true)
         {
-            Func<MigrationRunner> getRunner = () => GetMigrationRunner(migrationAssembly, connectionString, databaseName, announcer, timeout, applicationContext);
-
-            if (string.IsNullOrEmpty(dependantAssemblyPath))
+            void NullAnnouncer(string message)
             {
-                var runner = getRunner();
-                runner.MigrateDown(targetVersion, useAutomaticTransactionManagement);
+                /* no-op */
             }
-            else
-            {
-                var allFilePaths = Directory.GetFiles(dependantAssemblyPath, "*", SearchOption.AllDirectories);
-                ResolveEventHandler resolve = (sender, args) =>
-                    {
-                        var dllNameWithoutExtension = args.Name.Split(',')[0];
-                        var dllName = dllNameWithoutExtension + ".dll";
-                        var fullDllPath = allFilePaths.FirstOrDefault(_ => _.EndsWith(dllName));
-                        if (fullDllPath == null)
-                        {
-                            var message = Invariant($"Assembly not found Name: {args.Name}, Requesting Assembly FullName: {args.RequestingAssembly?.FullName}");
-                            throw new TypeInitializationException(message, null);
-                        }
 
-                        // since the assembly might have been already loaded as a depdendency of another assembly...
-                        var pathAsUri = new Uri(fullDllPath).ToString();
-                        var alreadyLoaded =
-                            AppDomain.CurrentDomain.GetAssemblies()
-                                .Where(a => !a.IsDynamic)
-                                .SingleOrDefault(_ => _.CodeBase == pathAsUri || _.Location == pathAsUri);
-
-                        var ret = alreadyLoaded ?? Assembly.LoadFrom(fullDllPath);
-
-                        return ret;
-                    };
-
-                AppDomain.CurrentDomain.AssemblyResolve += resolve;
-
-                var runner = getRunner();
-                runner.MigrateDown(targetVersion, useAutomaticTransactionManagement);
-
-                AppDomain.CurrentDomain.AssemblyResolve -= resolve;
-            }
+            var runner = GetMigrationRunner(migrationAssembly, connectionString, databaseName, announcer ?? NullAnnouncer, timeout, applicationContext);
+            runner.MigrateDown(targetVersion, useAutomaticTransactionManagement);
         }
 
         private static MigrationRunner GetMigrationRunner(
@@ -206,11 +122,6 @@ namespace Naos.Database.Migrator
             TimeSpan timeout,
             object applicationContext)
         {
-            if (announcer == null)
-            {
-                announcer = Console.WriteLine;
-            }
-
             if (timeout == default(TimeSpan))
             {
                 timeout = TimeSpan.FromSeconds(30);
@@ -239,7 +150,7 @@ namespace Naos.Database.Migrator
         {
             var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString)
         {
-            InitialCatalog = databaseName
+            InitialCatalog = databaseName,
         };
 
             var ret = sqlConnectionStringBuilder.ConnectionString;

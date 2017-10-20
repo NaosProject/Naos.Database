@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="BackupDatabaseMessageHandler.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,13 +19,15 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.FileJanitor.MessageBus.Contract;
     using Naos.MessageBus.Domain;
 
+    using Spritely.Recipes;
+
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
     /// </summary>
-    public class BackupDatabaseMessageHandler : IHandleMessages<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName
+    public class BackupDatabaseMessageHandler : MessageHandlerBase<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
-        /// <inheritdoc />
-        public async Task HandleAsync(BackupDatabaseMessage message)
+        /// <inheritdoc cref="MessageHandlerBase{T}" />
+        public override async Task HandleAsync(BackupDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             await this.HandleAsync(message, settings);
@@ -39,6 +41,9 @@ namespace Naos.Database.MessageBus.Handler
         /// <returns>Task to support async await calling.</returns>
         public async Task HandleAsync(BackupDatabaseMessage message, DatabaseMessageHandlerSettings settings)
         {
+            new { message }.Must().NotBeNull().OrThrowFirstFailure();
+            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {
                 // must have a date that is strictly alphanumeric...

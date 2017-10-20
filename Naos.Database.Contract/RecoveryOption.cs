@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RecoveryOption.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -22,6 +22,6 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Preserve uncommitted transactions.  Database will be offline after restore procedure.
         /// </summary>
-        NoRecovery
+        NoRecovery,
     }
 }

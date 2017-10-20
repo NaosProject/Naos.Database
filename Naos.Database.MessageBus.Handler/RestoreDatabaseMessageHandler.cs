@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RestoreDatabaseMessageHandler.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,13 +19,15 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.FileJanitor.MessageBus.Contract;
     using Naos.MessageBus.Domain;
 
+    using Spritely.Recipes;
+
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
     /// </summary>
-    public class RestoreDatabaseMessageHandler : IHandleMessages<RestoreDatabaseMessage>, IShareFilePath, IShareDatabaseName
+    public class RestoreDatabaseMessageHandler : MessageHandlerBase<RestoreDatabaseMessage>, IShareFilePath, IShareDatabaseName
     {
-        /// <inheritdoc />
-        public async Task HandleAsync(RestoreDatabaseMessage message)
+        /// <inheritdoc cref="MessageHandlerBase{T}" />
+        public override async Task HandleAsync(RestoreDatabaseMessage message)
         {
             if (!File.Exists(message.FilePath))
             {
@@ -46,6 +48,9 @@ namespace Naos.Database.MessageBus.Handler
             RestoreDatabaseMessage message,
             DatabaseMessageHandlerSettings settings)
         {
+            new { message }.Must().NotBeNull().OrThrowFirstFailure();
+            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+
             using (var activity = Log.Enter(() => new { Message = message, message.DatabaseName, message.FilePath }))
             {
                 {
@@ -80,7 +85,7 @@ namespace Naos.Database.MessageBus.Handler
                                                  RecoveryOption = message.RecoveryOption,
                                                  ReplaceOption = message.ReplaceOption,
                                                  RestoreFrom = restoreFileUri,
-                                                 RestrictedUserOption = message.RestrictedUserOption
+                                                 RestrictedUserOption = message.RestrictedUserOption,
                                              };
 
                     activity.Trace(() => "Starting restore.");

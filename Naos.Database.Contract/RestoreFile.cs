@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="RestoreFile.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -24,6 +24,6 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Gets or sets the type of file.
         /// </summary>
-        public string Type { get; set; }
+        public string FileType { get; set; }
     }
 }

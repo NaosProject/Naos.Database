@@ -1,10 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Extensions.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Tools.Backup
+namespace Naos.Database.Tools
 {
     using System;
 
@@ -23,7 +23,8 @@ namespace Naos.Database.Tools.Backup
         /// <param name="backupDetails">The backup details to validate.</param>
         public static void ThrowIfInvalid(this BackupDetails backupDetails)
         {
-            new { backupDetails, backupDetails.BackupTo }.Must().NotBeNull().OrThrow();
+            new { backupDetails }.Must().NotBeNull().OrThrow();
+            new { backupDetails.BackupTo }.Must().NotBeNull().OrThrow();
 
             if (backupDetails.Device == Device.Url)
             {
@@ -91,7 +92,8 @@ namespace Naos.Database.Tools.Backup
         /// <param name="restoreDetails">The restore details to validate.</param>
         public static void ThrowIfInvalid(this RestoreDetails restoreDetails)
         {
-            new { restoreDetails, restoreDetails.RestoreFrom }.Must().NotBeNull().OrThrow();
+            new { restoreDetails }.Must().NotBeNull().OrThrow();
+            new { restoreDetails.RestoreFrom }.Must().NotBeNull().OrThrow();
 
             if (restoreDetails.Device == Device.Url)
             {

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SqlInjectorChecker.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace Naos.Database.Tools
     /// <summary>
     /// Utility methods to guard against SQL Injection.
     /// </summary>
-    public class SqlInjectorChecker
+    public static class SqlInjectorChecker
     {
         /// <summary>
         /// Throws an ArgumentException if input has any characters that are not alpha-numeric nor the space character.
@@ -39,10 +39,12 @@ namespace Naos.Database.Tools
         /// <param name="pathToCheck">Path to check.</param>
         public static void ThrowIfNotValidPath(string pathToCheck)
         {
+            new { pathToCheck }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+
             try
             {
-                // ReSharper disable once ObjectCreationAsStatement - not using return just letting it get disposed...
-                new FileInfo(pathToCheck);
+                var fileInfoToCheck = new FileInfo(pathToCheck);
+                new { fileInfoToCheck }.Must().NotBeNull().OrThrowFirstFailure();
             }
             catch (Exception)
             {

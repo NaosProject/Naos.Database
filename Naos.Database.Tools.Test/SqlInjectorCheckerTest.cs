@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SqlInjectorCheckerTest.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,8 +32,9 @@ namespace Naos.Database.Tools.Test
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(string.Empty);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "AlphaNumeric", Justification = "Spelling/name is correct.")]
         [Fact]
-        public static void ThrowIfNotAlphanumericOrSpace_TextIsNotAlphaNumericOrWhitespace_ThrowsArgumentException()
+        public static void ThrowIfNotAlphanumericOrSpace_TextIsNotAlphaNumericOrWhiteSpace_ThrowsArgumentException()
         {
             // Arrange, Act, Assert
             Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(" \r "));
@@ -45,8 +46,9 @@ namespace Naos.Database.Tools.Test
             Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("abc123$abc1234"));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "AlphaNumeric", Justification = "Spelling/name is correct.")]
         [Fact]
-        public static void ThrowIfNotAlphanumericOrSpace_TextIsAlphaNumericOrWhitespace_DoesNotThrow()
+        public static void ThrowIfNotAlphanumericOrSpace_TextIsAlphaNumericOrWhiteSpace_DoesNotThrow()
         {
             // Arrange, Act, Assert
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(" ");

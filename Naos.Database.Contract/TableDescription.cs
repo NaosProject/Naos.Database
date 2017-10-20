@@ -1,11 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="TableDescription.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Naos.Database.Contract
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Detailed information about the table.
     /// </summary>
@@ -29,6 +31,6 @@ namespace Naos.Database.Contract
         /// <summary>
         /// Gets or sets the columns descriptions of the table.
         /// </summary>
-        public ColumnDescription[] Columns { get; set; }
+        public IReadOnlyCollection<ColumnDescription> Columns { get; set; }
     }
 }

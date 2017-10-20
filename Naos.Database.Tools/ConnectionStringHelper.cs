@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ConnectionStringHelper.cs" company="Naos">
-//   Copyright 2015 Naos
+//    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ namespace Naos.Database.Tools
     /// <summary>
     /// Utility class to assist in connection string manipulation operations.
     /// </summary>
-    public class ConnectionStringHelper
+    public static class ConnectionStringHelper
     {
         /// <summary>
         /// Will add replace the initial catalog in the connection string as the provided database name.

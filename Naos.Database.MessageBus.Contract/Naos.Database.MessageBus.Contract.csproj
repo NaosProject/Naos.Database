@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyDatabaseObjectMessage.cs" />
     <Compile Include="ShareDatabaseNameMessage.cs" />
     <Compile Include="IShareDatabaseName.cs" />
     <Compile Include="DeleteDatabaseMessage.cs" />

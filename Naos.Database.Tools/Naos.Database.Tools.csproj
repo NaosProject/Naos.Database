@@ -156,6 +156,7 @@
     <Compile Include=".Spritely.Recipes\MustValidation\RuleExtensions.cs" />
     <Compile Include=".Spritely.Recipes\MustValidation\Rules.cs" />
     <Compile Include=".Spritely.Recipes\MustValidation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="DatabaseObjectCopier.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ConnectionStringHelper.cs" />
     <Compile Include="DatabaseDescriber.cs" />

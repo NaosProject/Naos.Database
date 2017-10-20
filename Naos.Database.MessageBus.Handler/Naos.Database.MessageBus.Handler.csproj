@@ -89,6 +89,7 @@
     <Compile Include=".recipes\Spritely.MustValidation\Rules.cs" />
     <Compile Include=".recipes\Spritely.MustValidation\ValidatedNotNullAttribute.cs" />
     <Compile Include="CreateDatabaseMessageHandler.cs" />
+    <Compile Include="CopyDatabaseObjectMessageHandler.cs" />
     <Compile Include="ShareDatabaseNameMessageHandler.cs" />
     <Compile Include="DeleteDatabaseMessageHandler.cs" />
     <Compile Include="RestoreDatabaseMessageHandler.cs" />

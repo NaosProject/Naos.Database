@@ -8,6 +8,8 @@ namespace Naos.Database.Tools
 {
     using Microsoft.SqlServer.Management.Smo;
 
+    using Naos.Database.Contract;
+
     using Spritely.Recipes;
 
     /// <summary>
@@ -146,90 +148,5 @@ namespace Naos.Database.Tools
         /// Gets the object to script.
         /// </summary>
         public IScriptable ObjectToScript { get; private set; }
-    }
-
-    /// <summary>
-    /// Model object to hold a scripted object that can be applied to a different database.
-    /// </summary>
-    public class ScriptedObject
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScriptedObject"/> class.
-        /// </summary>
-        /// <param name="name">Name of the object.</param>
-        /// <param name="databaseObjectType">Database type of object.</param>
-        /// <param name="script">Script to create (and drop if configured to produce) the object.</param>
-        public ScriptedObject(string name, ScriptableObjectType databaseObjectType, string script)
-        {
-            this.Name = name;
-            this.DatabaseObjectType = databaseObjectType;
-            this.Script = script;
-        }
-
-        /// <summary>
-        /// Gets the name of the object.
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the database type of object.
-        /// </summary>
-        public ScriptableObjectType DatabaseObjectType { get; private set; }
-
-        /// <summary>
-        /// Gets the script.
-        /// </summary>
-        public string Script { get; private set; }
-    }
-
-    /// <summary>
-    /// Enumeration of scriptable object types.
-    /// </summary>
-    public enum ScriptableObjectType
-    {
-        /// <summary>
-        /// Database table.
-        /// </summary>
-        Table,
-
-        /// <summary>
-        /// Table foreign key.
-        /// </summary>
-        ForeignKey,
-
-        /// <summary>
-        /// Table or view index.
-        /// </summary>
-        Index,
-
-        /// <summary>
-        /// Database view.
-        /// </summary>
-        View,
-
-        /// <summary>
-        /// Stored procedure.
-        /// </summary>
-        StoredProcedure,
-
-        /// <summary>
-        /// User defined function.
-        /// </summary>
-        UserDefinedFunction,
-
-        /// <summary>
-        /// User defined data type.
-        /// </summary>
-        UserDefinedDataType,
-
-        /// <summary>
-        /// Database role.
-        /// </summary>
-        DatabaseRole,
-
-        /// <summary>
-        /// Database user.
-        /// </summary>
-        User,
     }
 }

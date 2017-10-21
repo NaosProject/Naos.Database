@@ -64,7 +64,7 @@ namespace Naos.Database.Tools
             var columns = new ColumnDescription[0];
             var targetedDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName);
 
-            DatabaseManager.RunOperationOnDatabase(
+            DatabaseManager.RunOperationOnSqlConnection(
                 connection => columns = connection.Query<ColumnDescription>(commandText, sqlParams, null, true, (int?)timeout.TotalSeconds).ToArray(),
                 targetedDatabaseConnectionString);
 

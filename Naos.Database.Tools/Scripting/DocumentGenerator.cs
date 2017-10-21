@@ -73,7 +73,6 @@ namespace Naos.Database.Tools
         /// <inheritdoc cref="IDocumentGenerator" />
         public void AddTable(string name, string[,] values, int[,] merges)
         {
-            new { name }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
             new { values }.Must().NotBeNull().OrThrowFirstFailure();
 
             var rowCount = values.GetLength(0);
@@ -160,8 +159,6 @@ namespace Naos.Database.Tools
 
         private void WriteTableElement(string value, int columnSpan, bool bold, int width)
         {
-            new { value }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-
             if (width == -1)
             {
                 width = DefaultWidth;

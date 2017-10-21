@@ -10,13 +10,19 @@ namespace Naos.Database.Tools
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
 
+    using AsyncBridge;
+
     using Dapper;
 
     using Its.Log.Instrumentation;
+
+    using Microsoft.SqlServer.Management.Common;
+    using Microsoft.SqlServer.Management.Smo;
 
     using Naos.Database.Contract;
 
@@ -32,7 +38,7 @@ namespace Naos.Database.Tools
         /// <summary>
         /// Event handler to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Want this to be read only field.")]
+        [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Want this to be read only field.")]
         public static readonly SqlInfoMessageEventHandler SqlInfoMessageEventHandlerToItsLog = (sender, e) => Log.Write(() => Invariant($"SQL Server Message: {e.Message}"));
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace Naos.Database.Tools
         /// <param name="connectionString">Database connection string.</param>
         /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
         /// <returns>Open connection.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Connection creation method, expect disposal in consumer.")]
+        [SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "Connection creation method, expect disposal in consumer.")]
         public static SqlConnection OpenConnection(string connectionString, bool logServerInfoMessages = true)
         {
             var connection = new SqlConnection(connectionString);
@@ -61,17 +67,18 @@ namespace Naos.Database.Tools
         /// <param name="action">Action to run.</param>
         /// <param name="connectionString">Database connection string.</param>
         /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Object is disposed correctly.")]
-        public static void RunOperationOnDatabase(this Action<SqlConnection> action, string connectionString, bool logServerInfoMessages = true)
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Object is disposed correctly.")]
+        public static void RunOperationOnSqlConnection(this Action<SqlConnection> action, string connectionString, bool logServerInfoMessages = true)
         {
-            new { action }.Must().NotBeNull().OrThrowFirstFailure();
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-
-            using (var connection = OpenConnection(connectionString, logServerInfoMessages))
+            Task AsyncOperation(SqlConnection connection)
             {
                 action(connection);
+                return Task.Run(() => { });
+            }
 
-                connection.Close();
+            using (var bridge = AsyncHelper.Wait)
+            {
+                bridge.Run(RunOperationOnSqlConnectionAsync(AsyncOperation, connectionString, logServerInfoMessages));
             }
         }
 
@@ -82,7 +89,7 @@ namespace Naos.Database.Tools
         /// <param name="connectionString">Database connection string.</param>
         /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
         /// <returns>Task for async.</returns>
-        public static async Task RunOperationOnDatabaseAsync(this Func<SqlConnection, Task> asyncAction, string connectionString, bool logServerInfoMessages = true)
+        public static async Task RunOperationOnSqlConnectionAsync(this Func<SqlConnection, Task> asyncAction, string connectionString, bool logServerInfoMessages = true)
         {
             new { asyncAction }.Must().NotBeNull().OrThrowFirstFailure();
             new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
@@ -111,7 +118,7 @@ namespace Naos.Database.Tools
                 PutDatabaseInSingleUserMode(connection, databaseName, timeout);
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
         }
 
         /// <summary>
@@ -120,8 +127,8 @@ namespace Naos.Database.Tools
         /// <param name="connectionString">The connection string to the intended server.</param>
         /// <param name="databaseName">The name of the target database.</param>
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Multi", Justification = "Spelling/name is correct.")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "MultiUser", Justification = "Spelling/name is correct.")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Multi", Justification = "Spelling/name is correct.")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "MultiUser", Justification = "Spelling/name is correct.")]
         public static void PutDatabaseIntoMultiUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
             new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
@@ -132,7 +139,7 @@ namespace Naos.Database.Tools
                 PutDatabaseIntoMultiUserMode(connection, databaseName, timeout);
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
         }
 
         /// <summary>
@@ -159,7 +166,7 @@ namespace Naos.Database.Tools
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
         }
 
         /// <summary>
@@ -186,7 +193,7 @@ namespace Naos.Database.Tools
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
         }
 
         /// <summary>
@@ -233,7 +240,7 @@ namespace Naos.Database.Tools
                 }
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
         }
 
         /// <summary>
@@ -274,7 +281,7 @@ namespace Naos.Database.Tools
                 ret = connection.Query<DatabaseConfiguration>(Query, null, null, true, (int?)timeout.TotalSeconds).ToArray();
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
             return ret;
         }
 
@@ -343,7 +350,7 @@ namespace Naos.Database.Tools
             }
 
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user
-            RunOperationOnDatabase(Logic, realConnectionString);
+            RunOperationOnSqlConnection(Logic, realConnectionString);
         }
 
         /// <summary>
@@ -372,7 +379,7 @@ namespace Naos.Database.Tools
                 connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
             }
 
-            RunOperationOnDatabase(Logic, realConnectionString);
+            RunOperationOnSqlConnection(Logic, realConnectionString);
         }
 
         /// <summary>
@@ -396,7 +403,7 @@ namespace Naos.Database.Tools
                 ret = connection.ExecuteScalar<string>("SELECT CONVERT(sysname, SERVERPROPERTY('InstanceDefaultDataPath'))", null, null, (int?)timeout.TotalSeconds);
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
 
             return ret;
         }
@@ -422,7 +429,7 @@ namespace Naos.Database.Tools
                 ret = connection.ExecuteScalar<string>("SELECT CONVERT(sysname, SERVERPROPERTY('InstanceDefaultLogPath'))", null, null, (int?)timeout.TotalSeconds);
             }
 
-            RunOperationOnDatabase(Logic, connectionString);
+            RunOperationOnSqlConnection(Logic, connectionString);
 
             return ret;
         }
@@ -639,7 +646,7 @@ namespace Naos.Database.Tools
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
                 }
 
-                await RunOperationOnDatabaseAsync(Logic, connectionString);
+                await RunOperationOnSqlConnectionAsync(Logic, connectionString);
 
                 activity.Trace(() => "Completed successfully.");
             }
@@ -752,7 +759,7 @@ namespace Naos.Database.Tools
                         restoreFiles = connection.Query<RestoreFile>(fileListCommand, commandTimeout: (int?)timeout.TotalSeconds).ToList();
                     }
 
-                    RunOperationOnDatabase(QueryRestoreFilesLogic, connectionString);
+                    RunOperationOnSqlConnection(QueryRestoreFilesLogic, connectionString);
 
                     if (useSpecifiedDataFilePath)
                     {
@@ -855,7 +862,7 @@ namespace Naos.Database.Tools
                     await connection.ExecuteScalarAsync(command, commandTimeout: (int?)timeout.TotalSeconds);
                 }
 
-                await RunOperationOnDatabaseAsync(RestoreLogic, connectionString);
+                await RunOperationOnSqlConnectionAsync(RestoreLogic, connectionString);
 
                 activity.Trace(() => "Completed successfully.");
             }
@@ -885,7 +892,7 @@ namespace Naos.Database.Tools
                 await SetRecoveryModeAsync(connection, databaseName, recoveryMode, timeout);
             }
 
-            await RunOperationOnDatabaseAsync(Logic, connectionString);
+            await RunOperationOnSqlConnectionAsync(Logic, connectionString);
         }
 
         /// <summary>
@@ -911,7 +918,7 @@ namespace Naos.Database.Tools
                 recoveryMode = (RecoveryMode)Enum.Parse(typeof(RecoveryMode), recoveryModeRaw.ToUpperInvariant().Replace("_", string.Empty), true);
             }
 
-            await RunOperationOnDatabaseAsync(Logic, connectionString);
+            await RunOperationOnSqlConnectionAsync(Logic, connectionString);
 
             return recoveryMode;
         }
@@ -981,6 +988,83 @@ namespace Naos.Database.Tools
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET MULTI_USER WITH ROLLBACK IMMEDIATE";
             connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
+        }
+
+        /// <summary>
+        /// Runs the specified operation against the <see cref="Database" /> object.
+        /// </summary>
+        /// <param name="action">Operation to run against the SMO database, <see cref="Database" />.</param>
+        /// <param name="connectionString">Database connection string.</param>
+        /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Smo", Justification = "Spelling/name is correct.")]
+        public static void RunOperationOnSmoDatabase(Action<Database> action, string connectionString, bool logServerInfoMessages = true)
+        {
+            Task AsyncOperation(Database database)
+            {
+                action(database);
+                return Task.Run(() => { });
+            }
+
+            using (var bridge = AsyncHelper.Wait)
+            {
+                bridge.Run(RunOperationOnSmoDatabaseAsync(AsyncOperation, connectionString, logServerInfoMessages));
+            }
+        }
+
+        /// <summary>
+        /// Runs the specified operation against the <see cref="Database" /> object.
+        /// </summary>
+        /// <param name="asyncAction">Operation to run against the SMO database, <see cref="Database" />.</param>
+        /// <param name="connectionString">Database connection string.</param>
+        /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
+        /// <returns>Task for async.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Smo", Justification = "Spelling/name is correct.")]
+        public static async Task RunOperationOnSmoDatabaseAsync(Func<Database, Task> asyncAction, string connectionString, bool logServerInfoMessages = true)
+        {
+            async Task ConnectionAction(SqlConnection connection)
+            {
+                await RunOperationOnSmoDatabaseAsync(asyncAction, connection);
+            }
+
+            await RunOperationOnSqlConnectionAsync(ConnectionAction, connectionString, logServerInfoMessages);
+        }
+
+        /// <summary>
+        /// Runs the specified operation against the <see cref="Database" /> object.
+        /// </summary>
+        /// <param name="asyncAction">Operation to run against the SMO database, <see cref="Database" />.</param>
+        /// <param name="connection">Database connection.</param>
+        /// <returns>Task for async.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Smo", Justification = "Spelling/name is correct.")]
+        public static async Task RunOperationOnSmoDatabaseAsync(Func<Database, Task> asyncAction, SqlConnection connection)
+        {
+            async Task ServerAction(Server server)
+            {
+                var databaseName = connection.Database;
+                var database = server.Databases[databaseName];
+                if (database == null)
+                {
+                    throw new MissingObjectException(Invariant($"Database: {databaseName} on DataSource {connection.DataSource} was not found or is not accessible."));
+                }
+
+                await asyncAction(database);
+            }
+
+            await RunOperationOnSmoServerAsync(ServerAction, connection);
+        }
+
+        /// <summary>
+        /// Runs the specified operation against the <see cref="Server" /> object.
+        /// </summary>
+        /// <param name="asyncAction">Operation to run against the SMO server, <see cref="Server" />.</param>
+        /// <param name="connection">Database connection.</param>
+        /// <returns>Task for async.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Smo", Justification = "Spelling/name is correct.")]
+        public static async Task RunOperationOnSmoServerAsync(Func<Server, Task> asyncAction, SqlConnection connection)
+        {
+            var server = new Server(new ServerConnection(connection));
+
+            await asyncAction(server);
         }
     }
 }

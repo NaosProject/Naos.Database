@@ -6,15 +6,18 @@
 
 namespace Naos.Database.Tools
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Dapper;
-
     using Its.Log.Instrumentation;
+
+    using Microsoft.SqlServer.Management.Smo;
+
+    using Naos.Database.Contract;
 
     using Spritely.Recipes;
 
@@ -42,27 +45,67 @@ namespace Naos.Database.Tools
 
             using (var targetConnection = DatabaseManager.OpenConnection(targetDatabaseConnectionString))
             {
+                async Task RunScriptOnServer(ScriptedObject scriptedObject, string scriptToRun)
+                {
+                    Log.Write(() => Invariant($"Applying create script for '{scriptedObject.Name}' of type '{scriptedObject.DatabaseObjectType}'"));
+                    try
+                    {
+                        async Task ServerAction(Server server)
+                        {
+                            // because it might contain "GO" statements most likely this needs to be executed via the SMO connection.
+                            server.ConnectionContext.ExecuteNonQuery(scriptToRun);
+                            await Task.Run(() => { });
+                        }
+
+                        await DatabaseManager.RunOperationOnSmoServerAsync(ServerAction, targetConnection);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new FailedOperationException(
+                            Invariant($"Failed to run script on database {ConnectionStringHelper.GetDatabaseNameFromConnectionString(targetDatabaseConnectionString)}; {scriptToRun}"),
+                            ex);
+                    }
+                }
+
+                foreach (var scriptedObject in scriptedObjects.Reverse())
+                {
+                    await RunScriptOnServer(scriptedObject, scriptedObject.DropScript);
+                }
+
                 foreach (var scriptedObject in scriptedObjects)
                 {
-                    Log.Write(() => Invariant($"Applying object script for '{scriptedObject.Name}' of type '{scriptedObject.DatabaseObjectType}'"));
-                    await targetConnection.ExecuteAsync(scriptedObject.Script);
+                    await RunScriptOnServer(scriptedObject, scriptedObject.CreateScript);
                 }
 
                 var tables = scriptedObjects.Where(_ => _.DatabaseObjectType == ScriptableObjectType.Table).ToList();
                 if (tables.Any())
                 {
+                    var copyOptions = SqlBulkCopyOptions.CheckConstraints
+                                    | SqlBulkCopyOptions.FireTriggers
+                                    | SqlBulkCopyOptions.KeepIdentity
+                                    | SqlBulkCopyOptions.KeepNulls
+                                    | SqlBulkCopyOptions.TableLock;
                     using (var sourceConnection = DatabaseManager.OpenConnection(sourceDatabaseConnectionString))
                     {
                         foreach (var table in tables)
                         {
                             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(table.Name);
-                            using (var bcp = new SqlBulkCopy(targetConnection))
+                            using (var transaction = targetConnection.BeginTransaction("BcpTable-" + table.Name))
                             {
-                                var command = sourceConnection.CreateCommand();
-                                command.CommandType = CommandType.Text;
-                                command.CommandText = "SELECT * FROM " + table.Name;
-                                var reader = await command.ExecuteReaderAsync();
-                                await bcp.WriteToServerAsync(reader);
+                                using (var bcp = new SqlBulkCopy(targetConnection, copyOptions, transaction) { DestinationTableName = table.Name })
+                                {
+                                    using (var command = sourceConnection.CreateCommand())
+                                    {
+                                        command.CommandType = CommandType.Text;
+                                        command.CommandText = "SELECT * FROM " + table.Name;
+                                        using (var reader = await command.ExecuteReaderAsync())
+                                        {
+                                            await bcp.WriteToServerAsync(reader);
+                                        }
+                                    }
+                                }
+
+                                transaction.Commit();
                             }
                         }
                     }

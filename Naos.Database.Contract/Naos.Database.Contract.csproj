@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include=".recipes\Spritely.MustValidation\MakeRule.cs" />
+    <Compile Include=".recipes\Spritely.MustValidation\MustExtensions.cs" />
+    <Compile Include=".recipes\Spritely.MustValidation\RuleExtensions.cs" />
+    <Compile Include=".recipes\Spritely.MustValidation\Rules.cs" />
+    <Compile Include=".recipes\Spritely.MustValidation\ValidatedNotNullAttribute.cs" />
     <Compile Include="BackupDetails.cs" />
     <Compile Include="ChecksumOption.cs" />
     <Compile Include="Cipher.cs" />
@@ -64,6 +69,7 @@
     <Compile Include="RestoreDetails.cs" />
     <Compile Include="RestoreFile.cs" />
     <Compile Include="RestrictedUserOption.cs" />
+    <Compile Include="ScriptedObject.cs" />
     <Compile Include="TableDescription.cs" />
   </ItemGroup>
   <ItemGroup>

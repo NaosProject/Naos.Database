@@ -15,6 +15,8 @@ namespace Naos.Database.Tools
     using Microsoft.SqlServer.Management.Common;
     using Microsoft.SqlServer.Management.Smo;
 
+    using Naos.Database.Contract;
+
     using Spritely.Recipes;
 
     using static System.FormattableString;
@@ -67,7 +69,7 @@ namespace Naos.Database.Tools
                 }
             }
 
-            RunOperationOnDatabase(Logic, connectionString, logServerInfoMessages);
+            DatabaseManager.RunOperationOnSmoDatabase(Logic, connectionString, logServerInfoMessages);
         }
 
         /// <summary>
@@ -76,44 +78,20 @@ namespace Naos.Database.Tools
         /// <param name="connectionString">Connection to database to find objects in.</param>
         /// <param name="objectNames">Names of objects to script.</param>
         /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
-        /// <param name="includeDrop">Value indicating whether or not to include drop logic at the beginning.</param>
         /// <param name="scrubScript">Value indicating whether or not to scrub the script to make it more readable and remove issues that prvent running.</param>
         /// <returns>Collection of scripted objects matching the provided names.</returns>
-        public static IReadOnlyCollection<ScriptedObject> ScriptObjectsFromDatabase(string connectionString, IReadOnlyCollection<string> objectNames, bool logServerInfoMessages = true, bool includeDrop = true, bool scrubScript = true)
+        public static IReadOnlyList<ScriptedObject> ScriptObjectsFromDatabase(string connectionString, IReadOnlyCollection<string> objectNames, bool logServerInfoMessages = true, bool scrubScript = true)
         {
             var ret = new List<ScriptedObject>();
             void Logic(Database database)
             {
                 var allScriptableObjects = database.GetAllScriptableObjects();
                 var filtered = allScriptableObjects.Where(_ => objectNames.Contains(_.Name)).ToList();
-                ret = filtered.Select(
-                    _ =>
-                        {
-                            var script = SqlObjectScripter.Script(_.ObjectToScript, includeDrop, scrubScript);
-                            return new ScriptedObject(_.Name, _.DatabaseObjectType, script);
-                        }).ToList();
+                ret = filtered.Select(_ => SqlObjectScripter.ScriptToObject(_, scrubScript)).ToList();
             }
 
-            RunOperationOnDatabase(Logic, connectionString, logServerInfoMessages);
+            DatabaseManager.RunOperationOnSmoDatabase(Logic, connectionString, logServerInfoMessages);
             return ret;
-        }
-
-        private static void RunOperationOnDatabase(Action<Database> databaseOperation, string connectionString, bool logServerInfoMessages)
-        {
-            void Logic(SqlConnection connection)
-            {
-                var databaseName = connection.Database;
-                var server = new Server(new ServerConnection(connection));
-                var database = server.Databases[databaseName];
-                if (database == null)
-                {
-                    throw new MissingObjectException(Invariant($"Database: {databaseName} on DataSource {connection.DataSource} was not found or is not accessible."));
-                }
-
-                databaseOperation(database);
-            }
-
-            DatabaseManager.RunOperationOnDatabase(Logic, connectionString, logServerInfoMessages);
         }
 
         private static void ScriptObjects(Database database, IDocumentGenerator documentGenerator, string databasePath, Action<string> announcer)

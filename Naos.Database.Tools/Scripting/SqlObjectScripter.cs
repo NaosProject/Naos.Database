@@ -12,6 +12,8 @@ namespace Naos.Database.Tools
 
     using Microsoft.SqlServer.Management.Smo;
 
+    using Naos.Database.Contract;
+
     using Spritely.Recipes;
 
     /// <summary>
@@ -31,24 +33,36 @@ namespace Naos.Database.Tools
             ScriptingOptions dropOptions = null;
             if (includeDrop)
             {
-                dropOptions = new ScriptingOptions { AllowSystemObjects = false, ScriptDrops = true, IncludeIfNotExists = true };
+                dropOptions = BuildDefaultDropScriptingOptions();
             }
 
-            var createOptions = new ScriptingOptions
-                                 {
-                                     AllowSystemObjects = false,
-                                     Bindings = true,
-                                     Default = true,
-                                     Permissions = true,
-                                     ExtendedProperties = true,
-                                     DriPrimaryKey = true,
-                                     DriUniqueKeys = true,
-                                     DriChecks = true,
-                                     DriDefaults = true,
-                                     DriForeignKeys = scriptableObject is ForeignKey,
-                                 };
+            var createOptions = BuildDefaultCreateScriptingOptions(scriptableObject);
 
             return Script(scriptableObject, dropOptions, createOptions, scrubScript);
+        }
+
+        private static ScriptingOptions BuildDefaultDropScriptingOptions()
+        {
+            var dropOptions = new ScriptingOptions { AllowSystemObjects = false, ScriptDrops = true, IncludeIfNotExists = true };
+            return dropOptions;
+        }
+
+        private static ScriptingOptions BuildDefaultCreateScriptingOptions(IScriptable scriptableObject)
+        {
+            var createOptions = new ScriptingOptions
+                                    {
+                                        AllowSystemObjects = false,
+                                        Bindings = true,
+                                        Default = true,
+                                        Permissions = true,
+                                        ExtendedProperties = true,
+                                        DriPrimaryKey = true,
+                                        DriUniqueKeys = true,
+                                        DriChecks = true,
+                                        DriDefaults = true,
+                                        DriForeignKeys = scriptableObject is ForeignKey,
+                                    };
+            return createOptions;
         }
 
         /// <summary>
@@ -81,6 +95,34 @@ namespace Naos.Database.Tools
             }
 
             return StringCollectionToSingleString(dropScript) + StringCollectionToSingleString(createScript);
+        }
+
+        /// <summary>
+        /// Scripts a <see cref="IScriptable" /> along with provided options.
+        /// </summary>
+        /// <param name="scriptableObject">Object to script.</param>
+        /// <param name="scrubScript">Optional value indicating whether or not to scrub the script to make it more readable and remove issues that prvent running; DEFAULT is true.</param>
+        /// <returns>Scripted object as a string.</returns>
+        public static ScriptedObject ScriptToObject(ScriptableObject scriptableObject, bool scrubScript = true)
+        {
+            new { scriptableObject }.Must().NotBeNull().OrThrowFirstFailure();
+
+            var dropOptions = BuildDefaultDropScriptingOptions();
+            var createOptions = BuildDefaultCreateScriptingOptions(scriptableObject.ObjectToScript);
+            var dropScript = scriptableObject.ObjectToScript.Script(dropOptions);
+            dropScript.Add("GO");
+
+            var createScript = scriptableObject.ObjectToScript.Script(createOptions);
+            createScript.Add("GO");
+
+            if (scrubScript)
+            {
+                ScrubScript(createScript);
+            }
+
+            var dropScriptString = StringCollectionToSingleString(dropScript);
+            var createScriptString = StringCollectionToSingleString(createScript);
+            return new ScriptedObject(scriptableObject.Name, scriptableObject.DatabaseObjectType, dropScriptString, createScriptString);
         }
 
         /// <summary>

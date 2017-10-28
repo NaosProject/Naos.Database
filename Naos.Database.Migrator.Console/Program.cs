@@ -2,111 +2,140 @@
 // <copyright file="Program.cs" company="Naos">
 //    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
-// <summary>
-//   The program entry point.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.MigratorHarness
+namespace Naos.Database.Migrator.Console
 {
     using System;
 
     using CLAP;
 
-    using Naos.Database.Migrator.Console;
+    using Its.Log.Instrumentation;
 
     /// <summary>
-    /// The program.
+    /// Exmaple of a main entry point of the application, just delete your 'Program.cs' is setup.
     /// </summary>
     public static class Program
     {
         /// <summary>
-        /// The program entry point.
+        /// Main entry point.
         /// </summary>
-        /// <param name="args">Command-line arguments.</param>
-        public static void Main(string[] args)
+        /// <param name="args">Arguments for application.</param>
+        /// <returns>Exit code.</returns>
+        public static int Main(string[] args)
         {
-            WriteAsciiArt();
-            Parser.Run<MigratorConsoleHarness>(args);
+            try
+            {
+                WriteAsciiArt(Console.WriteLine);
+
+                /*---------------------------------------------------------------------------*
+                 * This is just a pass through to the CLAP implementation of the harness,    *
+                 * it will parse the command line arguments and provide multiple entry       *
+                 * points as configured.  It is easiest to derive from the abstract class    *
+                 * 'CommandLinAbstractionBase' as 'ExampleCommandLineAbstraction' does which *
+                 * provides an example of the minimum amount of work to get started.  It is  *
+                 * installed as a recipe for easy reference and covers help, errors, etc.    *
+                 *---------------------------------------------------------------------------*
+                 * For an example of config files you can install the package                *
+                 * 'Naos.Recipes.Console.ExampleConfig' which has examples of the directory  *
+                 * structure, 'LogProcessorSettings' settings for console and file, as well  *
+                 * as an App.Config it not using the environment name as a parameter.        *
+                 *---------------------------------------------------------------------------*
+                 * Must update the code below to use your custom abstraction class.          *
+                 *---------------------------------------------------------------------------*/
+                var exitCode = Parser.Run<CommandLineAbstraction>(args);
+                return exitCode;
+            }
+            catch (Exception ex)
+            {
+                /*---------------------------------------------------------------------------*
+                 * This should never be reached but is here as a last ditch effort to ensure *
+                 * errors are not lost.                                                      *
+                 *---------------------------------------------------------------------------*/
+                Console.WriteLine(string.Empty);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(string.Empty);
+                Log.Write(ex);
+
+                return 1;
+            }
         }
 
-        /// <summary>
-        /// Write ASCII art.
-        /// </summary>
-        private static void WriteAsciiArt()
+        private static void WriteAsciiArt(Action<string> announcer)
         {
-            Console.WriteLine(@"______________________________________________________________________________");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|                                   `.,,.`                                   |");
-            Console.WriteLine(@"|                                :++++++++++:                                |");
-            Console.WriteLine(@"|                             `'+++++++++++++#+.                             |");
-            Console.WriteLine(@"|                            '+++++++++++++++++++`                           |");
-            Console.WriteLine(@"|                          .++++++++++++++++++++++,                          |");
-            Console.WriteLine(@"|                         :+++++++++';::;'+++++++++;                         |");
-            Console.WriteLine(@"|                        ;+++++++;.        `;++#++++'                        |");
-            Console.WriteLine(@"|                       :++++++;`             :++++++;  `'                   |");
-            Console.WriteLine(@"|                      ,++++++.                `'+++++::++                   |");
-            Console.WriteLine(@"|                      ++++++`                   '++++++++                   |");
-            Console.WriteLine(@"|                     '+++++                      '+++++++`                  |");
-            Console.WriteLine(@"|                     +++++`                      `+++++++`                  |");
-            Console.WriteLine(@"|                    '++++:                      `++++++++`                  |");
-            Console.WriteLine(@"|                    +++++`                     :+++++++++`                  |");
-            Console.WriteLine(@"|                    ++++:                      `;++++++++.                  |");
-            Console.WriteLine(@"|                    ++++`                         ,'+++++.                  |");
-            Console.WriteLine(@"|                     :;.                            `:+++.                  |");
-            Console.WriteLine(@"|                                                       .;,                  |");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|               ```````                              ```..`.```              |");
-            Console.WriteLine(@"|         `.,,,,,,,,,,,,,,,.`                    .;'''''''''''''';.`         |");
-            Console.WriteLine(@"|       `,,,,,,,,,,,,,,,,,,,,,`               `;'''''''''''''''''''';`       |");
-            Console.WriteLine(@"|      .,,,,,,,,,,,,,,,,,,,,,,,`              ''''''''''''''''''''''''       |");
-            Console.WriteLine(@"|      `,,,,,,,,,,,,,,,,,,,,,,,`             `.'''''''''''''''''''''',`      |");
-            Console.WriteLine(@"|      ,.`.,,,,,,,,,,,,,,,,,.`.,             .',.:;'''''''''''''';;,,'`      |");
-            Console.WriteLine(@"|      ,,,,..```.......``...,,,,             .''';:,,,,,,,:,,,,,,:;'''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|      .,,,,,,,,,,,,,,,,,,,,,,,.             `''''''''''''''''''''''''`      |");
-            Console.WriteLine(@"|       .,,,,,,,,,,,,,,,,,,,,,.               .;'''''''''''''''''''';.       |");
-            Console.WriteLine(@"|         `.,,,,,,,,,,,,,,,.`                   `,:'''''''''''''':,`         |");
-            Console.WriteLine(@"|                                                      ``````                |");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|                   ````````````````````````````````                         |");
-            Console.WriteLine(@"|          `````````````````````````````````````````````````````             |");
-            Console.WriteLine(@"|      ````````````````````.....................```````````````````          |");
-            Console.WriteLine(@"|     `````````````````.............,,,..............`````````````````       |");
-            Console.WriteLine(@"|      ```````````````````.......................````````````````````        |");
-            Console.WriteLine(@"|         ```````````````````````````````````````````````````````            |");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|----------------------------------------------------------------------------|");
-            Console.WriteLine(@"|                                                                            |");
-            Console.WriteLine(@"|         _____  ____    __  __ _                 _                          |");
-            Console.WriteLine(@"|        |  __ \|  _ \  |  \/  (_)               | |                         |");
-            Console.WriteLine(@"|        | |  | | |_) | | \  / |_  __ _ _ __ __ _| |_ ___  _ __              |");
-            Console.WriteLine(@"|        | |  | |  _ <  | |\/| | |/ _` | '__/ _` | __/ _ \| '__|             |");
-            Console.WriteLine(@"|        | |__| | |_) | | |  | | | (_| | | | (_| | || (_) | |                |");
-            Console.WriteLine(@"|        |_____/|____/  |_|  |_|_|\__, |_|  \__,_|\__\___/|_|                |");
-            Console.WriteLine(@"|                                  __/ |                                     |");
-            Console.WriteLine(@"|                                 |___/                                      |");
-            Console.WriteLine(@"|____________________________________________________________________________|");
-            Console.WriteLine();
+            announcer(@"______________________________________________________________________________");
+            announcer(@"|                                                                            |");
+            announcer(@"|                                   `.,,.`                                   |");
+            announcer(@"|                                :++++++++++:                                |");
+            announcer(@"|                             `'+++++++++++++#+.                             |");
+            announcer(@"|                            '+++++++++++++++++++`                           |");
+            announcer(@"|                          .++++++++++++++++++++++,                          |");
+            announcer(@"|                         :+++++++++';::;'+++++++++;                         |");
+            announcer(@"|                        ;+++++++;.        `;++#++++'                        |");
+            announcer(@"|                       :++++++;`             :++++++;  `'                   |");
+            announcer(@"|                      ,++++++.                `'+++++::++                   |");
+            announcer(@"|                      ++++++`                   '++++++++                   |");
+            announcer(@"|                     '+++++                      '+++++++`                  |");
+            announcer(@"|                     +++++`                      `+++++++`                  |");
+            announcer(@"|                    '++++:                      `++++++++`                  |");
+            announcer(@"|                    +++++`                     :+++++++++`                  |");
+            announcer(@"|                    ++++:                      `;++++++++.                  |");
+            announcer(@"|                    ++++`                         ,'+++++.                  |");
+            announcer(@"|                     :;.                            `:+++.                  |");
+            announcer(@"|                                                       .;,                  |");
+            announcer(@"|                                                                            |");
+            announcer(@"|               ```````                              ```..`.```              |");
+            announcer(@"|         `.,,,,,,,,,,,,,,,.`                    .;'''''''''''''';.`         |");
+            announcer(@"|       `,,,,,,,,,,,,,,,,,,,,,`               `;'''''''''''''''''''';`       |");
+            announcer(@"|      .,,,,,,,,,,,,,,,,,,,,,,,`              ''''''''''''''''''''''''       |");
+            announcer(@"|      `,,,,,,,,,,,,,,,,,,,,,,,`             `.'''''''''''''''''''''',`      |");
+            announcer(@"|      ,.`.,,,,,,,,,,,,,,,,,.`.,             .',.:;'''''''''''''';;,,'`      |");
+            announcer(@"|      ,,,,..```.......``...,,,,             .''';:,,,,,,,:,,,,,,:;'''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      ,,,,,,,,,,,,,,,,,,,,,,,,,             .''''''''''''''''''''''''`      |");
+            announcer(@"|      .,,,,,,,,,,,,,,,,,,,,,,,.             `''''''''''''''''''''''''`      |");
+            announcer(@"|       .,,,,,,,,,,,,,,,,,,,,,.               .;'''''''''''''''''''';.       |");
+            announcer(@"|         `.,,,,,,,,,,,,,,,.`                   `,:'''''''''''''':,`         |");
+            announcer(@"|                                                      ``````                |");
+            announcer(@"|                                                                            |");
+            announcer(@"|                                                                            |");
+            announcer(@"|                                                                            |");
+            announcer(@"|                   ````````````````````````````````                         |");
+            announcer(@"|          `````````````````````````````````````````````````````             |");
+            announcer(@"|      ````````````````````.....................```````````````````          |");
+            announcer(@"|     `````````````````.............,,,..............`````````````````       |");
+            announcer(@"|      ```````````````````.......................````````````````````        |");
+            announcer(@"|         ```````````````````````````````````````````````````````            |");
+            announcer(@"|                                                                            |");
+            announcer(@"|----------------------------------------------------------------------------|");
+            announcer(@"|                                                                            |");
+            announcer(@"|         _____  ____    __  __ _                 _                          |");
+            announcer(@"|        |  __ \|  _ \  |  \/  (_)               | |                         |");
+            announcer(@"|        | |  | | |_) | | \  / |_  __ _ _ __ __ _| |_ ___  _ __              |");
+            announcer(@"|        | |  | |  _ <  | |\/| | |/ _` | '__/ _` | __/ _ \| '__|             |");
+            announcer(@"|        | |__| | |_) | | |  | | | (_| | | | (_| | || (_) | |                |");
+            announcer(@"|        |_____/|____/  |_|  |_|_|\__, |_|  \__,_|\__\___/|_|                |");
+            announcer(@"|                                  __/ |                                     |");
+            announcer(@"|                                 |___/                                      |");
+            announcer(@"|____________________________________________________________________________|");
+            announcer(string.Empty);
         }
     }
 }

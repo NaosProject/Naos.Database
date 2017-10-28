@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Tools", "Naos.Database.Tools\Naos.Database.Tools.csproj", "{CF5080FD-F812-4C3D-808A-86F16E598D68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.SqlServer", "Naos.Database.SqlServer\Naos.Database.SqlServer.csproj", "{CF5080FD-F812-4C3D-808A-86F16E598D68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Migrator", "Naos.Database.Migrator\Naos.Database.Migrator.csproj", "{7FC1AA8E-A703-4E6E-AD4D-00FE0F1B910D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Migrator.Console", "Naos.Database.Migrator.Console\Naos.Database.Migrator.Console.csproj", "{29DAC7A4-FC7C-473D-BCE8-BEEFC215B08E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Tools.Test", "Naos.Database.Tools.Test\Naos.Database.Tools.Test.csproj", "{CB81E381-6276-48F2-91E0-819228FCCE34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Test", "Naos.Database.Test\Naos.Database.Test.csproj", "{CB81E381-6276-48F2-91E0-819228FCCE34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Contract", "Naos.Database.MessageBus.Contract\Naos.Database.MessageBus.Contract.csproj", "{FCF5A964-EE1D-41B8-9F55-DB6FA9FBBFE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Scheduler", "Naos.Database.MessageBus.Scheduler\Naos.Database.MessageBus.Scheduler.csproj", "{FCF5A964-EE1D-41B8-9F55-DB6FA9FBBFE8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Handler", "Naos.Database.MessageBus.Handler\Naos.Database.MessageBus.Handler.csproj", "{AA549B15-265C-4BF4-9EB3-FBD3D3280F94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Contract", "Naos.Database.Contract\Naos.Database.Contract.csproj", "{484A1706-0975-4905-AB9C-B0418B83BE7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Domain", "Naos.Database.Domain\Naos.Database.Domain.csproj", "{484A1706-0975-4905-AB9C-B0418B83BE7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Hangfire.Harness", "Naos.Database.MessageBus.Hangfire.Harness\Naos.Database.MessageBus.Hangfire.Harness.csproj", "{6EA321FE-2EA4-4BCB-82FA-D16848537877}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Hangfire.Console", "Naos.Database.MessageBus.Hangfire.Console\Naos.Database.MessageBus.Hangfire.Console.csproj", "{6EA321FE-2EA4-4BCB-82FA-D16848537877}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

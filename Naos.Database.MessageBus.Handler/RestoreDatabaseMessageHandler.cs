@@ -13,10 +13,10 @@ namespace Naos.Database.MessageBus.Handler
     using Its.Configuration;
     using Its.Log.Instrumentation;
 
-    using Naos.Database.Contract;
-    using Naos.Database.MessageBus.Contract;
-    using Naos.Database.Tools;
-    using Naos.FileJanitor.MessageBus.Contract;
+    using Naos.Database.Domain;
+    using Naos.Database.MessageBus.Scheduler;
+    using Naos.Database.SqlServer;
+    using Naos.FileJanitor.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
 
     using Spritely.Recipes;

@@ -10,7 +10,7 @@ namespace Naos.Database.MessageBus.Handler
 
     using Its.Log.Instrumentation;
 
-    using Naos.Database.MessageBus.Contract;
+    using Naos.Database.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
 
     /// <summary>

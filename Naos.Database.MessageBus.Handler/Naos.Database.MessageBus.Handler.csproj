@@ -45,8 +45,8 @@
       <HintPath>..\packages\Its.Log.2.9.14\lib\net451\Its.Log.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Naos.Compression.Domain, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Compression.Domain.1.0.3\lib\net461\Naos.Compression.Domain.dll</HintPath>
+    <Reference Include="Naos.Compression.Domain, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Compression.Domain.1.0.5\lib\net461\Naos.Compression.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Cron, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Cron.1.0.15\lib\net45\Naos.Cron.dll</HintPath>
@@ -55,15 +55,17 @@
     <Reference Include="Naos.Diagnostics.Domain, Version=1.1.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Diagnostics.Domain.1.1.9\lib\net461\Naos.Diagnostics.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.MessageBus.Contract, Version=1.0.110.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Contract.1.0.110\lib\net461\Naos.FileJanitor.MessageBus.Contract.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Naos.FileJanitor.Domain, Version=1.1.111.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.Domain.1.1.111-overhaulstructurenew\lib\net461\Naos.FileJanitor.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.MessageBus.Domain, Version=1.1.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.MessageBus.Domain.1.1.10-newserializationandd\lib\net461\Naos.MessageBus.Domain.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.MessageBus.Scheduler, Version=1.1.111.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Scheduler.1.1.111-overhaulstructurenew\lib\net461\Naos.FileJanitor.MessageBus.Scheduler.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Serialization.Domain, Version=1.0.35.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Serialization.Domain.1.0.35\lib\net461\Naos.Serialization.Domain.dll</HintPath>
+    <Reference Include="Naos.MessageBus.Domain, Version=1.1.21.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.MessageBus.Domain.1.1.21-newserializationandd\lib\net461\Naos.MessageBus.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="Naos.Serialization.Domain, Version=1.0.42.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Serialization.Domain.1.0.42\lib\net461\Naos.Serialization.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -102,17 +104,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Naos.Database.Contract\Naos.Database.Contract.csproj">
+    <ProjectReference Include="..\Naos.Database.Domain\Naos.Database.Domain.csproj">
       <Project>{484A1706-0975-4905-AB9C-B0418B83BE7D}</Project>
-      <Name>Naos.Database.Contract</Name>
+      <Name>Naos.Database.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Naos.Database.MessageBus.Contract\Naos.Database.MessageBus.Contract.csproj">
+    <ProjectReference Include="..\Naos.Database.MessageBus.Scheduler\Naos.Database.MessageBus.Scheduler.csproj">
       <Project>{FCF5A964-EE1D-41B8-9F55-DB6FA9FBBFE8}</Project>
-      <Name>Naos.Database.MessageBus.Contract</Name>
+      <Name>Naos.Database.MessageBus.Scheduler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Naos.Database.Tools\Naos.Database.Tools.csproj">
+    <ProjectReference Include="..\Naos.Database.SqlServer\Naos.Database.SqlServer.csproj">
       <Project>{CF5080FD-F812-4C3D-808A-86F16E598D68}</Project>
-      <Name>Naos.Database.Tools</Name>
+      <Name>Naos.Database.SqlServer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

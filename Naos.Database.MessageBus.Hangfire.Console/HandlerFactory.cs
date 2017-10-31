@@ -15,27 +15,27 @@ namespace Naos.Database.MessageBus.Hangfire.Console
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
-    using Its.Configuration;
     using Its.Log.Instrumentation;
 
-    using Naos.MessageBus.Core;
+    using Naos.Database.MessageBus.Handler;
+    using Naos.Database.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
-
-    using OBeautifulCode.TypeRepresentation;
-
-    using Spritely.Recipes;
 
     using static System.FormattableString;
 
     /// <summary>
     /// Factory builder to provide logic to resolve the appropriate <see cref="IHandleMessages" /> for a dispatched <see cref="IMessage" /> implementation.
     /// </summary>
-    public static class HandlerFactory
+    public static partial class HandlerFactory
     {
-        /*----------------------------- CHANGE BELOW --------------------------------*/
+        /*----------------------------- CHANGE HERE ---------------------------------*
+         * Specify explicit mapping here, if no types are RENAME this file    *
+         * in the Dictionary (Message->Handler Types) then the reflection only *
+         * Factory will be used, if there are types specified then ONLY those and    *
+         * built in ones will be used.                                               *
+         *---------------------------------------------------------------------------*/
 
         /// <summary>
         /// Map of the message type to the intended handler type.  Must have a parameterless constructor and implement <see cref="IHandleMessages" />,
@@ -43,63 +43,13 @@ namespace Naos.Database.MessageBus.Hangfire.Console
         /// </summary>
         private static readonly IReadOnlyDictionary<Type, Type> MessageTypeToHandlerTypeMap = new Dictionary<Type, Type>
             {
-                { typeof(ExampleMessage), typeof(ExampleMessageHandler) },
+                { typeof(BackupDatabaseMessage), typeof(BackupDatabaseMessageHandler) },
+                { typeof(CopyDatabaseObjectMessage), typeof(CopyDatabaseObjectMessageHandler) },
+                { typeof(CreateDatabaseMessage), typeof(CreateDatabaseMessageHandler) },
+                { typeof(DeleteDatabaseMessage), typeof(DeleteDatabaseMessageHandler) },
+                { typeof(RestoreDatabaseMessage), typeof(RestoreDatabaseMessageHandler) },
+                { typeof(ShareDatabaseNameMessage), typeof(ShareDatabaseNameMessageHandler) },
             };
-
-        /*----------------------------- CHANGE ABOVE --------------------------------*
-         * Should ONLY modify below for very specific situations, if no types are    *
-         * in the above Dictionary (Message->Handler Types) then the reflection only *
-         * Factory will be used, if there are types specified then ONLY those and    *
-         * built in ones will be used.                                               *
-         *---------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// Build the appropriate <see cref="IHandlerFactory" /> to use.
-        /// </summary>
-        /// <returns>Factory to use.</returns>
-        internal static IHandlerFactory Build()
-        {
-            var localDictionary = new Dictionary<Type, Type>();
-
-            // load all default handler (this can be omitted if the handler set needs to be explicitly done but be CAREFUL not to skip necessary default handlers.
-            ReflectionHandlerFactory.LoadHandlerTypeMapFromAssemblies(localDictionary, new[] { typeof(IMessage).Assembly, typeof(MessageDispatcher).Assembly });
-
-            var configuredEntires = MessageTypeToHandlerTypeMap?.ToList() ?? new List<KeyValuePair<Type, Type>>();
-
-            IHandlerFactory ret;
-            if (configuredEntires.Count != 0 && !(configuredEntires.Count == 1 && configuredEntires.Single().Key == typeof(ExampleMessage)))
-            {
-                configuredEntires.ForEach(
-                    _ =>
-                        {
-                            if (!localDictionary.ContainsKey(_.Key))
-                            {
-                                localDictionary.Add(_.Key, _.Value);
-                            }
-                        });
-
-                ret = new MappedTypeHandlerFactory(MessageTypeToHandlerTypeMap, TypeMatchStrategy.NamespaceAndName);
-            }
-            else
-            {
-                ret = BuildReflectionHandlerFactoryFromSettings();
-            }
-
-            return ret;
-        }
-
-        private static IHandlerFactory BuildReflectionHandlerFactoryFromSettings()
-        {
-            var configuration = Settings.Get<HandlerFactoryConfiguration>();
-
-            new { handlerFactoryConfiguration = configuration }.Must().NotBeNull().OrThrowFirstFailure();
-
-            var ret = !string.IsNullOrWhiteSpace(configuration.HandlerAssemblyPath)
-                          ? new ReflectionHandlerFactory(configuration.HandlerAssemblyPath, configuration.TypeMatchStrategyForMessageResolution)
-                          : new ReflectionHandlerFactory(configuration.TypeMatchStrategyForMessageResolution);
-
-            return ret;
-        }
     }
 
     /// <summary>

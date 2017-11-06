@@ -105,7 +105,7 @@
     <Compile Include=".recipes\Spritely.MustValidation\RuleExtensions.cs" />
     <Compile Include=".recipes\Spritely.MustValidation\Rules.cs" />
     <Compile Include=".recipes\Spritely.MustValidation\ValidatedNotNullAttribute.cs" />
-    <Compile Include="CommandLineAbstraction.cs" />
+    <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

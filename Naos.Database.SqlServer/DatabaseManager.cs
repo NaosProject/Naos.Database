@@ -15,8 +15,6 @@ namespace Naos.Database.SqlServer
     using System.Text;
     using System.Threading.Tasks;
 
-    using AsyncBridge;
-
     using Dapper;
 
     using Its.Log.Instrumentation;
@@ -25,6 +23,7 @@ namespace Naos.Database.SqlServer
     using Microsoft.SqlServer.Management.Smo;
 
     using Naos.Database.Domain;
+    using Naos.Recipes.RunWithRetry;
 
     using Spritely.Recipes;
 
@@ -76,10 +75,7 @@ namespace Naos.Database.SqlServer
                 return Task.Run(() => { });
             }
 
-            using (var bridge = AsyncHelper.Wait)
-            {
-                bridge.Run(RunOperationOnSqlConnectionAsync(AsyncOperation, connectionString, logServerInfoMessages));
-            }
+            Run.TaskUntilCompletion(RunOperationOnSqlConnectionAsync(AsyncOperation, connectionString, logServerInfoMessages));
         }
 
         /// <summary>
@@ -1005,10 +1001,7 @@ namespace Naos.Database.SqlServer
                 return Task.Run(() => { });
             }
 
-            using (var bridge = AsyncHelper.Wait)
-            {
-                bridge.Run(RunOperationOnSmoDatabaseAsync(AsyncOperation, connectionString, logServerInfoMessages));
-            }
+            Run.TaskUntilCompletion(RunOperationOnSmoDatabaseAsync(AsyncOperation, connectionString, logServerInfoMessages));
         }
 
         /// <summary>

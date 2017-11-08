@@ -24,6 +24,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets or sets the type of file.
         /// </summary>
-        public string FileType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "Matches sys schema in SQL Server.")]
+        public string Type { get; set; }
     }
 }

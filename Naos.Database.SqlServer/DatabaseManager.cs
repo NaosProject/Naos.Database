@@ -759,7 +759,7 @@ namespace Naos.Database.SqlServer
 
                     if (useSpecifiedDataFilePath)
                     {
-                        IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.FileType == "D").ToList();
+                        IEnumerable<RestoreFile> dataFiles = restoreFiles.Where(_ => _.Type == "D").ToList();
                         if (dataFiles.Count() != 1)
                         {
                             throw new InvalidOperationException(
@@ -772,7 +772,7 @@ namespace Naos.Database.SqlServer
 
                     if (useSpecifiedLogFilePath)
                     {
-                        IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.FileType == "L").ToList();
+                        IEnumerable<RestoreFile> logFiles = restoreFiles.Where(_ => _.Type == "L").ToList();
                         if (logFiles.Count() != 1)
                         {
                             throw new InvalidOperationException(

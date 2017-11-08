@@ -62,11 +62,13 @@ namespace Naos.Database.MessageBus.Handler
                     this.FilePath = message.FilePath;
 
                     // use this to avoid issues with database not there or going offline
-                    var masterConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(settings.LocalhostConnectionString, "master");
+                    var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
+                    var masterConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(localhostConnectionString, SqlServerDatabaseManager.MasterDatabaseName);
 
-                    var dataFilePath = Path.Combine(settings.DataDirectory, this.DatabaseName + "Dat.mdf");
+                    var dataDirectory = settings.DatabaseKindToDataDirectoryMap[message.DatabaseKind];
+                    var dataFilePath = Path.Combine(dataDirectory, this.DatabaseName + "Dat.mdf");
 
-                    var logFilePath = Path.Combine(settings.DataDirectory, this.DatabaseName + "Log.ldf");
+                    var logFilePath = Path.Combine(dataDirectory, this.DatabaseName + "Log.ldf");
 
                     activity.Trace(() => $"Using data path: {dataFilePath}, log path: {logFilePath}");
 

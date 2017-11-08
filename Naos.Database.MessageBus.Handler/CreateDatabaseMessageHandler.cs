@@ -38,6 +38,7 @@ namespace Naos.Database.MessageBus.Handler
         /// </summary>
         /// <param name="message">Message to handle.</param>
         /// <param name="settings">Needed settings to handle messages.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Keeping, seems reasonable.")]
         public void Handle(
             CreateDatabaseMessage message,
             DatabaseMessageHandlerSettings settings)
@@ -50,10 +51,11 @@ namespace Naos.Database.MessageBus.Handler
             {
                 {
                     // use this to avoid issues with database not there or going offline
+                    var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
                     var masterConnectionString =
                         ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                            settings.LocalhostConnectionString,
-                            "master");
+                            localhostConnectionString,
+                            SqlServerDatabaseManager.MasterDatabaseName);
 
                     var existingDatabases = SqlServerDatabaseManager.Retrieve(masterConnectionString);
                     if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, message.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
@@ -61,8 +63,9 @@ namespace Naos.Database.MessageBus.Handler
                         throw new ArgumentException("Cannot create a database because it's already present, please delete first.");
                     }
 
-                    var dataFilePath = Path.Combine(settings.DataDirectory, message.DataFileName);
-                    var logFilePath = Path.Combine(settings.DataDirectory, message.DataFileName);
+                    var dataDirectory = settings.DatabaseKindToDataDirectoryMap[message.DatabaseKind];
+                    var dataFilePath = Path.Combine(dataDirectory, message.DataFileName);
+                    var logFilePath = Path.Combine(dataDirectory, message.DataFileName);
 
                     var databaseConfiguration = new DatabaseConfiguration
                                                     {

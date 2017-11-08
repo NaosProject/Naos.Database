@@ -35,6 +35,11 @@ namespace Naos.Database.SqlServer
     public static class SqlServerDatabaseManager
     {
         /// <summary>
+        /// Name of the master database.
+        /// </summary>
+        public const string MasterDatabaseName = "master";
+
+        /// <summary>
         /// Event handler to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event.
         /// </summary>
         [SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Want this to be read only field.")]

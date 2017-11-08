@@ -49,7 +49,7 @@ namespace Naos.Database.SqlServer
             var builder = new SqlConnectionStringBuilder
                               {
                                   DataSource = serverName,
-                                  InitialCatalog = string.IsNullOrWhiteSpace(database) ? "master" : database,
+                                  InitialCatalog = string.IsNullOrWhiteSpace(database) ? SqlServerDatabaseManager.MasterDatabaseName : database,
                                   IntegratedSecurity = string.IsNullOrWhiteSpace(userName),
                               };
 

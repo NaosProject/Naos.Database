@@ -56,7 +56,9 @@ namespace Naos.Database.MessageBus.Handler
                         .Replace("-", string.Empty)
                         .Replace(":", string.Empty)
                         .Replace(" ", string.Empty);
-                var backupFilePath = Path.Combine(settings.BackupDirectory, message.BackupName) + "TakenOn" + datePart + ".bak";
+
+                var backupDirectory = settings.DatabaseKindToBackupDirectoryMap[message.DatabaseKind];
+                var backupFilePath = Path.Combine(backupDirectory, message.BackupName) + "TakenOn" + datePart + ".bak";
 
                 this.FilePath = backupFilePath;
                 this.DatabaseName = message.DatabaseName;
@@ -76,18 +78,19 @@ namespace Naos.Database.MessageBus.Handler
 
                 activity.Trace(() => Invariant($"Backing up database {this.DatabaseName} to {backupFilePath} for kind {message.DatabaseKind}"));
 
+                var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
                 switch (message.DatabaseKind)
                 {
                     case DatabaseKind.SqlServer:
                         await SqlServerDatabaseManager.BackupFullAsync(
-                            settings.LocalhostConnectionString,
+                            localhostConnectionString,
                             this.DatabaseName,
                             backupDetails,
                             message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
                         break;
                     case DatabaseKind.Mongo:
                         await MongoDatabaseManager.BackupFullAsync(
-                            settings.LocalhostConnectionString,
+                            localhostConnectionString,
                             this.DatabaseName,
                             backupDetails,
                             message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);

@@ -77,7 +77,7 @@ namespace Naos.Database.MessageBus.Handler
                     settings.LocalhostConnectionString,
                     this.DatabaseName,
                     backupDetails,
-                    settings.DefaultTimeout);
+                    message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
 
                 activity.Trace(() => "Completed successfully.");
             }

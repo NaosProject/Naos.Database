@@ -6,6 +6,8 @@
 
 namespace Naos.Database.MessageBus.Scheduler
 {
+    using System;
+
     using Naos.Database.Domain;
     using Naos.FileJanitor.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
@@ -50,5 +52,10 @@ namespace Naos.Database.MessageBus.Scheduler
         /// Gets or sets the restricted user option to use.
         /// </summary>
         public RestrictedUserOption RestrictedUserOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets an optional timeout; if not specified then the <see cref="DatabaseMessageHandlerSettings.DefaultTimeout" /> will be used.
+        /// </summary>
+        public TimeSpan Timeout { get; set; }
     }
 }

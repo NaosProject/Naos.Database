@@ -93,7 +93,7 @@ namespace Naos.Database.MessageBus.Handler
                         masterConnectionString,
                         this.DatabaseName,
                         restoreDetails,
-                        settings.DefaultTimeout);
+                        message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
 
                     activity.Trace(() => "Completed successfully.");
                 }

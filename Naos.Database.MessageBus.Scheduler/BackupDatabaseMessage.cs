@@ -6,6 +6,8 @@
 
 namespace Naos.Database.MessageBus.Scheduler
 {
+    using System;
+
     using Naos.Database.Domain;
     using Naos.MessageBus.Domain;
 
@@ -51,5 +53,10 @@ namespace Naos.Database.MessageBus.Scheduler
         /// Gets or sets the compression option to use.
         /// </summary>
         public CompressionOption CompressionOption { get; set; }
+
+        /// <summary>
+        /// Gets or sets an optional timeout; if not specified then the <see cref="DatabaseMessageHandlerSettings.DefaultTimeout" /> will be used.
+        /// </summary>
+        public TimeSpan Timeout { get; set; }
     }
 }

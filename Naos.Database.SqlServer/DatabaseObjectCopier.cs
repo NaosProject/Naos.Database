@@ -43,7 +43,7 @@ namespace Naos.Database.SqlServer
 
             var scriptedObjects = Scripter.ScriptObjectsFromDatabase(sourceDatabaseConnectionString, orderedObjectNamesToCopy);
 
-            using (var targetConnection = DatabaseManager.OpenConnection(targetDatabaseConnectionString))
+            using (var targetConnection = SqlServerDatabaseManager.OpenConnection(targetDatabaseConnectionString))
             {
                 async Task RunScriptOnServer(ScriptedObject scriptedObject, string scriptToRun)
                 {
@@ -57,7 +57,7 @@ namespace Naos.Database.SqlServer
                             await Task.Run(() => { });
                         }
 
-                        await DatabaseManager.RunOperationOnSmoServerAsync(ServerAction, targetConnection);
+                        await SqlServerDatabaseManager.RunOperationOnSmoServerAsync(ServerAction, targetConnection);
                     }
                     catch (Exception ex)
                     {
@@ -85,7 +85,7 @@ namespace Naos.Database.SqlServer
                                     | SqlBulkCopyOptions.KeepIdentity
                                     | SqlBulkCopyOptions.KeepNulls
                                     | SqlBulkCopyOptions.TableLock;
-                    using (var sourceConnection = DatabaseManager.OpenConnection(sourceDatabaseConnectionString))
+                    using (var sourceConnection = SqlServerDatabaseManager.OpenConnection(sourceDatabaseConnectionString))
                     {
                         foreach (var table in tables)
                         {

@@ -55,14 +55,14 @@
     <Reference Include="Naos.Diagnostics.Domain, Version=1.1.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Diagnostics.Domain.1.1.9\lib\net461\Naos.Diagnostics.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.Domain, Version=1.1.120.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.Domain.1.1.120-overhaulstructurenew\lib\net461\Naos.FileJanitor.Domain.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.Domain, Version=1.1.122.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.Domain.1.1.122\lib\net461\Naos.FileJanitor.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.MessageBus.Scheduler, Version=1.1.120.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Scheduler.1.1.120-overhaulstructurenew\lib\net461\Naos.FileJanitor.MessageBus.Scheduler.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.MessageBus.Scheduler, Version=1.1.122.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Scheduler.1.1.122\lib\net461\Naos.FileJanitor.MessageBus.Scheduler.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.MessageBus.Domain, Version=1.1.38.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.MessageBus.Domain.1.1.38-newserializationandd\lib\net461\Naos.MessageBus.Domain.dll</HintPath>
+    <Reference Include="Naos.MessageBus.Domain, Version=1.1.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.MessageBus.Domain.1.1.40\lib\net461\Naos.MessageBus.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Serialization.Domain, Version=1.0.43.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Serialization.Domain.1.0.43\lib\net461\Naos.Serialization.Domain.dll</HintPath>
@@ -111,6 +111,10 @@
     <ProjectReference Include="..\Naos.Database.MessageBus.Scheduler\Naos.Database.MessageBus.Scheduler.csproj">
       <Project>{FCF5A964-EE1D-41B8-9F55-DB6FA9FBBFE8}</Project>
       <Name>Naos.Database.MessageBus.Scheduler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Naos.Database.Mongo\Naos.Database.Mongo.csproj">
+      <Project>{55079B35-AEED-4C45-8E3B-6C72CADC4940}</Project>
+      <Name>Naos.Database.Mongo</Name>
     </ProjectReference>
     <ProjectReference Include="..\Naos.Database.SqlServer\Naos.Database.SqlServer.csproj">
       <Project>{CF5080FD-F812-4C3D-808A-86F16E598D68}</Project>

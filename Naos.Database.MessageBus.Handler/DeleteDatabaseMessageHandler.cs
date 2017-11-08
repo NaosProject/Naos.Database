@@ -13,6 +13,7 @@ namespace Naos.Database.MessageBus.Handler
     using Its.Configuration;
     using Its.Log.Instrumentation;
 
+    using Naos.Database.Domain;
     using Naos.Database.MessageBus.Scheduler;
     using Naos.Database.SqlServer;
     using Naos.MessageBus.Domain;
@@ -42,6 +43,7 @@ namespace Naos.Database.MessageBus.Handler
         {
             new { message }.Must().NotBeNull().OrThrowFirstFailure();
             new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer).OrThrowFirstFailure();
 
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {
@@ -52,11 +54,11 @@ namespace Naos.Database.MessageBus.Handler
                             settings.LocalhostConnectionString,
                             "master");
 
-                    var existingDatabases = DatabaseManager.Retrieve(masterConnectionString);
+                    var existingDatabases = SqlServerDatabaseManager.Retrieve(masterConnectionString);
                     if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, message.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
                     {
                         activity.Trace(() => "Deleting existing database before restore.");
-                        DatabaseManager.Delete(masterConnectionString, message.DatabaseName);
+                        SqlServerDatabaseManager.Delete(masterConnectionString, message.DatabaseName);
                     }
                     else
                     {

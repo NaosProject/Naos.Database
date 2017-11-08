@@ -167,7 +167,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="ConnectionStringHelper.cs" />
     <Compile Include="DatabaseDescriber.cs" />
-    <Compile Include="DatabaseManager.cs" />
+    <Compile Include="SqlServerDatabaseManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripting\DatabaseDocumenter.cs" />
     <Compile Include="Scripting\DatabaseObjectToScriptedDirectoryProcessor.cs" />

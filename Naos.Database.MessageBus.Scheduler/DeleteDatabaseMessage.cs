@@ -6,6 +6,7 @@
 
 namespace Naos.Database.MessageBus.Scheduler
 {
+    using Naos.Database.Domain;
     using Naos.MessageBus.Domain;
 
     /// <summary>
@@ -15,6 +16,11 @@ namespace Naos.Database.MessageBus.Scheduler
     {
         /// <inheritdoc />
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the kind of database.
+        /// </summary>
+        public DatabaseKind DatabaseKind { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the database to delete.

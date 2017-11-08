@@ -15,11 +15,14 @@ namespace Naos.Database.MessageBus.Handler
 
     using Naos.Database.Domain;
     using Naos.Database.MessageBus.Scheduler;
+    using Naos.Database.Mongo;
     using Naos.Database.SqlServer;
     using Naos.FileJanitor.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
 
     using Spritely.Recipes;
+
+    using static System.FormattableString;
 
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
@@ -50,6 +53,7 @@ namespace Naos.Database.MessageBus.Handler
         {
             new { message }.Must().NotBeNull().OrThrowFirstFailure();
             new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+            new { message.DatabaseKind }.Must().NotBeEqualTo(DatabaseKind.Invalid).OrThrowFirstFailure();
 
             using (var activity = Log.Enter(() => new { Message = message, message.DatabaseName, message.FilePath }))
             {
@@ -58,23 +62,15 @@ namespace Naos.Database.MessageBus.Handler
                     this.FilePath = message.FilePath;
 
                     // use this to avoid issues with database not there or going offline
-                    var masterConnectionString =
-                        ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                            settings.LocalhostConnectionString,
-                            "master");
+                    var masterConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(settings.LocalhostConnectionString, "master");
 
-                    var dataFilePath = Path.Combine(
-                        settings.DataDirectory,
-                        this.DatabaseName + "Dat.mdf");
+                    var dataFilePath = Path.Combine(settings.DataDirectory, this.DatabaseName + "Dat.mdf");
 
-                    var logFilePath = Path.Combine(
-                        settings.DataDirectory,
-                        this.DatabaseName + "Log.ldf");
+                    var logFilePath = Path.Combine(settings.DataDirectory, this.DatabaseName + "Log.ldf");
 
-                    activity.Trace(
-                        () => $"Using data path: {dataFilePath}, log path: {logFilePath}");
+                    activity.Trace(() => $"Using data path: {dataFilePath}, log path: {logFilePath}");
 
-                    var restoreFileUri = new Uri(this.FilePath);
+                    var restoreFilePath = new Uri(this.FilePath);
                     var restoreDetails = new RestoreDetails
                                              {
                                                  ChecksumOption = message.ChecksumOption,
@@ -84,16 +80,31 @@ namespace Naos.Database.MessageBus.Handler
                                                  LogFilePath = logFilePath,
                                                  RecoveryOption = message.RecoveryOption,
                                                  ReplaceOption = message.ReplaceOption,
-                                                 RestoreFrom = restoreFileUri,
+                                                 RestoreFrom = restoreFilePath,
                                                  RestrictedUserOption = message.RestrictedUserOption,
                                              };
 
-                    activity.Trace(() => "Starting restore.");
-                    await DatabaseManager.RestoreFullAsync(
-                        masterConnectionString,
-                        this.DatabaseName,
-                        restoreDetails,
-                        message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                    activity.Trace(() => Invariant($"Restoring database {this.DatabaseName} from {restoreFilePath} for kind {message.DatabaseKind}"));
+
+                    switch (message.DatabaseKind)
+                    {
+                        case DatabaseKind.SqlServer:
+                            await SqlServerDatabaseManager.RestoreFullAsync(
+                                masterConnectionString,
+                                this.DatabaseName,
+                                restoreDetails,
+                                message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                            break;
+                        case DatabaseKind.Mongo:
+                            await MongoDatabaseManager.RestoreFullAsync(
+                                masterConnectionString,
+                                this.DatabaseName,
+                                restoreDetails,
+                                message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                            break;
+                        default:
+                            throw new NotSupportedException(Invariant($"Unsupported {nameof(DatabaseKind)} - {message.DatabaseKind}"));
+                    }
 
                     activity.Trace(() => "Completed successfully.");
                 }

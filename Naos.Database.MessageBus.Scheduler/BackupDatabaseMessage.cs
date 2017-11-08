@@ -20,6 +20,11 @@ namespace Naos.Database.MessageBus.Scheduler
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the kind of database.
+        /// </summary>
+        public DatabaseKind DatabaseKind { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the database to backup.
         /// </summary>
         public string DatabaseName { get; set; }

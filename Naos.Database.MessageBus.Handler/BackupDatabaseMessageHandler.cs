@@ -15,11 +15,14 @@ namespace Naos.Database.MessageBus.Handler
 
     using Naos.Database.Domain;
     using Naos.Database.MessageBus.Scheduler;
+    using Naos.Database.Mongo;
     using Naos.Database.SqlServer;
     using Naos.FileJanitor.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
 
     using Spritely.Recipes;
+
+    using static System.FormattableString;
 
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
@@ -43,6 +46,7 @@ namespace Naos.Database.MessageBus.Handler
         {
             new { message }.Must().NotBeNull().OrThrowFirstFailure();
             new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+            new { message.DatabaseKind }.Must().NotBeEqualTo(DatabaseKind.Invalid).OrThrowFirstFailure();
 
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {
@@ -70,14 +74,27 @@ namespace Naos.Database.MessageBus.Handler
                                             ErrorHandling = message.ErrorHandling,
                                         };
 
-                activity.Trace(
-                    () => $"Backing up database {this.DatabaseName} to {backupFilePath}");
+                activity.Trace(() => Invariant($"Backing up database {this.DatabaseName} to {backupFilePath} for kind {message.DatabaseKind}"));
 
-                await DatabaseManager.BackupFullAsync(
-                    settings.LocalhostConnectionString,
-                    this.DatabaseName,
-                    backupDetails,
-                    message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                switch (message.DatabaseKind)
+                {
+                    case DatabaseKind.SqlServer:
+                        await SqlServerDatabaseManager.BackupFullAsync(
+                            settings.LocalhostConnectionString,
+                            this.DatabaseName,
+                            backupDetails,
+                            message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                        break;
+                    case DatabaseKind.Mongo:
+                        await MongoDatabaseManager.BackupFullAsync(
+                            settings.LocalhostConnectionString,
+                            this.DatabaseName,
+                            backupDetails,
+                            message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                        break;
+                    default:
+                        throw new NotSupportedException(Invariant($"Unsupported {nameof(DatabaseKind)} - {message.DatabaseKind}"));
+                }
 
                 activity.Trace(() => "Completed successfully.");
             }

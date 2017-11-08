@@ -69,7 +69,7 @@ namespace Naos.Database.SqlServer
                 }
             }
 
-            DatabaseManager.RunOperationOnSmoDatabase(Logic, connectionString, logServerInfoMessages);
+            SqlServerDatabaseManager.RunOperationOnSmoDatabase(Logic, connectionString, logServerInfoMessages);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Naos.Database.SqlServer
                 ret = filtered.Select(_ => SqlObjectScripter.ScriptToObject(_, scrubScript)).ToList();
             }
 
-            DatabaseManager.RunOperationOnSmoDatabase(Logic, connectionString, logServerInfoMessages);
+            SqlServerDatabaseManager.RunOperationOnSmoDatabase(Logic, connectionString, logServerInfoMessages);
             return ret;
         }
 

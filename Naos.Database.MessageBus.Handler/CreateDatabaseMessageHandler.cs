@@ -44,6 +44,7 @@ namespace Naos.Database.MessageBus.Handler
         {
             new { message }.Must().NotBeNull().OrThrowFirstFailure();
             new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer).OrThrowFirstFailure();
 
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {
@@ -54,7 +55,7 @@ namespace Naos.Database.MessageBus.Handler
                             settings.LocalhostConnectionString,
                             "master");
 
-                    var existingDatabases = DatabaseManager.Retrieve(masterConnectionString);
+                    var existingDatabases = SqlServerDatabaseManager.Retrieve(masterConnectionString);
                     if (existingDatabases.Any(_ => string.Equals(_.DatabaseName, message.DatabaseName, StringComparison.CurrentCultureIgnoreCase)))
                     {
                         throw new ArgumentException("Cannot create a database because it's already present, please delete first.");
@@ -79,7 +80,7 @@ namespace Naos.Database.MessageBus.Handler
                                                         LogFileMaxSizeInKb = message.LogFileMaxSizeInKb,
                                                     };
 
-                    DatabaseManager.Create(masterConnectionString, databaseConfiguration);
+                    SqlServerDatabaseManager.Create(masterConnectionString, databaseConfiguration);
 
                     this.DatabaseName = message.DatabaseName;
 

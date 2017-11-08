@@ -12,9 +12,12 @@ namespace Naos.Database.MessageBus.Handler
     using Its.Configuration;
     using Its.Log.Instrumentation;
 
+    using Naos.Database.Domain;
     using Naos.Database.MessageBus.Scheduler;
     using Naos.Database.SqlServer;
     using Naos.MessageBus.Domain;
+
+    using Spritely.Recipes;
 
     /// <summary>
     /// Naos.MessageBus handler for Share.
@@ -24,9 +27,14 @@ namespace Naos.Database.MessageBus.Handler
         /// <inheritdoc cref="MessageHandlerBase{T}" />
         public override async Task HandleAsync(CopyDatabaseObjectMessage message)
         {
-            var databaseSettings = Settings.Get<DatabaseMessageHandlerSettings>();
-            var sourceDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(databaseSettings.LocalhostConnectionString, message.SourceDatabaseName);
-            var targetDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(databaseSettings.LocalhostConnectionString, message.TargetDatabaseName);
+            new { message }.Must().NotBeNull().OrThrowFirstFailure();
+            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer).OrThrowFirstFailure();
+
+            var settings = Settings.Get<DatabaseMessageHandlerSettings>();
+            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+
+            var sourceDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(settings.LocalhostConnectionString, message.SourceDatabaseName);
+            var targetDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(settings.LocalhostConnectionString, message.TargetDatabaseName);
             await DatabaseObjectCopier.CopyObjects(message.OrderedObjectNamesToCopy, sourceDatabaseConnectionString, targetDatabaseConnectionString);
         }
     }

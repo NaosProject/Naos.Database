@@ -51,10 +51,10 @@ namespace Naos.Database.MessageBus.Handler
             {
                 {
                     // use this to avoid issues with database not there or going offline
-                    var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
+                    var localhostConnection = settings.DatabaseKindToLocalhostConnectionDefinitionMap[message.DatabaseKind];
                     var masterConnectionString =
                         ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                            localhostConnectionString,
+                            localhostConnection.ToSqlServerConnectionString(),
                             SqlServerDatabaseManager.MasterDatabaseName);
 
                     var existingDatabases = SqlServerDatabaseManager.Retrieve(masterConnectionString);

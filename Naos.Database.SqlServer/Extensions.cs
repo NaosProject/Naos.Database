@@ -12,11 +12,27 @@ namespace Naos.Database.SqlServer
 
     using Spritely.Recipes;
 
+    using static System.FormattableString;
+
     /// <summary>
     /// Extension methods for types in the namespace.
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Builds a localhost connection string from the configuration.
+        /// </summary>
+        /// <param name="connectionDefinition">Connection information.</param>
+        /// <returns>Localhost connection string.</returns>
+        public static string ToSqlServerConnectionString(this ConnectionDefinition connectionDefinition)
+        {
+            new { connectionDefinition }.Must().NotBeNull().OrThrowFirstFailure();
+
+            var instanceName = string.IsNullOrWhiteSpace(connectionDefinition.InstanceName) ? string.Empty : Invariant($"\\{connectionDefinition.InstanceName}");
+            var ret = Invariant($"Server={connectionDefinition.Server}{instanceName}; user id={connectionDefinition.UserName}; password={connectionDefinition.Password}");
+            return ret;
+        }
+
         /// <summary>
         /// Throws an exception if the <see cref="BackupDetails"/> is invalid.
         /// </summary>

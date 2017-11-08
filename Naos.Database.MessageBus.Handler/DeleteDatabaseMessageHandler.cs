@@ -37,6 +37,7 @@ namespace Naos.Database.MessageBus.Handler
         /// </summary>
         /// <param name="message">Message to handle.</param>
         /// <param name="settings">Needed settings to handle messages.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Keeping, seems reasonable.")]
         public void Handle(
             DeleteDatabaseMessage message,
             DatabaseMessageHandlerSettings settings)
@@ -49,10 +50,10 @@ namespace Naos.Database.MessageBus.Handler
             {
                 {
                     // use this to avoid issues with database not there or going offline
-                    var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
+                    var localhostConnection = settings.DatabaseKindToLocalhostConnectionDefinitionMap[message.DatabaseKind];
                     var masterConnectionString =
                         ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
-                            localhostConnectionString,
+                            localhostConnection.ToSqlServerConnectionString(),
                             SqlServerDatabaseManager.MasterDatabaseName);
 
                     var existingDatabases = SqlServerDatabaseManager.Retrieve(masterConnectionString);

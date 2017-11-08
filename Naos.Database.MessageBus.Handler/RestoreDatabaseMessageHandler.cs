@@ -61,10 +61,6 @@ namespace Naos.Database.MessageBus.Handler
                     this.DatabaseName = message.DatabaseName;
                     this.FilePath = message.FilePath;
 
-                    // use this to avoid issues with database not there or going offline
-                    var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
-                    var masterConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(localhostConnectionString, SqlServerDatabaseManager.MasterDatabaseName);
-
                     var dataDirectory = settings.DatabaseKindToDataDirectoryMap[message.DatabaseKind];
                     var dataFilePath = Path.Combine(dataDirectory, this.DatabaseName + "Dat.mdf");
 
@@ -88,9 +84,14 @@ namespace Naos.Database.MessageBus.Handler
 
                     activity.Trace(() => Invariant($"Restoring database {this.DatabaseName} from {restoreFilePath} for kind {message.DatabaseKind}"));
 
+                    var localhostConnection = settings.DatabaseKindToLocalhostConnectionDefinitionMap[message.DatabaseKind];
                     switch (message.DatabaseKind)
                     {
                         case DatabaseKind.SqlServer:
+                            // use this to avoid issues with database not there or going offline
+                            var masterConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(
+                                localhostConnection.ToSqlServerConnectionString(),
+                                SqlServerDatabaseManager.MasterDatabaseName);
                             await SqlServerDatabaseManager.RestoreFullAsync(
                                 masterConnectionString,
                                 this.DatabaseName,
@@ -99,10 +100,11 @@ namespace Naos.Database.MessageBus.Handler
                             break;
                         case DatabaseKind.Mongo:
                             await MongoDatabaseManager.RestoreFullAsync(
-                                masterConnectionString,
+                                localhostConnection,
                                 this.DatabaseName,
                                 restoreDetails,
-                                message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                                settings.WorkingDirectoryPath,
+                                settings.MongoUtilityDirectory);
                             break;
                         default:
                             throw new NotSupportedException(Invariant($"Unsupported {nameof(DatabaseKind)} - {message.DatabaseKind}"));

@@ -51,6 +51,7 @@
     <Compile Include=".recipes\Spritely.MustValidation\RuleExtensions.cs" />
     <Compile Include=".recipes\Spritely.MustValidation\Rules.cs" />
     <Compile Include=".recipes\Spritely.MustValidation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="ConnectionDefinition.cs" />
     <Compile Include="DatabaseKind.cs" />
     <Compile Include="BackupDetails.cs" />
     <Compile Include="ChecksumOption.cs" />

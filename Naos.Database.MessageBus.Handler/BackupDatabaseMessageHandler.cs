@@ -78,22 +78,23 @@ namespace Naos.Database.MessageBus.Handler
 
                 activity.Trace(() => Invariant($"Backing up database {this.DatabaseName} to {backupFilePath} for kind {message.DatabaseKind}"));
 
-                var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
+                var localhostConnection = settings.DatabaseKindToLocalhostConnectionDefinitionMap[message.DatabaseKind];
                 switch (message.DatabaseKind)
                 {
                     case DatabaseKind.SqlServer:
                         await SqlServerDatabaseManager.BackupFullAsync(
-                            localhostConnectionString,
+                            localhostConnection.ToSqlServerConnectionString(),
                             this.DatabaseName,
                             backupDetails,
                             message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
                         break;
                     case DatabaseKind.Mongo:
                         await MongoDatabaseManager.BackupFullAsync(
-                            localhostConnectionString,
+                            localhostConnection,
                             this.DatabaseName,
                             backupDetails,
-                            message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                            settings.WorkingDirectoryPath,
+                            settings.MongoUtilityDirectory);
                         break;
                     default:
                         throw new NotSupportedException(Invariant($"Unsupported {nameof(DatabaseKind)} - {message.DatabaseKind}"));

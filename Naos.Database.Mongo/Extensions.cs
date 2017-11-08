@@ -26,14 +26,6 @@ namespace Naos.Database.Mongo
             new { backupDetails }.Must().NotBeNull().OrThrow();
             new { backupDetails.BackupTo }.Must().NotBeNull().OrThrow();
 
-            if (backupDetails.Device == Device.Url)
-            {
-                if (string.IsNullOrWhiteSpace(backupDetails.Credential))
-                {
-                    throw new ArgumentException("Credential cannot be null or whitespace when Device is URL");
-                }
-            }
-
             if (!string.IsNullOrWhiteSpace(backupDetails.Name))
             {
                 if (backupDetails.Name.Length > 128)
@@ -50,25 +42,39 @@ namespace Naos.Database.Mongo
                 }
             }
 
-            if (backupDetails.Cipher != Cipher.NoEncryption)
+            if (backupDetails.ChecksumOption != ChecksumOption.NoChecksum)
             {
-                if (backupDetails.Encryptor == Encryptor.None)
-                {
-                    throw new ArgumentException("Encryptor is required when any Cipher != NoEncryption");
-                }
-
-                if (string.IsNullOrWhiteSpace(backupDetails.EncryptorName))
-                {
-                    throw new ArgumentException("EncryptorName is required when any Cipher != NoEncryption.");
-                }
+                throw new ArgumentException("ChecksumOption must be NoChecksum for Mongo");
             }
 
-            if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
+            if (backupDetails.Cipher != Cipher.NoEncryption)
             {
-                if (backupDetails.ErrorHandling == ErrorHandling.None)
-                {
-                    throw new ArgumentException("ErrorHandling cannot be None when using checksum.");
-                }
+                throw new ArgumentException("Cipher must be NoEncryption for Mongo");
+            }
+
+            if (backupDetails.CompressionOption != CompressionOption.Compression)
+            {
+                throw new ArgumentException("CompressionOption must be Compression for Mongo");
+            }
+
+            if (backupDetails.Device != Device.Disk)
+            {
+                throw new ArgumentException("Device must be Disk for Mongo.");
+            }
+
+            if (backupDetails.Encryptor != Encryptor.None)
+            {
+                throw new ArgumentException("Encryptor must be None for Mongo");
+            }
+
+            if (backupDetails.EncryptorName != null)
+            {
+                throw new ArgumentException("EncryptorName must be null for Mongo");
+            }
+
+            if (backupDetails.ErrorHandling != ErrorHandling.None)
+            {
+                throw new ArgumentException("ErrorHandling must be None for Mongo");
             }
         }
 
@@ -81,20 +87,29 @@ namespace Naos.Database.Mongo
             new { restoreDetails }.Must().NotBeNull().OrThrow();
             new { restoreDetails.RestoreFrom }.Must().NotBeNull().OrThrow();
 
-            if (restoreDetails.Device == Device.Url)
+            if (restoreDetails.ChecksumOption != ChecksumOption.NoChecksum)
             {
-                if (string.IsNullOrWhiteSpace(restoreDetails.Credential))
-                {
-                    throw new ArgumentException("Credential cannot be null or whitespace when Device is URL");
-                }
+                throw new ArgumentException("ChecksumOption must be NoChecksum for Mongo");
             }
 
-            if (restoreDetails.ChecksumOption == ChecksumOption.Checksum)
+            if (restoreDetails.Device != Device.Disk)
             {
-                if (restoreDetails.ErrorHandling == ErrorHandling.None)
-                {
-                    throw new ArgumentException("ErrorHandling cannot be None when using checksum.");
-                }
+                throw new ArgumentException("Device must be Disk for Mongo.");
+            }
+
+            if (restoreDetails.ErrorHandling != ErrorHandling.None)
+            {
+                throw new ArgumentException("ErrorHandling must be None for Mongo");
+            }
+
+            if (restoreDetails.RecoveryOption != RecoveryOption.NoRecovery)
+            {
+                throw new ArgumentException("RecoveryOption must be NoRecovery for Mongo");
+            }
+
+            if (restoreDetails.RestrictedUserOption != RestrictedUserOption.Normal)
+            {
+                throw new ArgumentException("RestrictedUserOption must be Normal for Mongo");
             }
         }
     }

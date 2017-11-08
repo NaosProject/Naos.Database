@@ -33,7 +33,7 @@ namespace Naos.Database.MessageBus.Handler
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             new { settings }.Must().NotBeNull().OrThrowFirstFailure();
 
-            var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionStringMap[message.DatabaseKind];
+            var localhostConnectionString = settings.DatabaseKindToLocalhostConnectionDefinitionMap[message.DatabaseKind].ToSqlServerConnectionString();
             var sourceDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(localhostConnectionString, message.SourceDatabaseName);
             var targetDatabaseConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(localhostConnectionString, message.TargetDatabaseName);
             await DatabaseObjectCopier.CopyObjects(message.OrderedObjectNamesToCopy, sourceDatabaseConnectionString, targetDatabaseConnectionString);

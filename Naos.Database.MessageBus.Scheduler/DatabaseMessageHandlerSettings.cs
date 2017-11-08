@@ -22,9 +22,19 @@ namespace Naos.Database.MessageBus.Scheduler
         public TimeSpan DefaultTimeout { get; set; }
 
         /// <summary>
-        /// Gets or sets a map of the <see cref="DatabaseKind" /> to a connection string to use for local host database operations.
+        /// Gets or sets the working directory to use for intermediate storage.
         /// </summary>
-        public IReadOnlyDictionary<DatabaseKind, string> DatabaseKindToLocalhostConnectionStringMap { get; set; }
+        public string WorkingDirectoryPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the directory where Mongo utilies are.
+        /// </summary>
+        public string MongoUtilityDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets a map of the <see cref="DatabaseKind" /> to a <see cref="ConnectionDefinition" /> to use for local host database operations.
+        /// </summary>
+        public IReadOnlyDictionary<DatabaseKind, ConnectionDefinition> DatabaseKindToLocalhostConnectionDefinitionMap { get; set; }
 
         /// <summary>
         /// Gets or sets the location on disk for backups.

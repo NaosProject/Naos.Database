@@ -78,7 +78,7 @@ namespace Naos.Database.MessageBus.Handler
 
                 activity.Trace(() => Invariant($"Backing up database {this.DatabaseName} to {backupFilePath} for kind {message.DatabaseKind}"));
 
-                var localhostConnection = settings.DatabaseKindToLocalhostConnectionDefinitionMap[message.DatabaseKind];
+                var localhostConnection = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.DatabaseName];
                 switch (message.DatabaseKind)
                 {
                     case DatabaseKind.SqlServer:

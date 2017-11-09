@@ -32,9 +32,9 @@ namespace Naos.Database.MessageBus.Scheduler
         public string MongoUtilityDirectory { get; set; }
 
         /// <summary>
-        /// Gets or sets a map of the <see cref="DatabaseKind" /> to a <see cref="ConnectionDefinition" /> to use for local host database operations.
+        /// Gets or sets a map of the database name to a <see cref="ConnectionDefinition" /> to use for local host database operations.
         /// </summary>
-        public IReadOnlyDictionary<DatabaseKind, ConnectionDefinition> DatabaseKindToLocalhostConnectionDefinitionMap { get; set; }
+        public IReadOnlyDictionary<string, ConnectionDefinition> DatabaseNameToLocalhostConnectionDefinitionMap { get; set; }
 
         /// <summary>
         /// Gets or sets the location on disk for backups.

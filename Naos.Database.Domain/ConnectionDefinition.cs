@@ -22,6 +22,11 @@ namespace Naos.Database.Domain
         public string InstanceName { get; set; }
 
         /// <summary>
+        /// Gets or sets the database name.
+        /// </summary>
+        public string DatabaseName { get; set; }
+
+        /// <summary>
         /// Gets or sets the username.
         /// </summary>
         public string UserName { get; set; }

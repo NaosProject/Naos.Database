@@ -84,7 +84,7 @@ namespace Naos.Database.MessageBus.Handler
 
                     activity.Trace(() => Invariant($"Restoring database {this.DatabaseName} from {restoreFilePath} for kind {message.DatabaseKind}"));
 
-                    var localhostConnection = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.DatabaseName];
+                    var localhostConnection = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.DatabaseName.ToUpperInvariant()];
                     switch (message.DatabaseKind)
                     {
                         case DatabaseKind.SqlServer:

@@ -36,8 +36,8 @@ namespace Naos.Database.Mongo
         /// <param name="backupDetails">The details of how to perform the backup.</param>
         /// <param name="workingDirectory">Working path to take temporary output.</param>
         /// <param name="mongoUtilityDirectory">Path where mongo utilies are located on disk.</param>
-        /// <returns>Task to support async await calling.</returns>
-        public static async Task BackupFullAsync(
+        /// <returns>Archived directory created.</returns>
+        public static async Task<ArchivedDirectory> BackupFullAsync(
             ConnectionDefinition connectionDefinition,
             string databaseName,
             BackupDetails backupDetails,
@@ -65,13 +65,15 @@ namespace Naos.Database.Mongo
                 activity.Trace(output);
 
                 activity.Trace(() => Invariant($"Creating backup file '{backupFilePath}' from '{backupToPath}'"));
-                var archivedDirectory = await archiver.ArchiveDirectory(backupToPath, backupFilePath, true, Encoding.UTF8);
+                var archivedDirectory = await archiver.ArchiveDirectory(backupToPath, backupFilePath, false, Encoding.UTF8);
                 new { archivedDirectory }.Must().NotBeNull().OrThrowFirstFailure();
 
                 activity.Trace(() => Invariant($"Cleaning up by removing temp directory '{backupToPath}'"));
                 Directory.Delete(backupToPath, true);
 
                 activity.Trace(() => "Completed successfully.");
+
+                return archivedDirectory;
             }
         }
 
@@ -106,14 +108,16 @@ namespace Naos.Database.Mongo
                 var directoryArchiveKind = DirectoryArchiveKind.DotNetZipFile;
                 var archiveCompressionKind = ArchiveCompressionKind.Fastest;
                 var archiver = ArchiverFactory.Instance.BuildArchiver(directoryArchiveKind, archiveCompressionKind);
-                var archivedDirectory = new ArchivedDirectory(directoryArchiveKind, archiveCompressionKind, backupFilePath, true, Encoding.UTF8);
+                var archivedDirectory = new ArchivedDirectory(directoryArchiveKind, archiveCompressionKind, backupFilePath, false, Encoding.UTF8);
 
                 activity.Trace(() => Invariant($"Inflating backup file '{backupFilePath}' to '{inflatedBackupFilePath}'"));
                 await archiver.RestoreDirectory(archivedDirectory, inflatedBackupFilePath);
 
                 var exePath = Path.Combine(mongoUtilityDirectory, "mongorestore.exe");
                 activity.Trace(() => Invariant($"Restoring database '{databaseName}' from '{inflatedBackupFilePath}' using '{exePath}'"));
-                var output = RunProcess("mongorestore.exe", Invariant($"--host {connectionDefinition.Server} --db {databaseName} --authenticationDatabase {connectionDefinition.AuthenticationSource ?? databaseName} --username {connectionDefinition.UserName} --password {connectionDefinition.Password} {restoreFromPath}"));
+
+                var dropSwitchAddIn = restoreDetails.ReplaceOption == ReplaceOption.ReplaceExistingDatabase ? "--drop " : string.Empty;
+                var output = RunProcess(exePath, Invariant($"{dropSwitchAddIn}--host {connectionDefinition.Server} --db {databaseName} --authenticationDatabase {connectionDefinition.AuthenticationSource ?? databaseName} --username {connectionDefinition.UserName} --password {connectionDefinition.Password} {restoreFromPath}"));
                 activity.Trace(output);
 
                 activity.Trace(() => Invariant($"Cleaning up by removing temp directory '{inflatedBackupFilePath}'"));

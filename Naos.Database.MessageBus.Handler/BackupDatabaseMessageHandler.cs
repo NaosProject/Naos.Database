@@ -7,6 +7,7 @@
 namespace Naos.Database.MessageBus.Handler
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.MessageBus.Scheduler;
     using Naos.Database.Mongo;
     using Naos.Database.SqlServer;
+    using Naos.FileJanitor.Domain;
     using Naos.FileJanitor.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
 
@@ -27,9 +29,9 @@ namespace Naos.Database.MessageBus.Handler
     /// <summary>
     /// Naos.MessageBus handler for BackupMessages.
     /// </summary>
-    public class BackupDatabaseMessageHandler : MessageHandlerBase<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName
+    public class BackupDatabaseMessageHandler : MessageHandlerBase<BackupDatabaseMessage>, IShareFilePath, IShareDatabaseName, IShareUserDefinedMetadata
     {
-        /// <inheritdoc cref="MessageHandlerBase{T}" />
+        /// <inheritdoc />
         public override async Task HandleAsync(BackupDatabaseMessage message)
         {
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
@@ -78,7 +80,7 @@ namespace Naos.Database.MessageBus.Handler
 
                 activity.Trace(() => Invariant($"Backing up database {this.DatabaseName} to {backupFilePath} for kind {message.DatabaseKind}"));
 
-                var localhostConnection = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.DatabaseName];
+                var localhostConnection = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.DatabaseName.ToUpperInvariant()];
                 switch (message.DatabaseKind)
                 {
                     case DatabaseKind.SqlServer:
@@ -87,14 +89,24 @@ namespace Naos.Database.MessageBus.Handler
                             this.DatabaseName,
                             backupDetails,
                             message.Timeout == default(TimeSpan) ? settings.DefaultTimeout : message.Timeout);
+                        this.UserDefinedMetadata = new MetadataItem[0];
                         break;
                     case DatabaseKind.Mongo:
-                        await MongoDatabaseManager.BackupFullAsync(
+                        var archivedDirectory = await MongoDatabaseManager.BackupFullAsync(
                             localhostConnection,
                             this.DatabaseName,
                             backupDetails,
                             settings.WorkingDirectoryPath,
                             settings.MongoUtilityDirectory);
+
+                        this.UserDefinedMetadata = new[]
+                                                       {
+                                                           new MetadataItem(nameof(ArchivedDirectory.DirectoryArchiveKind), archivedDirectory.DirectoryArchiveKind.ToString()),
+                                                           new MetadataItem(nameof(ArchivedDirectory.ArchiveCompressionKind), archivedDirectory.ArchiveCompressionKind.ToString()),
+                                                           new MetadataItem(nameof(ArchivedDirectory.IncludeBaseDirectory), archivedDirectory.IncludeBaseDirectory.ToString()),
+                                                           new MetadataItem(nameof(ArchivedDirectory.EntryNameEncoding), archivedDirectory.EntryNameEncoding.ToString()),
+                                                           new MetadataItem(nameof(ArchivedDirectory.ArchivedDateTimeUtc), DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
+                                                       };
                         break;
                     default:
                         throw new NotSupportedException(Invariant($"Unsupported {nameof(DatabaseKind)} - {message.DatabaseKind}"));
@@ -109,5 +121,8 @@ namespace Naos.Database.MessageBus.Handler
 
         /// <inheritdoc />
         public string DatabaseName { get; set; }
+
+        /// <inheritdoc />
+        public MetadataItem[] UserDefinedMetadata { get; set; }
     }
 }

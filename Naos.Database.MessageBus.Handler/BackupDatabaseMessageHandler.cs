@@ -9,6 +9,7 @@ namespace Naos.Database.MessageBus.Handler
     using System;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Its.Configuration;
@@ -99,14 +100,7 @@ namespace Naos.Database.MessageBus.Handler
                             settings.WorkingDirectoryPath,
                             settings.MongoUtilityDirectory);
 
-                        this.UserDefinedMetadata = new[]
-                                                       {
-                                                           new MetadataItem(nameof(ArchivedDirectory.DirectoryArchiveKind), archivedDirectory.DirectoryArchiveKind.ToString()),
-                                                           new MetadataItem(nameof(ArchivedDirectory.ArchiveCompressionKind), archivedDirectory.ArchiveCompressionKind.ToString()),
-                                                           new MetadataItem(nameof(ArchivedDirectory.IncludeBaseDirectory), archivedDirectory.IncludeBaseDirectory.ToString()),
-                                                           new MetadataItem(nameof(ArchivedDirectory.EntryNameEncoding), archivedDirectory.EntryNameEncoding.ToString()),
-                                                           new MetadataItem(nameof(ArchivedDirectory.ArchivedDateTimeUtc), DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
-                                                       };
+                        this.UserDefinedMetadata = archivedDirectory.ToMetadataItemCollection().ToArray();
                         break;
                     default:
                         throw new NotSupportedException(Invariant($"Unsupported {nameof(DatabaseKind)} - {message.DatabaseKind}"));

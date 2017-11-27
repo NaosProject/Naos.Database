@@ -313,6 +313,8 @@ namespace Naos.Database.SqlServer
 
             void Logic(SqlConnection connection)
             {
+                PutDatabaseInSingleUserMode(connection, currentConfiguration.DatabaseName, timeout);
+
                 if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
                 {
                     var renameDatabaseText = @"ALTER DATABASE " + currentConfiguration.DatabaseName + " MODIFY NAME = "

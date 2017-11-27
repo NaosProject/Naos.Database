@@ -16,6 +16,8 @@ namespace OBeautifulCode.Reflection.Recipes
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    using OBeautifulCode.Collection.Recipes;
+
     using Spritely.Recipes;
 
     using static System.FormattableString;
@@ -228,10 +230,23 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <summary>
         /// Gets the currently loaded assemblies (excluding dynamic ones).
         /// </summary>
+        /// <remarks>
+        /// If you want to get all types, then pass-in the result of this call into AssemblyHelper.GetTypesFromAssemblies()
+        /// </remarks>
         /// <returns>Currently loaded assemblies.</returns>
         public static IReadOnlyCollection<Assembly> GetLoadedAssemblies()
         {
-            return AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).ToList();
+            try
+            {
+                return AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic).ToList();
+            }
+            catch (ReflectionTypeLoadException reflectionTypeLoadException)
+            {
+                var loaderExceptions = reflectionTypeLoadException.LoaderExceptions.Select(_ => _.ToString()).ToCsv();
+                var typesLoaded = reflectionTypeLoadException.Types.Select(_ => _.ToString()).ToCsv();
+                var message = Invariant($"{nameof(ReflectionTypeLoadException)} was thrown when getting loaded assemblies.{Environment.NewLine}The loader exceptions are: {loaderExceptions}.{Environment.NewLine}{Environment.NewLine}The types loaded are: {typesLoaded}.{Environment.NewLine}{Environment.NewLine}See inner exception for the original exception.");
+                throw new TypeLoadException(message, reflectionTypeLoadException);
+            }
         }
 
         /// <summary>

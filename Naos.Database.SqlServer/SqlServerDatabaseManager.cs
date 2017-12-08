@@ -863,6 +863,15 @@ namespace Naos.Database.SqlServer
 
                 await RunOperationOnSqlConnectionAsync(RestoreLogic, connectionString);
 
+                // make sure the database isn't stuck in "Restoring..."
+                async Task ConfirmAvailable(SqlConnection connection)
+                {
+                    await connection.ExecuteScalarAsync("Select * from sys.tables", commandTimeout: (int?)timeout.TotalSeconds);
+                }
+
+                var databaseSpecificConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName);
+                await RunOperationOnSqlConnectionAsync(ConfirmAvailable, databaseSpecificConnectionString);
+
                 activity.Trace(() => "Completed successfully.");
             }
         }

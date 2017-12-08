@@ -33,7 +33,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Naos.MessageBus.Hangfire.Bootstrapper", "See package version number")]
 #endif
-    public class DefaultMessageBusConsoleAbstraction : ConsoleAbstractionBase
+    public partial class DefaultMessageBusConsoleAbstraction : ConsoleAbstractionBase
     {
         /// <summary>
         /// Monitor for items in Hangfire.

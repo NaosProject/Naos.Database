@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.SqlServer", "Naos.Database.SqlServer\Naos.Database.SqlServer.csproj", "{CF5080FD-F812-4C3D-808A-86F16E598D68}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.MessageBus.Hangfire.Console", "Naos.Database.MessageBus.Hangfire.Console\Naos.Database.MessageBus.Hangfire.Console.csproj", "{6EA321FE-2EA4-4BCB-82FA-D16848537877}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Mongo", "Naos.Database.Mongo\Naos.Database.Mongo.csproj", "{55079B35-AEED-4C45-8E3B-6C72CADC4940}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Console", "Naos.Database.Console\Naos.Database.Console.csproj", "{4D8DB520-80FF-4B4C-B34D-410A908D96EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{55079B35-AEED-4C45-8E3B-6C72CADC4940}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55079B35-AEED-4C45-8E3B-6C72CADC4940}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55079B35-AEED-4C45-8E3B-6C72CADC4940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D8DB520-80FF-4B4C-B34D-410A908D96EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D8DB520-80FF-4B4C-B34D-410A908D96EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D8DB520-80FF-4B4C-B34D-410A908D96EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D8DB520-80FF-4B4C-B34D-410A908D96EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,6 +6,11 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
+    using System.Linq;
+
+    using Spritely.Recipes;
+
     /// <summary>
     /// Kinds of databases.
     /// </summary>

@@ -65,7 +65,7 @@ namespace Naos.Database.Mongo
                 activity.Trace(output);
 
                 activity.Trace(() => Invariant($"Creating backup file '{backupFilePath}' from '{backupToPath}'"));
-                var archivedDirectory = await archiver.ArchiveDirectory(backupToPath, backupFilePath, false, Encoding.UTF8);
+                var archivedDirectory = await archiver.ArchiveDirectoryAsync(backupToPath, backupFilePath, false, Encoding.UTF8);
                 new { archivedDirectory }.Must().NotBeNull().OrThrowFirstFailure();
 
                 activity.Trace(() => Invariant($"Cleaning up by removing temp directory '{backupToPath}'"));
@@ -111,7 +111,7 @@ namespace Naos.Database.Mongo
                 var archivedDirectory = new ArchivedDirectory(directoryArchiveKind, archiveCompressionKind, backupFilePath, false, Encoding.UTF8);
 
                 activity.Trace(() => Invariant($"Inflating backup file '{backupFilePath}' to '{inflatedBackupFilePath}'"));
-                await archiver.RestoreDirectory(archivedDirectory, inflatedBackupFilePath);
+                await archiver.RestoreDirectoryAsync(archivedDirectory, inflatedBackupFilePath);
 
                 var exePath = Path.Combine(mongoUtilityDirectory, "mongorestore.exe");
                 activity.Trace(() => Invariant($"Restoring database '{databaseName}' from '{inflatedBackupFilePath}' using '{exePath}'"));

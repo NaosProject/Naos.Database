@@ -14,6 +14,7 @@ namespace Naos.Database.Migrator.Console
     using CLAP;
 
     using Naos.Database.Migrator;
+    using Naos.Logging.Domain;
 
     using OBeautifulCode.Reflection.Recipes;
 
@@ -53,7 +54,7 @@ namespace Naos.Database.Migrator.Console
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug,
             [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment)
         {
-            CommonSetup(debug, environment);
+            CommonSetup(debug, environment, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None) }));
 
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
@@ -64,9 +65,10 @@ namespace Naos.Database.Migrator.Console
                 throw new ArgumentException("Path to migration assembly: " + assemblyPath + " does not exist.", nameof(assemblyPath));
             }
 
-            if (string.IsNullOrEmpty(dependentAssemblyPath))
+            if (!string.IsNullOrEmpty(dependentAssemblyPath))
             {
-                using (var loader = AssemblyLoader.CreateAndLoadFromDirectory(dependentAssemblyPath))
+                // need to run loose because FluentMigrator doesn't play nice...
+                using (var loader = AssemblyLoader.CreateAndLoadFromDirectory(dependentAssemblyPath, suppressFileLoadException: true, suppressBadImageFormatException: true))
                 {
                     foreach (var fileToAssembly in loader.FilePathToAssemblyMap)
                     {
@@ -113,7 +115,7 @@ namespace Naos.Database.Migrator.Console
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug,
             [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment)
         {
-            CommonSetup(debug, environment);
+            CommonSetup(debug, environment, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None) }));
 
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
@@ -126,9 +128,10 @@ namespace Naos.Database.Migrator.Console
 
             Console.WriteLine(string.Empty);
 
-            if (string.IsNullOrEmpty(dependentAssemblyPath))
+            if (!string.IsNullOrEmpty(dependentAssemblyPath))
             {
-                using (var loader = AssemblyLoader.CreateAndLoadFromDirectory(dependentAssemblyPath))
+                // need to run loose because FluentMigrator doesn't play nice...
+                using (var loader = AssemblyLoader.CreateAndLoadFromDirectory(dependentAssemblyPath, suppressFileLoadException: true, suppressBadImageFormatException: true))
                 {
                     foreach (var fileToAssembly in loader.FilePathToAssemblyMap)
                     {

@@ -7,7 +7,6 @@
 namespace Naos.Database.Migrator.Console
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
     using System.Reflection;
 
@@ -75,7 +74,7 @@ namespace Naos.Database.Migrator.Console
                         Console.WriteLine(Invariant($"Loaded - {fileToAssembly.Key} - {fileToAssembly.Value}"));
                     }
 
-                    var assembly = Assembly.LoadFile(assemblyPath);
+                    var assembly = loader.FilePathToAssemblyMap[assemblyPath];
                     MigrationExecutor.Up(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
                 }
             }
@@ -138,7 +137,7 @@ namespace Naos.Database.Migrator.Console
                         Console.WriteLine(Invariant($"Loaded - {fileToAssembly.Key} - {fileToAssembly.Value}"));
                     }
 
-                    var assembly = Assembly.LoadFile(assemblyPath);
+                    var assembly = loader.FilePathToAssemblyMap[assemblyPath];
                     MigrationExecutor.Down(assembly, connectionString, databaseName, targetVersion, Console.WriteLine, timeout, applicationContext);
                 }
             }

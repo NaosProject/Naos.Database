@@ -12,7 +12,6 @@ namespace Naos.Database.SqlServer
     using System.IO;
     using System.Linq;
 
-    using Microsoft.SqlServer.Management.Common;
     using Microsoft.SqlServer.Management.Smo;
 
     using Naos.Database.Domain;
@@ -80,7 +79,7 @@ namespace Naos.Database.SqlServer
         /// <param name="logServerInfoMessages">Optional value indicating whether or not to wire up <see cref="Its.Log" /> to the <see cref="SqlConnection.InfoMessage" /> event; DEFAULT is true.</param>
         /// <param name="scrubScript">Value indicating whether or not to scrub the script to make it more readable and remove issues that prvent running.</param>
         /// <returns>Collection of scripted objects matching the provided names.</returns>
-        public static IReadOnlyList<ScriptedObject> ScriptObjectsFromDatabase(string connectionString, IReadOnlyCollection<string> objectNames, bool logServerInfoMessages = true, bool scrubScript = true)
+        public static System.Collections.Generic.IReadOnlyList<ScriptedObject> ScriptObjectsFromDatabase(string connectionString, System.Collections.Generic.IReadOnlyCollection<string> objectNames, bool logServerInfoMessages = true, bool scrubScript = true)
         {
             var ret = new List<ScriptedObject>();
             void Logic(Database database)

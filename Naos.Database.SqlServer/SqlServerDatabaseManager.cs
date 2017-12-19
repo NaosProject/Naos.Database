@@ -321,79 +321,84 @@ namespace Naos.Database.SqlServer
             {
                 PutDatabaseInSingleUserMode(connection, currentConfiguration.DatabaseName, timeout);
 
-                if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
+                try
                 {
-                    var renameDatabaseText = @"ALTER DATABASE " + currentConfiguration.DatabaseName + " MODIFY NAME = "
-                                             + newConfiguration.DatabaseName;
-                    connection.Execute(renameDatabaseText, null, null, (int?)timeout.TotalSeconds);
-                }
+                    if (currentConfiguration.DatabaseName != newConfiguration.DatabaseName)
+                    {
+                        var renameDatabaseText = @"ALTER DATABASE " + currentConfiguration.DatabaseName + " MODIFY NAME = "
+                                                 + newConfiguration.DatabaseName;
+                        connection.Execute(renameDatabaseText, null, null, (int?)timeout.TotalSeconds);
+                    }
 
-                if ((currentConfiguration.DataFileLogicalName != newConfiguration.DataFileLogicalName)
-                    && (currentConfiguration.DataFilePath != newConfiguration.DataFilePath))
-                {
-                    var updateDataFileText =
-                        Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
+                    if ((currentConfiguration.DataFileLogicalName != newConfiguration.DataFileLogicalName)
+                        && (currentConfiguration.DataFilePath != newConfiguration.DataFilePath))
+                    {
+                        var updateDataFileText =
+                            Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
                         NAME = '{currentConfiguration.DataFileLogicalName}',
                         NEWNAME = '{newConfiguration.DataFileLogicalName}',
                         FILENAME = '{newConfiguration.DataFilePath}')");
-                    connection.Execute(updateDataFileText, null, null, (int?)timeout.TotalSeconds);
-                }
+                        connection.Execute(updateDataFileText, null, null, (int?)timeout.TotalSeconds);
+                    }
 
-                if ((currentConfiguration.LogFileLogicalName != newConfiguration.LogFileLogicalName)
-                    && (currentConfiguration.LogFilePath != newConfiguration.LogFilePath))
-                {
-                    var updateLogFileText =
-                        Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
+                    if ((currentConfiguration.LogFileLogicalName != newConfiguration.LogFileLogicalName)
+                        && (currentConfiguration.LogFilePath != newConfiguration.LogFilePath))
+                    {
+                        var updateLogFileText =
+                            Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (
                         NAME = '{currentConfiguration.LogFileLogicalName}',
                         NEWNAME = '{newConfiguration.LogFileLogicalName}',
                         FILENAME = '{newConfiguration.LogFilePath}')");
-                    connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
-                }
+                        connection.Execute(updateLogFileText, null, null, (int?)timeout.TotalSeconds);
+                    }
 
-                if ((newConfiguration.RecoveryMode != RecoveryMode.Unspecified) && (currentConfiguration.RecoveryMode != newConfiguration.RecoveryMode))
+                    if ((newConfiguration.RecoveryMode != RecoveryMode.Unspecified) && (currentConfiguration.RecoveryMode != newConfiguration.RecoveryMode))
+                    {
+                        SetRecoveryModeAsync(connection, newConfiguration.DatabaseName, newConfiguration.RecoveryMode, timeout).Wait();
+                    }
+
+                    if (newConfiguration.DataFileMaxSizeInKb != currentConfiguration.DataFileMaxSizeInKb)
+                    {
+                        var maxSize = newConfiguration.DataFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : Invariant($"{newConfiguration.DataFileMaxSizeInKb}KB");
+                        var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.DataFileLogicalName}', MAXSIZE = {maxSize})");
+                        connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
+                    }
+
+                    if (newConfiguration.DataFileCurrentSizeInKb != currentConfiguration.DataFileCurrentSizeInKb)
+                    {
+                        var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.DataFileLogicalName}', SIZE = {newConfiguration.DataFileCurrentSizeInKb}KB)");
+                        connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
+                    }
+
+                    if (newConfiguration.DataFileGrowthSizeInKb != currentConfiguration.DataFileGrowthSizeInKb)
+                    {
+                        var updateFileGrowthText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.DataFileLogicalName}', FILEGROWTH = {newConfiguration.DataFileGrowthSizeInKb}KB)");
+                        connection.Execute(updateFileGrowthText, null, null, (int?)timeout.TotalSeconds);
+                    }
+
+                    if (newConfiguration.LogFileMaxSizeInKb != currentConfiguration.LogFileMaxSizeInKb)
+                    {
+                        var maxSize = newConfiguration.LogFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : Invariant($"{newConfiguration.LogFileMaxSizeInKb}KB");
+                        var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.LogFileLogicalName}', MAXSIZE = {maxSize})");
+                        connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
+                    }
+
+                    if (newConfiguration.LogFileCurrentSizeInKb != currentConfiguration.LogFileCurrentSizeInKb)
+                    {
+                        var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.LogFileLogicalName}', SIZE = {newConfiguration.LogFileCurrentSizeInKb}KB)");
+                        connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
+                    }
+
+                    if (newConfiguration.LogFileGrowthSizeInKb != currentConfiguration.LogFileGrowthSizeInKb)
+                    {
+                        var updateFileGrowthText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.LogFileLogicalName}', FILEGROWTH = {newConfiguration.LogFileGrowthSizeInKb}KB)");
+                        connection.Execute(updateFileGrowthText, null, null, (int?)timeout.TotalSeconds);
+                    }
+                }
+                finally
                 {
-                    SetRecoveryModeAsync(connection, newConfiguration.DatabaseName, newConfiguration.RecoveryMode, timeout).Wait();
+                    PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName, timeout);
                 }
-
-                if (newConfiguration.DataFileMaxSizeInKb != currentConfiguration.DataFileMaxSizeInKb)
-                {
-                    var maxSize = newConfiguration.DataFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : Invariant($"{newConfiguration.DataFileMaxSizeInKb}KB");
-                    var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.DataFileLogicalName}', MAXSIZE = {maxSize})");
-                    connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
-                }
-
-                if (newConfiguration.DataFileCurrentSizeInKb != currentConfiguration.DataFileCurrentSizeInKb)
-                {
-                    var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.DataFileLogicalName}', SIZE = {newConfiguration.DataFileCurrentSizeInKb}KB)");
-                    connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
-                }
-
-                if (newConfiguration.DataFileGrowthSizeInKb != currentConfiguration.DataFileGrowthSizeInKb)
-                {
-                    var updateFileGrowthText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.DataFileLogicalName}', FILEGROWTH = {newConfiguration.DataFileGrowthSizeInKb}KB)");
-                    connection.Execute(updateFileGrowthText, null, null, (int?)timeout.TotalSeconds);
-                }
-
-                if (newConfiguration.LogFileMaxSizeInKb != currentConfiguration.LogFileMaxSizeInKb)
-                {
-                    var maxSize = newConfiguration.LogFileMaxSizeInKb == Constants.InfinityMaxSize ? "UNLIMITED" : Invariant($"{newConfiguration.LogFileMaxSizeInKb}KB");
-                    var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.LogFileLogicalName}', MAXSIZE = {maxSize})");
-                    connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
-                }
-
-                if (newConfiguration.LogFileCurrentSizeInKb != currentConfiguration.LogFileCurrentSizeInKb)
-                {
-                    var updateFileSizeText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.LogFileLogicalName}', SIZE = {newConfiguration.LogFileCurrentSizeInKb}KB)");
-                    connection.Execute(updateFileSizeText, null, null, (int?)timeout.TotalSeconds);
-                }
-
-                if (newConfiguration.LogFileGrowthSizeInKb != currentConfiguration.LogFileGrowthSizeInKb)
-                {
-                    var updateFileGrowthText = Invariant($@"ALTER DATABASE {newConfiguration.DatabaseName} MODIFY FILE (NAME = '{newConfiguration.LogFileLogicalName}', FILEGROWTH = {newConfiguration.LogFileGrowthSizeInKb}KB)");
-                    connection.Execute(updateFileGrowthText, null, null, (int?)timeout.TotalSeconds);
-                }
-
-                PutDatabaseIntoMultiUserMode(connection, newConfiguration.DatabaseName, timeout);
             }
 
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, currentConfiguration.DatabaseName); // make sure it's going to take the only connection when it goes in single user

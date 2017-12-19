@@ -19,42 +19,43 @@ namespace Naos.Database.Test
     {
         // ReSharper disable InconsistentNaming
         [Fact]
-        public static void ThrowIfNotAlphanumericOrSpace_TextToCheckIsNull_ThrowsArgumentNullException()
+        public static void ThrowIfNotAlphanumericOrSpaceOrUnderscore_TextToCheckIsNull_ThrowsArgumentNullException()
         {
             // Arrange, Act, Assert
-            Assert.Throws<ArgumentNullException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(null));
+            Assert.Throws<ArgumentNullException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(null));
         }
 
         [Fact]
-        public static void ThrowIfNotAlphanumericOrSpace_TextIsEmpty_DoesNotThrow()
+        public static void ThrowIfNotAlphanumericOrSpaceOrUnderscore_TextIsEmpty_DoesNotThrow()
         {
             // Arrange, Act, Assert
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(string.Empty);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "AlphaNumeric", Justification = "Spelling/name is correct.")]
-        [Fact]
-        public static void ThrowIfNotAlphanumericOrSpace_TextIsNotAlphaNumericOrWhiteSpace_ThrowsArgumentException()
-        {
-            // Arrange, Act, Assert
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(" \r "));
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(" \n "));
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(" \t "));
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("abc*"));
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("%asdf"));
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("("));
-            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("abc123$abc1234"));
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(string.Empty);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "AlphaNumeric", Justification = "Spelling/name is correct.")]
         [Fact]
-        public static void ThrowIfNotAlphanumericOrSpace_TextIsAlphaNumericOrWhiteSpace_DoesNotThrow()
+        public static void ThrowIfNotAlphanumericOrSpaceOrUnderscore_TextIsNotAlphaNumericOrWhiteSpace_ThrowsArgumentException()
         {
             // Arrange, Act, Assert
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(" ");
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("a");
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("9");
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace("abcdefghijklmnopqrstuvwxyz 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(" \r "));
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(" \n "));
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(" \t "));
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("abc*"));
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("%asdf"));
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("("));
+            Assert.Throws<ArgumentException>(() => SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("abc123$abc1234"));
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "AlphaNumeric", Justification = "Spelling/name is correct.")]
+        [Fact]
+        public static void ThrowIfNotAlphanumericOrSpaceOrUnderscore_TextIsAlphaNumericOrWhiteSpaceOrUnderscore_DoesNotThrow()
+        {
+            // Arrange, Act, Assert
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(" ");
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("a");
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("9");
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("abcdefghijklmnopqrstuvwxyz 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore("abcdefghijklmnopqrstuvwxyz_1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         }
 
         // ReSharper restore InconsistentNaming

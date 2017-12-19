@@ -18,15 +18,15 @@ namespace Naos.Database.SqlServer
     public static class SqlInjectorChecker
     {
         /// <summary>
-        /// Throws an ArgumentException if input has any characters that are not alpha-numeric nor the space character.
+        /// Throws an <see cref="ArgumentException"/> if input has any characters that are not alpha-numeric nor the space character nor the underscore character.
         /// </summary>
         /// <param name="textToCheck">Text to check.</param>
-        public static void ThrowIfNotAlphanumericOrSpace(string textToCheck)
+        public static void ThrowIfNotAlphanumericOrSpaceOrUnderscore(string textToCheck)
         {
             new { textToCheck }.Must().NotBeNull().OrThrow();
 
-            const string Pattern = @"[a-zA-Z0-9 ]*";
-            Match match = Regex.Match(textToCheck, Pattern);
+            const string pattern = @"[a-zA-Z0-9 _]*";
+            Match match = Regex.Match(textToCheck, pattern);
             if (match.Value != textToCheck)
             {
                 throw new ArgumentException("The provided input: " + textToCheck + " is not alphanumeric and is not valid.");

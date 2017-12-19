@@ -49,7 +49,7 @@ namespace Naos.Database.SqlServer
                     throw new ArgumentException("Credential cannot be null or whitespace when Device is URL");
                 }
 
-                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Credential);
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(backupDetails.Credential);
             }
 
             if (!string.IsNullOrWhiteSpace(backupDetails.Name))
@@ -80,7 +80,7 @@ namespace Naos.Database.SqlServer
                     throw new ArgumentException("EncryptorName is required when any Cipher != NoEncryption.");
                 }
 
-                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.EncryptorName);
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(backupDetails.EncryptorName);
             }
 
             if (backupDetails.ChecksumOption == ChecksumOption.Checksum)
@@ -93,12 +93,12 @@ namespace Naos.Database.SqlServer
 
             if (!string.IsNullOrWhiteSpace(backupDetails.Name))
             {
-                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Name);
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(backupDetails.Name);
             }
 
             if (!string.IsNullOrWhiteSpace(backupDetails.Description))
             {
-                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(backupDetails.Description);
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(backupDetails.Description);
             }
         }
 
@@ -118,7 +118,7 @@ namespace Naos.Database.SqlServer
                     throw new ArgumentException("Credential cannot be null or whitespace when Device is URL");
                 }
 
-                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(restoreDetails.Credential);
+                SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(restoreDetails.Credential);
             }
 
             if (!string.IsNullOrWhiteSpace(restoreDetails.DataFilePath))

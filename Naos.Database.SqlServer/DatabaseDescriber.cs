@@ -35,9 +35,9 @@ namespace Naos.Database.SqlServer
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(tableName);
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(tableSchema);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(tableName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(tableSchema);
 
             var sqlParams = new
                                 {

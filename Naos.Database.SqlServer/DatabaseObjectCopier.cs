@@ -89,7 +89,7 @@ namespace Naos.Database.SqlServer
                     {
                         foreach (var table in tables)
                         {
-                            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(table.Name);
+                            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(table.Name);
                             using (var transaction = targetConnection.BeginTransaction("BcpTable-" + table.Name))
                             {
                                 using (var bcp = new SqlBulkCopy(targetConnection, copyOptions, transaction) { DestinationTableName = table.Name })

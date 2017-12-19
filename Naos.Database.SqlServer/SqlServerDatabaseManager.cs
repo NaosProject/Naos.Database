@@ -159,7 +159,7 @@ namespace Naos.Database.SqlServer
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET offline WITH ROLLBACK IMMEDIATE";
 
             void Logic(SqlConnection connection)
@@ -186,7 +186,7 @@ namespace Naos.Database.SqlServer
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET online";
 
             void Logic(SqlConnection connection)
@@ -416,7 +416,7 @@ namespace Naos.Database.SqlServer
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
             var realConnectionString = ConnectionStringHelper.SpecifyInitialCatalogInConnectionString(connectionString, databaseName); // make sure it's going to take the only connection when it goes in single user
             var commandText = "USE master; DROP DATABASE " + databaseName;
 
@@ -959,7 +959,7 @@ namespace Naos.Database.SqlServer
             new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
             new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
 
             var commandText = $"SELECT recovery_model_desc FROM sys.databases WHERE name = '{databaseName}'";
             RecoveryMode recoveryMode = RecoveryMode.Unspecified;
@@ -993,7 +993,7 @@ namespace Naos.Database.SqlServer
                     throw new NotSupportedException($"Unsupported recovery mode to set: {recoveryMode}");
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
 
             var commandText = "ALTER DATABASE " + databaseName + " SET RECOVERY " + modeMixIn;
 
@@ -1002,10 +1002,10 @@ namespace Naos.Database.SqlServer
 
         private static void ThrowIfBad(DatabaseConfiguration configuration)
         {
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.DatabaseName);
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.DataFileLogicalName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(configuration.DatabaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(configuration.DataFileLogicalName);
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.DataFilePath);
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(configuration.LogFileLogicalName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(configuration.LogFileLogicalName);
             SqlInjectorChecker.ThrowIfNotValidPath(configuration.LogFilePath);
         }
 
@@ -1025,7 +1025,7 @@ namespace Naos.Database.SqlServer
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE";
             connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
         }
@@ -1037,7 +1037,7 @@ namespace Naos.Database.SqlServer
                 timeout = TimeSpan.FromSeconds(30);
             }
 
-            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpace(databaseName);
+            SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
             var commandText = "ALTER DATABASE " + databaseName + " SET MULTI_USER WITH ROLLBACK IMMEDIATE";
             connection.Execute(commandText, null, null, (int?)timeout.TotalSeconds);
         }

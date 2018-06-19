@@ -10,7 +10,7 @@ namespace Naos.Database.Mongo
 
     using Naos.Database.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Extension methods for types in the namespace.
@@ -23,8 +23,8 @@ namespace Naos.Database.Mongo
         /// <param name="backupDetails">The backup details to validate.</param>
         public static void ThrowIfInvalid(this BackupDetails backupDetails)
         {
-            new { backupDetails }.Must().NotBeNull().OrThrow();
-            new { backupDetails.BackupTo }.Must().NotBeNull().OrThrow();
+            new { backupDetails }.Must().NotBeNull();
+            new { backupDetails.BackupTo }.Must().NotBeNull();
 
             if (!string.IsNullOrWhiteSpace(backupDetails.Name))
             {
@@ -84,8 +84,8 @@ namespace Naos.Database.Mongo
         /// <param name="restoreDetails">The restore details to validate.</param>
         public static void ThrowIfInvalid(this RestoreDetails restoreDetails)
         {
-            new { restoreDetails }.Must().NotBeNull().OrThrow();
-            new { restoreDetails.RestoreFrom }.Must().NotBeNull().OrThrow();
+            new { restoreDetails }.Must().NotBeNull();
+            new { restoreDetails.RestoreFrom }.Must().NotBeNull();
 
             if (restoreDetails.ChecksumOption != ChecksumOption.NoChecksum)
             {

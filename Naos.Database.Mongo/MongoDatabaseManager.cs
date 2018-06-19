@@ -19,7 +19,7 @@ namespace Naos.Database.Mongo
     using Naos.FileJanitor.Core;
     using Naos.FileJanitor.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     using static System.FormattableString;
 
@@ -44,9 +44,9 @@ namespace Naos.Database.Mongo
             string workingDirectory,
             string mongoUtilityDirectory)
         {
-            new { connectionDefinition }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { backupDetails }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionDefinition }.Must().NotBeNull();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { backupDetails }.Must().NotBeNull();
 
             backupDetails.ThrowIfInvalid();
 
@@ -66,7 +66,7 @@ namespace Naos.Database.Mongo
 
                 activity.Trace(() => Invariant($"Creating backup file '{backupFilePath}' from '{backupToPath}'"));
                 var archivedDirectory = await archiver.ArchiveDirectoryAsync(backupToPath, backupFilePath, false, Encoding.UTF8);
-                new { archivedDirectory }.Must().NotBeNull().OrThrowFirstFailure();
+                new { archivedDirectory }.Must().NotBeNull();
 
                 activity.Trace(() => Invariant($"Cleaning up by removing temp directory '{backupToPath}'"));
                 Directory.Delete(backupToPath, true);
@@ -93,9 +93,9 @@ namespace Naos.Database.Mongo
             string workingDirectory,
             string mongoUtilityDirectory)
         {
-            new { connectionDefinition }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { restoreDetails }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionDefinition }.Must().NotBeNull();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { restoreDetails }.Must().NotBeNull();
 
             restoreDetails.ThrowIfInvalid();
 

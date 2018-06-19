@@ -14,7 +14,7 @@ namespace Naos.Database.SqlServer
 
     using Naos.Database.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Class to script objects from database.
@@ -75,9 +75,9 @@ namespace Naos.Database.SqlServer
         /// <returns>Scripted object as a string.</returns>
         public static string Script(IScriptable scriptableObject, ScriptingOptions dropOptions, ScriptingOptions createOptions, bool scrubScript)
         {
-            new { scriptableObject }.Must().NotBeNull().OrThrowFirstFailure();
-            new { dropOptions }.Must().NotBeNull().OrThrowFirstFailure();
-            new { createOptions }.Must().NotBeNull().OrThrowFirstFailure();
+            new { scriptableObject }.Must().NotBeNull();
+            new { dropOptions }.Must().NotBeNull();
+            new { createOptions }.Must().NotBeNull();
 
             StringCollection dropScript = null;
             if (dropOptions != null)
@@ -105,7 +105,7 @@ namespace Naos.Database.SqlServer
         /// <returns>Scripted object as a string.</returns>
         public static ScriptedObject ScriptToObject(ScriptableObject scriptableObject, bool scrubScript = true)
         {
-            new { scriptableObject }.Must().NotBeNull().OrThrowFirstFailure();
+            new { scriptableObject }.Must().NotBeNull();
 
             var dropOptions = BuildDefaultDropScriptingOptions();
             var createOptions = BuildDefaultCreateScriptingOptions(scriptableObject.ObjectToScript);

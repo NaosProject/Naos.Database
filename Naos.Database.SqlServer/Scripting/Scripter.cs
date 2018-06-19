@@ -16,9 +16,7 @@ namespace Naos.Database.SqlServer
 
     using Naos.Database.Domain;
 
-    using Spritely.Recipes;
-
-    using static System.FormattableString;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Will create a directory under root for the database, will script everything possible under the appropriate of three directories; script, sproc, table.
@@ -139,7 +137,7 @@ namespace Naos.Database.SqlServer
         /// <returns>Collection of scriptable objects.</returns>
         public static IReadOnlyCollection<ScriptableObject> GetAllScriptableObjects(this Database database)
         {
-            new { database }.Must().NotBeNull().OrThrowFirstFailure();
+            new { database }.Must().NotBeNull();
 
             var ret = new List<ScriptableObject>();
 

@@ -11,7 +11,7 @@ namespace Naos.Database.SqlServer
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Microsoft Word XML implementation of <see cref="IDocumentGenerator" />.
@@ -53,7 +53,7 @@ namespace Naos.Database.SqlServer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = "Keepign lower case.")]
         public void AddEntry(string entry, int size, bool bold, Alignment alignment)
         {
-            new { entry }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { entry }.Must().NotBeNullNorWhiteSpace();
 
             var marginInPoints = this.margin;
             if (bold)
@@ -73,7 +73,7 @@ namespace Naos.Database.SqlServer
         /// <inheritdoc cref="IDocumentGenerator" />
         public void AddTable(string name, string[,] values, int[,] merges)
         {
-            new { values }.Must().NotBeNull().OrThrowFirstFailure();
+            new { values }.Must().NotBeNull();
 
             var rowCount = values.GetLength(0);
             var columnCount = values.GetLength(1);
@@ -181,7 +181,7 @@ namespace Naos.Database.SqlServer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "0#", Justification = "Specifically using a multi-dimensional array.")]
         private static bool InRowMergeRange(int[,] merges, int row, int column)
         {
-            new { merges }.Must().NotBeNull().OrThrowFirstFailure();
+            new { merges }.Must().NotBeNull();
 
             // only works for column spans, not row spans
             bool ret = false;

@@ -7,7 +7,6 @@
 namespace Naos.Database.MessageBus.Handler
 {
     using System;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.FileJanitor.MessageBus.Scheduler;
     using Naos.MessageBus.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     using static System.FormattableString;
 
@@ -47,9 +46,9 @@ namespace Naos.Database.MessageBus.Handler
         /// <returns>Task to support async await calling.</returns>
         public async Task HandleAsync(BackupDatabaseMessage message, DatabaseMessageHandlerSettings settings)
         {
-            new { message }.Must().NotBeNull().OrThrowFirstFailure();
-            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
-            new { message.DatabaseKind }.Must().NotBeEqualTo(DatabaseKind.Invalid).OrThrowFirstFailure();
+            new { message }.Must().NotBeNull();
+            new { settings }.Must().NotBeNull();
+            new { message.DatabaseKind }.Must().NotBeEqualTo(DatabaseKind.Invalid);
 
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {

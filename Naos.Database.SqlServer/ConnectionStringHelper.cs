@@ -8,7 +8,7 @@ namespace Naos.Database.SqlServer
 {
     using System.Data.SqlClient;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Utility class to assist in connection string manipulation operations.
@@ -23,8 +23,8 @@ namespace Naos.Database.SqlServer
         /// <returns>An adjusted connection string, specifying the provided database as the initial catalog.</returns>
         public static string SpecifyInitialCatalogInConnectionString(string connectionString, string databaseName)
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             var builder = new SqlConnectionStringBuilder(connectionString)
                               {
@@ -44,7 +44,7 @@ namespace Naos.Database.SqlServer
         /// <returns>Built connection string.</returns>
         public static string BuildConnectionString(string serverName, string database = null, string userName = null, string password = null)
         {
-            new { serverName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { serverName }.Must().NotBeNullNorWhiteSpace();
 
             var builder = new SqlConnectionStringBuilder
                               {
@@ -69,7 +69,7 @@ namespace Naos.Database.SqlServer
         /// <returns>Datbase name.</returns>
         public static string GetDatabaseNameFromConnectionString(string connectionString)
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
 
             return new SqlConnectionStringBuilder(connectionString).InitialCatalog;
         }

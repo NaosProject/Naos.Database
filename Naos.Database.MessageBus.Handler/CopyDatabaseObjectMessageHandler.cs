@@ -6,18 +6,16 @@
 
 namespace Naos.Database.MessageBus.Handler
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Its.Configuration;
-    using Its.Log.Instrumentation;
 
     using Naos.Database.Domain;
     using Naos.Database.MessageBus.Scheduler;
     using Naos.Database.SqlServer;
     using Naos.MessageBus.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Naos.MessageBus handler for Share.
@@ -27,11 +25,11 @@ namespace Naos.Database.MessageBus.Handler
         /// <inheritdoc cref="MessageHandlerBase{T}" />
         public override async Task HandleAsync(CopyDatabaseObjectMessage message)
         {
-            new { message }.Must().NotBeNull().OrThrowFirstFailure();
-            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer).OrThrowFirstFailure();
+            new { message }.Must().NotBeNull();
+            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer);
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
-            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
+            new { settings }.Must().NotBeNull();
 
             var sourceDatabaseConnectionString = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.SourceDatabaseName.ToUpperInvariant()].ToSqlServerConnectionString();
             var targetDatabaseConnectionString = settings.DatabaseNameToLocalhostConnectionDefinitionMap[message.TargetDatabaseName.ToUpperInvariant()].ToSqlServerConnectionString();

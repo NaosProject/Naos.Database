@@ -18,7 +18,7 @@ namespace Naos.Database.MessageBus.Handler
     using Naos.Database.SqlServer;
     using Naos.MessageBus.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Naos.MessageBus handler for RestoreMessages.
@@ -42,9 +42,9 @@ namespace Naos.Database.MessageBus.Handler
             DeleteDatabaseMessage message,
             DatabaseMessageHandlerSettings settings)
         {
-            new { message }.Must().NotBeNull().OrThrowFirstFailure();
-            new { settings }.Must().NotBeNull().OrThrowFirstFailure();
-            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer).OrThrowFirstFailure();
+            new { message }.Must().NotBeNull();
+            new { settings }.Must().NotBeNull();
+            new { message.DatabaseKind }.Must().BeEqualTo(DatabaseKind.SqlServer);
 
             using (var activity = Log.Enter(() => new { Message = message, DatabaseName = message.DatabaseName }))
             {

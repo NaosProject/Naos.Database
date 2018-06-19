@@ -53,7 +53,7 @@ namespace Naos.Database.Migrator.Console
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug,
             [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment)
         {
-            CommonSetup(debug, environment, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None) }));
+            CommonSetup(debug, environment, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None) }));
 
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
@@ -114,7 +114,7 @@ namespace Naos.Database.Migrator.Console
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug,
             [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment)
         {
-            CommonSetup(debug, environment, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None) }));
+            CommonSetup(debug, environment, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None) }));
 
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 

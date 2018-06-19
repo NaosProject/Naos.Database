@@ -40,7 +40,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
             [Required] [Aliases("file")] [Description("Path to create back at.")] string targetFilePath,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None), }));
+            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];
@@ -81,7 +81,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
             [Aliases("temp")] [Description("Path to write temp file (DEFAULT is parent of targetFilePath).")] string workingDirectory,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None), }));
+            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];
@@ -124,7 +124,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
             [Required] [Aliases("data")] [Description("Directory housing data and log files.")] string dataDirectory,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None), }));
+            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];
@@ -169,7 +169,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
             [Aliases("temp")] [Description("Path to write temp file (DEFAULT is parent of sourceFilePath).")] string workingDirectory,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogProcessorSettings(new[] { new ConsoleLogConfiguration(LogContexts.All, LogContexts.None), }));
+            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];

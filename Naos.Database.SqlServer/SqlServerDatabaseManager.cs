@@ -25,7 +25,7 @@ namespace Naos.Database.SqlServer
     using Naos.Database.Domain;
     using Naos.Recipes.RunWithRetry;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     using static System.FormattableString;
 
@@ -92,8 +92,8 @@ namespace Naos.Database.SqlServer
         /// <returns>Task for async.</returns>
         public static async Task RunOperationOnSqlConnectionAsync(this Func<SqlConnection, Task> asyncAction, string connectionString, bool logServerInfoMessages = true)
         {
-            new { asyncAction }.Must().NotBeNull().OrThrowFirstFailure();
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { asyncAction }.Must().NotBeNull();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
 
             using (var connection = OpenConnection(connectionString, logServerInfoMessages))
             {
@@ -111,8 +111,8 @@ namespace Naos.Database.SqlServer
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void PutDatabaseInSingleUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             void Logic(SqlConnection connection)
             {
@@ -132,8 +132,8 @@ namespace Naos.Database.SqlServer
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "MultiUser", Justification = "Spelling/name is correct.")]
         public static void PutDatabaseIntoMultiUserMode(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             void Logic(SqlConnection connection)
             {
@@ -151,8 +151,8 @@ namespace Naos.Database.SqlServer
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void TakeDatabaseOffline(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             if (timeout == default(TimeSpan))
             {
@@ -178,8 +178,8 @@ namespace Naos.Database.SqlServer
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void BringDatabaseOnline(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             if (timeout == default(TimeSpan))
             {
@@ -205,8 +205,8 @@ namespace Naos.Database.SqlServer
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void Create(string connectionString, DatabaseConfiguration configuration, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { configuration }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { configuration }.Must().NotBeNull();
 
             if (timeout == default(TimeSpan))
             {
@@ -252,7 +252,7 @@ namespace Naos.Database.SqlServer
         /// <returns>All databases from server.</returns>
         public static DatabaseConfiguration[] Retrieve(string connectionString, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
 
             if (timeout == default(TimeSpan))
             {
@@ -305,9 +305,9 @@ namespace Naos.Database.SqlServer
             DatabaseConfiguration newConfiguration,
             TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { currentConfiguration }.Must().NotBeNull().OrThrowFirstFailure();
-            new { newConfiguration }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { currentConfiguration }.Must().NotBeNull();
+            new { newConfiguration }.Must().NotBeNull();
 
             if (timeout == default(TimeSpan))
             {
@@ -413,8 +413,8 @@ namespace Naos.Database.SqlServer
         /// <param name="timeout">The command timeout (default is 30 seconds).</param>
         public static void Delete(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             if (timeout == default(TimeSpan))
             {
@@ -442,7 +442,7 @@ namespace Naos.Database.SqlServer
         /// <returns>Default location that the server will save data files to.</returns>
         public static string GetInstanceDefaultDataPath(string connectionString, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
 
             if (timeout == default(TimeSpan))
             {
@@ -468,7 +468,7 @@ namespace Naos.Database.SqlServer
         /// <returns>Default location that the server will save log files to.</returns>
         public static string GetInstanceDefaultLogPath(string connectionString, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
 
             if (timeout == default(TimeSpan))
             {
@@ -506,9 +506,9 @@ namespace Naos.Database.SqlServer
             BackupDetails backupDetails,
             TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { backupDetails }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { backupDetails }.Must().NotBeNull();
 
             BackupFullAsync(connectionString, databaseName, backupDetails, timeout).Wait();
         }
@@ -530,9 +530,9 @@ namespace Naos.Database.SqlServer
         /// <returns>Task to support async await calling.</returns>
         public static async Task BackupFullAsync(string connectionString, string databaseName, BackupDetails backupDetails, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { backupDetails }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { backupDetails }.Must().NotBeNull();
 
             backupDetails.ThrowIfInvalid();
 
@@ -713,9 +713,9 @@ namespace Naos.Database.SqlServer
             RestoreDetails restoreDetails,
             TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { restoreDetails }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { restoreDetails }.Must().NotBeNull();
 
             RestoreFullAsync(connectionString, databaseName, restoreDetails, timeout).Wait();
         }
@@ -734,13 +734,13 @@ namespace Naos.Database.SqlServer
             RestoreDetails restoreDetails,
             TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { restoreDetails }.Must().NotBeNull().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { restoreDetails }.Must().NotBeNull();
 
             // check parameters
-            new { connectionString, databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { restoreDetails }.Must().NotBeNull().OrThrow();
+            new { connectionString, databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { restoreDetails }.Must().NotBeNull();
 
             restoreDetails.ThrowIfInvalid();
 
@@ -935,9 +935,9 @@ namespace Naos.Database.SqlServer
         /// <returns>Task for async.</returns>
         public static async Task SetRecoveryModeAsync(string connectionString, string databaseName, RecoveryMode recoveryMode, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { recoveryMode }.Must().NotBeEqualTo(RecoveryMode.Unspecified).OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { recoveryMode }.Must().NotBeEqualTo(RecoveryMode.Unspecified);
 
             if (timeout == default(TimeSpan))
             {
@@ -961,8 +961,8 @@ namespace Naos.Database.SqlServer
         /// <returns>Recovery mode.</returns>
         public static async Task<RecoveryMode> GetRecoveryModeAsync(string connectionString, string databaseName, TimeSpan timeout = default(TimeSpan))
         {
-            new { connectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseName }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
 
             SqlInjectorChecker.ThrowIfNotAlphanumericOrSpaceOrUnderscore(databaseName);
 

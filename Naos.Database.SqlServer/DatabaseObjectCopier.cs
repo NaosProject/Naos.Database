@@ -19,7 +19,7 @@ namespace Naos.Database.SqlServer
 
     using Naos.Database.Domain;
 
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     using static System.FormattableString;
 
@@ -37,9 +37,9 @@ namespace Naos.Database.SqlServer
         /// <returns>Task for async.</returns>
         public static async Task CopyObjects(IReadOnlyList<string> orderedObjectNamesToCopy, string sourceDatabaseConnectionString, string targetDatabaseConnectionString)
         {
-            new { orderedObjectNamesToCopy }.Must().NotBeNull().And().NotBeEmptyEnumerable<string>().OrThrowFirstFailure();
-            new { sourceDatabaseConnectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { targetDatabaseConnectionString }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
+            new { orderedObjectNamesToCopy }.Must().NotBeNullNorEmptyEnumerableNorContainAnyNulls();
+            new { sourceDatabaseConnectionString }.Must().NotBeNullNorWhiteSpace();
+            new { targetDatabaseConnectionString }.Must().NotBeNullNorWhiteSpace();
 
             var scriptedObjects = Scripter.ScriptObjectsFromDatabase(sourceDatabaseConnectionString, orderedObjectNamesToCopy);
 

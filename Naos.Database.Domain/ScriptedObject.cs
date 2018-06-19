@@ -6,7 +6,7 @@
 
 namespace Naos.Database.Domain
 {
-    using Spritely.Recipes;
+    using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Model object to hold a scripted object that can be applied to a different database.
@@ -22,10 +22,10 @@ namespace Naos.Database.Domain
         /// <param name="createScript">Script to create the object.</param>
         public ScriptedObject(string name, ScriptableObjectType databaseObjectType, string dropScript, string createScript)
         {
-            new { name }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { dropScript }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { createScript }.Must().NotBeNull().And().NotBeWhiteSpace().OrThrowFirstFailure();
-            new { databaseObjectType }.Must().NotBeEqualTo(ScriptableObjectType.Invalid).OrThrowFirstFailure();
+            new { name }.Must().NotBeNullNorWhiteSpace();
+            new { dropScript }.Must().NotBeNullNorWhiteSpace();
+            new { createScript }.Must().NotBeNullNorWhiteSpace();
+            new { databaseObjectType }.Must().NotBeEqualTo(ScriptableObjectType.Invalid);
 
             this.Name = name;
             this.DatabaseObjectType = databaseObjectType;

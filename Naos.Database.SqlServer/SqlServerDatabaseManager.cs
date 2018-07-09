@@ -739,7 +739,8 @@ namespace Naos.Database.SqlServer
             new { restoreDetails }.Must().NotBeNull();
 
             // check parameters
-            new { connectionString, databaseName }.Must().NotBeNullNorWhiteSpace();
+            new { connectionString }.Must().NotBeNullNorWhiteSpace();
+            new { databaseName }.Must().NotBeNullNorWhiteSpace();
             new { restoreDetails }.Must().NotBeNull();
 
             restoreDetails.ThrowIfInvalid();

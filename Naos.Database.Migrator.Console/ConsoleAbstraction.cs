@@ -13,7 +13,6 @@ namespace Naos.Database.Migrator.Console
     using CLAP;
 
     using Naos.Database.Migrator;
-    using Naos.Logging.Domain;
 
     using OBeautifulCode.Reflection.Recipes;
 
@@ -53,7 +52,7 @@ namespace Naos.Database.Migrator.Console
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug,
             [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment)
         {
-            CommonSetup(debug, environment, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None) }));
+            CommonSetup(debug, environment);
 
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 
@@ -114,7 +113,7 @@ namespace Naos.Database.Migrator.Console
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug,
             [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment)
         {
-            CommonSetup(debug, environment, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None) }));
+            CommonSetup(debug, environment);
 
             var timeout = TimeSpan.FromSeconds(timeoutInSeconds);
 

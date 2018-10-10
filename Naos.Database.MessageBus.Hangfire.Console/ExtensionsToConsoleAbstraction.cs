@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExtensionsToDefaultMessageBusConsoleAbstraction.cs" company="Naos">
+// <copyright file="ExtensionsToConsoleAbstraction.cs" company="Naos">
 //    Copyright (c) Naos 2017. All Rights Reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,6 +7,7 @@
 namespace Naos.Database.MessageBus.Hangfire.Console
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using CLAP;
@@ -26,21 +27,41 @@ namespace Naos.Database.MessageBus.Hangfire.Console
     /// <summary>
     /// Abstraction for use with <see cref="CLAP" /> to provide basic command line interaction.
     /// </summary>
-    public partial class DefaultMessageBusConsoleAbstraction
+    public partial class ConsoleAbstraction
     {
         /// <summary>
         /// Backup a database to a file.
         /// </summary>
         /// <param name="databaseName">Name of database.</param>
         /// <param name="targetFilePath">Path to create backup at.</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [Verb(Aliases = "backupsql", Description = "Backup MS SQL Server database.")]
         public static void BackupSqlDatabase(
             [Required] [Aliases("name")] [Description("Name of database.")] string databaseName,
             [Required] [Aliases("file")] [Description("Path to create back at.")] string targetFilePath,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            // Only do console logging since these are intended to be additions to the primary functionality of processing messages from a queue
+            CommonSetup(
+                debug,
+                environment,
+                new LogWritingSettings(
+                    new[]
+                    {
+                        new ConsoleLogConfig(
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>(),
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.String, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                                { LogItemKind.Object, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                            },
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.Exception, null },
+                            }),
+                    }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];
@@ -72,6 +93,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
         /// <param name="targetFilePath">Path to create backup at.</param>
         /// <param name="utilityPath">Path to find supporting utilities (only needed for Mongo kind - should have mongodump.exe and mongorestore.exe).</param>
         /// <param name="workingDirectory">Path to write temp file (DEFAULT is parent of targetFilePath).</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [Verb(Aliases = "backupmongo", Description = "Backup Mongo database.")]
         public static void BackupMongoDatabase(
@@ -79,9 +101,28 @@ namespace Naos.Database.MessageBus.Hangfire.Console
             [Required] [Aliases("file")] [Description("Path to create back at.")] string targetFilePath,
             [Aliases("utility")] [Description("Path to find supporting utilities (should have mongodump.exe & mongorestore.exe).")] string utilityPath,
             [Aliases("temp")] [Description("Path to write temp file (DEFAULT is parent of targetFilePath).")] string workingDirectory,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            // Only do console logging since these are intended to be additions to the primary functionality of processing messages from a queue
+            CommonSetup(
+                debug,
+                environment,
+                new LogWritingSettings(
+                    new[]
+                    {
+                        new ConsoleLogConfig(
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>(),
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.String, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                                { LogItemKind.Object, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                            },
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.Exception, null },
+                            }),
+                    }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];
@@ -116,15 +157,35 @@ namespace Naos.Database.MessageBus.Hangfire.Console
         /// <param name="databaseName">Name of database.</param>
         /// <param name="sourceFilePath">Path to create back at.</param>
         /// <param name="dataDirectory">Directory housing data and log files.</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [Verb(Aliases = "restoresql", Description = "Restore MS SQL Server database.")]
         public static void RestoreSqlDatabase(
             [Required] [Aliases("name")] [Description("Name of database.")] string databaseName,
             [Required] [Aliases("file")] [Description("Path to load backup from.")] string sourceFilePath,
             [Required] [Aliases("data")] [Description("Directory housing data and log files.")] string dataDirectory,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            // Only do console logging since these are intended to be additions to the primary functionality of processing messages from a queue
+            CommonSetup(
+                debug,
+                environment,
+                new LogWritingSettings(
+                    new[]
+                    {
+                        new ConsoleLogConfig(
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>(),
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.String, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                                { LogItemKind.Object, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                            },
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.Exception, null },
+                            }),
+                    }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];
@@ -160,6 +221,7 @@ namespace Naos.Database.MessageBus.Hangfire.Console
         /// <param name="sourceFilePath">Path to create back at.</param>
         /// <param name="utilityPath">Path to find supporting utilities (only needed for Mongo kind - should have mongodump.exe and mongorestore.exe).</param>
         /// <param name="workingDirectory">Path to write temp file (DEFAULT is parent of targetFilePath).</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [Verb(Aliases = "restoremongo", Description = "Restore Mongo database.")]
         public static void RestoreMongoDatabase(
@@ -167,9 +229,28 @@ namespace Naos.Database.MessageBus.Hangfire.Console
             [Required] [Aliases("file")] [Description("Path to load backup from.")] string sourceFilePath,
             [Aliases("utility")] [Description("Path to find supporting utilities (should have mongodump.exe & mongorestore.exe).")] string utilityPath,
             [Aliases("temp")] [Description("Path to write temp file (DEFAULT is parent of sourceFilePath).")] string workingDirectory,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            // Only do console logging since these are intended to be additions to the primary functionality of processing messages from a queue
+            CommonSetup(
+                debug,
+                environment,
+                new LogWritingSettings(
+                    new[]
+                    {
+                        new ConsoleLogConfig(
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>(),
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.String, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                                { LogItemKind.Object, new[] { LogItemOrigin.ItsLogEntryPosted } },
+                            },
+                            new Dictionary<LogItemKind, IReadOnlyCollection<LogItemOrigin>>
+                            {
+                                { LogItemKind.Exception, null },
+                            }),
+                    }));
 
             var settings = Settings.Get<DatabaseMessageHandlerSettings>();
             var connectionDefinition = settings.DatabaseNameToLocalhostConnectionDefinitionMap[databaseName.ToUpperInvariant()];

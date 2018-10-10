@@ -14,8 +14,6 @@ namespace Naos.Database.Console
     using Naos.Database.Domain;
     using Naos.Database.Mongo;
     using Naos.Database.SqlServer;
-    using Naos.Logging.Domain;
-    using Naos.Recipes.Configuration.Setup;
     using Naos.Recipes.RunWithRetry;
     using Naos.Serialization.Factory;
 
@@ -34,15 +32,17 @@ namespace Naos.Database.Console
         /// <param name="databaseName">Name of database.</param>
         /// <param name="connectionString">SQL Server connection string to the database.</param>
         /// <param name="targetFilePath">Path to create backup at.</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [Verb(Aliases = "backupsql", Description = "Backup MS SQL Server database.")]
         public static void BackupSqlDatabase(
             [Required] [Aliases("name")] [Description("Name of database.")] string databaseName,
             [Required] [Aliases("connection")] [Description("SQL Server connection string to the database.")] string connectionString,
             [Required] [Aliases("file")] [Description("Path to create back at.")] string targetFilePath,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            CommonSetup(debug, environment);
 
             var errorHandling = ErrorHandling.StopOnError;
             var compressionOption = CompressionOption.NoCompression;
@@ -71,6 +71,7 @@ namespace Naos.Database.Console
         /// <param name="targetFilePath">Path to create backup at.</param>
         /// <param name="utilityPath">Path to find supporting utilities (only needed for Mongo kind - should have mongodump.exe and mongorestore.exe).</param>
         /// <param name="workingDirectory">Path to write temp file (DEFAULT is parent of targetFilePath).</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Keeping this way.")]
         [Verb(Aliases = "backupmongo", Description = "Backup Mongo database.")]
@@ -80,9 +81,10 @@ namespace Naos.Database.Console
             [Required] [Aliases("file")] [Description("Path to create back at.")] string targetFilePath,
             [Aliases("utility")] [Description("Path to find supporting utilities (should have mongodump.exe & mongorestore.exe).")] string utilityPath,
             [Aliases("temp")] [Description("Path to write temp file (DEFAULT is parent of targetFilePath).")] string workingDirectory,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            CommonSetup(debug, environment);
 
             new { connectionDefinitionJson }.Must().NotBeNullNorWhiteSpace();
             var serializer = SerializerFactory.Instance.BuildSerializer(Config.ConfigFileSerializationDescription);
@@ -119,6 +121,7 @@ namespace Naos.Database.Console
         /// <param name="connectionString">SQL Server connection string to the database.</param>
         /// <param name="sourceFilePath">Path to create back at.</param>
         /// <param name="dataDirectory">Directory housing data and log files.</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [Verb(Aliases = "restoresql", Description = "Restore MS SQL Server database.")]
         public static void RestoreSqlDatabase(
@@ -126,9 +129,10 @@ namespace Naos.Database.Console
             [Required] [Aliases("connection")] [Description("SQL Server connection string to the database.")] string connectionString,
             [Required] [Aliases("file")] [Description("Path to load backup from.")] string sourceFilePath,
             [Required] [Aliases("data")] [Description("Directory housing data and log files.")] string dataDirectory,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            CommonSetup(debug, environment);
 
             var dataFilePath = Path.Combine(dataDirectory, databaseName + "Dat.mdf");
             var logFilePath = Path.Combine(dataDirectory, databaseName + "Log.ldf");
@@ -161,6 +165,7 @@ namespace Naos.Database.Console
         /// <param name="sourceFilePath">Path to create back at.</param>
         /// <param name="utilityPath">Path to find supporting utilities (only needed for Mongo kind - should have mongodump.exe and mongorestore.exe).</param>
         /// <param name="workingDirectory">Path to write temp file (DEFAULT is parent of targetFilePath).</param>
+        /// <param name="environment">Sets the Its.Configuration precedence to use specific settings.</param>
         /// <param name="debug">Launches the debugger.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Keeping this way.")]
         [Verb(Aliases = "restoremongo", Description = "Restore Mongo database.")]
@@ -170,9 +175,10 @@ namespace Naos.Database.Console
             [Required] [Aliases("file")] [Description("Path to load backup from.")] string sourceFilePath,
             [Aliases("utility")] [Description("Path to find supporting utilities (should have mongodump.exe & mongorestore.exe).")] string utilityPath,
             [Aliases("temp")] [Description("Path to write temp file (DEFAULT is parent of sourceFilePath).")] string workingDirectory,
+            [Aliases("")] [Description("Sets the Its.Configuration precedence to use specific settings.")] [DefaultValue(null)] string environment,
             [Aliases("")] [Description("Launches the debugger.")] [DefaultValue(false)] bool debug)
         {
-            CommonSetup(debug, null, new LogWritingSettings(new[] { new ConsoleLogConfig(LogItemOrigins.All, LogItemOrigins.None), }));
+            CommonSetup(debug, environment);
 
             new { connectionDefinitionJson }.Must().NotBeNullNorWhiteSpace();
             var serializer = SerializerFactory.Instance.BuildSerializer(Config.ConfigFileSerializationDescription);

@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Migrator.Console
+namespace Naos.Database.MessageBus.Hangfire.Console
 {
     using System;
 

@@ -250,13 +250,6 @@
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include=".analyzers\release.ruleset" />
-    <Content Include=".config\ExampleDevelopment\LogProcessorSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include=".config\ExampleProduction\LogProcessorSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include=".recipes\Naos.Console\ExampleConsoleApp.config" />
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

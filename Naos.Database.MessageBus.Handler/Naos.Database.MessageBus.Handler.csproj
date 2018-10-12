@@ -55,14 +55,14 @@
     <Reference Include="Naos.Diagnostics.Domain, Version=1.2.13.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Diagnostics.Domain.1.2.13\lib\net462\Naos.Diagnostics.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.Domain, Version=1.1.136.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.Domain.1.1.136\lib\net462\Naos.FileJanitor.Domain.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.Domain, Version=1.1.137.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.Domain.1.1.137\lib\net462\Naos.FileJanitor.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.FileJanitor.MessageBus.Scheduler, Version=1.1.136.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Scheduler.1.1.136\lib\net462\Naos.FileJanitor.MessageBus.Scheduler.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.MessageBus.Scheduler, Version=1.1.137.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.MessageBus.Scheduler.1.1.137\lib\net462\Naos.FileJanitor.MessageBus.Scheduler.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.MessageBus.Domain, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.MessageBus.Domain.1.2.3\lib\net462\Naos.MessageBus.Domain.dll</HintPath>
+    <Reference Include="Naos.MessageBus.Domain, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.MessageBus.Domain.1.2.7\lib\net462\Naos.MessageBus.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Serialization.Domain, Version=1.0.55.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Serialization.Domain.1.0.55\lib\net462\Naos.Serialization.Domain.dll</HintPath>

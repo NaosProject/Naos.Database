@@ -1,21 +1,19 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DatabaseDebugTest.cs" company="Naos">
-//    Copyright (c) Naos 2017. All Rights Reserved.
+// <copyright file="DatabaseDebugTest.cs" company="Naos Project">
+//    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Naos.Database.Test
 {
     using System.Threading.Tasks;
-
-    using Naos.Database.SqlServer;
-
+    using Naos.Database.SqlServer.Administration;
     using Xunit;
 
-    public class DatabaseDebugTest
+    public static class DatabaseDebugTest
     {
         [Fact(Skip = "Used for debugging.")]
-        public async Task TestCopyObjects()
+        public static async Task TestCopyObjects()
         {
             var source = ConnectionStringHelper.BuildConnectionString("(local)\\SQLEXPRESS", "Source");
             var target = ConnectionStringHelper.BuildConnectionString("(local)\\SQLEXPRESS", "Target");
@@ -26,7 +24,7 @@ namespace Naos.Database.Test
         }
 
         [Fact(Skip = "Used for debugging.")]
-        public void TestScriptDatabase()
+        public static void TestScriptDatabase()
         {
             var source = ConnectionStringHelper.BuildConnectionString("(local)\\SQLEXPRESS", "Source");
             Scripter.ScriptDatabaseToFilePath(source, @"D:\Temp\SourceDatabase", null, true);

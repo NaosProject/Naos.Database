@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlInjectorCheckerTest.cs" company="Naos">
-//    Copyright (c) Naos 2017. All Rights Reserved.
+// <copyright file="SqlInjectorCheckerTest.cs" company="Naos Project">
+//    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -8,8 +8,7 @@ namespace Naos.Database.Test
 {
     using System;
 
-    using Naos.Database.SqlServer;
-
+    using Naos.Database.SqlServer.Administration;
     using Xunit;
 
     /// <summary>

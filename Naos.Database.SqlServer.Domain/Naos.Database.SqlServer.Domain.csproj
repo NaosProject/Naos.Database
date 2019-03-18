@@ -47,7 +47,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include=".recipes\OBeautifulCode.Validation\ApplyBecause.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\DictionaryExtensions.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\Parameter.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterShould.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidation.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidation.Internal.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidation.Strings.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidation.TypeValidation.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidation.Utility.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="SqlServerBackupDetails.cs" />
+    <Compile Include="ChecksumOption.cs" />
+    <Compile Include="Cipher.cs" />
+    <Compile Include="ColumnDescription.cs" />
+    <Compile Include="CompressionOption.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DatabaseConfiguration.cs" />
+    <Compile Include="DatabaseKind.cs" />
+    <Compile Include="DatabaseType.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="Encryptor.cs" />
+    <Compile Include="ErrorHandling.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecoveryMode.cs" />
+    <Compile Include="RecoveryOption.cs" />
+    <Compile Include="SqlServerRestoreDetails.cs" />
+    <Compile Include="RestoreFile.cs" />
+    <Compile Include="RestrictedUserOption.cs" />
+    <Compile Include="ScriptedObject.cs" />
+    <Compile Include="SqlServerConnectionDefinition.cs" />
+    <Compile Include="TableDescription.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
@@ -60,6 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Naos.Database.Domain\Naos.Database.Domain.csproj">
+      <Project>{484A1706-0975-4905-AB9C-B0418B83BE7D}</Project>
+      <Name>Naos.Database.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Naos.Build.Analyzers.1.55.0\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.0\build\Naos.Build.Analyzers.targets')" />

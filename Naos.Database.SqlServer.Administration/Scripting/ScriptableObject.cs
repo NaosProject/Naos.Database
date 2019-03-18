@@ -8,8 +8,7 @@ namespace Naos.Database.SqlServer.Administration
 {
     using Microsoft.SqlServer.Management.Smo;
 
-    using Naos.Database.Domain;
-
+    using Naos.Database.SqlServer.Domain;
     using OBeautifulCode.Validation.Recipes;
 
     /// <summary>

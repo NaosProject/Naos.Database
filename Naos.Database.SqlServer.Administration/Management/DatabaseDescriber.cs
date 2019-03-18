@@ -7,12 +7,11 @@
 namespace Naos.Database.SqlServer.Administration
 {
     using System;
-    using System.Data.SqlClient;
     using System.Linq;
 
     using Dapper;
 
-    using Naos.Database.Domain;
+    using Naos.Database.SqlServer.Domain;
 
     /// <summary>
     /// Utility to retrieve information about a database and its contents.

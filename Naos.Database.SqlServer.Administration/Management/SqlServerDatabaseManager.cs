@@ -16,9 +16,11 @@ namespace Naos.Database.SqlServer.Administration
     using System.Threading.Tasks;
 
     using Dapper;
+
     using Microsoft.SqlServer.Management.Common;
     using Microsoft.SqlServer.Management.Smo;
     using Naos.Database.Domain;
+    using Naos.Database.SqlServer.Domain;
     using Naos.Recipes.RunWithRetry;
 
     using OBeautifulCode.Validation.Recipes;
@@ -496,7 +498,7 @@ namespace Naos.Database.SqlServer.Administration
         public static void BackupFull(
             string connectionString,
             string databaseName,
-            BackupDetails backupDetails,
+            SqlServerBackupDetails backupDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {
@@ -526,7 +528,7 @@ namespace Naos.Database.SqlServer.Administration
         public static async Task BackupFullAsync(
             string connectionString,
             string databaseName,
-            BackupDetails backupDetails,
+            SqlServerBackupDetails backupDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {
@@ -716,7 +718,7 @@ namespace Naos.Database.SqlServer.Administration
         public static void RestoreFull(
             string connectionString,
             string databaseName,
-            RestoreDetails restoreDetails,
+            SqlServerRestoreDetails restoreDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {
@@ -739,7 +741,7 @@ namespace Naos.Database.SqlServer.Administration
         public static async Task RestoreFullAsync(
             string connectionString,
             string databaseName,
-            RestoreDetails restoreDetails,
+            SqlServerRestoreDetails restoreDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {

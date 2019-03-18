@@ -12,8 +12,8 @@ namespace Naos.Database.Mongo
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
-
     using Naos.Database.Domain;
+    using Naos.Database.Mongo.Domain;
     using Naos.FileJanitor.Domain;
 
     using OBeautifulCode.Validation.Recipes;
@@ -21,7 +21,7 @@ namespace Naos.Database.Mongo
     using static System.FormattableString;
 
     /// <summary>
-    /// Documenter for database objects.
+    /// Management operations against a Mongo server.
     /// </summary>
     public static class MongoDatabaseManager
     {
@@ -36,9 +36,9 @@ namespace Naos.Database.Mongo
         /// <param name="announcer">Optional announcer to log messages about what is happening.</param>
         /// <returns>Archived directory created.</returns>
         public static async Task<ArchivedDirectory> BackupFullAsync(
-            ConnectionDefinition connectionDefinition,
+            MongoConnectionDefinition connectionDefinition,
             string databaseName,
-            BackupDetails backupDetails,
+            MongoBackupDetails backupDetails,
             string workingDirectory,
             string mongoUtilityDirectory,
             Action<Func<object>> announcer = null)
@@ -66,7 +66,7 @@ namespace Naos.Database.Mongo
 
             var exePath = Path.Combine(mongoUtilityDirectory, "mongodump.exe");
             localAnnouncer(() => Invariant($"Backing up database '{databaseName}' to '{backupToPath}' using '{exePath}'"));
-            var output = RunProcess(exePath, Invariant($"--host {connectionDefinition.Server} --db {databaseName} --authenticationDatabase {connectionDefinition.AuthenticationSource ?? databaseName} --username {connectionDefinition.UserName} --password {connectionDefinition.Password} --out {backupToPath}"));
+            var output = RunProcess(exePath, Invariant($"--host {connectionDefinition.Server} --db {databaseName} --authenticationDatabase {connectionDefinition.AuthenticationDatabaseName ?? databaseName} --username {connectionDefinition.UserName} --password {connectionDefinition.Password} --out {backupToPath}"));
             localAnnouncer(() => output);
 
             localAnnouncer(() => Invariant($"Creating backup file '{backupFilePath}' from '{backupToPath}'"));
@@ -92,9 +92,9 @@ namespace Naos.Database.Mongo
         /// <param name="announcer">Optional announcer to log messages about what is happening.</param>
         /// <returns>Task to support async await calling.</returns>
         public static async Task RestoreFullAsync(
-            ConnectionDefinition connectionDefinition,
+            MongoConnectionDefinition connectionDefinition,
             string databaseName,
-            RestoreDetails restoreDetails,
+            MongoRestoreDetails restoreDetails,
             string workingDirectory,
             string mongoUtilityDirectory,
             Action<Func<object>> announcer = null)
@@ -129,7 +129,7 @@ namespace Naos.Database.Mongo
             localAnnouncer(() => Invariant($"Restoring database '{databaseName}' from '{inflatedBackupFilePath}' using '{exePath}'"));
 
             var dropSwitchAddIn = restoreDetails.ReplaceOption == ReplaceOption.ReplaceExistingDatabase ? "--drop " : string.Empty;
-            var output = RunProcess(exePath, Invariant($"{dropSwitchAddIn}--host {connectionDefinition.Server} --db {databaseName} --authenticationDatabase {connectionDefinition.AuthenticationSource ?? databaseName} --username {connectionDefinition.UserName} --password {connectionDefinition.Password} {restoreFromPath}"));
+            var output = RunProcess(exePath, Invariant($"{dropSwitchAddIn}--host {connectionDefinition.Server} --db {databaseName} --authenticationDatabase {connectionDefinition.AuthenticationDatabaseName ?? databaseName} --username {connectionDefinition.UserName} --password {connectionDefinition.Password} {restoreFromPath}"));
             localAnnouncer(() => output);
 
             localAnnouncer(() => Invariant($"Cleaning up by removing temp directory '{inflatedBackupFilePath}'"));

@@ -60,28 +60,18 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
-    <Compile Include="ConnectionDefinition.cs" />
-    <Compile Include="DatabaseKind.cs" />
-    <Compile Include="BackupDetails.cs" />
-    <Compile Include="ChecksumOption.cs" />
-    <Compile Include="Cipher.cs" />
-    <Compile Include="ColumnDescription.cs" />
-    <Compile Include="CompressionOption.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="DatabaseConfiguration.cs" />
-    <Compile Include="DatabaseType.cs" />
-    <Compile Include="RecoveryMode.cs" />
-    <Compile Include="Device.cs" />
-    <Compile Include="Encryptor.cs" />
-    <Compile Include="ErrorHandling.cs" />
+    <Compile Include="Cqrs\ICommand.cs" />
+    <Compile Include="Cqrs\ICommandHandler.cs" />
+    <Compile Include="Cqrs\ICommandHandlerAsync.cs" />
+    <Compile Include="Cqrs\ICommandWithReturn.cs" />
+    <Compile Include="Cqrs\ICommandWithReturnHandler.cs" />
+    <Compile Include="Cqrs\ICommandWithReturnHandlerAsync.cs" />
+    <Compile Include="IConnectionDefinition.cs" />
+    <Compile Include="Cqrs\IQuery.cs" />
+    <Compile Include="Cqrs\IQueryHandler.cs" />
+    <Compile Include="Cqrs\IQueryHandlerAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecoveryOption.cs" />
     <Compile Include="ReplaceOption.cs" />
-    <Compile Include="RestoreDetails.cs" />
-    <Compile Include="RestoreFile.cs" />
-    <Compile Include="RestrictedUserOption.cs" />
-    <Compile Include="ScriptedObject.cs" />
-    <Compile Include="TableDescription.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
@@ -90,6 +80,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.1.0.47\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.1.0.47\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Naos.Build.Analyzers.1.55.0\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.0\build\Naos.Build.Analyzers.targets')" />

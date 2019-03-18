@@ -228,6 +228,10 @@
       <Project>{484A1706-0975-4905-AB9C-B0418B83BE7D}</Project>
       <Name>Naos.Database.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Naos.Database.SqlServer.Domain\Naos.Database.SqlServer.Domain.csproj">
+      <Project>{53987A93-D9A7-4C6C-BC13-381CED2E0AE0}</Project>
+      <Name>Naos.Database.SqlServer.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17283.0\build\net40\Microsoft.SqlServer.SqlManagementObjects.targets" Condition="Exists('..\packages\Microsoft.SqlServer.SqlManagementObjects.140.17283.0\build\net40\Microsoft.SqlServer.SqlManagementObjects.targets')" />

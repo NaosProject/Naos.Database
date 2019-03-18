@@ -9,7 +9,7 @@ namespace Naos.Database.SqlServer.Administration
     using System;
 
     using Naos.Database.Domain;
-
+    using Naos.Database.SqlServer.Domain;
     using OBeautifulCode.Validation.Recipes;
 
     using static System.FormattableString;
@@ -24,7 +24,7 @@ namespace Naos.Database.SqlServer.Administration
         /// </summary>
         /// <param name="connectionDefinition">Connection information.</param>
         /// <returns>Localhost connection string.</returns>
-        public static string ToSqlServerConnectionString(this ConnectionDefinition connectionDefinition)
+        public static string ToSqlServerConnectionString(this SqlServerConnectionDefinition connectionDefinition)
         {
             new { connectionDefinition }.Must().NotBeNull();
 
@@ -34,10 +34,10 @@ namespace Naos.Database.SqlServer.Administration
         }
 
         /// <summary>
-        /// Throws an exception if the <see cref="BackupDetails"/> is invalid.
+        /// Throws an exception if the <see cref="SqlServerBackupDetails"/> is invalid.
         /// </summary>
         /// <param name="backupDetails">The backup details to validate.</param>
-        public static void ThrowIfInvalid(this BackupDetails backupDetails)
+        public static void ThrowIfInvalid(this SqlServerBackupDetails backupDetails)
         {
             new { backupDetails }.Must().NotBeNull();
             new { backupDetails.BackupTo }.Must().NotBeNull();
@@ -103,10 +103,10 @@ namespace Naos.Database.SqlServer.Administration
         }
 
         /// <summary>
-        /// Throws an exception if the <see cref="RestoreDetails"/> is invalid.
+        /// Throws an exception if the <see cref="SqlServerRestoreDetails"/> is invalid.
         /// </summary>
         /// <param name="restoreDetails">The restore details to validate.</param>
-        public static void ThrowIfInvalid(this RestoreDetails restoreDetails)
+        public static void ThrowIfInvalid(this SqlServerRestoreDetails restoreDetails)
         {
             new { restoreDetails }.Must().NotBeNull();
             new { restoreDetails.RestoreFrom }.Must().NotBeNull();

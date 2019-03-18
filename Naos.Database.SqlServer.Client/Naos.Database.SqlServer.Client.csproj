@@ -68,6 +68,20 @@
     <Compile Include=".recipes\Spritely.Redo\RetriableFunction.cs" />
     <Compile Include=".recipes\Spritely.Redo\RetriableFunctionAsync.cs" />
     <Compile Include=".recipes\Spritely.Redo\Using.cs" />
+    <Compile Include=".recipes\Spritely.SecureString\SecureString.cs" />
+    <Compile Include="Cqrs\Credentials.cs" />
+    <Compile Include="Cqrs\DatabaseConnectionSettings.cs" />
+    <Compile Include="Cqrs\ICommand.cs" />
+    <Compile Include="Cqrs\ICommandHandler.cs" />
+    <Compile Include="Cqrs\ICommandHandlerAsync.cs" />
+    <Compile Include="Cqrs\ICommandWithReturn.cs" />
+    <Compile Include="Cqrs\ICommandWithReturnHandler.cs" />
+    <Compile Include="Cqrs\ICommandWithReturnHandlerAsync.cs" />
+    <Compile Include="Cqrs\IDatabase.cs" />
+    <Compile Include="Cqrs\IQuery.cs" />
+    <Compile Include="Cqrs\IQueryHandler.cs" />
+    <Compile Include="Cqrs\IQueryHandlerAsync.cs" />
+    <Compile Include="Cqrs\SqlConnectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

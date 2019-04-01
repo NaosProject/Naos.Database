@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.SqlServer.Client
+namespace Naos.Database.Domain
 {
     /// <summary>
     ///     Marker interface for all command parameter objects.

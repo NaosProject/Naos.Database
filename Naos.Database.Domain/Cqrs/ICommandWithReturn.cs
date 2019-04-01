@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.SqlServer.Client
+namespace Naos.Database.Domain
 {
     /// <summary>
     ///     A command operation that returns a result. Consider using ICommand and IQuery to ICommandWithReturn instead.

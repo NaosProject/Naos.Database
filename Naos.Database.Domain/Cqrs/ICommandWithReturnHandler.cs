@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.SqlServer.Client
+namespace Naos.Database.Domain
 {
     /// <summary>
     ///     Represents a command with return handler (a write operation that returns a value).

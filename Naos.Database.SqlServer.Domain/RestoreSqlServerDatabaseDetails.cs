@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlServerRestoreDetails.cs" company="Naos Project">
+// <copyright file="RestoreSqlServerDatabaseDetails.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace Naos.Database.SqlServer.Domain
     /// <summary>
     /// Captures the details of a restore operation.
     /// </summary>
-    public class SqlServerRestoreDetails
+    public class RestoreSqlServerDatabaseDetails
     {
         /// <summary>
         /// Gets or sets an enum value indicating whether to enable checksums.

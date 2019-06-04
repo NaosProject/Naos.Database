@@ -47,10 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MongoBackupDetails.cs" />
+    <Compile Include="BackupMongoDatabaseDetails.cs" />
     <Compile Include="MongoConnectionDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MongoRestoreDetails.cs" />
+    <Compile Include="RestoreMongoDatabaseDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

@@ -34,10 +34,10 @@ namespace Naos.Database.SqlServer.Administration
         }
 
         /// <summary>
-        /// Throws an exception if the <see cref="SqlServerBackupDetails"/> is invalid.
+        /// Throws an exception if the <see cref="BackupSqlServerDatabaseDetails"/> is invalid.
         /// </summary>
         /// <param name="backupDetails">The backup details to validate.</param>
-        public static void ThrowIfInvalid(this SqlServerBackupDetails backupDetails)
+        public static void ThrowIfInvalid(this BackupSqlServerDatabaseDetails backupDetails)
         {
             new { backupDetails }.Must().NotBeNull();
             new { backupDetails.BackupTo }.Must().NotBeNull();
@@ -103,10 +103,10 @@ namespace Naos.Database.SqlServer.Administration
         }
 
         /// <summary>
-        /// Throws an exception if the <see cref="SqlServerRestoreDetails"/> is invalid.
+        /// Throws an exception if the <see cref="RestoreSqlServerDatabaseDetails"/> is invalid.
         /// </summary>
         /// <param name="restoreDetails">The restore details to validate.</param>
-        public static void ThrowIfInvalid(this SqlServerRestoreDetails restoreDetails)
+        public static void ThrowIfInvalid(this RestoreSqlServerDatabaseDetails restoreDetails)
         {
             new { restoreDetails }.Must().NotBeNull();
             new { restoreDetails.RestoreFrom }.Must().NotBeNull();

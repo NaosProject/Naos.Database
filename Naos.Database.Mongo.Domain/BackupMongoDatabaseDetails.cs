@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MongoBackupDetails.cs" company="Naos Project">
+// <copyright file="BackupMongoDatabaseDetails.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ namespace Naos.Database.Mongo.Domain
     /// <summary>
     /// Captures the details of a backup operation.
     /// </summary>
-    public class MongoBackupDetails
+    public class BackupMongoDatabaseDetails
     {
         /// <summary>
         /// Gets or sets the name of the backup (not the name of the backup file,

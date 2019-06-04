@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MongoRestoreDetails.cs" company="Naos Project">
+// <copyright file="RestoreMongoDatabaseDetails.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Captures the details of a restore operation.
     /// </summary>
-    public class MongoRestoreDetails
+    public class RestoreMongoDatabaseDetails
     {
         /// <summary>
         /// Gets or sets the location at which to pull the backup for restoration (i.e. file path or URL)

@@ -498,7 +498,7 @@ namespace Naos.Database.SqlServer.Administration
         public static void BackupFull(
             string connectionString,
             string databaseName,
-            SqlServerBackupDetails backupDetails,
+            BackupSqlServerDatabaseDetails backupDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {
@@ -528,7 +528,7 @@ namespace Naos.Database.SqlServer.Administration
         public static async Task BackupFullAsync(
             string connectionString,
             string databaseName,
-            SqlServerBackupDetails backupDetails,
+            BackupSqlServerDatabaseDetails backupDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {
@@ -718,7 +718,7 @@ namespace Naos.Database.SqlServer.Administration
         public static void RestoreFull(
             string connectionString,
             string databaseName,
-            SqlServerRestoreDetails restoreDetails,
+            RestoreSqlServerDatabaseDetails restoreDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {
@@ -741,7 +741,7 @@ namespace Naos.Database.SqlServer.Administration
         public static async Task RestoreFullAsync(
             string connectionString,
             string databaseName,
-            SqlServerRestoreDetails restoreDetails,
+            RestoreSqlServerDatabaseDetails restoreDetails,
             Action<Func<object>> announcer = null,
             TimeSpan timeout = default(TimeSpan))
         {

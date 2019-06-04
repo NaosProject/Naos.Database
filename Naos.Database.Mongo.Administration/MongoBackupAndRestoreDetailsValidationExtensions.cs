@@ -18,10 +18,10 @@ namespace Naos.Database.Mongo
     public static class MongoBackupAndRestoreDetailsValidationExtensions
     {
         /// <summary>
-        /// Throws an exception if the <see cref="MongoBackupDetails"/> is invalid.
+        /// Throws an exception if the <see cref="BackupMongoDatabaseDetails"/> is invalid.
         /// </summary>
         /// <param name="backupDetails">The backup details to validate.</param>
-        public static void ThrowIfInvalid(this MongoBackupDetails backupDetails)
+        public static void ThrowIfInvalid(this BackupMongoDatabaseDetails backupDetails)
         {
             new { backupDetails }.Must().NotBeNull();
             new { backupDetails.BackupTo }.Must().NotBeNull();
@@ -44,10 +44,10 @@ namespace Naos.Database.Mongo
         }
 
         /// <summary>
-        /// Throws an exception if the <see cref="MongoRestoreDetails"/> is invalid.
+        /// Throws an exception if the <see cref="RestoreMongoDatabaseDetails"/> is invalid.
         /// </summary>
         /// <param name="restoreDetails">The restore details to validate.</param>
-        public static void ThrowIfInvalid(this MongoRestoreDetails restoreDetails)
+        public static void ThrowIfInvalid(this RestoreMongoDatabaseDetails restoreDetails)
         {
             new { restoreDetails }.Must().NotBeNull();
             new { restoreDetails.RestoreFrom }.Must().NotBeNull();

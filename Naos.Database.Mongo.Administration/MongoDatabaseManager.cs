@@ -38,7 +38,7 @@ namespace Naos.Database.Mongo
         public static async Task<ArchivedDirectory> BackupFullAsync(
             MongoConnectionDefinition connectionDefinition,
             string databaseName,
-            MongoBackupDetails backupDetails,
+            BackupMongoDatabaseDetails backupDetails,
             string workingDirectory,
             string mongoUtilityDirectory,
             Action<Func<object>> announcer = null)
@@ -94,7 +94,7 @@ namespace Naos.Database.Mongo
         public static async Task RestoreFullAsync(
             MongoConnectionDefinition connectionDefinition,
             string databaseName,
-            MongoRestoreDetails restoreDetails,
+            RestoreMongoDatabaseDetails restoreDetails,
             string workingDirectory,
             string mongoUtilityDirectory,
             Action<Func<object>> announcer = null)

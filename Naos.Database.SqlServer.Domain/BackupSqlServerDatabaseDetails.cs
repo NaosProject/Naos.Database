@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SqlServerBackupDetails.cs" company="Naos Project">
+// <copyright file="BackupSqlServerDatabaseDetails.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace Naos.Database.SqlServer.Domain
     /// <summary>
     /// Captures the details of a backup operation.
     /// </summary>
-    public class SqlServerBackupDetails
+    public class BackupSqlServerDatabaseDetails
     {
         /// <summary>
         /// Gets or sets the location at which to save the backup (i.e. file path or URL).

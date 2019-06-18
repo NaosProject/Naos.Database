@@ -37,8 +37,8 @@
     <DocumentationFile>bin\Release\Naos.Database.Mongo.Administration.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.FileJanitor.Domain, Version=1.2.141.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.Domain.1.2.141\lib\net462\Naos.FileJanitor.Domain.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.Domain, Version=1.2.142.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.Domain.1.2.142\lib\net462\Naos.FileJanitor.Domain.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

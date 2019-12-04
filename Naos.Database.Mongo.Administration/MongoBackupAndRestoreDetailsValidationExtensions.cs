@@ -10,7 +10,7 @@ namespace Naos.Database.Mongo
 
     using Naos.Database.Domain;
     using Naos.Database.Mongo.Domain;
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Extension methods for types in the namespace.
@@ -23,8 +23,8 @@ namespace Naos.Database.Mongo
         /// <param name="backupDetails">The backup details to validate.</param>
         public static void ThrowIfInvalid(this BackupMongoDatabaseDetails backupDetails)
         {
-            new { backupDetails }.Must().NotBeNull();
-            new { backupDetails.BackupTo }.Must().NotBeNull();
+            new { backupDetails }.AsArg().Must().NotBeNull();
+            new { backupDetails.BackupTo }.AsArg().Must().NotBeNull();
 
             if (!string.IsNullOrWhiteSpace(backupDetails.Name))
             {
@@ -49,8 +49,8 @@ namespace Naos.Database.Mongo
         /// <param name="restoreDetails">The restore details to validate.</param>
         public static void ThrowIfInvalid(this RestoreMongoDatabaseDetails restoreDetails)
         {
-            new { restoreDetails }.Must().NotBeNull();
-            new { restoreDetails.RestoreFrom }.Must().NotBeNull();
+            new { restoreDetails }.AsArg().Must().NotBeNull();
+            new { restoreDetails.RestoreFrom }.AsArg().Must().NotBeNull();
         }
     }
 }

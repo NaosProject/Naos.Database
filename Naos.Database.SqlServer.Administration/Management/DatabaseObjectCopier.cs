@@ -18,7 +18,7 @@ namespace Naos.Database.SqlServer.Administration
 
     using Naos.Database.Domain;
     using Naos.Database.SqlServer.Domain;
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     using static System.FormattableString;
 
@@ -41,9 +41,9 @@ namespace Naos.Database.SqlServer.Administration
             string targetDatabaseConnectionString,
             Action<Func<object>> announcer = null)
         {
-            new { orderedObjectNamesToCopy }.Must().NotBeNullNorEmptyEnumerableNorContainAnyNulls();
-            new { sourceDatabaseConnectionString }.Must().NotBeNullNorWhiteSpace();
-            new { targetDatabaseConnectionString }.Must().NotBeNullNorWhiteSpace();
+            new { orderedObjectNamesToCopy }.AsArg().Must().NotBeNullNorEmptyEnumerableNorContainAnyNulls();
+            new { sourceDatabaseConnectionString }.AsArg().Must().NotBeNullNorWhiteSpace();
+            new { targetDatabaseConnectionString }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             void NullAnnounce(Func<object> announcement)
             {

@@ -9,7 +9,7 @@ namespace Naos.Database.SqlServer.Administration
     using Microsoft.SqlServer.Management.Smo;
 
     using Naos.Database.SqlServer.Domain;
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Model object that describes an object that can be scripted.
@@ -22,7 +22,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="table">Object that can be scripted.</param>
         public ScriptableObject(Table table)
         {
-            new { table }.Must().NotBeNull();
+            new { table }.AsArg().Must().NotBeNull();
 
             this.Name = table.Name;
             this.ObjectToScript = table;
@@ -35,7 +35,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="view">Object that can be scripted.</param>
         public ScriptableObject(View view)
         {
-            new { view }.Must().NotBeNull();
+            new { view }.AsArg().Must().NotBeNull();
 
             this.Name = view.Name;
             this.ObjectToScript = view;
@@ -48,7 +48,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="storedProcedure">Object that can be scripted.</param>
         public ScriptableObject(StoredProcedure storedProcedure)
         {
-            new { storedProcedure }.Must().NotBeNull();
+            new { storedProcedure }.AsArg().Must().NotBeNull();
 
             this.Name = storedProcedure.Name;
             this.ObjectToScript = storedProcedure;
@@ -61,7 +61,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="userDefinedFunction">Object that can be scripted.</param>
         public ScriptableObject(UserDefinedFunction userDefinedFunction)
         {
-            new { userDefinedFunction }.Must().NotBeNull();
+            new { userDefinedFunction }.AsArg().Must().NotBeNull();
 
             this.Name = userDefinedFunction.Name;
             this.ObjectToScript = userDefinedFunction;
@@ -74,7 +74,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="userDefinedDataType">Object that can be scripted.</param>
         public ScriptableObject(UserDefinedDataType userDefinedDataType)
         {
-            new { userDefinedDataType }.Must().NotBeNull();
+            new { userDefinedDataType }.AsArg().Must().NotBeNull();
 
             this.Name = userDefinedDataType.Name;
             this.ObjectToScript = userDefinedDataType;
@@ -87,7 +87,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="databaseRole">Object that can be scripted.</param>
         public ScriptableObject(DatabaseRole databaseRole)
         {
-            new { databaseRole }.Must().NotBeNull();
+            new { databaseRole }.AsArg().Must().NotBeNull();
 
             this.Name = databaseRole.Name;
             this.ObjectToScript = databaseRole;
@@ -100,7 +100,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="user">Object that can be scripted.</param>
         public ScriptableObject(User user)
         {
-            new { user }.Must().NotBeNull();
+            new { user }.AsArg().Must().NotBeNull();
 
             this.Name = user.Name;
             this.ObjectToScript = user;
@@ -113,7 +113,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="foreignKey">Object that can be scripted.</param>
         public ScriptableObject(ForeignKey foreignKey)
         {
-            new { foreignKey }.Must().NotBeNull();
+            new { foreignKey }.AsArg().Must().NotBeNull();
 
             this.Name = foreignKey.Name;
             this.ObjectToScript = foreignKey;
@@ -126,7 +126,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="index">Object that can be scripted.</param>
         public ScriptableObject(Index index)
         {
-            new { index }.Must().NotBeNull();
+            new { index }.AsArg().Must().NotBeNull();
 
             this.Name = index.Name;
             this.ObjectToScript = index;

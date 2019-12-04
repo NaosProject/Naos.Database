@@ -10,7 +10,7 @@ namespace Naos.Database.SqlServer.Administration
 
     using Naos.Database.Domain;
     using Naos.Database.SqlServer.Domain;
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     using static System.FormattableString;
 
@@ -26,7 +26,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <returns>Localhost connection string.</returns>
         public static string ToSqlServerConnectionString(this SqlServerConnectionDefinition connectionDefinition)
         {
-            new { connectionDefinition }.Must().NotBeNull();
+            new { connectionDefinition }.AsArg().Must().NotBeNull();
 
             var instanceName = string.IsNullOrWhiteSpace(connectionDefinition.InstanceName) ? string.Empty : Invariant($"\\{connectionDefinition.InstanceName}");
             var ret = Invariant($"Server={connectionDefinition.Server}{instanceName}; user id={connectionDefinition.UserName}; password={connectionDefinition.Password}");
@@ -39,8 +39,8 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="backupDetails">The backup details to validate.</param>
         public static void ThrowIfInvalid(this BackupSqlServerDatabaseDetails backupDetails)
         {
-            new { backupDetails }.Must().NotBeNull();
-            new { backupDetails.BackupTo }.Must().NotBeNull();
+            new { backupDetails }.AsArg().Must().NotBeNull();
+            new { backupDetails.BackupTo }.AsArg().Must().NotBeNull();
 
             if (backupDetails.Device == Device.Url)
             {
@@ -108,8 +108,8 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="restoreDetails">The restore details to validate.</param>
         public static void ThrowIfInvalid(this RestoreSqlServerDatabaseDetails restoreDetails)
         {
-            new { restoreDetails }.Must().NotBeNull();
-            new { restoreDetails.RestoreFrom }.Must().NotBeNull();
+            new { restoreDetails }.AsArg().Must().NotBeNull();
+            new { restoreDetails.RestoreFrom }.AsArg().Must().NotBeNull();
 
             if (restoreDetails.Device == Device.Url)
             {

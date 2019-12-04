@@ -16,7 +16,7 @@ namespace Naos.Database.Mongo
     using Naos.Database.Mongo.Domain;
     using Naos.FileJanitor.Domain;
 
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     using static System.FormattableString;
 
@@ -43,9 +43,9 @@ namespace Naos.Database.Mongo
             string mongoUtilityDirectory,
             Action<Func<object>> announcer = null)
         {
-            new { connectionDefinition }.Must().NotBeNull();
-            new { databaseName }.Must().NotBeNullNorWhiteSpace();
-            new { backupDetails }.Must().NotBeNull();
+            new { connectionDefinition }.AsArg().Must().NotBeNull();
+            new { databaseName }.AsArg().Must().NotBeNullNorWhiteSpace();
+            new { backupDetails }.AsArg().Must().NotBeNull();
 
             backupDetails.ThrowIfInvalid();
 
@@ -71,7 +71,7 @@ namespace Naos.Database.Mongo
 
             localAnnouncer(() => Invariant($"Creating backup file '{backupFilePath}' from '{backupToPath}'"));
             var archivedDirectory = await archiver.ArchiveDirectoryAsync(backupToPath, backupFilePath, false, Encoding.UTF8);
-            new { archivedDirectory }.Must().NotBeNull();
+            new { archivedDirectory }.AsOp().Must().NotBeNull();
 
             localAnnouncer(() => Invariant($"Cleaning up by removing temp directory '{backupToPath}'"));
             Directory.Delete(backupToPath, true);
@@ -99,9 +99,9 @@ namespace Naos.Database.Mongo
             string mongoUtilityDirectory,
             Action<Func<object>> announcer = null)
         {
-            new { connectionDefinition }.Must().NotBeNull();
-            new { databaseName }.Must().NotBeNullNorWhiteSpace();
-            new { restoreDetails }.Must().NotBeNull();
+            new { connectionDefinition }.AsArg().Must().NotBeNull();
+            new { databaseName }.AsArg().Must().NotBeNullNorWhiteSpace();
+            new { restoreDetails }.AsArg().Must().NotBeNull();
 
             restoreDetails.ThrowIfInvalid();
 

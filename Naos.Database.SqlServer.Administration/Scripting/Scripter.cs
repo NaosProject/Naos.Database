@@ -16,7 +16,7 @@ namespace Naos.Database.SqlServer.Administration
 
     using Naos.Database.Domain;
     using Naos.Database.SqlServer.Domain;
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Will create a directory under root for the database, will script everything possible under the appropriate of three directories; script, sproc, table.
@@ -137,7 +137,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <returns>Collection of scriptable objects.</returns>
         public static IReadOnlyCollection<ScriptableObject> GetAllScriptableObjects(this Database database)
         {
-            new { database }.Must().NotBeNull();
+            new { database }.AsArg().Must().NotBeNull();
 
             var ret = new List<ScriptableObject>();
 

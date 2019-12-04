@@ -10,7 +10,7 @@ namespace Naos.Database.SqlServer.Administration
 
     using Microsoft.SqlServer.Management.Smo;
 
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Documenter for database objects.
@@ -35,7 +35,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(UserDefinedDataType userDefinedDataType)
         {
-            new { userDefinedDataType }.Must().NotBeNull();
+            new { userDefinedDataType }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[3, 4];
             int leftRowIndexer = 0;
@@ -70,7 +70,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(DatabaseRole databaseRole)
         {
-            new { databaseRole }.Must().NotBeNull();
+            new { databaseRole }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[1, 2];
             int rowIndexer = 0;
@@ -90,7 +90,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(User user)
         {
-            new { user }.Must().NotBeNull();
+            new { user }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[1, 2];
             int rowIndexer = 0;
@@ -110,7 +110,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(Index index)
         {
-            new { index }.Must().NotBeNull();
+            new { index }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[4, 4];
             int leftRowIndexer = 0;
@@ -160,7 +160,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(Check check)
         {
-            new { check }.Must().NotBeNull();
+            new { check }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[1, 2];
             int rowIndexer = 0;
@@ -180,7 +180,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(ParameterCollectionBase parameters)
         {
-            new { parameters }.Must().NotBeNull();
+            new { parameters }.AsArg().Must().NotBeNull();
 
             int rowCount = parameters.Count + 1; // 1 for the header
             string[,] values = new string[rowCount, 4];
@@ -219,7 +219,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(Trigger trigger)
         {
-            new { trigger }.Must().NotBeNull();
+            new { trigger }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[2, 2];
             int rowIndexer = 0;
@@ -242,7 +242,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(StoredProcedure storedProcedure)
         {
-            new { storedProcedure }.Must().NotBeNull();
+            new { storedProcedure }.AsArg().Must().NotBeNull();
 
             this.documentGenerator.AddEntry(storedProcedure.Name, 15, true);
             string[,] values = new string[1, 2];
@@ -259,7 +259,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(UserDefinedFunction userDefinedFunction)
         {
-            new { userDefinedFunction }.Must().NotBeNull();
+            new { userDefinedFunction }.AsArg().Must().NotBeNull();
 
             this.documentGenerator.AddEntry(userDefinedFunction.Name, 15, true);
             string[,] values = new string[2, 2];
@@ -278,7 +278,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(Table table)
         {
-            new { table }.Must().NotBeNull();
+            new { table }.AsArg().Must().NotBeNull();
 
             this.documentGenerator.AddEntry("Table - " + table.Name, 15, true);
             string[,] values = new string[1, 2];
@@ -295,7 +295,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(View view)
         {
-            new { view }.Must().NotBeNull();
+            new { view }.AsArg().Must().NotBeNull();
 
             this.documentGenerator.AddEntry(view.Name, 15, true);
             string[,] values = new string[1, 2];
@@ -312,7 +312,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(ForeignKey foreignKey)
         {
-            new { foreignKey }.Must().NotBeNull();
+            new { foreignKey }.AsArg().Must().NotBeNull();
 
             string[,] values = new string[3, 4];
 
@@ -362,7 +362,7 @@ namespace Naos.Database.SqlServer.Administration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1814:PreferJaggedArraysOverMultidimensional", MessageId = "Body", Justification = "Specifically using a multi-dimensional array.")]
         public void Document(ColumnCollection columns)
         {
-            new { columns }.Must().NotBeNull();
+            new { columns }.AsArg().Must().NotBeNull();
 
             int rowCount = columns.Count + 1; // 1 for the header
             string[,] values = new string[rowCount, 7];

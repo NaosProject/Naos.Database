@@ -10,7 +10,7 @@ namespace Naos.Database.SqlServer.Administration
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Utility methods to guard against SQL Injection.
@@ -23,7 +23,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="textToCheck">Text to check.</param>
         public static void ThrowIfNotAlphanumericOrSpaceOrUnderscore(string textToCheck)
         {
-            new { textToCheck }.Must().NotBeNull();
+            new { textToCheck }.AsArg().Must().NotBeNull();
 
             const string pattern = @"[a-zA-Z0-9 _]*";
             Match match = Regex.Match(textToCheck, pattern);
@@ -39,12 +39,12 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="pathToCheck">Path to check.</param>
         public static void ThrowIfNotValidPath(string pathToCheck)
         {
-            new { pathToCheck }.Must().NotBeNullNorWhiteSpace();
+            new { pathToCheck }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             try
             {
                 var fileInfoToCheck = new FileInfo(pathToCheck);
-                new { fileInfoToCheck }.Must().NotBeNull();
+                new { fileInfoToCheck }.AsOp().Must().NotBeNull();
             }
             catch (Exception)
             {

@@ -11,7 +11,7 @@ namespace Naos.Database.SqlServer.Administration
     using System.IO;
     using Microsoft.SqlServer.Management.Smo;
 
-    using OBeautifulCode.Validation.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Manage processing objects to disk along with documentation if applicable.
@@ -49,8 +49,8 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="basePath">Path to write output.</param>
         public DatabaseObjectToScriptedDirectoryProcessor(IDocumentGenerator documentGenerator, string basePath)
         {
-            new { documentGenerator }.Must().NotBeNull();
-            new { basePath }.Must().NotBeNullNorWhiteSpace();
+            new { documentGenerator }.AsArg().Must().NotBeNull();
+            new { basePath }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             this.documentGenerator = documentGenerator;
             this.databaseDocumenter = new DatabaseDocumenter(this.documentGenerator);
@@ -80,7 +80,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="tables">Object to process.</param>
         public void Process(TableCollection tables)
         {
-            new { tables }.Must().NotBeNull();
+            new { tables }.AsArg().Must().NotBeNull();
 
             if (tables.Count > 0)
             {
@@ -116,7 +116,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="views">Object to process.</param>
         public void Process(ViewCollection views)
         {
-            new { views }.Must().NotBeNull();
+            new { views }.AsArg().Must().NotBeNull();
 
             if (views.Count > 0)
             {
@@ -147,7 +147,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="storedProcedures">Object to process.</param>
         public void Process(StoredProcedureCollection storedProcedures)
         {
-            new { storedProcedures }.Must().NotBeNull();
+            new { storedProcedures }.AsArg().Must().NotBeNull();
 
             if (storedProcedures.Count > 0)
             {
@@ -181,7 +181,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="userDefinedFunctions">Object to process.</param>
         public void Process(UserDefinedFunctionCollection userDefinedFunctions)
         {
-            new { userDefinedFunctions }.Must().NotBeNull();
+            new { userDefinedFunctions }.AsArg().Must().NotBeNull();
 
             if (userDefinedFunctions.Count > 0)
             {
@@ -215,7 +215,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="roles">Object to process.</param>
         public void Process(DatabaseRoleCollection roles)
         {
-            new { roles }.Must().NotBeNull();
+            new { roles }.AsArg().Must().NotBeNull();
 
             if (roles.Count > 0)
             {
@@ -242,7 +242,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="tableOrViewName">Name of table or view containing columns.</param>
         public void Process(ColumnCollection columns, string tableOrViewName)
         {
-            new { columns }.Must().NotBeNull();
+            new { columns }.AsArg().Must().NotBeNull();
 
             if (columns.Count > 0)
             {
@@ -262,9 +262,9 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="fileBasePath">FIle path to write to (might differ between view and table).</param>
         public void Process(IndexCollection indexes, string tableOrViewName, string fileBasePath)
         {
-            new { indexes }.Must().NotBeNull();
-            new { tableOrViewName }.Must().NotBeNullNorWhiteSpace();
-            new { fileBasePath }.Must().NotBeNullNorWhiteSpace();
+            new { indexes }.AsArg().Must().NotBeNull();
+            new { tableOrViewName }.AsArg().Must().NotBeNullNorWhiteSpace();
+            new { fileBasePath }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             var filtered = FilterPrimaryUniqueKeys(indexes);
             if (filtered.Count > 0)
@@ -293,9 +293,9 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="fileBasePath">FIle path to write to (might differ between view and table).</param>
         public void Process(TriggerCollection triggers, string tableOrViewName, string fileBasePath)
         {
-            new { triggers }.Must().NotBeNull();
-            new { tableOrViewName }.Must().NotBeNullNorWhiteSpace();
-            new { fileBasePath }.Must().NotBeNullNorWhiteSpace();
+            new { triggers }.AsArg().Must().NotBeNull();
+            new { tableOrViewName }.AsArg().Must().NotBeNullNorWhiteSpace();
+            new { fileBasePath }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             if (triggers.Count > 0)
             {
@@ -322,8 +322,8 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="tableName">Name of table or view containing checks.</param>
         public void Process(CheckCollection checks, string tableName)
         {
-            new { checks }.Must().NotBeNull();
-            new { tableName }.Must().NotBeNullNorWhiteSpace();
+            new { checks }.AsArg().Must().NotBeNull();
+            new { tableName }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             if (checks.Count > 0)
             {
@@ -347,8 +347,8 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="tableName">Name of table foreign keys.</param>
         public void Process(ForeignKeyCollection foreignKeys, string tableName)
         {
-            new { foreignKeys }.Must().NotBeNull();
-            new { tableName }.Must().NotBeNullNorWhiteSpace();
+            new { foreignKeys }.AsArg().Must().NotBeNull();
+            new { tableName }.AsArg().Must().NotBeNullNorWhiteSpace();
 
             if (foreignKeys.Count > 0)
             {
@@ -371,7 +371,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="users">Object to process.</param>
         public void Process(UserCollection users)
         {
-            new { users }.Must().NotBeNull();
+            new { users }.AsArg().Must().NotBeNull();
 
             if (users.Count > 0)
             {
@@ -397,7 +397,7 @@ namespace Naos.Database.SqlServer.Administration
         /// <param name="userDefinedDataTypes">Object to process.</param>
         public void Process(UserDefinedDataTypeCollection userDefinedDataTypes)
         {
-            new { userDefinedDataTypes }.Must().NotBeNull();
+            new { userDefinedDataTypes }.AsArg().Must().NotBeNull();
 
             if (userDefinedDataTypes.Count > 0)
             {

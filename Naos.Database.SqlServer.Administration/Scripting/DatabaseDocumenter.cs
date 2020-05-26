@@ -6,6 +6,7 @@
 
 namespace Naos.Database.SqlServer.Administration
 {
+    using System;
     using System.Globalization;
 
     using Microsoft.SqlServer.Management.Smo;
@@ -264,7 +265,7 @@ namespace Naos.Database.SqlServer.Administration
             this.documentGenerator.AddEntry(userDefinedFunction.Name, 15, true);
             string[,] values = new string[2, 2];
             values[0, 0] = "[[BOLD]]Return Type (Size)";
-            values[0, 1] = userDefinedFunction.DataType.Name + " (" + userDefinedFunction.DataType.MaximumLength + ")";
+            values[0, 1] = userDefinedFunction.DataType.Name + FormattableString.Invariant($" ({userDefinedFunction.DataType.MaximumLength})");
             values[1, 0] = "[[BOLD]]Description";
             values[1, 1] = string.Empty; // TODO: add tab.description?;
             int[,] merges = new int[0, 0];

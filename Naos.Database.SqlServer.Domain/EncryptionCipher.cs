@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Cipher.cs" company="Naos Project">
+// <copyright file="EncryptionCipher.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,7 +9,7 @@ namespace Naos.Database.SqlServer.Domain
     /// <summary>
     /// Specifies the algorithm used to encrypt/decrypt backups.
     /// </summary>
-    public enum Cipher
+    public enum EncryptionCipher
     {
         /// <summary>
         /// No encryption.

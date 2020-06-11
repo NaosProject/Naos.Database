@@ -39,8 +39,8 @@
     <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.FileJanitor.Domain, Version=1.2.145.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.FileJanitor.Domain.1.2.145\lib\net462\Naos.FileJanitor.Domain.dll</HintPath>
+    <Reference Include="Naos.FileJanitor.Domain, Version=1.2.146.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.FileJanitor.Domain.1.2.146\lib\net462\Naos.FileJanitor.Domain.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Type, Version=1.0.51.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Type.1.0.51\lib\net462\OBeautifulCode.Type.dll</HintPath>

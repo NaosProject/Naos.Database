@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Naos.Database.Domain.Recipes.DummyFactory</id>
+    <description>A Dummy Factory for types in Naos.Database.Domain</description>
+    <tags>dummyfactory dummy factory fakeiteasy autofixture snippet codeinclude utility shared recipe Database</tags>
+    <dependencies>
+      <dependency id="Naos.Database.Domain" version="$version$" />
+      <dependency id="OBeautifulCode.AutoFakeItEasy" version="1.0.129" />
+      <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.125" />
+      <dependency id="Naos.Protocol.Recipes.DummyFactory" version="1.0.63" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="DatabaseDummyFactory.cs" target="content\net462\.recipes\Naos.Database\DatabaseDummyFactory.cs" />
+    <file src="DatabaseDummyFactory.designer.cs" target="content\net462\.recipes\Naos.Database\DatabaseDummyFactory.designer.cs" />
+  </files>
+</package>

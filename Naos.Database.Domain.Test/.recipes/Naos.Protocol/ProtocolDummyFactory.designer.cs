@@ -7,7 +7,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain.Test
+namespace Naos.Protocol.Domain.Test
 {
     using System;
     using System.CodeDom.Compiler;

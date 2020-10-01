@@ -37,8 +37,8 @@
     <DocumentationFile>bin\Release\Naos.Database.Protocol.FileSystem.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.63.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.63\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.66\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Representation.System, Version=1.0.53.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Representation.System.1.0.53\lib\net462\OBeautifulCode.Representation.System.dll</HintPath>

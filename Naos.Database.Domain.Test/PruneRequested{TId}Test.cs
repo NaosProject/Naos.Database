@@ -10,7 +10,7 @@ namespace Naos.Database.Domain.Test
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy;
-
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
@@ -18,6 +18,7 @@ namespace Naos.Database.Domain.Test
 
     using static System.FormattableString;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
     public static partial class PruneRequestedTest
     {
         static PruneRequestedTest()
@@ -44,7 +45,7 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionType = typeof(ArgumentNullException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "details"
+                                                                   "details",
                                                                },
                         })
                .AddScenario(
@@ -68,7 +69,7 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionMessageContains = new[]
                                                                {
                                                                    "details",
-                                                                   "white space"
+                                                                   "white space",
                                                                },
                         });
         }

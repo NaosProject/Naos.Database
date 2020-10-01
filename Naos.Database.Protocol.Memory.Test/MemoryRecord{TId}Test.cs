@@ -40,7 +40,7 @@ namespace Naos.Database.Protocol.Memory.Test
                             ExpectedExceptionType = typeof(ArgumentNullException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "describedSerialization"
+                                                                   "describedSerialization",
                                                                },
                         });
         }

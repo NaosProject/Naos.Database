@@ -95,9 +95,11 @@
     <Compile Include=".recipes\OBeautifulCode.Type\ToStringXmlDocOptions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
     <Compile Include="Stream\MemoryRecord{TId}.cs" />
+    <Compile Include="Stream\MemoryRecord{TId}.designer.cs">
+      <DependentUpon>MemoryRecord{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\MemoryStream{TId}.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include=".analyzers\release.ruleset" />

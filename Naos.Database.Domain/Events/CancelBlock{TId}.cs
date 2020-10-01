@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Event to indicate a <see cref="Block{TId}" /> was cancelled (i.e. ignore a previous <see cref="Block{TId}" />).
@@ -30,7 +31,9 @@ namespace Naos.Database.Domain
             IReadOnlyDictionary<string, string> tags = null)
             : base(id, timestampUtc, tags)
         {
-            this.Details = details ?? throw new ArgumentNullException(nameof(details));
+            details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+
+            this.Details = details;
         }
 
         /// <summary>

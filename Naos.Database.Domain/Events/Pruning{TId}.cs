@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Event indicating a prune actively occurring on the stream.
@@ -30,7 +31,8 @@ namespace Naos.Database.Domain
             IReadOnlyDictionary<string, string> tags = null)
             : base(id, timestampUtc, tags)
         {
-            this.Pruner = pruner ?? throw new ArgumentNullException(nameof(pruner));
+            pruner.MustForArg(nameof(pruner)).NotBeNullNorWhiteSpace();
+            this.Pruner = pruner;
         }
 
         /// <summary>

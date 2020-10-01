@@ -11,10 +11,18 @@ namespace Naos.Database.Domain.Test
     using FakeItEasy;
 
     using OBeautifulCode.AutoFakeItEasy;
-
+    using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using Xunit;
+
+    using static System.FormattableString;
 
     public static partial class GetLatestByIdAndTypeOpTest
     {
+        static GetLatestByIdAndTypeOpTest()
+        {
+            ConstructorArgumentValidationTestScenarios.RemoveAllScenarios();
+            ConstructorArgumentValidationTestScenarios
+               .AddScenario(ConstructorArgumentValidationTestScenario<GetLatestByIdAndTypeOp<Version, Version>>.ConstructorCannotThrowScenario);
+        }
     }
 }

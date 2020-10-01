@@ -11,10 +11,16 @@ namespace Naos.Database.Domain.Test
     using FakeItEasy;
 
     using OBeautifulCode.AutoFakeItEasy;
-
+    using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using Xunit;
 
     public static partial class PutOpTest
     {
+        static PutOpTest()
+        {
+            ConstructorArgumentValidationTestScenarios.RemoveAllScenarios();
+            ConstructorArgumentValidationTestScenarios.AddScenario(
+                ConstructorArgumentValidationTestScenario<PutOp<Version>>.ConstructorCannotThrowScenario);
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
@@ -30,7 +31,8 @@ namespace Naos.Database.Domain
             IReadOnlyDictionary<string, string> tags = null)
             : base(id, timestampUtc, tags)
         {
-            this.Details = details ?? throw new ArgumentNullException(nameof(details));
+            details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+            this.Details = details;
         }
 
         /// <summary>

@@ -103,19 +103,55 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
     <Compile Include="Events\Block{TId}.cs" />
+    <Compile Include="Events\Block{TId}.designer.cs">
+      <DependentUpon>Block{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\CancelBlock{TId}.cs" />
+    <Compile Include="Events\CancelBlock{TId}.designer.cs">
+      <DependentUpon>CancelBlock{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\Pruned{TId}.cs" />
+    <Compile Include="Events\Pruned{TId}.designer.cs">
+      <DependentUpon>Pruned{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\PruneRequested{TId}.cs" />
+    <Compile Include="Events\PruneRequested{TId}.designer.cs">
+      <DependentUpon>PruneRequested{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\Pruning{TId}.cs" />
+    <Compile Include="Events\Pruning{TId}.designer.cs">
+      <DependentUpon>Pruning{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\CreateStreamOp{TId}.cs" />
+    <Compile Include="Operations\CreateStreamOp{TId}.designer.cs">
+      <DependentUpon>CreateStreamOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.cs" />
+    <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetLatestByIdAndTypeOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\GetOp{TObject}.cs" />
+    <Compile Include="Operations\GetOp{TObject}.designer.cs">
+      <DependentUpon>GetOp{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\GetStreamFromRepresentationOp{TId}.cs" />
+    <Compile Include="Operations\GetStreamFromRepresentationOp{TId}.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\PutOp{TObject}.cs" />
+    <Compile Include="Operations\PutOp{TObject}.designer.cs">
+      <DependentUpon>PutOp{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplaceOption.cs" />
+    <Compile Include="ResourceLocation\DatabaseLocatorBase.designer.cs">
+      <DependentUpon>DatabaseLocatorBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResourceLocation\NullDatabaseLocator.cs" />
     <Compile Include="ResourceLocation\DatabaseLocatorBase.cs" />
+    <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">
+      <DependentUpon>NullDatabaseLocator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
     <Compile Include="Stream\IProtocolFactoryStreamObjectReadOperations{TId}.cs" />
     <Compile Include="Stream\IProtocolFactoryStreamObjectWriteOperations{TId}.cs" />
@@ -125,6 +161,9 @@
     <Compile Include="Stream\IStream{TId}.cs" />
     <Compile Include="Stream\StreamFactory{TId}.cs" />
     <Compile Include="Stream\StreamRepresentation{TId}.cs" />
+    <Compile Include="Stream\StreamRepresentation{TId}.designer.cs">
+      <DependentUpon>StreamRepresentation{TId}.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

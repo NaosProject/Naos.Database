@@ -32,9 +32,9 @@ namespace Naos.Database.Serialization.Bson
         /// <inheritdoc />
         protected override IReadOnlyCollection<TypeToRegisterForBson> TypesToRegisterForBson => new TypeToRegisterForBson[]
         {
-            typeof(IResourceLocator).ToTypeToRegisterForBson(),
-            typeof(IOperation).ToTypeToRegisterForBson(),
-            typeof(IEvent<>).ToTypeToRegisterForBson(),
+            typeof(ResourceLocatorBase).ToTypeToRegisterForBson(),
+            typeof(OperationBase).ToTypeToRegisterForBson(),
+            typeof(EventBase<>).ToTypeToRegisterForBson(),
         };
     }
 }

@@ -9,7 +9,7 @@ namespace Naos.Database.Protocol.Memory.Test
     using System;
 
     using FakeItEasy;
-
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Serialization;
@@ -17,6 +17,7 @@ namespace Naos.Database.Protocol.Memory.Test
 
     public static partial class MemoryRecordTest
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = NaosSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static MemoryRecordTest()
         {
             ConstructorArgumentValidationTestScenarios.RemoveAllScenarios();

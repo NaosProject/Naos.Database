@@ -9,7 +9,7 @@ namespace Naos.Database.Domain.Test
     using System;
 
     using FakeItEasy;
-
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using Xunit;
@@ -18,6 +18,7 @@ namespace Naos.Database.Domain.Test
 
     public static partial class GetLatestByIdAndTypeOpTest
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = NaosSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static GetLatestByIdAndTypeOpTest()
         {
             ConstructorArgumentValidationTestScenarios.RemoveAllScenarios();

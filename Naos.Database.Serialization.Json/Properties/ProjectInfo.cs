@@ -7,7 +7,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain
+namespace Naos.Database.Serialization.Json
 {
     using global::System.Reflection;
     

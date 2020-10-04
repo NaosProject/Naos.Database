@@ -7,7 +7,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain
+namespace Naos.Database.Protocol.FileSystem
 {
     using global::System.Reflection;
     

@@ -7,7 +7,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain
+namespace Naos.Database.Domain.Test
 {
     using global::System.Reflection;
     

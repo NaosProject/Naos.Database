@@ -7,7 +7,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain
+namespace Naos.Database.Protocol.Memory.Test
 {
     using global::System.Reflection;
     

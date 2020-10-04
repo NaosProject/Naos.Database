@@ -143,6 +143,7 @@
       <DependentUpon>PutOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="ReplaceOption.cs" />
     <Compile Include="ResourceLocation\DatabaseLocatorBase.designer.cs">
       <DependentUpon>DatabaseLocatorBase.cs</DependentUpon>

@@ -148,8 +148,14 @@
     <Compile Include="ResourceLocation\DatabaseLocatorBase.designer.cs">
       <DependentUpon>DatabaseLocatorBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResourceLocation\FileSystemDatabaseLocator.designer.cs">
+      <DependentUpon>FileSystemDatabaseLocator.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResourceLocation\MemoryDatabaseLocator.cs" />
     <Compile Include="ResourceLocation\FileSystemDatabaseLocator.cs" />
+    <Compile Include="ResourceLocation\MemoryDatabaseLocator.designer.cs">
+      <DependentUpon>MemoryDatabaseLocator.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResourceLocation\NullDatabaseLocator.cs" />
     <Compile Include="ResourceLocation\DatabaseLocatorBase.cs" />
     <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">

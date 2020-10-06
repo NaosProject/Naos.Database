@@ -34,103 +34,117 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class PutOpTest
+    public static partial class FileSystemDatabaseLocatorTest
     {
-        private static readonly StringRepresentationTestScenarios<PutOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<PutOp<Version>>()
+        private static readonly StringRepresentationTestScenarios<FileSystemDatabaseLocator> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<FileSystemDatabaseLocator>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<PutOp<Version>>
+                new StringRepresentationTestScenario<FileSystemDatabaseLocator>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PutOp<Version>>();
+                        var systemUnderTest = A.Dummy<FileSystemDatabaseLocator>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<PutOp<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<FileSystemDatabaseLocator>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutOp<Version>: ObjectToPut = {systemUnderTest.ObjectToPut?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.FileSystemDatabaseLocator: RootFolderPath = {systemUnderTest.RootFolderPath?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<PutOp<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<PutOp<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<FileSystemDatabaseLocator> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<FileSystemDatabaseLocator>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutOp<Version>>
+                new ConstructorArgumentValidationTestScenario<FileSystemDatabaseLocator>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'objectToPut' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'rootFolderPath' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var result = new PutOp<Version>(
+                        var result = new FileSystemDatabaseLocator(
                                              null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "objectToPut" },
+                    ExpectedExceptionMessageContains = new[] { "rootFolderPath" },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<FileSystemDatabaseLocator>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'rootFolderPath' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var result = new FileSystemDatabaseLocator(
+                                             Invariant($"  {Environment.NewLine}  "));
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "rootFolderPath", "white space" },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<PutOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PutOp<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<FileSystemDatabaseLocator> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<FileSystemDatabaseLocator>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PutOp<Version>>
+                new ConstructorPropertyAssignmentTestScenario<FileSystemDatabaseLocator>
                 {
-                    Name = "ObjectToPut should return same 'objectToPut' parameter passed to constructor when getting",
+                    Name = "RootFolderPath should return same 'rootFolderPath' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PutOp<Version>>();
+                        var referenceObject = A.Dummy<FileSystemDatabaseLocator>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PutOp<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<FileSystemDatabaseLocator>
                         {
-                            SystemUnderTest = new PutOp<Version>(
-                                                      referenceObject.ObjectToPut),
-                            ExpectedPropertyValue = referenceObject.ObjectToPut,
+                            SystemUnderTest = new FileSystemDatabaseLocator(
+                                                      referenceObject.RootFolderPath),
+                            ExpectedPropertyValue = referenceObject.RootFolderPath,
                         };
 
                         return result;
                     },
-                    PropertyName = "ObjectToPut",
+                    PropertyName = "RootFolderPath",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<PutOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PutOp<Version>>()
+        private static readonly DeepCloneWithTestScenarios<FileSystemDatabaseLocator> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<FileSystemDatabaseLocator>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PutOp<Version>>
+                new DeepCloneWithTestScenario<FileSystemDatabaseLocator>
                 {
-                    Name = "DeepCloneWithObjectToPut should deep clone object and replace ObjectToPut with the provided objectToPut",
-                    WithPropertyName = "ObjectToPut",
+                    Name = "DeepCloneWithRootFolderPath should deep clone object and replace RootFolderPath with the provided rootFolderPath",
+                    WithPropertyName = "RootFolderPath",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PutOp<Version>>();
+                        var systemUnderTest = A.Dummy<FileSystemDatabaseLocator>();
 
-                        var referenceObject = A.Dummy<PutOp<Version>>().ThatIs(_ => !systemUnderTest.ObjectToPut.IsEqualTo(_.ObjectToPut));
+                        var referenceObject = A.Dummy<FileSystemDatabaseLocator>().ThatIs(_ => !systemUnderTest.RootFolderPath.IsEqualTo(_.RootFolderPath));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PutOp<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<FileSystemDatabaseLocator>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ObjectToPut,
+                            DeepCloneWithValue = referenceObject.RootFolderPath,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly PutOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<PutOp<Version>>();
+        private static readonly FileSystemDatabaseLocator ReferenceObjectForEquatableTestScenarios = A.Dummy<FileSystemDatabaseLocator>();
 
-        private static readonly EquatableTestScenarios<PutOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<PutOp<Version>>()
+        private static readonly EquatableTestScenarios<FileSystemDatabaseLocator> EquatableTestScenarios = new EquatableTestScenarios<FileSystemDatabaseLocator>()
             .AddScenario(() =>
-                new EquatableTestScenario<PutOp<Version>>
+                new EquatableTestScenario<FileSystemDatabaseLocator>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PutOp<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new FileSystemDatabaseLocator[]
                     {
-                        new PutOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.ObjectToPut),
+                        new FileSystemDatabaseLocator(
+                                ReferenceObjectForEquatableTestScenarios.RootFolderPath),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new PutOp<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new FileSystemDatabaseLocator[]
                     {
-                        new PutOp<Version>(
-                                A.Dummy<PutOp<Version>>().Whose(_ => !_.ObjectToPut.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectToPut)).ObjectToPut),
+                        new FileSystemDatabaseLocator(
+                                A.Dummy<FileSystemDatabaseLocator>().Whose(_ => !_.RootFolderPath.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RootFolderPath)).RootFolderPath),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -139,10 +153,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CreateStreamOp<Version>>(),
-                        A.Dummy<GetLatestByIdAndTypeOp<Version, Version>>(),
-                        A.Dummy<GetOp<Version>>(),
-                        A.Dummy<GetStreamFromRepresentationOp<Version>>(),
+                        A.Dummy<MemoryDatabaseLocator>(),
+                        A.Dummy<NullDatabaseLocator>(),
                     },
                 });
 
@@ -164,12 +176,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PutOp___Should_implement_IModel_of_PutOp___When_reflecting()
+            public static void FileSystemDatabaseLocator___Should_implement_IModel_of_FileSystemDatabaseLocator___When_reflecting()
             {
                 // Arrange
-                var type = typeof(PutOp<Version>);
+                var type = typeof(FileSystemDatabaseLocator);
 
-                var expectedModelMethods = typeof(IModel<PutOp<Version>>)
+                var expectedModelMethods = typeof(IModel<FileSystemDatabaseLocator>)
                                           .GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
                                           .ToList();
 
@@ -181,7 +193,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<PutOp<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<FileSystemDatabaseLocator>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -199,10 +211,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PutOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void FileSystemDatabaseLocator___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(PutOp<Version>);
+                var type = typeof(FileSystemDatabaseLocator);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -375,10 +387,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PutOp<Version>>();
+                var systemUnderTest = A.Dummy<FileSystemDatabaseLocator>();
 
                 // Act
-                var actual = (PutOp<Version>)systemUnderTest.Clone();
+                var actual = (FileSystemDatabaseLocator)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -402,7 +414,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PutOp<Version>>();
+                var systemUnderTest = A.Dummy<FileSystemDatabaseLocator>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -410,15 +422,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.ObjectToPut == null)
-                {
-                    actual.ObjectToPut.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.ObjectToPut.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectToPut);
-                }
             }
 
             [Fact]
@@ -437,7 +440,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ObjectToPut" };
+                var propertyNames = new string[] { "RootFolderPath" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -454,12 +457,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (PutOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (FileSystemDatabaseLocator)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var property = typeof(PutOp<Version>).GetProperty(propertyName);
+                        var property = typeof(FileSystemDatabaseLocator).GetProperty(propertyName);
 
                         var propertyType = property.PropertyType;
 
@@ -527,7 +530,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version>>();
+                var expected = A.Dummy<FileSystemDatabaseLocator>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -556,7 +559,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version>>();
+                var expected = A.Dummy<FileSystemDatabaseLocator>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -585,7 +588,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version>>();
+                var expected = A.Dummy<FileSystemDatabaseLocator>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -614,7 +617,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version>>();
+                var expected = A.Dummy<FileSystemDatabaseLocator>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -648,8 +651,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PutOp<Version> systemUnderTest1 = null;
-                PutOp<Version> systemUnderTest2 = null;
+                FileSystemDatabaseLocator systemUnderTest1 = null;
+                FileSystemDatabaseLocator systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -679,7 +682,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PutOp<Version> systemUnderTest = null;
+                    FileSystemDatabaseLocator systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -828,8 +831,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PutOp<Version> systemUnderTest1 = null;
-                PutOp<Version> systemUnderTest2 = null;
+                FileSystemDatabaseLocator systemUnderTest1 = null;
+                FileSystemDatabaseLocator systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -859,7 +862,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PutOp<Version> systemUnderTest = null;
+                    FileSystemDatabaseLocator systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1005,17 +1008,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ResourceLocatorBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    OperationBase systemUnderTest = null;
+                    ResourceLocatorBase systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ResourceLocatorBase)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1036,14 +1039,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ResourceLocatorBase___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ResourceLocatorBase)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1064,14 +1067,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ResourceLocatorBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ResourceLocatorBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1092,14 +1095,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ResourceLocatorBase___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ResourceLocatorBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1120,14 +1123,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ResourceLocatorBase___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ResourceLocatorBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1148,17 +1151,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_DatabaseLocatorBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    VoidOperationBase systemUnderTest = null;
+                    DatabaseLocatorBase systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((VoidOperationBase)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((DatabaseLocatorBase)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1179,14 +1182,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_DatabaseLocatorBase___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((VoidOperationBase)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((DatabaseLocatorBase)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1207,14 +1210,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_DatabaseLocatorBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((DatabaseLocatorBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1235,14 +1238,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_DatabaseLocatorBase___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((DatabaseLocatorBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1263,14 +1266,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_DatabaseLocatorBase___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((DatabaseLocatorBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1291,14 +1294,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_FileSystemDatabaseLocator___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PutOp<Version> systemUnderTest = null;
+                    FileSystemDatabaseLocator systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1322,7 +1325,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_FileSystemDatabaseLocator___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1350,7 +1353,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_FileSystemDatabaseLocator___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1378,7 +1381,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_FileSystemDatabaseLocator___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1406,7 +1409,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_FileSystemDatabaseLocator___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

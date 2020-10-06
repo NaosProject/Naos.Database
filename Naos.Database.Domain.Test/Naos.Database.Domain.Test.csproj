@@ -258,6 +258,10 @@
     <Compile Include="DatabaseLocatorBaseTest.designer.cs">
       <DependentUpon>DatabaseLocatorBaseTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileSystemDatabaseLocatorTest.cs" />
+    <Compile Include="FileSystemDatabaseLocatorTest.designer.cs">
+      <DependentUpon>FileSystemDatabaseLocatorTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetLatestByIdAndTypeOp{TId,TObject}Test.cs" />
     <Compile Include="GetLatestByIdAndTypeOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestByIdAndTypeOp{TId,TObject}Test.cs</DependentUpon>
@@ -269,6 +273,10 @@
     <Compile Include="GetStreamFromRepresentationOp{TId}Test.cs" />
     <Compile Include="GetStreamFromRepresentationOp{TId}Test.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemoryDatabaseLocatorTest.cs" />
+    <Compile Include="MemoryDatabaseLocatorTest.designer.cs">
+      <DependentUpon>MemoryDatabaseLocatorTest.cs</DependentUpon>
     </Compile>
     <Compile Include="NullDatabaseLocatorTest.cs" />
     <Compile Include="NullDatabaseLocatorTest.designer.cs">

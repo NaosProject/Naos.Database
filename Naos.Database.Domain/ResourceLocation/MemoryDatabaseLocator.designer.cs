@@ -15,6 +15,8 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
+    using global::Naos.Protocol.Domain;
+
     using global::OBeautifulCode.Equality.Recipes;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
@@ -22,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class StreamRepresentation<TId> : IModel<StreamRepresentation<TId>>
+    public partial class MemoryDatabaseLocator : IModel<MemoryDatabaseLocator>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="StreamRepresentation{TId}"/> are equal.
+        /// Determines whether two objects of type <see cref="MemoryDatabaseLocator"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(StreamRepresentation<TId> left, StreamRepresentation<TId> right)
+        public static bool operator ==(MemoryDatabaseLocator left, MemoryDatabaseLocator right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -48,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="StreamRepresentation{TId}"/> are not equal.
+        /// Determines whether two objects of type <see cref="MemoryDatabaseLocator"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(StreamRepresentation<TId> left, StreamRepresentation<TId> right) => !(left == right);
+        public static bool operator !=(MemoryDatabaseLocator left, MemoryDatabaseLocator right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(StreamRepresentation<TId> other)
+        public bool Equals(MemoryDatabaseLocator other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -74,7 +76,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as StreamRepresentation<TId>);
+        public override bool Equals(object obj) => this == (obj as MemoryDatabaseLocator);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -82,22 +84,13 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public object Clone() => this.DeepClone();
-
-        /// <inheritdoc />
-        public StreamRepresentation<TId> DeepClone()
-        {
-            var result = new StreamRepresentation<TId>(
-                                 this.Name?.Clone().ToString());
-
-            return result;
-        }
+        public new MemoryDatabaseLocator DeepClone() => (MemoryDatabaseLocator)this.DeepCloneInternal();
 
         /// <summary>
         /// Deep clones this object with a new <see cref="Name" />.
         /// </summary>
         /// <param name="name">The new <see cref="Name" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRepresentation{TId}" /> using the specified <paramref name="name" /> for <see cref="Name" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="MemoryDatabaseLocator" /> using the specified <paramref name="name" /> for <see cref="Name" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -113,47 +106,19 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRepresentation<TId> DeepCloneWithName(string name)
+        public MemoryDatabaseLocator DeepCloneWithName(string name)
         {
-            var result = new StreamRepresentation<TId>(
+            var result = new MemoryDatabaseLocator(
                                  name);
 
             return result;
         }
 
-        private static TId DeepCloneGeneric(TId value)
+        /// <inheritdoc />
+        protected override ResourceLocatorBase DeepCloneInternal()
         {
-            TId result;
-
-            var type = typeof(TId);
-
-            if (type.IsValueType)
-            {
-                result = value;
-            }
-            else
-            {
-                if (ReferenceEquals(value, null))
-                {
-                    result = default;
-                }
-                else if (value is IDeepCloneable<TId> deepCloneableValue)
-                {
-                    result = deepCloneableValue.DeepClone();
-                }
-                else if (value is string valueAsString)
-                {
-                    result = (TId)(object)valueAsString.Clone().ToString();
-                }
-                else if (value is global::System.Version valueAsVersion)
-                {
-                    result = (TId)valueAsVersion.Clone();
-                }
-                else
-                {
-                    throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
-                }
-            }
+            var result = new MemoryDatabaseLocator(
+                                 this.Name?.Clone().ToString());
 
             return result;
         }
@@ -162,7 +127,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Name = {this.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.MemoryDatabaseLocator: Name = {this.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

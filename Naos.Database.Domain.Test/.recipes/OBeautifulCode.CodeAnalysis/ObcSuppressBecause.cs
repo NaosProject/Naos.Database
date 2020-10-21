@@ -115,6 +115,11 @@ namespace OBeautifulCode.CodeAnalysis.Recipes
         public const string CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment = "We disagree with the assessment that this method as excessively complex.";
 
         /// <summary>
+        /// We disagree with the assessment that this code is unmaintainable.
+        /// </summary>
+        public const string CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment = "We disagree with the assessment that this code is unmaintainable.";
+
+        /// <summary>
         /// We disagree with the assessment this type or method is excessively coupled.
         /// </summary>
         public const string CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment = "We disagree with the assessment this type or method is excessively coupled.";

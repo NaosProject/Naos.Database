@@ -93,7 +93,7 @@ namespace Naos.Database.Protocol.Memory.Test
         }
     }
 
-    public class MyObject : IIdentifiableBy<string>
+    public class MyObject : IIdentifiableBy<string>, IHaveTags
     {
         public MyObject(
             string id,
@@ -106,5 +106,8 @@ namespace Naos.Database.Protocol.Memory.Test
         public string Id { get; private set; }
 
         public string Field { get; private set; }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<string, string> Tags => new Dictionary<string, string>();
     }
 }

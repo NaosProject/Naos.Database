@@ -104,10 +104,6 @@
     <Compile Include=".recipes\Spritely.Redo\RetriableFunctionAsync.cs" />
     <Compile Include=".recipes\Spritely.Redo\Using.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
-    <Compile Include="Stream\MemoryRecord{TId}.cs" />
-    <Compile Include="Stream\MemoryRecord{TId}.designer.cs">
-      <DependentUpon>MemoryRecord{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\MemoryStream{TId}.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GlobalSuppressions.cs" />

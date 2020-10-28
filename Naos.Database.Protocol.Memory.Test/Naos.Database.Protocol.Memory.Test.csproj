@@ -236,10 +236,6 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
     <Compile Include="ConsoleAbstraction.cs" />
-    <Compile Include="MemoryRecord{TId}Test.cs" />
-    <Compile Include="MemoryRecord{TId}Test.designer.cs">
-      <DependentUpon>MemoryRecord{TId}Test.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MemoryStreamTests.cs" />

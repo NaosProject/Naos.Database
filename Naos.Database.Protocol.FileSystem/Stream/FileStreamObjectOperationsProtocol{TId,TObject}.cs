@@ -14,6 +14,7 @@ namespace Naos.Database.Protocol.FileSystem
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
@@ -31,7 +32,7 @@ namespace Naos.Database.Protocol.FileSystem
         private const string FileExtensionPrefixWithDot = ".value";
         private const string BinaryFileExtensionWithDot = ".value.bin";
         private const string StringFileExtensionWithDot = ".value.str";
-        private const string TagFileExtensionWithDot = ".tag";
+        private const string MetadataFileExtensionWithDot = ".metadata";
         private readonly FileStream<TId> stream;
         private readonly IReturningProtocol<GetIdFromObjectOp<TId, TObject>, TId> getIdFromObjectProtocol;
         private readonly IReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>> getTagsFromObjectProtocol;
@@ -106,7 +107,9 @@ namespace Naos.Database.Protocol.FileSystem
         {
             var timestamp = DateTime.UtcNow;
             var timestampString = this.dateTimeStringSerializer.SerializeToString(timestamp).Replace(":", "-");
-            var objectId = this.getIdFromObjectProtocol.Execute(new GetIdFromObjectOp<TId, TObject>(operation.ObjectToPut));
+            var id = this.getIdFromObjectProtocol.Execute(new GetIdFromObjectOp<TId, TObject>(operation.ObjectToPut));
+            var typeRepresentationWithVersion = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
+            var typeRepresentationWithoutVersion = typeRepresentationWithVersion.RemoveAssemblyVersions();
             var tags = this.getTagsFromObjectProtocol.Execute(new GetTagsFromObjectOp<TObject>(operation.ObjectToPut));
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
@@ -116,20 +119,29 @@ namespace Naos.Database.Protocol.FileSystem
             var serializedObjectBinary = this.stream.DefaultSerializationFormat != SerializationFormat.Binary
                 ? null
                 : serializer.SerializeToBytes(operation.ObjectToPut);
-            var serializedObjectId = (objectId is string stringKey) ? stringKey : serializer.SerializeToString(objectId);
-            var rootPath = this.GetRootPath(objectId);
+            var serializedId = (id is string stringKey) ? stringKey : serializer.SerializeToString(id);
+            var rootPath = this.GetRootPath(id);
             // need to create the timestamp utc and put into path (should be prefixing the filename)
-            var id = serializedObjectId.EncodeForFilePath();
-            var baseFilePath = Path.Combine(rootPath, timestampString + "___" + id);
-            var objectTagFilePath = baseFilePath + TagFileExtensionWithDot;
+            var filePathId = serializedId.EncodeForFilePath();
+            var baseFilePath = Path.Combine(
+                rootPath,
+                timestampString
+              + "___"
+              + filePathId);
+
+            var metadata = new StreamRecordMetadata<TId>(
+                id,
+                tags,
+                typeRepresentationWithVersion,
+                typeRepresentationWithoutVersion,
+                timestamp);
+
+            var objectMetadataFilePath = baseFilePath + MetadataFileExtensionWithDot;
             var objectBinFilePath = baseFilePath + BinaryFileExtensionWithDot;
             var objectStrFilePath = baseFilePath + StringFileExtensionWithDot;
 
-            var serializedTags = serializer.SerializeToString(tags);
-            if (tags.Any())
-            {
-                File.WriteAllText(objectTagFilePath, serializedTags);
-            }
+            var serializedMetadata = serializer.SerializeToString(metadata);
+            File.WriteAllText(objectMetadataFilePath, serializedMetadata);
 
             if (serializedObjectBinary != null)
             {

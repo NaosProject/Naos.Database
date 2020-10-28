@@ -172,6 +172,7 @@
     <Compile Include="Stream\StreamFactory{TId}.cs" />
     <Compile Include="Stream\Representation\StreamRepresentation{TId}.cs" />
     <Compile Include="Stream\Representation\StreamRepresentationBase{TId}.cs" />
+    <Compile Include="Stream\StreamRecordMetadata{TId}.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

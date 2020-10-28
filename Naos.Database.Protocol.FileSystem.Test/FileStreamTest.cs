@@ -41,7 +41,7 @@ namespace Naos.Protocol.SqlServer.Test
         {
             var streamName = "StreamName32";
 
-            var testingFilePath = "D:/Temp/FileStream"; // Path.GetTempPath();
+            var testingFilePath = Path.GetTempPath();
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocol<string>(fileSystemLocator);
 

@@ -11,6 +11,7 @@ namespace Naos.Database.Protocol.FileSystem
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
     using Naos.Recipes.RunWithRetry;
@@ -27,6 +28,7 @@ namespace Naos.Database.Protocol.FileSystem
     {
         private static readonly IReadOnlyDictionary<string, string> IllegalToReplacementTokenMap;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "All are declared in static constructor.")]
         static FilePathExtensions()
         {
             var illegalCharToCoreReplacementTokenMap = new Dictionary<char, string>

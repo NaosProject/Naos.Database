@@ -28,7 +28,7 @@ namespace Naos.Database.Protocol.Memory
         private readonly SerializerRepresentation defaultSerializerRepresentation;
         private readonly SerializationFormat defaultSerializationFormat;
         private readonly ISerializerFactory serializerFactory;
-        private readonly IList<MemoryRecord<TId>> items = new List<MemoryRecord<TId>>();
+        private readonly IList<Tuple<StreamRecordMetadata<TId>, DescribedSerialization>> items = new List<Tuple<StreamRecordMetadata<TId>, DescribedSerialization>>();
         private bool created = false;
 
         /// <summary>
@@ -157,9 +157,19 @@ namespace Naos.Database.Protocol.Memory
             var result = new LambdaReturningProtocol<GetLatestByIdAndTypeOp<TId, TObject>, TObject>(
                 operation =>
                 {
-                    var typeRepresentation = typeof(TObject).ToRepresentation();
-                    var item = this.items.OrderByDescending(_ => _.DateTimeUtc).FirstOrDefault(_ => _.DescribedSerialization.PayloadTypeRepresentation == typeRepresentation && _.Id.Equals(operation.Id));
-                    var resultItem = item?.DescribedSerialization.DeserializePayloadUsingSpecificFactory(this.serializerFactory);
+                    var typeRepresentationToMatch = operation.TypeVersionMatchStrategy == TypeVersionMatchStrategy.Any
+                        ? typeof(TObject).ToRepresentation().RemoveAssemblyVersions()
+                        : typeof(TObject).ToRepresentation();
+
+                    var item = this
+                              .items.OrderByDescending(_ => _.Item1.TimestampUtc)
+                              .FirstOrDefault(
+                                   _ => (operation.TypeVersionMatchStrategy         == TypeVersionMatchStrategy.Any
+                                            ? _.Item1.TypeRepresentationWithoutVersion == typeRepresentationToMatch
+                                            : _.Item1.TypeRepresentationWithVersion   == typeRepresentationToMatch)
+                                     && _.Item1.Id.Equals(operation.Id));
+
+                    var resultItem = item?.Item2?.DeserializePayloadUsingSpecificFactory(this.serializerFactory);
                     return (TObject)resultItem;
                 });
 
@@ -173,12 +183,18 @@ namespace Naos.Database.Protocol.Memory
             {
                 var operationForId = new GetIdFromObjectOp<TId, TObject>(operation.ObjectToPut);
                 var id = this.BuildGetIdFromObjectProtocol<TObject>().Execute(operationForId);
+                var operationForTags = new GetTagsFromObjectOp<TObject>(operation.ObjectToPut);
+                var tags = this.BuildGetTagsFromObjectProtocol<TObject>().Execute(operationForTags);
+                var typeRepresentationWithVersion = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
+                var typeRepresentationWithoutVersion = typeRepresentationWithVersion.RemoveAssemblyVersions();
+
                 var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
                     this.defaultSerializerRepresentation,
                     this.serializerFactory,
                     this.defaultSerializationFormat);
-                var memoryRecord = new MemoryRecord<TId>(id, describedSerialization, DateTime.UtcNow);
-                this.items.Add(memoryRecord);
+
+                var metadata = new StreamRecordMetadata<TId>(id, tags, typeRepresentationWithVersion, typeRepresentationWithoutVersion, DateTime.UtcNow);
+                this.items.Add(new Tuple<StreamRecordMetadata<TId>, DescribedSerialization>(metadata, describedSerialization));
             }
 
             var result = new LambdaVoidProtocol<PutOp<TObject>>(Action);

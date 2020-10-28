@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include=".recipes\Naos.CodeAnalysis\NaosSuppressBecause.cs" />
+    <Compile Include=".recipes\Naos.RunWithRetry\Run.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\Actions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\ApplyBecause.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\AssertionKind.cs" />
@@ -96,6 +97,12 @@
     <Compile Include=".recipes\OBeautifulCode.Type\ToStringReadableOptions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\ToStringXmlDocOptions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include=".recipes\Spritely.Redo\BackOffStrategy.cs" />
+    <Compile Include=".recipes\Spritely.Redo\RetriableAction.cs" />
+    <Compile Include=".recipes\Spritely.Redo\RetriableActionAsync.cs" />
+    <Compile Include=".recipes\Spritely.Redo\RetriableFunction.cs" />
+    <Compile Include=".recipes\Spritely.Redo\RetriableFunctionAsync.cs" />
+    <Compile Include=".recipes\Spritely.Redo\Using.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Stream\MemoryRecord{TId}.cs" />
     <Compile Include="Stream\MemoryRecord{TId}.designer.cs">

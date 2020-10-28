@@ -123,10 +123,8 @@
       <DependentUpon>Pruning{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Legacy\IConnectionDefinition.cs" />
+    <Compile Include="Operations\DeleteStreamOp{TId}.cs" />
     <Compile Include="Operations\CreateStreamOp{TId}.cs" />
-    <Compile Include="Operations\CreateStreamOp{TId}.designer.cs">
-      <DependentUpon>CreateStreamOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.cs" />
     <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestByIdAndTypeOp{TId,TObject}.cs</DependentUpon>
@@ -136,9 +134,6 @@
       <DependentUpon>GetOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\GetStreamFromRepresentationOp{TId}.cs" />
-    <Compile Include="Operations\GetStreamFromRepresentationOp{TId}.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\PutOp{TObject}.cs" />
     <Compile Include="Operations\PutOp{TObject}.designer.cs">
       <DependentUpon>PutOp{TObject}.cs</DependentUpon>
@@ -162,6 +157,7 @@
     <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">
       <DependentUpon>NullDatabaseLocator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
     <Compile Include="Stream\IProtocolFactoryStreamObjectReadOperations{TId}.cs" />
     <Compile Include="Stream\IProtocolFactoryStreamObjectWriteOperations{TId}.cs" />
@@ -169,11 +165,13 @@
     <Compile Include="Stream\IProtocolStreamObjectWriteOperations{TId,TObject}.cs" />
     <Compile Include="Stream\IReadOnlyStream{TId}.cs" />
     <Compile Include="Stream\IStream{TId}.cs" />
+    <Compile Include="Stream\Representation\FileStreamRepresentation{TId}.cs" />
+    <Compile Include="Stream\Representation\IStreamRepresentation{TId}.cs" />
+    <Compile Include="Stream\Representation\MemoryStreamRepresentation{TId}.cs" />
+    <Compile Include="Stream\StreamBase{TId}.cs" />
     <Compile Include="Stream\StreamFactory{TId}.cs" />
-    <Compile Include="Stream\StreamRepresentation{TId}.cs" />
-    <Compile Include="Stream\StreamRepresentation{TId}.designer.cs">
-      <DependentUpon>StreamRepresentation{TId}.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Stream\Representation\StreamRepresentation{TId}.cs" />
+    <Compile Include="Stream\Representation\StreamRepresentationBase{TId}.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

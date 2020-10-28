@@ -15,7 +15,7 @@ namespace Naos.Database.Protocol.Memory
     using Naos.Protocol.Domain;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
-    using OBeautifulCode.Type.Recipes;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
@@ -23,14 +23,13 @@ namespace Naos.Database.Protocol.Memory
     /// </summary>
     /// <typeparam name="TId">The type of the ID.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class MemoryStream<TId> : IStream<TId>, IProtocolResourceLocator<TId>
+    public class MemoryStream<TId> : StreamBase<TId>
     {
         private readonly SerializerRepresentation defaultSerializerRepresentation;
         private readonly SerializationFormat defaultSerializationFormat;
         private readonly ISerializerFactory serializerFactory;
-        private readonly ISyncAndAsyncReturningProtocol<GetProtocolByTypeOp, IProtocol> getProtocolByTypeProtocol;
         private readonly IList<MemoryRecord<TId>> items = new List<MemoryRecord<TId>>();
-        private readonly NullResourceLocator nullResourceLocator = new NullResourceLocator();
+        private bool created = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStream{TId}"/> class.
@@ -39,13 +38,16 @@ namespace Naos.Database.Protocol.Memory
         /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
         /// <param name="defaultSerializationFormat">The default serialization format.</param>
         /// <param name="serializerFactory">The serializer factory.</param>
-        /// <param name="getProtocolByTypeProtocol">The protocol to get, by type, other protocols.</param>
+        /// <param name="protocolGetIdByTypeProtocol">Optional, id extractor protocols by type; DEFAULT will look for implementation of <see cref="IIdentifiable"/> on the object written.</param>
+        /// <param name="protocolGetTagsByTypeProtocol">Optional tag extractor protocols by type; DEFAULT will look for implementation of <see cref="IHaveTags"/> on the object written.</param>
         public MemoryStream(
             string name,
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
-            ISyncAndAsyncReturningProtocol<GetProtocolByTypeOp, IProtocol> getProtocolByTypeProtocol = null)
+            ISyncAndAsyncReturningProtocol<GetProtocolByTypeOp, IProtocol> protocolGetIdByTypeProtocol = null,
+            ISyncAndAsyncReturningProtocol<GetProtocolByTypeOp, IProtocol> protocolGetTagsByTypeProtocol = null)
+        : base(name, new SingleResourceLocatorProtocol<TId>(new MemoryDatabaseLocator(name)), protocolGetIdByTypeProtocol, protocolGetTagsByTypeProtocol)
         {
             this.defaultSerializerRepresentation = defaultSerializerRepresentation ?? throw new ArgumentNullException(nameof(defaultSerializerRepresentation));
 
@@ -56,47 +58,101 @@ namespace Naos.Database.Protocol.Memory
 
             this.defaultSerializationFormat = defaultSerializationFormat;
             this.serializerFactory = serializerFactory ?? throw new ArgumentNullException(nameof(serializerFactory));
-            this.Name = name;
-            this.getProtocolByTypeProtocol = getProtocolByTypeProtocol ?? new ProtocolFactory(new Dictionary<Type, Func<IProtocol>>());
+            this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
         }
 
         /// <inheritdoc />
-        public ISyncAndAsyncReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>>
-            BuildGetTagsFromObjectProtocol<TObject>()
+        public override IStreamRepresentation<TId> StreamRepresentation => new MemoryStreamRepresentation<TId>(this.Name, this.Id);
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <value>The identifier.</value>
+        public string Id { get; private set; }
+
+        /// <inheritdoc />
+        public override void Execute(
+            CreateStreamOp<TId> operation)
         {
-            var operation = new GetProtocolByTypeOp(
-                typeof(ISyncAndAsyncReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>>).ToRepresentation(),
-                MissingProtocolStrategy.Null);
-            var result = this.getProtocolByTypeProtocol.Execute(operation);
-            if (result != null)
+            if (operation == null)
             {
-                return (ISyncAndAsyncReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>>)result;
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            if (operation.StreamRepresentation != this.StreamRepresentation)
+            {
+                throw new ArgumentException(Invariant($"This {nameof(MemoryStream<TId>)} can only 'create' a stream with the same representation."));
+            }
+
+            if (this.created)
+            {
+                switch (operation.ExistingStreamEncounteredStrategy)
+                {
+                    case ExistingStreamEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(Invariant($"Expected stream {operation.StreamRepresentation} to not exist, it does and the operation {nameof(operation.ExistingStreamEncounteredStrategy)} is set to '{operation.ExistingStreamEncounteredStrategy}'."));
+                    case ExistingStreamEncounteredStrategy.Overwrite:
+                        this.items.Clear();
+                        break;
+                    case ExistingStreamEncounteredStrategy.Skip:
+                        break;
+                    default:
+                        throw new NotSupportedException(Invariant($"Operation {nameof(operation.ExistingStreamEncounteredStrategy)} of '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
+                }
+            }
+
+            this.created = true;
+        }
+
+        /// <inheritdoc />
+        public override async Task ExecuteAsync(
+            CreateStreamOp<TId> operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just to get the async.
+        }
+
+        /// <inheritdoc />
+        public override void Execute(
+            DeleteStreamOp<TId> operation)
+        {
+            if (operation == null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            if (operation.StreamRepresentation != this.StreamRepresentation)
+            {
+                throw new ArgumentException(Invariant($"This {nameof(MemoryStream<TId>)} can only 'Delete' a stream with the same representation."));
+            }
+
+            if (!this.created)
+            {
+                switch (operation.ExistingStreamNotEncounteredStrategy)
+                {
+                    case ExistingStreamNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
+                    case ExistingStreamNotEncounteredStrategy.Skip:
+                        break;
+                }
             }
             else
             {
-                return new GetTagsFromObjectProtocol<TObject>();
+                this.items.Clear();
             }
         }
 
         /// <inheritdoc />
-        public ISyncAndAsyncReturningProtocol<GetIdFromObjectOp<TId, TObject>, TId> BuildGetIdFromObjectProtocol<TObject>()
+        public override async Task ExecuteAsync(
+            DeleteStreamOp<TId> operation)
         {
-            var operation = new GetProtocolByTypeOp(
-                typeof(ISyncAndAsyncReturningProtocol<GetIdFromObjectOp<TId, TObject>, TId>).ToRepresentation(),
-                MissingProtocolStrategy.Null);
-            var result = this.getProtocolByTypeProtocol.Execute(operation);
-            if (result != null)
-            {
-                return (ISyncAndAsyncReturningProtocol<GetIdFromObjectOp<TId, TObject>, TId>)result;
-            }
-            else
-            {
-                return new GetIdFromObjectProtocol<TId, TObject>();
-            }
+            this.Execute(operation);
+            await Task.FromResult(true); // just to get the async.
         }
 
         /// <inheritdoc />
-        public ISyncAndAsyncReturningProtocol<GetLatestByIdAndTypeOp<TId, TObject>, TObject> BuildGetLatestByIdAndTypeProtocol<TObject>()
+        public override ISyncAndAsyncReturningProtocol<GetLatestByIdAndTypeOp<TId, TObject>, TObject> BuildGetLatestByIdAndTypeProtocol<TObject>()
         {
             var result = new LambdaReturningProtocol<GetLatestByIdAndTypeOp<TId, TObject>, TObject>(
                 operation =>
@@ -111,41 +167,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public string Name { get; private set; }
-
-        /// <inheritdoc />
-        public IProtocolResourceLocator<TId> ResourceLocatorProtocol => this;
-
-        /// <inheritdoc />
-        public StreamRepresentation<TId> StreamRepresentation => new StreamRepresentation<TId>(this.Name);
-
-        /// <inheritdoc />
-        public void Execute(
-            CreateStreamOp<TId> operation)
-        {
-            if (operation == null)
-            {
-                throw new ArgumentNullException(nameof(operation));
-            }
-
-            if (operation.StreamRepresentation != this.StreamRepresentation)
-            {
-                throw new ArgumentException(Invariant($"This {nameof(MemoryStream<TId>)} can only 'create' a stream with the same representation."));
-            }
-
-            // nothing else to do...
-        }
-
-        /// <inheritdoc />
-        public async Task ExecuteAsync(
-            CreateStreamOp<TId> operation)
-        {
-            var resultNotUsed = await Task.FromResult(false); // just to get the async.
-            this.Execute(operation);
-        }
-
-        /// <inheritdoc />
-        public ISyncAndAsyncVoidProtocol<PutOp<TObject>> BuildPutProtocol<TObject>()
+        public override ISyncAndAsyncVoidProtocol<PutOp<TObject>> BuildPutProtocol<TObject>()
         {
             void Action(PutOp<TObject> operation)
             {
@@ -160,43 +182,6 @@ namespace Naos.Database.Protocol.Memory
             }
 
             var result = new LambdaVoidProtocol<PutOp<TObject>>(Action);
-            return result;
-        }
-
-        /// <inheritdoc />
-        public IResourceLocator Execute(
-            GetResourceLocatorByIdOp<TId> operation)
-        {
-            return this.nullResourceLocator;
-        }
-
-        /// <inheritdoc />
-        public async Task<IResourceLocator> ExecuteAsync(
-            GetResourceLocatorByIdOp<TId> operation)
-        {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
-            return result;
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyCollection<IResourceLocator> Execute(
-            GetAllResourceLocatorsOp operation)
-        {
-            var result = new[]
-                         {
-                             this.nullResourceLocator,
-                         };
-
-            return result;
-        }
-
-        /// <inheritdoc />
-        public async Task<IReadOnlyCollection<IResourceLocator>> ExecuteAsync(
-            GetAllResourceLocatorsOp operation)
-        {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
             return result;
         }
     }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IReadOnlyStream{TId}.cs" company="Naos Project">
+// <copyright file="StreamRepresentationBase{TId}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,32 +7,30 @@
 namespace Naos.Database.Domain
 {
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Type;
 
     /// <summary>
-    /// Stream interface, a stream is a list of objects ordered by timestamp, only read operations are supported.
+    /// Stream description to allow the <see cref="StreamFactory{TId}"/> to produce the correct stream.
     /// </summary>
     /// <typeparam name="TId">The type of ID of the stream.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public interface IReadOnlyStream<TId>
-        : IProtocolFactoryStreamObjectReadOperations<TId>
+    public abstract partial class StreamRepresentationBase<TId> : IStreamRepresentation<TId>, IModelViaCodeGen
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamRepresentationBase{TId}"/> class.
+        /// </summary>
+        /// <param name="name">The name of the stream.</param>
+        protected StreamRepresentationBase(string name)
+        {
+            name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
+            this.Name = name;
+        }
+
         /// <summary>
         /// Gets the name of the stream.
         /// </summary>
         /// <value>The name of the stream.</value>
-        string Name { get; }
-
-        /// <summary>
-        /// Gets the resource locator protocol.
-        /// </summary>
-        /// <value>The resource locator protocol.</value>
-        IProtocolResourceLocator<TId> ResourceLocatorProtocol { get; }
-
-        /// <summary>
-        /// Gets the representation of the stream.
-        /// </summary>
-        /// <value>The representation of the stream.</value>
-        IStreamRepresentation<TId> StreamRepresentation { get; }
+        public string Name { get; private set; }
     }
 }

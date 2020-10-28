@@ -80,6 +80,9 @@
     <Reference Include="Naos.Protocol.Domain, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Protocol.Domain.1.0.74\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
+    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.74\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.24\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
     </Reference>

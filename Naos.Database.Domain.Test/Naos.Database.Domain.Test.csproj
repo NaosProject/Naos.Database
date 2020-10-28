@@ -248,9 +248,6 @@
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="CreateStreamOp{TId}Test.cs" />
-    <Compile Include="CreateStreamOp{TId}Test.designer.cs">
-      <DependentUpon>CreateStreamOp{TId}Test.cs</DependentUpon>
-    </Compile>
     <Compile Include="DatabaseDummyFactoryTest.designer.cs">
       <DependentUpon>DatabaseDummyFactoryTest.cs</DependentUpon>
     </Compile>
@@ -271,9 +268,6 @@
       <DependentUpon>GetOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="GetStreamFromRepresentationOp{TId}Test.cs" />
-    <Compile Include="GetStreamFromRepresentationOp{TId}Test.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TId}Test.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemoryDatabaseLocatorTest.cs" />
     <Compile Include="MemoryDatabaseLocatorTest.designer.cs">
       <DependentUpon>MemoryDatabaseLocatorTest.cs</DependentUpon>
@@ -310,9 +304,6 @@
     </Compile>
     <Compile Include="DatabaseDummyFactoryTest.cs" />
     <Compile Include="StreamRepresentation{TId}Test.cs" />
-    <Compile Include="StreamRepresentation{TId}Test.designer.cs">
-      <DependentUpon>StreamRepresentation{TId}Test.cs</DependentUpon>
-    </Compile>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

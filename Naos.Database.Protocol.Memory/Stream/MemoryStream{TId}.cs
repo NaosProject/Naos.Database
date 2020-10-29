@@ -79,7 +79,7 @@ namespace Naos.Database.Protocol.Memory
                 throw new ArgumentNullException(nameof(operation));
             }
 
-            if (operation.StreamRepresentation != this.StreamRepresentation)
+            if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
             {
                 throw new ArgumentException(Invariant($"This {nameof(MemoryStream<TId>)} can only 'create' a stream with the same representation."));
             }
@@ -120,7 +120,7 @@ namespace Naos.Database.Protocol.Memory
                 throw new ArgumentNullException(nameof(operation));
             }
 
-            if (operation.StreamRepresentation != this.StreamRepresentation)
+            if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
             {
                 throw new ArgumentException(Invariant($"This {nameof(MemoryStream<TId>)} can only 'Delete' a stream with the same representation."));
             }

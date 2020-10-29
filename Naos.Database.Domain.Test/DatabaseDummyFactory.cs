@@ -10,10 +10,12 @@
 namespace Naos.Database.Domain.Test
 {
     using System;
-
+    using System.Collections.Generic;
     using FakeItEasy;
 
     using OBeautifulCode.AutoFakeItEasy;
+    using OBeautifulCode.Math.Recipes;
+    using OBeautifulCode.Representation.System;
 
     /// <summary>
     /// A Dummy Factory for types in <see cref="Naos.Database.Domain"/>.
@@ -30,6 +32,31 @@ namespace Naos.Database.Domain.Test
         public DatabaseDummyFactory()
         {
             /* Add any overriding or custom registrations here. */
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var availableTypes = new[]
+                                         {
+                                             typeof(FileStreamRepresentation<Version>),
+                                             typeof(MemoryStreamRepresentation<Version>),
+                                         };
+
+                    var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
+
+                    var randomType = availableTypes[randomIndex];
+
+                    var result = (IStreamRepresentation<Version>)AD.ummy(randomType);
+
+                    return result;
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecordMetadata<Version>(
+                    A.Dummy<Version>(),
+                    A.Dummy<IReadOnlyDictionary<string, string>>(),
+                    A.Dummy<TypeRepresentation>(),
+                    A.Dummy<TypeRepresentation>(),
+                    A.Dummy<DateTime>().ToUniversalTime()));
         }
     }
 }

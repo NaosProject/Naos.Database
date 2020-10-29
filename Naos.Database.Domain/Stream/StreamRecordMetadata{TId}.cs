@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// Strategy to use when trying to create a stream that already exists.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier.</typeparam>
-    public class StreamRecordMetadata<TId> : IIdentifiableBy<TId>, IHaveTags, IModelViaCodeGen, IHaveTimestampUtc
+    public partial class StreamRecordMetadata<TId> : IIdentifiableBy<TId>, IHaveTags, IModelViaCodeGen, IHaveTimestampUtc
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecordMetadata{TId}"/> class.

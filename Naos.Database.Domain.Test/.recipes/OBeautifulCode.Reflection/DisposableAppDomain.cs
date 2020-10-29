@@ -15,8 +15,8 @@ namespace OBeautifulCode.Reflection.Recipes
     /// A wrapper for an <see cref="AppDomain"/> that implements <see cref="IDisposable"/>.
     /// </summary>
 #if !OBeautifulCodeReflectionSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Reflection.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Reflection.Recipes", "See package version number")]
     internal
 #else
     public

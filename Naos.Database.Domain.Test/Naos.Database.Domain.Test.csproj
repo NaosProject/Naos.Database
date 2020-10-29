@@ -113,8 +113,8 @@
     <Reference Include="OBeautifulCode.Serialization.PropertyBag, Version=1.0.84.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Serialization.PropertyBag.1.0.84\lib\net462\OBeautifulCode.Serialization.PropertyBag.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Type, Version=1.0.71.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Type.1.0.71\lib\net462\OBeautifulCode.Type.dll</HintPath>
+    <Reference Include="OBeautifulCode.Type, Version=1.0.73.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Type.1.0.73\lib\net462\OBeautifulCode.Type.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -206,6 +206,7 @@
     <Compile Include=".recipes\OBeautifulCode.Compression\CompressorFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Compression\DotNetZipCompressor.cs" />
     <Compile Include=".recipes\OBeautifulCode.Compression\NullCompressor.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Enum\EnumExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\DateTimeEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\DictionaryEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\EnumerableEqualityComparer.cs" />
@@ -216,10 +217,28 @@
     <Compile Include=".recipes\OBeautifulCode.Equality\ReadOnlyDictionaryEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Math\ThreadSafeRandom.cs" />
     <Compile Include=".recipes\OBeautifulCode.Process\ProcessHelper.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\AccessModifier.cs" />
     <Compile Include=".recipes\OBeautifulCode.Reflection\AppDomainHelper.cs" />
     <Compile Include=".recipes\OBeautifulCode.Reflection\AssemblyHelper.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\BindingFlagsFor.cs" />
     <Compile Include=".recipes\OBeautifulCode.Reflection\CompressionMethod.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ConstructorsMatchedToPropertiesStrategy.cs" />
     <Compile Include=".recipes\OBeautifulCode.Reflection\DisposableAppDomain.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberAccessModifiers.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberAttributes.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberKinds.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberMutability.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberOwners.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberRelationships.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\OrderMembersBy.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Attribute.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Constructor.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Enum.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Field.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.MemberInfo.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Method.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Property.cs" />
     <Compile Include=".recipes\OBeautifulCode.Representation\RepresentationSystemDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Representation\RepresentationSystemDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Serialization\AppDomainScenarios.cs" />
@@ -248,12 +267,23 @@
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="CreateStreamOp{TId}Test.cs" />
+    <Compile Include="CreateStreamOp{TId}Test.designer.cs">
+      <DependentUpon>CreateStreamOp{TId}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseDummyFactoryTest.designer.cs">
       <DependentUpon>DatabaseDummyFactoryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseLocatorBaseTest.cs" />
     <Compile Include="DatabaseLocatorBaseTest.designer.cs">
       <DependentUpon>DatabaseLocatorBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteStreamOp{TId}Test.cs" />
+    <Compile Include="DeleteStreamOp{TId}Test.designer.cs">
+      <DependentUpon>DeleteStreamOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FileStreamRepresentation{TId}Test.cs" />
+    <Compile Include="FileStreamRepresentation{TId}Test.designer.cs">
+      <DependentUpon>FileStreamRepresentation{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="FileSystemDatabaseLocatorTest.cs" />
     <Compile Include="FileSystemDatabaseLocatorTest.designer.cs">
@@ -268,9 +298,16 @@
       <DependentUpon>GetOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="GetStreamFromRepresentationOp{TId}Test.cs" />
+    <Compile Include="GetStreamFromRepresentationOp{TId}Test.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp{TId}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="MemoryDatabaseLocatorTest.cs" />
     <Compile Include="MemoryDatabaseLocatorTest.designer.cs">
       <DependentUpon>MemoryDatabaseLocatorTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemoryStreamRepresentation{TId}Test.cs" />
+    <Compile Include="MemoryStreamRepresentation{TId}Test.designer.cs">
+      <DependentUpon>MemoryStreamRepresentation{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="NullDatabaseLocatorTest.cs" />
     <Compile Include="NullDatabaseLocatorTest.designer.cs">
@@ -303,8 +340,19 @@
       <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseDummyFactoryTest.cs" />
+    <Compile Include="StreamRecordMetadata{TId}Test.cs" />
+    <Compile Include="StreamRecordMetadata{TId}Test.designer.cs">
+      <DependentUpon>StreamRecordMetadata{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamRepresentationBase{TId}Test.cs" />
+    <Compile Include="StreamRepresentationBase{TId}Test.designer.cs">
+      <DependentUpon>StreamRepresentationBase{TId}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="StreamRepresentation{TId}Test.cs" />
     <AdditionalFiles Include=".analyzers\stylecop.json" />
+    <Compile Include="StreamRepresentation{TId}Test.designer.cs">
+      <DependentUpon>StreamRepresentation{TId}Test.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />

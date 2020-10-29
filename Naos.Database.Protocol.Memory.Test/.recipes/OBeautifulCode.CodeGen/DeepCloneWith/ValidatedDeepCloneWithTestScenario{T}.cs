@@ -14,6 +14,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
     using global::System.Reflection;
 
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Reflection.Recipes;
     using OBeautifulCode.Type.Recipes;
 
     /// <summary>
@@ -59,7 +60,9 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
                 new { systemUnderTest }.AsTest().Must().NotBeNull(id);
 
                 var deepCloneWithMethodName = "DeepCloneWith" + withPropertyName;
-                deepCloneWithMethod = typeof(T).GetMethods(BindingFlags.Public | BindingFlags.Instance).SingleOrDefault(_ => _.Name == deepCloneWithMethodName);
+
+                deepCloneWithMethod = typeof(T).GetMethod(deepCloneWithMethodName, BindingFlagsFor.PublicDeclaredAndInheritedInstanceMembers);
+
                 new { deepCloneWithMethod }.AsTest().Must().NotBeNull(id);
 
                 // ReSharper disable once PossibleNullReferenceException
@@ -81,7 +84,8 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
                     new { withValueTypeIsAssignableToDeepCloneWithMethodParameterType }.AsTest().Must().BeTrue(id);
                 }
 
-                var withProperty = typeof(T).GetProperty(withPropertyName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty);
+                var withProperty = typeof(T).GetProperty(withPropertyName, BindingFlagsFor.PublicDeclaredAndInheritedInstanceMembers);
+
                 new { withProperty }.Must().NotBeNull(id);
             }
 

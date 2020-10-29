@@ -20,8 +20,8 @@ namespace OBeautifulCode.Reflection.Recipes
     /// Adapted from <a href="https://malvinly.com/2012/04/08/executing-code-in-a-new-application-domain/" />.
     /// </remarks>
 #if !OBeautifulCodeReflectionSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Reflection.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Reflection.Recipes", "See package version number")]
     internal
 #else
     public
@@ -576,7 +576,7 @@ namespace OBeautifulCode.Reflection.Recipes
 
             return result;
         }
-        
+
         private static AppDomainDelegate BuildAppDomainDelegate(
             this DisposableAppDomain disposableAppDomain)
         {

@@ -396,6 +396,46 @@ namespace OBeautifulCode.Type.Recipes
         }
 
         /// <summary>
+        /// Determines if the specified type has a base type.
+        /// </summary>
+        /// <returns>
+        /// true if the specified type has a base type, otherwise false.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
+        public static bool HasBaseType(
+            this Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var result = type.BaseType != null;
+
+            return result;
+        }
+
+        /// <summary>
+        /// Determines if the base type of the specified type is object.
+        /// </summary>
+        /// <returns>
+        /// true if the base type of the specified type is object, otherwise false.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
+        public static bool HasObjectAsBaseType(
+            this Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var result = type.BaseType == typeof(object);
+
+            return result;
+        }
+
+        /// <summary>
         /// Determines if <see cref="Comparer{T}.Default"/> will return a
         /// working (non-throwing) comparer for the specified type.
         /// </summary>

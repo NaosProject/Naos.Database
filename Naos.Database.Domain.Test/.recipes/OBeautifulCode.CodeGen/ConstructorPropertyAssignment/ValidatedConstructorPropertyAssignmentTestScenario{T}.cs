@@ -14,6 +14,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
     using global::System.Reflection;
 
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Reflection.Recipes;
 
     /// <summary>
     /// Specifies a scenario for testing when a constructor sets a property values.
@@ -63,7 +64,8 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
 
                 expectedPropertyValue = systemUnderTestExpectedPropertyValue.ExpectedPropertyValue;
 
-                property = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).SingleOrDefault(_ => _.Name == propertyName);
+                property = typeof(T).GetProperty(propertyName, BindingFlagsFor.PublicDeclaredAndInheritedInstanceMembers);
+
                 new { property }.AsTest().Must().NotBeNull(id);
 
                 if (compareActualToExpectedUsing == CompareActualToExpectedUsing.DefaultStrategy)
@@ -82,7 +84,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
                     }
                 }
             }
-            
+
             this.Id = id;
             this.PropertyName = propertyName;
             this.SystemUnderTest = systemUnderTest;

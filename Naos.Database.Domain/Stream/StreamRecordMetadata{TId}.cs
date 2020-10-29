@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -32,6 +33,15 @@ namespace Naos.Database.Domain
             TypeRepresentation typeRepresentationWithoutVersion,
             DateTime timestampUtc)
         {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            tags.MustForArg(nameof(tags)).NotBeNull();
+            typeRepresentationWithVersion.MustForArg(nameof(typeRepresentationWithVersion)).NotBeNull();
+            typeRepresentationWithoutVersion.MustForArg(nameof(typeRepresentationWithoutVersion)).NotBeNull();
+
             this.Id = id;
             this.Tags = tags;
             this.TypeRepresentationWithVersion = typeRepresentationWithVersion;

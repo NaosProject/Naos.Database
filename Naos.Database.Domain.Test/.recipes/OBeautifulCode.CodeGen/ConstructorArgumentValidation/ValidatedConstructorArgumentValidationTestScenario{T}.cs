@@ -48,7 +48,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
         {
             new { id }.AsTest().Must().NotBeNullNorWhiteSpace();
             new { constructionFunc }.AsTest().Must().NotBeNull(id);
-            expectedExceptionType.IsAssignableTo(typeof(Exception)).AsTest(Invariant($"{nameof(expectedExceptionType)}.{nameof(TypeExtensions.IsAssignableTo)}(typeof({nameof(Exception)}))")).Must().BeTrue();
+            expectedExceptionType.IsAssignableTo(typeof(Exception)).AsTest(Invariant($"{nameof(expectedExceptionType)}.{nameof(OBeautifulCode.Type.Recipes.TypeExtensions.IsAssignableTo)}(typeof({nameof(Exception)}))")).Must().BeTrue();
 
             if (expectedExceptionMessageContains != null)
             {

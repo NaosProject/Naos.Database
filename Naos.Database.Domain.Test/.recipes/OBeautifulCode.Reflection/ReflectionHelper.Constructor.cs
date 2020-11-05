@@ -159,7 +159,7 @@ namespace OBeautifulCode.Reflection.Recipes
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = ObcSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         public static IReadOnlyCollection<ConstructorInfo> GetConstructorsMatchedToProperties(
             this Type classType,
-            IReadOnlyList<PropertyInfo> properties,
+            IReadOnlyCollection<PropertyInfo> properties,
             ConstructorsMatchedToPropertiesStrategy matchStrategy,
             MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.Public,
             MemberRelationships memberRelationships = MemberRelationships.DeclaredInType)

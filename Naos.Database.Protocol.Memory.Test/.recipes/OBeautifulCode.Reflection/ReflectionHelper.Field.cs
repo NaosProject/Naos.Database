@@ -11,11 +11,9 @@ namespace OBeautifulCode.Reflection.Recipes
 {
     using global::System;
     using global::System.Collections.Generic;
-    using global::System.Diagnostics.CodeAnalysis;
     using global::System.Linq;
     using global::System.Reflection;
 
-    using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.Type.Recipes;
 
     using static global::System.FormattableString;
@@ -65,97 +63,33 @@ namespace OBeautifulCode.Reflection.Recipes
         }
 
         /// <summary>
-        /// Determines if a type has a field of the specified field name.
-        /// </summary>
-        /// <param name="type">The type to check.</param>
-        /// <param name="fieldName">The name of the field to check for.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
-        /// <returns>
-        /// true if the type has a field of the specified field name, false if not.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="fieldName"/> is whitespace.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
-        public static bool HasField(
-            this Type type,
-            string fieldName,
-            BindingFlags bindingFlags)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (fieldName == null)
-            {
-                throw new ArgumentNullException(nameof(fieldName));
-            }
-
-            if (string.IsNullOrWhiteSpace(fieldName))
-            {
-                throw new ArgumentException(Invariant($"{nameof(fieldName)} is white space."));
-            }
-
-            bool result;
-
-            try
-            {
-                result = type.GetField(fieldName, bindingFlags) != null;
-            }
-            catch (AmbiguousMatchException)
-            {
-                result = true;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the name of all of the fields.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
-        /// <returns>
-        /// The field names.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
-        public static IReadOnlyCollection<string> GetFieldNames(
-            this Type type,
-            BindingFlags bindingFlags)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            var allFields = type.GetFields(bindingFlags);
-
-            var result = allFields.Select(_ => _.Name).ToList();
-
-            return result;
-        }
-
-        /// <summary>
         /// Gets the <see cref="FieldInfo"/> for the specified field.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="fieldName">The name of the field.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to <paramref name="type"/>.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberOwners">OPTIONAL value that scopes the search for members based on who owns the member.  DEFAULT is to include members owned by an object or owned by the type itself.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
+        /// <param name="throwIfNotFound">OPTIONAL value indicating whether to throw if no fields are found.  DEFAULT is to throw..</param>
         /// <returns>
-        /// The <see cref="FieldInfo"/>.
+        /// The <see cref="FieldInfo"/> or null if no fields are found and <paramref name="throwIfNotFound"/> is false.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="fieldName"/> is whitespace.</exception>
-        /// <exception cref="ArgumentException">There is no field named <paramref name="fieldName"/> on the object type using the specified binding constraints.</exception>
+        /// <exception cref="ArgumentException">There is no field named <paramref name="fieldName"/> on the object type using the specified binding constraints and <paramref name="throwIfNotFound"/> is true.</exception>
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on the object type using the specified binding constraints.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
-        public static FieldInfo GetFieldInfo(
+        public static FieldInfo GetFieldFiltered(
             this Type type,
             string fieldName,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberOwners memberOwners = MemberOwners.All,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated,
+            bool throwIfNotFound = true)
         {
             if (type == null)
             {
@@ -172,20 +106,32 @@ namespace OBeautifulCode.Reflection.Recipes
                 throw new ArgumentException(Invariant($"{nameof(fieldName)} is white space."));
             }
 
+            var fields = type
+                // ReSharper disable once RedundantArgumentDefaultValue
+                .GetFieldsFiltered(memberRelationships, memberOwners, memberAccessModifiers, memberMutability, memberAttributes, OrderMembersBy.None)
+                .Where(_ => _.Name == fieldName)
+                .ToList();
+
             FieldInfo result;
 
-            try
+            if (!fields.Any())
             {
-                result = type.GetField(fieldName, bindingFlags);
-
-                if (result == null)
+                if (throwIfNotFound)
                 {
                     throw new ArgumentException(Invariant($"There is no field named '{fieldName}' on type '{type.ToStringReadable()}', using the specified binding constraints."));
                 }
+                else
+                {
+                    result = null;
+                }
             }
-            catch (AmbiguousMatchException)
+            else if (fields.Count > 1)
             {
                 throw new ArgumentException(Invariant($"There is more than one field named '{fieldName}' on type '{type.ToStringReadable()}', using the specified binding constraints."));
+            }
+            else
+            {
+                result = fields.Single();
             }
 
             return result;
@@ -197,7 +143,11 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <typeparam name="T">The type of the field.</typeparam>
         /// <param name="item">The object.</param>
         /// <param name="fieldName">The name of the field.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to the <paramref name="item"/> Type.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberOwners">OPTIONAL value that scopes the search for members based on who owns the member.  DEFAULT is to include members owned by an object or owned by the type itself.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
         /// <returns>
         /// The value of the field.
         /// </returns>
@@ -208,18 +158,21 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on the object type using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">The field does not have a get method.</exception>
         /// <exception cref="InvalidCastException">The field is not of the specified type.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
         public static T GetFieldValue<T>(
             this object item,
             string fieldName,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberOwners memberOwners = MemberOwners.All,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
         {
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var fieldInfo = item.GetType().GetFieldInfo(fieldName, bindingFlags);
+            var fieldInfo = item.GetType().GetFieldFiltered(fieldName, memberRelationships, memberOwners, memberAccessModifiers, memberMutability, memberAttributes);
 
             var fieldValue = fieldInfo.GetValue(item);
 
@@ -233,7 +186,11 @@ namespace OBeautifulCode.Reflection.Recipes
         /// </summary>
         /// <param name="item">The object.</param>
         /// <param name="fieldName">The name of the field.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to the <paramref name="item"/> Type.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberOwners">OPTIONAL value that scopes the search for members based on who owns the member.  DEFAULT is to include members owned by an object or owned by the type itself.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
         /// <returns>
         /// The value of the field.
         /// </returns>
@@ -243,18 +200,21 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <exception cref="ArgumentException">There is no field named <paramref name="fieldName"/> on the object type using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on the object type using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">The field does not have a get method.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
         public static object GetFieldValue(
             this object item,
             string fieldName,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberOwners memberOwners = MemberOwners.All,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
         {
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var fieldInfo = item.GetType().GetFieldInfo(fieldName, bindingFlags);
+            var fieldInfo = item.GetType().GetFieldFiltered(fieldName, memberRelationships, memberOwners, memberAccessModifiers, memberMutability, memberAttributes);
 
             var result = fieldInfo.GetValue(item);
 
@@ -267,7 +227,10 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <typeparam name="T">The type of the field.</typeparam>
         /// <param name="type">The type that contains the field.</param>
         /// <param name="fieldName">The name of the field.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to <paramref name="type"/>.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
         /// <returns>
         /// The value of the field.
         /// </returns>
@@ -277,31 +240,23 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <exception cref="ArgumentException">There is no field named <paramref name="fieldName"/> on type <paramref name="type"/> using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on type <paramref name="type"/> using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">The field does not have a get method.</exception>
-        /// <exception cref="ArgumentException">The field is not static.</exception>
         /// <exception cref="InvalidCastException">The field is not of the specified type.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
         public static T GetStaticFieldValue<T>(
             this Type type,
             string fieldName,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            var fieldInfo = type.GetFieldInfo(fieldName, bindingFlags);
+            var fieldInfo = type.GetFieldFiltered(fieldName, memberRelationships, MemberOwners.Static, memberAccessModifiers, memberMutability, memberAttributes);
 
-            object fieldValue;
-
-            try
-            {
-                fieldValue = fieldInfo.GetValue(null);
-            }
-            catch (TargetException)
-            {
-                throw new ArgumentException("The field is not static.");
-            }
+            var fieldValue = fieldInfo.GetValue(null);
 
             var result = fieldValue.CastOrThrowIfTypeMismatch<T>(fieldInfo);
 
@@ -313,7 +268,10 @@ namespace OBeautifulCode.Reflection.Recipes
         /// </summary>
         /// <param name="type">The type that contains the field.</param>
         /// <param name="fieldName">The name of the field.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to <paramref name="type"/>.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
         /// <returns>
         /// The value of the field.
         /// </returns>
@@ -323,30 +281,73 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <exception cref="ArgumentException">There is no field named <paramref name="fieldName"/> on type <paramref name="type"/> using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on type <paramref name="type"/> using the specified binding constraints.</exception>
         /// <exception cref="ArgumentException">The field does not have a get method.</exception>
-        /// <exception cref="ArgumentException">The field is not static.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
         public static object GetStaticFieldValue(
             this Type type,
             string fieldName,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            var fieldInfo = type.GetFieldInfo(fieldName, bindingFlags);
+            var fieldInfo = type.GetFieldFiltered(fieldName, memberRelationships, MemberOwners.Static, memberAccessModifiers, memberMutability, memberAttributes);
 
-            object result;
+            var result = fieldInfo.GetValue(null);
 
-            try
+            return result;
+        }
+
+        /// <summary>
+        /// Determines if a type has a field of the specified field name.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <param name="fieldName">The name of the field to check for.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to <paramref name="type"/>.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberOwners">OPTIONAL value that scopes the search for members based on who owns the member.  DEFAULT is to include members owned by an object or owned by the type itself.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
+        /// <returns>
+        /// true if the type has a field of the specified field name, false if not.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="fieldName"/> is whitespace.</exception>
+        public static bool HasField(
+            this Type type,
+            string fieldName,
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberOwners memberOwners = MemberOwners.All,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
+        {
+            if (type == null)
             {
-                result = fieldInfo.GetValue(null);
+                throw new ArgumentNullException(nameof(type));
             }
-            catch (TargetException)
+
+            if (fieldName == null)
             {
-                throw new ArgumentException("The field is not static.");
+                throw new ArgumentNullException(nameof(fieldName));
             }
+
+            if (string.IsNullOrWhiteSpace(fieldName))
+            {
+                throw new ArgumentException(Invariant($"{nameof(fieldName)} is white space."));
+            }
+
+            var fields = type
+                // ReSharper disable once RedundantArgumentDefaultValue
+                .GetFieldsFiltered(memberRelationships, memberOwners, memberAccessModifiers, memberMutability, memberAttributes, OrderMembersBy.None)
+                .Where(_ => _.Name == fieldName)
+                .ToList();
+
+            var result = fields.Any();
 
             return result;
         }
@@ -461,7 +462,11 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <param name="item">The object.</param>
         /// <param name="fieldName">The name of the field.</param>
         /// <param name="value">The value to set the field to.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to the <paramref name="item"/> Type.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberOwners">OPTIONAL value that scopes the search for members based on who owns the member.  DEFAULT is to include members owned by an object or owned by the type itself.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
         /// <exception cref="ArgumentNullException"><paramref name="item"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="fieldName"/> is whitespace.</exception>
@@ -469,19 +474,22 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on the object type using the specified binding constraints.</exception>
         /// <exception cref="InvalidCastException">Unable to assign null to the field's type.</exception>
         /// <exception cref="InvalidCastException">Unable to assign <paramref name="value"/> type to the field's type.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
         public static void SetFieldValue(
             this object item,
             string fieldName,
             object value,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberOwners memberOwners = MemberOwners.All,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
         {
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var fieldInfo = item.GetType().GetFieldInfo(fieldName, bindingFlags);
+            var fieldInfo = item.GetType().GetFieldFiltered(fieldName, memberRelationships, memberOwners, memberAccessModifiers, memberMutability, memberAttributes);
 
             value.ThrowIfNotAssignableTo(fieldInfo);
 
@@ -494,7 +502,10 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <param name="type">The type that contains the field.</param>
         /// <param name="fieldName">The name of the field.</param>
         /// <param name="value">The value to set the field to.</param>
-        /// <param name="bindingFlags">Binding flags to use when searching.  See <see cref="BindingFlagsFor" /> for commonly-used binding flags.</param>
+        /// <param name="memberRelationships">OPTIONAL value that scopes the search for members based on their relationship to <paramref name="type"/>.  DEFAULT is to include the members declared in or inherited by the specified type.</param>
+        /// <param name="memberAccessModifiers">OPTIONAL value that scopes the search for members based on access modifiers.  DEFAULT is to include members having any supported access modifier.</param>
+        /// <param name="memberMutability">OPTIONAL value that scopes the search for members based on mutability.  DEFAULT is to include members where mutability is not applicable and where applicable, include members with any kind of mutability.</param>
+        /// <param name="memberAttributes">OPTIONAL value that scopes the search for members based on the presence or absence of certain attributes on those members.  DEFAULT is to include members that are not compiler generated.</param>
         /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="fieldName"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="fieldName"/> is whitespace.</exception>
@@ -502,31 +513,25 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <exception cref="ArgumentException">There is more than one field named <paramref name="fieldName"/> on type <paramref name="type"/> using the specified binding constraints.</exception>
         /// <exception cref="InvalidCastException">Unable to assign null to the field's type.</exception>
         /// <exception cref="InvalidCastException">Unable to assign <paramref name="value"/> type to the field's type.</exception>
-        /// <exception cref="ArgumentException">The field is not static.</exception>
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Justification = ObcSuppressBecause.CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags)]
         public static void SetStaticFieldValue(
             this Type type,
             string fieldName,
             object value,
-            BindingFlags bindingFlags)
+            MemberRelationships memberRelationships = MemberRelationships.DeclaredOrInherited,
+            MemberAccessModifiers memberAccessModifiers = MemberAccessModifiers.All,
+            MemberMutability memberMutability = MemberMutability.All,
+            MemberAttributes memberAttributes = MemberAttributes.NotCompilerGenerated)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            var fieldInfo = type.GetFieldInfo(fieldName, bindingFlags);
+            var fieldInfo = type.GetFieldFiltered(fieldName, memberRelationships, MemberOwners.Static, memberAccessModifiers, memberMutability, memberAttributes);
 
             value.ThrowIfNotAssignableTo(fieldInfo);
 
-            try
-            {
-                fieldInfo.SetValue(null, value);
-            }
-            catch (TargetException)
-            {
-                throw new ArgumentException("The field is not static.");
-            }
+            fieldInfo.SetValue(null, value);
         }
 
         private static T CastOrThrowIfTypeMismatch<T>(

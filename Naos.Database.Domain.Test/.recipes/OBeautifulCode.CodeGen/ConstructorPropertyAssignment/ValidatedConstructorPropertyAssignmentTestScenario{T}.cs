@@ -64,7 +64,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
 
                 expectedPropertyValue = systemUnderTestExpectedPropertyValue.ExpectedPropertyValue;
 
-                property = typeof(T).GetProperty(propertyName, BindingFlagsFor.PublicDeclaredAndInheritedInstanceMembers);
+                property = typeof(T).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public, throwIfNotFound: false);
 
                 new { property }.AsTest().Must().NotBeNull(id);
 

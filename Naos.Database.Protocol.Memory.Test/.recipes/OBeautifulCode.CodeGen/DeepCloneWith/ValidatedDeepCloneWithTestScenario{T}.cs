@@ -61,7 +61,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
 
                 var deepCloneWithMethodName = "DeepCloneWith" + withPropertyName;
 
-                deepCloneWithMethod = typeof(T).GetMethod(deepCloneWithMethodName, BindingFlagsFor.PublicDeclaredAndInheritedInstanceMembers);
+                deepCloneWithMethod = typeof(T).GetMethodFiltered(deepCloneWithMethodName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public, throwIfNotFound: false);
 
                 new { deepCloneWithMethod }.AsTest().Must().NotBeNull(id);
 
@@ -84,7 +84,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
                     new { withValueTypeIsAssignableToDeepCloneWithMethodParameterType }.AsTest().Must().BeTrue(id);
                 }
 
-                var withProperty = typeof(T).GetProperty(withPropertyName, BindingFlagsFor.PublicDeclaredAndInheritedInstanceMembers);
+                var withProperty = typeof(T).GetPropertyFiltered(withPropertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public, throwIfNotFound: false);
 
                 new { withProperty }.Must().NotBeNull(id);
             }

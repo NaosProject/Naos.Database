@@ -8,10 +8,12 @@ namespace Naos.Database.Serialization.Json
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Naos.Protocol.Domain;
     using Naos.Protocol.Serialization.Json;
     using OBeautifulCode.Serialization.Json;
     using OBeautifulCode.Type;
+    using OBeautifulCode.Type.Recipes;
 
     /// <inheritdoc />
     public class DatabaseJsonSerializationConfiguration : JsonSerializationConfigurationBase
@@ -31,9 +33,10 @@ namespace Naos.Database.Serialization.Json
             };
 
         /// <inheritdoc />
-        protected override IReadOnlyCollection<TypeToRegisterForJson> TypesToRegisterForJson => new TypeToRegisterForJson[]
-        {
-            typeof(IModel).ToTypeToRegisterForJson(),
-        };
+        protected override IReadOnlyCollection<TypeToRegisterForJson> TypesToRegisterForJson => new Type[0]
+           .Concat(new[] { typeof(IModel) })
+           .Concat(Naos.Database.Domain.ProjectInfo.Assembly.GetPublicEnumTypes())
+           .Select(_ => _.ToTypeToRegisterForJson())
+           .ToList();
     }
 }

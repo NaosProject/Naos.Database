@@ -22,6 +22,7 @@ namespace Naos.Protocol.SqlServer.Test
     using OBeautifulCode.Type;
     using Xunit;
     using Xunit.Abstractions;
+    using FileStream = Naos.Database.Protocol.FileSystem.FileStream;
 
     /// <summary>
     /// Tests for <see cref="FileStream{TKey}"/>.
@@ -43,37 +44,37 @@ namespace Naos.Protocol.SqlServer.Test
 
             var testingFilePath = Path.GetTempPath();
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocol<string>(fileSystemLocator);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
 
             SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(SerializationKind.Json);
 
             var defaultSerializationFormat = SerializationFormat.String;
 
-            var stream = new FileStream<string>(
+            var stream = new FileStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp<string>(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
             var key = stream.Name + "Key";
             var firstValue = "Testing again.";
             var secondValue = "Testing again latest.";
-            stream.BuildPutProtocol<MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, firstValue)));
+            stream.GetObjectWriteOperationsProtocol<string, MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, firstValue)));
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            stream.BuildPutProtocol<MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, secondValue)));
+            stream.GetObjectWriteOperationsProtocol<string, MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, secondValue)));
             stopwatch.Stop();
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
             stopwatch.Reset();
             stopwatch.Start();
-            var my = stream.BuildGetLatestByIdAndTypeProtocol<MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
+            var my = stream.GetObjectReadOperationsProtocol<string, MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my.Id}, Field={my.Field}"));
             my.Id.MustForTest().BeEqualTo(key);
 
-            stream.Execute(new DeleteStreamOp<string>(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
     }
 

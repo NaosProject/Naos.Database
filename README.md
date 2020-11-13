@@ -2,7 +2,8 @@
 
 Naos.Database
 =============
-A database tools utility set, includes:
-* Backup and restore logic
-* Messages and handlers for database backup and restore
-* Cleaner interface to FluentMigrator's runner.
+An abstract database layer declaring a stream/event sourcing pattern of accessing data.
+
+Includes implementations for in memory and the file system.
+
+See database implementations in specific repos; like Naos.SqlServer.

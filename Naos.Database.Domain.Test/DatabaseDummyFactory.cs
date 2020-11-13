@@ -37,21 +37,21 @@ namespace Naos.Database.Domain.Test
                 {
                     var availableTypes = new[]
                                          {
-                                             typeof(FileStreamRepresentation<Version>),
-                                             typeof(MemoryStreamRepresentation<Version>),
+                                             typeof(FileStreamRepresentation),
+                                             typeof(MemoryStreamRepresentation),
                                          };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
 
                     var randomType = availableTypes[randomIndex];
 
-                    var result = (IStreamRepresentation<Version>)AD.ummy(randomType);
+                    var result = (IStreamRepresentation)AD.ummy(randomType);
 
                     return result;
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordMetadata<Version>(
+                () => new StreamRecordMetadata(
                     A.Dummy<Version>(),
                     A.Dummy<IReadOnlyDictionary<string, string>>(),
                     A.Dummy<TypeRepresentation>(),

@@ -39,11 +39,17 @@
     <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.74\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.81\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="OBeautifulCode.Compression, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Compression.1.0.19\lib\net462\OBeautifulCode.Compression.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Representation.System, Version=1.0.55.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Representation.System.1.0.55\lib\net462\OBeautifulCode.Representation.System.dll</HintPath>
+    </Reference>
+    <Reference Include="OBeautifulCode.Serialization, Version=1.0.90.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Serialization.1.0.90\lib\net462\OBeautifulCode.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Type, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Type.1.0.74\lib\net462\OBeautifulCode.Type.dll</HintPath>
@@ -77,6 +83,7 @@
     <Compile Include=".recipes\OBeautifulCode.Assertion\WorkflowExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.CodeAnalysis\ObcSuppressBecause.cs" />
     <Compile Include=".recipes\OBeautifulCode.Collection\EnumerableExtensions.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Enum\EnumExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\DateTimeEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\DictionaryEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\EnumerableEqualityComparer.cs" />
@@ -85,6 +92,24 @@
     <Compile Include=".recipes\OBeautifulCode.Equality\EqualityExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\HashCodeHelper.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ReadOnlyDictionaryEqualityComparer.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\AccessModifier.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\BindingFlagsFor.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ConstructorsMatchedToPropertiesStrategy.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberAccessModifiers.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberAttributes.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberKinds.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberMutability.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberOwners.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\MemberRelationships.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\OrderMembersBy.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Attribute.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Constructor.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Enum.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Field.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.MemberInfo.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Method.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Reflection\ReflectionHelper.Property.cs" />
     <Compile Include=".recipes\OBeautifulCode.String\StringExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\ArrayKind.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\DeepCloneExtensions.cs" />
@@ -103,46 +128,70 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
-    <Compile Include="Events\Block{TId}.cs" />
-    <Compile Include="Events\Block{TId}.designer.cs">
-      <DependentUpon>Block{TId}.cs</DependentUpon>
+    <Compile Include="Events\BlockEvent{TId}.cs" />
+    <Compile Include="Events\BlockEvent{TId}.designer.cs">
+      <DependentUpon>BlockEvent{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\CancelBlock{TId}.cs" />
-    <Compile Include="Events\CancelBlock{TId}.designer.cs">
-      <DependentUpon>CancelBlock{TId}.cs</DependentUpon>
+    <Compile Include="Events\CancelBlockEvent{TId}.cs" />
+    <Compile Include="Events\CancelBlockEvent{TId}.designer.cs">
+      <DependentUpon>CancelBlockEvent{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Pruned{TId}.cs" />
-    <Compile Include="Events\Pruned{TId}.designer.cs">
-      <DependentUpon>Pruned{TId}.cs</DependentUpon>
+    <Compile Include="Events\PrunedEvent{TId}.cs" />
+    <Compile Include="Events\PrunedEvent{TId}.designer.cs">
+      <DependentUpon>PrunedEvent{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\PruneRequested{TId}.cs" />
-    <Compile Include="Events\PruneRequested{TId}.designer.cs">
-      <DependentUpon>PruneRequested{TId}.cs</DependentUpon>
+    <Compile Include="Events\PruneRequestedEvent{TId}.cs" />
+    <Compile Include="Events\PruneRequestedEvent{TId}.designer.cs">
+      <DependentUpon>PruneRequestedEvent{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Pruning{TId}.cs" />
-    <Compile Include="Events\Pruning{TId}.designer.cs">
-      <DependentUpon>Pruning{TId}.cs</DependentUpon>
+    <Compile Include="Events\PruningEvent{TId}.cs" />
+    <Compile Include="Events\PruningEvent{TId}.designer.cs">
+      <DependentUpon>PruningEvent{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Legacy\IConnectionDefinition.cs" />
-    <Compile Include="Operations\CreateStreamOp{TId}.designer.cs">
-      <DependentUpon>CreateStreamOp{TId}.cs</DependentUpon>
+    <Compile Include="Operations\CreateStreamOp.designer.cs">
+      <DependentUpon>CreateStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\DeleteStreamOp{TId}.cs" />
-    <Compile Include="Operations\CreateStreamOp{TId}.cs" />
-    <Compile Include="Operations\DeleteStreamOp{TId}.designer.cs">
-      <DependentUpon>DeleteStreamOp{TId}.cs</DependentUpon>
+    <Compile Include="Operations\DeleteStreamOp.designer.cs">
+      <DependentUpon>DeleteStreamOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\GetNextUniqueLongOp.cs" />
+    <Compile Include="Operations\DeleteStreamOp.cs" />
+    <Compile Include="Operations\CreateStreamOp.cs" />
     <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.cs" />
     <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestByIdAndTypeOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\GetNextUniqueLongOp.designer.cs">
+      <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\GetOp{TObject}.cs" />
     <Compile Include="Operations\GetOp{TObject}.designer.cs">
       <DependentUpon>GetOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\GetStreamFromRepresentationOp{TId}.cs" />
-    <Compile Include="Operations\GetStreamFromRepresentationOp{TId}.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TId}.cs</DependentUpon>
+    <Compile Include="Operations\GetStreamFromRepresentationOp.cs" />
+    <Compile Include="Operations\GetStreamFromRepresentationOp.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TObject}.designer.cs">
+      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TObject}.cs" />
+    <Compile Include="Operations\PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\PutIdentifiableOp{TId,TObject}.cs" />
+    <Compile Include="Operations\PutIdentifiableOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutIdentifiableOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\PutOp{TId,TObject}.cs" />
+    <Compile Include="Operations\PutOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutOp{TId,TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\PutOp{TObject}.cs" />
     <Compile Include="Operations\PutOp{TObject}.designer.cs">
@@ -169,34 +218,54 @@
     </Compile>
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
-    <Compile Include="Stream\IProtocolFactoryStreamObjectReadOperations{TId}.cs" />
-    <Compile Include="Stream\IProtocolFactoryStreamObjectWriteOperations{TId}.cs" />
-    <Compile Include="Stream\IProtocolStreamObjectReadOperations{TId,TObject}.cs" />
-    <Compile Include="Stream\IProtocolStreamObjectWriteOperations{TId,TObject}.cs" />
-    <Compile Include="Stream\IReadOnlyStream{TId}.cs" />
-    <Compile Include="Stream\IStream{TId}.cs" />
-    <Compile Include="Stream\Representation\FileStreamRepresentation{TId}.cs" />
-    <Compile Include="Stream\Representation\FileStreamRepresentation{TId}.designer.cs">
-      <DependentUpon>FileStreamRepresentation{TId}.cs</DependentUpon>
+    <Compile Include="Stream\NullStreamObjectIdentifier.designer.cs">
+      <DependentUpon>NullStreamObjectIdentifier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\IStreamRepresentation{TId}.cs" />
-    <Compile Include="Stream\Representation\MemoryStreamRepresentation{TId}.cs" />
-    <Compile Include="Stream\Representation\MemoryStreamRepresentation{TId}.designer.cs">
-      <DependentUpon>MemoryStreamRepresentation{TId}.cs</DependentUpon>
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWithIdReadOperations{TId}.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWithIdWriteOperations{TId}.cs" />
+    <Compile Include="Stream\StreamRecord.designer.cs">
+      <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentationBase{TId}.designer.cs">
-      <DependentUpon>StreamRepresentationBase{TId}.cs</DependentUpon>
+    <Compile Include="Stream\StreamRecordMetadata.designer.cs">
+      <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentation{TId}.designer.cs">
-      <DependentUpon>StreamRepresentation{TId}.cs</DependentUpon>
+    <Compile Include="Stream\StreamRecord{TObject}.cs" />
+    <Compile Include="Stream\StreamRecord.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectReadOperations{TObject}.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolFactoryStreamObjectReadOperations.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolFactoryStreamObjectWriteOperations.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectReadOperations{TId,TObject}.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWriteOperations{TObject}.cs" />
+    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWriteOperations{TId,TObject}.cs" />
+    <Compile Include="Stream\IReadOnlyStream.cs" />
+    <Compile Include="Stream\NullStreamObjectIdentifier.cs" />
+    <Compile Include="Stream\IStream.cs" />
+    <Compile Include="Stream\Representation\FileStreamRepresentation.cs" />
+    <Compile Include="Stream\Representation\FileStreamRepresentation.designer.cs">
+      <DependentUpon>FileStreamRepresentation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\StreamBase{TId}.cs" />
-    <Compile Include="Stream\StreamFactory{TId}.cs" />
-    <Compile Include="Stream\Representation\StreamRepresentation{TId}.cs" />
-    <Compile Include="Stream\Representation\StreamRepresentationBase{TId}.cs" />
-    <Compile Include="Stream\StreamRecordMetadata{TId}.cs" />
-    <Compile Include="Stream\StreamRecordMetadata{TId}.designer.cs">
-      <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
+    <Compile Include="Stream\Representation\IStreamRepresentation.cs" />
+    <Compile Include="Stream\Representation\MemoryStreamRepresentation.cs" />
+    <Compile Include="Stream\Representation\MemoryStreamRepresentation.designer.cs">
+      <DependentUpon>MemoryStreamRepresentation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Representation\StreamRepresentation.designer.cs">
+      <DependentUpon>StreamRepresentation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Representation\StreamRepresentationBase.designer.cs">
+      <DependentUpon>StreamRepresentationBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\StreamRecord{TObject}.designer.cs">
+      <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\TypeRepresentationWithAndWithoutVersion.cs" />
+    <Compile Include="Stream\StreamBase.cs" />
+    <Compile Include="Stream\StreamFactory.cs" />
+    <Compile Include="Stream\Representation\StreamRepresentation.cs" />
+    <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />
+    <Compile Include="Stream\StreamRecordMetadata.cs" />
+    <Compile Include="Stream\TypeRepresentationWithAndWithoutVersion.designer.cs">
+      <DependentUpon>TypeRepresentationWithAndWithoutVersion.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

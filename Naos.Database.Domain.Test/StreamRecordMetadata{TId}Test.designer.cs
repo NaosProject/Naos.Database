@@ -35,16 +35,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class StreamRecordMetadataTest
     {
-        private static readonly StringRepresentationTestScenarios<StreamRecordMetadata<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamRecordMetadata<Version>>()
+        private static readonly StringRepresentationTestScenarios<StreamRecordMetadata> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamRecordMetadata>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StreamRecordMetadata<Version>>
+                new StringRepresentationTestScenario<StreamRecordMetadata>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordMetadata<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TypeRepresentationWithVersion = {systemUnderTest.TypeRepresentationWithVersion?.ToString() ?? "<null>"}, TypeRepresentationWithoutVersion = {systemUnderTest.TypeRepresentationWithoutVersion?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StreamRecordMetadata<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamRecordMetadata<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StreamRecordMetadata> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamRecordMetadata>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new StreamRecordMetadata<Version>(
+                        var result = new StreamRecordMetadata(
                                              null,
                                              referenceObject.Tags,
                                              referenceObject.TypeRepresentationWithVersion,
@@ -76,14 +76,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "id" },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new StreamRecordMetadata<Version>(
+                        var result = new StreamRecordMetadata(
                                              referenceObject.Id,
                                              null,
                                              referenceObject.TypeRepresentationWithVersion,
@@ -96,14 +96,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags" },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new StreamRecordMetadata<Version>(
+                        var result = new StreamRecordMetadata(
                                              referenceObject.Id,
                                              new Dictionary<string, string>(),
                                              referenceObject.TypeRepresentationWithVersion,
@@ -116,12 +116,12 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary" },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
                         var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
 
@@ -129,7 +129,7 @@ namespace Naos.Database.Domain.Test
 
                         dictionaryWithNullValue[randomKey] = null;
 
-                        var result = new StreamRecordMetadata<Version>(
+                        var result = new StreamRecordMetadata(
                                              referenceObject.Id,
                                              dictionaryWithNullValue,
                                              referenceObject.TypeRepresentationWithVersion,
@@ -142,14 +142,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value" },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationWithVersion' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new StreamRecordMetadata<Version>(
+                        var result = new StreamRecordMetadata(
                                              referenceObject.Id,
                                              referenceObject.Tags,
                                              null,
@@ -162,14 +162,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "typeRepresentationWithVersion" },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationWithoutVersion' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new StreamRecordMetadata<Version>(
+                        var result = new StreamRecordMetadata(
                                              referenceObject.Id,
                                              referenceObject.Tags,
                                              referenceObject.TypeRepresentationWithVersion,
@@ -182,18 +182,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "typeRepresentationWithoutVersion" },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamRecordMetadata<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamRecordMetadata<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamRecordMetadata> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamRecordMetadata>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
                 {
                     Name = "Id should return same 'id' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
                         {
-                            SystemUnderTest = new StreamRecordMetadata<Version>(
+                            SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.Id,
                                                       referenceObject.Tags,
                                                       referenceObject.TypeRepresentationWithVersion,
@@ -207,16 +207,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Id",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
                 {
                     Name = "Tags should return same 'tags' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
                         {
-                            SystemUnderTest = new StreamRecordMetadata<Version>(
+                            SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.Id,
                                                       referenceObject.Tags,
                                                       referenceObject.TypeRepresentationWithVersion,
@@ -230,16 +230,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Tags",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
                 {
                     Name = "TypeRepresentationWithVersion should return same 'typeRepresentationWithVersion' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
                         {
-                            SystemUnderTest = new StreamRecordMetadata<Version>(
+                            SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.Id,
                                                       referenceObject.Tags,
                                                       referenceObject.TypeRepresentationWithVersion,
@@ -253,16 +253,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TypeRepresentationWithVersion",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
                 {
                     Name = "TypeRepresentationWithoutVersion should return same 'typeRepresentationWithoutVersion' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
                         {
-                            SystemUnderTest = new StreamRecordMetadata<Version>(
+                            SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.Id,
                                                       referenceObject.Tags,
                                                       referenceObject.TypeRepresentationWithVersion,
@@ -276,16 +276,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TypeRepresentationWithoutVersion",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
                         {
-                            SystemUnderTest = new StreamRecordMetadata<Version>(
+                            SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.Id,
                                                       referenceObject.Tags,
                                                       referenceObject.TypeRepresentationWithVersion,
@@ -299,19 +299,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TimestampUtc",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StreamRecordMetadata<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordMetadata<Version>>()
+        private static readonly DeepCloneWithTestScenarios<StreamRecordMetadata> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordMetadata>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata<Version>>
+                new DeepCloneWithTestScenario<StreamRecordMetadata>
                 {
                     Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
                     WithPropertyName = "Id",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Id,
@@ -321,17 +321,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata<Version>>
+                new DeepCloneWithTestScenario<StreamRecordMetadata>
                 {
                     Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
                     WithPropertyName = "Tags",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Tags,
@@ -341,17 +341,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata<Version>>
+                new DeepCloneWithTestScenario<StreamRecordMetadata>
                 {
                     Name = "DeepCloneWithTypeRepresentationWithVersion should deep clone object and replace TypeRepresentationWithVersion with the provided typeRepresentationWithVersion",
                     WithPropertyName = "TypeRepresentationWithVersion",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>().ThatIs(_ => !systemUnderTest.TypeRepresentationWithVersion.IsEqualTo(_.TypeRepresentationWithVersion));
+                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.TypeRepresentationWithVersion.IsEqualTo(_.TypeRepresentationWithVersion));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TypeRepresentationWithVersion,
@@ -361,17 +361,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata<Version>>
+                new DeepCloneWithTestScenario<StreamRecordMetadata>
                 {
                     Name = "DeepCloneWithTypeRepresentationWithoutVersion should deep clone object and replace TypeRepresentationWithoutVersion with the provided typeRepresentationWithoutVersion",
                     WithPropertyName = "TypeRepresentationWithoutVersion",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>().ThatIs(_ => !systemUnderTest.TypeRepresentationWithoutVersion.IsEqualTo(_.TypeRepresentationWithoutVersion));
+                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.TypeRepresentationWithoutVersion.IsEqualTo(_.TypeRepresentationWithoutVersion));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TypeRepresentationWithoutVersion,
@@ -381,17 +381,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata<Version>>
+                new DeepCloneWithTestScenario<StreamRecordMetadata>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordMetadata<Version>>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -401,55 +401,55 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StreamRecordMetadata<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordMetadata<Version>>();
+        private static readonly StreamRecordMetadata ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordMetadata>();
 
-        private static readonly EquatableTestScenarios<StreamRecordMetadata<Version>> EquatableTestScenarios = new EquatableTestScenarios<StreamRecordMetadata<Version>>()
+        private static readonly EquatableTestScenarios<StreamRecordMetadata> EquatableTestScenarios = new EquatableTestScenarios<StreamRecordMetadata>()
             .AddScenario(() =>
-                new EquatableTestScenario<StreamRecordMetadata<Version>>
+                new EquatableTestScenario<StreamRecordMetadata>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamRecordMetadata<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamRecordMetadata[]
                     {
-                        new StreamRecordMetadata<Version>(
+                        new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StreamRecordMetadata<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StreamRecordMetadata[]
                     {
-                        new StreamRecordMetadata<Version>(
-                                A.Dummy<StreamRecordMetadata<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
+                        new StreamRecordMetadata(
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata<Version>(
+                        new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<StreamRecordMetadata<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata<Version>(
+                        new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<StreamRecordMetadata<Version>>().Whose(_ => !_.TypeRepresentationWithVersion.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion)).TypeRepresentationWithVersion,
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationWithVersion.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion)).TypeRepresentationWithVersion,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata<Version>(
+                        new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion,
-                                A.Dummy<StreamRecordMetadata<Version>>().Whose(_ => !_.TypeRepresentationWithoutVersion.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion)).TypeRepresentationWithoutVersion,
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationWithoutVersion.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion)).TypeRepresentationWithoutVersion,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata<Version>(
+                        new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithVersion,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationWithoutVersion,
-                                A.Dummy<StreamRecordMetadata<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -482,9 +482,9 @@ namespace Naos.Database.Domain.Test
             public static void StreamRecordMetadata___Should_implement_IModel_of_StreamRecordMetadata___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamRecordMetadata<Version>);
+                var type = typeof(StreamRecordMetadata);
 
-                var expectedModelMethods = typeof(IModel<StreamRecordMetadata<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StreamRecordMetadata>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -494,7 +494,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamRecordMetadata<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamRecordMetadata>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -515,7 +515,7 @@ namespace Naos.Database.Domain.Test
             public static void StreamRecordMetadata___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamRecordMetadata<Version>);
+                var type = typeof(StreamRecordMetadata);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -688,10 +688,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
                 // Act
-                var actual = (StreamRecordMetadata<Version>)systemUnderTest.Clone();
+                var actual = (StreamRecordMetadata)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -715,7 +715,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamRecordMetadata<Version>>();
+                var systemUnderTest = A.Dummy<StreamRecordMetadata>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -794,12 +794,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StreamRecordMetadata<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StreamRecordMetadata)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StreamRecordMetadata<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StreamRecordMetadata).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -867,7 +867,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata<Version>>();
+                var expected = A.Dummy<StreamRecordMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -896,7 +896,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata<Version>>();
+                var expected = A.Dummy<StreamRecordMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -925,7 +925,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata<Version>>();
+                var expected = A.Dummy<StreamRecordMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -954,7 +954,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata<Version>>();
+                var expected = A.Dummy<StreamRecordMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -988,8 +988,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamRecordMetadata<Version> systemUnderTest1 = null;
-                StreamRecordMetadata<Version> systemUnderTest2 = null;
+                StreamRecordMetadata systemUnderTest1 = null;
+                StreamRecordMetadata systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1019,7 +1019,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordMetadata<Version> systemUnderTest = null;
+                    StreamRecordMetadata systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1168,8 +1168,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamRecordMetadata<Version> systemUnderTest1 = null;
-                StreamRecordMetadata<Version> systemUnderTest2 = null;
+                StreamRecordMetadata systemUnderTest1 = null;
+                StreamRecordMetadata systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1199,7 +1199,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordMetadata<Version> systemUnderTest = null;
+                    StreamRecordMetadata systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1352,7 +1352,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordMetadata<Version> systemUnderTest = null;
+                    StreamRecordMetadata systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

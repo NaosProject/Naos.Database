@@ -55,18 +55,13 @@ namespace Naos.Database.Protocol.Memory.Test
                          { nameof(MyObject.Field), _.ObjectToDetermineTagsFrom.Field },
                      });
 
-            var stream = new MemoryStream<string>(
+            var stream = new MemoryStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory(),
-                new ProtocolFactory(
-                    new Dictionary<Type, Func<IProtocol>>
-                    {
-                        { typeof(ISyncAndAsyncReturningProtocol<GetTagsFromObjectOp<MyObject>, IReadOnlyDictionary<string, string>>), () => tagExtractor },
-                    }));
+                new JsonSerializerFactory());
 
-            stream.Execute(new CreateStreamOp<string>(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
             var key = stream.Name;
             var firstValue = "Testing again.";
             var secondValue = "Testing again latest.";
@@ -75,7 +70,7 @@ namespace Naos.Database.Protocol.Memory.Test
                 idx < 10;
                 idx++)
             {
-                stream.BuildPutProtocol<MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, firstValue)));
+                stream.GetObjectWriteOperationsProtocol<MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, firstValue)));
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 stream.BuildPutProtocol<MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, secondValue)));
@@ -83,13 +78,13 @@ namespace Naos.Database.Protocol.Memory.Test
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
                 stopwatch.Start();
-                var my = stream.BuildGetLatestByIdAndTypeProtocol<MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
+                var my = stream.GetObjectReadOperationsProtocol<string, MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my.Id}, Field={my.Field}"));
                 my.Id.MustForTest().BeEqualTo(key);
             }
 
-            stream.Execute(new DeleteStreamOp<string>(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
     }
 

@@ -39,16 +39,16 @@ namespace Naos.Database.Domain.Test
             ConstructorArgumentValidationTestScenarios
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                         {
                             Name =
                                 "constructor should throw ArgumentException when parameter 'timesteampUtc' is not a UTC datetime scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject =
-                                                       A.Dummy<StreamRecordMetadata<Version>>();
+                                                       A.Dummy<StreamRecordMetadata>();
 
-                                                   var result = new StreamRecordMetadata<Version>(
+                                                   var result = new StreamRecordMetadata(
                                                        referenceObject.Id,
                                                        referenceObject.Tags,
                                                        referenceObject.TypeRepresentationWithVersion,
@@ -66,16 +66,16 @@ namespace Naos.Database.Domain.Test
                         })
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                         {
                             Name =
                                 "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject =
-                                                       A.Dummy<StreamRecordMetadata<Version>>();
+                                                       A.Dummy<StreamRecordMetadata>();
 
-                                                   var result = new StreamRecordMetadata<Version>(
+                                                   var result = new StreamRecordMetadata(
                                                        null,
                                                        referenceObject.Tags,
                                                        referenceObject.TypeRepresentationWithVersion,
@@ -92,16 +92,16 @@ namespace Naos.Database.Domain.Test
                         })
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                         {
                             Name =
                                 "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject =
-                                                       A.Dummy<StreamRecordMetadata<Version>>();
+                                                       A.Dummy<StreamRecordMetadata>();
 
-                                                   var result = new StreamRecordMetadata<Version>(
+                                                   var result = new StreamRecordMetadata(
                                                        referenceObject.Id,
                                                        null,
                                                        referenceObject.TypeRepresentationWithVersion,
@@ -118,16 +118,16 @@ namespace Naos.Database.Domain.Test
                         })
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                         {
                             Name =
                                 "constructor should throw ArgumentNullException when parameter 'typeRepresentationWithVersion' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject =
-                                                       A.Dummy<StreamRecordMetadata<Version>>();
+                                                       A.Dummy<StreamRecordMetadata>();
 
-                                                   var result = new StreamRecordMetadata<Version>(
+                                                   var result = new StreamRecordMetadata(
                                                        referenceObject.Id,
                                                        referenceObject.Tags,
                                                        null,
@@ -144,16 +144,16 @@ namespace Naos.Database.Domain.Test
                         })
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata<Version>>
+                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
                         {
                             Name =
                                 "constructor should throw ArgumentNullException when parameter 'typeRepresentationWithoutVersion' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject =
-                                                       A.Dummy<StreamRecordMetadata<Version>>();
+                                                       A.Dummy<StreamRecordMetadata>();
 
-                                                   var result = new StreamRecordMetadata<Version>(
+                                                   var result = new StreamRecordMetadata(
                                                        referenceObject.Id,
                                                        referenceObject.Tags,
                                                        referenceObject.TypeRepresentationWithVersion,

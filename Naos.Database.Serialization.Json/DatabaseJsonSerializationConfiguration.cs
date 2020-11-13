@@ -9,7 +9,6 @@ namespace Naos.Database.Serialization.Json
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Naos.Protocol.Domain;
     using Naos.Protocol.Serialization.Json;
     using OBeautifulCode.Serialization.Json;
     using OBeautifulCode.Type;

@@ -4,21 +4,23 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Naos.Database.Domain;
+using Naos.Protocol.Domain;
+using OBeautifulCode.Assertion.Recipes;
+using OBeautifulCode.Representation.System;
+using OBeautifulCode.Serialization;
+using OBeautifulCode.Type.Recipes;
+using FileStream = Naos.Database.Protocol.FileSystem.FileStream;
+using static System.FormattableString;
+
 namespace Naos.Database.Protocol.FileSystem
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Naos.Database.Domain;
-    using Naos.Protocol.Domain;
-    using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Serialization;
-    using OBeautifulCode.Type.Recipes;
-    using static System.FormattableString;
-
     /// <summary>
     /// File system implementation of <see cref="IProtocolStreamObjectReadOperations{TId,TObject}"/>
     /// and <see cref="IProtocolStreamObjectWriteOperations{TId,TObject}"/>.
@@ -33,23 +35,21 @@ namespace Naos.Database.Protocol.FileSystem
         private const string BinaryFileExtensionWithDot = ".value.bin";
         private const string StringFileExtensionWithDot = ".value.str";
         private const string MetadataFileExtensionWithDot = ".metadata";
-        private readonly FileStream<TId> stream;
-        private readonly IReturningProtocol<GetIdFromObjectOp<TId, TObject>, TId> getIdFromObjectProtocol;
-        private readonly IReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>> getTagsFromObjectProtocol;
-        private ObcDateTimeStringSerializer dateTimeStringSerializer;
+        private readonly FileStream stream;
+        private readonly ObcDateTimeStringSerializer dateTimeStringSerializer;
+        private readonly ISyncAndAsyncReturningProtocol<GetIdFromObjectOp<TId, TObject>, TId> getIdFromObjectProtocol = new GetIdFromObjectProtocol<TId, TObject>();
+        private readonly ISyncAndAsyncReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>> getTagsFromObjectProtocol = new GetTagsFromObjectProtocol<TObject>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamObjectOperationsProtocol{TId, TObject}"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         public FileStreamObjectOperationsProtocol(
-            FileStream<TId> stream)
+            FileStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
-            this.getIdFromObjectProtocol = this.stream.BuildGetIdFromObjectProtocol<TObject>();
-            this.getTagsFromObjectProtocol = this.stream.BuildGetTagsFromObjectProtocol<TObject>();
             this.dateTimeStringSerializer = new ObcDateTimeStringSerializer();
         }
 
@@ -105,6 +105,31 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             PutOp<TObject> operation)
         {
+            var innerOperation = new PutAndReturnStreamInternalObjectIdOp<TObject>(operation.ObjectToPut);
+            var unusedResult = this.Execute(innerOperation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            PutOp<TObject> operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just to get the async.
+        }
+
+        private string GetRootPath(
+            TId id)
+        {
+            var locator = this.stream.ResourceLocatorProtocol.GetResourceLocatorByIdProtocol<TId>().Execute(new GetResourceLocatorByIdOp<TId>(id));
+            var fileLocator = locator as FileSystemDatabaseLocator ?? throw new InvalidOperationException(Invariant($"Resource locator extracted for ID {id} was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{locator.GetType().ToStringReadable()}'."));
+            var result = Path.Combine(fileLocator.RootFolderPath, this.stream.Name);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public long Execute(
+            PutAndReturnStreamInternalObjectIdOp<TObject> operation)
+        {
             var timestamp = DateTime.UtcNow;
             var timestampString = this.dateTimeStringSerializer.SerializeToString(timestamp).Replace(":", "-");
             var id = this.getIdFromObjectProtocol.Execute(new GetIdFromObjectOp<TId, TObject>(operation.ObjectToPut));
@@ -129,7 +154,7 @@ namespace Naos.Database.Protocol.FileSystem
               + "___"
               + filePathId);
 
-            var metadata = new StreamRecordMetadata<TId>(
+            var metadata = new StreamRecordMetadata(
                 id,
                 tags,
                 typeRepresentationWithVersion,
@@ -151,23 +176,16 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 File.WriteAllText(objectStrFilePath, serializedObjectString);
             }
+
+            throw new NotImplementedException("Need to add a manifest in a single file of ids.");
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PutOp<TObject> operation)
+        public async Task<long> ExecuteAsync(
+            PutAndReturnStreamInternalObjectIdOp<TObject> operation)
         {
-            this.Execute(operation);
-            await Task.FromResult(true); // just to get the async.
-        }
-
-        private string GetRootPath(
-            TId id)
-        {
-            var locator = this.stream.ResourceLocatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(id));
-            var fileLocator = locator as FileSystemDatabaseLocator ?? throw new InvalidOperationException(Invariant($"Resource locator extracted for ID {id} was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{locator.GetType().ToStringReadable()}'."));
-            var result = Path.Combine(fileLocator.RootFolderPath, this.stream.Name);
-            return result;
+            var syncResult = this.Execute(operation);
+            return await Task.FromResult(syncResult);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Naos.Database.Domain
     using static System.FormattableString;
 
     /// <summary>
-    /// Abstract base of an operation.
+    /// Put the object to a <see cref="IStream"/>.
     /// </summary>
     /// <typeparam name="TObject">Type of data being written.</typeparam>
     public partial class PutOp<TObject> : VoidOperationBase

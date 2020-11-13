@@ -77,14 +77,14 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.73.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.73\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.74\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.81\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.74\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.81\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.74\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.81\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.24\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
@@ -258,18 +258,18 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
-    <Compile Include="Block{TId}Test.cs" />
-    <Compile Include="Block{TId}Test.designer.cs">
-      <DependentUpon>Block{TId}Test.cs</DependentUpon>
+    <Compile Include="BlockEvent{TId}Test.cs" />
+    <Compile Include="BlockEvent{TId}Test.designer.cs">
+      <DependentUpon>BlockEvent{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelBlock{TId}Test.cs" />
-    <Compile Include="CancelBlock{TId}Test.designer.cs">
-      <DependentUpon>CancelBlock{TId}Test.cs</DependentUpon>
+    <Compile Include="CancelBlockEvent{TId}Test.cs" />
+    <Compile Include="CancelBlockEvent{TId}Test.designer.cs">
+      <DependentUpon>CancelBlockEvent{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
-    <Compile Include="CreateStreamOp{TId}Test.cs" />
-    <Compile Include="CreateStreamOp{TId}Test.designer.cs">
-      <DependentUpon>CreateStreamOp{TId}Test.cs</DependentUpon>
+    <Compile Include="CreateStreamOpTest.cs" />
+    <Compile Include="CreateStreamOpTest.designer.cs">
+      <DependentUpon>CreateStreamOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseDummyFactoryTest.designer.cs">
       <DependentUpon>DatabaseDummyFactoryTest.cs</DependentUpon>
@@ -278,13 +278,13 @@
     <Compile Include="DatabaseLocatorBaseTest.designer.cs">
       <DependentUpon>DatabaseLocatorBaseTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="DeleteStreamOp{TId}Test.cs" />
-    <Compile Include="DeleteStreamOp{TId}Test.designer.cs">
-      <DependentUpon>DeleteStreamOp{TId}Test.cs</DependentUpon>
+    <Compile Include="DeleteStreamOpTest.cs" />
+    <Compile Include="DeleteStreamOpTest.designer.cs">
+      <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="FileStreamRepresentation{TId}Test.cs" />
-    <Compile Include="FileStreamRepresentation{TId}Test.designer.cs">
-      <DependentUpon>FileStreamRepresentation{TId}Test.cs</DependentUpon>
+    <Compile Include="FileStreamRepresentationTest.cs" />
+    <Compile Include="FileStreamRepresentationTest.designer.cs">
+      <DependentUpon>FileStreamRepresentationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="FileSystemDatabaseLocatorTest.cs" />
     <Compile Include="FileSystemDatabaseLocatorTest.designer.cs">
@@ -294,41 +294,68 @@
     <Compile Include="GetLatestByIdAndTypeOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestByIdAndTypeOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetNextUniqueLongOpTest.cs" />
+    <Compile Include="GetNextUniqueLongOpTest.designer.cs">
+      <DependentUpon>GetNextUniqueLongOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetOp{TObject}Test.cs" />
     <Compile Include="GetOp{TObject}Test.designer.cs">
       <DependentUpon>GetOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetStreamFromRepresentationOp{TId}Test.cs" />
-    <Compile Include="GetStreamFromRepresentationOp{TId}Test.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TId}Test.cs</DependentUpon>
+    <Compile Include="GetStreamFromRepresentationOpTest.cs" />
+    <Compile Include="GetStreamFromRepresentationOpTest.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MemoryDatabaseLocatorTest.cs" />
     <Compile Include="MemoryDatabaseLocatorTest.designer.cs">
       <DependentUpon>MemoryDatabaseLocatorTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="MemoryStreamRepresentation{TId}Test.cs" />
-    <Compile Include="MemoryStreamRepresentation{TId}Test.designer.cs">
-      <DependentUpon>MemoryStreamRepresentation{TId}Test.cs</DependentUpon>
+    <Compile Include="MemoryStreamRepresentationTest.cs" />
+    <Compile Include="MemoryStreamRepresentationTest.designer.cs">
+      <DependentUpon>MemoryStreamRepresentationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="NullDatabaseLocatorTest.cs" />
     <Compile Include="NullDatabaseLocatorTest.designer.cs">
       <DependentUpon>NullDatabaseLocatorTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="NullStreamObjectIdentifierTest.cs" />
+    <Compile Include="NullStreamObjectIdentifierTest.designer.cs">
+      <DependentUpon>NullStreamObjectIdentifierTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Class1Test.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
-    <Compile Include="Pruned{TId}Test.cs" />
-    <Compile Include="Pruned{TId}Test.designer.cs">
-      <DependentUpon>Pruned{TId}Test.cs</DependentUpon>
+    <Compile Include="PrunedEvent{TId}Test.cs" />
+    <Compile Include="PrunedEvent{TId}Test.designer.cs">
+      <DependentUpon>PrunedEvent{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="PruneRequested{TId}Test.cs" />
-    <Compile Include="PruneRequested{TId}Test.designer.cs">
-      <DependentUpon>PruneRequested{TId}Test.cs</DependentUpon>
+    <Compile Include="PruneRequestedEvent{TId}Test.cs" />
+    <Compile Include="PruneRequestedEvent{TId}Test.designer.cs">
+      <DependentUpon>PruneRequestedEvent{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pruning{TId}Test.cs" />
-    <Compile Include="Pruning{TId}Test.designer.cs">
-      <DependentUpon>Pruning{TId}Test.cs</DependentUpon>
+    <Compile Include="PruningEvent{TId}Test.cs" />
+    <Compile Include="PruningEvent{TId}Test.designer.cs">
+      <DependentUpon>PruningEvent{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs" />
+    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TObject}Test.cs" />
+    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TObject}Test.designer.cs">
+      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs" />
+    <Compile Include="PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutIdentifiableOp{TId,TObject}Test.cs" />
+    <Compile Include="PutIdentifiableOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>PutIdentifiableOp{TId,TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutOp{TId,TObject}Test.cs" />
+    <Compile Include="PutOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>PutOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="PutOp{TObject}Test.cs" />
     <Compile Include="PutOp{TObject}Test.designer.cs">
@@ -341,18 +368,34 @@
       <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseDummyFactoryTest.cs" />
+    <Compile Include="StreamRecordMetadataTest.cs" />
+    <Compile Include="StreamRecordMetadataTest.designer.cs">
+      <DependentUpon>StreamRecordMetadataTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="StreamRecordMetadata{TId}Test.cs" />
     <Compile Include="StreamRecordMetadata{TId}Test.designer.cs">
       <DependentUpon>StreamRecordMetadata{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="StreamRepresentationBase{TId}Test.cs" />
-    <Compile Include="StreamRepresentationBase{TId}Test.designer.cs">
-      <DependentUpon>StreamRepresentationBase{TId}Test.cs</DependentUpon>
+    <Compile Include="StreamRecordTest.cs" />
+    <Compile Include="StreamRecordTest.designer.cs">
+      <DependentUpon>StreamRecordTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="StreamRepresentation{TId}Test.cs" />
+    <Compile Include="StreamRecord{TObject}Test.cs" />
+    <Compile Include="StreamRecord{TObject}Test.designer.cs">
+      <DependentUpon>StreamRecord{TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamRepresentationBaseTest.cs" />
+    <Compile Include="StreamRepresentationBaseTest.designer.cs">
+      <DependentUpon>StreamRepresentationBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamRepresentationTest.cs" />
     <AdditionalFiles Include=".analyzers\stylecop.json" />
-    <Compile Include="StreamRepresentation{TId}Test.designer.cs">
-      <DependentUpon>StreamRepresentation{TId}Test.cs</DependentUpon>
+    <Compile Include="StreamRepresentationTest.designer.cs">
+      <DependentUpon>StreamRepresentationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TypeRepresentationWithAndWithoutVersionTest.cs" />
+    <Compile Include="TypeRepresentationWithAndWithoutVersionTest.designer.cs">
+      <DependentUpon>TypeRepresentationWithAndWithoutVersionTest.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

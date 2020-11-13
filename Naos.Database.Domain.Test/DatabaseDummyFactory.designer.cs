@@ -21,6 +21,7 @@ namespace Naos.Database.Domain.Test
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.Math.Recipes;
     using global::OBeautifulCode.Representation.System;
+    using global::OBeautifulCode.Serialization;
 
     /// <summary>
     /// The default (code generated) Dummy Factory.
@@ -38,49 +39,65 @@ namespace Naos.Database.Domain.Test
         public DefaultDatabaseDummyFactory()
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new Block<Version>(
+                () => new StreamRecord<Version>(
+                                 A.Dummy<long>(),
+                                 A.Dummy<StreamRecordMetadata>(),
+                                 A.Dummy<Version>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecord(
+                                 A.Dummy<long>(),
+                                 A.Dummy<StreamRecordMetadata>(),
+                                 A.Dummy<DescribedSerialization>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new BlockEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CancelBlock<Version>(
+                () => new CancelBlockEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new Pruned<Version>(
+                () => new PrunedEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneRequested<Version>(
+                () => new PruneRequestedEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new Pruning<Version>(
+                () => new PruningEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CreateStreamOp<Version>(
-                                 A.Dummy<IStreamRepresentation<Version>>(),
+                () => new CreateStreamOp(
+                                 A.Dummy<IStreamRepresentation>(),
                                  A.Dummy<ExistingStreamEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new DeleteStreamOp<Version>(
-                                 A.Dummy<IStreamRepresentation<Version>>(),
+                () => new DeleteStreamOp(
+                                 A.Dummy<IStreamRepresentation>(),
                                  A.Dummy<ExistingStreamNotEncounteredStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetNextUniqueLongOp(
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestByIdAndTypeOp<Version, Version>(
@@ -91,8 +108,31 @@ namespace Naos.Database.Domain.Test
                 () => new GetOp<Version>());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetStreamFromRepresentationOp<Version>(
-                                 A.Dummy<StreamRepresentation<Version>>()));
+                () => new GetStreamFromRepresentationOp(
+                                 A.Dummy<StreamRepresentation>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutIdentifiableAndReturnStreamInternalObjectIdOp<Version, Version>(
+                                 A.Dummy<Version>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutAndReturnStreamInternalObjectIdOp<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<Version>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutAndReturnStreamInternalObjectIdOp<Version>(
+                                 A.Dummy<Version>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutIdentifiableOp<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutOp<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<Version>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutOp<Version>(
@@ -129,13 +169,20 @@ namespace Naos.Database.Domain.Test
                 () => new NullDatabaseLocator());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new FileStreamRepresentation<Version>(
+                () => new NullStreamObjectIdentifier());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new FileStreamRepresentation(
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyList<FileSystemDatabaseLocator>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new MemoryStreamRepresentation<Version>(
+                () => new MemoryStreamRepresentation(
                                  A.Dummy<string>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRepresentation(
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -143,30 +190,31 @@ namespace Naos.Database.Domain.Test
                 {
                     var availableTypes = new[]
                     {
-                        typeof(FileStreamRepresentation<Version>),
-                        typeof(MemoryStreamRepresentation<Version>),
-                        typeof(StreamRepresentation<Version>)
+                        typeof(FileStreamRepresentation),
+                        typeof(MemoryStreamRepresentation),
+                        typeof(StreamRepresentation)
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
 
                     var randomType = availableTypes[randomIndex];
 
-                    var result = (StreamRepresentationBase<Version>)AD.ummy(randomType);
+                    var result = (StreamRepresentationBase)AD.ummy(randomType);
 
                     return result;
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRepresentation<Version>(
-                                 A.Dummy<string>()));
+                () => new TypeRepresentationWithAndWithoutVersion(
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<TypeRepresentation>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordMetadata<Version>(
-                                 A.Dummy<Version>(),
+                () => new StreamRecordMetadata(
+                                 A.Dummy<string>(),
+                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
+                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
                                  A.Dummy<DateTime>()));
         }
 

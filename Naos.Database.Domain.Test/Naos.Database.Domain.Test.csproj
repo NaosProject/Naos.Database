@@ -77,14 +77,14 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.73.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.73\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.81\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.82\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.81\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.82\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.81\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.82\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.24\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
@@ -337,25 +337,13 @@
     <Compile Include="PruningEvent{TId}Test.designer.cs">
       <DependentUpon>PruningEvent{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs" />
-    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TId,TObject}Test.designer.cs">
-      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs</DependentUpon>
+    <Compile Include="PutAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
+    <Compile Include="PutAndReturnInternalRecordIdOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TObject}Test.cs" />
-    <Compile Include="PutAndReturnStreamInternalObjectIdOp{TObject}Test.designer.cs">
-      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TObject}Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs" />
-    <Compile Include="PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}Test.designer.cs">
-      <DependentUpon>PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PutIdentifiableOp{TId,TObject}Test.cs" />
-    <Compile Include="PutIdentifiableOp{TId,TObject}Test.designer.cs">
-      <DependentUpon>PutIdentifiableOp{TId,TObject}Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PutOp{TId,TObject}Test.cs" />
-    <Compile Include="PutOp{TId,TObject}Test.designer.cs">
-      <DependentUpon>PutOp{TId,TObject}Test.cs</DependentUpon>
+    <Compile Include="PutAndReturnInternalRecordIdOp{TObject}Test.cs" />
+    <Compile Include="PutAndReturnInternalRecordIdOp{TObject}Test.designer.cs">
+      <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="PutOp{TObject}Test.cs" />
     <Compile Include="PutOp{TObject}Test.designer.cs">
@@ -371,10 +359,6 @@
     <Compile Include="StreamRecordMetadataTest.cs" />
     <Compile Include="StreamRecordMetadataTest.designer.cs">
       <DependentUpon>StreamRecordMetadataTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StreamRecordMetadata{TId}Test.cs" />
-    <Compile Include="StreamRecordMetadata{TId}Test.designer.cs">
-      <DependentUpon>StreamRecordMetadata{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="StreamRecordTest.cs" />
     <Compile Include="StreamRecordTest.designer.cs">

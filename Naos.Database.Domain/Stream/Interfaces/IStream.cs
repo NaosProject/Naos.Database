@@ -16,10 +16,7 @@ namespace Naos.Database.Domain
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public interface IStream
         : IReadOnlyStream,
-          ISyncAndAsyncVoidProtocol<CreateStreamOp>,
-          ISyncAndAsyncVoidProtocol<DeleteStreamOp>,
-          IProtocolFactoryStreamObjectWriteOperations,
-          ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>
+          IStreamWritingProtocolsFactory
     {
     }
 }

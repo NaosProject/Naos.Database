@@ -17,16 +17,16 @@ namespace Naos.Database.Protocol.FileSystem
     public partial class FileStream
     {
         /// <inheritdoc />
-        public override IProtocolStreamObjectReadOperations<TId, TObject> GetObjectReadOperationsProtocol<TId, TObject>()
+        public override IStreamReadingProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>()
         {
-            var result = new FileStreamObjectOperationsProtocol<TId, TObject>(this);
+            var result = new FileStream<TId, TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IProtocolStreamObjectWriteOperations<TId, TObject> GetObjectWriteOperationsProtocol<TId, TObject>()
+        public override IStreamWritingProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
         {
-            var result = new FileStreamObjectOperationsProtocol<TId, TObject>(this);
+            var result = new FileStream<TId, TObject>(this);
             return result;
         }
     }

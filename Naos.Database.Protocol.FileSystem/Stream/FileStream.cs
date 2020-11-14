@@ -30,19 +30,19 @@ namespace Naos.Database.Protocol.FileSystem
         /// <param name="defaultSerializerRepresentation">Default serializer description to use.</param>
         /// <param name="defaultSerializationFormat">Default serializer format.</param>
         /// <param name="serializerFactory">The factory to get a serializer to use for objects.</param>
-        /// <param name="resourceLocatorProtocol">The protocols for getting locators.</param>
+        /// <param name="resourceLocatorProtocols">The protocols for getting locators.</param>
         public FileStream(
             string name,
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
-            IProtocolResourceLocator resourceLocatorProtocol)
-        : base(name, resourceLocatorProtocol)
+            IProtocolResourceLocator resourceLocatorProtocols)
+        : base(name, resourceLocatorProtocols)
         {
             name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
             defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
             serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
-            resourceLocatorProtocol.MustForArg(nameof(resourceLocatorProtocol)).NotBeNull();
+            resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
 
             this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
             this.SerializerFactory = serializerFactory;
@@ -73,7 +73,7 @@ namespace Naos.Database.Protocol.FileSystem
             get
             {
                 var allFileSystemDatabaseLocators =
-                    this.ResourceLocatorProtocol
+                    this.ResourceLocatorProtocols
                         .Execute(new GetAllResourceLocatorsOp())
                         .Cast<FileSystemDatabaseLocator>()
                         .ToList();

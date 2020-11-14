@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProtocolStreamObjectWriteOperations{TId,TObject}.cs" company="Naos Project">
+// <copyright file="IStreamReadingProtocols{TId,TObject}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -13,13 +13,8 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Type of ID used.</typeparam>
     /// <typeparam name="TObject">Type of object used.</typeparam>
-    public interface IProtocolStreamObjectWriteOperations<TId, TObject> :
-        IProtocolStreamObjectWithIdWriteOperations<TId>,
-        IProtocolStreamObjectWriteOperations<TObject>,
-        ISyncAndAsyncVoidProtocol<PutOp<TId, TObject>>,
-        ISyncAndAsyncReturningProtocol<PutAndReturnStreamInternalObjectIdOp<TId, TObject>, long>,
-        ISyncAndAsyncVoidProtocol<PutIdentifiableOp<TId, TObject>>,
-        ISyncAndAsyncReturningProtocol<PutIdentifiableAndReturnStreamInternalObjectIdOp<TId, TObject>, long>
+    public interface IStreamReadingProtocols<TId, TObject> :
+        ISyncAndAsyncReturningProtocol<GetLatestByIdAndTypeOp<TId, TObject>, TObject>
     {
     }
 }

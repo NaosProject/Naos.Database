@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public interface IReadOnlyStream
-        : IProtocolFactoryStreamObjectReadOperations
+        : IStreamReadingProtocolsFactory
     {
         /// <summary>
         /// Gets the name of the stream.
@@ -26,7 +26,7 @@ namespace Naos.Database.Domain
         /// Gets the resource locator protocol.
         /// </summary>
         /// <value>The resource locator protocol.</value>
-        IProtocolResourceLocator ResourceLocatorProtocol { get; }
+        IResourceLocatorProtocols ResourceLocatorProtocols { get; }
 
         /// <summary>
         /// Gets the representation of the stream.

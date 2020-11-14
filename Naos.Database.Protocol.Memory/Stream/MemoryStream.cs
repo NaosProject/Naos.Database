@@ -21,7 +21,10 @@ namespace Naos.Database.Protocol.Memory
     /// In memory implementation of <see cref="IStream"/>.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class MemoryStream : StreamBase
+    public class MemoryStream :
+        StreamBase,
+        IStreamReadingProtocols,
+        IStreamWritingProtocols
     {
         private readonly object streamLock = new object();
 
@@ -116,7 +119,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override void Execute(
+        public void Execute(
             CreateStreamOp operation)
         {
             lock (this.streamLock)
@@ -156,7 +159,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override async Task ExecuteAsync(
+        public async Task ExecuteAsync(
             CreateStreamOp operation)
         {
             this.Execute(operation);
@@ -164,7 +167,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override void Execute(
+        public void Execute(
             DeleteStreamOp operation)
         {
             lock (this.streamLock)
@@ -199,7 +202,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override async Task ExecuteAsync(
+        public async Task ExecuteAsync(
             DeleteStreamOp operation)
         {
             this.Execute(operation);
@@ -207,35 +210,47 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override IProtocolStreamObjectReadOperations<TId, TObject> GetObjectReadOperationsProtocol<TId, TObject>()
+        public override IStreamReadingProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>()
         {
-            var result = new MemoryStreamObjectOperationsProtocol<TId, TObject>(this);
+            var result = new MemoryStreamProtocols<TId, TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IProtocolStreamObjectReadOperations<TObject> GetObjectReadOperationsProtocol<TObject>()
+        public override IStreamWritingProtocols GetStreamWritingProtocols()
         {
-            var result = new MemoryStreamObjectOperationsProtocol<NullStreamObjectIdentifier, TObject>(this);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override IStreamReadingProtocols GetStreamReadingProtocols()
+        {
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override IStreamReadingProtocols<TObject> GetStreamReadingProtocols<TObject>()
+        {
+            var result = new MemoryStreamProtocols<TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IProtocolStreamObjectWriteOperations<TId, TObject> GetObjectWriteOperationsProtocol<TId, TObject>()
+        public override IStreamWritingProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
         {
-            var result = new MemoryStreamObjectOperationsProtocol<TId, TObject>(this);
+            var result = new MemoryStreamProtocols<TId, TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IProtocolStreamObjectWriteOperations<TObject> GetObjectWriteOperationsProtocol<TObject>()
+        public override IStreamWritingProtocols<TObject> GetStreamWritingProtocols<TObject>()
         {
-            var result = new MemoryStreamObjectOperationsProtocol<NullStreamObjectIdentifier, TObject>(this);
+            var result = new MemoryStreamProtocols<TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override long Execute(
+        public long Execute(
             GetNextUniqueLongOp operation)
         {
             var result = Interlocked.Increment(ref this.uniqueLongForExternalProtocol);
@@ -243,7 +258,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override async Task<long> ExecuteAsync(
+        public async Task<long> ExecuteAsync(
             GetNextUniqueLongOp operation)
         {
             var syncResult = this.Execute(operation);

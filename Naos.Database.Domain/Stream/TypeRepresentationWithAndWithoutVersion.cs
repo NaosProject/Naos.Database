@@ -6,9 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
-    using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
@@ -16,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Container to hold two <see cref="TypeRepresentation"/>'s, one with the version and one without.
     /// </summary>
-    public class TypeRepresentationWithAndWithoutVersion : IModelViaCodeGen
+    public partial class TypeRepresentationWithAndWithoutVersion : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeRepresentationWithAndWithoutVersion"/> class.
@@ -44,5 +41,23 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The without version.</value>
         public TypeRepresentation WithoutVersion { get; private set; }
+    }
+
+    /// <summary>
+    /// Extensions for <see cref="TypeRepresentationWithAndWithoutVersion"/>.
+    /// </summary>
+    public static class TypeRepresentationWithAndWithoutVersionExtensions
+    {
+        /// <summary>
+        /// Converts to a <see cref="TypeRepresentation"/> to a <see cref="TypeRepresentationWithAndWithoutVersion"/>.
+        /// </summary>
+        /// <param name="typeRepresentationWithVersion">The type representation with version to convert.</param>
+        /// <returns>Converted <see cref="TypeRepresentationWithAndWithoutVersion"/>.</returns>
+        public static TypeRepresentationWithAndWithoutVersion ToWithAndWithoutVersion(
+            this TypeRepresentation typeRepresentationWithVersion)
+        {
+            var result = new TypeRepresentationWithAndWithoutVersion(typeRepresentationWithVersion);
+            return result;
+        }
     }
 }

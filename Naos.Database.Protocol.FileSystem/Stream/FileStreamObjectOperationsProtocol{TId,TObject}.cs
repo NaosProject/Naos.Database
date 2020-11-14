@@ -4,32 +4,29 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Naos.Database.Domain;
-using Naos.Protocol.Domain;
-using OBeautifulCode.Assertion.Recipes;
-using OBeautifulCode.Representation.System;
-using OBeautifulCode.Serialization;
-using OBeautifulCode.Type.Recipes;
-using FileStream = Naos.Database.Protocol.FileSystem.FileStream;
-using static System.FormattableString;
-
 namespace Naos.Database.Protocol.FileSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Naos.Database.Domain;
+    using Naos.Protocol.Domain;
+    using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
+    using static System.FormattableString;
+    using FileStream = Naos.Database.Protocol.FileSystem.FileStream;
+
     /// <summary>
-    /// File system implementation of <see cref="IProtocolStreamObjectReadOperations{TId,TObject}"/>
-    /// and <see cref="IProtocolStreamObjectWriteOperations{TId,TObject}"/>.
+    /// File system implementation of <see cref="IStreamReadingProtocols{TId,TObject}"/>
+    /// and <see cref="IStreamWritingProtocols{TId,TObject}"/>.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class FileStreamObjectOperationsProtocol<TId, TObject>
-        : IProtocolStreamObjectReadOperations<TId, TObject>,
-          IProtocolStreamObjectWriteOperations<TId, TObject>
+    public partial class FileStream<TId, TObject>
+        : IStreamReadingProtocols<TId, TObject>,
+          IStreamWritingProtocols<TId, TObject>
     {
         private const string FileExtensionPrefixWithDot = ".value";
         private const string BinaryFileExtensionWithDot = ".value.bin";
@@ -41,10 +38,10 @@ namespace Naos.Database.Protocol.FileSystem
         private readonly ISyncAndAsyncReturningProtocol<GetTagsFromObjectOp<TObject>, IReadOnlyDictionary<string, string>> getTagsFromObjectProtocol = new GetTagsFromObjectProtocol<TObject>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileStreamObjectOperationsProtocol{TId, TObject}"/> class.
+        /// Initializes a new instance of the <see cref="FileStream{TId,TObject}"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public FileStreamObjectOperationsProtocol(
+        public FileStream(
             FileStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
@@ -105,7 +102,7 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             PutOp<TObject> operation)
         {
-            var innerOperation = new PutAndReturnStreamInternalObjectIdOp<TObject>(operation.ObjectToPut);
+            var innerOperation = new PutAndReturnInternalRecordIdOp<TObject>(operation.ObjectToPut);
             var unusedResult = this.Execute(innerOperation);
         }
 
@@ -128,7 +125,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public long Execute(
-            PutAndReturnStreamInternalObjectIdOp<TObject> operation)
+            PutAndReturnInternalRecordIdOp<TObject> operation)
         {
             var timestamp = DateTime.UtcNow;
             var timestampString = this.dateTimeStringSerializer.SerializeToString(timestamp).Replace(":", "-");
@@ -182,7 +179,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public async Task<long> ExecuteAsync(
-            PutAndReturnStreamInternalObjectIdOp<TObject> operation)
+            PutAndReturnInternalRecordIdOp<TObject> operation)
         {
             var syncResult = this.Execute(operation);
             return await Task.FromResult(syncResult);

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProtocolStreamObjectReadOperations{TId}.cs" company="Naos Project">
+// <copyright file="IStreamWritingProtocols.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,10 +9,12 @@ namespace Naos.Database.Domain
     using Naos.Protocol.Domain;
 
     /// <summary>
-    /// Interface to protocol the basic stream data operations with a known identifier and unknown object.
+    /// Interface to protocol the basic stream data operations without a known identifier.
     /// </summary>
-    /// <typeparam name="TId">Type of ID used.</typeparam>
-    public interface IProtocolStreamObjectWithIdReadOperations<TId>
+    public interface IStreamWritingProtocols :
+        ISyncAndAsyncVoidProtocol<CreateStreamOp>,
+        ISyncAndAsyncVoidProtocol<DeleteStreamOp>,
+        ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>
     {
     }
 }

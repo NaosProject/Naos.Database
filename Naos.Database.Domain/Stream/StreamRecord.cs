@@ -14,23 +14,23 @@ namespace Naos.Database.Protocol.Memory
     /// <summary>
     /// The record in a <see cref="IStream"/>; metadata and the actual object.
     /// </summary>
-    public class StreamRecord : IModelViaCodeGen
+    public partial class StreamRecord : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecord"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="internalRecordId">The identifier.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="payload">The payload.</param>
         public StreamRecord(
-            long id,
+            long internalRecordId,
             StreamRecordMetadata metadata,
             DescribedSerialization payload)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
 
-            this.Id = id;
+            this.InternalRecordId = internalRecordId;
             this.Metadata = metadata;
             this.Payload = payload;
         }
@@ -39,7 +39,7 @@ namespace Naos.Database.Protocol.Memory
         /// Gets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public long Id { get; private set; }
+        public long InternalRecordId { get; private set; }
 
         /// <summary>
         /// Gets the metadata.

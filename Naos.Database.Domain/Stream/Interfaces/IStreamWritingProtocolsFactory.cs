@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProtocolFactoryStreamObjectWriteOperations.cs" company="Naos Project">
+// <copyright file="IStreamWritingProtocolsFactory.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,21 +11,27 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to get the protocols for the basic stream write operations.
     /// </summary>
-    public interface IProtocolFactoryStreamObjectWriteOperations
+    public interface IStreamWritingProtocolsFactory
     {
         /// <summary>
-        /// Builds the <see cref="IProtocolStreamObjectWriteOperations{TId,TObject}"/> protocol.
+        /// Builds the <see cref="IStreamWritingProtocols{TObject}"/> protocol.
+        /// </summary>
+        /// <returns>Protocols for write operations.</returns>
+        IStreamWritingProtocols GetStreamWritingProtocols();
+
+        /// <summary>
+        /// Builds the <see cref="IStreamWritingProtocols{TObject}"/> protocol.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <returns>Protocols for write operations.</returns>
+        IStreamWritingProtocols<TObject> GetStreamWritingProtocols<TObject>();
+
+        /// <summary>
+        /// Builds the <see cref="IStreamWritingProtocols{TId,TObject}"/> protocol.
         /// </summary>
         /// <typeparam name="TId">The type of the identifier.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <returns>Protocols for write operations.</returns>
-        IProtocolStreamObjectWriteOperations<TId, TObject> GetObjectWriteOperationsProtocol<TId, TObject>();
-
-        /// <summary>
-        /// Builds the <see cref="IProtocolStreamObjectWriteOperations{TObject}"/> protocol.
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <returns>Protocols for write operations.</returns>
-        IProtocolStreamObjectWriteOperations<TObject> GetObjectWriteOperationsProtocol<TObject>();
+        IStreamWritingProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>();
     }
 }

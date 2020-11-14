@@ -39,8 +39,8 @@
     <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.81\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.82\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Compression, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Compression.1.0.19\lib\net462\OBeautifulCode.Compression.dll</HintPath>
@@ -173,22 +173,14 @@
     <Compile Include="Operations\GetStreamFromRepresentationOp.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TId,TObject}.cs</DependentUpon>
+    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TObject}.designer.cs">
-      <DependentUpon>PutAndReturnStreamInternalObjectIdOp{TObject}.cs</DependentUpon>
+    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TObject}.designer.cs">
+      <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\PutAndReturnStreamInternalObjectIdOp{TObject}.cs" />
-    <Compile Include="Operations\PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutIdentifiableAndReturnStreamInternalObjectIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\PutIdentifiableOp{TId,TObject}.cs" />
-    <Compile Include="Operations\PutIdentifiableOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutIdentifiableOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TObject}.cs" />
     <Compile Include="Operations\PutOp{TId,TObject}.cs" />
     <Compile Include="Operations\PutOp{TId,TObject}.designer.cs">
       <DependentUpon>PutOp{TId,TObject}.cs</DependentUpon>
@@ -218,11 +210,11 @@
     </Compile>
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadingProtocols.cs" />
     <Compile Include="Stream\NullStreamObjectIdentifier.designer.cs">
       <DependentUpon>NullStreamObjectIdentifier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWithIdReadOperations{TId}.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWithIdWriteOperations{TId}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWritingProtocols.cs" />
     <Compile Include="Stream\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
@@ -231,15 +223,15 @@
     </Compile>
     <Compile Include="Stream\StreamRecord{TObject}.cs" />
     <Compile Include="Stream\StreamRecord.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectReadOperations{TObject}.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolFactoryStreamObjectReadOperations.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolFactoryStreamObjectWriteOperations.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectReadOperations{TId,TObject}.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWriteOperations{TObject}.cs" />
-    <Compile Include="Stream\ObjectReadWriteOperationDefinitions\IProtocolStreamObjectWriteOperations{TId,TObject}.cs" />
-    <Compile Include="Stream\IReadOnlyStream.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadingProtocols{TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadingProtocolsFactory.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWritingProtocolsFactory.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadingProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWritingProtocols{TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWritingProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IReadOnlyStream.cs" />
     <Compile Include="Stream\NullStreamObjectIdentifier.cs" />
-    <Compile Include="Stream\IStream.cs" />
+    <Compile Include="Stream\Interfaces\IStream.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentation.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentation.designer.cs">
       <DependentUpon>FileStreamRepresentation.cs</DependentUpon>

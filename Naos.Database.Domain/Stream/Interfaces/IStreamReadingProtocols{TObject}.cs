@@ -1,20 +1,18 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullStreamObjectIdentifier.cs" company="Naos Project">
+// <copyright file="IStreamReadingProtocols{TObject}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Naos.Database.Domain
 {
-    using System;
-    using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
-    using OBeautifulCode.Type;
 
     /// <summary>
-    /// A null object to be used as the id of an object in a <see cref="IStream"/> that does not have an actual identifier.
+    /// Interface to protocol the basic stream data operations without a known identifier.
     /// </summary>
-    public partial class NullStreamObjectIdentifier : IModelViaCodeGen
+    /// <typeparam name="TObject">Type of object used.</typeparam>
+    public interface IStreamReadingProtocols<TObject>
     {
     }
 }

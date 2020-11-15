@@ -65,6 +65,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordMetadata(
                                              null,
+                                             null,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
@@ -85,6 +86,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordMetadata(
                                              Invariant($"  {Environment.NewLine}  "),
+                                             null,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
@@ -106,6 +108,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StreamRecordMetadata(
                                              referenceObject.StringSerializedId,
                                              null,
+                                             null,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
                                              referenceObject.TimestampUtc);
@@ -125,6 +128,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordMetadata(
                                              referenceObject.StringSerializedId,
+                                             null,
                                              referenceObject.TypeRepresentationOfId,
                                              null,
                                              referenceObject.Tags,
@@ -145,6 +149,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordMetadata(
                                              referenceObject.StringSerializedId,
+                                             null,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              null,
@@ -165,6 +170,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordMetadata(
                                              referenceObject.StringSerializedId,
+                                             null,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              new Dictionary<string, string>(),
@@ -191,6 +197,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordMetadata(
                                              referenceObject.StringSerializedId,
+                                             null,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              dictionaryWithNullValue,
@@ -215,6 +222,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.StringSerializedId,
+                                                      null,
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
@@ -238,6 +246,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.StringSerializedId,
+                                                      null,
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
@@ -261,6 +270,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.StringSerializedId,
+                                                      null,
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
@@ -284,6 +294,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.StringSerializedId,
+                                                      null,
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
@@ -307,6 +318,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordMetadata(
                                                       referenceObject.StringSerializedId,
+                                                      null,
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
@@ -433,6 +445,7 @@ namespace Naos.Database.Domain.Test
                     {
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                null,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
@@ -442,30 +455,35 @@ namespace Naos.Database.Domain.Test
                     {
                         new StreamRecordMetadata(
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.StringSerializedId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StringSerializedId)).StringSerializedId,
+                                null,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                null,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                null,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationOfId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId)).TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                null,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationOfObject.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject)).TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                null,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,

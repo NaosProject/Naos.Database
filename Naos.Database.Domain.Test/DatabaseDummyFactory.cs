@@ -16,6 +16,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// A Dummy Factory for types in <see cref="Naos.Database.Domain"/>.
@@ -53,6 +54,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordMetadata(
                     A.Dummy<Version>().ToString(),
+                    A.Dummy<SerializerRepresentation>(),
                     typeof(Version).ToRepresentation().ToWithAndWithoutVersion(),
                     A.Dummy<TypeRepresentation>().ToWithAndWithoutVersion(),
                     new Dictionary<string, string>(), 

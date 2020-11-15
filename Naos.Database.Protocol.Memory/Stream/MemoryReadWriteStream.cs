@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemoryStream.cs" company="Naos Project">
+// <copyright file="MemoryReadWriteStream.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -18,13 +18,13 @@ namespace Naos.Database.Protocol.Memory
     using static System.FormattableString;
 
     /// <summary>
-    /// In memory implementation of <see cref="IStream"/>.
+    /// In memory implementation of <see cref="IReadWriteStream"/>.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class MemoryStream :
-        StreamBase,
-        IStreamReadingProtocols,
-        IStreamWritingProtocols
+    public class MemoryReadWriteStream :
+        ReadWriteStreamBase,
+        IStreamReadProtocols,
+        IStreamWriteProtocols
     {
         private readonly object streamLock = new object();
 
@@ -34,13 +34,13 @@ namespace Naos.Database.Protocol.Memory
         private long uniqueLongForInMemoryEntries = 0;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryStream"/> class.
+        /// Initializes a new instance of the <see cref="MemoryReadWriteStream"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
         /// <param name="defaultSerializationFormat">The default serialization format.</param>
         /// <param name="serializerFactory">The serializer factory.</param>
-        public MemoryStream(
+        public MemoryReadWriteStream(
             string name,
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
@@ -87,7 +87,7 @@ namespace Naos.Database.Protocol.Memory
         public SerializationFormat DefaultSerializationFormat { get; private set; }
 
         /// <summary>
-        /// Safely add an item to the internal collection; should really only be used in testing and is not part of the <see cref="IStream"/> language.
+        /// Safely add an item to the internal collection; should really only be used in testing and is not part of the <see cref="IReadWriteStream"/> language.
         /// </summary>
         /// <param name="metadata">The metadata.</param>
         /// <param name="payload">The payload.</param>
@@ -131,7 +131,7 @@ namespace Naos.Database.Protocol.Memory
 
                 if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
                 {
-                    throw new ArgumentException(Invariant($"This {nameof(MemoryStream)} can only 'create' a stream with the same representation."));
+                    throw new ArgumentException(Invariant($"This {nameof(MemoryReadWriteStream)} can only 'create' a stream with the same representation."));
                 }
 
                 if (this.created)
@@ -179,7 +179,7 @@ namespace Naos.Database.Protocol.Memory
 
                 if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
                 {
-                    throw new ArgumentException(Invariant($"This {nameof(MemoryStream)} can only 'Delete' a stream with the same representation."));
+                    throw new ArgumentException(Invariant($"This {nameof(MemoryReadWriteStream)} can only 'Delete' a stream with the same representation."));
                 }
 
                 if (!this.created)
@@ -210,40 +210,40 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override IStreamReadingProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>()
+        public override IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>()
         {
-            var result = new MemoryStreamProtocols<TId, TObject>(this);
+            var result = new MemoryStreamReadWriteProtocols<TId, TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IStreamWritingProtocols GetStreamWritingProtocols()
+        public override IStreamWriteProtocols GetStreamWritingProtocols()
         {
             return this;
         }
 
         /// <inheritdoc />
-        public override IStreamReadingProtocols GetStreamReadingProtocols()
+        public override IStreamReadProtocols GetStreamReadingProtocols()
         {
             return this;
         }
 
         /// <inheritdoc />
-        public override IStreamReadingProtocols<TObject> GetStreamReadingProtocols<TObject>()
+        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>()
         {
             var result = new MemoryStreamProtocols<TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IStreamWritingProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
+        public override IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
         {
-            var result = new MemoryStreamProtocols<TId, TObject>(this);
+            var result = new MemoryStreamReadWriteProtocols<TId, TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IStreamWritingProtocols<TObject> GetStreamWritingProtocols<TObject>()
+        public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
         {
             var result = new MemoryStreamProtocols<TObject>(this);
             return result;

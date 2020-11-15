@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event container to signal a block to a <see cref="IStream"/> indicating the stream should not be processed beyond this event without an associated <see cref="CancelBlockEvent{TId}"/>.
+    /// Event container to signal a block to a <see cref="IReadWriteStream"/> indicating the stream should not be processed beyond this event without an associated <see cref="CancelBlockEvent{TId}"/>.
     /// </summary>
     /// <typeparam name="TId">Type of the identifier.</typeparam>
     public partial class BlockEvent<TId> : EventBase<TId>, IHaveTags

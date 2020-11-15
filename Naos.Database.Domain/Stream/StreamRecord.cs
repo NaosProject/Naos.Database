@@ -4,15 +4,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Protocol.Memory
+namespace Naos.Database.Domain
 {
-    using Naos.Database.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// The record in a <see cref="IStream"/>; metadata and the actual object.
+    /// The record in a <see cref="IReadWriteStream"/>; metadata and the actual object.
     /// </summary>
     public partial class StreamRecord : IModelViaCodeGen
     {

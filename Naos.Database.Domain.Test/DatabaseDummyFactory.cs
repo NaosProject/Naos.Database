@@ -52,10 +52,10 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordMetadata(
-                    A.Dummy<Version>(),
-                    A.Dummy<IReadOnlyDictionary<string, string>>(),
-                    A.Dummy<TypeRepresentation>(),
-                    A.Dummy<TypeRepresentation>(),
+                    A.Dummy<Version>().ToString(),
+                    typeof(Version).ToRepresentation().ToWithAndWithoutVersion(),
+                    A.Dummy<TypeRepresentation>().ToWithAndWithoutVersion(),
+                    new Dictionary<string, string>(), 
                     A.Dummy<DateTime>().ToUniversalTime()));
         }
     }

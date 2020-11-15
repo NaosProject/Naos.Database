@@ -1,18 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IStreamReadingProtocols{TObject}.cs" company="Naos Project">
+// <copyright file="NullStreamRepresentation.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
-
     /// <summary>
-    /// Interface to protocol the basic stream data operations without a known identifier.
+    /// A null object to be used as the id of an object in a <see cref="IReadWriteStream"/> that does not have an actual identifier.
     /// </summary>
-    /// <typeparam name="TObject">Type of object used.</typeparam>
-    public interface IStreamReadingProtocols<TObject>
+    public partial class NullStreamRepresentation : IStreamRepresentation
     {
+        /// <inheritdoc />
+        public string Name => nameof(NullStreamRepresentation);
     }
 }

@@ -10,7 +10,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
-    /// Stream description to allow the <see cref="StreamFactory"/> to produce the correct stream.
+    /// Stream description to allow the <see cref="GetStreamFromRepresentationByNameProtocolFactory"/> to produce the correct stream.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class MemoryStreamRepresentation : StreamRepresentationBase

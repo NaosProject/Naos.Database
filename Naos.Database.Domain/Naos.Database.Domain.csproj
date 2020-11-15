@@ -169,10 +169,7 @@
     <Compile Include="Operations\GetOp{TObject}.designer.cs">
       <DependentUpon>GetOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\GetStreamFromRepresentationOp.cs" />
-    <Compile Include="Operations\GetStreamFromRepresentationOp.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
     <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
@@ -210,11 +207,12 @@
     </Compile>
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadingProtocols.cs" />
-    <Compile Include="Stream\NullStreamObjectIdentifier.designer.cs">
-      <DependentUpon>NullStreamObjectIdentifier.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Interfaces\IStreamWritingProtocols.cs" />
+    <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
+    <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadProtocols.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullStream.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWriteProtocols.cs" />
     <Compile Include="Stream\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
@@ -223,14 +221,14 @@
     </Compile>
     <Compile Include="Stream\StreamRecord{TObject}.cs" />
     <Compile Include="Stream\StreamRecord.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadingProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadingProtocolsFactory.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWritingProtocolsFactory.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadingProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWritingProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWritingProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadProtocols{TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWriteProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\IStreamReadProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWriteProtocols{TObject}.cs" />
+    <Compile Include="Stream\Interfaces\IStreamWriteProtocols{TId,TObject}.cs" />
     <Compile Include="Stream\Interfaces\IReadOnlyStream.cs" />
-    <Compile Include="Stream\NullStreamObjectIdentifier.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullStreamIdentifier.cs" />
     <Compile Include="Stream\Interfaces\IStream.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentation.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentation.designer.cs">
@@ -251,8 +249,8 @@
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\TypeRepresentationWithAndWithoutVersion.cs" />
-    <Compile Include="Stream\StreamBase.cs" />
-    <Compile Include="Stream\StreamFactory.cs" />
+    <Compile Include="Stream\ReadWriteStreamBase.cs" />
+    <Compile Include="Stream\GetStreamFromRepresentationByNameProtocolFactory.cs" />
     <Compile Include="Stream\Representation\StreamRepresentation.cs" />
     <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />
     <Compile Include="Stream\StreamRecordMetadata.cs" />

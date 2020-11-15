@@ -19,13 +19,13 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecordMetadata"/> class.
         /// </summary>
-        /// <param name="stringSerializedObjectId">The identifier serialized as a string.</param>
+        /// <param name="stringSerializedId">The identifier serialized as a string.</param>
         /// <param name="typeRepresentationOfId">The type representation of the identifier.</param>
         /// <param name="typeRepresentationOfObject">The type representation of the object.</param>
         /// <param name="tags">The tags.</param>
         /// <param name="timestampUtc">Timestamp of the record in UTC.</param>
         public StreamRecordMetadata(
-            string stringSerializedObjectId,
+            string stringSerializedId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfObject,
             IReadOnlyDictionary<string, string> tags,
@@ -35,7 +35,7 @@ namespace Naos.Database.Domain
             typeRepresentationOfId.MustForArg(nameof(typeRepresentationOfId)).NotBeNull();
             typeRepresentationOfObject.MustForArg(nameof(typeRepresentationOfObject)).NotBeNull();
 
-            this.StringSerializedObjectId = stringSerializedObjectId;
+            this.StringSerializedId = stringSerializedId;
             this.Tags = tags;
             this.TypeRepresentationOfId = typeRepresentationOfId;
             this.TypeRepresentationOfObject = typeRepresentationOfObject;
@@ -52,7 +52,7 @@ namespace Naos.Database.Domain
         /// Gets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public string StringSerializedObjectId { get; private set; }
+        public string StringSerializedId { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }

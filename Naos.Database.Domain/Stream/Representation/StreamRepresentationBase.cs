@@ -6,12 +6,14 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
+    using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Stream description to allow the <see cref="StreamFactory"/> to produce the correct stream.
+    /// Stream description to allow the <see cref="GetStreamFromRepresentationByNameProtocolFactory"/> to produce the correct stream.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public abstract partial class StreamRepresentationBase : IStreamRepresentation, IModelViaCodeGen

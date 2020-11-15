@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemoryStreamProtocols{TId,TObject}.cs" company="Naos Project">
+// <copyright file="MemoryStreamReadWriteProtocols{TId,TObject}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -18,52 +18,52 @@ namespace Naos.Database.Protocol.Memory
 
     /// <summary>
     /// Set of protocols to work with known identifier and/or object type.
-    /// Implements the <see cref="Naos.Database.Domain.IStreamReadingProtocols{TObject}" />
-    /// Implements the <see cref="Naos.Database.Domain.IStreamWritingProtocols{TObject}" />
-    /// Implements the <see cref="Naos.Database.Domain.IStreamReadingProtocols{TId, TObject}" />
-    /// Implements the <see cref="Naos.Database.Domain.IStreamWritingProtocols{TId, TObject}" />.
+    /// Implements the <see cref="IStreamReadProtocols{TObject}" />
+    /// Implements the <see cref="IStreamWriteProtocols{TObject}" />
+    /// Implements the <see cref="IStreamReadProtocols{TId,TObject}" />
+    /// Implements the <see cref="IStreamWriteProtocols{TId,TObject}" />.
     /// </summary>
     /// <typeparam name="TId">The type of the t identifier.</typeparam>
     /// <typeparam name="TObject">The type of the t object.</typeparam>
-    /// <seealso cref="Naos.Database.Domain.IStreamReadingProtocols{TObject}" />
-    /// <seealso cref="Naos.Database.Domain.IStreamWritingProtocols{TObject}" />
-    /// <seealso cref="Naos.Database.Domain.IStreamReadingProtocols{TId, TObject}" />
-    /// <seealso cref="Naos.Database.Domain.IStreamWritingProtocols{TId, TObject}" />
-    public partial class MemoryStreamProtocols<TId, TObject> :
-        IStreamReadingProtocols<TId, TObject>,
-        IStreamWritingProtocols<TId, TObject>
+    /// <seealso cref="IStreamReadProtocols{TObject}" />
+    /// <seealso cref="IStreamWriteProtocols{TObject}" />
+    /// <seealso cref="IStreamReadProtocols{TId,TObject}" />
+    /// <seealso cref="IStreamWriteProtocols{TId,TObject}" />
+    public partial class MemoryStreamReadWriteProtocols<TId, TObject> :
+        IStreamReadProtocols<TId, TObject>,
+        IStreamWriteProtocols<TId, TObject>
     {
-        private readonly MemoryStream stream;
+        private readonly MemoryReadWriteStream readWriteStream;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryStreamProtocols{TId, TObject}"/> class.
+        /// Initializes a new instance of the <see cref="MemoryStreamReadWriteProtocols{TId,TObject}"/> class.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        public MemoryStreamProtocols(
-            MemoryStream stream)
+        /// <param name="readWriteStream">The stream.</param>
+        public MemoryStreamReadWriteProtocols(
+            MemoryReadWriteStream readWriteStream)
         {
-            this.stream = stream;
+            this.readWriteStream = readWriteStream;
         }
 
         /// <inheritdoc />
         public TObject Execute(
             GetLatestByIdAndTypeOp<TId, TObject> operation)
         {
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializer = this.readWriteStream.SerializerFactory.BuildSerializer(this.readWriteStream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
             var typeRepresentationToMatch = operation.TypeVersionMatchStrategy == TypeVersionMatchStrategy.Any
                 ? typeof(TObject).ToRepresentation().RemoveAssemblyVersions()
                 : typeof(TObject).ToRepresentation();
 
             var item = this
-                      .stream.GetItems().OrderByDescending(_ => _.Metadata.TimestampUtc)
+                      .readWriteStream.GetItems().OrderByDescending(_ => _.Metadata.TimestampUtc)
                       .FirstOrDefault(
                            _ => (operation.TypeVersionMatchStrategy                        == TypeVersionMatchStrategy.Any
                                     ? _.Metadata.TypeRepresentationOfObject.WithoutVersion == typeRepresentationToMatch
                                     : _.Metadata.TypeRepresentationOfObject.WithVersion    == typeRepresentationToMatch)
-                             && _.Metadata.StringSerializedObjectId.Equals(serializedObjectId));
+                             && _.Metadata.StringSerializedId.Equals(serializedObjectId));
 
-            var resultItem = item?.Payload?.DeserializePayloadUsingSpecificFactory(this.stream.SerializerFactory);
+            var resultItem = item?.Payload?.DeserializePayloadUsingSpecificFactory(this.readWriteStream.SerializerFactory);
             return (TObject)resultItem;
         }
 
@@ -98,16 +98,16 @@ namespace Naos.Database.Protocol.Memory
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializer = this.readWriteStream.SerializerFactory.BuildSerializer(this.readWriteStream.DefaultSerializerRepresentation);
             string serializedStringId = serializer.SerializeToString(operation.Id);
 
             var identifierTypeRep = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
             var objectTypeRep = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
 
             var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
-                this.stream.DefaultSerializerRepresentation,
-                this.stream.SerializerFactory,
-                this.stream.DefaultSerializationFormat);
+                this.readWriteStream.DefaultSerializerRepresentation,
+                this.readWriteStream.SerializerFactory,
+                this.readWriteStream.DefaultSerializationFormat);
 
             var metadata = new StreamRecordMetadata(
                 serializedStringId,
@@ -115,7 +115,7 @@ namespace Naos.Database.Protocol.Memory
                 objectTypeRep.ToWithAndWithoutVersion(),
                 operation.Tags ?? new Dictionary<string, string>(),
                 DateTime.UtcNow);
-            var result = this.stream.AddItem(metadata, describedSerialization);
+            var result = this.readWriteStream.AddItem(metadata, describedSerialization);
             return result;
         }
 

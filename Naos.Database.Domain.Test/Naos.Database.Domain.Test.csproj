@@ -302,10 +302,6 @@
     <Compile Include="GetOp{TObject}Test.designer.cs">
       <DependentUpon>GetOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetStreamFromRepresentationOpTest.cs" />
-    <Compile Include="GetStreamFromRepresentationOpTest.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOpTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemoryDatabaseLocatorTest.cs" />
     <Compile Include="MemoryDatabaseLocatorTest.designer.cs">
       <DependentUpon>MemoryDatabaseLocatorTest.cs</DependentUpon>
@@ -317,10 +313,6 @@
     <Compile Include="NullDatabaseLocatorTest.cs" />
     <Compile Include="NullDatabaseLocatorTest.designer.cs">
       <DependentUpon>NullDatabaseLocatorTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NullStreamObjectIdentifierTest.cs" />
-    <Compile Include="NullStreamObjectIdentifierTest.designer.cs">
-      <DependentUpon>NullStreamObjectIdentifierTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -344,6 +336,10 @@
     <Compile Include="PutAndReturnInternalRecordIdOp{TObject}Test.cs" />
     <Compile Include="PutAndReturnInternalRecordIdOp{TObject}Test.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutOp{TId,TObject}Test.cs" />
+    <Compile Include="PutOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>PutOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="PutOp{TObject}Test.cs" />
     <Compile Include="PutOp{TObject}Test.designer.cs">

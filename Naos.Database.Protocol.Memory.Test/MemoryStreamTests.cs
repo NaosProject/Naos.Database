@@ -55,7 +55,7 @@ namespace Naos.Database.Protocol.Memory.Test
                          { nameof(MyObject.Field), _.ObjectToDetermineTagsFrom.Field },
                      });
 
-            var stream = new MemoryStream(
+            var stream = new MemoryReadWriteStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,

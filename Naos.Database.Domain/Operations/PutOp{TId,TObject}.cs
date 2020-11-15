@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using static System.FormattableString;
 
     /// <summary>
-    /// Put the object to a <see cref="IStream"/>.
+    /// Put the object to a <see cref="IWriteOnlyStream"/>.
     /// </summary>
     /// <typeparam name="TId">Type of the identifier.</typeparam>
     /// <typeparam name="TObject">Type of data being written.</typeparam>

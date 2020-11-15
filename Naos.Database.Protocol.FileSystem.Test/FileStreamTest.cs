@@ -22,10 +22,9 @@ namespace Naos.Protocol.SqlServer.Test
     using OBeautifulCode.Type;
     using Xunit;
     using Xunit.Abstractions;
-    using FileStream = Naos.Database.Protocol.FileSystem.FileStream;
 
     /// <summary>
-    /// Tests for <see cref="FileStream{TKey}"/>.
+    /// Tests for <see cref="FileReadWriteStream"/>.
     /// </summary>
     public partial class FileStreamTest
     {
@@ -50,7 +49,7 @@ namespace Naos.Protocol.SqlServer.Test
 
             var defaultSerializationFormat = SerializationFormat.String;
 
-            var stream = new FileStream(
+            var stream = new FileReadWriteStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,

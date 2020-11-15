@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StreamBase.cs" company="Naos Project">
+// <copyright file="ReadWriteStreamBase.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -14,14 +14,14 @@ namespace Naos.Database.Domain
     /// Stream interface, a stream is a list of objects ordered by timestamp.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public abstract class StreamBase : IStream
+    public abstract class ReadWriteStreamBase : IReadWriteStream
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamBase"/> class.
+        /// Initializes a new instance of the <see cref="ReadWriteStreamBase"/> class.
         /// </summary>
         /// <param name="name">The name of the stream.</param>
         /// <param name="resourceLocatorProtocols">Protocol to get appropriate resource locator(s).</param>
-        protected StreamBase(
+        protected ReadWriteStreamBase(
             string name,
             IResourceLocatorProtocols resourceLocatorProtocols)
         {
@@ -42,21 +42,21 @@ namespace Naos.Database.Domain
         public abstract IStreamRepresentation StreamRepresentation { get; }
 
         /// <inheritdoc />
-        public abstract IStreamReadingProtocols GetStreamReadingProtocols();
+        public abstract IStreamReadProtocols GetStreamReadingProtocols();
 
         /// <inheritdoc />
-        public abstract IStreamReadingProtocols<TObject> GetStreamReadingProtocols<TObject>();
+        public abstract IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>();
 
         /// <inheritdoc />
-        public abstract IStreamReadingProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>();
+        public abstract IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>();
 
         /// <inheritdoc />
-        public abstract IStreamWritingProtocols GetStreamWritingProtocols();
+        public abstract IStreamWriteProtocols GetStreamWritingProtocols();
 
         /// <inheritdoc />
-        public abstract IStreamWritingProtocols<TObject> GetStreamWritingProtocols<TObject>();
+        public abstract IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>();
 
         /// <inheritdoc />
-        public abstract IStreamWritingProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>();
+        public abstract IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>();
     }
 }

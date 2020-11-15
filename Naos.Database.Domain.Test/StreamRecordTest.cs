@@ -7,15 +7,22 @@
 namespace Naos.Database.Domain.Test
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
 
     using FakeItEasy;
 
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
+    using OBeautifulCode.CodeGen.ModelObject.Recipes;
+    using OBeautifulCode.Math.Recipes;
 
     using Xunit;
 
+    using static System.FormattableString;
+
+    [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
     public static partial class StreamRecordTest
     {
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]

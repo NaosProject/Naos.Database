@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MemoryStreamObjectOperationsProtocol{TObject}.cs" company="Naos Project">
+// <copyright file="MemoryStreamReadWriteProtocols{TObject}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -21,30 +21,30 @@ namespace Naos.Database.Protocol.Memory
 
     /// <summary>
     /// Set of protocols to work with known identifier and/or object type.
-    /// Implements the <see cref="Naos.Database.Domain.IStreamReadingProtocols{TObject}" />
-    /// Implements the <see cref="Naos.Database.Domain.IStreamWritingProtocols{TObject}" />
-    /// Implements the <see cref="Naos.Database.Domain.IStreamReadingProtocols{TId, TObject}" />
-    /// Implements the <see cref="Naos.Database.Domain.IStreamWritingProtocols{TId, TObject}" />
+    /// Implements the <see cref="IStreamReadProtocols{TObject}" />
+    /// Implements the <see cref="IStreamWriteProtocols{TObject}" />
+    /// Implements the <see cref="IStreamReadProtocols{TId,TObject}" />
+    /// Implements the <see cref="IStreamWriteProtocols{TId,TObject}" />
     /// </summary>
     /// <typeparam name="TObject">The type of the t object.</typeparam>
-    /// <seealso cref="Naos.Database.Domain.IStreamReadingProtocols{TObject}" />
-    /// <seealso cref="Naos.Database.Domain.IStreamWritingProtocols{TObject}" />
-    /// <seealso cref="Naos.Database.Domain.IStreamReadingProtocols{TId, TObject}" />
-    /// <seealso cref="Naos.Database.Domain.IStreamWritingProtocols{TId, TObject}" />
+    /// <seealso cref="IStreamReadProtocols{TObject}" />
+    /// <seealso cref="IStreamWriteProtocols{TObject}" />
+    /// <seealso cref="IStreamReadProtocols{TId,TObject}" />
+    /// <seealso cref="IStreamWriteProtocols{TId,TObject}" />
     public partial class MemoryStreamProtocols<TObject> :
-        IStreamReadingProtocols<TObject>,
-        IStreamWritingProtocols<TObject>
+        IStreamReadProtocols<TObject>,
+        IStreamWriteProtocols<TObject>
     {
-        private readonly MemoryStreamProtocols<NullStreamObjectIdentifier, TObject> chainingProtocols;
+        private readonly MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject> chainingProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamProtocols{TObject}"/> class.
         /// </summary>
-        /// <param name="stream">The stream.</param>
+        /// <param name="readWriteStream">The stream.</param>
         public MemoryStreamProtocols(
-            MemoryStream stream)
+            MemoryReadWriteStream readWriteStream)
         {
-            this.chainingProtocols = new MemoryStreamProtocols<NullStreamObjectIdentifier, TObject>(stream);
+            this.chainingProtocols = new MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);
         }
 
         /// <inheritdoc />
@@ -67,7 +67,7 @@ namespace Naos.Database.Protocol.Memory
         public long Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var chainOperation = new PutAndReturnInternalRecordIdOp<NullStreamObjectIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags);
+            var chainOperation = new PutAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags);
             var result = this.chainingProtocols.Execute(chainOperation);
             return result;
         }

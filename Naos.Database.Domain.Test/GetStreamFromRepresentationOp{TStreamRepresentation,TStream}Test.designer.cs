@@ -18,6 +18,8 @@ namespace Naos.Database.Domain.Test
 
     using global::FakeItEasy;
 
+    using global::Naos.Protocol.Domain;
+
     using global::OBeautifulCode.Assertion.Recipes;
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -33,533 +35,103 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StreamRecordMetadataTest
+    public static partial class GetStreamFromRepresentationOpTStreamRepresentationTStreamTest
     {
-        private static readonly StringRepresentationTestScenarios<StreamRecordMetadata> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamRecordMetadata>()
+        private static readonly StringRepresentationTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StreamRecordMetadata>
+                new StringRepresentationTestScenario<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
+                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordMetadata>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordMetadata: StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SerializerRepresentation = {systemUnderTest.SerializerRepresentation?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TypeRepresentationOfId = {systemUnderTest.TypeRepresentationOfId?.ToString() ?? "<null>"}, TypeRepresentationOfObject = {systemUnderTest.TypeRepresentationOfObject?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>: TypedStreamRepresentation = {systemUnderTest.TypedStreamRepresentation?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StreamRecordMetadata> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamRecordMetadata>()
+        private static readonly ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
+                new ConstructorArgumentValidationTestScenario<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'stringSerializedId' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'typedStreamRepresentation' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             null,
-                                             referenceObject.SerializerRepresentation,
-                                             referenceObject.TypeRepresentationOfId,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                        var result = new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>(
+                                             null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'stringSerializedId' is white space scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.SerializerRepresentation,
-                                             referenceObject.TypeRepresentationOfId,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", "white space", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'serializerRepresentation' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             referenceObject.StringSerializedId,
-                                             null,
-                                             referenceObject.TypeRepresentationOfId,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "serializerRepresentation", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationOfId' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.SerializerRepresentation,
-                                             null,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "typeRepresentationOfId", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationOfObject' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.SerializerRepresentation,
-                                             referenceObject.TypeRepresentationOfId,
-                                             null,
-                                             referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "typeRepresentationOfObject", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.SerializerRepresentation,
-                                             referenceObject.TypeRepresentationOfId,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             null,
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new StreamRecordMetadata(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.SerializerRepresentation,
-                                             referenceObject.TypeRepresentationOfId,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             new Dictionary<string, string>(),
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new StreamRecordMetadata(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.SerializerRepresentation,
-                                             referenceObject.TypeRepresentationOfId,
-                                             referenceObject.TypeRepresentationOfObject,
-                                             dictionaryWithNullValue,
-                                             referenceObject.TimestampUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
+                    ExpectedExceptionMessageContains = new[] { "typedStreamRepresentation", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamRecordMetadata> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamRecordMetadata>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
+                new ConstructorPropertyAssignmentTestScenario<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                 {
-                    Name = "StringSerializedId should return same 'stringSerializedId' parameter passed to constructor when getting",
+                    Name = "TypedStreamRepresentation should return same 'typedStreamRepresentation' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
+                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                         {
-                            SystemUnderTest = new StreamRecordMetadata(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.SerializerRepresentation,
-                                                      referenceObject.TypeRepresentationOfId,
-                                                      referenceObject.TypeRepresentationOfObject,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.StringSerializedId,
+                            SystemUnderTest = new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>(
+                                                      referenceObject.TypedStreamRepresentation),
+                            ExpectedPropertyValue = referenceObject.TypedStreamRepresentation,
                         };
 
                         return result;
                     },
-                    PropertyName = "StringSerializedId",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
-                {
-                    Name = "SerializerRepresentation should return same 'serializerRepresentation' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = new StreamRecordMetadata(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.SerializerRepresentation,
-                                                      referenceObject.TypeRepresentationOfId,
-                                                      referenceObject.TypeRepresentationOfObject,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.SerializerRepresentation,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "SerializerRepresentation",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
-                {
-                    Name = "TypeRepresentationOfId should return same 'typeRepresentationOfId' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = new StreamRecordMetadata(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.SerializerRepresentation,
-                                                      referenceObject.TypeRepresentationOfId,
-                                                      referenceObject.TypeRepresentationOfObject,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.TypeRepresentationOfId,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TypeRepresentationOfId",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
-                {
-                    Name = "TypeRepresentationOfObject should return same 'typeRepresentationOfObject' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = new StreamRecordMetadata(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.SerializerRepresentation,
-                                                      referenceObject.TypeRepresentationOfId,
-                                                      referenceObject.TypeRepresentationOfObject,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.TypeRepresentationOfObject,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TypeRepresentationOfObject",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = new StreamRecordMetadata(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.SerializerRepresentation,
-                                                      referenceObject.TypeRepresentationOfId,
-                                                      referenceObject.TypeRepresentationOfObject,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
-                {
-                    Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordMetadata>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = new StreamRecordMetadata(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.SerializerRepresentation,
-                                                      referenceObject.TypeRepresentationOfId,
-                                                      referenceObject.TypeRepresentationOfObject,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.TimestampUtc,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TimestampUtc",
+                    PropertyName = "TypedStreamRepresentation",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StreamRecordMetadata> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordMetadata>()
+        private static readonly DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata>
+                new DeepCloneWithTestScenario<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                 {
-                    Name = "DeepCloneWithStringSerializedId should deep clone object and replace StringSerializedId with the provided stringSerializedId",
-                    WithPropertyName = "StringSerializedId",
+                    Name = "DeepCloneWithTypedStreamRepresentation should deep clone object and replace TypedStreamRepresentation with the provided typedStreamRepresentation",
+                    WithPropertyName = "TypedStreamRepresentation",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
+                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
-                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.StringSerializedId.IsEqualTo(_.StringSerializedId));
+                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>().ThatIs(_ => !systemUnderTest.TypedStreamRepresentation.IsEqualTo(_.TypedStreamRepresentation));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.StringSerializedId,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata>
-                {
-                    Name = "DeepCloneWithSerializerRepresentation should deep clone object and replace SerializerRepresentation with the provided serializerRepresentation",
-                    WithPropertyName = "SerializerRepresentation",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
-
-                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.SerializerRepresentation.IsEqualTo(_.SerializerRepresentation));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.SerializerRepresentation,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
-
-                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata>
-                {
-                    Name = "DeepCloneWithTypeRepresentationOfId should deep clone object and replace TypeRepresentationOfId with the provided typeRepresentationOfId",
-                    WithPropertyName = "TypeRepresentationOfId",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
-
-                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.TypeRepresentationOfId.IsEqualTo(_.TypeRepresentationOfId));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TypeRepresentationOfId,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata>
-                {
-                    Name = "DeepCloneWithTypeRepresentationOfObject should deep clone object and replace TypeRepresentationOfObject with the provided typeRepresentationOfObject",
-                    WithPropertyName = "TypeRepresentationOfObject",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
-
-                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.TypeRepresentationOfObject.IsEqualTo(_.TypeRepresentationOfObject));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TypeRepresentationOfObject,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordMetadata>
-                {
-                    Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
-                    WithPropertyName = "TimestampUtc",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
-
-                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TimestampUtc,
+                            DeepCloneWithValue = referenceObject.TypedStreamRepresentation,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly StreamRecordMetadata ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordMetadata>();
+        private static readonly GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
-        private static readonly EquatableTestScenarios<StreamRecordMetadata> EquatableTestScenarios = new EquatableTestScenarios<StreamRecordMetadata>()
+        private static readonly EquatableTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>> EquatableTestScenarios = new EquatableTestScenarios<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>()
             .AddScenario(() =>
-                new EquatableTestScenario<StreamRecordMetadata>
+                new EquatableTestScenario<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamRecordMetadata[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>[]
                     {
-                        new StreamRecordMetadata(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                        new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>(
+                                ReferenceObjectForEquatableTestScenarios.TypedStreamRepresentation),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StreamRecordMetadata[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>[]
                     {
-                        new StreamRecordMetadata(
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.StringSerializedId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StringSerializedId)).StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.SerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SerializerRepresentation)).SerializerRepresentation,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationOfId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId)).TypeRepresentationOfId,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationOfObject.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject)).TypeRepresentationOfObject,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordMetadata(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                        new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>(
+                                A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>().Whose(_ => !_.TypedStreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypedStreamRepresentation)).TypedStreamRepresentation),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -568,6 +140,15 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
+                        A.Dummy<CreateStreamOp>(),
+                        A.Dummy<DeleteStreamOp>(),
+                        A.Dummy<GetNextUniqueLongOp>(),
+                        A.Dummy<GetLatestByIdAndTypeOp<Version, Version>>(),
+                        A.Dummy<GetOp<Version>>(),
+                        A.Dummy<PutAndReturnInternalRecordIdOp<Version, Version>>(),
+                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
+                        A.Dummy<PutOp<Version, Version>>(),
+                        A.Dummy<PutOp<Version>>(),
                     },
                 });
 
@@ -589,12 +170,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StreamRecordMetadata___Should_implement_IModel_of_StreamRecordMetadata___When_reflecting()
+            public static void GetStreamFromRepresentationOp___Should_implement_IModel_of_GetStreamFromRepresentationOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamRecordMetadata);
+                var type = typeof(GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>);
 
-                var expectedModelMethods = typeof(IModel<StreamRecordMetadata>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -604,7 +185,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamRecordMetadata>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -622,10 +203,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StreamRecordMetadata___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetStreamFromRepresentationOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamRecordMetadata);
+                var type = typeof(GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -798,10 +379,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamRecordMetadata>();
+                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
                 // Act
-                var actual = (StreamRecordMetadata)systemUnderTest.Clone();
+                var actual = (GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -825,7 +406,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamRecordMetadata>();
+                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -834,40 +415,13 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.SerializerRepresentation == null)
+                if (systemUnderTest.TypedStreamRepresentation == null)
                 {
-                    actual.SerializerRepresentation.AsTest().Must().BeNull();
+                    actual.TypedStreamRepresentation.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.SerializerRepresentation.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SerializerRepresentation);
-                }
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
-                }
-
-                if (systemUnderTest.TypeRepresentationOfId == null)
-                {
-                    actual.TypeRepresentationOfId.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.TypeRepresentationOfId.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypeRepresentationOfId);
-                }
-
-                if (systemUnderTest.TypeRepresentationOfObject == null)
-                {
-                    actual.TypeRepresentationOfObject.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.TypeRepresentationOfObject.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypeRepresentationOfObject);
+                    actual.TypedStreamRepresentation.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypedStreamRepresentation);
                 }
             }
 
@@ -887,7 +441,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "StringSerializedId", "SerializerRepresentation", "Tags", "TypeRepresentationOfId", "TypeRepresentationOfObject", "TimestampUtc" };
+                var propertyNames = new string[] { "TypedStreamRepresentation" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -904,12 +458,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StreamRecordMetadata)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StreamRecordMetadata).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -977,7 +531,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1006,7 +560,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1035,7 +589,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1064,7 +618,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordMetadata>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1098,8 +652,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamRecordMetadata systemUnderTest1 = null;
-                StreamRecordMetadata systemUnderTest2 = null;
+                GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest1 = null;
+                GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1129,7 +683,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordMetadata systemUnderTest = null;
+                    GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1278,8 +832,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamRecordMetadata systemUnderTest1 = null;
-                StreamRecordMetadata systemUnderTest2 = null;
+                GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest1 = null;
+                GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1309,7 +863,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordMetadata systemUnderTest = null;
+                    GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1455,14 +1009,300 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordMetadata___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordMetadata systemUnderTest = null;
+                    OperationBase systemUnderTest = null;
+
+                    // Act
+                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
+
+                    // Assert
+                    actual.AsTest().Must().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
+
+                    // Assert
+                    actual.AsTest().Must().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_null()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange
+                    ReturningOperationBase<NullReadWriteStream> systemUnderTest = null;
+
+                    // Act
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<NullReadWriteStream>)systemUnderTest);
+
+                    // Assert
+                    actual.AsTest().Must().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_parameter_other_is_same_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<NullReadWriteStream>)scenario.ReferenceObject);
+
+                    // Assert
+                    actual.AsTest().Must().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<NullReadWriteStream>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<NullReadWriteStream>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<NullReadWriteStream>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_GetStreamFromRepresentationOp___Should_return_false___When_parameter_other_is_null()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange
+                    GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1486,7 +1326,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordMetadata___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetStreamFromRepresentationOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1514,7 +1354,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordMetadata___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetStreamFromRepresentationOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1542,7 +1382,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordMetadata___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetStreamFromRepresentationOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1570,7 +1410,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordMetadata___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetStreamFromRepresentationOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

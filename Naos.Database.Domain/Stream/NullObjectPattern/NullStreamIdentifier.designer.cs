@@ -15,8 +15,6 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
-
     using global::OBeautifulCode.Equality.Recipes;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
@@ -24,15 +22,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class NullDatabaseLocator : IModel<NullDatabaseLocator>
+    public partial class NullStreamIdentifier : IModel<NullStreamIdentifier>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="NullDatabaseLocator"/> are equal.
+        /// Determines whether two objects of type <see cref="NullStreamIdentifier"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(NullDatabaseLocator left, NullDatabaseLocator right)
+        public static bool operator ==(NullStreamIdentifier left, NullStreamIdentifier right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +48,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="NullDatabaseLocator"/> are not equal.
+        /// Determines whether two objects of type <see cref="NullStreamIdentifier"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(NullDatabaseLocator left, NullDatabaseLocator right) => !(left == right);
+        public static bool operator !=(NullStreamIdentifier left, NullStreamIdentifier right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(NullDatabaseLocator other)
+        public bool Equals(NullStreamIdentifier other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -76,19 +74,19 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as NullDatabaseLocator);
+        public override bool Equals(object obj) => this == (obj as NullStreamIdentifier);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Value;
 
         /// <inheritdoc />
-        public new NullDatabaseLocator DeepClone() => (NullDatabaseLocator)this.DeepCloneInternal();
+        public object Clone() => this.DeepClone();
 
         /// <inheritdoc />
-        protected override ResourceLocatorBase DeepCloneInternal()
+        public NullStreamIdentifier DeepClone()
         {
-            var result = new NullDatabaseLocator();
+            var result = new NullStreamIdentifier();
 
             return result;
         }
@@ -97,7 +95,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.NullDatabaseLocator: <no properties>.");
+            var result = Invariant($"Naos.Database.Domain.NullStreamIdentifier: <no properties>.");
 
             return result;
         }

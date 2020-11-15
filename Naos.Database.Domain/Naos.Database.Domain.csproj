@@ -170,6 +170,9 @@
       <DependentUpon>GetOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
+    <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
@@ -211,6 +214,9 @@
     <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />
     <Compile Include="Stream\Interfaces\IStreamReadProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullResourceLocatorProtocols.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullStreamIdentifier.designer.cs">
+      <DependentUpon>NullStreamIdentifier.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStream.cs" />
     <Compile Include="Stream\Interfaces\IStreamWriteProtocols.cs" />

@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
@@ -24,6 +25,7 @@ namespace Naos.Database.Domain
         /// <param name="typeRepresentationOfObject">The type representation of the object.</param>
         /// <param name="tags">The tags.</param>
         /// <param name="timestampUtc">Timestamp of the record in UTC.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StreamRecordMetadata(
             string stringSerializedId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfId,

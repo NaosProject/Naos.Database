@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PutOp{TObject}.cs" company="Naos Project">
+// <copyright file="PutOp{TId,TObject}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -28,6 +28,7 @@ namespace Naos.Database.Domain
         {
             this.Id = id;
             this.ObjectToPut = objectToPut;
+            this.Tags = tags;
         }
 
         /// <summary>

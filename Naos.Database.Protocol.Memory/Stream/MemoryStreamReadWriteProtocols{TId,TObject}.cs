@@ -56,7 +56,7 @@ namespace Naos.Database.Protocol.Memory
                 : typeof(TObject).ToRepresentation();
 
             var item = this
-                      .readWriteStream.GetItems().OrderByDescending(_ => _.Metadata.TimestampUtc)
+                      .readWriteStream.GetAllItems().OrderByDescending(_ => _.Metadata.TimestampUtc)
                       .FirstOrDefault(
                            _ => (operation.TypeVersionMatchStrategy                        == TypeVersionMatchStrategy.Any
                                     ? _.Metadata.TypeRepresentationOfObject.WithoutVersion == typeRepresentationToMatch

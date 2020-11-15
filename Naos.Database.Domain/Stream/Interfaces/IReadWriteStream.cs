@@ -22,6 +22,5 @@ namespace Naos.Database.Domain
           IReadOnlyStream,
           IWriteOnlyStream
     {
-
     }
 }

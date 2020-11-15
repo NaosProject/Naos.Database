@@ -25,6 +25,7 @@ namespace Naos.Database.Domain
         public PutOp(TObject objectToPut, IReadOnlyDictionary<string, string> tags = null)
         {
             this.ObjectToPut = objectToPut;
+            this.Tags = tags;
         }
 
         /// <summary>

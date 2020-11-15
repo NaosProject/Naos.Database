@@ -210,6 +210,7 @@
     <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
     <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />
     <Compile Include="Stream\Interfaces\IStreamReadProtocols.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullResourceLocatorProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStream.cs" />
     <Compile Include="Stream\Interfaces\IStreamWriteProtocols.cs" />

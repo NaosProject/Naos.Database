@@ -27,6 +27,7 @@ namespace Naos.Database.Domain
         public PutAndReturnInternalRecordIdOp(TObject objectToPut, IReadOnlyDictionary<string, string> tags = null)
         {
             this.ObjectToPut = objectToPut;
+            this.Tags = tags;
         }
 
         /// <summary>

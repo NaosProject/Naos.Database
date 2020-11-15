@@ -62,10 +62,10 @@ namespace Naos.Protocol.SqlServer.Test
             var firstObject = new MyObject(key, firstValue);
             var secondValue = "Testing again latest.";
             var secondObject = new MyObject(key, secondValue);
-            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(key, firstObject));
+            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(firstObject.Id, firstObject, firstObject.Tags));
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(key, secondObject));
+            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(secondObject.Id, secondObject, secondObject.Tags));
             stopwatch.Stop();
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
             stopwatch.Reset();

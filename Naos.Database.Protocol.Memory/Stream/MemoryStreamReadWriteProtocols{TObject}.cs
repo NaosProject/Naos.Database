@@ -24,7 +24,7 @@ namespace Naos.Database.Protocol.Memory
     /// Implements the <see cref="IStreamReadProtocols{TObject}" />
     /// Implements the <see cref="IStreamWriteProtocols{TObject}" />
     /// Implements the <see cref="IStreamReadProtocols{TId,TObject}" />
-    /// Implements the <see cref="IStreamWriteProtocols{TId,TObject}" />
+    /// Implements the <see cref="IStreamWriteProtocols{TId,TObject}" />.
     /// </summary>
     /// <typeparam name="TObject">The type of the t object.</typeparam>
     /// <seealso cref="IStreamReadProtocols{TObject}" />

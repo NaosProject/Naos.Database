@@ -109,7 +109,8 @@ namespace Naos.Database.Protocol.Memory
         /// Gets a shallow copy of the list of items at time of calling.
         /// </summary>
         /// <returns>The items at time of calling.</returns>
-        public IReadOnlyCollection<StreamRecord> GetItems()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Clone action happening, prefer method.")]
+        public IReadOnlyCollection<StreamRecord> GetAllItems()
         {
             lock (this.streamLock)
             {

@@ -6,72 +6,67 @@
 
 namespace Naos.Database.Protocol.FileSystem
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using Naos.Database.Domain;
-    using Naos.Protocol.Domain;
-    using Naos.Recipes.RunWithRetry;
-    using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Serialization;
-    using OBeautifulCode.Type.Recipes;
-    using static System.FormattableString;
 
     /// <summary>
     /// File system implementation of <see cref="IStreamReadProtocols{TObject}"/>
     /// and <see cref="IStreamWriteProtocols{TObject}"/>.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class FileStreamProtocols<TObject>
+    public partial class FileStreamReadWriteProtocols<TObject>
         : IStreamReadProtocols<TObject>,
           IStreamWriteProtocols<TObject>
     {
-        private readonly FileReadWriteStream stream;
+        private readonly FileStreamReadWriteProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileStreamProtocols{TObject}"/> class.
+        /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols{TObject}"/> class.
         /// </summary>
-        /// <param name="stream">The stream.</param>
-        public FileStreamProtocols(
-            FileReadWriteStream stream)
+        /// <param name="readWriteStream">The stream.</param>
+        public FileStreamReadWriteProtocols(
+            FileReadWriteStream readWriteStream)
         {
-            stream.MustForArg(nameof(stream)).NotBeNull();
-
-            this.stream = stream;
+            this.delegatedProtocols = new FileStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);
         }
 
         /// <inheritdoc />
         public long Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var task = this.ExecuteAsync(operation);
-            var result = Run.TaskUntilCompletion(task);
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(
+                new NullStreamIdentifier(),
+                operation.ObjectToPut,
+                operation.Tags);
+            var result = this.delegatedProtocols.Execute(delegatedOperation);
             return result;
         }
 
         /// <inheritdoc />
-        public Task<long> ExecuteAsync(
+        public async Task<long> ExecuteAsync(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            throw new NotImplementedException();
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
         }
 
         /// <inheritdoc />
         public void Execute(
             PutOp<TObject> operation)
         {
-            var task = this.ExecuteAsync(operation);
-            Run.TaskUntilCompletion(task);
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(
+                operation.ObjectToPut,
+                operation.Tags);
+            this.Execute(delegatedOperation);
         }
 
         /// <inheritdoc />
-        public Task ExecuteAsync(
+        public async Task ExecuteAsync(
             PutOp<TObject> operation)
         {
-            throw new NotImplementedException();
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await
         }
     }
 }

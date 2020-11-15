@@ -170,6 +170,8 @@ namespace Naos.Database.Protocol.FileSystem
             var recordIdentifierTrackingFilePath = Path.Combine(rootPath, RecordIdentifierTrackingFileName);
 
             long newId;
+
+            // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
             using (var fileStream = new FileStream(
                 recordIdentifierTrackingFilePath,
                 FileMode.OpenOrCreate,

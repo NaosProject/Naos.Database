@@ -16,7 +16,7 @@ namespace Naos.Database.Protocol.FileSystem
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// File system implementation of <see cref="IReadWriteStream"/>.
+    /// File system implementation of <see cref="IReadWriteStream"/>, it is thread resilient but not necessarily thread safe.
     /// Implements the <see cref="ReadWriteStreamBase" />.
     /// </summary>
     /// <seealso cref="ReadWriteStreamBase" />

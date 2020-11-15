@@ -84,6 +84,7 @@
     <Compile Include=".recipes\OBeautifulCode.Assertion\WorkflowExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.CodeAnalysis\ObcSuppressBecause.cs" />
     <Compile Include=".recipes\OBeautifulCode.Collection\EnumerableExtensions.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Enum\EnumExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\DateTimeEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\DictionaryEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\EnumerableEqualityComparer.cs" />

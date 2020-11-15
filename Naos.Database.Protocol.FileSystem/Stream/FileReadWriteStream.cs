@@ -23,6 +23,15 @@ namespace Naos.Database.Protocol.FileSystem
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class FileReadWriteStream : ReadWriteStreamBase
     {
+        private readonly object fileLock = new object();
+
+        /// <summary>
+        /// Gets the locking object for the specific <see cref="IStream"/>.
+        /// </summary>
+        /// <value>The file lock.</value>
+        // ReSharper disable once ConvertToAutoProperty - prefer proper backing field for safety given it's used for locking
+        public object FileLock => this.fileLock;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FileReadWriteStream"/> class.
         /// </summary>
@@ -84,21 +93,21 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override IStreamReadProtocols GetStreamReadingProtocols() => new FileStreamProtocols(this);
+        public override IStreamReadProtocols GetStreamReadingProtocols() => new FileStreamReadWriteProtocols(this);
 
         /// <inheritdoc />
-        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new FileStreamProtocols<TObject>(this);
+        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new FileStreamReadWriteProtocols<TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>() => new FileStreamProtocols<TId, TObject>(this);
+        public override IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>() => new FileStreamReadWriteProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols GetStreamWritingProtocols() => new FileStreamProtocols(this);
+        public override IStreamWriteProtocols GetStreamWritingProtocols() => new FileStreamReadWriteProtocols(this);
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>() => new FileStreamProtocols<TObject>(this);
+        public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>() => new FileStreamReadWriteProtocols<TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>() => new FileStreamProtocols<TId, TObject>(this);
+        public override IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>() => new FileStreamReadWriteProtocols<TId, TObject>(this);
     }
 }

@@ -26,17 +26,17 @@ namespace Naos.Database.Protocol.FileSystem
     /// </summary>
     /// <typeparam name="TId">The type of the identifier.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class FileStreamProtocols<TId, TObject>
+    public partial class FileStreamReadWriteProtocols<TId, TObject>
         : IStreamReadProtocols<TId, TObject>,
           IStreamWriteProtocols<TId, TObject>
     {
         private readonly FileReadWriteStream stream;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileStreamProtocols{TId, TObject}"/> class.
+        /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols{TId,TObject}"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public FileStreamProtocols(
+        public FileStreamReadWriteProtocols(
             FileReadWriteStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();

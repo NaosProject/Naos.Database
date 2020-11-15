@@ -35,7 +35,7 @@ namespace Naos.Database.Protocol.Memory
         IStreamReadProtocols<TObject>,
         IStreamWriteProtocols<TObject>
     {
-        private readonly MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject> chainingProtocols;
+        private readonly MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamProtocols{TObject}"/> class.
@@ -44,15 +44,15 @@ namespace Naos.Database.Protocol.Memory
         public MemoryStreamProtocols(
             MemoryReadWriteStream readWriteStream)
         {
-            this.chainingProtocols = new MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);
+            this.delegatedProtocols = new MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);
         }
 
         /// <inheritdoc />
         public void Execute(
             PutOp<TObject> operation)
         {
-            var chainOperation = new PutAndReturnInternalRecordIdOp<TObject>(operation.ObjectToPut, operation.Tags);
-            this.Execute(chainOperation);
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(operation.ObjectToPut, operation.Tags);
+            this.Execute(delegatedOperation);
         }
 
         /// <inheritdoc />
@@ -67,8 +67,8 @@ namespace Naos.Database.Protocol.Memory
         public long Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var chainOperation = new PutAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags);
-            var result = this.chainingProtocols.Execute(chainOperation);
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags);
+            var result = this.delegatedProtocols.Execute(delegatedOperation);
             return result;
         }
 

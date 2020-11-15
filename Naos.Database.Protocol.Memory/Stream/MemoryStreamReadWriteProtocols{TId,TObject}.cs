@@ -80,8 +80,8 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             PutOp<TId, TObject> operation)
         {
-            var chainOperation = new PutAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags);
-            this.Execute(chainOperation);
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags);
+            this.Execute(delegatedOperation);
         }
 
         /// <inheritdoc />
@@ -111,6 +111,7 @@ namespace Naos.Database.Protocol.Memory
 
             var metadata = new StreamRecordMetadata(
                 serializedStringId,
+                this.readWriteStream.DefaultSerializerRepresentation,
                 identifierTypeRep.ToWithAndWithoutVersion(),
                 objectTypeRep.ToWithAndWithoutVersion(),
                 operation.Tags ?? new Dictionary<string, string>(),

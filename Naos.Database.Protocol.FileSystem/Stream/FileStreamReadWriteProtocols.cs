@@ -24,17 +24,17 @@ namespace Naos.Database.Protocol.FileSystem
     /// File system implementation of <see cref="IStreamReadProtocols{TId,TObject}"/>
     /// and <see cref="IStreamWriteProtocols{TId,TObject}"/>.
     /// </summary>
-    public partial class FileStreamProtocols
+    public partial class FileStreamReadWriteProtocols
         : IStreamReadProtocols,
           IStreamWriteProtocols
     {
         private readonly FileReadWriteStream stream;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileStreamProtocols"/> class.
+        /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public FileStreamProtocols(
+        public FileStreamReadWriteProtocols(
             FileReadWriteStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();

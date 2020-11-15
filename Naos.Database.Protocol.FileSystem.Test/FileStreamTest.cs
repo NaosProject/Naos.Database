@@ -70,10 +70,14 @@ namespace Naos.Protocol.SqlServer.Test
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
             stopwatch.Reset();
             stopwatch.Start();
-            var my = stream.GetStreamReadingProtocols<string, MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
+            var my1 = stream.GetStreamReadingProtocols<string, MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
-            this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my.Id}, Field={my.Field}"));
-            my.Id.MustForTest().BeEqualTo(key);
+            this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my1.Id}, Field={my1.Field}"));
+            my1.Id.MustForTest().BeEqualTo(key);
+            var my2 = stream.GetStreamReadingProtocols<string, MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
+            this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
+            this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my2.Id}, Field={my2.Field}"));
+            my2.Id.MustForTest().BeEqualTo(key);
 
             stream.GetStreamWritingProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }

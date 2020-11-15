@@ -129,6 +129,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "fileStream is only disposed once.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public long Execute(
             PutAndReturnInternalRecordIdOp<TId, TObject> operation)
@@ -187,8 +188,9 @@ namespace Naos.Database.Protocol.FileSystem
                 fileStream.Position = 0;
                 var writer = new StreamWriter(fileStream);
                 writer.Write(newId.ToString(CultureInfo.InvariantCulture));
+
+                // necessary to flush buffer.
                 writer.Close();
-                fileStream.Close();
             }
 
             var filePathIdentifier = stringSerializedId.EncodeForFilePath();

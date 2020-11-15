@@ -127,6 +127,7 @@ namespace Naos.Database.Protocol.FileSystem
         public long Execute(
             GetNextUniqueLongOp operation)
         {
+            // lock unique long directory, get max number, and add file with new max number
             throw new NotImplementedException();
         }
 

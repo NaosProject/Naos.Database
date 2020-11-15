@@ -340,6 +340,31 @@ namespace OBeautifulCode.Type.Recipes
         }
 
         /// <summary>
+        /// Gets the generic type definition of a specified type if the type is generic
+        /// but not a generic type definition, otherwise returns the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// If the specified type is a generic type but not a generic type definition then the
+        /// generic type definition is returned, otherwise the specified type is returned.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="type"/> is null.</exception>
+        public static Type GetGenericTypeDefinitionOrSpecifiedType(
+            this Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var result = type.IsGenericType && (!type.IsGenericTypeDefinition)
+                ? type.GetGenericTypeDefinition()
+                : type;
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets the types in the inheritance path starting from the specified type's
         /// <see cref="Type.BaseType"/> and ending in a type with no <see cref="Type.BaseType"/>.
         /// </summary>

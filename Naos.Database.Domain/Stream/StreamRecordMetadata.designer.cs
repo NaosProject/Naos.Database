@@ -97,6 +97,7 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordMetadata(
                                  this.StringSerializedId?.DeepClone(),
+                                 null,
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
@@ -129,6 +130,7 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordMetadata(
                                  stringSerializedId,
+                                 null,
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
@@ -161,6 +163,7 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordMetadata(
                                  this.StringSerializedId?.DeepClone(),
+                                 null,
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  tags,
@@ -193,7 +196,8 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordMetadata(
                                  this.StringSerializedId?.DeepClone(),
-                                 typeRepresentationOfId,
+                                 null,
+                                 null,
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
                                  this.TimestampUtc);
@@ -225,6 +229,7 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordMetadata(
                                  this.StringSerializedId?.DeepClone(),
+                                 null,
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  typeRepresentationOfObject,
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
@@ -257,6 +262,7 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordMetadata(
                                  this.StringSerializedId?.DeepClone(),
+                                 null,
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),

@@ -10,6 +10,7 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -21,6 +22,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StreamRecordMetadata"/> class.
         /// </summary>
         /// <param name="stringSerializedId">The identifier serialized as a string.</param>
+        /// <param name="serializerRepresentation">The representation of the serializer used.</param>
         /// <param name="typeRepresentationOfId">The type representation of the identifier.</param>
         /// <param name="typeRepresentationOfObject">The type representation of the object.</param>
         /// <param name="tags">The tags.</param>
@@ -28,16 +30,19 @@ namespace Naos.Database.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StreamRecordMetadata(
             string stringSerializedId,
+            SerializerRepresentation serializerRepresentation,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfObject,
             IReadOnlyDictionary<string, string> tags,
             DateTime timestampUtc)
         {
             tags.MustForArg(nameof(tags)).NotBeNull();
+            serializerRepresentation.MustForArg(nameof(serializerRepresentation)).NotBeNull();
             typeRepresentationOfId.MustForArg(nameof(typeRepresentationOfId)).NotBeNull();
             typeRepresentationOfObject.MustForArg(nameof(typeRepresentationOfObject)).NotBeNull();
 
             this.StringSerializedId = stringSerializedId;
+            this.SerializerRepresentation = serializerRepresentation;
             this.Tags = tags;
             this.TypeRepresentationOfId = typeRepresentationOfId;
             this.TypeRepresentationOfObject = typeRepresentationOfObject;
@@ -55,6 +60,12 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The identifier.</value>
         public string StringSerializedId { get; private set; }
+
+        /// <summary>
+        /// Gets the serializer representation.
+        /// </summary>
+        /// <value>The serializer representation.</value>
+        public SerializerRepresentation SerializerRepresentation { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }

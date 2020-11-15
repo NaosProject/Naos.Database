@@ -56,14 +56,16 @@ namespace Naos.Protocol.SqlServer.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.GetStreamWritingProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
             var key = stream.Name + "Key";
             var firstValue = "Testing again.";
+            var firstObject = new MyObject(key, firstValue);
             var secondValue = "Testing again latest.";
-            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, firstValue)));
+            var secondObject = new MyObject(key, secondValue);
+            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(key, firstObject));
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<MyObject>(new MyObject(key, secondValue)));
+            stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(key, secondObject));
             stopwatch.Stop();
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
             stopwatch.Reset();
@@ -73,7 +75,7 @@ namespace Naos.Protocol.SqlServer.Test
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my.Id}, Field={my.Field}"));
             my.Id.MustForTest().BeEqualTo(key);
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.GetStreamWritingProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
     }
 

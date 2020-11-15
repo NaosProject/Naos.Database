@@ -66,7 +66,7 @@ namespace Naos.Database.Protocol.FileSystem
         public TObject Execute(
             GetLatestByIdAndTypeOp<TId, TObject> operation)
         {
-            var stringSerializedId = this.serializer.SerializeToString(operation.Id);
+            var stringSerializedId = this.ConvertIdToString(operation.Id);
             var resourceLocator = this.resourceLocatorUsingIdProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var rootPath = this.GetRootPathFromLocator(resourceLocator);
 
@@ -92,7 +92,7 @@ namespace Naos.Database.Protocol.FileSystem
                 if (metadata.TypeRepresentationOfObject.WithoutVersion == typeRepresentationToCheck)
                 {
                     var recordSerializer = this.stream.SerializerFactory.BuildSerializer(metadata.SerializerRepresentation);
-                    var filePathBase = metadataFilePathToTest.Substring(0, metadataFilePathToTest.Length - MetadataFileExtension.Length);
+                    var filePathBase = metadataFilePathToTest.Substring(0, metadataFilePathToTest.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
                     var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
                     TObject result;
                     if (File.Exists(binaryFilePath))
@@ -139,7 +139,7 @@ namespace Naos.Database.Protocol.FileSystem
             var identifierTypeRepresentation = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
             var objectTypeRepresentation = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
 
-            var stringSerializedId = this.serializer.SerializeToString(operation.Id);
+            var stringSerializedId = this.ConvertIdToString(operation.Id);
             var streamRecordMetadata = new StreamRecordMetadata(
                 stringSerializedId,
                 this.serializerRepresentation,
@@ -167,9 +167,8 @@ namespace Naos.Database.Protocol.FileSystem
             }
 
             var timestampString = this.dateTimeStringSerializer.SerializeToString(streamRecordMetadata.TimestampUtc).Replace(":", "-");
-            // lock current max record id file and update
-            // generate file name to be used of each file
             var recordIdentifierTrackingFilePath = Path.Combine(rootPath, RecordIdentifierTrackingFileName);
+
             long newId;
             using (var fileStream = new FileStream(
                 recordIdentifierTrackingFilePath,
@@ -180,10 +179,14 @@ namespace Naos.Database.Protocol.FileSystem
                 string currentIdString = null;
                 var reader = new StreamReader(fileStream);
                 currentIdString = reader.ReadToEnd();
+                currentIdString = string.IsNullOrWhiteSpace(currentIdString) ? 0.ToString(CultureInfo.InvariantCulture) : currentIdString;
                 var currentId = long.Parse(currentIdString, CultureInfo.InvariantCulture);
                 newId = currentId + 1;
+                fileStream.Position = 0;
                 var writer = new StreamWriter(fileStream);
                 writer.Write(newId.ToString(CultureInfo.InvariantCulture));
+                writer.Close();
+                fileStream.Close();
             }
 
             var filePathIdentifier = stringSerializedId.EncodeForFilePath();
@@ -205,6 +208,24 @@ namespace Naos.Database.Protocol.FileSystem
             }
 
             return newId;
+        }
+
+        private string ConvertIdToString(
+            TId identifier)
+        {
+            var identifierType = identifier?.GetType() ?? typeof(TId);
+            if (identifierType == typeof(string)
+             || identifierType == typeof(long)
+             || identifierType == typeof(int)
+             || identifierType == typeof(short))
+            {
+                return identifier?.ToString();
+            }
+            else
+            {
+                var result = this.serializer.SerializeToString(identifier);
+                return result;
+            }
         }
 
         /// <inheritdoc />

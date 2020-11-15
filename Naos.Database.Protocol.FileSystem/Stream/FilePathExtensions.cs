@@ -78,7 +78,7 @@ namespace Naos.Database.Protocol.FileSystem
 
             IllegalToReplacementTokenMap =
                 illegalCharToCoreReplacementTokenMap.ToDictionary(
-                    k => k.ToString(),
+                    k => k.Key.ToString(),
                     v => Invariant($"___{v.Value}___"));
 
             var illegalToCheck = Path.GetInvalidPathChars().Concat(Path.GetInvalidFileNameChars()).Distinct().OrderBy(_ => _).ToList();

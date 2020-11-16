@@ -303,9 +303,6 @@
       <DependentUpon>GetOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs" />
-    <Compile Include="GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemoryDatabaseLocatorTest.cs" />
     <Compile Include="MemoryDatabaseLocatorTest.designer.cs">
       <DependentUpon>MemoryDatabaseLocatorTest.cs</DependentUpon>

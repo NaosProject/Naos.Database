@@ -170,9 +170,6 @@
       <DependentUpon>GetOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
-    <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>

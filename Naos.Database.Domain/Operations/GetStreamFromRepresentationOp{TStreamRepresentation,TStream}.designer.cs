@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class GetLatestByIdAndTypeOp<TId, TObject> : IModel<GetLatestByIdAndTypeOp<TId, TObject>>
+    public partial class GetStreamFromRepresentationOp<TStreamRepresentation, TStream> : IModel<GetStreamFromRepresentationOp<TStreamRepresentation, TStream>>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="GetLatestByIdAndTypeOp{TId, TObject}"/> are equal.
+        /// Determines whether two objects of type <see cref="GetStreamFromRepresentationOp{TStreamRepresentation, TStream}"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(GetLatestByIdAndTypeOp<TId, TObject> left, GetLatestByIdAndTypeOp<TId, TObject> right)
+        public static bool operator ==(GetStreamFromRepresentationOp<TStreamRepresentation, TStream> left, GetStreamFromRepresentationOp<TStreamRepresentation, TStream> right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="GetLatestByIdAndTypeOp{TId, TObject}"/> are not equal.
+        /// Determines whether two objects of type <see cref="GetStreamFromRepresentationOp{TStreamRepresentation, TStream}"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(GetLatestByIdAndTypeOp<TId, TObject> left, GetLatestByIdAndTypeOp<TId, TObject> right) => !(left == right);
+        public static bool operator !=(GetStreamFromRepresentationOp<TStreamRepresentation, TStream> left, GetStreamFromRepresentationOp<TStreamRepresentation, TStream> right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(GetLatestByIdAndTypeOp<TId, TObject> other)
+        public bool Equals(GetStreamFromRepresentationOp<TStreamRepresentation, TStream> other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -70,29 +70,27 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.Id.IsEqualTo(other.Id)
-                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy);
+            var result = this.TypedStreamRepresentation.IsEqualTo(other.TypedStreamRepresentation);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as GetLatestByIdAndTypeOp<TId, TObject>);
+        public override bool Equals(object obj) => this == (obj as GetStreamFromRepresentationOp<TStreamRepresentation, TStream>);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.Id)
-            .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.TypedStreamRepresentation)
             .Value;
 
         /// <inheritdoc />
-        public new GetLatestByIdAndTypeOp<TId, TObject> DeepClone() => (GetLatestByIdAndTypeOp<TId, TObject>)this.DeepCloneInternal();
+        public new GetStreamFromRepresentationOp<TStreamRepresentation, TStream> DeepClone() => (GetStreamFromRepresentationOp<TStreamRepresentation, TStream>)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Id" />.
+        /// Deep clones this object with a new <see cref="TypedStreamRepresentation" />.
         /// </summary>
-        /// <param name="id">The new <see cref="Id" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestByIdAndTypeOp{TId, TObject}" /> using the specified <paramref name="id" /> for <see cref="Id" /> and a deep clone of every other property.</returns>
+        /// <param name="typedStreamRepresentation">The new <see cref="TypedStreamRepresentation" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetStreamFromRepresentationOp{TStreamRepresentation, TStream}" /> using the specified <paramref name="typedStreamRepresentation" /> for <see cref="TypedStreamRepresentation" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -108,40 +106,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestByIdAndTypeOp<TId, TObject> DeepCloneWithId(TId id)
+        public GetStreamFromRepresentationOp<TStreamRepresentation, TStream> DeepCloneWithTypedStreamRepresentation(TStreamRepresentation typedStreamRepresentation)
         {
-            var result = new GetLatestByIdAndTypeOp<TId, TObject>(
-                                 id,
-                                 this.TypeVersionMatchStrategy);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="TypeVersionMatchStrategy" />.
-        /// </summary>
-        /// <param name="typeVersionMatchStrategy">The new <see cref="TypeVersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestByIdAndTypeOp{TId, TObject}" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestByIdAndTypeOp<TId, TObject> DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
-        {
-            var result = new GetLatestByIdAndTypeOp<TId, TObject>(
-                                 DeepCloneGeneric(this.Id),
-                                 typeVersionMatchStrategy);
+            var result = new GetStreamFromRepresentationOp<TStreamRepresentation, TStream>(
+                                 typedStreamRepresentation);
 
             return result;
         }
@@ -149,18 +117,17 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new GetLatestByIdAndTypeOp<TId, TObject>(
-                                 DeepCloneGeneric(this.Id),
-                                 this.TypeVersionMatchStrategy);
+            var result = new GetStreamFromRepresentationOp<TStreamRepresentation, TStream>(
+                                 DeepCloneGeneric(this.TypedStreamRepresentation));
 
             return result;
         }
 
-        private static TId DeepCloneGeneric(TId value)
+        private static TStreamRepresentation DeepCloneGeneric(TStreamRepresentation value)
         {
             object result;
 
-            var type = typeof(TId);
+            var type = typeof(TStreamRepresentation);
 
             if (type.IsValueType)
             {
@@ -172,7 +139,7 @@ namespace Naos.Database.Domain
                 {
                     result = default;
                 }
-                else if (value is IDeepCloneable<TId> deepCloneableValue)
+                else if (value is IDeepCloneable<TStreamRepresentation> deepCloneableValue)
                 {
                     result = deepCloneableValue.DeepClone();
                 }
@@ -194,14 +161,14 @@ namespace Naos.Database.Domain
                 }
             }
 
-            return (TId)result;
+            return (TStreamRepresentation)result;
         }
 
-        private static TObject DeepCloneGeneric(TObject value)
+        private static TStream DeepCloneGeneric(TStream value)
         {
             object result;
 
-            var type = typeof(TObject);
+            var type = typeof(TStream);
 
             if (type.IsValueType)
             {
@@ -213,7 +180,7 @@ namespace Naos.Database.Domain
                 {
                     result = default;
                 }
-                else if (value is IDeepCloneable<TObject> deepCloneableValue)
+                else if (value is IDeepCloneable<TStream> deepCloneableValue)
                 {
                     result = deepCloneableValue.DeepClone();
                 }
@@ -235,14 +202,14 @@ namespace Naos.Database.Domain
                 }
             }
 
-            return (TObject)result;
+            return (TStream)result;
         }
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: TypedStreamRepresentation = {this.TypedStreamRepresentation?.ToString() ?? "<null>"}.");
 
             return result;
         }

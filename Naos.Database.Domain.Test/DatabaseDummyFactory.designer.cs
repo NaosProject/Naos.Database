@@ -96,10 +96,6 @@ namespace Naos.Database.Domain.Test
                 () => new GetOp<Version>());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetStreamFromRepresentationOp<NullStreamRepresentation, NullReadWriteStream>(
-                                 A.Dummy<NullStreamRepresentation>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutAndReturnInternalRecordIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),

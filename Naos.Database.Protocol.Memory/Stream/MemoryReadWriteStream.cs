@@ -24,6 +24,8 @@ namespace Naos.Database.Protocol.Memory
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public class MemoryReadWriteStream :
         ReadWriteStreamBase,
+        IStreamManagementProtocolFactory,
+        IStreamManagementProtocols,
         IStreamReadProtocols,
         IStreamWriteProtocols
     {
@@ -269,5 +271,8 @@ namespace Naos.Database.Protocol.Memory
             var syncResult = this.Execute(operation);
             return await Task.FromResult(syncResult);
         }
+
+        /// <inheritdoc />
+        public IStreamManagementProtocols GetStreamManagementProtocols() => this;
     }
 }

@@ -28,7 +28,8 @@ namespace Naos.Database.Protocol.FileSystem
     /// and <see cref="IStreamWriteProtocols{TId,TObject}"/>.
     /// </summary>
     public partial class FileStreamReadWriteProtocols
-        : IStreamReadProtocols,
+        : IStreamManagementProtocols,
+          IStreamReadProtocols,
           IStreamWriteProtocols
     {
         private const string NextUniqueLongTrackingFileName = "_NextUniqueLongTracking.nfo";

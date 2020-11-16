@@ -56,7 +56,7 @@ namespace Naos.Protocol.SqlServer.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.GetStreamWritingProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.GetStreamManagementProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
             var key = stream.Name + "Key";
             var firstValue = "Testing again.";
             var firstObject = new MyObject(key, firstValue);
@@ -79,7 +79,7 @@ namespace Naos.Protocol.SqlServer.Test
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my2.Id}, Field={my2.Field}"));
             my2.Id.MustForTest().BeEqualTo(key);
 
-            stream.GetStreamWritingProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.GetStreamManagementProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
 
         [Fact]
@@ -102,14 +102,14 @@ namespace Naos.Protocol.SqlServer.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.GetStreamWritingProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Overwrite));
+            stream.GetStreamManagementProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Overwrite));
 
             var nextLong = stream.GetStreamWritingProtocols().Execute(new GetNextUniqueLongOp());
             nextLong.MustForTest().BeEqualTo(1L);
             var nextNextLong = stream.GetStreamWritingProtocols().Execute(new GetNextUniqueLongOp());
             nextNextLong.MustForTest().BeEqualTo(2L);
 
-            stream.GetStreamWritingProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.GetStreamManagementProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
     }
 

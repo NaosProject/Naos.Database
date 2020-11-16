@@ -21,7 +21,7 @@ namespace Naos.Database.Protocol.FileSystem
     /// </summary>
     /// <seealso cref="ReadWriteStreamBase" />
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class FileReadWriteStream : ReadWriteStreamBase
+    public partial class FileReadWriteStream : ReadWriteStreamBase, IStreamManagementProtocolFactory
     {
         private readonly object fileLock = new object();
 
@@ -109,5 +109,8 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>() => new FileStreamReadWriteProtocols<TId, TObject>(this);
+
+        /// <inheritdoc />
+        public IStreamManagementProtocols GetStreamManagementProtocols() => new FileStreamReadWriteProtocols(this);
     }
 }

@@ -174,6 +174,9 @@
       <DependentUpon>GetOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
+    <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
@@ -211,6 +214,8 @@
     </Compile>
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
+    <Compile Include="Stream\Interfaces\IStreamManagementProtocols.cs" />
+    <Compile Include="Stream\Interfaces\IStreamManagementProtocolFactory.cs" />
     <Compile Include="Stream\Interfaces\StreamExtensions.cs" />
     <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
     <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />

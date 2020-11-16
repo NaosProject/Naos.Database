@@ -12,8 +12,6 @@ namespace Naos.Database.Domain
     /// Interface to protocol the basic stream data operations without a known identifier.
     /// </summary>
     public interface IStreamWriteProtocols :
-        ISyncAndAsyncVoidProtocol<CreateStreamOp>,
-        ISyncAndAsyncVoidProtocol<DeleteStreamOp>,
         ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>
     {
     }

@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// A null object to be used as the id of an object in a <see cref="IReadWriteStream"/> that does not have an actual identifier.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class NullReadWriteStream : IReadWriteStream, IModelViaCodeGen
+    public partial class NullReadWriteStream : IReadWriteStream, IStreamManagementProtocolFactory, IModelViaCodeGen
     {
         /// <inheritdoc />
         public string Name => nameof(NullReadWriteStream);
@@ -58,6 +58,12 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IStreamManagementProtocols GetStreamManagementProtocols()
         {
             throw new NotImplementedException();
         }

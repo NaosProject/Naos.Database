@@ -211,6 +211,7 @@
     </Compile>
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
+    <Compile Include="Stream\Interfaces\StreamExtensions.cs" />
     <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
     <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />
     <Compile Include="Stream\Interfaces\IStreamReadProtocols.cs" />

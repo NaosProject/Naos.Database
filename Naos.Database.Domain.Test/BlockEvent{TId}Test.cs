@@ -29,6 +29,79 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static BlockEventTIdTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<BlockEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<BlockEvent<Version>>();
+
+                                                   var result = new BlockEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       null,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<BlockEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<BlockEvent<Version>>();
+
+                                                   var result = new BlockEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       string.Empty,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                                   "white space",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<BlockEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<BlockEvent<Version>>();
+
+                                                   var result = new BlockEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       Invariant($"  {Environment.NewLine}  "),
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                                   "white space",
+                                                               },
+                        });
         }
     }
 }

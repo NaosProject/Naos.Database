@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullStream.cs" company="Naos Project">
+// <copyright file="NullReadWriteStream.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// A null object to be used as the id of an object in a <see cref="IReadWriteStream"/> that does not have an actual identifier.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class NullReadWriteStream : IReadWriteStream
+    public partial class NullReadWriteStream : IReadWriteStream, IModelViaCodeGen
     {
         /// <inheritdoc />
         public string Name => nameof(NullReadWriteStream);

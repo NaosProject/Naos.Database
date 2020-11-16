@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -31,7 +32,8 @@ namespace Naos.Database.Domain
             IReadOnlyDictionary<string, string> tags = null)
             : base(id, timestampUtc)
         {
-            this.Details = details ?? throw new ArgumentNullException(nameof(details));
+            details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+            this.Details = details;
             this.Tags = tags;
         }
 

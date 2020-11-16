@@ -29,6 +29,55 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static PruningEventTIdTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'pruner' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<PruningEvent<Version>>();
+
+                                                   var result = new PruningEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       null,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "pruner",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'pruner' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<PruningEvent<Version>>();
+
+                                                   var result = new PruningEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       Invariant($"  {Environment.NewLine}  "),
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "pruner",
+                                                                   "white space",
+                                                               },
+                        });
         }
     }
 }

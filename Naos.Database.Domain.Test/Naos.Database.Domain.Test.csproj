@@ -318,9 +318,17 @@
     <Compile Include="NullDatabaseLocatorTest.designer.cs">
       <DependentUpon>NullDatabaseLocatorTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="NullReadWriteStreamTest.cs" />
+    <Compile Include="NullReadWriteStreamTest.designer.cs">
+      <DependentUpon>NullReadWriteStreamTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="NullStreamIdentifierTest.cs" />
     <Compile Include="NullStreamIdentifierTest.designer.cs">
       <DependentUpon>NullStreamIdentifierTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NullStreamRepresentationTest.cs" />
+    <Compile Include="NullStreamRepresentationTest.designer.cs">
+      <DependentUpon>NullStreamRepresentationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

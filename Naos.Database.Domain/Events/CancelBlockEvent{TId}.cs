@@ -33,7 +33,6 @@ namespace Naos.Database.Domain
             : base(id, timestampUtc)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
-
             this.Details = details;
             this.Tags = tags;
         }

@@ -29,6 +29,55 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static CancelBlockEventTIdTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CancelBlockEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CancelBlockEvent<Version>>();
+
+                                                   var result = new CancelBlockEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       null,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CancelBlockEvent<Version>>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CancelBlockEvent<Version>>();
+
+                                                   var result = new CancelBlockEvent<Version>(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       Invariant($"  {Environment.NewLine}  "),
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                                   "white space",
+                                                               },
+                        });
         }
     }
 }

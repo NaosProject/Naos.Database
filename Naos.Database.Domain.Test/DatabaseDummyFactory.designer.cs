@@ -152,6 +152,15 @@ namespace Naos.Database.Domain.Test
                 () => new NullDatabaseLocator());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullReadWriteStream());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullStreamIdentifier());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullStreamRepresentation());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord(
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata>(),
@@ -171,9 +180,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata>(),
                                  A.Dummy<Version>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new NullStreamIdentifier());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FileStreamRepresentation(

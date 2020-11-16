@@ -35,7 +35,7 @@ namespace Naos.Database.Domain.Test
                     () =>
                         new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
                         {
-                            Name = "constructor should throw ArgumentNullException when parameter 'pruner' is null scenario",
+                            Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<PruningEvent<Version>>();
@@ -51,14 +51,14 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionType = typeof(ArgumentNullException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "pruner",
+                                                                   "details",
                                                                },
                         })
                .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
                         {
-                            Name = "constructor should throw ArgumentException when parameter 'pruner' is white space scenario",
+                            Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<PruningEvent<Version>>();
@@ -74,7 +74,7 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionType = typeof(ArgumentException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "pruner",
+                                                                   "details",
                                                                    "white space",
                                                                },
                         });

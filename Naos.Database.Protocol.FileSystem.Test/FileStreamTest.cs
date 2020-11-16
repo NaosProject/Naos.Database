@@ -39,7 +39,7 @@ namespace Naos.Protocol.SqlServer.Test
         [Fact]
         public void Create_Put_Get_Delete___Given_valid_data___Should_roundtrip_to_file_system()
         {
-            var streamName = "StreamName32";
+            var streamName = "FileStream_ReadWriteTest";
 
             var testingFilePath = Path.GetTempPath();
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
@@ -78,6 +78,36 @@ namespace Naos.Protocol.SqlServer.Test
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
             this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my2.Id}, Field={my2.Field}"));
             my2.Id.MustForTest().BeEqualTo(key);
+
+            stream.GetStreamWritingProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
+        public void GetNextUniqueLongOp___Given_valid_data___Should_execute_and_persist_to_file_system()
+        {
+            var streamName = "FileStreamTest_GetNextUniqueLong";
+
+            var testingFilePath = Path.GetTempPath();
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(SerializationKind.Json);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.GetStreamWritingProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Overwrite));
+
+            var nextLong = stream.GetStreamWritingProtocols().Execute(new GetNextUniqueLongOp());
+            nextLong.MustForTest().BeEqualTo(1L);
+            var nextNextLong = stream.GetStreamWritingProtocols().Execute(new GetNextUniqueLongOp());
+            nextNextLong.MustForTest().BeEqualTo(2L);
 
             stream.GetStreamWritingProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }

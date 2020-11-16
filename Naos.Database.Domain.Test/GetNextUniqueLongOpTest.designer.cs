@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetNextUniqueLongOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetNextUniqueLongOp: Context = {systemUnderTest.Context?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetNextUniqueLongOp: Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -60,37 +60,100 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetNextUniqueLongOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'context' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>();
+
                         var result = new GetNextUniqueLongOp(
+                                             null,
+                                             referenceObject.Tags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "details", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetNextUniqueLongOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>();
+
+                        var result = new GetNextUniqueLongOp(
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.Tags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetNextUniqueLongOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>();
+
+                        var result = new GetNextUniqueLongOp(
+                                             referenceObject.Details,
                                              null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "context", },
+                    ExpectedExceptionMessageContains = new[] { "tags", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetNextUniqueLongOp>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'context' is white space scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
                     ConstructionFunc = () =>
                     {
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>();
+
                         var result = new GetNextUniqueLongOp(
-                                             Invariant($"  {Environment.NewLine}  "));
+                                             referenceObject.Details,
+                                             new Dictionary<string, string>());
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "context", "white space", },
+                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetNextUniqueLongOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>();
+
+                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
+
+                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
+
+                        dictionaryWithNullValue[randomKey] = null;
+
+                        var result = new GetNextUniqueLongOp(
+                                             referenceObject.Details,
+                                             dictionaryWithNullValue);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetNextUniqueLongOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetNextUniqueLongOp>()
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetNextUniqueLongOp>
                 {
-                    Name = "Context should return same 'context' parameter passed to constructor when getting",
+                    Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetNextUniqueLongOp>();
@@ -98,31 +161,72 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetNextUniqueLongOp>
                         {
                             SystemUnderTest = new GetNextUniqueLongOp(
-                                                      referenceObject.Context),
-                            ExpectedPropertyValue = referenceObject.Context,
+                                                      referenceObject.Details,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
-                    PropertyName = "Context",
+                    PropertyName = "Details",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetNextUniqueLongOp>
+                {
+                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetNextUniqueLongOp>
+                        {
+                            SystemUnderTest = new GetNextUniqueLongOp(
+                                                      referenceObject.Details,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Tags",
                 });
 
         private static readonly DeepCloneWithTestScenarios<GetNextUniqueLongOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetNextUniqueLongOp>()
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<GetNextUniqueLongOp>
                 {
-                    Name = "DeepCloneWithContext should deep clone object and replace Context with the provided context",
-                    WithPropertyName = "Context",
+                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
+                    WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<GetNextUniqueLongOp>();
 
-                        var referenceObject = A.Dummy<GetNextUniqueLongOp>().ThatIs(_ => !systemUnderTest.Context.IsEqualTo(_.Context));
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
                         var result = new SystemUnderTestDeepCloneWithValue<GetNextUniqueLongOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Context,
+                            DeepCloneWithValue = referenceObject.Details,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetNextUniqueLongOp>
+                {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetNextUniqueLongOp>();
+
+                        var referenceObject = A.Dummy<GetNextUniqueLongOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetNextUniqueLongOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
                         };
 
                         return result;
@@ -140,12 +244,17 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetNextUniqueLongOp[]
                     {
                         new GetNextUniqueLongOp(
-                                ReferenceObjectForEquatableTestScenarios.Context),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetNextUniqueLongOp[]
                     {
                         new GetNextUniqueLongOp(
-                                A.Dummy<GetNextUniqueLongOp>().Whose(_ => !_.Context.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Context)).Context),
+                                A.Dummy<GetNextUniqueLongOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new GetNextUniqueLongOp(
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                A.Dummy<GetNextUniqueLongOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -428,6 +537,15 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
+
+                if (systemUnderTest.Tags == null)
+                {
+                    actual.Tags.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                }
             }
 
             [Fact]
@@ -446,7 +564,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Context" };
+                var propertyNames = new string[] { "Details", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

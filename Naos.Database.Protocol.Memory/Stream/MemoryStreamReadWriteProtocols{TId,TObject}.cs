@@ -49,6 +49,7 @@ namespace Naos.Database.Protocol.Memory
         public TObject Execute(
             GetLatestByIdAndTypeOp<TId, TObject> operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             var serializer = this.readWriteStream.SerializerFactory.BuildSerializer(this.readWriteStream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
             var typeRepresentationToMatch = operation.TypeVersionMatchStrategy == TypeVersionMatchStrategy.Any

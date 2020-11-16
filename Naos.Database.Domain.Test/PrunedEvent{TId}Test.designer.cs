@@ -396,6 +396,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
+                        A.Dummy<UniqueLongIssuedEvent>(),
                         A.Dummy<BlockEvent<Version>>(),
                         A.Dummy<CancelBlockEvent<Version>>(),
                         A.Dummy<PruneRequestedEvent<Version>>(),

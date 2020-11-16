@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class PruningEvent<TId> : IModel<PruningEvent<TId>>
+    public partial class UniqueLongIssuedEvent : IModel<UniqueLongIssuedEvent>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="PruningEvent{TId}"/> are equal.
+        /// Determines whether two objects of type <see cref="UniqueLongIssuedEvent"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(PruningEvent<TId> left, PruningEvent<TId> right)
+        public static bool operator ==(UniqueLongIssuedEvent left, UniqueLongIssuedEvent right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="PruningEvent{TId}"/> are not equal.
+        /// Determines whether two objects of type <see cref="UniqueLongIssuedEvent"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(PruningEvent<TId> left, PruningEvent<TId> right) => !(left == right);
+        public static bool operator !=(UniqueLongIssuedEvent left, UniqueLongIssuedEvent right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(PruningEvent<TId> other)
+        public bool Equals(UniqueLongIssuedEvent other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -79,7 +79,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as PruningEvent<TId>);
+        public override bool Equals(object obj) => this == (obj as UniqueLongIssuedEvent);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -90,7 +90,7 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new PruningEvent<TId> DeepClone() => (PruningEvent<TId>)this.DeepCloneInternal();
+        public new UniqueLongIssuedEvent DeepClone() => (UniqueLongIssuedEvent)this.DeepCloneInternal();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
@@ -108,9 +108,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override EventBase<TId> DeepCloneWithId(TId id)
+        public override EventBase<long> DeepCloneWithId(long id)
         {
-            var result = new PruningEvent<TId>(
+            var result = new UniqueLongIssuedEvent(
                                  id,
                                  this.TimestampUtc,
                                  this.Details?.DeepClone(),
@@ -135,10 +135,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override EventBase<TId> DeepCloneWithTimestampUtc(DateTime timestampUtc)
+        public override EventBase<long> DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new PruningEvent<TId>(
-                                 DeepCloneGeneric(this.Id),
+            var result = new UniqueLongIssuedEvent(
+                                 this.Id,
                                  timestampUtc,
                                  this.Details?.DeepClone(),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
@@ -150,7 +150,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Details" />.
         /// </summary>
         /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruningEvent{TId}" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="UniqueLongIssuedEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -166,10 +166,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruningEvent<TId> DeepCloneWithDetails(string details)
+        public UniqueLongIssuedEvent DeepCloneWithDetails(string details)
         {
-            var result = new PruningEvent<TId>(
-                                 DeepCloneGeneric(this.Id),
+            var result = new UniqueLongIssuedEvent(
+                                 this.Id,
                                  this.TimestampUtc,
                                  details,
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
@@ -181,7 +181,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Tags" />.
         /// </summary>
         /// <param name="tags">The new <see cref="Tags" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruningEvent{TId}" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="UniqueLongIssuedEvent" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -197,10 +197,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruningEvent<TId> DeepCloneWithTags(IReadOnlyDictionary<string, string> tags)
+        public UniqueLongIssuedEvent DeepCloneWithTags(IReadOnlyDictionary<string, string> tags)
         {
-            var result = new PruningEvent<TId>(
-                                 DeepCloneGeneric(this.Id),
+            var result = new UniqueLongIssuedEvent(
+                                 this.Id,
                                  this.TimestampUtc,
                                  this.Details?.DeepClone(),
                                  tags);
@@ -211,8 +211,8 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         protected override EventBaseBase DeepCloneInternal()
         {
-            var result = new PruningEvent<TId>(
-                                 DeepCloneGeneric(this.Id),
+            var result = new UniqueLongIssuedEvent(
+                                 this.Id,
                                  this.TimestampUtc,
                                  this.Details?.DeepClone(),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
@@ -220,52 +220,11 @@ namespace Naos.Database.Domain
             return result;
         }
 
-        private static TId DeepCloneGeneric(TId value)
-        {
-            object result;
-
-            var type = typeof(TId);
-
-            if (type.IsValueType)
-            {
-                result = value;
-            }
-            else
-            {
-                if (ReferenceEquals(value, null))
-                {
-                    result = default;
-                }
-                else if (value is IDeepCloneable<TId> deepCloneableValue)
-                {
-                    result = deepCloneableValue.DeepClone();
-                }
-                else if (value is string valueAsString)
-                {
-                    result = valueAsString.DeepClone();
-                }
-                else if (value is global::System.Version valueAsVersion)
-                {
-                    result = valueAsVersion.DeepClone();
-                }
-                else if (value is global::System.Uri valueAsUri)
-                {
-                    result = valueAsUri.DeepClone();
-                }
-                else
-                {
-                    throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
-                }
-            }
-
-            return (TId)result;
-        }
-
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.UniqueLongIssuedEvent: Id = {this.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}.");
 
             return result;
         }

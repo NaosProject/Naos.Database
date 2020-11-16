@@ -39,6 +39,13 @@ namespace Naos.Database.Domain.Test
         public DefaultDatabaseDummyFactory()
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new UniqueLongIssuedEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new BlockEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>(),
@@ -85,7 +92,8 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetNextUniqueLongOp(
-                                 A.Dummy<string>()));
+                                 A.Dummy<string>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestByIdAndTypeOp<Version, Version>(

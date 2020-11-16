@@ -35,56 +35,37 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class PruneRequestedEventTIdTest
+    public static partial class UniqueLongIssuedEventTest
     {
-        private static readonly StringRepresentationTestScenarios<PruneRequestedEvent<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<PruneRequestedEvent<Version>>()
+        private static readonly StringRepresentationTestScenarios<UniqueLongIssuedEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<UniqueLongIssuedEvent>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<PruneRequestedEvent<Version>>
+                new StringRepresentationTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                        var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<UniqueLongIssuedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneRequestedEvent<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.UniqueLongIssuedEvent: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<PruneRequestedEvent<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<PruneRequestedEvent<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<UniqueLongIssuedEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<UniqueLongIssuedEvent>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestedEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
-
-                        var result = new PruneRequestedEvent<Version>(
-                                             null,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Details,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "id", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new PruneRequestedEvent<Version>(
+                        var result = new UniqueLongIssuedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
                                              null,
@@ -96,14 +77,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new PruneRequestedEvent<Version>(
+                        var result = new UniqueLongIssuedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
                                              Invariant($"  {Environment.NewLine}  "),
@@ -115,14 +96,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new PruneRequestedEvent<Version>(
+                        var result = new UniqueLongIssuedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
                                              referenceObject.Details,
@@ -134,14 +115,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new PruneRequestedEvent<Version>(
+                        var result = new UniqueLongIssuedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
                                              referenceObject.Details,
@@ -153,12 +134,12 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
                         var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
 
@@ -166,7 +147,7 @@ namespace Naos.Database.Domain.Test
 
                         dictionaryWithNullValue[randomKey] = null;
 
-                        var result = new PruneRequestedEvent<Version>(
+                        var result = new UniqueLongIssuedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
                                              referenceObject.Details,
@@ -178,18 +159,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<PruneRequestedEvent<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PruneRequestedEvent<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<UniqueLongIssuedEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<UniqueLongIssuedEvent>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorPropertyAssignmentTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "Id should return same 'id' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<UniqueLongIssuedEvent>
                         {
-                            SystemUnderTest = new PruneRequestedEvent<Version>(
+                            SystemUnderTest = new UniqueLongIssuedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
                                                       referenceObject.Details,
@@ -202,16 +183,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Id",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorPropertyAssignmentTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<UniqueLongIssuedEvent>
                         {
-                            SystemUnderTest = new PruneRequestedEvent<Version>(
+                            SystemUnderTest = new UniqueLongIssuedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
                                                       referenceObject.Details,
@@ -224,16 +205,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TimestampUtc",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorPropertyAssignmentTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<UniqueLongIssuedEvent>
                         {
-                            SystemUnderTest = new PruneRequestedEvent<Version>(
+                            SystemUnderTest = new UniqueLongIssuedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
                                                       referenceObject.Details,
@@ -246,16 +227,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Details",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneRequestedEvent<Version>>
+                new ConstructorPropertyAssignmentTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "Tags should return same 'tags' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>();
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<UniqueLongIssuedEvent>
                         {
-                            SystemUnderTest = new PruneRequestedEvent<Version>(
+                            SystemUnderTest = new UniqueLongIssuedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
                                                       referenceObject.Details,
@@ -268,19 +249,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Tags",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<PruneRequestedEvent<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PruneRequestedEvent<Version>>()
+        private static readonly DeepCloneWithTestScenarios<UniqueLongIssuedEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<UniqueLongIssuedEvent>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneRequestedEvent<Version>>
+                new DeepCloneWithTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
                     WithPropertyName = "Id",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                        var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<UniqueLongIssuedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Id,
@@ -290,17 +271,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneRequestedEvent<Version>>
+                new DeepCloneWithTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                        var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<UniqueLongIssuedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -310,17 +291,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneRequestedEvent<Version>>
+                new DeepCloneWithTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                        var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<UniqueLongIssuedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
@@ -330,17 +311,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneRequestedEvent<Version>>
+                new DeepCloneWithTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
                     WithPropertyName = "Tags",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                        var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
-                        var referenceObject = A.Dummy<PruneRequestedEvent<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+                        var referenceObject = A.Dummy<UniqueLongIssuedEvent>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestedEvent<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<UniqueLongIssuedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Tags,
@@ -350,44 +331,44 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly PruneRequestedEvent<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<PruneRequestedEvent<Version>>();
+        private static readonly UniqueLongIssuedEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<UniqueLongIssuedEvent>();
 
-        private static readonly EquatableTestScenarios<PruneRequestedEvent<Version>> EquatableTestScenarios = new EquatableTestScenarios<PruneRequestedEvent<Version>>()
+        private static readonly EquatableTestScenarios<UniqueLongIssuedEvent> EquatableTestScenarios = new EquatableTestScenarios<UniqueLongIssuedEvent>()
             .AddScenario(() =>
-                new EquatableTestScenario<PruneRequestedEvent<Version>>
+                new EquatableTestScenario<UniqueLongIssuedEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PruneRequestedEvent<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new UniqueLongIssuedEvent[]
                     {
-                        new PruneRequestedEvent<Version>(
+                        new UniqueLongIssuedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new PruneRequestedEvent<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new UniqueLongIssuedEvent[]
                     {
-                        new PruneRequestedEvent<Version>(
-                                A.Dummy<PruneRequestedEvent<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
+                        new UniqueLongIssuedEvent(
+                                A.Dummy<UniqueLongIssuedEvent>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
-                        new PruneRequestedEvent<Version>(
+                        new UniqueLongIssuedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<PruneRequestedEvent<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
+                                A.Dummy<UniqueLongIssuedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
-                        new PruneRequestedEvent<Version>(
+                        new UniqueLongIssuedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<PruneRequestedEvent<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                A.Dummy<UniqueLongIssuedEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
-                        new PruneRequestedEvent<Version>(
+                        new UniqueLongIssuedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<PruneRequestedEvent<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
+                                A.Dummy<UniqueLongIssuedEvent>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -396,10 +377,10 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<UniqueLongIssuedEvent>(),
                         A.Dummy<BlockEvent<Version>>(),
                         A.Dummy<CancelBlockEvent<Version>>(),
                         A.Dummy<PrunedEvent<Version>>(),
+                        A.Dummy<PruneRequestedEvent<Version>>(),
                         A.Dummy<PruningEvent<Version>>(),
                     },
                 });
@@ -422,12 +403,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PruneRequestedEvent___Should_implement_IModel_of_PruneRequestedEvent___When_reflecting()
+            public static void UniqueLongIssuedEvent___Should_implement_IModel_of_UniqueLongIssuedEvent___When_reflecting()
             {
                 // Arrange
-                var type = typeof(PruneRequestedEvent<Version>);
+                var type = typeof(UniqueLongIssuedEvent);
 
-                var expectedModelMethods = typeof(IModel<PruneRequestedEvent<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<UniqueLongIssuedEvent>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -437,7 +418,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<PruneRequestedEvent<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<UniqueLongIssuedEvent>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -455,10 +436,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PruneRequestedEvent___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void UniqueLongIssuedEvent___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(PruneRequestedEvent<Version>);
+                var type = typeof(UniqueLongIssuedEvent);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -631,10 +612,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
                 // Act
-                var actual = (PruneRequestedEvent<Version>)systemUnderTest.Clone();
+                var actual = (UniqueLongIssuedEvent)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -658,7 +639,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PruneRequestedEvent<Version>>();
+                var systemUnderTest = A.Dummy<UniqueLongIssuedEvent>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -666,15 +647,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.Id == null)
-                {
-                    actual.Id.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Id.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Id);
-                }
 
                 if (systemUnderTest.Tags == null)
                 {
@@ -719,12 +691,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (PruneRequestedEvent<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (UniqueLongIssuedEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(PruneRequestedEvent<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(UniqueLongIssuedEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -792,7 +764,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestedEvent<Version>>();
+                var expected = A.Dummy<UniqueLongIssuedEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -821,7 +793,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestedEvent<Version>>();
+                var expected = A.Dummy<UniqueLongIssuedEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -850,7 +822,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestedEvent<Version>>();
+                var expected = A.Dummy<UniqueLongIssuedEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -879,7 +851,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestedEvent<Version>>();
+                var expected = A.Dummy<UniqueLongIssuedEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -913,8 +885,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PruneRequestedEvent<Version> systemUnderTest1 = null;
-                PruneRequestedEvent<Version> systemUnderTest2 = null;
+                UniqueLongIssuedEvent systemUnderTest1 = null;
+                UniqueLongIssuedEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -944,7 +916,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PruneRequestedEvent<Version> systemUnderTest = null;
+                    UniqueLongIssuedEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1093,8 +1065,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PruneRequestedEvent<Version> systemUnderTest1 = null;
-                PruneRequestedEvent<Version> systemUnderTest2 = null;
+                UniqueLongIssuedEvent systemUnderTest1 = null;
+                UniqueLongIssuedEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1124,7 +1096,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PruneRequestedEvent<Version> systemUnderTest = null;
+                    UniqueLongIssuedEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1420,10 +1392,10 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    EventBase<Version> systemUnderTest = null;
+                    EventBase<long> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((EventBase<Version>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((EventBase<long>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1451,7 +1423,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((EventBase<Version>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((EventBase<long>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1479,7 +1451,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<Version>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<long>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1507,7 +1479,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<Version>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<long>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1535,7 +1507,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<Version>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<long>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1556,14 +1528,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestedEvent___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_UniqueLongIssuedEvent___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PruneRequestedEvent<Version> systemUnderTest = null;
+                    UniqueLongIssuedEvent systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1587,7 +1559,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestedEvent___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_UniqueLongIssuedEvent___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1615,7 +1587,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestedEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_UniqueLongIssuedEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1643,7 +1615,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestedEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_UniqueLongIssuedEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1671,7 +1643,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestedEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_UniqueLongIssuedEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

@@ -128,6 +128,7 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="Events\UniqueLongIssuedEvent.cs" />
     <Compile Include="Events\BlockEvent{TId}.cs" />
     <Compile Include="Events\BlockEvent{TId}.designer.cs">
       <DependentUpon>BlockEvent{TId}.cs</DependentUpon>
@@ -147,6 +148,9 @@
     <Compile Include="Events\PruningEvent{TId}.cs" />
     <Compile Include="Events\PruningEvent{TId}.designer.cs">
       <DependentUpon>PruningEvent{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\UniqueLongIssuedEvent.designer.cs">
+      <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Legacy\IConnectionDefinition.cs" />
     <Compile Include="Operations\CreateStreamOp.designer.cs">

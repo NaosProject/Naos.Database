@@ -14,6 +14,7 @@ namespace Naos.Database.Protocol.Memory
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using static System.FormattableString;
 
@@ -123,6 +124,7 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             CreateStreamOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             lock (this.streamLock)
             {
                 if (operation == null)
@@ -171,6 +173,7 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             DeleteStreamOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             lock (this.streamLock)
             {
                 if (operation == null)
@@ -254,6 +257,7 @@ namespace Naos.Database.Protocol.Memory
         public long Execute(
             GetNextUniqueLongOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             var result = Interlocked.Increment(ref this.uniqueLongForExternalProtocol);
             return result;
         }

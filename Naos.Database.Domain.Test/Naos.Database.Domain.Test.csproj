@@ -390,6 +390,10 @@
     <Compile Include="TypeRepresentationWithAndWithoutVersionTest.designer.cs">
       <DependentUpon>TypeRepresentationWithAndWithoutVersionTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="UniqueLongIssuedEventTest.cs" />
+    <Compile Include="UniqueLongIssuedEventTest.designer.cs">
+      <DependentUpon>UniqueLongIssuedEventTest.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />

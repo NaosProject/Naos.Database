@@ -8,8 +8,10 @@ namespace Naos.Database.Protocol.FileSystem
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
@@ -28,7 +30,10 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamReadProtocols,
           IStreamWriteProtocols
     {
+        private const string NextUniqueLongTrackingFileName = "_NextUniqueLongTracking.nfo";
+        private readonly object nextUniqueLongLock = new object();
         private readonly FileReadWriteStream stream;
+        private readonly ISerializer serializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols"/> class.
@@ -40,12 +45,15 @@ namespace Naos.Database.Protocol.FileSystem
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
+            this.serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
         }
 
         /// <inheritdoc />
         public void Execute(
             CreateStreamOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
                                         ?? throw new ArgumentException(FormattableString.Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
 
@@ -58,8 +66,8 @@ namespace Naos.Database.Protocol.FileSystem
                     switch (operation.ExistingStreamEncounteredStrategy)
                     {
                         case ExistingStreamEncounteredStrategy.Overwrite:
-                            Directory.Delete(directoryPath, true);
-                            Directory.CreateDirectory(directoryPath);
+                            this.DeleteDirectoryAndConfirm(directoryPath, true);
+                            this.CreateDirectoryAndConfirm(directoryPath);
                             break;
                         case ExistingStreamEncounteredStrategy.Skip:
                             /* no-op */
@@ -72,7 +80,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
                 else
                 {
-                    Directory.CreateDirectory(directoryPath);
+                    this.CreateDirectoryAndConfirm(directoryPath);
                 }
             }
         }
@@ -89,6 +97,7 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             DeleteStreamOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
                                         ?? throw new ArgumentException(Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
 
@@ -127,8 +136,49 @@ namespace Naos.Database.Protocol.FileSystem
         public long Execute(
             GetNextUniqueLongOp operation)
         {
-            // lock unique long directory, get max number, and add file with new max number
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var resourceLocator = this.stream.ResourceLocatorProtocols.Execute(new GetResourceLocatorForUniqueIdentifierOp());
+            var fileLocator = resourceLocator as FileSystemDatabaseLocator
+                           ?? throw new InvalidOperationException(
+                                  Invariant(
+                                      $"Resource locator was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{resourceLocator?.GetType()?.ToStringReadable() ?? "<null>"}'."));
+            var rootPath = Path.Combine(fileLocator.RootFolderPath, this.stream.Name);
+            var trackingFilePath = Path.Combine(rootPath, NextUniqueLongTrackingFileName);
+
+            long nextLong;
+
+            lock (this.nextUniqueLongLock)
+            {
+                // open the file in locking mode to restrict a single thread changing the list of unique longs index at a time.
+                using (var fileStream = new FileStream(
+                    trackingFilePath,
+                    FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite,
+                    FileShare.None))
+                {
+                    var reader = new StreamReader(fileStream);
+                    var currentSerializedListText = reader.ReadToEnd();
+                    var currentList = !string.IsNullOrWhiteSpace(currentSerializedListText)
+                        ? this.serializer.Deserialize<IList<UniqueLongIssuedEvent>>(currentSerializedListText)
+                        : new List<UniqueLongIssuedEvent>();
+
+                    nextLong = currentList.Any()
+                        ? currentList.Max(_ => _.Id) + 1
+                        : 1;
+
+                    currentList.Add(new UniqueLongIssuedEvent(nextLong, DateTime.UtcNow, operation.Details, operation.Tags));
+                    var updatedSerializedListText = this.serializer.SerializeToString(currentList);
+
+                    fileStream.Position = 0;
+                    var writer = new StreamWriter(fileStream);
+                    writer.Write(updatedSerializedListText);
+
+                    // necessary to flush buffer.
+                    writer.Close();
+                }
+            }
+
+            return nextLong;
         }
 
         /// <inheritdoc />
@@ -138,6 +188,45 @@ namespace Naos.Database.Protocol.FileSystem
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
             return result;
+        }
+
+        private void CreateDirectoryAndConfirm(
+            string directoryPath)
+        {
+            Directory.CreateDirectory(directoryPath);
+            var timeoutTimeSpan = TimeSpan.FromSeconds(1);
+            var timeout = DateTime.UtcNow.Add(timeoutTimeSpan);
+            var directoryExists = false;
+            while (!directoryExists && DateTime.UtcNow < timeout)
+            {
+                directoryExists = Directory.Exists(directoryPath);
+                Thread.Sleep(TimeSpan.FromMilliseconds(10));
+            }
+
+            if (!directoryExists)
+            {
+                throw new InvalidOperationException(Invariant($"Directory '{directoryPath}' was created but not found on disk after checking for '{timeoutTimeSpan.TotalSeconds}' seconds."));
+            }
+        }
+
+        private void DeleteDirectoryAndConfirm(
+            string directoryPath,
+            bool recursive)
+        {
+            Directory.Delete(directoryPath, recursive);
+            var timeoutTimeSpan = TimeSpan.FromSeconds(1);
+            var timeout = DateTime.UtcNow.Add(timeoutTimeSpan);
+            var directoryExists = true;
+            while (directoryExists && DateTime.UtcNow < timeout)
+            {
+                directoryExists = Directory.Exists(directoryPath);
+                Thread.Sleep(TimeSpan.FromMilliseconds(10));
+            }
+
+            if (directoryExists)
+            {
+                throw new InvalidOperationException(Invariant($"Directory '{directoryPath}' was deleted but remains on disk after checking for '{timeoutTimeSpan.TotalSeconds}' seconds."));
+            }
         }
     }
 }

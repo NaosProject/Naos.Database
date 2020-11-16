@@ -35,10 +35,11 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamReadProtocols<TId, TObject>,
           IStreamWriteProtocols<TId, TObject>
     {
-        private const string RecordIdentifierTrackingFileName = "IdentifierTracking.nfo";
+        private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
         private const string BinaryFileExtension = "bin";
         private const string MetadataFileExtension = "meta";
 
+        private readonly object nextInternalRecordIdentifierLock = new object();
         private readonly ObcDateTimeStringSerializer dateTimeStringSerializer = new ObcDateTimeStringSerializer();
         private readonly FileReadWriteStream stream;
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> resourceLocatorUsingIdProtocols;
@@ -66,6 +67,7 @@ namespace Naos.Database.Protocol.FileSystem
         public TObject Execute(
             GetLatestByIdAndTypeOp<TId, TObject> operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             var stringSerializedId = this.ConvertIdToString(operation.Id);
             var resourceLocator = this.resourceLocatorUsingIdProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var rootPath = this.GetRootPathFromLocator(resourceLocator);
@@ -134,6 +136,7 @@ namespace Naos.Database.Protocol.FileSystem
         public long Execute(
             PutAndReturnInternalRecordIdOp<TId, TObject> operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             var resourceLocator = this.resourceLocatorUsingIdProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var rootPath = this.GetRootPathFromLocator(resourceLocator);
 
@@ -172,25 +175,28 @@ namespace Naos.Database.Protocol.FileSystem
 
             long newId;
 
-            // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
-            using (var fileStream = new FileStream(
-                recordIdentifierTrackingFilePath,
-                FileMode.OpenOrCreate,
-                FileAccess.ReadWrite,
-                FileShare.None))
+            lock (this.nextInternalRecordIdentifierLock)
             {
-                string currentIdString = null;
-                var reader = new StreamReader(fileStream);
-                currentIdString = reader.ReadToEnd();
-                currentIdString = string.IsNullOrWhiteSpace(currentIdString) ? 0.ToString(CultureInfo.InvariantCulture) : currentIdString;
-                var currentId = long.Parse(currentIdString, CultureInfo.InvariantCulture);
-                newId = currentId + 1;
-                fileStream.Position = 0;
-                var writer = new StreamWriter(fileStream);
-                writer.Write(newId.ToString(CultureInfo.InvariantCulture));
+                // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
+                using (var fileStream = new FileStream(
+                    recordIdentifierTrackingFilePath,
+                    FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite,
+                    FileShare.None))
+                {
+                    string currentIdString = null;
+                    var reader = new StreamReader(fileStream);
+                    currentIdString = reader.ReadToEnd();
+                    currentIdString = string.IsNullOrWhiteSpace(currentIdString) ? 0.ToString(CultureInfo.InvariantCulture) : currentIdString;
+                    var currentId = long.Parse(currentIdString, CultureInfo.InvariantCulture);
+                    newId = currentId + 1;
+                    fileStream.Position = 0;
+                    var writer = new StreamWriter(fileStream);
+                    writer.Write(newId.ToString(CultureInfo.InvariantCulture));
 
-                // necessary to flush buffer.
-                writer.Close();
+                    // necessary to flush buffer.
+                    writer.Close();
+                }
             }
 
             var filePathIdentifier = stringSerializedId.EncodeForFilePath();

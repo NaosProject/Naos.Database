@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruningEvent<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruningEvent<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Pruner = {systemUnderTest.Pruner?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruningEvent<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,7 +68,7 @@ namespace Naos.Database.Domain.Test
                         var result = new PruningEvent<Version>(
                                              null,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Pruner,
+                                             referenceObject.Details,
                                              referenceObject.Tags);
 
                         return result;
@@ -79,7 +79,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'pruner' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruningEvent<Version>>();
@@ -93,12 +93,12 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "pruner", },
+                    ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'pruner' is white space scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruningEvent<Version>>();
@@ -112,7 +112,7 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "pruner", "white space", },
+                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<PruningEvent<Version>>
@@ -125,7 +125,7 @@ namespace Naos.Database.Domain.Test
                         var result = new PruningEvent<Version>(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Pruner,
+                                             referenceObject.Details,
                                              null);
 
                         return result;
@@ -144,7 +144,7 @@ namespace Naos.Database.Domain.Test
                         var result = new PruningEvent<Version>(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Pruner,
+                                             referenceObject.Details,
                                              new Dictionary<string, string>());
 
                         return result;
@@ -169,7 +169,7 @@ namespace Naos.Database.Domain.Test
                         var result = new PruningEvent<Version>(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Pruner,
+                                             referenceObject.Details,
                                              dictionaryWithNullValue);
 
                         return result;
@@ -192,7 +192,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new PruningEvent<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Pruner,
+                                                      referenceObject.Details,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
@@ -214,7 +214,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new PruningEvent<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Pruner,
+                                                      referenceObject.Details,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
@@ -226,7 +226,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruningEvent<Version>>
                 {
-                    Name = "Pruner should return same 'pruner' parameter passed to constructor when getting",
+                    Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruningEvent<Version>>();
@@ -236,14 +236,14 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new PruningEvent<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Pruner,
+                                                      referenceObject.Details,
                                                       referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Pruner,
+                            ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
-                    PropertyName = "Pruner",
+                    PropertyName = "Details",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruningEvent<Version>>
@@ -258,7 +258,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new PruningEvent<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Pruner,
+                                                      referenceObject.Details,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
@@ -312,18 +312,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<PruningEvent<Version>>
                 {
-                    Name = "DeepCloneWithPruner should deep clone object and replace Pruner with the provided pruner",
-                    WithPropertyName = "Pruner",
+                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
+                    WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<PruningEvent<Version>>();
 
-                        var referenceObject = A.Dummy<PruningEvent<Version>>().ThatIs(_ => !systemUnderTest.Pruner.IsEqualTo(_.Pruner));
+                        var referenceObject = A.Dummy<PruningEvent<Version>>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
                         var result = new SystemUnderTestDeepCloneWithValue<PruningEvent<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Pruner,
+                            DeepCloneWithValue = referenceObject.Details,
                         };
 
                         return result;
@@ -363,7 +363,7 @@ namespace Naos.Database.Domain.Test
                         new PruningEvent<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Pruner,
+                                ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PruningEvent<Version>[]
@@ -371,22 +371,22 @@ namespace Naos.Database.Domain.Test
                         new PruningEvent<Version>(
                                 A.Dummy<PruningEvent<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Pruner,
+                                ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new PruningEvent<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<PruningEvent<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Pruner,
+                                ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new PruningEvent<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<PruningEvent<Version>>().Whose(_ => !_.Pruner.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Pruner)).Pruner,
+                                A.Dummy<PruningEvent<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new PruningEvent<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Pruner,
+                                ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<PruningEvent<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -396,6 +396,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
+                        A.Dummy<UniqueLongIssuedEvent>(),
                         A.Dummy<BlockEvent<Version>>(),
                         A.Dummy<CancelBlockEvent<Version>>(),
                         A.Dummy<PrunedEvent<Version>>(),
@@ -701,7 +702,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "TimestampUtc", "Pruner", "Tags" };
+                var propertyNames = new string[] { "Id", "TimestampUtc", "Details", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -83,7 +83,7 @@ namespace Naos.Protocol.SqlServer.Test
         }
 
         [Fact]
-        public void GetNextUniqueLongOp___Given_valid_data___Should_execute_and_persist_to_file_system()
+        public static void GetNextUniqueLongOp___Given_valid_data___Should_execute_and_persist_to_file_system()
         {
             var streamName = "FileStreamTest_GetNextUniqueLong";
 

@@ -13,6 +13,7 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
     using Naos.Recipes.RunWithRetry;
@@ -66,8 +67,8 @@ namespace Naos.Database.Protocol.FileSystem
                     switch (operation.ExistingStreamEncounteredStrategy)
                     {
                         case ExistingStreamEncounteredStrategy.Overwrite:
-                            this.DeleteDirectoryAndConfirm(directoryPath, true);
-                            this.CreateDirectoryAndConfirm(directoryPath);
+                            DeleteDirectoryAndConfirm(directoryPath, true);
+                            CreateDirectoryAndConfirm(directoryPath);
                             break;
                         case ExistingStreamEncounteredStrategy.Skip:
                             /* no-op */
@@ -80,7 +81,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
                 else
                 {
-                    this.CreateDirectoryAndConfirm(directoryPath);
+                    CreateDirectoryAndConfirm(directoryPath);
                 }
             }
         }
@@ -133,6 +134,8 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
         public long Execute(
             GetNextUniqueLongOp operation)
         {
@@ -190,7 +193,7 @@ namespace Naos.Database.Protocol.FileSystem
             return result;
         }
 
-        private void CreateDirectoryAndConfirm(
+        private static void CreateDirectoryAndConfirm(
             string directoryPath)
         {
             Directory.CreateDirectory(directoryPath);
@@ -209,7 +212,7 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
-        private void DeleteDirectoryAndConfirm(
+        private static void DeleteDirectoryAndConfirm(
             string directoryPath,
             bool recursive)
         {

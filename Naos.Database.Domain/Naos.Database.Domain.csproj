@@ -153,6 +153,7 @@
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Legacy\IConnectionDefinition.cs" />
+    <Compile Include="Operations\TryHandleEventOp{TEvent}.cs" />
     <Compile Include="Operations\CreateStreamOp.designer.cs">
       <DependentUpon>CreateStreamOp.cs</DependentUpon>
     </Compile>
@@ -192,6 +193,9 @@
     <Compile Include="Operations\PutOp{TObject}.cs" />
     <Compile Include="Operations\PutOp{TObject}.designer.cs">
       <DependentUpon>PutOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\TryHandleEventOp{TEvent}.designer.cs">
+      <DependentUpon>TryHandleEventOp{TEvent}.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />

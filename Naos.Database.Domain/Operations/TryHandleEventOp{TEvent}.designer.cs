@@ -15,6 +15,8 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
+    using global::Naos.Protocol.Domain;
+
     using global::OBeautifulCode.Equality.Recipes;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
@@ -22,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class MemoryStreamRepresentation : IModel<MemoryStreamRepresentation>
+    public partial class TryHandleEventOp<TEvent> : IModel<TryHandleEventOp<TEvent>>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="MemoryStreamRepresentation"/> are equal.
+        /// Determines whether two objects of type <see cref="TryHandleEventOp{TEvent}"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(MemoryStreamRepresentation left, MemoryStreamRepresentation right)
+        public static bool operator ==(TryHandleEventOp<TEvent> left, TryHandleEventOp<TEvent> right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -48,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="MemoryStreamRepresentation"/> are not equal.
+        /// Determines whether two objects of type <see cref="TryHandleEventOp{TEvent}"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(MemoryStreamRepresentation left, MemoryStreamRepresentation right) => !(left == right);
+        public static bool operator !=(TryHandleEventOp<TEvent> left, TryHandleEventOp<TEvent> right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(MemoryStreamRepresentation other)
+        public bool Equals(TryHandleEventOp<TEvent> other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -68,54 +70,27 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.Name.IsEqualTo(other.Name, StringComparer.Ordinal)
-                      && this.Id.IsEqualTo(other.Id, StringComparer.Ordinal);
+            var result = this.Details.IsEqualTo(other.Details, StringComparer.Ordinal);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as MemoryStreamRepresentation);
+        public override bool Equals(object obj) => this == (obj as TryHandleEventOp<TEvent>);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.Name)
-            .Hash(this.Id)
+            .Hash(this.Details)
             .Value;
 
         /// <inheritdoc />
-        public new MemoryStreamRepresentation DeepClone() => (MemoryStreamRepresentation)this.DeepCloneInternal();
-
-        /// <inheritdoc />
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override StreamRepresentationBase DeepCloneWithName(string name)
-        {
-            var result = new MemoryStreamRepresentation(
-                                 name,
-                                 this.Id?.DeepClone());
-
-            return result;
-        }
+        public new TryHandleEventOp<TEvent> DeepClone() => (TryHandleEventOp<TEvent>)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Id" />.
+        /// Deep clones this object with a new <see cref="Details" />.
         /// </summary>
-        /// <param name="id">The new <see cref="Id" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="MemoryStreamRepresentation" /> using the specified <paramref name="id" /> for <see cref="Id" /> and a deep clone of every other property.</returns>
+        /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="TryHandleEventOp{TEvent}" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -131,30 +106,69 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public MemoryStreamRepresentation DeepCloneWithId(string id)
+        public TryHandleEventOp<TEvent> DeepCloneWithDetails(string details)
         {
-            var result = new MemoryStreamRepresentation(
-                                 this.Name?.DeepClone(),
-                                 id);
+            var result = new TryHandleEventOp<TEvent>(
+                                 details);
 
             return result;
         }
 
         /// <inheritdoc />
-        protected override StreamRepresentationBase DeepCloneInternal()
+        protected override OperationBase DeepCloneInternal()
         {
-            var result = new MemoryStreamRepresentation(
-                                 this.Name?.DeepClone(),
-                                 this.Id?.DeepClone());
+            var result = new TryHandleEventOp<TEvent>(
+                                 this.Details?.DeepClone());
 
             return result;
+        }
+
+        private static TEvent DeepCloneGeneric(TEvent value)
+        {
+            object result;
+
+            var type = typeof(TEvent);
+
+            if (type.IsValueType)
+            {
+                result = value;
+            }
+            else
+            {
+                if (ReferenceEquals(value, null))
+                {
+                    result = default;
+                }
+                else if (value is IDeepCloneable<TEvent> deepCloneableValue)
+                {
+                    result = deepCloneableValue.DeepClone();
+                }
+                else if (value is string valueAsString)
+                {
+                    result = valueAsString.DeepClone();
+                }
+                else if (value is global::System.Version valueAsVersion)
+                {
+                    result = valueAsVersion.DeepClone();
+                }
+                else if (value is global::System.Uri valueAsUri)
+                {
+                    result = valueAsUri.DeepClone();
+                }
+                else
+                {
+                    throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
+                }
+            }
+
+            return (TEvent)result;
         }
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.MemoryStreamRepresentation: Name = {this.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {this.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

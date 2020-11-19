@@ -9,7 +9,7 @@ namespace Naos.Database.Domain.Legacy
     using Naos.CodeAnalysis.Recipes;
 
     /// <summary>
-    /// Base interface for specific connection definitions.
+    /// This is only for legacy SQL connectivity and will be removed in the future.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = NaosSuppressBecause.CA1040_AvoidEmptyInterfaces_NeedToIdentifyGroupOfTypesAndPreferInterfaceOverAttribute)]
     public interface IConnectionDefinition

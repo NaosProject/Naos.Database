@@ -389,6 +389,10 @@
     <Compile Include="StreamRepresentationTest.designer.cs">
       <DependentUpon>StreamRepresentationTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="TryHandleEventOp{TEvent}Test.cs" />
+    <Compile Include="TryHandleEventOp{TEvent}Test.designer.cs">
+      <DependentUpon>TryHandleEventOp{TEvent}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="TypeRepresentationWithAndWithoutVersionTest.cs" />
     <Compile Include="TypeRepresentationWithAndWithoutVersionTest.designer.cs">
       <DependentUpon>TypeRepresentationWithAndWithoutVersionTest.cs</DependentUpon>

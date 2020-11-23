@@ -9,10 +9,10 @@ namespace Naos.Database.Domain
     using Naos.Protocol.Domain;
 
     /// <summary>
-    /// Attempts to put a <see cref="HandlingEventEvent{TId,TEvent}"/>.
+    /// Attempts to put a <see cref="HandlingEventEvent{TId,TEvent}"/> and return the found <see cref="IEvent"/> to handle.
     /// </summary>
     /// <typeparam name="TEvent">Type of the event.</typeparam>
-    public partial class TryHandleEventOp<TEvent> : ReturningOperationBase<TEvent>
+    public partial class TryHandleEventOp<TEvent> : ReturningOperationBase<EventToHandle<TEvent>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleEventOp{TEvent}"/> class.

@@ -72,7 +72,8 @@ namespace Naos.Database.Domain
 
             var result = this.Id.IsEqualTo(other.Id)
                       && this.ObjectToPut.IsEqualTo(other.ObjectToPut)
-                      && this.Tags.IsEqualTo(other.Tags);
+                      && this.Tags.IsEqualTo(other.Tags)
+                      && this.ExistingRecordEncounteredStrategy.IsEqualTo(other.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -85,6 +86,7 @@ namespace Naos.Database.Domain
             .Hash(this.Id)
             .Hash(this.ObjectToPut)
             .Hash(this.Tags)
+            .Hash(this.ExistingRecordEncounteredStrategy)
             .Value;
 
         /// <inheritdoc />
@@ -115,7 +117,8 @@ namespace Naos.Database.Domain
             var result = new PutAndReturnInternalRecordIdOp<TId, TObject>(
                                  id,
                                  DeepCloneGeneric(this.ObjectToPut),
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 this.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -145,7 +148,8 @@ namespace Naos.Database.Domain
             var result = new PutAndReturnInternalRecordIdOp<TId, TObject>(
                                  DeepCloneGeneric(this.Id),
                                  objectToPut,
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 this.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -175,7 +179,39 @@ namespace Naos.Database.Domain
             var result = new PutAndReturnInternalRecordIdOp<TId, TObject>(
                                  DeepCloneGeneric(this.Id),
                                  DeepCloneGeneric(this.ObjectToPut),
-                                 tags);
+                                 tags,
+                                 this.ExistingRecordEncounteredStrategy);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="ExistingRecordEncounteredStrategy" />.
+        /// </summary>
+        /// <param name="existingRecordEncounteredStrategy">The new <see cref="ExistingRecordEncounteredStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="PutAndReturnInternalRecordIdOp{TId, TObject}" /> using the specified <paramref name="existingRecordEncounteredStrategy" /> for <see cref="ExistingRecordEncounteredStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public PutAndReturnInternalRecordIdOp<TId, TObject> DeepCloneWithExistingRecordEncounteredStrategy(ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy)
+        {
+            var result = new PutAndReturnInternalRecordIdOp<TId, TObject>(
+                                 DeepCloneGeneric(this.Id),
+                                 DeepCloneGeneric(this.ObjectToPut),
+                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 existingRecordEncounteredStrategy);
 
             return result;
         }
@@ -186,7 +222,8 @@ namespace Naos.Database.Domain
             var result = new PutAndReturnInternalRecordIdOp<TId, TObject>(
                                  DeepCloneGeneric(this.Id),
                                  DeepCloneGeneric(this.ObjectToPut),
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 this.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -277,7 +314,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectToPut = {this.ObjectToPut?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectToPut = {this.ObjectToPut?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

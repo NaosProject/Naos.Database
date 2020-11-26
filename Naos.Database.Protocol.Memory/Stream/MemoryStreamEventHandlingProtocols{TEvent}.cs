@@ -45,7 +45,6 @@ namespace Naos.Database.Protocol.Memory
             //      else
             //                   return default
             throw new System.NotImplementedException();
-
         }
 
         /// <inheritdoc />

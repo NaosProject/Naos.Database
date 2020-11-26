@@ -282,6 +282,10 @@
     <Compile Include="DeleteStreamOpTest.designer.cs">
       <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventToHandle{TEvent}Test.cs" />
+    <Compile Include="EventToHandle{TEvent}Test.designer.cs">
+      <DependentUpon>EventToHandle{TEvent}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileStreamRepresentationTest.cs" />
     <Compile Include="FileStreamRepresentationTest.designer.cs">
       <DependentUpon>FileStreamRepresentationTest.cs</DependentUpon>
@@ -390,6 +394,9 @@
       <DependentUpon>StreamRepresentationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="TryHandleEventOp{TEvent}Test.cs" />
+    <Compile Include="TryHandleEventOp{TEvent}Test.designer.cs">
+      <DependentUpon>TryHandleEventOp{TEvent}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="TypeRepresentationWithAndWithoutVersionTest.cs" />
     <Compile Include="TypeRepresentationWithAndWithoutVersionTest.designer.cs">
       <DependentUpon>TypeRepresentationWithAndWithoutVersionTest.cs</DependentUpon>

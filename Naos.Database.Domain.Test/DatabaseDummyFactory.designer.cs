@@ -115,7 +115,8 @@ namespace Naos.Database.Domain.Test
                 () => new PutAndReturnInternalRecordIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutAndReturnInternalRecordIdOp<Version>(
@@ -126,7 +127,8 @@ namespace Naos.Database.Domain.Test
                 () => new PutOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutOp<Version>(
@@ -171,6 +173,10 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullStreamRepresentation());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new EventToHandle<Version>(
+                                 A.Dummy<Version>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord(

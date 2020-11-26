@@ -53,7 +53,6 @@ namespace Naos.Database.Protocol.FileSystem
             //      else
             //                   return default
             throw new NotImplementedException();
-
         }
 
         /// <inheritdoc />

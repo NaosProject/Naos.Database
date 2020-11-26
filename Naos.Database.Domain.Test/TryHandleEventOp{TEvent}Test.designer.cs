@@ -35,340 +35,117 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class PutOpTIdTObjectTest
+    public static partial class TryHandleEventOpTEventTest
     {
-        private static readonly StringRepresentationTestScenarios<PutOp<Version, Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<PutOp<Version, Version>>()
+        private static readonly StringRepresentationTestScenarios<TryHandleEventOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<TryHandleEventOp<Version>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<PutOp<Version, Version>>
+                new StringRepresentationTestScenario<TryHandleEventOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<TryHandleEventOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<PutOp<Version, Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<TryHandleEventOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectToPut = {systemUnderTest.ObjectToPut?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {systemUnderTest.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleEventOp<Version>: Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<PutOp<Version, Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<PutOp<Version, Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<TryHandleEventOp<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<TryHandleEventOp<Version>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutOp<Version, Version>>
+                new ConstructorArgumentValidationTestScenario<TryHandleEventOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new PutOp<Version, Version>(
-                                             null,
-                                             referenceObject.ObjectToPut,
-                                             referenceObject.Tags,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                        var result = new TryHandleEventOp<Version>(
+                                             null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "id", },
+                    ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutOp<Version, Version>>
+                new ConstructorArgumentValidationTestScenario<TryHandleEventOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'objectToPut' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new PutOp<Version, Version>(
-                                             referenceObject.Id,
-                                             null,
-                                             referenceObject.Tags,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "objectToPut", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new PutOp<Version, Version>(
-                                             referenceObject.Id,
-                                             referenceObject.ObjectToPut,
-                                             null,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new PutOp<Version, Version>(
-                                             referenceObject.Id,
-                                             referenceObject.ObjectToPut,
-                                             new Dictionary<string, string>(),
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                        var result = new TryHandleEventOp<Version>(
+                                             Invariant($"  {Environment.NewLine}  "));
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new PutOp<Version, Version>(
-                                             referenceObject.Id,
-                                             referenceObject.ObjectToPut,
-                                             dictionaryWithNullValue,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
+                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<PutOp<Version, Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PutOp<Version, Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<TryHandleEventOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<TryHandleEventOp<Version>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PutOp<Version, Version>>
+                new ConstructorPropertyAssignmentTestScenario<TryHandleEventOp<Version>>
                 {
-                    Name = "Id should return same 'id' parameter passed to constructor when getting",
+                    Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
+                        var referenceObject = A.Dummy<TryHandleEventOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PutOp<Version, Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleEventOp<Version>>
                         {
-                            SystemUnderTest = new PutOp<Version, Version>(
-                                                      referenceObject.Id,
-                                                      referenceObject.ObjectToPut,
-                                                      referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
-                            ExpectedPropertyValue = referenceObject.Id,
+                            SystemUnderTest = new TryHandleEventOp<Version>(
+                                                      referenceObject.Details),
+                            ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
-                    PropertyName = "Id",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "ObjectToPut should return same 'objectToPut' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<PutOp<Version, Version>>
-                        {
-                            SystemUnderTest = new PutOp<Version, Version>(
-                                                      referenceObject.Id,
-                                                      referenceObject.ObjectToPut,
-                                                      referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
-                            ExpectedPropertyValue = referenceObject.ObjectToPut,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "ObjectToPut",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<PutOp<Version, Version>>
-                        {
-                            SystemUnderTest = new PutOp<Version, Version>(
-                                                      referenceObject.Id,
-                                                      referenceObject.ObjectToPut,
-                                                      referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "ExistingRecordEncounteredStrategy should return same 'existingRecordEncounteredStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<PutOp<Version, Version>>
-                        {
-                            SystemUnderTest = new PutOp<Version, Version>(
-                                                      referenceObject.Id,
-                                                      referenceObject.ObjectToPut,
-                                                      referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
-                            ExpectedPropertyValue = referenceObject.ExistingRecordEncounteredStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "ExistingRecordEncounteredStrategy",
+                    PropertyName = "Details",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<PutOp<Version, Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PutOp<Version, Version>>()
+        private static readonly DeepCloneWithTestScenarios<TryHandleEventOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<TryHandleEventOp<Version>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PutOp<Version, Version>>
+                new DeepCloneWithTestScenario<TryHandleEventOp<Version>>
                 {
-                    Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
-                    WithPropertyName = "Id",
+                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
+                    WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<TryHandleEventOp<Version>>();
 
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+                        var referenceObject = A.Dummy<TryHandleEventOp<Version>>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PutOp<Version, Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleEventOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Id,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithObjectToPut should deep clone object and replace ObjectToPut with the provided objectToPut",
-                    WithPropertyName = "ObjectToPut",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>().ThatIs(_ => !systemUnderTest.ObjectToPut.IsEqualTo(_.ObjectToPut));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<PutOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ObjectToPut,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<PutOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<PutOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithExistingRecordEncounteredStrategy should deep clone object and replace ExistingRecordEncounteredStrategy with the provided existingRecordEncounteredStrategy",
-                    WithPropertyName = "ExistingRecordEncounteredStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<PutOp<Version, Version>>().ThatIs(_ => !systemUnderTest.ExistingRecordEncounteredStrategy.IsEqualTo(_.ExistingRecordEncounteredStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<PutOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ExistingRecordEncounteredStrategy,
+                            DeepCloneWithValue = referenceObject.Details,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly PutOp<Version, Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<PutOp<Version, Version>>();
+        private static readonly TryHandleEventOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<TryHandleEventOp<Version>>();
 
-        private static readonly EquatableTestScenarios<PutOp<Version, Version>> EquatableTestScenarios = new EquatableTestScenarios<PutOp<Version, Version>>()
+        private static readonly EquatableTestScenarios<TryHandleEventOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<TryHandleEventOp<Version>>()
             .AddScenario(() =>
-                new EquatableTestScenario<PutOp<Version, Version>>
+                new EquatableTestScenario<TryHandleEventOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PutOp<Version, Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new TryHandleEventOp<Version>[]
                     {
-                        new PutOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.ObjectToPut,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
+                        new TryHandleEventOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.Details),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new PutOp<Version, Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new TryHandleEventOp<Version>[]
                     {
-                        new PutOp<Version, Version>(
-                                A.Dummy<PutOp<Version, Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
-                                ReferenceObjectForEquatableTestScenarios.ObjectToPut,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
-                        new PutOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<PutOp<Version, Version>>().Whose(_ => !_.ObjectToPut.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectToPut)).ObjectToPut,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
-                        new PutOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.ObjectToPut,
-                                A.Dummy<PutOp<Version, Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
-                        new PutOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.ObjectToPut,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<PutOp<Version, Version>>().Whose(_ => !_.ExistingRecordEncounteredStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy)).ExistingRecordEncounteredStrategy),
+                        new TryHandleEventOp<Version>(
+                                A.Dummy<TryHandleEventOp<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -377,7 +154,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<TryHandleEventOp<Version>>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
@@ -386,6 +162,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
+                        A.Dummy<PutOp<Version, Version>>(),
                         A.Dummy<PutOp<Version>>(),
                     },
                 });
@@ -408,12 +185,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PutOp___Should_implement_IModel_of_PutOp___When_reflecting()
+            public static void TryHandleEventOp___Should_implement_IModel_of_TryHandleEventOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(PutOp<Version, Version>);
+                var type = typeof(TryHandleEventOp<Version>);
 
-                var expectedModelMethods = typeof(IModel<PutOp<Version, Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<TryHandleEventOp<Version>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -423,7 +200,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<PutOp<Version, Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<TryHandleEventOp<Version>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -441,10 +218,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PutOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void TryHandleEventOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(PutOp<Version, Version>);
+                var type = typeof(TryHandleEventOp<Version>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -617,10 +394,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
+                var systemUnderTest = A.Dummy<TryHandleEventOp<Version>>();
 
                 // Act
-                var actual = (PutOp<Version, Version>)systemUnderTest.Clone();
+                var actual = (TryHandleEventOp<Version>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -644,7 +421,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PutOp<Version, Version>>();
+                var systemUnderTest = A.Dummy<TryHandleEventOp<Version>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -652,33 +429,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.Id == null)
-                {
-                    actual.Id.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Id.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Id);
-                }
-
-                if (systemUnderTest.ObjectToPut == null)
-                {
-                    actual.ObjectToPut.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.ObjectToPut.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectToPut);
-                }
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
-                }
             }
 
             [Fact]
@@ -697,7 +447,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "ObjectToPut", "Tags", "ExistingRecordEncounteredStrategy" };
+                var propertyNames = new string[] { "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -714,12 +464,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (PutOp<Version, Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (TryHandleEventOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(PutOp<Version, Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(TryHandleEventOp<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -787,7 +537,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version, Version>>();
+                var expected = A.Dummy<TryHandleEventOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -816,7 +566,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version, Version>>();
+                var expected = A.Dummy<TryHandleEventOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -845,7 +595,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version, Version>>();
+                var expected = A.Dummy<TryHandleEventOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -874,7 +624,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PutOp<Version, Version>>();
+                var expected = A.Dummy<TryHandleEventOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -908,8 +658,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PutOp<Version, Version> systemUnderTest1 = null;
-                PutOp<Version, Version> systemUnderTest2 = null;
+                TryHandleEventOp<Version> systemUnderTest1 = null;
+                TryHandleEventOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -939,7 +689,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PutOp<Version, Version> systemUnderTest = null;
+                    TryHandleEventOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1088,8 +838,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PutOp<Version, Version> systemUnderTest1 = null;
-                PutOp<Version, Version> systemUnderTest2 = null;
+                TryHandleEventOp<Version> systemUnderTest1 = null;
+                TryHandleEventOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1119,7 +869,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PutOp<Version, Version> systemUnderTest = null;
+                    TryHandleEventOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1408,17 +1158,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    VoidOperationBase systemUnderTest = null;
+                    ReturningOperationBase<EventToHandle<Version>> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((VoidOperationBase)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<EventToHandle<Version>>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1439,14 +1189,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((VoidOperationBase)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<EventToHandle<Version>>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1467,14 +1217,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<EventToHandle<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1495,14 +1245,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<EventToHandle<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1523,14 +1273,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<EventToHandle<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1551,14 +1301,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_TryHandleEventOp___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PutOp<Version, Version> systemUnderTest = null;
+                    TryHandleEventOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1582,7 +1332,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_TryHandleEventOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1610,7 +1360,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_TryHandleEventOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1638,7 +1388,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_TryHandleEventOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1666,7 +1416,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PutOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_TryHandleEventOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

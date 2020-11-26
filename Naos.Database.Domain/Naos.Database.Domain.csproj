@@ -216,6 +216,9 @@
     <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">
       <DependentUpon>NullDatabaseLocator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\EventToHandle{TEvent}.designer.cs">
+      <DependentUpon>EventToHandle{TEvent}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ExistingRecordEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />

@@ -216,6 +216,7 @@
     <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">
       <DependentUpon>NullDatabaseLocator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ExistingRecordEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
     <Compile Include="Stream\Interfaces\IStreamEventHandlingProtocolFactory.cs" />

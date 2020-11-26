@@ -26,11 +26,17 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier.</param>
         /// <param name="objectToPut">The object to put into a stream.</param>
         /// <param name="tags">Optional tags to put with the record.</param>
-        public PutAndReturnInternalRecordIdOp(TId id, TObject objectToPut, IReadOnlyDictionary<string, string> tags = null)
+        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        public PutAndReturnInternalRecordIdOp(
+            TId id,
+            TObject objectToPut,
+            IReadOnlyDictionary<string, string> tags = null,
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
         {
             this.Id = id;
             this.ObjectToPut = objectToPut;
             this.Tags = tags;
+            this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
         }
 
         /// <summary>
@@ -47,5 +53,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }
+
+        /// <summary>
+        /// Gets the existing record encountered strategy.
+        /// </summary>
+        /// <value>The existing record encountered strategy.</value>
+        public ExistingRecordEncounteredStrategy ExistingRecordEncounteredStrategy { get; private set; }
     }
 }

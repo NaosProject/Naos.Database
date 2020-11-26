@@ -107,6 +107,8 @@
     <Compile Include=".recipes\Spritely.Redo\Using.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stream\FilePathExtensions.cs" />
+    <Compile Include="Stream\FileStreamManagementProtocols.cs" />
+    <Compile Include="Stream\FileStreamEventHandlingProtocols{TEvent}.cs" />
     <Compile Include="Stream\FileStreamReadWriteProtocols.cs" />
     <Compile Include="Stream\FileStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Stream\FileStreamReadWriteProtocols{TId,TObject}.cs" />

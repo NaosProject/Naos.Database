@@ -218,8 +218,10 @@
     </Compile>
     <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
+    <Compile Include="Stream\Interfaces\IStreamEventHandlingProtocolFactory.cs" />
     <Compile Include="Stream\Interfaces\IStreamManagementProtocols.cs" />
     <Compile Include="Stream\Interfaces\IStreamManagementProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\IStreamEventHandlingProtocols{TEvent}.cs" />
     <Compile Include="Stream\Interfaces\StreamExtensions.cs" />
     <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
     <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />
@@ -237,6 +239,7 @@
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.designer.cs">
       <DependentUpon>NullStreamRepresentation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\EventToHandle{TEvent}.cs" />
     <Compile Include="Stream\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>

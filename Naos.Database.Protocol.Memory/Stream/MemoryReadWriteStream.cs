@@ -25,6 +25,7 @@ namespace Naos.Database.Protocol.Memory
     public class MemoryReadWriteStream :
         ReadWriteStreamBase,
         IStreamManagementProtocolFactory,
+        IStreamEventHandlingProtocolFactory,
         IStreamManagementProtocols,
         IStreamReadProtocols,
         IStreamWriteProtocols
@@ -237,7 +238,7 @@ namespace Naos.Database.Protocol.Memory
         /// <inheritdoc />
         public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>()
         {
-            var result = new MemoryStreamProtocols<TObject>(this);
+            var result = new MemoryStreamReadWriteProtocols<TObject>(this);
             return result;
         }
 
@@ -251,7 +252,7 @@ namespace Naos.Database.Protocol.Memory
         /// <inheritdoc />
         public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
         {
-            var result = new MemoryStreamProtocols<TObject>(this);
+            var result = new MemoryStreamReadWriteProtocols<TObject>(this);
             return result;
         }
 
@@ -274,5 +275,10 @@ namespace Naos.Database.Protocol.Memory
 
         /// <inheritdoc />
         public IStreamManagementProtocols GetStreamManagementProtocols() => this;
+
+        /// <inheritdoc />
+        public IStreamEventHandlingProtocols<TEvent> GetStreamEventHandlingProtocols<TEvent>()
+            where TEvent : IEvent
+            => new MemoryStreamEventHandlingProtocols<TEvent>(this);
     }
 }

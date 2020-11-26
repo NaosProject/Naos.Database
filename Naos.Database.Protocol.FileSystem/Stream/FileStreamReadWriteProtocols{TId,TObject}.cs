@@ -7,8 +7,6 @@
 namespace Naos.Database.Protocol.FileSystem
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -16,9 +14,7 @@ namespace Naos.Database.Protocol.FileSystem
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
-    using Naos.Recipes.RunWithRetry;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Enum.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.String.Recipes;
@@ -31,7 +27,7 @@ namespace Naos.Database.Protocol.FileSystem
     /// </summary>
     /// <typeparam name="TId">The type of the identifier.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class FileStreamReadWriteProtocols<TId, TObject>
+    public class FileStreamReadWriteProtocols<TId, TObject>
         : IStreamReadProtocols<TId, TObject>,
           IStreamWriteProtocols<TId, TObject>
     {
@@ -155,7 +151,7 @@ namespace Naos.Database.Protocol.FileSystem
             var stringSerializedMetadata = this.serializer.SerializeToString(streamRecordMetadata);
             byte[] serializedBytes = null;
             string serializedString = null;
-            string fileExtension = null;
+            string fileExtension;
             switch (this.stream.DefaultSerializationFormat)
             {
                 case SerializationFormat.String:
@@ -184,7 +180,7 @@ namespace Naos.Database.Protocol.FileSystem
                     FileAccess.ReadWrite,
                     FileShare.None))
                 {
-                    string currentIdString = null;
+                    string currentIdString;
                     var reader = new StreamReader(fileStream);
                     currentIdString = reader.ReadToEnd();
                     currentIdString = string.IsNullOrWhiteSpace(currentIdString) ? 0.ToString(CultureInfo.InvariantCulture) : currentIdString;
@@ -210,6 +206,8 @@ namespace Naos.Database.Protocol.FileSystem
             if (fileExtension == BinaryFileExtension)
             {
                 serializedBytes.MustForOp(nameof(serializedBytes)).NotBeNull(payloadFilePath);
+
+                // ReSharper disable once AssignNullToNotNullAttribute -- checked above with must
                 File.WriteAllBytes(payloadFilePath, serializedBytes);
             }
             else

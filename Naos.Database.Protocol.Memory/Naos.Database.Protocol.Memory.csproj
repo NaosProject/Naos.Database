@@ -106,6 +106,7 @@
     <Compile Include=".recipes\Spritely.Redo\RetriableFunctionAsync.cs" />
     <Compile Include=".recipes\Spritely.Redo\Using.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
+    <Compile Include="Stream\MemoryStreamEventHandlingProtocols{TEvent}.cs" />
     <Compile Include="Stream\MemoryStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Stream\MemoryStreamReadWriteProtocols{TId,TObject}.cs" />
     <Compile Include="Stream\MemoryReadWriteStream.cs" />

@@ -21,17 +21,17 @@ namespace Naos.Database.Protocol.Memory
     /// <seealso cref="IStreamWriteProtocols{TObject}" />
     /// <seealso cref="IStreamReadProtocols{TId,TObject}" />
     /// <seealso cref="IStreamWriteProtocols{TId,TObject}" />
-    public partial class MemoryStreamProtocols<TObject> :
+    public partial class MemoryStreamReadWriteProtocols<TObject> :
         IStreamReadProtocols<TObject>,
         IStreamWriteProtocols<TObject>
     {
         private readonly MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemoryStreamProtocols{TObject}"/> class.
+        /// Initializes a new instance of the <see cref="MemoryStreamReadWriteProtocols{TObject}"/> class.
         /// </summary>
         /// <param name="readWriteStream">The stream.</param>
-        public MemoryStreamProtocols(
+        public MemoryStreamReadWriteProtocols(
             MemoryReadWriteStream readWriteStream)
         {
             this.delegatedProtocols = new MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);

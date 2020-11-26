@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Attempts to put a <see cref="HandlingEventEvent{TId,TEvent}"/> and return the found <see cref="IEvent"/> to handle.
@@ -21,6 +22,7 @@ namespace Naos.Database.Domain
         public TryHandleEventOp(
             string details)
         {
+            details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
             this.Details = details;
         }
 

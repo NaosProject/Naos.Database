@@ -31,6 +31,7 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamEventHandlingProtocols<TEvent>
         where TEvent : IEvent
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
         private readonly FileReadWriteStream stream;
 
         /// <summary>

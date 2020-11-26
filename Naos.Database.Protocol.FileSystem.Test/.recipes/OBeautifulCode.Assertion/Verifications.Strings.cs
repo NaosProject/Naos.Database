@@ -191,6 +191,10 @@ namespace OBeautifulCode.Assertion.Recipes
 
         public const string NotBeAssignableToTypeExceptionMessageSuffix = "is assignable to the specified type";
 
+        public const string BeValidEmailAddressExceptionMessageSuffix = "is not a valid email address";
+
+        public const string NotBeValidEmailAddressExceptionMessageSuffix = "is a valid email address";
+
         public static readonly string SubjectAndOperationSequencingErrorMessage = Invariant($"There is an issue with sequencing of the provided value and the supported assertion operators: {nameof(WorkflowExtensions.AsArg)}, {nameof(WorkflowExtensions.AsOp)}, {nameof(WorkflowExtensions.AsTest)}, {nameof(WorkflowExtensions.Must)}, {nameof(WorkflowExtensions.MustForArg)}, {nameof(WorkflowExtensions.MustForOp)}, {nameof(WorkflowExtensions.MustForTest)}, {nameof(WorkflowExtensions.And)}, {nameof(WorkflowExtensions.Each)}.");
 
 #pragma warning restore SA1600

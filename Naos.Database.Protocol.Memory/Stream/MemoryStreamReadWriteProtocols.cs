@@ -79,7 +79,9 @@ namespace Naos.Database.Protocol.Memory
         public async Task<long> ExecuteAsync(
             GetNextUniqueLongOp operation)
         {
-            return await this.stream.ExecuteAsync(operation);
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
         }
 
         /// <inheritdoc />

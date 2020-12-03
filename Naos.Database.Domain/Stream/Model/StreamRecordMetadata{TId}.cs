@@ -27,7 +27,8 @@ namespace Naos.Database.Domain
         /// <param name="typeRepresentationOfId">The type representation of the identifier.</param>
         /// <param name="typeRepresentationOfObject">The type representation of the object.</param>
         /// <param name="tags">The tags.</param>
-        /// <param name="timestampUtc">Timestamp of the record in UTC.</param>
+        /// <param name="timestampUtc">The timestamp of the record in UTC.</param>
+        /// <param name="objectTimestampUtc">The object's timestamp in UTC (if applicable).</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StreamRecordMetadata(
             TId id,
@@ -35,7 +36,8 @@ namespace Naos.Database.Domain
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfObject,
             IReadOnlyDictionary<string, string> tags,
-            DateTime timestampUtc)
+            DateTime timestampUtc,
+            DateTime? objectTimestampUtc)
         {
             tags.MustForArg(nameof(tags)).NotBeNull();
             serializerRepresentation.MustForArg(nameof(serializerRepresentation)).NotBeNull();
@@ -53,7 +55,13 @@ namespace Naos.Database.Domain
                 throw new ArgumentException("The timestamp must be in UTC format; it is: " + timestampUtc.Kind, nameof(timestampUtc));
             }
 
+            if (objectTimestampUtc != null && objectTimestampUtc?.Kind != DateTimeKind.Utc)
+            {
+                throw new ArgumentException("The timestamp must be in UTC format; it is: " + timestampUtc.Kind, nameof(timestampUtc));
+            }
+
             this.TimestampUtc = timestampUtc;
+            this.ObjectTimestampUtc = objectTimestampUtc;
         }
 
         /// <summary>
@@ -85,5 +93,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public DateTime TimestampUtc { get; private set; }
+
+        /// <summary>
+        /// Gets the object timestamp in UTC (if applicable).
+        /// </summary>
+        /// <value>The object timestamp in UTC (if applicable).</value>
+        public DateTime? ObjectTimestampUtc { get; private set; }
     }
 }

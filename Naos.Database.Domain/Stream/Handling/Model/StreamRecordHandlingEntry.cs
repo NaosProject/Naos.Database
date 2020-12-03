@@ -26,19 +26,26 @@ namespace Naos.Database.Domain
         /// <param name="typeRepresentationOfEntry">The type representation of entry.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="tags">The tags.</param>
-        /// <param name="timestampUtc">The timestamp UTC.</param>
+        /// <param name="timestampUtc">The timestamp of the record in UTC.</param>
+        /// <param name="objectTimestampUtc">The object's timestamp in UTC (if applicable).</param>
         public StreamRecordHandlingEntry(
             long internalHandlingEntryId,
             string concern,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfEntry,
             DescribedSerialization payload,
             IReadOnlyDictionary<string, string> tags,
-            DateTime timestampUtc)
+            DateTime timestampUtc,
+            DateTime? objectTimestampUtc)
         {
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
             typeRepresentationOfEntry.MustForArg(nameof(typeRepresentationOfEntry)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
             if (timestampUtc.Kind != DateTimeKind.Utc)
+            {
+                throw new ArgumentException("The timestamp must be in UTC format; it is: " + timestampUtc.Kind, nameof(timestampUtc));
+            }
+
+            if (objectTimestampUtc != null && objectTimestampUtc?.Kind != DateTimeKind.Utc)
             {
                 throw new ArgumentException("The timestamp must be in UTC format; it is: " + timestampUtc.Kind, nameof(timestampUtc));
             }
@@ -49,6 +56,7 @@ namespace Naos.Database.Domain
             this.Payload = payload;
             this.Tags = tags ?? new Dictionary<string, string>();
             this.TimestampUtc = timestampUtc;
+            this.ObjectTimestampUtc = objectTimestampUtc;
         }
 
         /// <summary>
@@ -80,5 +88,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public DateTime TimestampUtc { get; private set; }
+
+        /// <summary>
+        /// Gets the object timestamp in UTC (if applicable).
+        /// </summary>
+        /// <value>The object timestamp in UTC (if applicable).</value>
+        public DateTime? ObjectTimestampUtc { get; private set; }
     }
 }

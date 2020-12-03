@@ -27,11 +27,15 @@ namespace Naos.Database.Protocol.Memory
         IStreamManagementProtocolFactory,
         IStreamRecordHandlingProtocolFactory,
         IStreamManagementProtocols,
-        ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>
+        IReturningProtocol<GetNextUniqueLongOp, long>,
+        IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
+        IReturningProtocol<GetHandlingStatusOfRecordSetByIdOp, HandlingStatus>,
+        IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
+        IReturningProtocol<TryHandleRecordOp, StreamRecord>
     {
         private readonly object streamLock = new object();
 
-        private readonly IList<StreamRecord> records = new List<StreamRecord>();
+        private readonly List<StreamRecord> records = new List<StreamRecord>();
         private bool created = false;
         private long uniqueLongForExternalProtocol = 0;
         private long uniqueLongForInMemoryEntries = 0;
@@ -258,18 +262,6 @@ namespace Naos.Database.Protocol.Memory
             return result;
         }
 
-        /// <summary>
-        /// Execute as an asynchronous operation.
-        /// </summary>
-        /// <param name="operation">The operation.</param>
-        /// <returns>System.Int64.</returns>
-        public async Task<long> ExecuteAsync(
-            GetNextUniqueLongOp operation)
-        {
-            var syncResult = this.Execute(operation);
-            return await Task.FromResult(syncResult);
-        }
-
         /// <inheritdoc />
         public IStreamManagementProtocols GetStreamManagementProtocols() => this;
 
@@ -289,26 +281,66 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
-            throw new NotImplementedException();
+            lock (this.streamLock)
+            {
+                var newList = this.records.Where(_ => _.Metadata.TimestampUtc >= operation.MaxInternalRecordDate);
+                this.records.Clear();
+                this.records.AddRange(newList);
+            }
         }
 
         /// <inheritdoc />
-        public Task ExecuteAsync(
+        public async Task ExecuteAsync(
             PruneBeforeInternalRecordDateOp operation)
         {
-            throw new NotImplementedException();
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await...
         }
 
         /// <inheritdoc />
         public void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
+            lock (this.streamLock)
+            {
+                var newList = this.records.Where(_ => _.InternalRecordId >= operation.MaxInternalRecordId);
+                this.records.Clear();
+                this.records.AddRange(newList);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await...
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordHandlingEntry> Execute(
+            GetHandlingHistoryOfRecordOp operation)
+        {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public Task ExecuteAsync(
-            PruneBeforeInternalRecordIdOp operation)
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordSetByIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordSetByTagOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            TryHandleRecordOp operation)
         {
             throw new NotImplementedException();
         }

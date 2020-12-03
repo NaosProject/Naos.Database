@@ -18,17 +18,26 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId, TObject}"/> class.
         /// </summary>
-        /// <param name="recordToHandle">The record to handle.</param>
+        /// <param name="concern">The concern.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         public TryHandleRecordWithIdOp(
-            StreamRecordWithId<TId, TObject> recordToHandle)
+            string concern,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
-            this.RecordToHandle = recordToHandle;
+            this.Concern = concern;
+            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
 
         /// <summary>
-        /// Gets the record to handle.
+        /// Gets the concern.
         /// </summary>
-        /// <value>The record to handle.</value>
-        public StreamRecordWithId<TId, TObject> RecordToHandle { get; private set; }
+        /// <value>The concern.</value>
+        public string Concern { get; private set; }
+
+        /// <summary>
+        /// Gets the type version match strategy.
+        /// </summary>
+        /// <value>The type version match strategy.</value>
+        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
     }
 }

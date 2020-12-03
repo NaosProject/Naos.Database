@@ -17,17 +17,35 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId}"/> class.
         /// </summary>
-        /// <param name="recordToHandle">The record to handle.</param>
+        /// <param name="concern">The concern.</param>
+        /// <param name="objectType">The optional type of the object; default is no filter.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         public TryHandleRecordWithIdOp(
-            StreamRecordWithId<TId> recordToHandle)
+            string concern,
+            TypeRepresentationWithAndWithoutVersion objectType = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
-            this.RecordToHandle = recordToHandle;
+            this.Concern = concern;
+            this.ObjectType = objectType;
+            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
 
         /// <summary>
-        /// Gets the record to handle.
+        /// Gets the concern.
         /// </summary>
-        /// <value>The record to handle.</value>
-        public StreamRecordWithId<TId> RecordToHandle { get; private set; }
+        /// <value>The concern.</value>
+        public string Concern { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the object.
+        /// </summary>
+        /// <value>The type of the object.</value>
+        public TypeRepresentationWithAndWithoutVersion ObjectType { get; private set; }
+
+        /// <summary>
+        /// Gets the type version match strategy.
+        /// </summary>
+        /// <value>The type version match strategy.</value>
+        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
     }
 }

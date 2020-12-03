@@ -9,6 +9,7 @@ namespace Naos.Database.Protocol.Memory
     using System.Threading.Tasks;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Set of protocols to handle <see cref="IEvent"/>'s in a stream.
@@ -29,6 +30,7 @@ namespace Naos.Database.Protocol.Memory
         public MemoryStreamRecordHandlingProtocols(
             MemoryReadWriteStream stream)
         {
+            stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;
         }
 

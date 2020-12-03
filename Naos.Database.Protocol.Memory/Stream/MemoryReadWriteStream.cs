@@ -26,7 +26,8 @@ namespace Naos.Database.Protocol.Memory
         ReadWriteStreamBase,
         IStreamManagementProtocolFactory,
         IStreamRecordHandlingProtocolFactory,
-        IStreamManagementProtocols
+        IStreamManagementProtocols,
+        ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>
     {
         private readonly object streamLock = new object();
 
@@ -108,16 +109,14 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <summary>
-        /// Gets a shallow copy of the list of items at time of calling.
+        /// Runs the locked operation on record list.
         /// </summary>
-        /// <returns>The items at time of calling.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Clone action happening, prefer method.")]
-        public IReadOnlyCollection<StreamRecord> GetAllItems()
+        /// <param name="lockedRecordReader">The locked record reader.</param>
+        public void RunLockedOperationOnRecordList(Action<IReadOnlyList<StreamRecord>> lockedRecordReader)
         {
             lock (this.streamLock)
             {
-                var result = this.records.Select(_ => _).ToList();
-                return result;
+                lockedRecordReader((IReadOnlyList<StreamRecord>)this.records);
             }
         }
 

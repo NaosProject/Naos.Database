@@ -6,9 +6,12 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
+    using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
+    using static System.FormattableString;
 
     /// <summary>
     /// Container to hold two <see cref="TypeRepresentation"/>'s, one with the version and one without.
@@ -48,7 +51,9 @@ namespace Naos.Database.Domain
     /// </summary>
     public static class TypeRepresentationWithAndWithoutVersionExtensions
     {
-        /// <summary>
+        private static VersionlessTypeRepresentationEqualityComparer versionlessComparer = new VersionlessTypeRepresentationEqualityComparer();
+
+            /// <summary>
         /// Converts to a <see cref="TypeRepresentation"/> to a <see cref="TypeRepresentationWithAndWithoutVersion"/>.
         /// </summary>
         /// <param name="typeRepresentationWithVersion">The type representation with version to convert.</param>
@@ -57,6 +62,35 @@ namespace Naos.Database.Domain
             this TypeRepresentation typeRepresentationWithVersion)
         {
             var result = new TypeRepresentationWithAndWithoutVersion(typeRepresentationWithVersion);
+            return result;
+        }
+
+        /// <summary>
+        /// Compares a <see cref="TypeRepresentationWithAndWithoutVersion"/> to an external <see cref="TypeRepresentation"/>
+        /// using the provided <see cref="TypeVersionMatchStrategy"/> to determine whether or not to include the version.
+        /// </summary>
+        /// <param name="typeRepresentationWithAndWithoutVersion">The <see cref="TypeRepresentationWithAndWithoutVersion"/> to compare.</param>
+        /// <param name="typeRepresentation">The type representation to compare against it.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <returns><c>true</c> if equal according to strategy, <c>false</c> otherwise.</returns>
+        public static bool EqualsAccordingToStrategy(
+            this TypeRepresentationWithAndWithoutVersion typeRepresentationWithAndWithoutVersion,
+            TypeRepresentation typeRepresentation,
+            TypeVersionMatchStrategy typeVersionMatchStrategy)
+        {
+            bool result;
+            switch (typeVersionMatchStrategy)
+            {
+                case TypeVersionMatchStrategy.Any:
+                    result = versionlessComparer.Equals(typeRepresentationWithAndWithoutVersion.WithoutVersion, typeRepresentation);
+                    break;
+                case TypeVersionMatchStrategy.Specific:
+                    result = typeRepresentation.Equals(typeRepresentationWithAndWithoutVersion.WithVersion);
+                    break;
+                default:
+                    throw new NotSupportedException(Invariant($"{nameof(TypeVersionMatchStrategy)} {typeVersionMatchStrategy} is not supported."));
+            }
+
             return result;
         }
     }

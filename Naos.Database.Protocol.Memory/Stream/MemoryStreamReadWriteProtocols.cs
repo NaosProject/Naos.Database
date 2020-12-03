@@ -6,9 +6,12 @@
 
 namespace Naos.Database.Protocol.Memory
 {
+    using System.Linq;
     using System.Threading.Tasks;
     using Naos.Database.Domain;
+    using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
 
     /// <summary>
     /// Set of protocols to work with known identifier and/or object type.
@@ -40,7 +43,20 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord Execute(
             GetLatestRecordOp operation)
         {
-            throw new System.NotImplementedException();
+            StreamRecord result = null;
+            this.stream.RunLockedOperationOnRecordList(
+                records =>
+                {
+                    result =
+                        records.OrderByDescending(_ => _.InternalRecordId)
+                               .FirstOrDefault(
+                                    _ => _.Metadata.FuzzyMatchTypes(
+                                        operation.IdentifierType,
+                                        operation.ObjectType,
+                                        operation.TypeVersionMatchStrategy));
+                });
+
+            return result;
         }
 
         /// <inheritdoc />
@@ -56,12 +72,40 @@ namespace Naos.Database.Protocol.Memory
         public long Execute(
             GetNextUniqueLongOp operation)
         {
-            throw new System.NotImplementedException();
+            return this.stream.Execute(operation);
         }
 
         /// <inheritdoc />
         public async Task<long> ExecuteAsync(
             GetNextUniqueLongOp operation)
+        {
+            return await this.stream.ExecuteAsync(operation);
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordByIdOp operation)
+        {
+            StreamRecord result = null;
+            this.stream.RunLockedOperationOnRecordList(
+                records =>
+                {
+                    result =
+                        records.OrderByDescending(_ => _.InternalRecordId)
+                               .FirstOrDefault(
+                                    _ => _.Metadata.FuzzyMatchTypesAndId(
+                                        operation.StringSerializedId,
+                                        operation.IdentifierType,
+                                        operation.ObjectType,
+                                        operation.TypeVersionMatchStrategy));
+                });
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecord> ExecuteAsync(
+            GetLatestRecordByIdOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

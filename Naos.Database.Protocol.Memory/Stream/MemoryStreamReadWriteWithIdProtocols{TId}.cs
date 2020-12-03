@@ -30,6 +30,7 @@ namespace Naos.Database.Protocol.Memory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "temp")]
         private readonly MemoryReadWriteStream stream;
+        private readonly MemoryStreamReadWriteProtocols delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamReadWriteWithIdProtocols{TId}"/> class.
@@ -41,13 +42,40 @@ namespace Naos.Database.Protocol.Memory
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
+            this.delegatedProtocols = new MemoryStreamReadWriteProtocols(stream);
         }
 
         /// <inheritdoc />
         public StreamRecordWithId<TId> Execute(
             GetLatestRecordByIdOp<TId> operation)
         {
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+
+            var delegatedOperation = new GetLatestRecordByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy);
+
+            var record = this.delegatedProtocols.Execute(delegatedOperation);
+
+            if (record == null)
+            {
+                return null;
+            }
+
+            var metadata = new StreamRecordMetadata<TId>(
+                operation.Id,
+                record.Metadata.SerializerRepresentation,
+                record.Metadata.TypeRepresentationOfId,
+                record.Metadata.TypeRepresentationOfObject,
+                record.Metadata.Tags,
+                record.Metadata.TimestampUtc);
+
+            var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
+            return result;
         }
 
         /// <inheritdoc />

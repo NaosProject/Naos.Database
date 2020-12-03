@@ -14,7 +14,8 @@ namespace Naos.Database.Domain
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = NaosSuppressBecause.CA1040_AvoidEmptyInterfaces_NeedToIdentifyGroupOfTypesAndPreferInterfaceOverAttribute)]
     public interface IStreamReadProtocols
-        : ISyncAndAsyncReturningProtocol<GetLatestRecordOp, StreamRecord>
+        : ISyncAndAsyncReturningProtocol<GetLatestRecordOp, StreamRecord>,
+          ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
     {
     }
 }

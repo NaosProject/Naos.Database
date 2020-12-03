@@ -10,6 +10,7 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Type;
+    using static System.FormattableString;
 
     /// <summary>
     /// A null object to be used as the id of an object in a <see cref="IReadWriteStream"/> that does not have an actual identifier.
@@ -20,6 +21,12 @@ namespace Naos.Database.Domain
                                                IStreamRecordHandlingProtocolFactory,
                                                IModelViaCodeGen
     {
+        /// <summary>
+        /// Exception message indicating specific failure.
+        /// </summary>
+        public static readonly string ExceptionMessage = Invariant(
+            $"This is the null object class '{nameof(NullReadWriteStream)}'.  None of these methods are expected to be functional and this error was likely bad configuration.");
+
         /// <inheritdoc />
         public string Name => nameof(NullReadWriteStream);
 
@@ -32,79 +39,79 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public IStreamReadProtocols GetStreamReadingProtocols()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamWriteProtocols GetStreamWritingProtocols()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamManagementProtocols GetStreamManagementProtocols()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamRecordHandlingProtocols<TObject> GetStreamRecordHandlingProtocols<TObject>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
         public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(ExceptionMessage);
         }
     }
 }

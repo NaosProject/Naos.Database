@@ -20,10 +20,13 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="GetLatestRecordByIdOp{TId, TObject}"/> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         public GetLatestRecordByIdOp(
-            TId id)
+            TId id,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             this.Id = id;
+            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
 
         /// <summary>
@@ -31,5 +34,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The identifier.</value>
         public TId Id { get; private set; }
+
+        /// <summary>
+        /// Gets the type version match strategy.
+        /// </summary>
+        /// <value>The type version match strategy.</value>
+        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
     }
 }

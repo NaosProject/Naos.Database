@@ -15,5 +15,20 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class GetLatestRecordOp<TObject> : ReturningOperationBase<StreamRecord<TObject>>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetLatestRecordOp{TObject}"/> class.
+        /// </summary>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        public GetLatestRecordOp(
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+        {
+            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+        }
+
+        /// <summary>
+        /// Gets the type version match strategy.
+        /// </summary>
+        /// <value>The type version match strategy.</value>
+        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
     }
 }

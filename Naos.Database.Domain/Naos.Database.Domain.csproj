@@ -134,6 +134,12 @@
     <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent.designer.cs">
       <DependentUpon>CanceledBlockedHandlingEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByIdOp.cs" />
+    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.cs" />
+    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry{TObject}.cs" />
+    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.cs" />
+    <Compile Include="Stream\Handling\History\GetHandlingHistoryOfRecordOp.cs" />
+    <Compile Include="Stream\Handling\Model\HandlingStatus.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
       <DependentUpon>HandleRecordOp.cs</DependentUpon>

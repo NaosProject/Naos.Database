@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Protocol.Memory
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
@@ -43,6 +44,54 @@ namespace Naos.Database.Protocol.Memory
         /// <inheritdoc />
         public async Task<StreamRecord> ExecuteAsync(
             TryHandleRecordOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordHandlingEntry> Execute(
+            GetHandlingHistoryOfRecordOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordHandlingEntry>> ExecuteAsync(
+            GetHandlingHistoryOfRecordOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordSetByIdOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<HandlingStatus> ExecuteAsync(
+            GetHandlingStatusOfRecordSetByIdOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordSetByTagOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<HandlingStatus> ExecuteAsync(
+            GetHandlingStatusOfRecordSetByTagOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

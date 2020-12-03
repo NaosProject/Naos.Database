@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
@@ -55,6 +56,7 @@ namespace Naos.Database.Domain
         /// <param name="objectType">Type of the object; null will exclude from match.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         /// <returns><c>true</c> if matching, <c>false</c> otherwise.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public static bool FuzzyMatchTypesAndId(
             this StreamRecordMetadata streamRecordMetadata,
             string stringSerializedId,

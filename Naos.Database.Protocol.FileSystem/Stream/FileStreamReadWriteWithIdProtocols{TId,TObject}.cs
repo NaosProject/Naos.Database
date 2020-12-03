@@ -278,7 +278,7 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecordWithId<TId, TObject> Execute(
             GetLatestRecordByIdOp<TId, TObject> operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

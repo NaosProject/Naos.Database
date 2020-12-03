@@ -49,7 +49,7 @@ namespace Naos.Database.Protocol.FileSystem
             TryHandleRecordOp<TObject> operation)
         {
             // check collection for concern and see if any handling/handled/canceled events
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

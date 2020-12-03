@@ -109,7 +109,7 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             GetLatestRecordOp operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -125,7 +125,7 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

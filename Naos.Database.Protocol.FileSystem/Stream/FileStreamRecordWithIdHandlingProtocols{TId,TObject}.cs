@@ -49,7 +49,7 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecordWithId<TId, TObject> Execute(
             TryHandleRecordWithIdOp<TId, TObject> operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

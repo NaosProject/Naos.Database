@@ -162,7 +162,7 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -177,7 +177,7 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

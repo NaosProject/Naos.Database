@@ -48,7 +48,7 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecordWithId<TId> Execute(
             TryHandleRecordWithIdOp<TId> operation)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

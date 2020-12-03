@@ -21,7 +21,7 @@ namespace Naos.Database.Protocol.FileSystem
     /// </summary>
     /// <seealso cref="ReadWriteStreamBase" />
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class FileReadWriteStream : ReadWriteStreamBase, IStreamManagementProtocolFactory, IStreamEventHandlingProtocolFactory
+    public partial class FileReadWriteStream : ReadWriteStreamBase, IStreamManagementProtocolFactory, IStreamRecordHandlingProtocolFactory
     {
         private readonly object fileLock = new object();
 
@@ -99,7 +99,10 @@ namespace Naos.Database.Protocol.FileSystem
         public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new FileStreamReadWriteProtocols<TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>() => new FileStreamReadWriteProtocols<TId, TObject>(this);
+        public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new FileStreamReadWriteWithIdProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>() => new FileStreamReadWriteWithIdProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
         public override IStreamWriteProtocols GetStreamWritingProtocols() => new FileStreamReadWriteProtocols(this);
@@ -108,14 +111,24 @@ namespace Naos.Database.Protocol.FileSystem
         public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>() => new FileStreamReadWriteProtocols<TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>() => new FileStreamReadWriteProtocols<TId, TObject>(this);
+        public override IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>() => new FileStreamReadWriteWithIdProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public override IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>() => new FileStreamReadWriteWithIdProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
         public IStreamManagementProtocols GetStreamManagementProtocols() => new FileStreamManagementProtocols(this);
 
         /// <inheritdoc />
-        public IStreamEventHandlingProtocols<TEvent> GetStreamEventHandlingProtocols<TEvent>()
-            where TEvent : IEvent
-            => new FileStreamEventHandlingProtocols<TEvent>(this);
+        public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols() => new FileStreamRecordHandlingProtocols(this);
+
+        /// <inheritdoc />
+        public IStreamRecordHandlingProtocols<TObject> GetStreamRecordHandlingProtocols<TObject>() => new FileStreamRecordHandlingProtocols<TObject>(this);
+
+        /// <inheritdoc />
+        public IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>() => new FileStreamRecordWithIdHandlingProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new FileStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
     }
 }

@@ -18,7 +18,7 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamReadProtocols<TObject>,
           IStreamWriteProtocols<TObject>
     {
-        private readonly FileStreamReadWriteProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
+        private readonly FileStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols{TObject}"/> class.
@@ -27,14 +27,14 @@ namespace Naos.Database.Protocol.FileSystem
         public FileStreamReadWriteProtocols(
             FileReadWriteStream readWriteStream)
         {
-            this.delegatedProtocols = new FileStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);
+            this.delegatedProtocols = new FileStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject>(readWriteStream);
         }
 
         /// <inheritdoc />
         public long Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var delegatedOperation = new PutAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(
                 new NullStreamIdentifier(),
                 operation.ObjectToPut,
                 operation.Tags);
@@ -67,6 +67,22 @@ namespace Naos.Database.Protocol.FileSystem
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await
+        }
+
+        /// <inheritdoc />
+        public TObject Execute(
+            GetLatestObjectOp<TObject> operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<TObject> ExecuteAsync(
+            GetLatestObjectOp<TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
         }
     }
 }

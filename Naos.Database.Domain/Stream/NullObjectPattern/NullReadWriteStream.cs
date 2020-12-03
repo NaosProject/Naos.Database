@@ -15,7 +15,10 @@ namespace Naos.Database.Domain
     /// A null object to be used as the id of an object in a <see cref="IReadWriteStream"/> that does not have an actual identifier.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class NullReadWriteStream : IReadWriteStream, IStreamManagementProtocolFactory, IStreamEventHandlingProtocolFactory, IModelViaCodeGen
+    public partial class NullReadWriteStream : IReadWriteStream,
+                                               IStreamManagementProtocolFactory,
+                                               IStreamRecordHandlingProtocolFactory,
+                                               IModelViaCodeGen
     {
         /// <inheritdoc />
         public string Name => nameof(NullReadWriteStream);
@@ -39,7 +42,13 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>()
+        public IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>()
         {
             throw new NotImplementedException();
         }
@@ -57,7 +66,13 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
+        public IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>()
         {
             throw new NotImplementedException();
         }
@@ -69,8 +84,25 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IStreamEventHandlingProtocols<TEvent> GetStreamEventHandlingProtocols<TEvent>()
-            where TEvent : IEvent
+        public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IStreamRecordHandlingProtocols<TObject> GetStreamRecordHandlingProtocols<TObject>()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>()
         {
             throw new NotImplementedException();
         }

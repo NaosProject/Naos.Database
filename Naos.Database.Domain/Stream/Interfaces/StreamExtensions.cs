@@ -91,7 +91,7 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Wraps <see cref="PutOp{TId, TObject}"/>.
+        /// Wraps <see cref="PutWithIdOp{TId,TObject}"/>.
         /// </summary>
         /// <typeparam name="TId">The type of the identifier.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -107,8 +107,8 @@ namespace Naos.Database.Domain
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TId, TObject>(id, objectToPut, tags);
-            var protocol = stream.GetStreamWritingProtocols<TId, TObject>();
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags);
+            var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             protocol.Execute(operation);
         }
 
@@ -130,13 +130,13 @@ namespace Naos.Database.Domain
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TId, TObject>(id, objectToPut, tags);
-            var protocol = stream.GetStreamWritingProtocols<TId, TObject>();
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags);
+            var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             await protocol.ExecuteAsync(operation);
         }
 
         /// <summary>
-        /// Wraps <see cref="GetLatestByIdAndTypeOp{TId,TObject}"/>.
+        /// Wraps <see cref="GetLatestObjectByIdOp{TId,TObject}"/>.
         /// </summary>
         /// <typeparam name="TId">The type of the identifier.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -144,21 +144,21 @@ namespace Naos.Database.Domain
         /// <param name="identifier">The identifier.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <returns>The object.</returns>
-        public static TObject GetLatestByIdAndType<TId, TObject>(
+        public static TObject GetLatestObjectByIdOp<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestByIdAndTypeOp<TId, TObject>(identifier, typeVersionMatchStrategy);
-            var protocol = stream.GetStreamReadingProtocols<TId, TObject>();
+            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = protocol.Execute(operation);
             return result;
         }
 
         /// <summary>
-        /// Wraps <see cref="GetLatestByIdAndTypeOp{TId,TObject}"/>.
+        /// Wraps <see cref="GetLatestObjectByIdOp{TId,TObject}"/>.
         /// </summary>
         /// <typeparam name="TId">The type of the identifier.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -166,15 +166,15 @@ namespace Naos.Database.Domain
         /// <param name="identifier">The identifier.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <returns>The object.</returns>
-        public static async Task<TObject> GetLatestByIdAndTypeAsync<TId, TObject>(
+        public static async Task<TObject> GetLatestObjectByIdOpAsync<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestByIdAndTypeOp<TId, TObject>(identifier, typeVersionMatchStrategy);
-            var protocol = stream.GetStreamReadingProtocols<TId, TObject>();
+            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

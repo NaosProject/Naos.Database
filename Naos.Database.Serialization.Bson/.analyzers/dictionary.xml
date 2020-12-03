@@ -108,6 +108,9 @@
       <!-- Acronym for Public Key Cryptography Standards -->
       <Word>PKCS</Word>
 
+      <!-- Acronym for Portable Network Graphics -->
+      <Word>PNG</Word>
+
       <!-- Acronym for Request For Comments -->
       <Word>RFC</Word>
 
@@ -116,6 +119,9 @@
 
       <!-- A series of datapoints indexed in time order -->
       <Word>timeseries</Word>
+
+      <!-- Acronym for Transportation Layer Security -->
+      <Word>TLS</Word>
 
       <!-- In .NET, a way describe a type parameter in generics. -->
       <Word>typeparam</Word>

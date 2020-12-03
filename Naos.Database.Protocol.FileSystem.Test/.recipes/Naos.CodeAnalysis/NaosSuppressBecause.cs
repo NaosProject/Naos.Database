@@ -130,6 +130,11 @@ namespace Naos.CodeAnalysis.Recipes
         public const string CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain = "The spelling of the identifier is correct in-context of the domain.";
 
         /// <summary>
+        /// The casing is as preferred.
+        /// </summary>
+        public const string CA1709_IdentifiersShouldBeCasedCorrectly_CasingIsAsPreferred = "The casing is as preferred.";
+
+        /// <summary>
         /// The identifier is suffixed with the name of the Type that it directly extends or implements to improves readability and comprehension of unit tests whre the Type is a primary concern of those tests.
         /// </summary>
         public const string CA1710_IdentifiersShouldHaveCorrectSuffix_NameDirectlyExtendedOrImplementedTypeAddedAsSuffixForTestsWhereTypeIsPrimaryConcern = "The identifier is suffixed with the name of the Type that it directly extends or implements to improves readability and comprehension of unit tests whre the Type is a primary concern of those tests.";
@@ -203,6 +208,11 @@ namespace Naos.CodeAnalysis.Recipes
         /// The type is being used in testing and we explicitly do not want the type to be equatable because it has bearing on the tests.
         /// </summary>
         public const string CA1815_OverrideEqualsAndOperatorEqualsOnValueTypes_TypeUsedForTestsThatRequireTypeToNotBeEquatable = "The type is being used in testing and we explicitly do not want the type to be equatable because it has bearing on the tests.";
+
+        /// <summary>
+        /// Data payloads are commonly represented as a byte arrays.
+        /// </summary>
+        public const string CA1819_PropertiesShouldNotReturnArrays_DataPayloadsAreCommonlyRepresentedAsByteArrays = "Data payloads are commonly represented as a byte arrays.";
 
         /// <summary>
         /// An array property is required for unit tests.

@@ -65,15 +65,15 @@ namespace Naos.Database.Protocol.Memory.Test
                 idx < 10;
                 idx++)
             {
-                stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(firstObject.Id, firstObject, firstObject.Tags));
+                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(firstObject.Id, firstObject, firstObject.Tags));
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                stream.GetStreamWritingProtocols<string, MyObject>().Execute(new PutOp<string, MyObject>(secondObject.Id, secondObject, secondObject.Tags));
+                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(secondObject.Id, secondObject, secondObject.Tags));
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
                 stopwatch.Start();
-                var my = stream.GetStreamReadingProtocols<string, MyObject>().Execute(new GetLatestByIdAndTypeOp<string, MyObject>(key));
+                var my = stream.GetStreamReadingWithIdProtocols<string, MyObject>().Execute(new GetLatestObjectByIdOp<string, MyObject>(key));
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={my.Id}, Field={my.Field}"));
                 my.Id.MustForTest().BeEqualTo(key);

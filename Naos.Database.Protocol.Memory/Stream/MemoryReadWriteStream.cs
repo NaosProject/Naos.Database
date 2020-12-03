@@ -25,10 +25,8 @@ namespace Naos.Database.Protocol.Memory
     public class MemoryReadWriteStream :
         ReadWriteStreamBase,
         IStreamManagementProtocolFactory,
-        IStreamEventHandlingProtocolFactory,
-        IStreamManagementProtocols,
-        IStreamReadProtocols,
-        IStreamWriteProtocols
+        IStreamRecordHandlingProtocolFactory,
+        IStreamManagementProtocols
     {
         private readonly object streamLock = new object();
 
@@ -217,37 +215,29 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public override IStreamReadProtocols<TId, TObject> GetStreamReadingProtocols<TId, TObject>()
+        public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new MemoryStreamReadWriteWithIdProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>()
         {
-            var result = new MemoryStreamReadWriteProtocols<TId, TObject>(this);
+            var result = new MemoryStreamReadWriteWithIdProtocols<TId, TObject>(this);
             return result;
         }
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols GetStreamWritingProtocols()
-        {
-            return this;
-        }
+        public override IStreamWriteProtocols GetStreamWritingProtocols() => new MemoryStreamReadWriteProtocols(this);
 
         /// <inheritdoc />
-        public override IStreamReadProtocols GetStreamReadingProtocols()
-        {
-            return this;
-        }
+        public override IStreamReadProtocols GetStreamReadingProtocols() => new MemoryStreamReadWriteProtocols(this);
 
         /// <inheritdoc />
-        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>()
-        {
-            var result = new MemoryStreamReadWriteProtocols<TObject>(this);
-            return result;
-        }
+        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new MemoryStreamReadWriteProtocols<TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols<TId, TObject> GetStreamWritingProtocols<TId, TObject>()
-        {
-            var result = new MemoryStreamReadWriteProtocols<TId, TObject>(this);
-            return result;
-        }
+        public override IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>() => new MemoryStreamReadWriteWithIdProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public override IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>() => new MemoryStreamReadWriteWithIdProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
         public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
@@ -256,7 +246,11 @@ namespace Naos.Database.Protocol.Memory
             return result;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Executes the specified operation.
+        /// </summary>
+        /// <param name="operation">The operation.</param>
+        /// <returns>System.Int64.</returns>
         public long Execute(
             GetNextUniqueLongOp operation)
         {
@@ -265,7 +259,11 @@ namespace Naos.Database.Protocol.Memory
             return result;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Execute as an asynchronous operation.
+        /// </summary>
+        /// <param name="operation">The operation.</param>
+        /// <returns>System.Int64.</returns>
         public async Task<long> ExecuteAsync(
             GetNextUniqueLongOp operation)
         {
@@ -277,8 +275,43 @@ namespace Naos.Database.Protocol.Memory
         public IStreamManagementProtocols GetStreamManagementProtocols() => this;
 
         /// <inheritdoc />
-        public IStreamEventHandlingProtocols<TEvent> GetStreamEventHandlingProtocols<TEvent>()
-            where TEvent : IEvent
-            => new MemoryStreamEventHandlingProtocols<TEvent>(this);
+        public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols() => new MemoryStreamRecordHandlingProtocols(this);
+
+        /// <inheritdoc />
+        public IStreamRecordHandlingProtocols<TObject> GetStreamRecordHandlingProtocols<TObject>() => new MemoryStreamRecordHandlingProtocols<TObject>(this);
+
+        /// <inheritdoc />
+        public IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>() => new MemoryStreamRecordWithIdHandlingProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new MemoryStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
+
+        /// <inheritdoc />
+        public void Execute(
+            PruneBeforeInternalRecordDateOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(
+            PruneBeforeInternalRecordDateOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

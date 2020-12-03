@@ -20,8 +20,8 @@ namespace Naos.Database.Protocol.FileSystem
     using static System.FormattableString;
 
     /// <summary>
-    /// File system implementation of <see cref="IStreamReadProtocols{TId,TObject}"/>
-    /// and <see cref="IStreamWriteProtocols{TId,TObject}"/>.
+    /// File system implementation of <see cref="IStreamReadProtocols"/>
+    /// and <see cref="IStreamWriteProtocols"/>.
     /// </summary>
     public class FileStreamReadWriteProtocols
         : IStreamReadProtocols,
@@ -81,7 +81,7 @@ namespace Naos.Database.Protocol.FileSystem
                         ? currentList.Max(_ => _.Id) + 1
                         : 1;
 
-                    currentList.Add(new UniqueLongIssuedEvent(nextLong, DateTime.UtcNow, operation.Details, operation.Tags));
+                    currentList.Add(new UniqueLongIssuedEvent(nextLong, DateTime.UtcNow, operation.Details));
                     var updatedSerializedListText = this.serializer.SerializeToString(currentList);
 
                     fileStream.Position = 0;
@@ -99,6 +99,22 @@ namespace Naos.Database.Protocol.FileSystem
         /// <inheritdoc />
         public async Task<long> ExecuteAsync(
             GetNextUniqueLongOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecord> ExecuteAsync(
+            GetLatestRecordOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

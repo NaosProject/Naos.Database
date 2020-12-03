@@ -11,9 +11,10 @@ namespace Naos.Protocol.Domain.Test
 {
     using System;
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using FakeItEasy;
-
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.AutoFakeItEasy;
 
     /// <summary>
@@ -31,6 +32,70 @@ namespace Naos.Protocol.Domain.Test
         public ProtocolDummyFactory()
         {
             /* Add any overriding or custom registrations here. */
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CanceledRequestedExecutionEvent<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new SelfCanceledRunningExecutionEvent<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CanceledRunningExecutionEvent<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CompletedExecutionEvent<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new FailedExecutionEvent<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RequestedExecutionEvent<Version, CancelExecutionAttemptOp<Version, Version>>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<CancelExecutionAttemptOp<Version, Version>>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RunningExecutionEvent<Version, CancelExecutionAttemptOp<Version, Version>>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<CancelExecutionAttemptOp<Version, Version>>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CacheResult<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullEvent(
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullIdentifiedEvent<Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
         }
     }
 }

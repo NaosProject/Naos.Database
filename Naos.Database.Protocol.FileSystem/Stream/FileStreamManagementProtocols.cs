@@ -157,5 +157,35 @@ namespace Naos.Database.Protocol.FileSystem
                 throw new InvalidOperationException(Invariant($"Directory '{directoryPath}' was deleted but remains on disk after checking for '{timeoutTimeSpan.TotalSeconds}' seconds."));
             }
         }
+
+        /// <inheritdoc />
+        public void Execute(
+            PruneBeforeInternalRecordDateOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            PruneBeforeInternalRecordDateOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // for async...
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // for async...
+        }
     }
 }

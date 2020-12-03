@@ -10,22 +10,18 @@ namespace Naos.Database.Protocol.Memory
     using Naos.Database.Domain;
 
     /// <summary>
-    /// Set of protocols to work with known identifier and/or object type.
+    /// Set of protocols:
     /// Implements the <see cref="IStreamReadProtocols{TObject}" />
-    /// Implements the <see cref="IStreamWriteProtocols{TObject}" />
-    /// Implements the <see cref="IStreamReadProtocols{TId,TObject}" />
-    /// Implements the <see cref="IStreamWriteProtocols{TId,TObject}" />.
+    /// Implements the <see cref="IStreamWriteProtocols{TObject}" />.
     /// </summary>
     /// <typeparam name="TObject">The type of the t object.</typeparam>
     /// <seealso cref="IStreamReadProtocols{TObject}" />
     /// <seealso cref="IStreamWriteProtocols{TObject}" />
-    /// <seealso cref="IStreamReadProtocols{TId,TObject}" />
-    /// <seealso cref="IStreamWriteProtocols{TId,TObject}" />
     public partial class MemoryStreamReadWriteProtocols<TObject> :
         IStreamReadProtocols<TObject>,
         IStreamWriteProtocols<TObject>
     {
-        private readonly MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
+        private readonly MemoryStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamReadWriteProtocols{TObject}"/> class.
@@ -34,7 +30,7 @@ namespace Naos.Database.Protocol.Memory
         public MemoryStreamReadWriteProtocols(
             MemoryReadWriteStream readWriteStream)
         {
-            this.delegatedProtocols = new MemoryStreamReadWriteProtocols<NullStreamIdentifier, TObject>(readWriteStream);
+            this.delegatedProtocols = new MemoryStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject>(readWriteStream);
         }
 
         /// <inheritdoc />
@@ -57,7 +53,7 @@ namespace Naos.Database.Protocol.Memory
         public long Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var delegatedOperation = new PutAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags);
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags);
             var result = this.delegatedProtocols.Execute(delegatedOperation);
             return result;
         }
@@ -65,6 +61,22 @@ namespace Naos.Database.Protocol.Memory
         /// <inheritdoc />
         public async Task<long> ExecuteAsync(
             PutAndReturnInternalRecordIdOp<TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public TObject Execute(
+            GetLatestObjectOp<TObject> operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<TObject> ExecuteAsync(
+            GetLatestObjectOp<TObject> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

@@ -39,8 +39,8 @@
     <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.82\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.87\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Compression, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Compression.1.0.19\lib\net462\OBeautifulCode.Compression.dll</HintPath>
@@ -128,74 +128,142 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
-    <Compile Include="Events\UniqueLongIssuedEvent.cs" />
-    <Compile Include="Events\BlockEvent{TId}.cs" />
-    <Compile Include="Events\BlockEvent{TId}.designer.cs">
-      <DependentUpon>BlockEvent{TId}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\Blocking\BlockedHandlingEvent{TBlockingContext}.designer.cs">
+      <DependentUpon>BlockedHandlingEvent{TBlockingContext}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\CancelBlockEvent{TId}.cs" />
-    <Compile Include="Events\CancelBlockEvent{TId}.designer.cs">
-      <DependentUpon>CancelBlockEvent{TId}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent{TCancelContext}.designer.cs">
+      <DependentUpon>CanceledBlockedHandlingEvent{TCancelContext}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\PrunedEvent{TId}.cs" />
-    <Compile Include="Events\PrunedEvent{TId}.designer.cs">
-      <DependentUpon>PrunedEvent{TId}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
+      <DependentUpon>HandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\PruneRequestedEvent{TId}.cs" />
-    <Compile Include="Events\PruneRequestedEvent{TId}.designer.cs">
-      <DependentUpon>PruneRequestedEvent{TId}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.designer.cs">
+      <DependentUpon>HandleRecordOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\PruningEvent{TId}.cs" />
-    <Compile Include="Events\PruningEvent{TId}.designer.cs">
-      <DependentUpon>PruningEvent{TId}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>HandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\UniqueLongIssuedEvent.designer.cs">
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.cs" />
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.designer.cs">
+      <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.designer.cs">
+      <DependentUpon>TryHandleRecordOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.designer.cs">
+      <DependentUpon>TryHandleRecordOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.designer.cs">
+      <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Interfaces\Management\IPruneOperation.cs" />
+    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadWithIdProtocols{TId}.cs" />
+    <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocols.cs" />
+    <Compile Include="Stream\Interfaces\Handling\IStreamRecordWithIdHandlingProtocols{TId}.cs" />
+    <Compile Include="Stream\Interfaces\Handling\IStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteWithIdProtocols{TId}.cs" />
+    <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
+      <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.designer.cs">
+      <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.designer.cs">
+      <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneOperationExecutedEvent.designer.cs">
+      <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneOperationRequestedEvent.cs" />
+    <Compile Include="Stream\Management\PruneOperationRequestedEvent.designer.cs">
+      <DependentUpon>PruneOperationRequestedEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneSummary.cs" />
+    <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
+    <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.cs" />
+    <Compile Include="Stream\Management\PruneSummary.designer.cs">
+      <DependentUpon>PruneSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Model\StreamRecordMetadata{TId}.designer.cs">
+      <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.cs" />
+    <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.designer.cs">
+      <DependentUpon>StreamRecordWithId{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Model\StreamRecordWithId{TId}.designer.cs">
+      <DependentUpon>StreamRecordWithId{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp.cs" />
+    <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
+    <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.cs" />
+    <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
+    <Compile Include="Stream\Handling\Blocking\BlockedHandlingEvent{TBlockingContext}.cs" />
+    <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent{TCancelContext}.cs" />
     <Compile Include="Legacy\IConnectionDefinition.cs" />
-    <Compile Include="Operations\TryHandleEventOp{TEvent}.cs" />
-    <Compile Include="Operations\CreateStreamOp.designer.cs">
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
+    <Compile Include="Stream\Management\CreateStreamOp.designer.cs">
       <DependentUpon>CreateStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\DeleteStreamOp.designer.cs">
+    <Compile Include="Stream\Management\DeleteStreamOp.designer.cs">
       <DependentUpon>DeleteStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\GetNextUniqueLongOp.cs" />
-    <Compile Include="Operations\DeleteStreamOp.cs" />
-    <Compile Include="Operations\CreateStreamOp.cs" />
-    <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.cs" />
-    <Compile Include="Operations\GetLatestByIdAndTypeOp{TId,TObject}.designer.cs">
-      <DependentUpon>GetLatestByIdAndTypeOp{TId,TObject}.cs</DependentUpon>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
+      <DependentUpon>GetLatestRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\GetNextUniqueLongOp.designer.cs">
-      <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\GetOp{TObject}.cs" />
-    <Compile Include="Operations\GetOp{TObject}.designer.cs">
-      <DependentUpon>GetOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
-    <Compile Include="Operations\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
+    <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.cs" />
+    <Compile Include="Stream\Management\DeleteStreamOp.cs" />
+    <Compile Include="Stream\Management\CreateStreamOp.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.cs" />
+    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
+    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
+    <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.designer.cs">
+      <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TObject}.designer.cs">
+    <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\PutAndReturnInternalRecordIdOp{TObject}.cs" />
-    <Compile Include="Operations\PutOp{TId,TObject}.cs" />
-    <Compile Include="Operations\PutOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutOp{TId,TObject}.cs</DependentUpon>
+    <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.cs" />
+    <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\PutOp{TObject}.cs" />
-    <Compile Include="Operations\PutOp{TObject}.designer.cs">
+    <Compile Include="Stream\WriteOnly\PutOp{TObject}.cs" />
+    <Compile Include="Stream\WriteOnly\PutOp{TObject}.designer.cs">
       <DependentUpon>PutOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\TryHandleEventOp{TEvent}.designer.cs">
-      <DependentUpon>TryHandleEventOp{TEvent}.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
@@ -216,20 +284,17 @@
     <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">
       <DependentUpon>NullDatabaseLocator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\EventToHandle{TEvent}.designer.cs">
-      <DependentUpon>EventToHandle{TEvent}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ExistingRecordEncounteredStrategy.cs" />
-    <Compile Include="Stream\ExistingStreamNotEncounteredStrategy.cs" />
-    <Compile Include="Stream\ExistingStreamEncounteredStrategy.cs" />
-    <Compile Include="Stream\Interfaces\IStreamEventHandlingProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\IStreamManagementProtocols.cs" />
-    <Compile Include="Stream\Interfaces\IStreamManagementProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\IStreamEventHandlingProtocols{TEvent}.cs" />
+    <Compile Include="Stream\Model\ExistingRecordEncounteredStrategy.cs" />
+    <Compile Include="Stream\Model\ExistingStreamNotEncounteredStrategy.cs" />
+    <Compile Include="Stream\Model\ExistingStreamEncounteredStrategy.cs" />
+    <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\Management\IStreamManagementProtocols.cs" />
+    <Compile Include="Stream\Interfaces\Management\IStreamManagementProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocols{TObject}.cs" />
     <Compile Include="Stream\Interfaces\StreamExtensions.cs" />
     <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
-    <Compile Include="Stream\Interfaces\IWriteOnlyStream.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadProtocols.cs" />
+    <Compile Include="Stream\Interfaces\WriteOnly\IWriteOnlyStream.cs" />
+    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullReadWriteStream.designer.cs">
       <DependentUpon>NullReadWriteStream.cs</DependentUpon>
     </Compile>
@@ -239,26 +304,27 @@
     </Compile>
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
     <Compile Include="Stream\NullObjectPattern\NullReadWriteStream.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWriteProtocols.cs" />
+    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.designer.cs">
       <DependentUpon>NullStreamRepresentation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\EventToHandle{TEvent}.cs" />
-    <Compile Include="Stream\StreamRecord.designer.cs">
+    <Compile Include="Stream\Model\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\StreamRecordMetadata.designer.cs">
+    <Compile Include="Stream\Model\StreamRecordMetadata{TId}.cs" />
+    <Compile Include="Stream\Model\StreamRecordMetadata.designer.cs">
       <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\StreamRecord{TObject}.cs" />
-    <Compile Include="Stream\StreamRecord.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWriteProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\IStreamReadProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWriteProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IStreamWriteProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\Interfaces\IReadOnlyStream.cs" />
+    <Compile Include="Stream\Model\StreamRecordWithId{TId}.cs" />
+    <Compile Include="Stream\Model\StreamRecord{TObject}.cs" />
+    <Compile Include="Stream\Model\StreamRecord.cs" />
+    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocols{TObject}.cs" />
+    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocolFactory.cs" />
+    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocols{TObject}.cs" />
+    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\Interfaces\ReadOnly\IReadOnlyStream.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifier.cs" />
     <Compile Include="Stream\Interfaces\IStream.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentation.cs" />
@@ -276,24 +342,24 @@
     <Compile Include="Stream\Representation\StreamRepresentationBase.designer.cs">
       <DependentUpon>StreamRepresentationBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\StreamRecord{TObject}.designer.cs">
+    <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\TypeRepresentationWithAndWithoutVersion.cs" />
-    <Compile Include="Stream\ReadWriteStreamBase.cs" />
+    <Compile Include="Stream\Model\TypeRepresentationWithAndWithoutVersion.cs" />
+    <Compile Include="Stream\Model\ReadWriteStreamBase.cs" />
     <Compile Include="Stream\GetStreamFromRepresentationByNameProtocolFactory.cs" />
     <Compile Include="Stream\Representation\StreamRepresentation.cs" />
     <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />
-    <Compile Include="Stream\StreamRecordMetadata.cs" />
-    <Compile Include="Stream\TypeRepresentationWithAndWithoutVersion.designer.cs">
+    <Compile Include="Stream\Model\StreamRecordMetadata.cs" />
+    <Compile Include="Stream\Model\TypeRepresentationWithAndWithoutVersion.designer.cs">
       <DependentUpon>TypeRepresentationWithAndWithoutVersion.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
+    <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include=".analyzers\release.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -301,19 +367,17 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Protocols\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Naos.Build.Analyzers.1.55.46\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.46\build\Naos.Build.Analyzers.targets')" />
+  <Import Project="..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Naos.Build.Analyzers.1.55.46\build\Naos.Build.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Naos.Build.Analyzers.1.55.46\build\Naos.Build.Analyzers.targets'))" />
+    <Error Condition="!Exists('..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

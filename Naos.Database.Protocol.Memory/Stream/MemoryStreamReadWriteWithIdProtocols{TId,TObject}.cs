@@ -15,6 +15,7 @@ namespace Naos.Database.Protocol.Memory
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Set of protocols to work with known identifier and/or object type.
@@ -105,13 +106,18 @@ namespace Naos.Database.Protocol.Memory
                 this.stream.SerializerFactory,
                 this.stream.DefaultSerializationFormat);
 
+            var objectTimestamp = operation.ObjectToPut is IHaveTimestampUtc objectWithTimestamp
+                ? objectWithTimestamp.TimestampUtc
+                : (DateTime?)null;
+
             var metadata = new StreamRecordMetadata(
                 serializedStringId,
                 this.stream.DefaultSerializerRepresentation,
                 identifierTypeRep.ToWithAndWithoutVersion(),
                 objectTypeRep.ToWithAndWithoutVersion(),
                 operation.Tags ?? new Dictionary<string, string>(),
-                DateTime.UtcNow);
+                DateTime.UtcNow,
+                objectTimestamp);
             var result = this.stream.AddItem(metadata, describedSerialization);
             return result;
         }
@@ -147,7 +153,8 @@ namespace Naos.Database.Protocol.Memory
                 record.Metadata.TypeRepresentationOfId,
                 record.Metadata.TypeRepresentationOfObject,
                 record.Metadata.Tags,
-                record.Metadata.TimestampUtc);
+                record.Metadata.TimestampUtc,
+                record.Metadata.ObjectTimestampUtc);
 
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 

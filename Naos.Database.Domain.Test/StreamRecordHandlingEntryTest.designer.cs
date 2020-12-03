@@ -18,8 +18,6 @@ namespace Naos.Database.Domain.Test
 
     using global::FakeItEasy;
 
-    using global::Naos.Protocol.Domain;
-
     using global::OBeautifulCode.Assertion.Recipes;
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -35,152 +33,585 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class GetLatestObjectByIdOpTIdTObjectTest
+    public static partial class StreamRecordHandlingEntryTest
     {
-        private static readonly StringRepresentationTestScenarios<GetLatestObjectByIdOp<Version, Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetLatestObjectByIdOp<Version, Version>>()
+        private static readonly StringRepresentationTestScenarios<StreamRecordHandlingEntry> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamRecordHandlingEntry>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                new StringRepresentationTestScenario<StreamRecordHandlingEntry>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<GetLatestObjectByIdOp<Version, Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordHandlingEntry>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestObjectByIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntry: InternalHandlingEntryId = {systemUnderTest.InternalHandlingEntryId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeRepresentationOfEntry = {systemUnderTest.TypeRepresentationOfEntry?.ToString() ?? "<null>"}, Payload = {systemUnderTest.Payload?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectTimestampUtc = {systemUnderTest.ObjectTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<GetLatestObjectByIdOp<Version, Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetLatestObjectByIdOp<Version, Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StreamRecordHandlingEntry> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamRecordHandlingEntry>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
 
-                        var result = new GetLatestObjectByIdOp<Version, Version>(
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
                                              null,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.TypeRepresentationOfEntry,
+                                             referenceObject.Payload,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "id", },
-                });
-
-        private static readonly ConstructorPropertyAssignmentTestScenarios<GetLatestObjectByIdOp<Version, Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetLatestObjectByIdOp<Version, Version>>()
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectByIdOp<Version, Version>>
-                {
-                    Name = "Id should return same 'id' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectByIdOp<Version, Version>(
-                                                      referenceObject.Id,
-                                                      referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.Id,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Id",
+                    ExpectedExceptionMessageContains = new[] { "concern", },
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
                 {
-                    Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
+                    Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.TypeRepresentationOfEntry,
+                                             referenceObject.Payload,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationOfEntry' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
+                                             referenceObject.Concern,
+                                             null,
+                                             referenceObject.Payload,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "typeRepresentationOfEntry", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'payload' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
+                                             referenceObject.Concern,
+                                             referenceObject.TypeRepresentationOfEntry,
+                                             null,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "payload", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
+                                             referenceObject.Concern,
+                                             referenceObject.TypeRepresentationOfEntry,
+                                             referenceObject.Payload,
+                                             null,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "tags", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
+                                             referenceObject.Concern,
+                                             referenceObject.TypeRepresentationOfEntry,
+                                             referenceObject.Payload,
+                                             new Dictionary<string, string>(),
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
+
+                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
+
+                        dictionaryWithNullValue[randomKey] = null;
+
+                        var result = new StreamRecordHandlingEntry(
+                                             referenceObject.InternalHandlingEntryId,
+                                             referenceObject.Concern,
+                                             referenceObject.TypeRepresentationOfEntry,
+                                             referenceObject.Payload,
+                                             dictionaryWithNullValue,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
+                });
+
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamRecordHandlingEntry> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamRecordHandlingEntry>()
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "InternalHandlingEntryId should return same 'internalHandlingEntryId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectByIdOp<Version, Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
                         {
-                            SystemUnderTest = new GetLatestObjectByIdOp<Version, Version>(
-                                                      referenceObject.Id,
-                                                      referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.InternalHandlingEntryId,
                         };
 
                         return result;
                     },
-                    PropertyName = "TypeVersionMatchStrategy",
+                    PropertyName = "InternalHandlingEntryId",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "Concern should return same 'concern' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.Concern,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Concern",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "TypeRepresentationOfEntry should return same 'typeRepresentationOfEntry' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.TypeRepresentationOfEntry,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TypeRepresentationOfEntry",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "Payload should return same 'payload' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.Payload,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Payload",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Tags",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.TimestampUtc,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TimestampUtc",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "ObjectTimestampUtc should return same 'objectTimestampUtc' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.ObjectTimestampUtc,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "ObjectTimestampUtc",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<GetLatestObjectByIdOp<Version, Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetLatestObjectByIdOp<Version, Version>>()
+        private static readonly DeepCloneWithTestScenarios<StreamRecordHandlingEntry> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordHandlingEntry>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
                 {
-                    Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
-                    WithPropertyName = "Id",
+                    Name = "DeepCloneWithInternalHandlingEntryId should deep clone object and replace InternalHandlingEntryId with the provided internalHandlingEntryId",
+                    WithPropertyName = "InternalHandlingEntryId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
 
-                        var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.InternalHandlingEntryId.IsEqualTo(_.InternalHandlingEntryId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectByIdOp<Version, Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Id,
+                            DeepCloneWithValue = referenceObject.InternalHandlingEntryId,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
                 {
-                    Name = "DeepCloneWithTypeVersionMatchStrategy should deep clone object and replace TypeVersionMatchStrategy with the provided typeVersionMatchStrategy",
-                    WithPropertyName = "TypeVersionMatchStrategy",
+                    Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
+                    WithPropertyName = "Concern",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
 
-                        var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectByIdOp<Version, Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
+                            DeepCloneWithValue = referenceObject.Concern,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "DeepCloneWithTypeRepresentationOfEntry should deep clone object and replace TypeRepresentationOfEntry with the provided typeRepresentationOfEntry",
+                    WithPropertyName = "TypeRepresentationOfEntry",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.TypeRepresentationOfEntry.IsEqualTo(_.TypeRepresentationOfEntry));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TypeRepresentationOfEntry,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "DeepCloneWithPayload should deep clone object and replace Payload with the provided payload",
+                    WithPropertyName = "Payload",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.Payload.IsEqualTo(_.Payload));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Payload,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
+                    WithPropertyName = "TimestampUtc",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TimestampUtc,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "DeepCloneWithObjectTimestampUtc should deep clone object and replace ObjectTimestampUtc with the provided objectTimestampUtc",
+                    WithPropertyName = "ObjectTimestampUtc",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.ObjectTimestampUtc.IsEqualTo(_.ObjectTimestampUtc));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.ObjectTimestampUtc,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly GetLatestObjectByIdOp<Version, Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+        private static readonly StreamRecordHandlingEntry ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordHandlingEntry>();
 
-        private static readonly EquatableTestScenarios<GetLatestObjectByIdOp<Version, Version>> EquatableTestScenarios = new EquatableTestScenarios<GetLatestObjectByIdOp<Version, Version>>()
+        private static readonly EquatableTestScenarios<StreamRecordHandlingEntry> EquatableTestScenarios = new EquatableTestScenarios<StreamRecordHandlingEntry>()
             .AddScenario(() =>
-                new EquatableTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                new EquatableTestScenario<StreamRecordHandlingEntry>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetLatestObjectByIdOp<Version, Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamRecordHandlingEntry[]
                     {
-                        new GetLatestObjectByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new GetLatestObjectByIdOp<Version, Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StreamRecordHandlingEntry[]
                     {
-                        new GetLatestObjectByIdOp<Version, Version>(
-                                A.Dummy<GetLatestObjectByIdOp<Version, Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
-                        new GetLatestObjectByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<GetLatestObjectByIdOp<Version, Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
+                        new StreamRecordHandlingEntry(
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.InternalHandlingEntryId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId)).InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.TypeRepresentationOfEntry.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry)).TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.Payload.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Payload)).Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.ObjectTimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc)).ObjectTimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -189,33 +620,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<GetHandlingStatusOfRecordSetByIdOp>(),
-                        A.Dummy<GetHandlingStatusOfRecordSetByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
-                        A.Dummy<HandleRecordOp>(),
-                        A.Dummy<HandleRecordWithIdOp<Version>>(),
-                        A.Dummy<TryHandleRecordOp>(),
-                        A.Dummy<TryHandleRecordOp<Version>>(),
-                        A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<TryHandleRecordWithIdOp<Version>>(),
-                        A.Dummy<PruneBeforeInternalRecordDateOp>(),
-                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
-                        A.Dummy<GetLatestObjectOp<Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordOp>(),
-                        A.Dummy<GetLatestRecordOp<Version>>(),
-                        A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<HandleRecordOp<Version>>(),
-                        A.Dummy<CreateStreamOp>(),
-                        A.Dummy<DeleteStreamOp>(),
-                        A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
-                        A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
-                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
-                        A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<PutOp<Version>>(),
                     },
                 });
 
@@ -237,12 +641,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetLatestObjectByIdOp___Should_implement_IModel_of_GetLatestObjectByIdOp___When_reflecting()
+            public static void StreamRecordHandlingEntry___Should_implement_IModel_of_StreamRecordHandlingEntry___When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetLatestObjectByIdOp<Version, Version>);
+                var type = typeof(StreamRecordHandlingEntry);
 
-                var expectedModelMethods = typeof(IModel<GetLatestObjectByIdOp<Version, Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StreamRecordHandlingEntry>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -252,7 +656,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetLatestObjectByIdOp<Version, Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamRecordHandlingEntry>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -270,10 +674,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetLatestObjectByIdOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void StreamRecordHandlingEntry___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetLatestObjectByIdOp<Version, Version>);
+                var type = typeof(StreamRecordHandlingEntry);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -446,10 +850,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
 
                 // Act
-                var actual = (GetLatestObjectByIdOp<Version, Version>)systemUnderTest.Clone();
+                var actual = (StreamRecordHandlingEntry)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -473,7 +877,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -482,13 +886,31 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.Id == null)
+                if (systemUnderTest.TypeRepresentationOfEntry == null)
                 {
-                    actual.Id.AsTest().Must().BeNull();
+                    actual.TypeRepresentationOfEntry.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.Id.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Id);
+                    actual.TypeRepresentationOfEntry.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypeRepresentationOfEntry);
+                }
+
+                if (systemUnderTest.Payload == null)
+                {
+                    actual.Payload.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.Payload.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Payload);
+                }
+
+                if (systemUnderTest.Tags == null)
+                {
+                    actual.Tags.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
                 }
             }
 
@@ -508,7 +930,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "TypeVersionMatchStrategy" };
+                var propertyNames = new string[] { "InternalHandlingEntryId", "Concern", "TypeRepresentationOfEntry", "Payload", "Tags", "TimestampUtc", "ObjectTimestampUtc" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -525,12 +947,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (GetLatestObjectByIdOp<Version, Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StreamRecordHandlingEntry)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(GetLatestObjectByIdOp<Version, Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StreamRecordHandlingEntry).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -598,7 +1020,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntry>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -627,7 +1049,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntry>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -656,7 +1078,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntry>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -685,7 +1107,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntry>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -719,8 +1141,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetLatestObjectByIdOp<Version, Version> systemUnderTest1 = null;
-                GetLatestObjectByIdOp<Version, Version> systemUnderTest2 = null;
+                StreamRecordHandlingEntry systemUnderTest1 = null;
+                StreamRecordHandlingEntry systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -750,7 +1172,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetLatestObjectByIdOp<Version, Version> systemUnderTest = null;
+                    StreamRecordHandlingEntry systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -899,8 +1321,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetLatestObjectByIdOp<Version, Version> systemUnderTest1 = null;
-                GetLatestObjectByIdOp<Version, Version> systemUnderTest2 = null;
+                StreamRecordHandlingEntry systemUnderTest1 = null;
+                StreamRecordHandlingEntry systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -930,7 +1352,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetLatestObjectByIdOp<Version, Version> systemUnderTest = null;
+                    StreamRecordHandlingEntry systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1076,300 +1498,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_StreamRecordHandlingEntry___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    OperationBase systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    ReturningOperationBase<Version> systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<Version>)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<Version>)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<Version>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<Version>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<Version>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectByIdOp___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    GetLatestObjectByIdOp<Version, Version> systemUnderTest = null;
+                    StreamRecordHandlingEntry systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1393,7 +1529,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectByIdOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_StreamRecordHandlingEntry___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1421,7 +1557,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectByIdOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_StreamRecordHandlingEntry___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1449,7 +1585,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectByIdOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_StreamRecordHandlingEntry___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1477,7 +1613,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectByIdOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_StreamRecordHandlingEntry___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

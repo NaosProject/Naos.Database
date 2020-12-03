@@ -18,6 +18,7 @@ namespace Naos.Database.Protocol.FileSystem
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.String.Recipes;
+    using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
 
@@ -139,6 +140,9 @@ namespace Naos.Database.Protocol.FileSystem
             var identifierTypeRepresentation = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
             var objectTypeRepresentation = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
 
+            var objectTimestamp = operation.ObjectToPut is IHaveTimestampUtc objectWithTimestamp
+                ? objectWithTimestamp.TimestampUtc
+                : (DateTime?)null;
             var stringSerializedId = this.ConvertIdToString(operation.Id);
             var streamRecordMetadata = new StreamRecordMetadata(
                 stringSerializedId,
@@ -146,7 +150,8 @@ namespace Naos.Database.Protocol.FileSystem
                 identifierTypeRepresentation.ToWithAndWithoutVersion(),
                 objectTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                DateTime.UtcNow);
+                DateTime.UtcNow,
+                objectTimestamp);
 
             var stringSerializedMetadata = this.serializer.SerializeToString(streamRecordMetadata);
             byte[] serializedBytes = null;

@@ -72,7 +72,8 @@ namespace Naos.Database.Protocol.Memory
                 record.Metadata.TypeRepresentationOfId,
                 record.Metadata.TypeRepresentationOfObject,
                 record.Metadata.Tags,
-                record.Metadata.TimestampUtc);
+                record.Metadata.TimestampUtc,
+                record.Metadata.ObjectTimestampUtc);
 
             var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
             return result;

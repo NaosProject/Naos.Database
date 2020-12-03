@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordMetadata: StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SerializerRepresentation = {systemUnderTest.SerializerRepresentation?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TypeRepresentationOfId = {systemUnderTest.TypeRepresentationOfId?.ToString() ?? "<null>"}, TypeRepresentationOfObject = {systemUnderTest.TypeRepresentationOfObject?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordMetadata: StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SerializerRepresentation = {systemUnderTest.SerializerRepresentation?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TypeRepresentationOfId = {systemUnderTest.TypeRepresentationOfId?.ToString() ?? "<null>"}, TypeRepresentationOfObject = {systemUnderTest.TypeRepresentationOfObject?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectTimestampUtc = {systemUnderTest.ObjectTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -69,7 +69,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -90,7 +91,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -111,7 +113,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -132,7 +135,8 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -153,7 +157,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              null,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -174,7 +179,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              null,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -195,7 +201,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              new Dictionary<string, string>(),
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -222,7 +229,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
                                              dictionaryWithNullValue,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -247,7 +255,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.StringSerializedId,
                         };
 
@@ -271,7 +280,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.SerializerRepresentation,
                         };
 
@@ -295,7 +305,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.TypeRepresentationOfId,
                         };
 
@@ -319,7 +330,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.TypeRepresentationOfObject,
                         };
 
@@ -343,7 +355,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
 
@@ -367,13 +380,39 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.TypeRepresentationOfId,
                                                       referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
 
                         return result;
                     },
                     PropertyName = "TimestampUtc",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordMetadata>
+                {
+                    Name = "ObjectTimestampUtc should return same 'objectTimestampUtc' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordMetadata>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordMetadata>
+                        {
+                            SystemUnderTest = new StreamRecordMetadata(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.ObjectTimestampUtc,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "ObjectTimestampUtc",
                 });
 
         private static readonly DeepCloneWithTestScenarios<StreamRecordMetadata> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordMetadata>()
@@ -496,6 +535,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordMetadata>
+                {
+                    Name = "DeepCloneWithObjectTimestampUtc should deep clone object and replace ObjectTimestampUtc with the provided objectTimestampUtc",
+                    WithPropertyName = "ObjectTimestampUtc",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordMetadata>();
+
+                        var referenceObject = A.Dummy<StreamRecordMetadata>().ThatIs(_ => !systemUnderTest.ObjectTimestampUtc.IsEqualTo(_.ObjectTimestampUtc));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordMetadata>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.ObjectTimestampUtc,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly StreamRecordMetadata ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordMetadata>();
@@ -514,7 +573,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StreamRecordMetadata[]
                     {
@@ -524,42 +584,56 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.SerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SerializerRepresentation)).SerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationOfId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId)).TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TypeRepresentationOfObject.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject)).TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordMetadata(
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordMetadata(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                A.Dummy<StreamRecordMetadata>().Whose(_ => !_.ObjectTimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc)).ObjectTimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -887,7 +961,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "StringSerializedId", "SerializerRepresentation", "Tags", "TypeRepresentationOfId", "TypeRepresentationOfObject", "TimestampUtc" };
+                var propertyNames = new string[] { "StringSerializedId", "SerializerRepresentation", "Tags", "TypeRepresentationOfId", "TypeRepresentationOfObject", "TimestampUtc", "ObjectTimestampUtc" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

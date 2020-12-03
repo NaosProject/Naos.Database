@@ -286,6 +286,18 @@
     <Compile Include="DeleteStreamOpTest.designer.cs">
       <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetHandlingHistoryOfRecordOpTest.cs" />
+    <Compile Include="GetHandlingHistoryOfRecordOpTest.designer.cs">
+      <DependentUpon>GetHandlingHistoryOfRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetHandlingStatusOfRecordSetByIdOpTest.cs" />
+    <Compile Include="GetHandlingStatusOfRecordSetByIdOpTest.designer.cs">
+      <DependentUpon>GetHandlingStatusOfRecordSetByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetHandlingStatusOfRecordSetByTagOpTest.cs" />
+    <Compile Include="GetHandlingStatusOfRecordSetByTagOpTest.designer.cs">
+      <DependentUpon>GetHandlingStatusOfRecordSetByTagOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetLatestObjectByIdOp{TId,TObject}Test.cs" />
     <Compile Include="GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}Test.cs</DependentUpon>
@@ -313,6 +325,14 @@
     <Compile Include="GetLatestRecordOp{TObject}Test.cs" />
     <Compile Include="GetLatestRecordOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamRecordHandlingEntryTest.cs" />
+    <Compile Include="StreamRecordHandlingEntryTest.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntryTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamRecordHandlingEntry{TObject}Test.cs" />
+    <Compile Include="StreamRecordHandlingEntry{TObject}Test.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntry{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\HandleRecordOpTest.cs" />
     <Compile Include="Stream\Handling\HandleRecordOpTest.designer.cs">

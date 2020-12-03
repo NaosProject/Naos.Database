@@ -44,7 +44,8 @@ namespace Naos.Database.Domain.Test
                                                        referenceObject.TypeRepresentationOfId,
                                                        referenceObject.TypeRepresentationOfObject,
                                                        referenceObject.Tags,
-                                                       referenceObject.TimestampUtc);
+                                                       referenceObject.TimestampUtc,
+                                                       referenceObject.ObjectTimestampUtc);
 
                                                    return result;
                                                },
@@ -69,7 +70,8 @@ namespace Naos.Database.Domain.Test
                                                        null,
                                                        referenceObject.TypeRepresentationOfObject,
                                                        referenceObject.Tags,
-                                                       referenceObject.TimestampUtc);
+                                                       referenceObject.TimestampUtc,
+                                                       referenceObject.ObjectTimestampUtc);
 
                                                    return result;
                                                },
@@ -94,7 +96,8 @@ namespace Naos.Database.Domain.Test
                                                        referenceObject.TypeRepresentationOfId,
                                                        null,
                                                        referenceObject.Tags,
-                                                       referenceObject.TimestampUtc);
+                                                       referenceObject.TimestampUtc,
+                                                       referenceObject.ObjectTimestampUtc);
 
                                                    return result;
                                                },
@@ -131,7 +134,8 @@ namespace Naos.Database.Domain.Test
                                                        referenceObject.TypeRepresentationOfId,
                                                        referenceObject.TypeRepresentationOfObject,
                                                        referenceObject.Tags,
-                                                       nonUtcTimestamp);
+                                                       nonUtcTimestamp,
+                                                       referenceObject.ObjectTimestampUtc);
 
                                                    return result;
                                                },
@@ -139,6 +143,44 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionMessageContains = new[]
                                                                {
                                                                    "The timestamp must be in UTC format",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<StreamRecordMetadata>
+                        {
+                            Name =
+                                "constructor should throw ArgumentException when parameter 'objectTimestamp' is not of kind UTC scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<StreamRecordMetadata>();
+
+                                                   var referenceObjectTimestampUtc = referenceObject.TimestampUtc;
+                                                   var nonUtcTimestamp = new DateTime(
+                                                       referenceObjectTimestampUtc.Year,
+                                                       referenceObjectTimestampUtc.Month,
+                                                       referenceObjectTimestampUtc.Day,
+                                                       referenceObjectTimestampUtc.Hour,
+                                                       referenceObjectTimestampUtc.Minute,
+                                                       referenceObjectTimestampUtc.Second,
+                                                       referenceObjectTimestampUtc.Millisecond,
+                                                       DateTimeKind.Unspecified);
+
+                                                   var result = new StreamRecordMetadata(
+                                                       referenceObject.StringSerializedId,
+                                                       referenceObject.SerializerRepresentation,
+                                                       referenceObject.TypeRepresentationOfId,
+                                                       referenceObject.TypeRepresentationOfObject,
+                                                       referenceObject.Tags,
+                                                       referenceObject.TimestampUtc,
+                                                       nonUtcTimestamp);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "The objectTimestamp must be in UTC format",
                                                                },
                         });
         }

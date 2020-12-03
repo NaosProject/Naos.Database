@@ -100,6 +100,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -109,6 +110,7 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                     A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                     A.Dummy<IReadOnlyDictionary<string, string>>(),
+                    A.Dummy<DateTime>().ToUniversalTime(),
                     A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

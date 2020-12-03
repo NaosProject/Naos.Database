@@ -12,7 +12,6 @@ namespace Naos.Database.Domain.Test
 
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.Math.Recipes;
-    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
 
     /// <summary>
@@ -35,9 +34,11 @@ namespace Naos.Database.Domain.Test
         public DatabaseDummyFactory()
         {
             /* Add any overriding or custom registrations here. */
+
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
+                    // make sure IStreamRepresentation has a correct option instead of a proxy
                     var availableTypes = new[]
                                          {
                                              typeof(FileStreamRepresentation),
@@ -54,13 +55,82 @@ namespace Naos.Database.Domain.Test
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    // make sure IPruneOperation has a correct option instead of a proxy
+                    var availableTypes = new[]
+                                         {
+                                             typeof(PruneBeforeInternalRecordDateOp),
+                                             typeof(PruneBeforeInternalRecordIdOp),
+                                         };
+
+                    var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
+
+                    var randomType = availableTypes[randomIndex];
+
+                    var result = (IPruneOperation)AD.ummy(randomType);
+
+                    return result;
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneOperationRequestedEvent(
+                                 A.Dummy<IPruneOperation>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneSummary(
+                                 A.Dummy<IReadOnlyList<long>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneOperationExecutedEvent(
+                                 A.Dummy<IPruneOperation>(),
+                                 A.Dummy<PruneSummary>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneBeforeInternalRecordDateOp(
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecordMetadata<Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<SerializerRepresentation>(),
+                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
+                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordMetadata(
-                    A.Dummy<Version>().ToString(),
+                    A.Dummy<string>(),
                     A.Dummy<SerializerRepresentation>(),
-                    A.Dummy<TypeRepresentation>().ToWithAndWithoutVersion(),
-                    A.Dummy<TypeRepresentation>().ToWithAndWithoutVersion(),
+                    A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
+                    A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                     A.Dummy<IReadOnlyDictionary<string, string>>(),
                     A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new UniqueLongIssuedEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CanceledPruneRequestedEvent(
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new BlockedHandlingEvent(
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CanceledBlockedHandlingEvent(
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
         }
     }
 }

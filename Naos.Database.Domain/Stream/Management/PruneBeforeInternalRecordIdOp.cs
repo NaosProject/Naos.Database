@@ -25,7 +25,6 @@ namespace Naos.Database.Domain
             long maxInternalRecordId,
             string details)
         {
-            maxInternalRecordId.MustForArg(nameof(maxInternalRecordId)).NotBeLessThan(0L);
             details.MustForArg(nameof(details)).NotBeNull();
 
             this.MaxInternalRecordId = maxInternalRecordId;

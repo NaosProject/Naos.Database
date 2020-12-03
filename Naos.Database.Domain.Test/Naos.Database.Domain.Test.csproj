@@ -77,14 +77,14 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.73.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.73\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.87\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.88\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.87\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.88\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.87\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.88\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.24\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
@@ -258,13 +258,13 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
-    <Compile Include="BlockedHandlingEvent{TBlockingContext}Test.cs" />
-    <Compile Include="BlockedHandlingEvent{TBlockingContext}Test.designer.cs">
-      <DependentUpon>BlockedHandlingEvent{TBlockingContext}Test.cs</DependentUpon>
+    <Compile Include="BlockedHandlingEventTest.cs" />
+    <Compile Include="BlockedHandlingEventTest.designer.cs">
+      <DependentUpon>BlockedHandlingEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CanceledBlockedHandlingEvent{TCancelContext}Test.cs" />
-    <Compile Include="CanceledBlockedHandlingEvent{TCancelContext}Test.designer.cs">
-      <DependentUpon>CanceledBlockedHandlingEvent{TCancelContext}Test.cs</DependentUpon>
+    <Compile Include="CanceledBlockedHandlingEventTest.cs" />
+    <Compile Include="CanceledBlockedHandlingEventTest.designer.cs">
+      <DependentUpon>CanceledBlockedHandlingEventTest.cs</DependentUpon>
     </Compile>
     <Compile Include="CanceledPruneRequestedEventTest.cs" />
     <Compile Include="CanceledPruneRequestedEventTest.designer.cs">
@@ -305,6 +305,10 @@
     <Compile Include="GetLatestRecordOpTest.cs" />
     <Compile Include="GetLatestRecordOpTest.designer.cs">
       <DependentUpon>GetLatestRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetLatestRecordOp{TObject}Test.cs" />
+    <Compile Include="GetLatestRecordOp{TObject}Test.designer.cs">
+      <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\HandleRecordOpTest.cs" />
     <Compile Include="Stream\Handling\HandleRecordOpTest.designer.cs">

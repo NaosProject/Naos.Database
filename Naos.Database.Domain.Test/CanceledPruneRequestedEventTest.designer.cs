@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<CanceledPruneRequestedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CanceledPruneRequestedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CanceledPruneRequestedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -67,8 +67,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new CanceledPruneRequestedEvent(
                                              null,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Tags);
+                                             referenceObject.TimestampUtc);
 
                         return result;
                     },
@@ -85,73 +84,12 @@ namespace Naos.Database.Domain.Test
 
                         var result = new CanceledPruneRequestedEvent(
                                              Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Tags);
+                                             referenceObject.TimestampUtc);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledPruneRequestedEvent>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledPruneRequestedEvent>();
-
-                        var result = new CanceledPruneRequestedEvent(
-                                             referenceObject.Details,
-                                             referenceObject.TimestampUtc,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledPruneRequestedEvent>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledPruneRequestedEvent>();
-
-                        var result = new CanceledPruneRequestedEvent(
-                                             referenceObject.Details,
-                                             referenceObject.TimestampUtc,
-                                             new Dictionary<string, string>());
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledPruneRequestedEvent>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledPruneRequestedEvent>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new CanceledPruneRequestedEvent(
-                                             referenceObject.Details,
-                                             referenceObject.TimestampUtc,
-                                             dictionaryWithNullValue);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<CanceledPruneRequestedEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CanceledPruneRequestedEvent>()
@@ -167,8 +105,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new CanceledPruneRequestedEvent(
                                                       referenceObject.Details,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Tags),
+                                                      referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
 
@@ -188,35 +125,13 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new CanceledPruneRequestedEvent(
                                                       referenceObject.Details,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Tags),
+                                                      referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
 
                         return result;
                     },
                     PropertyName = "TimestampUtc",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CanceledPruneRequestedEvent>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledPruneRequestedEvent>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<CanceledPruneRequestedEvent>
-                        {
-                            SystemUnderTest = new CanceledPruneRequestedEvent(
-                                                      referenceObject.Details,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
                 });
 
         private static readonly DeepCloneWithTestScenarios<CanceledPruneRequestedEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CanceledPruneRequestedEvent>()
@@ -259,26 +174,6 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<CanceledPruneRequestedEvent>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<CanceledPruneRequestedEvent>();
-
-                        var referenceObject = A.Dummy<CanceledPruneRequestedEvent>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<CanceledPruneRequestedEvent>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
                 });
 
         private static readonly CanceledPruneRequestedEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<CanceledPruneRequestedEvent>();
@@ -293,23 +188,16 @@ namespace Naos.Database.Domain.Test
                     {
                         new CanceledPruneRequestedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new CanceledPruneRequestedEvent[]
                     {
                         new CanceledPruneRequestedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<CanceledPruneRequestedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                                A.Dummy<CanceledPruneRequestedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
                         new CanceledPruneRequestedEvent(
                                 A.Dummy<CanceledPruneRequestedEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CanceledPruneRequestedEvent(
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<CanceledPruneRequestedEvent>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -321,8 +209,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
                         A.Dummy<UniqueLongIssuedEvent>(),
-                        A.Dummy<BlockedHandlingEvent<Version>>(),
-                        A.Dummy<CanceledBlockedHandlingEvent<Version>>(),
+                        A.Dummy<BlockedHandlingEvent>(),
+                        A.Dummy<CanceledBlockedHandlingEvent>(),
                     },
                 });
 
@@ -588,15 +476,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
-                }
             }
 
             [Fact]
@@ -615,7 +494,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TimestampUtc", "Details", "Tags" };
+                var propertyNames = new string[] { "TimestampUtc", "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

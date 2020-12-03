@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: MaxInternalRecordDate = {systemUnderTest.MaxInternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: MaxInternalRecordDate = {systemUnderTest.MaxInternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -67,8 +67,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new PruneBeforeInternalRecordDateOp(
                                              referenceObject.MaxInternalRecordDate,
-                                             null,
-                                             referenceObject.Tags);
+                                             null);
 
                         return result;
                     },
@@ -85,73 +84,12 @@ namespace Naos.Database.Domain.Test
 
                         var result = new PruneBeforeInternalRecordDateOp(
                                              referenceObject.MaxInternalRecordDate,
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.Tags);
+                                             Invariant($"  {Environment.NewLine}  "));
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                        var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.MaxInternalRecordDate,
-                                             referenceObject.Details,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                        var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.MaxInternalRecordDate,
-                                             referenceObject.Details,
-                                             new Dictionary<string, string>());
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.MaxInternalRecordDate,
-                                             referenceObject.Details,
-                                             dictionaryWithNullValue);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<PruneBeforeInternalRecordDateOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PruneBeforeInternalRecordDateOp>()
@@ -167,8 +105,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
                                                       referenceObject.MaxInternalRecordDate,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
+                                                      referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.MaxInternalRecordDate,
                         };
 
@@ -188,35 +125,13 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
                                                       referenceObject.MaxInternalRecordDate,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
+                                                      referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
                     PropertyName = "Details",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordDateOp>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordDateOp>
-                        {
-                            SystemUnderTest = new PruneBeforeInternalRecordDateOp(
-                                                      referenceObject.MaxInternalRecordDate,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
                 });
 
         private static readonly DeepCloneWithTestScenarios<PruneBeforeInternalRecordDateOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PruneBeforeInternalRecordDateOp>()
@@ -259,26 +174,6 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneBeforeInternalRecordDateOp>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneBeforeInternalRecordDateOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
                 });
 
         private static readonly PruneBeforeInternalRecordDateOp ReferenceObjectForEquatableTestScenarios = A.Dummy<PruneBeforeInternalRecordDateOp>();
@@ -293,23 +188,16 @@ namespace Naos.Database.Domain.Test
                     {
                         new PruneBeforeInternalRecordDateOp(
                                 ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                                ReferenceObjectForEquatableTestScenarios.Details),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PruneBeforeInternalRecordDateOp[]
                     {
                         new PruneBeforeInternalRecordDateOp(
                                 A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.MaxInternalRecordDate.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate)).MaxInternalRecordDate,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                                ReferenceObjectForEquatableTestScenarios.Details),
                         new PruneBeforeInternalRecordDateOp(
                                 ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate,
-                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new PruneBeforeInternalRecordDateOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
+                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -319,22 +207,23 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
                         A.Dummy<HandleRecordOp>(),
+                        A.Dummy<HandleRecordOp<Version>>(),
+                        A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version>>(),
                         A.Dummy<TryHandleRecordOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
+                        A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
+                        A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp<Version>>(),
                         A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<PruneBeforeInternalRecordIdOp>(),
-                        A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
@@ -605,15 +494,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
-                }
             }
 
             [Fact]
@@ -632,7 +512,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "MaxInternalRecordDate", "Details", "Tags" };
+                var propertyNames = new string[] { "MaxInternalRecordDate", "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

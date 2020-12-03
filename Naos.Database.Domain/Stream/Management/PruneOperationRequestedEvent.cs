@@ -15,22 +15,19 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
     /// </summary>
-    public partial class PruneOperationRequestedEvent : EventBaseBase, IHaveTags
+    public partial class PruneOperationRequestedEvent : EventBaseBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneOperationRequestedEvent"/> class.
         /// </summary>
         /// <param name="pruneOperation">The prune operation.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        /// <param name="tags">The optional tags.</param>
         public PruneOperationRequestedEvent(
             IPruneOperation pruneOperation,
-            DateTime timestampUtc,
-            IReadOnlyDictionary<string, string> tags = null)
+            DateTime timestampUtc)
             : base(timestampUtc)
         {
             this.PruneOperation = pruneOperation;
-            this.Tags = tags;
         }
 
         /// <summary>
@@ -38,8 +35,5 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The prune operation.</value>
         public IPruneOperation PruneOperation { get; private set; }
-
-        /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
     }
 }

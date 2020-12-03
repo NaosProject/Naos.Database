@@ -16,25 +16,22 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Deletes all records in a stream whose internal record identifier is less than the specified threshold.
     /// </summary>
-    public partial class PruneBeforeInternalRecordDateOp : VoidOperationBase, IHaveTags, IPruneOperation
+    public partial class PruneBeforeInternalRecordDateOp : VoidOperationBase, IPruneOperation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneBeforeInternalRecordDateOp"/> class.
         /// </summary>
         /// <param name="maxInternalRecordDate">The maximum internal record date.</param>
         /// <param name="details">The pruning context.</param>
-        /// <param name="tags">The optional tags.</param>
         public PruneBeforeInternalRecordDateOp(
             DateTime maxInternalRecordDate,
-            string details,
-            IReadOnlyDictionary<string, string> tags = null)
+            string details)
         {
             maxInternalRecordDate.Kind.MustForArg(Invariant($"{nameof(maxInternalRecordDate)}.{nameof(maxInternalRecordDate.Kind)}")).BeEqualTo(DateTimeKind.Utc);
             details.MustForArg(nameof(details)).NotBeNull();
 
             this.MaxInternalRecordDate = maxInternalRecordDate;
             this.Details = details;
-            this.Tags = tags;
         }
 
         /// <summary>
@@ -48,8 +45,5 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The details.</value>
         public string Details { get; private set; }
-
-        /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
     }
 }

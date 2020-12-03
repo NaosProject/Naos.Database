@@ -39,8 +39,8 @@
     <CodeAnalysisRuleSet />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.87\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.88\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Compression, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Compression.1.0.19\lib\net462\OBeautifulCode.Compression.dll</HintPath>
@@ -128,11 +128,11 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
-    <Compile Include="Stream\Handling\Blocking\BlockedHandlingEvent{TBlockingContext}.designer.cs">
-      <DependentUpon>BlockedHandlingEvent{TBlockingContext}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\Blocking\BlockedHandlingEvent.designer.cs">
+      <DependentUpon>BlockedHandlingEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent{TCancelContext}.designer.cs">
-      <DependentUpon>CanceledBlockedHandlingEvent{TCancelContext}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent.designer.cs">
+      <DependentUpon>CanceledBlockedHandlingEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
@@ -219,12 +219,13 @@
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp.cs" />
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
-    <Compile Include="Stream\Handling\Blocking\BlockedHandlingEvent{TBlockingContext}.cs" />
-    <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent{TCancelContext}.cs" />
+    <Compile Include="Stream\Handling\Blocking\BlockedHandlingEvent.cs" />
+    <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent.cs" />
     <Compile Include="Legacy\IConnectionDefinition.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
@@ -236,6 +237,9 @@
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
       <DependentUpon>GetLatestRecordOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.cs" />
     <Compile Include="Stream\Management\DeleteStreamOp.cs" />

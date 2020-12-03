@@ -35,185 +35,118 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class BlockedHandlingEventTBlockingContextTest
+    public static partial class BlockedHandlingEventTest
     {
-        private static readonly StringRepresentationTestScenarios<BlockedHandlingEvent<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<BlockedHandlingEvent<Version>>()
+        private static readonly StringRepresentationTestScenarios<BlockedHandlingEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<BlockedHandlingEvent>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<BlockedHandlingEvent<Version>>
+                new StringRepresentationTestScenario<BlockedHandlingEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<BlockedHandlingEvent<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<BlockedHandlingEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.BlockedHandlingEvent<Version>: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, BlockingContext = {systemUnderTest.BlockingContext?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.BlockedHandlingEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<BlockedHandlingEvent<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<BlockedHandlingEvent<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<BlockedHandlingEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<BlockedHandlingEvent>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'blockingContext' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
 
-                        var result = new BlockedHandlingEvent<Version>(
+                        var result = new BlockedHandlingEvent(
                                              null,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Tags);
+                                             referenceObject.TimestampUtc);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "blockingContext", },
+                    ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent<Version>>
+                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
 
-                        var result = new BlockedHandlingEvent<Version>(
-                                             referenceObject.BlockingContext,
-                                             referenceObject.TimestampUtc,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
-
-                        var result = new BlockedHandlingEvent<Version>(
-                                             referenceObject.BlockingContext,
-                                             referenceObject.TimestampUtc,
-                                             new Dictionary<string, string>());
+                        var result = new BlockedHandlingEvent(
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.TimestampUtc);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new BlockedHandlingEvent<Version>(
-                                             referenceObject.BlockingContext,
-                                             referenceObject.TimestampUtc,
-                                             dictionaryWithNullValue);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
+                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<BlockedHandlingEvent<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<BlockedHandlingEvent<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<BlockedHandlingEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<BlockedHandlingEvent>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent<Version>>
+                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent>
                 {
-                    Name = "BlockingContext should return same 'blockingContext' parameter passed to constructor when getting",
+                    Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent>
                         {
-                            SystemUnderTest = new BlockedHandlingEvent<Version>(
-                                                      referenceObject.BlockingContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.BlockingContext,
+                            SystemUnderTest = new BlockedHandlingEvent(
+                                                      referenceObject.Details,
+                                                      referenceObject.TimestampUtc),
+                            ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
-                    PropertyName = "BlockingContext",
+                    PropertyName = "Details",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent<Version>>
+                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent>
                         {
-                            SystemUnderTest = new BlockedHandlingEvent<Version>(
-                                                      referenceObject.BlockingContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Tags),
+                            SystemUnderTest = new BlockedHandlingEvent(
+                                                      referenceObject.Details,
+                                                      referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
 
                         return result;
                     },
                     PropertyName = "TimestampUtc",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent<Version>>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = new BlockedHandlingEvent<Version>(
-                                                      referenceObject.BlockingContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<BlockedHandlingEvent<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<BlockedHandlingEvent<Version>>()
+        private static readonly DeepCloneWithTestScenarios<BlockedHandlingEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<BlockedHandlingEvent>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<BlockedHandlingEvent<Version>>
+                new DeepCloneWithTestScenario<BlockedHandlingEvent>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
 
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<BlockedHandlingEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -223,75 +156,48 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<BlockedHandlingEvent<Version>>
+                new DeepCloneWithTestScenario<BlockedHandlingEvent>
                 {
-                    Name = "DeepCloneWithBlockingContext should deep clone object and replace BlockingContext with the provided blockingContext",
-                    WithPropertyName = "BlockingContext",
+                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
+                    WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent<Version>>();
+                        var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
 
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.BlockingContext.IsEqualTo(_.BlockingContext));
+                        var referenceObject = A.Dummy<BlockedHandlingEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.BlockingContext,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<BlockedHandlingEvent<Version>>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent<Version>>();
-
-                        var referenceObject = A.Dummy<BlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
+                            DeepCloneWithValue = referenceObject.Details,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly BlockedHandlingEvent<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<BlockedHandlingEvent<Version>>();
+        private static readonly BlockedHandlingEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<BlockedHandlingEvent>();
 
-        private static readonly EquatableTestScenarios<BlockedHandlingEvent<Version>> EquatableTestScenarios = new EquatableTestScenarios<BlockedHandlingEvent<Version>>()
+        private static readonly EquatableTestScenarios<BlockedHandlingEvent> EquatableTestScenarios = new EquatableTestScenarios<BlockedHandlingEvent>()
             .AddScenario(() =>
-                new EquatableTestScenario<BlockedHandlingEvent<Version>>
+                new EquatableTestScenario<BlockedHandlingEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new BlockedHandlingEvent<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new BlockedHandlingEvent[]
                     {
-                        new BlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.BlockingContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new BlockedHandlingEvent(
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new BlockedHandlingEvent<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new BlockedHandlingEvent[]
                     {
-                        new BlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.BlockingContext,
-                                A.Dummy<BlockedHandlingEvent<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new BlockedHandlingEvent<Version>(
-                                A.Dummy<BlockedHandlingEvent<Version>>().Whose(_ => !_.BlockingContext.IsEqualTo(ReferenceObjectForEquatableTestScenarios.BlockingContext)).BlockingContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new BlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.BlockingContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<BlockedHandlingEvent<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
+                        new BlockedHandlingEvent(
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                A.Dummy<BlockedHandlingEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                        new BlockedHandlingEvent(
+                                A.Dummy<BlockedHandlingEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -302,9 +208,9 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<Guid>(),
                         A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
-                        A.Dummy<CanceledPruneRequestedEvent>(),
                         A.Dummy<UniqueLongIssuedEvent>(),
-                        A.Dummy<CanceledBlockedHandlingEvent<Version>>(),
+                        A.Dummy<CanceledPruneRequestedEvent>(),
+                        A.Dummy<CanceledBlockedHandlingEvent>(),
                     },
                 });
 
@@ -329,9 +235,9 @@ namespace Naos.Database.Domain.Test
             public static void BlockedHandlingEvent___Should_implement_IModel_of_BlockedHandlingEvent___When_reflecting()
             {
                 // Arrange
-                var type = typeof(BlockedHandlingEvent<Version>);
+                var type = typeof(BlockedHandlingEvent);
 
-                var expectedModelMethods = typeof(IModel<BlockedHandlingEvent<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<BlockedHandlingEvent>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -341,7 +247,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<BlockedHandlingEvent<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<BlockedHandlingEvent>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -362,7 +268,7 @@ namespace Naos.Database.Domain.Test
             public static void BlockedHandlingEvent___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(BlockedHandlingEvent<Version>);
+                var type = typeof(BlockedHandlingEvent);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -535,10 +441,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<BlockedHandlingEvent<Version>>();
+                var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
 
                 // Act
-                var actual = (BlockedHandlingEvent<Version>)systemUnderTest.Clone();
+                var actual = (BlockedHandlingEvent)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -562,7 +468,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<BlockedHandlingEvent<Version>>();
+                var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -570,24 +476,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.BlockingContext == null)
-                {
-                    actual.BlockingContext.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.BlockingContext.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.BlockingContext);
-                }
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
-                }
             }
 
             [Fact]
@@ -606,7 +494,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TimestampUtc", "BlockingContext", "Tags" };
+                var propertyNames = new string[] { "TimestampUtc", "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -623,12 +511,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (BlockedHandlingEvent<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (BlockedHandlingEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(BlockedHandlingEvent<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(BlockedHandlingEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -696,7 +584,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<BlockedHandlingEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -725,7 +613,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<BlockedHandlingEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -754,7 +642,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<BlockedHandlingEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -783,7 +671,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<BlockedHandlingEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -817,8 +705,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                BlockedHandlingEvent<Version> systemUnderTest1 = null;
-                BlockedHandlingEvent<Version> systemUnderTest2 = null;
+                BlockedHandlingEvent systemUnderTest1 = null;
+                BlockedHandlingEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -848,7 +736,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    BlockedHandlingEvent<Version> systemUnderTest = null;
+                    BlockedHandlingEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -997,8 +885,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                BlockedHandlingEvent<Version> systemUnderTest1 = null;
-                BlockedHandlingEvent<Version> systemUnderTest2 = null;
+                BlockedHandlingEvent systemUnderTest1 = null;
+                BlockedHandlingEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1028,7 +916,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    BlockedHandlingEvent<Version> systemUnderTest = null;
+                    BlockedHandlingEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1324,7 +1212,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    BlockedHandlingEvent<Version> systemUnderTest = null;
+                    BlockedHandlingEvent systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

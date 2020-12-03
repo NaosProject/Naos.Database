@@ -35,359 +35,41 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class CanceledBlockedHandlingEventTCancelContextTest
+    public static partial class GetLatestRecordOpTObjectTest
     {
-        private static readonly StringRepresentationTestScenarios<CanceledBlockedHandlingEvent<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<CanceledBlockedHandlingEvent<Version>>()
+        private static readonly StringRepresentationTestScenarios<GetLatestRecordOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetLatestRecordOp<Version>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<CanceledBlockedHandlingEvent<Version>>
+                new StringRepresentationTestScenario<GetLatestRecordOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                        var systemUnderTest = A.Dummy<GetLatestRecordOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<CanceledBlockedHandlingEvent<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetLatestRecordOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CanceledBlockedHandlingEvent<Version>: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, CancelContext = {systemUnderTest.CancelContext?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestRecordOp<Version>: <no properties>."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<CanceledBlockedHandlingEvent<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<CanceledBlockedHandlingEvent<Version>>()
+        private static readonly GetLatestRecordOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetLatestRecordOp<Version>>();
+
+        private static readonly EquatableTestScenarios<GetLatestRecordOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<GetLatestRecordOp<Version>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'cancelContext' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new CanceledBlockedHandlingEvent<Version>(
-                                             null,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Details,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "cancelContext", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new CanceledBlockedHandlingEvent<Version>(
-                                             referenceObject.CancelContext,
-                                             referenceObject.TimestampUtc,
-                                             null,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "details", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new CanceledBlockedHandlingEvent<Version>(
-                                             referenceObject.CancelContext,
-                                             referenceObject.TimestampUtc,
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new CanceledBlockedHandlingEvent<Version>(
-                                             referenceObject.CancelContext,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Details,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new CanceledBlockedHandlingEvent<Version>(
-                                             referenceObject.CancelContext,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Details,
-                                             new Dictionary<string, string>());
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new CanceledBlockedHandlingEvent<Version>(
-                                             referenceObject.CancelContext,
-                                             referenceObject.TimestampUtc,
-                                             referenceObject.Details,
-                                             dictionaryWithNullValue);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
-                });
-
-        private static readonly ConstructorPropertyAssignmentTestScenarios<CanceledBlockedHandlingEvent<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CanceledBlockedHandlingEvent<Version>>()
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "CancelContext should return same 'cancelContext' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = new CanceledBlockedHandlingEvent<Version>(
-                                                      referenceObject.CancelContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.CancelContext,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "CancelContext",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = new CanceledBlockedHandlingEvent<Version>(
-                                                      referenceObject.CancelContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.TimestampUtc,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TimestampUtc",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "Details should return same 'details' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = new CanceledBlockedHandlingEvent<Version>(
-                                                      referenceObject.CancelContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Details,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Details",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = new CanceledBlockedHandlingEvent<Version>(
-                                                      referenceObject.CancelContext,
-                                                      referenceObject.TimestampUtc,
-                                                      referenceObject.Details,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
-                });
-
-        private static readonly DeepCloneWithTestScenarios<CanceledBlockedHandlingEvent<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CanceledBlockedHandlingEvent<Version>>()
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
-                    WithPropertyName = "TimestampUtc",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TimestampUtc,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "DeepCloneWithCancelContext should deep clone object and replace CancelContext with the provided cancelContext",
-                    WithPropertyName = "CancelContext",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.CancelContext.IsEqualTo(_.CancelContext));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.CancelContext,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
-                    WithPropertyName = "Details",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Details,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<CanceledBlockedHandlingEvent<Version>>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-                        var referenceObject = A.Dummy<CanceledBlockedHandlingEvent<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<CanceledBlockedHandlingEvent<Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                });
-
-        private static readonly CanceledBlockedHandlingEvent<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
-
-        private static readonly EquatableTestScenarios<CanceledBlockedHandlingEvent<Version>> EquatableTestScenarios = new EquatableTestScenarios<CanceledBlockedHandlingEvent<Version>>()
-            .AddScenario(() =>
-                new EquatableTestScenario<CanceledBlockedHandlingEvent<Version>>
+                new EquatableTestScenario<GetLatestRecordOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CanceledBlockedHandlingEvent<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetLatestRecordOp<Version>[]
                     {
-                        new CanceledBlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.CancelContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new GetLatestRecordOp<Version>(),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new CanceledBlockedHandlingEvent<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetLatestRecordOp<Version>[]
                     {
-                        new CanceledBlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.CancelContext,
-                                A.Dummy<CanceledBlockedHandlingEvent<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CanceledBlockedHandlingEvent<Version>(
-                                A.Dummy<CanceledBlockedHandlingEvent<Version>>().Whose(_ => !_.CancelContext.IsEqualTo(ReferenceObjectForEquatableTestScenarios.CancelContext)).CancelContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CanceledBlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.CancelContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<CanceledBlockedHandlingEvent<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CanceledBlockedHandlingEvent<Version>(
-                                ReferenceObjectForEquatableTestScenarios.CancelContext,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<CanceledBlockedHandlingEvent<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -396,11 +78,29 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<PruneOperationRequestedEvent>(),
-                        A.Dummy<PruneOperationExecutedEvent>(),
-                        A.Dummy<CanceledPruneRequestedEvent>(),
-                        A.Dummy<UniqueLongIssuedEvent>(),
-                        A.Dummy<BlockedHandlingEvent<Version>>(),
+                        A.Dummy<HandleRecordOp>(),
+                        A.Dummy<HandleRecordOp<Version>>(),
+                        A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
+                        A.Dummy<HandleRecordWithIdOp<Version>>(),
+                        A.Dummy<TryHandleRecordOp>(),
+                        A.Dummy<TryHandleRecordOp<Version>>(),
+                        A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
+                        A.Dummy<TryHandleRecordWithIdOp<Version>>(),
+                        A.Dummy<PruneBeforeInternalRecordDateOp>(),
+                        A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
+                        A.Dummy<GetLatestObjectOp<Version>>(),
+                        A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
+                        A.Dummy<GetLatestRecordByIdOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp>(),
+                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
+                        A.Dummy<CreateStreamOp>(),
+                        A.Dummy<DeleteStreamOp>(),
+                        A.Dummy<GetNextUniqueLongOp>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
+                        A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
+                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
+                        A.Dummy<PutWithIdOp<Version, Version>>(),
+                        A.Dummy<PutOp<Version>>(),
                     },
                 });
 
@@ -422,12 +122,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void CanceledBlockedHandlingEvent___Should_implement_IModel_of_CanceledBlockedHandlingEvent___When_reflecting()
+            public static void GetLatestRecordOp___Should_implement_IModel_of_GetLatestRecordOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(CanceledBlockedHandlingEvent<Version>);
+                var type = typeof(GetLatestRecordOp<Version>);
 
-                var expectedModelMethods = typeof(IModel<CanceledBlockedHandlingEvent<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetLatestRecordOp<Version>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -437,7 +137,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<CanceledBlockedHandlingEvent<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetLatestRecordOp<Version>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -455,10 +155,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void CanceledBlockedHandlingEvent___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetLatestRecordOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(CanceledBlockedHandlingEvent<Version>);
+                var type = typeof(GetLatestRecordOp<Version>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -503,115 +203,6 @@ namespace Naos.Database.Domain.Test
 
         [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
-        public static class Constructing
-        {
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Constructor___Should_throw___When_parameters_are_not_valid()
-            {
-                var scenarios = ConstructorArgumentValidationTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = Record.Exception(scenario.ConstructionFunc);
-
-                    // Assert
-                    actual.AsTest().Must().BeOfType(scenario.ExpectedExceptionType, because: scenario.Id);
-
-                    foreach(var expected in scenario.ExpectedExceptionMessageContains ?? new List<string>())
-                    {
-                        actual.Message.AsTest().Must().ContainString(expected, because: scenario.Id);
-                    }
-
-                    if (scenario.ExpectedExceptionMessageEquals != null)
-                    {
-                        actual.Message.AsTest().Must().BeEqualTo(scenario.ExpectedExceptionMessageEquals, because: scenario.Id);
-                    }
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            [SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "referenceObject")]
-            public static void Properties___Should_be_assigned_by_constructor_to_expected_value___When_getting()
-            {
-                var scenarios = ConstructorPropertyAssignmentTestScenarios.ValidateAndPrepareForTesting();
-
-                var obcAssertionAsTestMethod = typeof(WorkflowExtensions).GetMethodFiltered(nameof(WorkflowExtensions.AsTest), MemberRelationships.DeclaredInType, MemberOwners.Static, MemberAccessModifiers.Public);
-
-                var obcAssertionBeEqualToMethod = typeof(Verifications).GetMethodFiltered(nameof(Verifications.BeEqualTo), MemberRelationships.DeclaredInType, MemberOwners.Static, MemberAccessModifiers.Public);
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    if ((scenario.PropertyName == ConstructorPropertyAssignmentTestScenario.NoPropertiesAssignedInConstructorScenarioPropertyName) || (scenario.PropertyName == ConstructorPropertyAssignmentTestScenario.ForceGeneratedTestsToPassAndWriteMyOwnScenarioPropertyName))
-                    {
-                        continue;
-                    }
-
-                    // Act
-                    var actual = scenario.Property.GetValue(scenario.SystemUnderTest);
-
-                    // Assert
-                    if (scenario.CompareActualToExpectedUsing == CompareActualToExpectedUsing.ValueEquality)
-                    {
-                        var propertyType = scenario.Property.PropertyType;
-
-                        // Use reflection to call: actual.AsTest().Must().BeEqualTo(scenario.ExpectedPropertyValue, because: scenario.Id)
-                        // We need to use reflection here to specify the 'subject' and 'comparisonValue' types.
-                        // BeEqualTo() uses declared types and not runtime types to identify the contract to use for equality.
-                        // Here 'scenario.ExpectedPropertyValue' and 'actual' are declared as typeof(object).
-                        // With the exception of some specific boxed types (e.g. value types, string),
-                        // BeEqualTo() uses reference equality to compare two objects declared as typeof(object).
-                        // We want to use the property's real type, 'scenario.Property.PropertyType'.
-                        // For example, BeEqualTo() returns false for these two dictionaries because their declared type is typeof(object):
-                        // object x = Dictionary<string, string>();
-                        // object y = Dictionary<string, string>();
-                        var assertionTracker = ((AssertionTracker)obcAssertionAsTestMethod.MakeGenericMethod(propertyType).Invoke(null, new[] { actual, Type.Missing })).Must();
-
-                        var invokeableObcAssertionBeEqualToMethod = obcAssertionBeEqualToMethod.MakeGenericMethod(propertyType);
-
-                        invokeableObcAssertionBeEqualToMethod.Invoke(null, new object[] { assertionTracker, scenario.ExpectedPropertyValue, scenario.Id, Type.Missing, Type.Missing });
-                    }
-                    else if (scenario.CompareActualToExpectedUsing == CompareActualToExpectedUsing.ReferenceEquality)
-                    {
-                        actual.AsTest().Must().BeSameReferenceAs(scenario.ExpectedPropertyValue, because: scenario.Id);
-                    }
-                    else
-                    {
-                        throw new NotSupportedException("This CompareActualToExpectedUsing is not supported: " + scenario.CompareActualToExpectedUsing);
-                    }
-                }
-            }
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Cloning
         {
             [Fact]
@@ -631,10 +222,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                var systemUnderTest = A.Dummy<GetLatestRecordOp<Version>>();
 
                 // Act
-                var actual = (CanceledBlockedHandlingEvent<Version>)systemUnderTest.Clone();
+                var actual = (GetLatestRecordOp<Version>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -658,7 +249,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                var systemUnderTest = A.Dummy<GetLatestRecordOp<Version>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -666,108 +257,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.CancelContext == null)
-                {
-                    actual.CancelContext.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.CancelContext.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.CancelContext);
-                }
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
-            {
-                var propertyNames = new string[] { "TimestampUtc", "CancelContext", "Details", "Tags" };
-
-                var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
-
-                var obcAssertionAsTestMethod = typeof(WorkflowExtensions).GetMethodFiltered(nameof(WorkflowExtensions.AsTest), MemberRelationships.DeclaredInType, MemberOwners.Static, MemberAccessModifiers.Public);
-
-                var obcAssertionBeEqualToMethod = typeof(Verifications).GetMethodFiltered(nameof(Verifications.BeEqualTo), MemberRelationships.DeclaredInType, MemberOwners.Static, MemberAccessModifiers.Public);
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    if (scenario.WithPropertyName == DeepCloneWithTestScenario.ForceGeneratedTestsToPassAndWriteMyOwnScenarioWithPropertyName)
-                    {
-                        continue;
-                    }
-
-                    // Act
-                    var actual = (CanceledBlockedHandlingEvent<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
-
-                    // Assert
-                    foreach(var propertyName in propertyNames)
-                    {
-                        var propertyInfo = typeof(CanceledBlockedHandlingEvent<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
-
-                        var propertyType = propertyInfo.PropertyType;
-
-                        var actualPropertyValue = propertyInfo.GetValue(actual);
-
-                        if (propertyName == scenario.WithPropertyName)
-                        {
-                            if (propertyType.IsValueType)
-                            {
-                                actualPropertyValue.AsTest().Must().BeEqualTo(scenario.WithValue, because: scenario.Id);
-                            }
-                            else
-                            {
-                                actualPropertyValue.AsTest().Must().BeSameReferenceAs(scenario.WithValue, because: scenario.Id);
-                            }
-                        }
-                        else
-                        {
-                            var systemUnderTestPropertyValue = propertyInfo.GetValue(scenario.SystemUnderTest);
-
-                            // Use reflection to call: actualPropertyValue.AsTest().Must().BeEqualTo(systemUnderTestPropertyValue, because: scenario.Id)
-                            // We need to use reflection here to specify the 'subject' and 'comparisonValue' types.
-                            // BeEqualTo() uses declared types and not runtime types to identify the contract to use for equality.
-                            // Here 'systemUnderTestPropertyValue' and 'actualPropertyValue' are declared as typeof(object).
-                            // With the exception of some specific boxed types (e.g. value types, string),
-                            // BeEqualTo() uses reference equality to compare two objects declared as typeof(object).
-                            // We want to use the property's real type, 'property.PropertyType'.
-                            // For example, BeEqualTo() returns false for these two dictionaries because their declared type is typeof(object):
-                            // object x = Dictionary<string, string>();
-                            // object y = Dictionary<string, string>();
-                            var assertionTracker = ((AssertionTracker)obcAssertionAsTestMethod.MakeGenericMethod(propertyType).Invoke(null, new[] { actualPropertyValue, Type.Missing })).Must();
-
-                            var invokeableObcAssertionBeEqualToMethod = obcAssertionBeEqualToMethod.MakeGenericMethod(propertyType);
-
-                            invokeableObcAssertionBeEqualToMethod.Invoke(null, new object[] { assertionTracker, systemUnderTestPropertyValue, scenario.Id, Type.Missing, Type.Missing });
-
-                            if ((!propertyType.IsValueType) && (propertyType != typeof(string)) && (systemUnderTestPropertyValue != null))
-                            {
-                                actualPropertyValue.AsTest().Must().NotBeSameReferenceAs(systemUnderTestPropertyValue, because: scenario.Id);
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -792,7 +281,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<GetLatestRecordOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -821,7 +310,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<GetLatestRecordOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -850,7 +339,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<GetLatestRecordOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -879,7 +368,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CanceledBlockedHandlingEvent<Version>>();
+                var expected = A.Dummy<GetLatestRecordOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -913,8 +402,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CanceledBlockedHandlingEvent<Version> systemUnderTest1 = null;
-                CanceledBlockedHandlingEvent<Version> systemUnderTest2 = null;
+                GetLatestRecordOp<Version> systemUnderTest1 = null;
+                GetLatestRecordOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -944,7 +433,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CanceledBlockedHandlingEvent<Version> systemUnderTest = null;
+                    GetLatestRecordOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1093,8 +582,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CanceledBlockedHandlingEvent<Version> systemUnderTest1 = null;
-                CanceledBlockedHandlingEvent<Version> systemUnderTest2 = null;
+                GetLatestRecordOp<Version> systemUnderTest1 = null;
+                GetLatestRecordOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1124,7 +613,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CanceledBlockedHandlingEvent<Version> systemUnderTest = null;
+                    GetLatestRecordOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1270,17 +759,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_EventBaseBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    EventBaseBase systemUnderTest = null;
+                    OperationBase systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((EventBaseBase)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1301,14 +790,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_EventBaseBase___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((EventBaseBase)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1329,14 +818,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_EventBaseBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBaseBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1357,14 +846,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_EventBaseBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBaseBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1385,14 +874,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_EventBaseBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBaseBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1413,14 +902,157 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CanceledBlockedHandlingEvent___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CanceledBlockedHandlingEvent<Version> systemUnderTest = null;
+                    ReturningOperationBase<StreamRecord<Version>> systemUnderTest = null;
+
+                    // Act
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecord<Version>>)systemUnderTest);
+
+                    // Assert
+                    actual.AsTest().Must().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_parameter_other_is_same_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecord<Version>>)scenario.ReferenceObject);
+
+                    // Assert
+                    actual.AsTest().Must().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecord<Version>>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecord<Version>>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecord<Version>>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_GetLatestRecordOp___Should_return_false___When_parameter_other_is_null()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange
+                    GetLatestRecordOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1444,7 +1076,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CanceledBlockedHandlingEvent___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetLatestRecordOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1472,7 +1104,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CanceledBlockedHandlingEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetLatestRecordOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1500,7 +1132,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CanceledBlockedHandlingEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetLatestRecordOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1528,7 +1160,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CanceledBlockedHandlingEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetLatestRecordOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

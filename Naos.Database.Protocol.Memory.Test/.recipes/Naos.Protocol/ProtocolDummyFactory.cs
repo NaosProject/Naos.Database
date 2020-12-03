@@ -32,54 +32,58 @@ namespace Naos.Protocol.Domain.Test
         public ProtocolDummyFactory()
         {
             /* Add any overriding or custom registrations here. */
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledRequestedExecutionEvent<Version, Version>(
-                                 A.Dummy<Version>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new SelfCanceledRunningExecutionEvent<Version, Version>(
-                                 A.Dummy<Version>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                () => new CanceledRequestedExecutionEvent<Version>(
+                    A.Dummy<Version>(),
+                    A.Dummy<string>(),
+                    A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledRunningExecutionEvent<Version, Version>(
+                () => new CanceledRunningExecutionEvent<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CompletedExecutionEvent<Version, Version>(
+                () => new CompletedExecutionEvent<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new FailedExecutionEvent<Version, Version>(
+                () => new FailedExecutionEvent<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RequestedExecutionEvent<Version, CancelExecutionAttemptOp<Version, Version>>(
+                () => new RequestedExecutionEvent<Version, CancelRunningExecutionOp<Version>>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<CancelExecutionAttemptOp<Version, Version>>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<CancelRunningExecutionOp<Version>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RunningExecutionEvent<Version, CancelExecutionAttemptOp<Version, Version>>(
+                () => new RequestedExecutionEvent<Version, FailRunningExecutionOp<Version>>(
+                    A.Dummy<Version>(),
+                    A.Dummy<DateTime>().ToUniversalTime(),
+                    A.Dummy<FailRunningExecutionOp<Version>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RequestedExecutionEvent<Version, CancelExecutionRequestOp<Version>>(
+                    A.Dummy<Version>(),
+                    A.Dummy<DateTime>().ToUniversalTime(),
+                    A.Dummy<CancelExecutionRequestOp<Version>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RunningExecutionEvent<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<CancelExecutionAttemptOp<Version, Version>>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<DateTime>().ToUniversalTime()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new SelfCanceledRunningExecutionEvent<Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CacheResult<Version, Version>(
@@ -95,7 +99,6 @@ namespace Naos.Protocol.Domain.Test
                 () => new NullIdentifiedEvent<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
-
         }
     }
 }

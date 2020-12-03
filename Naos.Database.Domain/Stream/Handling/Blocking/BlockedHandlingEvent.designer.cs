@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class PruneBeforeInternalRecordIdOp : IModel<PruneBeforeInternalRecordIdOp>
+    public partial class BlockedHandlingEvent : IModel<BlockedHandlingEvent>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="PruneBeforeInternalRecordIdOp"/> are equal.
+        /// Determines whether two objects of type <see cref="BlockedHandlingEvent"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(PruneBeforeInternalRecordIdOp left, PruneBeforeInternalRecordIdOp right)
+        public static bool operator ==(BlockedHandlingEvent left, BlockedHandlingEvent right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="PruneBeforeInternalRecordIdOp"/> are not equal.
+        /// Determines whether two objects of type <see cref="BlockedHandlingEvent"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(PruneBeforeInternalRecordIdOp left, PruneBeforeInternalRecordIdOp right) => !(left == right);
+        public static bool operator !=(BlockedHandlingEvent left, BlockedHandlingEvent right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(PruneBeforeInternalRecordIdOp other)
+        public bool Equals(BlockedHandlingEvent other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -70,29 +70,25 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.MaxInternalRecordId.IsEqualTo(other.MaxInternalRecordId)
+            var result = this.TimestampUtc.IsEqualTo(other.TimestampUtc)
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as PruneBeforeInternalRecordIdOp);
+        public override bool Equals(object obj) => this == (obj as BlockedHandlingEvent);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.MaxInternalRecordId)
+            .Hash(this.TimestampUtc)
             .Hash(this.Details)
             .Value;
 
         /// <inheritdoc />
-        public new PruneBeforeInternalRecordIdOp DeepClone() => (PruneBeforeInternalRecordIdOp)this.DeepCloneInternal();
+        public new BlockedHandlingEvent DeepClone() => (BlockedHandlingEvent)this.DeepCloneInternal();
 
-        /// <summary>
-        /// Deep clones this object with a new <see cref="MaxInternalRecordId" />.
-        /// </summary>
-        /// <param name="maxInternalRecordId">The new <see cref="MaxInternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneBeforeInternalRecordIdOp" /> using the specified <paramref name="maxInternalRecordId" /> for <see cref="MaxInternalRecordId" /> and a deep clone of every other property.</returns>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -108,11 +104,11 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneBeforeInternalRecordIdOp DeepCloneWithMaxInternalRecordId(long maxInternalRecordId)
+        public override EventBaseBase DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new PruneBeforeInternalRecordIdOp(
-                                 maxInternalRecordId,
-                                 this.Details?.DeepClone());
+            var result = new BlockedHandlingEvent(
+                                 this.Details?.DeepClone(),
+                                 timestampUtc);
 
             return result;
         }
@@ -121,7 +117,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Details" />.
         /// </summary>
         /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneBeforeInternalRecordIdOp" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="BlockedHandlingEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -137,21 +133,21 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneBeforeInternalRecordIdOp DeepCloneWithDetails(string details)
+        public BlockedHandlingEvent DeepCloneWithDetails(string details)
         {
-            var result = new PruneBeforeInternalRecordIdOp(
-                                 this.MaxInternalRecordId,
-                                 details);
+            var result = new BlockedHandlingEvent(
+                                 details,
+                                 this.TimestampUtc);
 
             return result;
         }
 
         /// <inheritdoc />
-        protected override OperationBase DeepCloneInternal()
+        protected override EventBaseBase DeepCloneInternal()
         {
-            var result = new PruneBeforeInternalRecordIdOp(
-                                 this.MaxInternalRecordId,
-                                 this.Details?.DeepClone());
+            var result = new BlockedHandlingEvent(
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc);
 
             return result;
         }
@@ -160,7 +156,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {this.MaxInternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.BlockedHandlingEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

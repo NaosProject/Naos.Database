@@ -72,8 +72,7 @@ namespace Naos.Database.Domain
 
             var result = this.TimestampUtc.IsEqualTo(other.TimestampUtc)
                       && this.PruneOperation.IsEqualTo(other.PruneOperation)
-                      && this.PruneSummary.IsEqualTo(other.PruneSummary)
-                      && this.Tags.IsEqualTo(other.Tags);
+                      && this.PruneSummary.IsEqualTo(other.PruneSummary);
 
             return result;
         }
@@ -86,7 +85,6 @@ namespace Naos.Database.Domain
             .Hash(this.TimestampUtc)
             .Hash(this.PruneOperation)
             .Hash(this.PruneSummary)
-            .Hash(this.Tags)
             .Value;
 
         /// <inheritdoc />
@@ -113,8 +111,7 @@ namespace Naos.Database.Domain
             var result = new PruneOperationExecutedEvent(
                                  (IPruneOperation)DeepCloneInterface(this.PruneOperation),
                                  this.PruneSummary?.DeepClone(),
-                                 timestampUtc,
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 timestampUtc);
 
             return result;
         }
@@ -144,8 +141,7 @@ namespace Naos.Database.Domain
             var result = new PruneOperationExecutedEvent(
                                  pruneOperation,
                                  this.PruneSummary?.DeepClone(),
-                                 this.TimestampUtc,
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 this.TimestampUtc);
 
             return result;
         }
@@ -175,39 +171,7 @@ namespace Naos.Database.Domain
             var result = new PruneOperationExecutedEvent(
                                  (IPruneOperation)DeepCloneInterface(this.PruneOperation),
                                  pruneSummary,
-                                 this.TimestampUtc,
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="Tags" />.
-        /// </summary>
-        /// <param name="tags">The new <see cref="Tags" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneOperationExecutedEvent" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneOperationExecutedEvent DeepCloneWithTags(IReadOnlyDictionary<string, string> tags)
-        {
-            var result = new PruneOperationExecutedEvent(
-                                 (IPruneOperation)DeepCloneInterface(this.PruneOperation),
-                                 this.PruneSummary?.DeepClone(),
-                                 this.TimestampUtc,
-                                 tags);
+                                 this.TimestampUtc);
 
             return result;
         }
@@ -218,8 +182,7 @@ namespace Naos.Database.Domain
             var result = new PruneOperationExecutedEvent(
                                  (IPruneOperation)DeepCloneInterface(this.PruneOperation),
                                  this.PruneSummary?.DeepClone(),
-                                 this.TimestampUtc,
-                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 this.TimestampUtc);
 
             return result;
         }
@@ -276,7 +239,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PruneOperationExecutedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, PruneOperation = {this.PruneOperation?.ToString() ?? "<null>"}, PruneSummary = {this.PruneSummary?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PruneOperationExecutedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, PruneOperation = {this.PruneOperation?.ToString() ?? "<null>"}, PruneSummary = {this.PruneSummary?.ToString() ?? "<null>"}.");
 
             return result;
         }

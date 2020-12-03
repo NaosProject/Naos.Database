@@ -84,5 +84,21 @@ namespace Naos.Database.Protocol.FileSystem
             var result = await Task.FromResult(syncResult);
             return result;
         }
+
+        /// <inheritdoc />
+        public StreamRecord<TObject> Execute(
+            GetLatestRecordOp<TObject> operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecord<TObject>> ExecuteAsync(
+            GetLatestRecordOp<TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

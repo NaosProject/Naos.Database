@@ -15,7 +15,8 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">Type of object used.</typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = NaosSuppressBecause.CA1040_AvoidEmptyInterfaces_NeedToIdentifyGroupOfTypesAndPreferInterfaceOverAttribute)]
     public interface IStreamReadProtocols<TObject>
-        : ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>
+        : ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>,
+          ISyncAndAsyncReturningProtocol<GetLatestRecordOp<TObject>, StreamRecord<TObject>>
     {
     }
 }

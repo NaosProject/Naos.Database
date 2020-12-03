@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CanceledPruneRequestedEvent.cs" company="Naos Project">
+// <copyright file="BlockedHandlingEvent.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -13,16 +13,16 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
+    /// Event container to signal a block to a <see cref="IReadWriteStream"/> indicating the stream should not be processed beyond this event without an associated <see cref="CanceledBlockedHandlingEvent"/>.
     /// </summary>
-    public partial class CanceledPruneRequestedEvent : EventBaseBase
+    public partial class BlockedHandlingEvent : EventBaseBase, IHaveDetails
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanceledPruneRequestedEvent"/> class.
+        /// Initializes a new instance of the <see cref="BlockedHandlingEvent"/> class.
         /// </summary>
-        /// <param name="details">The details.</param>
+        /// <param name="details">The details about the block.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        public CanceledPruneRequestedEvent(
+        public BlockedHandlingEvent(
             string details,
             DateTime timestampUtc)
             : base(timestampUtc)
@@ -31,10 +31,7 @@ namespace Naos.Database.Domain
             this.Details = details;
         }
 
-        /// <summary>
-        /// Gets the details.
-        /// </summary>
-        /// <value>The details.</value>
+        /// <inheritdoc />
         public string Details { get; private set; }
     }
 }

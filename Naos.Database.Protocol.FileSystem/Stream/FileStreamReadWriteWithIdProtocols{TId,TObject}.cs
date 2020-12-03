@@ -42,6 +42,7 @@ namespace Naos.Database.Protocol.FileSystem
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> resourceLocatorUsingIdProtocols;
         private readonly ISerializer serializer;
         private readonly SerializerRepresentation serializerRepresentation;
+        private readonly IStreamReadProtocols delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteWithIdProtocols{TId,TObject}"/> class.
@@ -53,6 +54,7 @@ namespace Naos.Database.Protocol.FileSystem
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
+            this.delegatedProtocols = stream.GetStreamReadingProtocols();
 
             this.resourceLocatorUsingIdProtocols = this.stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
             this.serializerRepresentation = this.stream.DefaultSerializerRepresentation;
@@ -278,7 +280,31 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecordWithId<TId, TObject> Execute(
             GetLatestRecordByIdOp<TId, TObject> operation)
         {
-            throw new System.NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var recordSerializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = recordSerializer.SerializeToString(operation.Id);
+
+            var delegatedOperation = new GetLatestRecordByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+
+            var record = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var metadata = new StreamRecordMetadata<TId>(
+                operation.Id,
+                record.Metadata.SerializerRepresentation,
+                record.Metadata.TypeRepresentationOfId,
+                record.Metadata.TypeRepresentationOfObject,
+                record.Metadata.Tags,
+                record.Metadata.TimestampUtc,
+                record.Metadata.ObjectTimestampUtc);
+
+            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+
+            var result = new StreamRecordWithId<TId, TObject>(record.InternalRecordId, metadata, payload);
+            return result;
         }
 
         /// <inheritdoc />

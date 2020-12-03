@@ -28,6 +28,8 @@ namespace Naos.Database.Protocol.Memory
         IStreamRecordHandlingProtocolFactory,
         IStreamManagementProtocols,
         IReturningProtocol<GetNextUniqueLongOp, long>,
+        IReturningProtocol<GetLatestRecordOp, StreamRecord>,
+        IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
         IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByIdOp, HandlingStatus>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
@@ -109,18 +111,6 @@ namespace Naos.Database.Protocol.Memory
                 var itemToAdd = new StreamRecord(id, metadata, payload);
                 this.records.Add(itemToAdd);
                 return id;
-            }
-        }
-
-        /// <summary>
-        /// Runs the locked operation on record list.
-        /// </summary>
-        /// <param name="lockedRecordReader">The locked record reader.</param>
-        public void RunLockedOperationOnRecordList(Action<IReadOnlyList<StreamRecord>> lockedRecordReader)
-        {
-            lock (this.streamLock)
-            {
-                lockedRecordReader((IReadOnlyList<StreamRecord>)this.records);
             }
         }
 
@@ -343,6 +333,42 @@ namespace Naos.Database.Protocol.Memory
             TryHandleRecordOp operation)
         {
             throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordOp operation)
+        {
+            lock (this.streamLock)
+            {
+                var result =
+                    this.records.OrderByDescending(_ => _.InternalRecordId)
+                           .FirstOrDefault(
+                                _ => _.Metadata.FuzzyMatchTypes(
+                                    operation.IdentifierType,
+                                    operation.ObjectType,
+                                    operation.TypeVersionMatchStrategy));
+                return result;
+            }
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordByIdOp operation)
+        {
+            lock (this.streamLock)
+            {
+                var result =
+                    this.records.OrderByDescending(_ => _.InternalRecordId)
+                           .FirstOrDefault(
+                                _ => _.Metadata.FuzzyMatchTypesAndId(
+                                    operation.StringSerializedId,
+                                    operation.IdentifierType,
+                                    operation.ObjectType,
+                                    operation.TypeVersionMatchStrategy));
+
+                return result;
+            }
         }
     }
 }

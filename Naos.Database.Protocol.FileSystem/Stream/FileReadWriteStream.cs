@@ -7,8 +7,10 @@
 namespace Naos.Database.Protocol.FileSystem
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
@@ -21,7 +23,18 @@ namespace Naos.Database.Protocol.FileSystem
     /// </summary>
     /// <seealso cref="ReadWriteStreamBase" />
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class FileReadWriteStream : ReadWriteStreamBase, IStreamManagementProtocolFactory, IStreamRecordHandlingProtocolFactory
+    public partial class FileReadWriteStream :
+        ReadWriteStreamBase,
+        IStreamManagementProtocolFactory,
+        IStreamRecordHandlingProtocolFactory,
+        IStreamManagementProtocols,
+        IReturningProtocol<GetNextUniqueLongOp, long>,
+        IReturningProtocol<GetLatestRecordOp, StreamRecord>,
+        IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
+        IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
+        IReturningProtocol<GetHandlingStatusOfRecordSetByIdOp, HandlingStatus>,
+        IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
+        IReturningProtocol<TryHandleRecordOp, StreamRecord>
     {
         private readonly object fileLock = new object();
 
@@ -130,5 +143,110 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new FileStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
+
+        /// <inheritdoc />
+        public void Execute(
+            CreateStreamOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(
+            CreateStreamOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            DeleteStreamOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(
+            DeleteStreamOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            PruneBeforeInternalRecordDateOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(
+            PruneBeforeInternalRecordDateOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(
+            PruneBeforeInternalRecordIdOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public long Execute(
+            GetNextUniqueLongOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordHandlingEntry> Execute(
+            GetHandlingHistoryOfRecordOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordSetByIdOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordSetByTagOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            TryHandleRecordOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordByIdOp operation)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

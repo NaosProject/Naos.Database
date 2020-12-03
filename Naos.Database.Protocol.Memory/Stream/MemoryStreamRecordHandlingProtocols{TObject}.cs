@@ -10,6 +10,8 @@ namespace Naos.Database.Protocol.Memory
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Set of protocols to handle <see cref="IEvent"/>'s in a stream.
@@ -38,7 +40,15 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord<TObject> Execute(
             TryHandleRecordOp<TObject> operation)
         {
-            throw new System.NotImplementedException();
+            var delegatedOperation = new TryHandleRecordOp(
+                operation.Concern,
+                operation.IdentifierType,
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+            var record = this.stream.Execute(delegatedOperation);
+            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
+            return result;
         }
 
         /// <inheritdoc />

@@ -48,8 +48,15 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord<TObject> Execute(
             TryHandleRecordOp<TObject> operation)
         {
-            // check collection for concern and see if any handling/handled/canceled events
-            throw new System.NotImplementedException();
+            var delegatedOperation = new TryHandleRecordOp(
+                operation.Concern,
+                operation.IdentifierType,
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+            var record = this.stream.Execute(delegatedOperation);
+            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
+            return result;
         }
 
         /// <inheritdoc />

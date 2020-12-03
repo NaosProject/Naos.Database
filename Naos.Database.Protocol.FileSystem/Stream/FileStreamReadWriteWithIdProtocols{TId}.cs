@@ -10,6 +10,7 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Threading.Tasks;
     using Naos.Database.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
 
     /// <summary>
     /// File system implementation of <see cref="IStreamReadWithIdProtocols{TId}"/>
@@ -21,7 +22,9 @@ namespace Naos.Database.Protocol.FileSystem
           IStreamWriteWithIdProtocols<TId>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "temp")]
-        private FileReadWriteStream stream;
+        private readonly FileReadWriteStream stream;
+
+        private readonly IStreamReadProtocols delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteWithIdProtocols{TId}"/> class.
@@ -32,20 +35,50 @@ namespace Naos.Database.Protocol.FileSystem
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
+            this.delegatedProtocols = stream.GetStreamReadingProtocols();
         }
 
         /// <inheritdoc />
         public StreamRecordWithId<TId> Execute(
             GetLatestRecordByIdOp<TId> operation)
         {
-            throw new System.NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+
+            var delegatedOperation = new GetLatestRecordByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy);
+
+            var record = this.delegatedProtocols.Execute(delegatedOperation);
+
+            if (record == null)
+            {
+                return null;
+            }
+
+            var metadata = new StreamRecordMetadata<TId>(
+                operation.Id,
+                record.Metadata.SerializerRepresentation,
+                record.Metadata.TypeRepresentationOfId,
+                record.Metadata.TypeRepresentationOfObject,
+                record.Metadata.Tags,
+                record.Metadata.TimestampUtc,
+                record.Metadata.ObjectTimestampUtc);
+
+            var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
+            return result;
         }
 
         /// <inheritdoc />
-        public Task<StreamRecordWithId<TId>> ExecuteAsync(
+        public async Task<StreamRecordWithId<TId>> ExecuteAsync(
             GetLatestRecordByIdOp<TId> operation)
         {
-            throw new System.NotImplementedException();
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
         }
     }
 }

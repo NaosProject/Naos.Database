@@ -43,19 +43,7 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord Execute(
             GetLatestRecordOp operation)
         {
-            StreamRecord result = null;
-            this.stream.RunLockedOperationOnRecordList(
-                records =>
-                {
-                    result =
-                        records.OrderByDescending(_ => _.InternalRecordId)
-                               .FirstOrDefault(
-                                    _ => _.Metadata.FuzzyMatchTypes(
-                                        operation.IdentifierType,
-                                        operation.ObjectType,
-                                        operation.TypeVersionMatchStrategy));
-                });
-
+            var result = this.stream.Execute(operation);
             return result;
         }
 
@@ -88,20 +76,7 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
-            StreamRecord result = null;
-            this.stream.RunLockedOperationOnRecordList(
-                records =>
-                {
-                    result =
-                        records.OrderByDescending(_ => _.InternalRecordId)
-                               .FirstOrDefault(
-                                    _ => _.Metadata.FuzzyMatchTypesAndId(
-                                        operation.StringSerializedId,
-                                        operation.IdentifierType,
-                                        operation.ObjectType,
-                                        operation.TypeVersionMatchStrategy));
-                });
-
+            var result = this.stream.Execute(operation);
             return result;
         }
 

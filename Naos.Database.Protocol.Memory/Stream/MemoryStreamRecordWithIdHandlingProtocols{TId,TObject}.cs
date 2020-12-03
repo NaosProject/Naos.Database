@@ -10,6 +10,8 @@ namespace Naos.Database.Protocol.Memory
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Set of protocols to handle <see cref="IEvent"/>'s in a stream.
@@ -39,7 +41,27 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecordWithId<TId, TObject> Execute(
             TryHandleRecordWithIdOp<TId, TObject> operation)
         {
-            throw new System.NotImplementedException();
+            var delegatedOperation = new TryHandleRecordOp(
+                operation.Concern,
+                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+            var record = this.stream.Execute(delegatedOperation);
+
+            var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);
+            var payload = record.Payload.DeserializePayloadUsingSpecificSerializer<TObject>(serializer);
+            var id = serializer.Deserialize<TId>(record.Metadata.StringSerializedId);
+            var metadata = new StreamRecordMetadata<TId>(
+                id,
+                record.Metadata.SerializerRepresentation,
+                record.Metadata.TypeRepresentationOfId,
+                record.Metadata.TypeRepresentationOfObject,
+                record.Metadata.Tags,
+                record.Metadata.TimestampUtc,
+                record.Metadata.ObjectTimestampUtc);
+
+            var result = new StreamRecordWithId<TId, TObject>(record.InternalRecordId, metadata, payload);
+            return result;
         }
 
         /// <inheritdoc />

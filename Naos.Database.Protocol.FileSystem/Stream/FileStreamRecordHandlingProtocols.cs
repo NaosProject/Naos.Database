@@ -47,7 +47,8 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             TryHandleRecordOp operation)
         {
-            throw new System.NotImplementedException();
+            var result = this.stream.Execute(operation);
+            return result;
         }
 
         /// <inheritdoc />
@@ -63,7 +64,8 @@ namespace Naos.Database.Protocol.FileSystem
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
-            throw new System.NotImplementedException();
+            var result = this.stream.Execute(operation);
+            return result;
         }
 
         /// <inheritdoc />
@@ -79,7 +81,8 @@ namespace Naos.Database.Protocol.FileSystem
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByIdOp operation)
         {
-            throw new System.NotImplementedException();
+            var result = this.stream.Execute(operation);
+            return result;
         }
 
         /// <inheritdoc />
@@ -95,7 +98,8 @@ namespace Naos.Database.Protocol.FileSystem
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByTagOp operation)
         {
-            throw new System.NotImplementedException();
+            var result = this.stream.Execute(operation);
+            return result;
         }
 
         /// <inheritdoc />

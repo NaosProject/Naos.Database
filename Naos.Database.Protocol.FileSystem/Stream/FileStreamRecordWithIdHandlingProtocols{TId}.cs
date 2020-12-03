@@ -48,7 +48,26 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecordWithId<TId> Execute(
             TryHandleRecordWithIdOp<TId> operation)
         {
-            throw new System.NotImplementedException();
+            var delegatedOperation = new TryHandleRecordOp(
+                operation.Concern,
+                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy);
+            var record = this.stream.Execute(delegatedOperation);
+
+            var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);
+            var id = serializer.Deserialize<TId>(record.Metadata.StringSerializedId);
+            var metadata = new StreamRecordMetadata<TId>(
+                id,
+                record.Metadata.SerializerRepresentation,
+                record.Metadata.TypeRepresentationOfId,
+                record.Metadata.TypeRepresentationOfObject,
+                record.Metadata.Tags,
+                record.Metadata.TimestampUtc,
+                record.Metadata.ObjectTimestampUtc);
+
+            var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
+            return result;
         }
 
         /// <inheritdoc />

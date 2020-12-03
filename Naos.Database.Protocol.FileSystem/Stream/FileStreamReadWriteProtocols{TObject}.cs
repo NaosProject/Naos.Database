@@ -8,6 +8,9 @@ namespace Naos.Database.Protocol.FileSystem
 {
     using System.Threading.Tasks;
     using Naos.Database.Domain;
+    using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// File system implementation of <see cref="IStreamReadProtocols{TObject}"/>
@@ -18,16 +21,22 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamReadProtocols<TObject>,
           IStreamWriteProtocols<TObject>
     {
-        private readonly FileStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedProtocols;
+        private readonly FileStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedWithIdProtocols;
+        private readonly FileReadWriteStream stream;
+        private readonly IStreamReadProtocols delegatedProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols{TObject}"/> class.
         /// </summary>
-        /// <param name="readWriteStream">The stream.</param>
+        /// <param name="stream">The stream.</param>
         public FileStreamReadWriteProtocols(
-            FileReadWriteStream readWriteStream)
+            FileReadWriteStream stream)
         {
-            this.delegatedProtocols = new FileStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject>(readWriteStream);
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            this.stream = stream;
+            this.delegatedProtocols = stream.GetStreamReadingProtocols();
+            this.delegatedWithIdProtocols = new FileStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject>(stream);
         }
 
         /// <inheritdoc />
@@ -38,7 +47,7 @@ namespace Naos.Database.Protocol.FileSystem
                 new NullStreamIdentifier(),
                 operation.ObjectToPut,
                 operation.Tags);
-            var result = this.delegatedProtocols.Execute(delegatedOperation);
+            var result = this.delegatedWithIdProtocols.Execute(delegatedOperation);
             return result;
         }
 
@@ -73,7 +82,15 @@ namespace Naos.Database.Protocol.FileSystem
         public TObject Execute(
             GetLatestObjectOp<TObject> operation)
         {
-            throw new System.NotImplementedException();
+            var delegatedOperation = new GetLatestRecordOp(
+                operation.IdentifierType,
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+
+            var record = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var result = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            return result;
         }
 
         /// <inheritdoc />
@@ -89,7 +106,16 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord<TObject> Execute(
             GetLatestRecordOp<TObject> operation)
         {
-            throw new System.NotImplementedException();
+            var delegatedOperation = new GetLatestRecordOp(
+                operation.IdentifierType,
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+
+            var record = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
+            return result;
         }
 
         /// <inheritdoc />

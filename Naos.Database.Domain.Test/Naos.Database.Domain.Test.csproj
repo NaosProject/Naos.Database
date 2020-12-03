@@ -294,6 +294,10 @@
     <Compile Include="GetLatestObjectOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetLatestRecordByIdOpTest.cs" />
+    <Compile Include="GetLatestRecordByIdOpTest.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetLatestRecordByIdOp{TId,TObject}Test.cs" />
     <Compile Include="GetLatestRecordByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}Test.cs</DependentUpon>

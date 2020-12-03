@@ -149,9 +149,21 @@
       <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.designer.cs">
+      <DependentUpon>TryHandleRecordOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.designer.cs">
+      <DependentUpon>TryHandleRecordOp{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.cs" />
+    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.designer.cs">
+      <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Interfaces\Management\IPruneOperation.cs" />
     <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadWithIdProtocols{TId}.cs" />
     <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocols.cs" />
@@ -180,6 +192,7 @@
     <Compile Include="Stream\Management\PruneSummary.designer.cs">
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Model\StreamRecordMetadataExtensions.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadata{TId}.designer.cs">
       <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
     </Compile>
@@ -193,9 +206,27 @@
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
+      <DependentUpon>GetLatestRecordOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp.cs" />
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
@@ -211,6 +242,9 @@
     </Compile>
     <Compile Include="Stream\Management\DeleteStreamOp.designer.cs">
       <DependentUpon>DeleteStreamOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.cs" />
     <Compile Include="Stream\Management\DeleteStreamOp.cs" />

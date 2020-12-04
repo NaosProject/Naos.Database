@@ -44,6 +44,7 @@ namespace Naos.Database.Protocol.FileSystem
         IReturningProtocol<TryHandleRecordOp, StreamRecord>,
         IReturningProtocol<PutRecordOp, long>
     {
+        private const string RecordHandlingTrackingDirectoryName = "_HandlingTracking";
         private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
         private const string NextUniqueLongTrackingFileName = "_NextUniqueLongTracking.nfo";
         private const string BinaryFileExtension = "bin";
@@ -55,7 +56,7 @@ namespace Naos.Database.Protocol.FileSystem
         private readonly object nextInternalRecordIdentifierLock = new object();
         private readonly object nextUniqueLongLock = new object();
         private readonly ObcDateTimeStringSerializer dateTimeStringSerializer = new ObcDateTimeStringSerializer();
-        private readonly ISerializer metadataSerializer;
+        private readonly ISerializer internalSerializer;
         private FileSystemDatabaseLocator singleLocator;
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Naos.Database.Protocol.FileSystem
             serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
             resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
 
-            this.metadataSerializer = serializerFactory.BuildSerializer(defaultSerializerRepresentation);
+            this.internalSerializer = serializerFactory.BuildSerializer(defaultSerializerRepresentation);
 
             this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
             this.SerializerFactory = serializerFactory;
@@ -168,30 +169,37 @@ namespace Naos.Database.Protocol.FileSystem
             var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
                                         ?? throw new ArgumentException(FormattableString.Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
 
-            foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
+            lock (this.fileLock)
             {
-                var directoryPath = Path.Combine(fileSystemDatabaseLocator.RootFolderPath, this.Name);
-                var exists = Directory.Exists(directoryPath);
-                if (exists)
+                foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
                 {
-                    switch (operation.ExistingStreamEncounteredStrategy)
+                    var directoryPath = Path.Combine(fileSystemDatabaseLocator.RootFolderPath, this.Name);
+                    var exists = Directory.Exists(directoryPath);
+                    if (exists)
                     {
-                        case ExistingStreamEncounteredStrategy.Overwrite:
-                            DeleteDirectoryAndConfirm(directoryPath, true);
-                            CreateDirectoryAndConfirm(directoryPath);
-                            break;
-                        case ExistingStreamEncounteredStrategy.Skip:
-                            /* no-op */
-                            break;
-                        case ExistingStreamEncounteredStrategy.Throw:
-                            throw new InvalidOperationException(FormattableString.Invariant($"Path '{directoryPath}' already exists and {nameof(operation.ExistingStreamEncounteredStrategy)} on the operation is {operation.ExistingStreamEncounteredStrategy}."));
-                        default:
-                            throw new NotSupportedException(FormattableString.Invariant($"{nameof(operation.ExistingStreamEncounteredStrategy)} value '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
+                        switch (operation.ExistingStreamEncounteredStrategy)
+                        {
+                            case ExistingStreamEncounteredStrategy.Overwrite:
+                                DeleteDirectoryAndConfirm(directoryPath, true);
+                                CreateDirectoryAndConfirm(directoryPath);
+                                break;
+                            case ExistingStreamEncounteredStrategy.Skip:
+                                /* no-op */
+                                break;
+                            case ExistingStreamEncounteredStrategy.Throw:
+                                throw new InvalidOperationException(
+                                    FormattableString.Invariant(
+                                        $"Path '{directoryPath}' already exists and {nameof(operation.ExistingStreamEncounteredStrategy)} on the operation is {operation.ExistingStreamEncounteredStrategy}."));
+                            default:
+                                throw new NotSupportedException(
+                                    FormattableString.Invariant(
+                                        $"{nameof(operation.ExistingStreamEncounteredStrategy)} value '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
+                        }
                     }
-                }
-                else
-                {
-                    CreateDirectoryAndConfirm(directoryPath);
+                    else
+                    {
+                        CreateDirectoryAndConfirm(directoryPath);
+                    }
                 }
             }
         }
@@ -212,25 +220,28 @@ namespace Naos.Database.Protocol.FileSystem
             var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
                                         ?? throw new ArgumentException(Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
 
-            foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
+            lock (this.fileLock)
             {
-                var directoryPath = Path.Combine(fileSystemDatabaseLocator.RootFolderPath, this.Name);
-                var exists = Directory.Exists(directoryPath);
-                if (!exists)
+                foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
                 {
-                    switch (operation.ExistingStreamNotEncounteredStrategy)
+                    var directoryPath = Path.Combine(fileSystemDatabaseLocator.RootFolderPath, this.Name);
+                    var exists = Directory.Exists(directoryPath);
+                    if (!exists)
                     {
-                        case ExistingStreamNotEncounteredStrategy.Throw:
-                            throw new InvalidOperationException(
-                                Invariant(
-                                    $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
-                        case ExistingStreamNotEncounteredStrategy.Skip:
-                            break;
+                        switch (operation.ExistingStreamNotEncounteredStrategy)
+                        {
+                            case ExistingStreamNotEncounteredStrategy.Throw:
+                                throw new InvalidOperationException(
+                                    Invariant(
+                                        $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
+                            case ExistingStreamNotEncounteredStrategy.Skip:
+                                break;
+                        }
                     }
-                }
-                else
-                {
-                    Directory.Delete(directoryPath, true);
+                    else
+                    {
+                        Directory.Delete(directoryPath, true);
+                    }
                 }
             }
         }
@@ -292,7 +303,7 @@ namespace Naos.Database.Protocol.FileSystem
                         SearchOption.TopDirectoryOnly);
                 foreach (var fileToConsiderRemoving in filesToPotentiallyRemove)
                 {
-                    var internalRecordId = GetInternalRecordIdFromFilePath(fileToConsiderRemoving);
+                    var internalRecordId = GetInternalRecordIdFromRecordFilePath(fileToConsiderRemoving);
                     if (internalRecordId < operation.MaxInternalRecordId)
                     {
                         File.Delete(fileToConsiderRemoving);
@@ -338,7 +349,7 @@ namespace Naos.Database.Protocol.FileSystem
                     var reader = new StreamReader(fileStream);
                     var currentSerializedListText = reader.ReadToEnd();
                     var currentList = !string.IsNullOrWhiteSpace(currentSerializedListText)
-                        ? this.metadataSerializer.Deserialize<IList<UniqueLongIssuedEvent>>(currentSerializedListText)
+                        ? this.internalSerializer.Deserialize<IList<UniqueLongIssuedEvent>>(currentSerializedListText)
                         : new List<UniqueLongIssuedEvent>();
 
                     nextLong = currentList.Any()
@@ -346,7 +357,7 @@ namespace Naos.Database.Protocol.FileSystem
                         : 1;
 
                     currentList.Add(new UniqueLongIssuedEvent(nextLong, DateTime.UtcNow, operation.Details));
-                    var updatedSerializedListText = this.metadataSerializer.SerializeToString(currentList);
+                    var updatedSerializedListText = this.internalSerializer.SerializeToString(currentList);
 
                     fileStream.Position = 0;
                     var writer = new StreamWriter(fileStream);
@@ -364,14 +375,61 @@ namespace Naos.Database.Protocol.FileSystem
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
-            throw new System.NotImplementedException();
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+            var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
+            lock (this.fileLock)
+            {
+                var files = Directory.GetFiles(
+                    concernDirectory,
+                    "*___RecordId-" + operation.InternalRecordId + "___*",
+                    SearchOption.TopDirectoryOnly);
+
+                var result = new List<StreamRecordHandlingEntry>();
+                foreach (var file in files)
+                {
+                    var text = File.ReadAllText(file);
+                    var item = this.internalSerializer.Deserialize<StreamRecordHandlingEntry>(text);
+                    result.Add(item);
+                }
+
+                return result;
+            }
         }
 
         /// <inheritdoc />
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
-            throw new System.NotImplementedException();
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+            var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
+            lock (this.fileLock)
+            {
+                var files = operation.IdsToMatch.SelectMany(
+                                          _ => Directory.GetFiles(
+                                              concernDirectory,
+                                              "*___Id-" + _.StringSerializedId.EncodeForFilePath() + "___*." + MetadataFileExtension,
+                                              SearchOption.TopDirectoryOnly).Select(__ => new Tuple<StringSerializedIdentifier, string>(_, __)))
+                                     .ToList();
+
+                var statuses = new List<HandlingStatus>();
+                foreach (var file in files)
+                {
+                    var text = File.ReadAllText(file.Item2);
+                    var item = this.internalSerializer.Deserialize<StreamRecordHandlingEntry>(text);
+
+                    if (item.Metadata.TypeRepresentationOfId.EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.TypeVersionMatchStrategy))
+                    {
+                        statuses.Add(item.Metadata.Status);
+                    }
+                }
+
+                var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
+                return result;
+            }
         }
 
         /// <inheritdoc />
@@ -394,21 +452,23 @@ namespace Naos.Database.Protocol.FileSystem
         {
             var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-
-            var metadataPathsThatCouldMatch = Directory.GetFiles(
-                rootPath,
-                Invariant($"*.{MetadataFileExtension}"),
-                SearchOption.TopDirectoryOnly);
-
-            var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-            if (!orderedDescendingByInternalRecordId.Any())
+            lock (this.fileLock)
             {
-                return default;
-            }
+                var metadataPathsThatCouldMatch = Directory.GetFiles(
+                    rootPath,
+                    Invariant($"*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
 
-            var latest = orderedDescendingByInternalRecordId.First();
-            var result = this.GetStreamRecordFromMetadataFile(latest);
-            return result;
+                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                if (!orderedDescendingByInternalRecordId.Any())
+                {
+                    return default;
+                }
+
+                var latest = orderedDescendingByInternalRecordId.First();
+                var result = this.GetStreamRecordFromMetadataFile(latest);
+                return result;
+            }
         }
 
         /// <inheritdoc />
@@ -434,7 +494,7 @@ namespace Naos.Database.Protocol.FileSystem
                 foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
                 {
                     var fileText = File.ReadAllText(metadataFilePathToTest);
-                    var metadata = this.metadataSerializer.Deserialize<StreamRecordMetadata>(fileText);
+                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
                     if (metadata.FuzzyMatchTypesAndId(
                         operation.StringSerializedId,
                         operation.IdentifierType,
@@ -498,7 +558,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadataFilePath = Path.Combine(rootPath, metadataFileName);
                 var payloadFilePath = Path.Combine(rootPath, payloadFileName);
 
-                var stringSerializedMetadata = this.metadataSerializer.SerializeToString(operation.Metadata);
+                var stringSerializedMetadata = this.internalSerializer.SerializeToString(operation.Metadata);
                 File.WriteAllText(metadataFilePath, stringSerializedMetadata);
                 if (fileExtension == BinaryFileExtension)
                 {
@@ -568,7 +628,7 @@ namespace Naos.Database.Protocol.FileSystem
                 if (metadata == null)
                 {
                     var metadataFileText = File.ReadAllText(metadataFilePath);
-                    metadata = this.metadataSerializer.Deserialize<StreamRecordMetadata>(metadataFileText);
+                    metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(metadataFileText);
                 }
 
                 var filePathBase =
@@ -597,7 +657,7 @@ namespace Naos.Database.Protocol.FileSystem
                     serializationFormat = SerializationFormat.String;
                 }
 
-                var internalRecordId = GetInternalRecordIdFromFilePath(metadataFilePath);
+                var internalRecordId = GetInternalRecordIdFromRecordFilePath(metadataFilePath);
                 var payload = new DescribedSerialization(
                     metadata.TypeRepresentationOfObject.WithVersion,
                     stringPayload,
@@ -609,7 +669,81 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
-        private static long GetInternalRecordIdFromFilePath(
+        private StreamRecordHandlingEntry GetStreamRecordHandlingEntryFromMetadataFile(string metadataFilePath, StreamRecordHandlingEntryMetadata metadata = null)
+        {
+            lock (this.fileLock)
+            {
+                if (metadata == null)
+                {
+                    var metadataFileText = File.ReadAllText(metadataFilePath);
+                    metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(metadataFileText);
+                }
+
+                var filePathBase =
+                    metadataFilePath.Substring(0, metadataFilePath.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
+                var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
+                string stringPayload;
+                SerializationFormat serializationFormat;
+                if (File.Exists(binaryFilePath))
+                {
+                    var bytes = File.ReadAllBytes(binaryFilePath);
+                    stringPayload = Convert.ToBase64String(bytes);
+                    serializationFormat = SerializationFormat.Binary;
+                }
+                else
+                {
+                    var stringFilePath = Invariant(
+                        $"{filePathBase}.{metadata.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)}");
+                    if (!File.Exists(stringFilePath))
+                    {
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected payload file '{stringFilePath}' to exist to accompany metadata file '{metadataFilePath}' but was not found."));
+                    }
+
+                    stringPayload = File.ReadAllText(stringFilePath);
+                    serializationFormat = SerializationFormat.String;
+                }
+
+                var internalRecordId = GetInternalRecordHandlingEntryIdFromEntryFilePath(metadataFilePath);
+
+                var payload = new DescribedSerialization(
+                    metadata.TypeRepresentationOfObject.WithVersion,
+                    stringPayload,
+                    metadata.SerializerRepresentation,
+                    serializationFormat);
+
+                var result = new StreamRecordHandlingEntry(internalRecordId, metadata, payload);
+                return result;
+            }
+        }
+
+        private static long GetInternalRecordIdFromRecordFilePath(
+            string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentException(nameof(filePath));
+            }
+
+            var internalRecordIdString = Path.GetFileName(filePath)
+                                            ?.Split(
+                                                  new[]
+                                                  {
+                                                      "___",
+                                                  },
+                                                  StringSplitOptions.RemoveEmptyEntries)[0];
+
+            if (string.IsNullOrWhiteSpace(internalRecordIdString))
+            {
+                throw new InvalidOperationException(Invariant($"Failed to extract internal record id from file path: '{filePath}'."));
+            }
+
+            var internalRecordId = long.Parse(internalRecordIdString, CultureInfo.InvariantCulture);
+            return internalRecordId;
+        }
+
+        private static long GetInternalRecordHandlingEntryIdFromEntryFilePath(
             string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))

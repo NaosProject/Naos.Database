@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StreamRecordMetadata{TId}.cs" company="Naos Project">
+// <copyright file="StreamRecordHandlingEntryMetadata.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -14,15 +14,17 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Metadata of a stream entry.
+    /// Metadata of a stream handling entry.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
-    public partial class StreamRecordMetadata<TId> : IHaveTags, IModelViaCodeGen, IHaveTimestampUtc
+    public partial class StreamRecordHandlingEntryMetadata : IHaveTags, IModelViaCodeGen, IHaveTimestampUtc
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamRecordMetadata{TId}"/> class.
+        /// Initializes a new instance of the <see cref="StreamRecordHandlingEntryMetadata"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="internalRecordId">The internal record identifier of the record that originated the handling.</param>
+        /// <param name="concern">The concern.</param>
+        /// <param name="status">The status of the entry.</param>
+        /// <param name="stringSerializedId">The identifier serialized as a string.</param>
         /// <param name="serializerRepresentation">The representation of the serializer used.</param>
         /// <param name="typeRepresentationOfId">The type representation of the identifier.</param>
         /// <param name="typeRepresentationOfObject">The type representation of the object.</param>
@@ -30,8 +32,11 @@ namespace Naos.Database.Domain
         /// <param name="timestampUtc">The timestamp of the record in UTC.</param>
         /// <param name="objectTimestampUtc">The object's timestamp in UTC (if applicable).</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
-        public StreamRecordMetadata(
-            TId id,
+        public StreamRecordHandlingEntryMetadata(
+            long internalRecordId,
+            string concern,
+            HandlingStatus status,
+            string stringSerializedId,
             SerializerRepresentation serializerRepresentation,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfObject,
@@ -39,12 +44,16 @@ namespace Naos.Database.Domain
             DateTime timestampUtc,
             DateTime? objectTimestampUtc)
         {
+            concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
             tags.MustForArg(nameof(tags)).NotBeNull();
             serializerRepresentation.MustForArg(nameof(serializerRepresentation)).NotBeNull();
             typeRepresentationOfId.MustForArg(nameof(typeRepresentationOfId)).NotBeNull();
             typeRepresentationOfObject.MustForArg(nameof(typeRepresentationOfObject)).NotBeNull();
 
-            this.Id = id;
+            this.InternalRecordId = internalRecordId;
+            this.Concern = concern;
+            this.Status = status;
+            this.StringSerializedId = stringSerializedId;
             this.SerializerRepresentation = serializerRepresentation;
             this.Tags = tags ?? new Dictionary<string, string>();
             this.TypeRepresentationOfId = typeRepresentationOfId;
@@ -65,10 +74,28 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
+        /// Gets the internal record identifier.
+        /// </summary>
+        /// <value>The internal record identifier.</value>
+        public long InternalRecordId { get; private set; }
+
+        /// <summary>
+        /// Gets the concern.
+        /// </summary>
+        /// <value>The concern.</value>
+        public string Concern { get; private set; }
+
+        /// <summary>
+        /// Gets the status.
+        /// </summary>
+        /// <value>The status.</value>
+        public HandlingStatus Status { get; private set; }
+
+        /// <summary>
         /// Gets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public TId Id { get; private set; }
+        public string StringSerializedId { get; private set; }
 
         /// <summary>
         /// Gets the serializer representation.

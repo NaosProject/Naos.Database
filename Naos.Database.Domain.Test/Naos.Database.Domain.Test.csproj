@@ -338,13 +338,13 @@
     <Compile Include="PutRecordOpTest.designer.cs">
       <DependentUpon>PutRecordOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="StreamRecordHandlingEntryMetadataTest.cs" />
+    <Compile Include="StreamRecordHandlingEntryMetadataTest.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntryMetadataTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="StreamRecordHandlingEntryTest.cs" />
     <Compile Include="StreamRecordHandlingEntryTest.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StreamRecordHandlingEntry{TObject}Test.cs" />
-    <Compile Include="StreamRecordHandlingEntry{TObject}Test.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntry{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\HandleRecordOpTest.cs" />
     <Compile Include="Stream\Handling\HandleRecordOpTest.designer.cs">

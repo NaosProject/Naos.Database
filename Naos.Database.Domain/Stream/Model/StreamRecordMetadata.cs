@@ -45,7 +45,7 @@ namespace Naos.Database.Domain
 
             this.StringSerializedId = stringSerializedId;
             this.SerializerRepresentation = serializerRepresentation;
-            this.Tags = tags;
+            this.Tags = tags ?? new Dictionary<string, string>();
             this.TypeRepresentationOfId = typeRepresentationOfId;
             this.TypeRepresentationOfObject = typeRepresentationOfObject;
 

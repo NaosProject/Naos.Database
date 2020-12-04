@@ -315,7 +315,7 @@ namespace Naos.Database.Protocol.Memory
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, concern);
 
-                var entriesForInternalRecordId = entries.Where(_ => _.InternalRecordId == operation.InternalRecordId).ToList();
+                var entriesForInternalRecordId = entries.Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId).ToList();
                 return entriesForInternalRecordId;
             }
         }

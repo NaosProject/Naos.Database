@@ -33,44 +33,47 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StreamRecordHandlingEntryTObjectTest
+    public static partial class StreamRecordHandlingEntryMetadataTest
     {
-        private static readonly StringRepresentationTestScenarios<StreamRecordHandlingEntry<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamRecordHandlingEntry<Version>>()
+        private static readonly StringRepresentationTestScenarios<StreamRecordHandlingEntryMetadata> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamRecordHandlingEntryMetadata>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StreamRecordHandlingEntry<Version>>
+                new StringRepresentationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntry<Version>: InternalHandlingEntryId = {systemUnderTest.InternalHandlingEntryId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeRepresentationOfEntry = {systemUnderTest.TypeRepresentationOfEntry?.ToString() ?? "<null>"}, Payload = {systemUnderTest.Payload?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntryMetadata: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Status = {systemUnderTest.Status.ToString() ?? "<null>"}, StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SerializerRepresentation = {systemUnderTest.SerializerRepresentation?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TypeRepresentationOfId = {systemUnderTest.TypeRepresentationOfId?.ToString() ?? "<null>"}, TypeRepresentationOfObject = {systemUnderTest.TypeRepresentationOfObject?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectTimestampUtc = {systemUnderTest.ObjectTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StreamRecordHandlingEntry<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamRecordHandlingEntry<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StreamRecordHandlingEntryMetadata> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamRecordHandlingEntryMetadata>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              null,
-                                             referenceObject.TypeRepresentationOfEntry,
-                                             referenceObject.Payload,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -78,21 +81,24 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.TypeRepresentationOfEntry,
-                                             referenceObject.Payload,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -100,65 +106,149 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationOfEntry' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'stringSerializedId' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
+                                             referenceObject.Status,
                                              null,
-                                             referenceObject.Payload,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "typeRepresentationOfEntry", },
+                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'payload' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'stringSerializedId' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
-                                             referenceObject.TypeRepresentationOfEntry,
-                                             null,
+                                             referenceObject.Status,
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              referenceObject.Tags,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'serializerRepresentation' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var result = new StreamRecordHandlingEntryMetadata(
+                                             referenceObject.InternalRecordId,
+                                             referenceObject.Concern,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             null,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "payload", },
+                    ExpectedExceptionMessageContains = new[] { "serializerRepresentation", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationOfId' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var result = new StreamRecordHandlingEntryMetadata(
+                                             referenceObject.InternalRecordId,
+                                             referenceObject.Concern,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             null,
+                                             referenceObject.TypeRepresentationOfObject,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "typeRepresentationOfId", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'typeRepresentationOfObject' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var result = new StreamRecordHandlingEntryMetadata(
+                                             referenceObject.InternalRecordId,
+                                             referenceObject.Concern,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             null,
+                                             referenceObject.Tags,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "typeRepresentationOfObject", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
-                                             referenceObject.TypeRepresentationOfEntry,
-                                             referenceObject.Payload,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              null,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -166,21 +256,24 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
-                                             referenceObject.TypeRepresentationOfEntry,
-                                             referenceObject.Payload,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              new Dictionary<string, string>(),
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -188,12 +281,12 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorArgumentValidationTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                         var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
 
@@ -201,14 +294,17 @@ namespace Naos.Database.Domain.Test
 
                         dictionaryWithNullValue[randomKey] = null;
 
-                        var result = new StreamRecordHandlingEntry<Version>(
-                                             referenceObject.InternalHandlingEntryId,
+                        var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
-                                             referenceObject.TypeRepresentationOfEntry,
-                                             referenceObject.Payload,
+                                             referenceObject.Status,
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.SerializerRepresentation,
+                                             referenceObject.TypeRepresentationOfId,
+                                             referenceObject.TypeRepresentationOfObject,
                                              dictionaryWithNullValue,
-                                             referenceObject.TimestampUtc);
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.ObjectTimestampUtc);
 
                         return result;
                     },
@@ -216,50 +312,28 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamRecordHandlingEntry<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamRecordHandlingEntry<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamRecordHandlingEntryMetadata> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamRecordHandlingEntryMetadata>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
-                {
-                    Name = "InternalHandlingEntryId should return same 'internalHandlingEntryId' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
-                        {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
-                                                      referenceObject.InternalRecordId,
-                                                      referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
-                                                      referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.InternalHandlingEntryId,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "InternalHandlingEntryId",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "InternalRecordId should return same 'internalRecordId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.InternalRecordId,
                         };
 
@@ -268,23 +342,26 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "InternalRecordId",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "Concern should return same 'concern' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
 
@@ -293,73 +370,166 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Concern",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "TypeRepresentationOfEntry should return same 'typeRepresentationOfEntry' parameter passed to constructor when getting",
+                    Name = "Status should return same 'status' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.Status,
                         };
 
                         return result;
                     },
-                    PropertyName = "TypeRepresentationOfEntry",
+                    PropertyName = "Status",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "Payload should return same 'payload' parameter passed to constructor when getting",
+                    Name = "StringSerializedId should return same 'stringSerializedId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
-                            ExpectedPropertyValue = referenceObject.Payload,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.StringSerializedId,
                         };
 
                         return result;
                     },
-                    PropertyName = "Payload",
+                    PropertyName = "StringSerializedId",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "SerializerRepresentation should return same 'serializerRepresentation' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.SerializerRepresentation,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SerializerRepresentation",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "TypeRepresentationOfId should return same 'typeRepresentationOfId' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.TypeRepresentationOfId,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TypeRepresentationOfId",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "TypeRepresentationOfObject should return same 'typeRepresentationOfObject' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.TypeRepresentationOfObject,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TypeRepresentationOfObject",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "Tags should return same 'tags' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
 
@@ -368,64 +538,75 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Tags",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = new StreamRecordHandlingEntry<Version>(
-                                                      referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
-                                                      referenceObject.TypeRepresentationOfEntry,
-                                                      referenceObject.Payload,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
                                                       referenceObject.Tags,
-                                                      referenceObject.TimestampUtc),
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
 
                         return result;
                     },
                     PropertyName = "TimestampUtc",
-                });
-
-        private static readonly DeepCloneWithTestScenarios<StreamRecordHandlingEntry<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordHandlingEntry<Version>>()
+                })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "DeepCloneWithInternalHandlingEntryId should deep clone object and replace InternalHandlingEntryId with the provided internalHandlingEntryId",
-                    WithPropertyName = "InternalHandlingEntryId",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    Name = "ObjectTimestampUtc should return same 'objectTimestampUtc' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.InternalHandlingEntryId.IsEqualTo(_.InternalHandlingEntryId));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntryMetadata>
                         {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.InternalHandlingEntryId,
+                            SystemUnderTest = new StreamRecordHandlingEntryMetadata(
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.Status,
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.SerializerRepresentation,
+                                                      referenceObject.TypeRepresentationOfId,
+                                                      referenceObject.TypeRepresentationOfObject,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.ObjectTimestampUtc,
                         };
 
                         return result;
                     },
-                })
+                    PropertyName = "ObjectTimestampUtc",
+                });
+
+        private static readonly DeepCloneWithTestScenarios<StreamRecordHandlingEntryMetadata> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamRecordHandlingEntryMetadata>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "DeepCloneWithInternalRecordId should deep clone object and replace InternalRecordId with the provided internalRecordId",
                     WithPropertyName = "InternalRecordId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.InternalRecordId,
@@ -435,17 +616,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
                     WithPropertyName = "Concern",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Concern,
@@ -455,57 +636,77 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "DeepCloneWithTypeRepresentationOfEntry should deep clone object and replace TypeRepresentationOfEntry with the provided typeRepresentationOfEntry",
-                    WithPropertyName = "TypeRepresentationOfEntry",
+                    Name = "DeepCloneWithStatus should deep clone object and replace Status with the provided status",
+                    WithPropertyName = "Status",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.TypeRepresentationOfEntry.IsEqualTo(_.TypeRepresentationOfEntry));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.Status.IsEqualTo(_.Status));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TypeRepresentationOfEntry,
+                            DeepCloneWithValue = referenceObject.Status,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
                 {
-                    Name = "DeepCloneWithPayload should deep clone object and replace Payload with the provided payload",
-                    WithPropertyName = "Payload",
+                    Name = "DeepCloneWithStringSerializedId should deep clone object and replace StringSerializedId with the provided stringSerializedId",
+                    WithPropertyName = "StringSerializedId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.Payload.IsEqualTo(_.Payload));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.StringSerializedId.IsEqualTo(_.StringSerializedId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Payload,
+                            DeepCloneWithValue = referenceObject.StringSerializedId,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "DeepCloneWithSerializerRepresentation should deep clone object and replace SerializerRepresentation with the provided serializerRepresentation",
+                    WithPropertyName = "SerializerRepresentation",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.SerializerRepresentation.IsEqualTo(_.SerializerRepresentation));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SerializerRepresentation,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
                     WithPropertyName = "Tags",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Tags,
@@ -515,17 +716,57 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamRecordHandlingEntry<Version>>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "DeepCloneWithTypeRepresentationOfId should deep clone object and replace TypeRepresentationOfId with the provided typeRepresentationOfId",
+                    WithPropertyName = "TypeRepresentationOfId",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.TypeRepresentationOfId.IsEqualTo(_.TypeRepresentationOfId));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TypeRepresentationOfId,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "DeepCloneWithTypeRepresentationOfObject should deep clone object and replace TypeRepresentationOfObject with the provided typeRepresentationOfObject",
+                    WithPropertyName = "TypeRepresentationOfObject",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.TypeRepresentationOfObject.IsEqualTo(_.TypeRepresentationOfObject));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TypeRepresentationOfObject,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var referenceObject = A.Dummy<StreamRecordHandlingEntry<Version>>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -533,85 +774,162 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntryMetadata>
+                {
+                    Name = "DeepCloneWithObjectTimestampUtc should deep clone object and replace ObjectTimestampUtc with the provided objectTimestampUtc",
+                    WithPropertyName = "ObjectTimestampUtc",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>().ThatIs(_ => !systemUnderTest.ObjectTimestampUtc.IsEqualTo(_.ObjectTimestampUtc));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntryMetadata>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.ObjectTimestampUtc,
+                        };
+
+                        return result;
+                    },
                 });
 
-        private static readonly StreamRecordHandlingEntry<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordHandlingEntry<Version>>();
+        private static readonly StreamRecordHandlingEntryMetadata ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-        private static readonly EquatableTestScenarios<StreamRecordHandlingEntry<Version>> EquatableTestScenarios = new EquatableTestScenarios<StreamRecordHandlingEntry<Version>>()
+        private static readonly EquatableTestScenarios<StreamRecordHandlingEntryMetadata> EquatableTestScenarios = new EquatableTestScenarios<StreamRecordHandlingEntryMetadata>()
             .AddScenario(() =>
-                new EquatableTestScenario<StreamRecordHandlingEntry<Version>>
+                new EquatableTestScenario<StreamRecordHandlingEntryMetadata>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamRecordHandlingEntry<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamRecordHandlingEntryMetadata[]
                     {
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                        new StreamRecordHandlingEntryMetadata(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StreamRecordHandlingEntry<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StreamRecordHandlingEntryMetadata[]
                     {
-                        new StreamRecordHandlingEntry<Version>(
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.InternalHandlingEntryId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId)).InternalHandlingEntryId,
+                        new StreamRecordHandlingEntryMetadata(
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.Status.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Status)).Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.TypeRepresentationOfEntry.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry)).TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.StringSerializedId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StringSerializedId)).StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.Payload.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Payload)).Payload,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.SerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SerializerRepresentation)).SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
-                        new StreamRecordHandlingEntry<Version>(
-                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
-                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.TypeRepresentationOfId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId)).TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<StreamRecordHandlingEntry<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.TypeRepresentationOfObject.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject)).TypeRepresentationOfObject,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntryMetadata(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.SerializerRepresentation,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfId,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfObject,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                A.Dummy<StreamRecordHandlingEntryMetadata>().Whose(_ => !_.ObjectTimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc)).ObjectTimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -641,12 +959,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StreamRecordHandlingEntry___Should_implement_IModel_of_StreamRecordHandlingEntry___When_reflecting()
+            public static void StreamRecordHandlingEntryMetadata___Should_implement_IModel_of_StreamRecordHandlingEntryMetadata___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamRecordHandlingEntry<Version>);
+                var type = typeof(StreamRecordHandlingEntryMetadata);
 
-                var expectedModelMethods = typeof(IModel<StreamRecordHandlingEntry<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StreamRecordHandlingEntryMetadata>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -656,7 +974,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamRecordHandlingEntry<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamRecordHandlingEntryMetadata>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -674,10 +992,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StreamRecordHandlingEntry___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void StreamRecordHandlingEntryMetadata___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamRecordHandlingEntry<Version>);
+                var type = typeof(StreamRecordHandlingEntryMetadata);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -850,10 +1168,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                 // Act
-                var actual = (StreamRecordHandlingEntry<Version>)systemUnderTest.Clone();
+                var actual = (StreamRecordHandlingEntryMetadata)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -877,7 +1195,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                var systemUnderTest = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -886,22 +1204,13 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.TypeRepresentationOfEntry == null)
+                if (systemUnderTest.SerializerRepresentation == null)
                 {
-                    actual.TypeRepresentationOfEntry.AsTest().Must().BeNull();
+                    actual.SerializerRepresentation.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.TypeRepresentationOfEntry.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypeRepresentationOfEntry);
-                }
-
-                if (systemUnderTest.Payload == null)
-                {
-                    actual.Payload.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Payload.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Payload);
+                    actual.SerializerRepresentation.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SerializerRepresentation);
                 }
 
                 if (systemUnderTest.Tags == null)
@@ -911,6 +1220,24 @@ namespace Naos.Database.Domain.Test
                 else
                 {
                     actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                }
+
+                if (systemUnderTest.TypeRepresentationOfId == null)
+                {
+                    actual.TypeRepresentationOfId.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.TypeRepresentationOfId.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypeRepresentationOfId);
+                }
+
+                if (systemUnderTest.TypeRepresentationOfObject == null)
+                {
+                    actual.TypeRepresentationOfObject.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.TypeRepresentationOfObject.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TypeRepresentationOfObject);
                 }
             }
 
@@ -930,7 +1257,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "InternalHandlingEntryId", "InternalRecordId", "Concern", "TypeRepresentationOfEntry", "Payload", "Tags", "TimestampUtc" };
+                var propertyNames = new string[] { "InternalRecordId", "Concern", "Status", "StringSerializedId", "SerializerRepresentation", "Tags", "TypeRepresentationOfId", "TypeRepresentationOfObject", "TimestampUtc", "ObjectTimestampUtc" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -947,12 +1274,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StreamRecordHandlingEntry<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StreamRecordHandlingEntryMetadata)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StreamRecordHandlingEntry<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StreamRecordHandlingEntryMetadata).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -1020,7 +1347,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1049,7 +1376,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1078,7 +1405,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1107,7 +1434,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamRecordHandlingEntry<Version>>();
+                var expected = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1141,8 +1468,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamRecordHandlingEntry<Version> systemUnderTest1 = null;
-                StreamRecordHandlingEntry<Version> systemUnderTest2 = null;
+                StreamRecordHandlingEntryMetadata systemUnderTest1 = null;
+                StreamRecordHandlingEntryMetadata systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1172,7 +1499,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordHandlingEntry<Version> systemUnderTest = null;
+                    StreamRecordHandlingEntryMetadata systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1321,8 +1648,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamRecordHandlingEntry<Version> systemUnderTest1 = null;
-                StreamRecordHandlingEntry<Version> systemUnderTest2 = null;
+                StreamRecordHandlingEntryMetadata systemUnderTest1 = null;
+                StreamRecordHandlingEntryMetadata systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1352,7 +1679,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordHandlingEntry<Version> systemUnderTest = null;
+                    StreamRecordHandlingEntryMetadata systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1498,14 +1825,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordHandlingEntry___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_StreamRecordHandlingEntryMetadata___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamRecordHandlingEntry<Version> systemUnderTest = null;
+                    StreamRecordHandlingEntryMetadata systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1529,7 +1856,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordHandlingEntry___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_StreamRecordHandlingEntryMetadata___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1557,7 +1884,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordHandlingEntry___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_StreamRecordHandlingEntryMetadata___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1585,7 +1912,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordHandlingEntry___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_StreamRecordHandlingEntryMetadata___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1613,7 +1940,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StreamRecordHandlingEntry___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_StreamRecordHandlingEntryMetadata___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

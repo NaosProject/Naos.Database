@@ -52,7 +52,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<HandlingStatus> statuses)
         {
             strategy.MustForArg(nameof(strategy)).NotBeNull();
-            statuses.MustForArg(nameof(statuses)).NotBeNullNorEmptyEnumerable();
+            statuses.MustForArg(nameof(statuses)).NotBeNull();
+
+            if (!statuses.Any())
+            {
+                return HandlingStatus.None;
+            }
 
             if (statuses.Any(_ => _ == HandlingStatus.Failed))
             {

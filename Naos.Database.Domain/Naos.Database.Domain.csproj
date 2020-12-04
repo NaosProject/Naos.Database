@@ -151,19 +151,19 @@
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.designer.cs">
       <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.designer.cs">
       <DependentUpon>HandlingStatusCompositionStrategy.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry{TObject}.cs" />
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.cs" />
     <Compile Include="Stream\Handling\History\GetHandlingHistoryOfRecordOp.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatus.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry{TObject}.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntry{TObject}.cs</DependentUpon>
+    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">

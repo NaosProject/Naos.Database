@@ -36,12 +36,12 @@ namespace Naos.Database.Domain
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse -- prefer this for safety in refactoring order
             if (match && identifierType != null)
             {
-                match = streamRecordMetadata.TypeRepresentationOfId.EqualsAccordingToStrategy(identifierType.WithVersion, typeVersionMatchStrategy);
+                match = streamRecordMetadata.TypeRepresentationOfId.EqualsAccordingToStrategy(identifierType, typeVersionMatchStrategy);
             }
 
             if (match && objectType != null)
             {
-                match = streamRecordMetadata.TypeRepresentationOfObject.EqualsAccordingToStrategy(objectType.WithVersion, typeVersionMatchStrategy);
+                match = streamRecordMetadata.TypeRepresentationOfObject.EqualsAccordingToStrategy(objectType, typeVersionMatchStrategy);
             }
 
             return match;

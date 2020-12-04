@@ -16,50 +16,25 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Metadata of a stream entry.
     /// </summary>
-    public partial class StreamRecordHandlingEntry : IHaveTags, IModelViaCodeGen, IHaveTimestampUtc
+    public partial class StreamRecordHandlingEntry : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecordHandlingEntry"/> class.
         /// </summary>
         /// <param name="internalHandlingEntryId">The internal handling entry identifier.</param>
-        /// <param name="internalRecordId">The internal record identifier.</param>
-        /// <param name="concern">The concern.</param>
-        /// <param name="typeRepresentationOfEntry">The type representation of entry.</param>
+        /// <param name="metadata">The metadata.</param>
         /// <param name="payload">The payload.</param>
-        /// <param name="tags">The tags.</param>
-        /// <param name="timestampUtc">The timestamp of the record in UTC.</param>
-        /// <param name="objectTimestampUtc">The object's timestamp in UTC (if applicable).</param>
         public StreamRecordHandlingEntry(
             long internalHandlingEntryId,
-            long internalRecordId,
-            string concern,
-            TypeRepresentationWithAndWithoutVersion typeRepresentationOfEntry,
-            DescribedSerialization payload,
-            IReadOnlyDictionary<string, string> tags,
-            DateTime timestampUtc,
-            DateTime? objectTimestampUtc)
+            StreamRecordHandlingEntryMetadata metadata,
+            DescribedSerialization payload)
         {
-            concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
-            typeRepresentationOfEntry.MustForArg(nameof(typeRepresentationOfEntry)).NotBeNull();
+            metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
-            if (timestampUtc.Kind != DateTimeKind.Utc)
-            {
-                throw new ArgumentException("The timestamp must be in UTC format; it is: " + timestampUtc.Kind, nameof(timestampUtc));
-            }
-
-            if (objectTimestampUtc != null && objectTimestampUtc?.Kind != DateTimeKind.Utc)
-            {
-                throw new ArgumentException("The timestamp must be in UTC format; it is: " + timestampUtc.Kind, nameof(timestampUtc));
-            }
 
             this.InternalHandlingEntryId = internalHandlingEntryId;
-            this.InternalRecordId = internalRecordId;
-            this.Concern = concern;
-            this.TypeRepresentationOfEntry = typeRepresentationOfEntry;
+            this.Metadata = metadata;
             this.Payload = payload;
-            this.Tags = tags ?? new Dictionary<string, string>();
-            this.TimestampUtc = timestampUtc;
-            this.ObjectTimestampUtc = objectTimestampUtc;
         }
 
         /// <summary>
@@ -69,39 +44,15 @@ namespace Naos.Database.Domain
         public long InternalHandlingEntryId { get; private set; }
 
         /// <summary>
-        /// Gets the internal record identifier.
+        /// Gets the metadata.
         /// </summary>
-        /// <value>The internal record identifier.</value>
-        public long InternalRecordId { get; private set; }
-
-        /// <summary>
-        /// Gets the concern.
-        /// </summary>
-        /// <value>The concern.</value>
-        public string Concern { get; private set; }
-
-        /// <summary>
-        /// Gets the type representation of the entry.
-        /// </summary>
-        /// <value>The type representation of entry.</value>
-        public TypeRepresentationWithAndWithoutVersion TypeRepresentationOfEntry { get; private set; }
+        /// <value>The metadata.</value>
+        public StreamRecordHandlingEntryMetadata Metadata { get; private set; }
 
         /// <summary>
         /// Gets the payload.
         /// </summary>
         /// <value>The payload.</value>
         public DescribedSerialization Payload { get; private set; }
-
-        /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
-
-        /// <inheritdoc />
-        public DateTime TimestampUtc { get; private set; }
-
-        /// <summary>
-        /// Gets the object timestamp in UTC (if applicable).
-        /// </summary>
-        /// <value>The object timestamp in UTC (if applicable).</value>
-        public DateTime? ObjectTimestampUtc { get; private set; }
     }
 }

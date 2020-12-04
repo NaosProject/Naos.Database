@@ -27,10 +27,7 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamReadProtocols,
           IStreamWriteProtocols
     {
-        private const string NextUniqueLongTrackingFileName = "_NextUniqueLongTracking.nfo";
-        private readonly object nextUniqueLongLock = new object();
         private readonly FileReadWriteStream stream;
-        private readonly ISerializer serializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteProtocols"/> class.
@@ -42,7 +39,6 @@ namespace Naos.Database.Protocol.FileSystem
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
-            this.serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
         }
 
         /// <inheritdoc />
@@ -51,49 +47,8 @@ namespace Naos.Database.Protocol.FileSystem
         public long Execute(
             GetNextUniqueLongOp operation)
         {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-            var resourceLocator = this.stream.ResourceLocatorProtocols.Execute(new GetResourceLocatorForUniqueIdentifierOp());
-            var fileLocator = resourceLocator as FileSystemDatabaseLocator
-                           ?? throw new InvalidOperationException(
-                                  Invariant(
-                                      $"Resource locator was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{resourceLocator?.GetType()?.ToStringReadable() ?? "<null>"}'."));
-            var rootPath = Path.Combine(fileLocator.RootFolderPath, this.stream.Name);
-            var trackingFilePath = Path.Combine(rootPath, NextUniqueLongTrackingFileName);
-
-            long nextLong;
-
-            lock (this.nextUniqueLongLock)
-            {
-                // open the file in locking mode to restrict a single thread changing the list of unique longs index at a time.
-                using (var fileStream = new FileStream(
-                    trackingFilePath,
-                    FileMode.OpenOrCreate,
-                    FileAccess.ReadWrite,
-                    FileShare.None))
-                {
-                    var reader = new StreamReader(fileStream);
-                    var currentSerializedListText = reader.ReadToEnd();
-                    var currentList = !string.IsNullOrWhiteSpace(currentSerializedListText)
-                        ? this.serializer.Deserialize<IList<UniqueLongIssuedEvent>>(currentSerializedListText)
-                        : new List<UniqueLongIssuedEvent>();
-
-                    nextLong = currentList.Any()
-                        ? currentList.Max(_ => _.Id) + 1
-                        : 1;
-
-                    currentList.Add(new UniqueLongIssuedEvent(nextLong, DateTime.UtcNow, operation.Details));
-                    var updatedSerializedListText = this.serializer.SerializeToString(currentList);
-
-                    fileStream.Position = 0;
-                    var writer = new StreamWriter(fileStream);
-                    writer.Write(updatedSerializedListText);
-
-                    // necessary to flush buffer.
-                    writer.Close();
-                }
-            }
-
-            return nextLong;
+            var result = this.stream.Execute(operation);
+            return result;
         }
 
         /// <inheritdoc />
@@ -126,7 +81,8 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
-            throw new System.NotImplementedException();
+            var result = this.stream.Execute(operation);
+            return result;
         }
 
         /// <inheritdoc />

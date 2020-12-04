@@ -39,37 +39,7 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             CreateStreamOp operation)
         {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
-                                        ?? throw new ArgumentException(FormattableString.Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
-
-            foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
-            {
-                var directoryPath = Path.Combine(fileSystemDatabaseLocator.RootFolderPath, this.stream.Name);
-                var exists = Directory.Exists(directoryPath);
-                if (exists)
-                {
-                    switch (operation.ExistingStreamEncounteredStrategy)
-                    {
-                        case ExistingStreamEncounteredStrategy.Overwrite:
-                            DeleteDirectoryAndConfirm(directoryPath, true);
-                            CreateDirectoryAndConfirm(directoryPath);
-                            break;
-                        case ExistingStreamEncounteredStrategy.Skip:
-                            /* no-op */
-                            break;
-                        case ExistingStreamEncounteredStrategy.Throw:
-                            throw new InvalidOperationException(FormattableString.Invariant($"Path '{directoryPath}' already exists and {nameof(operation.ExistingStreamEncounteredStrategy)} on the operation is {operation.ExistingStreamEncounteredStrategy}."));
-                        default:
-                            throw new NotSupportedException(FormattableString.Invariant($"{nameof(operation.ExistingStreamEncounteredStrategy)} value '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
-                    }
-                }
-                else
-                {
-                    CreateDirectoryAndConfirm(directoryPath);
-                }
-            }
+            this.stream.Execute(operation);
         }
 
         /// <inheritdoc />
@@ -84,31 +54,7 @@ namespace Naos.Database.Protocol.FileSystem
         public void Execute(
             DeleteStreamOp operation)
         {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-            var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
-                                        ?? throw new ArgumentException(Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
-
-            foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
-            {
-                var directoryPath = Path.Combine(fileSystemDatabaseLocator.RootFolderPath, this.stream.Name);
-                var exists = Directory.Exists(directoryPath);
-                if (!exists)
-                {
-                    switch (operation.ExistingStreamNotEncounteredStrategy)
-                    {
-                        case ExistingStreamNotEncounteredStrategy.Throw:
-                            throw new InvalidOperationException(
-                                Invariant(
-                                    $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
-                        case ExistingStreamNotEncounteredStrategy.Skip:
-                            break;
-                    }
-                }
-                else
-                {
-                    Directory.Delete(directoryPath, true);
-                }
-            }
+            this.stream.Execute(operation);
         }
 
         /// <inheritdoc />
@@ -117,45 +63,6 @@ namespace Naos.Database.Protocol.FileSystem
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await
-        }
-
-        private static void CreateDirectoryAndConfirm(
-            string directoryPath)
-        {
-            Directory.CreateDirectory(directoryPath);
-            var timeoutTimeSpan = TimeSpan.FromSeconds(1);
-            var timeout = DateTime.UtcNow.Add(timeoutTimeSpan);
-            var directoryExists = false;
-            while (!directoryExists && DateTime.UtcNow < timeout)
-            {
-                directoryExists = Directory.Exists(directoryPath);
-                Thread.Sleep(TimeSpan.FromMilliseconds(10));
-            }
-
-            if (!directoryExists)
-            {
-                throw new InvalidOperationException(Invariant($"Directory '{directoryPath}' was created but not found on disk after checking for '{timeoutTimeSpan.TotalSeconds}' seconds."));
-            }
-        }
-
-        private static void DeleteDirectoryAndConfirm(
-            string directoryPath,
-            bool recursive)
-        {
-            Directory.Delete(directoryPath, recursive);
-            var timeoutTimeSpan = TimeSpan.FromSeconds(1);
-            var timeout = DateTime.UtcNow.Add(timeoutTimeSpan);
-            var directoryExists = true;
-            while (directoryExists && DateTime.UtcNow < timeout)
-            {
-                directoryExists = Directory.Exists(directoryPath);
-                Thread.Sleep(TimeSpan.FromMilliseconds(10));
-            }
-
-            if (directoryExists)
-            {
-                throw new InvalidOperationException(Invariant($"Directory '{directoryPath}' was deleted but remains on disk after checking for '{timeoutTimeSpan.TotalSeconds}' seconds."));
-            }
         }
 
         /// <inheritdoc />

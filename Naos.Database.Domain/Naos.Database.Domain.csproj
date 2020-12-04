@@ -233,6 +233,7 @@
     <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Model\PutRecordOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
     </Compile>
@@ -241,9 +242,6 @@
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">
-      <DependentUpon>GetLatestRecordByIdOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.cs" />

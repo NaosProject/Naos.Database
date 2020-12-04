@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
     using static System.FormattableString;
 
     /// <summary>
@@ -18,22 +19,32 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestRecordByIdOp"/> class.
         /// </summary>
+        /// <param name="locator">The locator determined by the <paramref name="stringSerializedId"/> before serialization.</param>
         /// <param name="stringSerializedId">The identifier serialized as a string using the same serializer as the object.</param>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public GetLatestRecordByIdOp(
+            IResourceLocator locator,
             string stringSerializedId,
             TypeRepresentationWithAndWithoutVersion identifierType = null,
             TypeRepresentationWithAndWithoutVersion objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
+            locator.MustForArg(nameof(locator)).NotBeNull();
+            this.Locator = locator;
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
+
+        /// <summary>
+        /// Gets the locator.
+        /// </summary>
+        /// <value>The locator.</value>
+        public IResourceLocator Locator { get; private set; }
 
         /// <summary>
         /// Gets the string serialized identifier.

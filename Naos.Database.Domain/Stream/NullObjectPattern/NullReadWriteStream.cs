@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Type;
@@ -19,6 +20,7 @@ namespace Naos.Database.Domain
     public partial class NullReadWriteStream : IReadWriteStream,
                                                IStreamManagementProtocolFactory,
                                                IStreamRecordHandlingProtocolFactory,
+                                               ISyncAndAsyncReturningProtocol<PutRecordOp, long>,
                                                IModelViaCodeGen
     {
         /// <summary>
@@ -110,6 +112,20 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>()
+        {
+            throw new NotImplementedException(ExceptionMessage);
+        }
+
+        /// <inheritdoc />
+        public long Execute(
+            PutRecordOp operation)
+        {
+            throw new NotImplementedException(ExceptionMessage);
+        }
+
+        /// <inheritdoc />
+        public Task<long> ExecuteAsync(
+            PutRecordOp operation)
         {
             throw new NotImplementedException(ExceptionMessage);
         }

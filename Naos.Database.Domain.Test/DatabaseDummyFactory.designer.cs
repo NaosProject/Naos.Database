@@ -53,7 +53,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetHandlingStatusOfRecordSetByIdOp(
+                () => new GetHandlingStatusOfRecordsByIdOp(
                                  A.Dummy<IReadOnlyCollection<long>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

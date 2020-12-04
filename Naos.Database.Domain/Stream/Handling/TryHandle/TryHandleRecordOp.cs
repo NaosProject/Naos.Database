@@ -19,7 +19,7 @@ namespace Naos.Database.Domain
         /// <param name="concern">The concern.</param>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
         public TryHandleRecordOp(
             string concern,
             TypeRepresentationWithAndWithoutVersion identifierType = null,

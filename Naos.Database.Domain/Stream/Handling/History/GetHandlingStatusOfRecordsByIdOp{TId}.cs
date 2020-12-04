@@ -1,38 +1,41 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TryHandleRecordWithIdOp{TId,TObject}.cs" company="Naos Project">
+// <copyright file="GetHandlingStatusOfRecordsByIdOp{TId}.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
-    /// Handles a record.
+    /// Gets the composite status of the set of records by specified tag matching on locators found by identifiers.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
-    public partial class TryHandleRecordWithIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>
+    /// <typeparam name="TId">Type of the identifier.</typeparam>
+    public partial class GetHandlingStatusOfRecordsByIdOp<TId> : ReturningOperationBase<HandlingStatus>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId, TObject}"/> class.
+        /// Initializes a new instance of the <see cref="GetHandlingStatusOfRecordsByIdOp{TId}"/> class.
         /// </summary>
-        /// <param name="concern">The concern.</param>
+        /// <param name="idsToMatch">The object identifiers to treat as a composite status.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
-        public TryHandleRecordWithIdOp(
-            string concern,
+        public GetHandlingStatusOfRecordsByIdOp(
+            IReadOnlyCollection<TId> idsToMatch,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
-            this.Concern = concern;
+            idsToMatch.MustForArg(nameof(idsToMatch)).NotBeNull();
+
+            this.IdsToMatch = idsToMatch;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
 
         /// <summary>
-        /// Gets the concern.
+        /// Gets the object identifiers to match.
         /// </summary>
-        /// <value>The concern.</value>
-        public string Concern { get; private set; }
+        /// <value>The object identifiers to match.</value>
+        public IReadOnlyCollection<TId> IdsToMatch { get; private set; }
 
         /// <summary>
         /// Gets the type version match strategy.

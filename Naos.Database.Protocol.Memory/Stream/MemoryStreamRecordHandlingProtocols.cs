@@ -70,7 +70,7 @@ namespace Naos.Database.Protocol.Memory
 
         /// <inheritdoc />
         public HandlingStatus Execute(
-            GetHandlingStatusOfRecordSetByIdOp operation)
+            GetHandlingStatusOfRecordsByIdOp operation)
         {
             var result = this.stream.Execute(operation);
             return result;
@@ -78,7 +78,7 @@ namespace Naos.Database.Protocol.Memory
 
         /// <inheritdoc />
         public async Task<HandlingStatus> ExecuteAsync(
-            GetHandlingStatusOfRecordSetByIdOp operation)
+            GetHandlingStatusOfRecordsByIdOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

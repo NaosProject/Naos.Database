@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
-    /// Handles a record.
+    /// Gets the composite status of the set of records by specified tag matching on all locators.
     /// </summary>
     public partial class GetHandlingStatusOfRecordSetByTagOp : ReturningOperationBase<HandlingStatus>
     {

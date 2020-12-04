@@ -38,7 +38,7 @@ namespace Naos.Database.Protocol.FileSystem
         IReturningProtocol<GetLatestRecordOp, StreamRecord>,
         IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
         IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
-        IReturningProtocol<GetHandlingStatusOfRecordSetByIdOp, HandlingStatus>,
+        IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
         IReturningProtocol<TryHandleRecordOp, StreamRecord>,
         IReturningProtocol<PutRecordOp, long>
@@ -332,7 +332,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public HandlingStatus Execute(
-            GetHandlingStatusOfRecordSetByIdOp operation)
+            GetHandlingStatusOfRecordsByIdOp operation)
         {
             throw new System.NotImplementedException();
         }

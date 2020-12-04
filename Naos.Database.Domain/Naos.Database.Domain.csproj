@@ -136,13 +136,8 @@
     <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent.designer.cs">
       <DependentUpon>CanceledBlockedHandlingEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\History\GetHandlingHistoryOfRecordOp.designer.cs">
-      <DependentUpon>GetHandlingHistoryOfRecordOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByIdOp.cs" />
-    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByIdOp.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordSetByIdOp.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordsByIdOp.cs" />
+    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordsByIdOp{TId}.cs" />
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.cs" />
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.designer.cs">
       <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
@@ -157,6 +152,8 @@
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry{TObject}.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\Model\LocatedStringSerializedIdentifier.cs" />
+    <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
       <DependentUpon>HandleRecordOp.cs</DependentUpon>

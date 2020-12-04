@@ -33,6 +33,8 @@ namespace Naos.Database.Protocol.FileSystem
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
         private readonly FileReadWriteStream stream;
 
+        private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamRecordWithIdHandlingProtocols{TId}"/> class.
         /// </summary>
@@ -42,6 +44,7 @@ namespace Naos.Database.Protocol.FileSystem
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
+            this.locatorProtocols = stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
         /// <inheritdoc />
@@ -73,6 +76,36 @@ namespace Naos.Database.Protocol.FileSystem
         /// <inheritdoc />
         public async Task<StreamRecordWithId<TId>> ExecuteAsync(
             TryHandleRecordWithIdOp<TId> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordsByIdOp<TId> operation)
+        {
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var identifierType = typeof(TId).ToRepresentation().ToWithAndWithoutVersion();
+            var items = new List<LocatedStringSerializedIdentifier>();
+            foreach (var id in operation.IdsToMatch)
+            {
+                var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(id));
+                var stringSerializedId = serializer.SerializeToString(id);
+                var identified = new StringSerializedIdentifier(stringSerializedId, identifierType);
+                var located = new LocatedStringSerializedIdentifier(identified, locator);
+                items.Add(located);
+            }
+
+            var delegatedOperation = new GetHandlingStatusOfRecordsByIdOp(items);
+            var result = this.stream.Execute(delegatedOperation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<HandlingStatus> ExecuteAsync(
+            GetHandlingStatusOfRecordsByIdOp<TId> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

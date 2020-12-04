@@ -290,14 +290,6 @@
     <Compile Include="GetHandlingHistoryOfRecordOpTest.designer.cs">
       <DependentUpon>GetHandlingHistoryOfRecordOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetHandlingStatusOfRecordSetByIdOpTest.cs" />
-    <Compile Include="GetHandlingStatusOfRecordSetByIdOpTest.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordSetByIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GetHandlingStatusOfRecordSetByTagOpTest.cs" />
-    <Compile Include="GetHandlingStatusOfRecordSetByTagOpTest.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordSetByTagOpTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="GetLatestObjectByIdOp{TId,TObject}Test.cs" />
     <Compile Include="GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}Test.cs</DependentUpon>

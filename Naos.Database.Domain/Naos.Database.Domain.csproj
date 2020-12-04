@@ -136,11 +136,23 @@
     <Compile Include="Stream\Handling\Blocking\CanceledBlockedHandlingEvent.designer.cs">
       <DependentUpon>CanceledBlockedHandlingEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\History\GetHandlingHistoryOfRecordOp.designer.cs">
+      <DependentUpon>GetHandlingHistoryOfRecordOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordsByIdOp.cs" />
+    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordsByIdOp.designer.cs">
+      <DependentUpon>GetHandlingStatusOfRecordsByIdOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordsByIdOp{TId}.cs" />
+    <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordsByIdOp{TId}.designer.cs">
+      <DependentUpon>GetHandlingStatusOfRecordsByIdOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.cs" />
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.designer.cs">
       <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Model\LocatedStringSerializedIdentifier.designer.cs">
+      <DependentUpon>LocatedStringSerializedIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
@@ -154,6 +166,9 @@
     </Compile>
     <Compile Include="Stream\Handling\Model\LocatedStringSerializedIdentifier.cs" />
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
+    <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
+      <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
       <DependentUpon>HandleRecordOp.cs</DependentUpon>

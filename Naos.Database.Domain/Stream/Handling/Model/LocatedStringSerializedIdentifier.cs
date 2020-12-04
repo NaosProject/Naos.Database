@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Container of a string serialized identifier with it's type and it's correct locator.
     /// </summary>
-    public class LocatedStringSerializedIdentifier : ISpecifyResourceLocator, IModelViaCodeGen
+    public partial class LocatedStringSerializedIdentifier : ISpecifyResourceLocator, IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LocatedStringSerializedIdentifier"/> class.
@@ -32,12 +32,6 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The string serialized identifier.</value>
         public StringSerializedIdentifier StringSerializedId { get; private set; }
-
-        /// <summary>
-        /// Gets the type of the identifier.
-        /// </summary>
-        /// <value>The type of the identifier.</value>
-        public TypeRepresentationWithAndWithoutVersion IdentifierType { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

@@ -35,139 +35,113 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class TryHandleRecordWithIdOpTIdTest
+    public static partial class GetHandlingStatusOfRecordsByIdOpTest
     {
-        private static readonly StringRepresentationTestScenarios<TryHandleRecordWithIdOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<TryHandleRecordWithIdOp<Version>>()
+        private static readonly StringRepresentationTestScenarios<GetHandlingStatusOfRecordsByIdOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<TryHandleRecordWithIdOp<Version>>
+                new StringRepresentationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<TryHandleRecordWithIdOp<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: LocatedIdsToMatch = {systemUnderTest.LocatedIdsToMatch?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<TryHandleRecordWithIdOp<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<TryHandleRecordWithIdOp<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<GetHandlingStatusOfRecordsByIdOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'locatedIdsToMatch' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var result = new TryHandleRecordWithIdOp<Version>(
+                        var result = new GetHandlingStatusOfRecordsByIdOp(
                                              null,
-                                             referenceObject.ObjectType,
                                              referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "concern", },
+                    ExpectedExceptionMessageContains = new[] { "locatedIdsToMatch", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'locatedIdsToMatch' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var result = new TryHandleRecordWithIdOp<Version>(
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.ObjectType,
+                        var result = new GetHandlingStatusOfRecordsByIdOp(
+                                             new List<LocatedStringSerializedIdentifier>(),
                                              referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                    ExpectedExceptionMessageContains = new[] { "locatedIdsToMatch", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'objectType' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'locatedIdsToMatch' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var result = new TryHandleRecordWithIdOp<Version>(
-                                             referenceObject.Concern,
-                                             null,
+                        var result = new GetHandlingStatusOfRecordsByIdOp(
+                                             new LocatedStringSerializedIdentifier[0].Concat(referenceObject.LocatedIdsToMatch).Concat(new LocatedStringSerializedIdentifier[] { null }).Concat(referenceObject.LocatedIdsToMatch).ToList(),
                                              referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "objectType", },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "locatedIdsToMatch", "contains at least one null element", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<TryHandleRecordWithIdOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<TryHandleRecordWithIdOp<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetHandlingStatusOfRecordsByIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "Concern should return same 'concern' parameter passed to constructor when getting",
+                    Name = "LocatedIdsToMatch should return same 'locatedIdsToMatch' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordsByIdOp>
                         {
-                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
-                                                      referenceObject.Concern,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
+                                                      referenceObject.LocatedIdsToMatch,
                                                       referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.Concern,
+                            ExpectedPropertyValue = referenceObject.LocatedIdsToMatch,
                         };
 
                         return result;
                     },
-                    PropertyName = "Concern",
+                    PropertyName = "LocatedIdsToMatch",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
-                {
-                    Name = "ObjectType should return same 'objectType' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
-                        {
-                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
-                                                      referenceObject.Concern,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "ObjectType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
                     Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordsByIdOp>
                         {
-                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
-                                                      referenceObject.Concern,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
+                                                      referenceObject.LocatedIdsToMatch,
                                                       referenceObject.TypeVersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
@@ -177,59 +151,39 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TypeVersionMatchStrategy",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<TryHandleRecordWithIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<TryHandleRecordWithIdOp<Version>>()
+        private static readonly DeepCloneWithTestScenarios<GetHandlingStatusOfRecordsByIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
+                new DeepCloneWithTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
-                    WithPropertyName = "Concern",
+                    Name = "DeepCloneWithLocatedIdsToMatch should deep clone object and replace LocatedIdsToMatch with the provided locatedIdsToMatch",
+                    WithPropertyName = "LocatedIdsToMatch",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.LocatedIdsToMatch.IsEqualTo(_.LocatedIdsToMatch));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Concern,
+                            DeepCloneWithValue = referenceObject.LocatedIdsToMatch,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
-                {
-                    Name = "DeepCloneWithObjectType should deep clone object and replace ObjectType with the provided objectType",
-                    WithPropertyName = "ObjectType",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
-
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
+                new DeepCloneWithTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
                     Name = "DeepCloneWithTypeVersionMatchStrategy should deep clone object and replace TypeVersionMatchStrategy with the provided typeVersionMatchStrategy",
                     WithPropertyName = "TypeVersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
@@ -239,35 +193,28 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly TryHandleRecordWithIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+        private static readonly GetHandlingStatusOfRecordsByIdOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-        private static readonly EquatableTestScenarios<TryHandleRecordWithIdOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<TryHandleRecordWithIdOp<Version>>()
+        private static readonly EquatableTestScenarios<GetHandlingStatusOfRecordsByIdOp> EquatableTestScenarios = new EquatableTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<TryHandleRecordWithIdOp<Version>>
+                new EquatableTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new TryHandleRecordWithIdOp<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetHandlingStatusOfRecordsByIdOp[]
                     {
-                        new TryHandleRecordWithIdOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                        new GetHandlingStatusOfRecordsByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.LocatedIdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new TryHandleRecordWithIdOp<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetHandlingStatusOfRecordsByIdOp[]
                     {
-                        new TryHandleRecordWithIdOp<Version>(
-                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                        new GetHandlingStatusOfRecordsByIdOp(
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.LocatedIdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.LocatedIdsToMatch)).LocatedIdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
-                        new TryHandleRecordWithIdOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
-                        new TryHandleRecordWithIdOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
+                        new GetHandlingStatusOfRecordsByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.LocatedIdsToMatch,
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -276,7 +223,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<GetHandlingStatusOfRecordsByIdOp>(),
                         A.Dummy<GetHandlingStatusOfRecordsByIdOp<Version>>(),
                         A.Dummy<GetHandlingStatusOfRecordSetByTagOp>(),
                         A.Dummy<GetHandlingHistoryOfRecordOp>(),
@@ -287,6 +233,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
+                        A.Dummy<TryHandleRecordWithIdOp<Version>>(),
                         A.Dummy<PruneBeforeInternalRecordDateOp>(),
                         A.Dummy<PruneBeforeInternalRecordIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp>(),
@@ -326,12 +273,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void TryHandleRecordWithIdOp___Should_implement_IModel_of_TryHandleRecordWithIdOp___When_reflecting()
+            public static void GetHandlingStatusOfRecordsByIdOp___Should_implement_IModel_of_GetHandlingStatusOfRecordsByIdOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(TryHandleRecordWithIdOp<Version>);
+                var type = typeof(GetHandlingStatusOfRecordsByIdOp);
 
-                var expectedModelMethods = typeof(IModel<TryHandleRecordWithIdOp<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetHandlingStatusOfRecordsByIdOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -341,7 +288,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<TryHandleRecordWithIdOp<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetHandlingStatusOfRecordsByIdOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -359,10 +306,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void TryHandleRecordWithIdOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetHandlingStatusOfRecordsByIdOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(TryHandleRecordWithIdOp<Version>);
+                var type = typeof(GetHandlingStatusOfRecordsByIdOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -535,10 +482,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                 // Act
-                var actual = (TryHandleRecordWithIdOp<Version>)systemUnderTest.Clone();
+                var actual = (GetHandlingStatusOfRecordsByIdOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -562,7 +509,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -571,13 +518,13 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.ObjectType == null)
+                if (systemUnderTest.LocatedIdsToMatch == null)
                 {
-                    actual.ObjectType.AsTest().Must().BeNull();
+                    actual.LocatedIdsToMatch.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
+                    actual.LocatedIdsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.LocatedIdsToMatch);
                 }
             }
 
@@ -597,7 +544,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "ObjectType", "TypeVersionMatchStrategy" };
+                var propertyNames = new string[] { "LocatedIdsToMatch", "TypeVersionMatchStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -614,12 +561,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (TryHandleRecordWithIdOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (GetHandlingStatusOfRecordsByIdOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(TryHandleRecordWithIdOp<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(GetHandlingStatusOfRecordsByIdOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -687,7 +634,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                var expected = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -716,7 +663,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                var expected = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -745,7 +692,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                var expected = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -774,7 +721,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+                var expected = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -808,8 +755,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                TryHandleRecordWithIdOp<Version> systemUnderTest1 = null;
-                TryHandleRecordWithIdOp<Version> systemUnderTest2 = null;
+                GetHandlingStatusOfRecordsByIdOp systemUnderTest1 = null;
+                GetHandlingStatusOfRecordsByIdOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -839,7 +786,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    TryHandleRecordWithIdOp<Version> systemUnderTest = null;
+                    GetHandlingStatusOfRecordsByIdOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -988,8 +935,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                TryHandleRecordWithIdOp<Version> systemUnderTest1 = null;
-                TryHandleRecordWithIdOp<Version> systemUnderTest2 = null;
+                GetHandlingStatusOfRecordsByIdOp systemUnderTest1 = null;
+                GetHandlingStatusOfRecordsByIdOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1019,7 +966,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    TryHandleRecordWithIdOp<Version> systemUnderTest = null;
+                    GetHandlingStatusOfRecordsByIdOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1315,10 +1262,10 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<StreamRecordWithId<Version>> systemUnderTest = null;
+                    ReturningOperationBase<HandlingStatus> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordWithId<Version>>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<HandlingStatus>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1346,7 +1293,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordWithId<Version>>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<HandlingStatus>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1374,7 +1321,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordWithId<Version>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<HandlingStatus>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1402,7 +1349,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordWithId<Version>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<HandlingStatus>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1430,7 +1377,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordWithId<Version>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<HandlingStatus>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1451,14 +1398,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_TryHandleRecordWithIdOp___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_GetHandlingStatusOfRecordsByIdOp___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    TryHandleRecordWithIdOp<Version> systemUnderTest = null;
+                    GetHandlingStatusOfRecordsByIdOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1482,7 +1429,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_TryHandleRecordWithIdOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetHandlingStatusOfRecordsByIdOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1510,7 +1457,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_TryHandleRecordWithIdOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetHandlingStatusOfRecordsByIdOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1538,7 +1485,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_TryHandleRecordWithIdOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetHandlingStatusOfRecordsByIdOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1566,7 +1513,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_TryHandleRecordWithIdOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetHandlingStatusOfRecordsByIdOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1727,7 +1674,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact]
+            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

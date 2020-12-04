@@ -261,8 +261,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<BlockedHandlingEvent>(),
                         A.Dummy<CanceledBlockedHandlingEvent>(),
                         A.Dummy<CanceledPruneRequestedEvent>(),
-                        A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
+                        A.Dummy<PruneOperationRequestedEvent>(),
                     },
                 });
 

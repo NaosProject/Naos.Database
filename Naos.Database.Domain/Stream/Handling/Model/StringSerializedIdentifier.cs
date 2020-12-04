@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Container of a string serialized identifier with it's type.
     /// </summary>
-    public class StringSerializedIdentifier : IModelViaCodeGen
+    public partial class StringSerializedIdentifier : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSerializedIdentifier"/> class.

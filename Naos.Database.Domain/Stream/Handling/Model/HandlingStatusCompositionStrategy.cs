@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Strategy on how to compose multiple strategies.
     /// </summary>
-    public class HandlingStatusCompositionStrategy : IModelViaCodeGen
+    public partial class HandlingStatusCompositionStrategy : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HandlingStatusCompositionStrategy"/> class.

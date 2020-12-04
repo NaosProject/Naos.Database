@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetHandlingStatusOfRecordSetByTagOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordSetByTagOp: TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordSetByTagOp: TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {systemUnderTest.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -63,8 +63,12 @@ namespace Naos.Database.Domain.Test
                     Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
                     ConstructionFunc = () =>
                     {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
                         var result = new GetHandlingStatusOfRecordSetByTagOp(
-                                             null);
+                                             null,
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
@@ -77,8 +81,12 @@ namespace Naos.Database.Domain.Test
                     Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty dictionary scenario",
                     ConstructionFunc = () =>
                     {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
                         var result = new GetHandlingStatusOfRecordSetByTagOp(
-                                             new Dictionary<string, string>());
+                                             new Dictionary<string, string>(),
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
@@ -100,12 +108,50 @@ namespace Naos.Database.Domain.Test
                         dictionaryWithNullValue[randomKey] = null;
 
                         var result = new GetHandlingStatusOfRecordSetByTagOp(
-                                             dictionaryWithNullValue);
+                                             dictionaryWithNullValue,
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one key-value pair with a null value", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'handlingStatusCompositionStrategy' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                        var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                             referenceObject.TagsToMatch,
+                                             null,
+                                             referenceObject.TagMatchStrategy);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "handlingStatusCompositionStrategy", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tagMatchStrategy' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                        var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetHandlingStatusOfRecordSetByTagOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetHandlingStatusOfRecordSetByTagOp>()
@@ -120,13 +166,57 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordSetByTagOp>
                         {
                             SystemUnderTest = new GetHandlingStatusOfRecordSetByTagOp(
-                                                      referenceObject.TagsToMatch),
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TagMatchStrategy),
                             ExpectedPropertyValue = referenceObject.TagsToMatch,
                         };
 
                         return result;
                     },
                     PropertyName = "TagsToMatch",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                {
+                    Name = "HandlingStatusCompositionStrategy should return same 'handlingStatusCompositionStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            SystemUnderTest = new GetHandlingStatusOfRecordSetByTagOp(
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TagMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.HandlingStatusCompositionStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "HandlingStatusCompositionStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                {
+                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            SystemUnderTest = new GetHandlingStatusOfRecordSetByTagOp(
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TagMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TagMatchStrategy",
                 });
 
         private static readonly DeepCloneWithTestScenarios<GetHandlingStatusOfRecordSetByTagOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetHandlingStatusOfRecordSetByTagOp>()
@@ -149,6 +239,46 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                {
+                    Name = "DeepCloneWithHandlingStatusCompositionStrategy should deep clone object and replace HandlingStatusCompositionStrategy with the provided handlingStatusCompositionStrategy",
+                    WithPropertyName = "HandlingStatusCompositionStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>().ThatIs(_ => !systemUnderTest.HandlingStatusCompositionStrategy.IsEqualTo(_.HandlingStatusCompositionStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.HandlingStatusCompositionStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                {
+                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
+                    WithPropertyName = "TagMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly GetHandlingStatusOfRecordSetByTagOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
@@ -162,12 +292,24 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetHandlingStatusOfRecordSetByTagOp[]
                     {
                         new GetHandlingStatusOfRecordSetByTagOp(
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch),
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetHandlingStatusOfRecordSetByTagOp[]
                     {
                         new GetHandlingStatusOfRecordSetByTagOp(
-                                A.Dummy<GetHandlingStatusOfRecordSetByTagOp>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch),
+                                A.Dummy<GetHandlingStatusOfRecordSetByTagOp>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy),
+                        new GetHandlingStatusOfRecordSetByTagOp(
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                A.Dummy<GetHandlingStatusOfRecordSetByTagOp>().Whose(_ => !_.HandlingStatusCompositionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy)).HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy),
+                        new GetHandlingStatusOfRecordSetByTagOp(
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                A.Dummy<GetHandlingStatusOfRecordSetByTagOp>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -176,9 +318,9 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
+                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
                         A.Dummy<GetHandlingStatusOfRecordsByIdOp>(),
                         A.Dummy<GetHandlingStatusOfRecordsByIdOp<Version>>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -479,6 +621,24 @@ namespace Naos.Database.Domain.Test
                 {
                     actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
                 }
+
+                if (systemUnderTest.HandlingStatusCompositionStrategy == null)
+                {
+                    actual.HandlingStatusCompositionStrategy.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.HandlingStatusCompositionStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.HandlingStatusCompositionStrategy);
+                }
+
+                if (systemUnderTest.TagMatchStrategy == null)
+                {
+                    actual.TagMatchStrategy.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.TagMatchStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagMatchStrategy);
+                }
             }
 
             [Fact]
@@ -497,7 +657,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TagsToMatch" };
+                var propertyNames = new string[] { "TagsToMatch", "HandlingStatusCompositionStrategy", "TagMatchStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

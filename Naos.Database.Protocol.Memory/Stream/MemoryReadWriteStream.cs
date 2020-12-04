@@ -305,7 +305,6 @@ namespace Naos.Database.Protocol.Memory
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
-
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();

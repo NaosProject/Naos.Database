@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: LocatedIdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: IdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {systemUnderTest.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -60,60 +60,104 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'locatedIdsToMatch' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'idsToMatch' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                         var result = new GetHandlingStatusOfRecordsByIdOp(
                                              null,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "locatedIdsToMatch", },
+                    ExpectedExceptionMessageContains = new[] { "idsToMatch", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'locatedIdsToMatch' is an empty enumerable scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'idsToMatch' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                         var result = new GetHandlingStatusOfRecordsByIdOp(
-                                             new List<LocatedStringSerializedIdentifier>(),
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             new List<StringSerializedIdentifier>(),
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "locatedIdsToMatch", "is an empty enumerable", },
+                    ExpectedExceptionMessageContains = new[] { "idsToMatch", "is an empty enumerable", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'locatedIdsToMatch' contains a null element scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'idsToMatch' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                         var result = new GetHandlingStatusOfRecordsByIdOp(
-                                             new LocatedStringSerializedIdentifier[0].Concat(referenceObject.IdsToMatch).Concat(new LocatedStringSerializedIdentifier[] { null }).Concat(referenceObject.IdsToMatch).ToList(),
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             new StringSerializedIdentifier[0].Concat(referenceObject.IdsToMatch).Concat(new StringSerializedIdentifier[] { null }).Concat(referenceObject.IdsToMatch).ToList(),
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "locatedIdsToMatch", "contains at least one null element", },
+                    ExpectedExceptionMessageContains = new[] { "idsToMatch", "contains at least one null element", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'handlingStatusCompositionStrategy' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
+
+                        var result = new GetHandlingStatusOfRecordsByIdOp(
+                                             referenceObject.IdsToMatch,
+                                             null,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "handlingStatusCompositionStrategy", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordsByIdOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
+
+                        var result = new GetHandlingStatusOfRecordsByIdOp(
+                                             referenceObject.IdsToMatch,
+                                             referenceObject.HandlingStatusCompositionStrategy,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetHandlingStatusOfRecordsByIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "LocatedIdsToMatch should return same 'locatedIdsToMatch' parameter passed to constructor when getting",
+                    Name = "IdsToMatch should return same 'idsToMatch' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
@@ -122,13 +166,37 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
                                                       referenceObject.IdsToMatch,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.IdsToMatch,
                         };
 
                         return result;
                     },
-                    PropertyName = "LocatedIdsToMatch",
+                    PropertyName = "IdsToMatch",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
+                {
+                    Name = "HandlingStatusCompositionStrategy should return same 'handlingStatusCompositionStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordsByIdOp>
+                        {
+                            SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
+                                                      referenceObject.IdsToMatch,
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.HandlingStatusCompositionStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "HandlingStatusCompositionStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
@@ -142,21 +210,45 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
                                                       referenceObject.IdsToMatch,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
 
                         return result;
                     },
                     PropertyName = "TypeVersionMatchStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
+                {
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordsByIdOp>
+                        {
+                            SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
+                                                      referenceObject.IdsToMatch,
+                                                      referenceObject.HandlingStatusCompositionStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SpecifiedResourceLocator",
                 });
 
         private static readonly DeepCloneWithTestScenarios<GetHandlingStatusOfRecordsByIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetHandlingStatusOfRecordsByIdOp>()
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "DeepCloneWithLocatedIdsToMatch should deep clone object and replace LocatedIdsToMatch with the provided locatedIdsToMatch",
-                    WithPropertyName = "LocatedIdsToMatch",
+                    Name = "DeepCloneWithIdsToMatch should deep clone object and replace IdsToMatch with the provided idsToMatch",
+                    WithPropertyName = "IdsToMatch",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
@@ -167,6 +259,26 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.IdsToMatch,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetHandlingStatusOfRecordsByIdOp>
+                {
+                    Name = "DeepCloneWithHandlingStatusCompositionStrategy should deep clone object and replace HandlingStatusCompositionStrategy with the provided handlingStatusCompositionStrategy",
+                    WithPropertyName = "HandlingStatusCompositionStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
+
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.HandlingStatusCompositionStrategy.IsEqualTo(_.HandlingStatusCompositionStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordsByIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.HandlingStatusCompositionStrategy,
                         };
 
                         return result;
@@ -191,6 +303,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetHandlingStatusOfRecordsByIdOp>
+                {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
+
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordsByIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly GetHandlingStatusOfRecordsByIdOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
@@ -205,16 +337,32 @@ namespace Naos.Database.Domain.Test
                     {
                         new GetHandlingStatusOfRecordsByIdOp(
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetHandlingStatusOfRecordsByIdOp[]
                     {
                         new GetHandlingStatusOfRecordsByIdOp(
                                 A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.IdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdsToMatch)).IdsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetHandlingStatusOfRecordsByIdOp(
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
-                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.HandlingStatusCompositionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy)).HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new GetHandlingStatusOfRecordsByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.IdsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new GetHandlingStatusOfRecordsByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.IdsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -223,9 +371,9 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
+                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
                         A.Dummy<GetHandlingStatusOfRecordsByIdOp<Version>>(),
                         A.Dummy<GetHandlingStatusOfRecordSetByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -526,6 +674,24 @@ namespace Naos.Database.Domain.Test
                 {
                     actual.IdsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.IdsToMatch);
                 }
+
+                if (systemUnderTest.HandlingStatusCompositionStrategy == null)
+                {
+                    actual.HandlingStatusCompositionStrategy.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.HandlingStatusCompositionStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.HandlingStatusCompositionStrategy);
+                }
+
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                }
             }
 
             [Fact]
@@ -544,7 +710,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "LocatedIdsToMatch", "TypeVersionMatchStrategy" };
+                var propertyNames = new string[] { "IdsToMatch", "HandlingStatusCompositionStrategy", "TypeVersionMatchStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

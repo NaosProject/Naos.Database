@@ -152,6 +152,9 @@
       <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.cs" />
+    <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.designer.cs">
+      <DependentUpon>HandlingStatusCompositionStrategy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
     </Compile>
@@ -245,6 +248,9 @@
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\TagMatchStrategy.cs" />
+    <Compile Include="Stream\Model\TagMatchStrategy.designer.cs">
+      <DependentUpon>TagMatchStrategy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp.cs</DependentUpon>
     </Compile>

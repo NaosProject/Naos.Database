@@ -330,6 +330,10 @@
     <Compile Include="GetLatestRecordOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="HandlingStatusCompositionStrategyTest.cs" />
+    <Compile Include="HandlingStatusCompositionStrategyTest.designer.cs">
+      <DependentUpon>HandlingStatusCompositionStrategyTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="PutRecordOpTest.cs" />
     <Compile Include="PutRecordOpTest.designer.cs">
       <DependentUpon>PutRecordOpTest.cs</DependentUpon>
@@ -488,6 +492,10 @@
     <Compile Include="StringSerializedIdentifierTest.cs" />
     <Compile Include="StringSerializedIdentifierTest.designer.cs">
       <DependentUpon>StringSerializedIdentifierTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TagMatchStrategyTest.cs" />
+    <Compile Include="TagMatchStrategyTest.designer.cs">
+      <DependentUpon>TagMatchStrategyTest.cs</DependentUpon>
     </Compile>
     <Compile Include="TryHandleRecordOpTest.cs" />
     <Compile Include="TryHandleRecordOpTest.designer.cs">

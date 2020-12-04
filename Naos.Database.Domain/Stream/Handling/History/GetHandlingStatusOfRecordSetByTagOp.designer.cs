@@ -70,7 +70,9 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.TagsToMatch.IsEqualTo(other.TagsToMatch);
+            var result = this.TagsToMatch.IsEqualTo(other.TagsToMatch)
+                      && this.HandlingStatusCompositionStrategy.IsEqualTo(other.HandlingStatusCompositionStrategy)
+                      && this.TagMatchStrategy.IsEqualTo(other.TagMatchStrategy);
 
             return result;
         }
@@ -81,6 +83,8 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.TagsToMatch)
+            .Hash(this.HandlingStatusCompositionStrategy)
+            .Hash(this.TagMatchStrategy)
             .Value;
 
         /// <inheritdoc />
@@ -109,7 +113,69 @@ namespace Naos.Database.Domain
         public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithTagsToMatch(IReadOnlyDictionary<string, string> tagsToMatch)
         {
             var result = new GetHandlingStatusOfRecordSetByTagOp(
-                                 tagsToMatch);
+                                 tagsToMatch,
+                                 this.HandlingStatusCompositionStrategy?.DeepClone(),
+                                 this.TagMatchStrategy?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="HandlingStatusCompositionStrategy" />.
+        /// </summary>
+        /// <param name="handlingStatusCompositionStrategy">The new <see cref="HandlingStatusCompositionStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetHandlingStatusOfRecordSetByTagOp" /> using the specified <paramref name="handlingStatusCompositionStrategy" /> for <see cref="HandlingStatusCompositionStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithHandlingStatusCompositionStrategy(HandlingStatusCompositionStrategy handlingStatusCompositionStrategy)
+        {
+            var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 handlingStatusCompositionStrategy,
+                                 this.TagMatchStrategy?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="TagMatchStrategy" />.
+        /// </summary>
+        /// <param name="tagMatchStrategy">The new <see cref="TagMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetHandlingStatusOfRecordSetByTagOp" /> using the specified <paramref name="tagMatchStrategy" /> for <see cref="TagMatchStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
+        {
+            var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 this.HandlingStatusCompositionStrategy?.DeepClone(),
+                                 tagMatchStrategy);
 
             return result;
         }
@@ -118,7 +184,9 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new GetHandlingStatusOfRecordSetByTagOp(
-                                 this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+                                 this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 this.HandlingStatusCompositionStrategy?.DeepClone(),
+                                 this.TagMatchStrategy?.DeepClone());
 
             return result;
         }
@@ -127,7 +195,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordSetByTagOp: TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordSetByTagOp: TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {this.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy?.ToString() ?? "<null>"}.");
 
             return result;
         }

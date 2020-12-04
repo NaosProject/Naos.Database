@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Strategy on how to handle an existing record encountered during a write.
     /// </summary>
-    public class TagMatchStrategy : IModelViaCodeGen
+    public partial class TagMatchStrategy : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TagMatchStrategy"/> class.

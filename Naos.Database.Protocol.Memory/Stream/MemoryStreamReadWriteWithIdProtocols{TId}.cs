@@ -56,11 +56,11 @@ namespace Naos.Database.Protocol.Memory
             var serializedObjectId = serializer.SerializeToString(operation.Id);
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var delegatedOperation = new GetLatestRecordByIdOp(
-                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 

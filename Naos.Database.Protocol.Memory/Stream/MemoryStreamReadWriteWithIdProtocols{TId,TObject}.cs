@@ -57,11 +57,11 @@ namespace Naos.Database.Protocol.Memory
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
-                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
             var result = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
@@ -124,7 +124,7 @@ namespace Naos.Database.Protocol.Memory
                 objectTimestamp);
 
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var result = this.stream.Execute(new PutRecordOp(locator, metadata, describedSerialization));
+            var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator));
 
             return result;
         }
@@ -148,11 +148,11 @@ namespace Naos.Database.Protocol.Memory
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
-                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 

@@ -16,6 +16,7 @@ namespace Naos.Database.Protocol.Memory
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
 
     /// <summary>
@@ -38,11 +39,13 @@ namespace Naos.Database.Protocol.Memory
         IReturningProtocol<PutRecordOp, long>
     {
         private readonly object streamLock = new object();
+        private readonly object singleLocatorLock = new object();
 
-        private readonly List<StreamRecord> records = new List<StreamRecord>();
+        private readonly Dictionary<MemoryDatabaseLocator, List<StreamRecord>> locatorToRecordPartitionMap = new Dictionary<MemoryDatabaseLocator, List<StreamRecord>>();
         private bool created = false;
         private long uniqueLongForExternalProtocol = 0;
         private long uniqueLongForInMemoryEntries = 0;
+        private MemoryDatabaseLocator singleLocator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryReadWriteStream"/> class.
@@ -123,7 +126,7 @@ namespace Naos.Database.Protocol.Memory
                                 Invariant(
                                     $"Expected stream {operation.StreamRepresentation} to not exist, it does and the operation {nameof(operation.ExistingStreamEncounteredStrategy)} is set to '{operation.ExistingStreamEncounteredStrategy}'."));
                         case ExistingStreamEncounteredStrategy.Overwrite:
-                            this.records.Clear();
+                            this.locatorToRecordPartitionMap.Clear();
                             break;
                         case ExistingStreamEncounteredStrategy.Skip:
                             break;
@@ -177,7 +180,10 @@ namespace Naos.Database.Protocol.Memory
                 }
                 else
                 {
-                    this.records.Clear();
+                    foreach (var partition in this.locatorToRecordPartitionMap)
+                    {
+                        partition.Value.Clear();
+                    }
                 }
             }
         }
@@ -194,11 +200,7 @@ namespace Naos.Database.Protocol.Memory
         public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new MemoryStreamReadWriteWithIdProtocols<TId>(this);
 
         /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>()
-        {
-            var result = new MemoryStreamReadWriteWithIdProtocols<TId, TObject>(this);
-            return result;
-        }
+        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>() => new MemoryStreamReadWriteWithIdProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
         public override IStreamWriteProtocols GetStreamWritingProtocols() => new MemoryStreamReadWriteProtocols(this);
@@ -254,11 +256,15 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.streamLock)
             {
-                var newList = this.records.Where(_ => _.Metadata.TimestampUtc >= operation.MaxInternalRecordDate);
-                this.records.Clear();
-                this.records.AddRange(newList);
+                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.Metadata.TimestampUtc >= operation.MaxInternalRecordDate);
+                this.locatorToRecordPartitionMap[memoryDatabaseLocator].Clear();
+                this.locatorToRecordPartitionMap[memoryDatabaseLocator].AddRange(newList);
             }
         }
 
@@ -274,11 +280,15 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.streamLock)
             {
-                var newList = this.records.Where(_ => _.InternalRecordId >= operation.MaxInternalRecordId);
-                this.records.Clear();
-                this.records.AddRange(newList);
+                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.InternalRecordId >= operation.MaxInternalRecordId);
+                this.locatorToRecordPartitionMap[memoryDatabaseLocator].Clear();
+                this.locatorToRecordPartitionMap[memoryDatabaseLocator].AddRange(newList);
             }
         }
 
@@ -322,10 +332,14 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord Execute(
             GetLatestRecordOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.streamLock)
             {
                 var result =
-                    this.records.OrderByDescending(_ => _.InternalRecordId)
+                    this.locatorToRecordPartitionMap[memoryDatabaseLocator].OrderByDescending(_ => _.InternalRecordId)
                            .FirstOrDefault(
                                 _ => _.Metadata.FuzzyMatchTypes(
                                     operation.IdentifierType,
@@ -339,10 +353,14 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.streamLock)
             {
                 var result =
-                    this.records.OrderByDescending(_ => _.InternalRecordId)
+                    this.locatorToRecordPartitionMap[memoryDatabaseLocator].OrderByDescending(_ => _.InternalRecordId)
                            .FirstOrDefault(
                                 _ => _.Metadata.FuzzyMatchTypesAndId(
                                     operation.StringSerializedId,
@@ -358,12 +376,52 @@ namespace Naos.Database.Protocol.Memory
         public long Execute(
             PutRecordOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.streamLock)
             {
+                var exists = this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var recordPartition);
+                if (!exists)
+                {
+                    recordPartition = new List<StreamRecord>();
+                    this.locatorToRecordPartitionMap.Add(memoryDatabaseLocator, recordPartition);
+                }
+
                 var id = Interlocked.Increment(ref this.uniqueLongForInMemoryEntries);
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
-                this.records.Add(itemToAdd);
+                recordPartition.Add(itemToAdd);
                 return id;
+            }
+        }
+
+        private MemoryDatabaseLocator TryGetSingleLocator()
+        {
+            if (this.singleLocator != null)
+            {
+                return this.singleLocator;
+            }
+            else
+            {
+                lock (this.singleLocatorLock)
+                {
+                    if (this.singleLocator != null)
+                    {
+                        return this.singleLocator;
+                    }
+
+                    var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+                    if (allLocators.Count != 1)
+                    {
+                        throw new NotSupportedException(Invariant($"The attempted operation cannot be performed because it expected a single {nameof(IResourceLocator)} to be available and there are: {allLocators.Count}."));
+                    }
+
+                    var result = allLocators.Single().ConfirmAndConvert<MemoryDatabaseLocator>();
+
+                    this.singleLocator = result;
+                    return this.singleLocator;
+                }
             }
         }
     }

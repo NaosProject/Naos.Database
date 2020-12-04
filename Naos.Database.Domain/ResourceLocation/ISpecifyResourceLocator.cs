@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IStreamWriteProtocols.cs" company="Naos Project">
+// <copyright file="ISpecifyResourceLocator.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -9,11 +9,14 @@ namespace Naos.Database.Domain
     using Naos.Protocol.Domain;
 
     /// <summary>
-    /// Interface to protocol the basic stream data operations without a known identifier.
+    /// Interface to expose a specified <see cref="IResourceLocator"/> for the operation.
     /// </summary>
-    public interface IStreamWriteProtocols :
-        ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>,
-        ISyncAndAsyncReturningProtocol<PutRecordOp, long>
+    public interface ISpecifyResourceLocator
     {
+        /// <summary>
+        /// Gets the specified resource locator.
+        /// </summary>
+        /// <value>The specified resource locator.</value>
+        IResourceLocator SpecifiedResourceLocator { get; }
     }
 }

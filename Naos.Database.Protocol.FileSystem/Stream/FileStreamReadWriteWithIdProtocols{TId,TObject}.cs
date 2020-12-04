@@ -62,11 +62,11 @@ namespace Naos.Database.Protocol.FileSystem
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var stringSerializedId = ConvertIdToString(operation.Id, serializer);
             var delegatedOperation = new GetLatestRecordByIdOp(
-                resourceLocator,
                 stringSerializedId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                resourceLocator);
             var record = this.stream.Execute(delegatedOperation);
             var result = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
             return result;
@@ -111,7 +111,7 @@ namespace Naos.Database.Protocol.FileSystem
                 this.stream.DefaultSerializationFormat);
 
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var result = this.stream.Execute(new PutRecordOp(locator, metadata, payload));
+            var result = this.stream.Execute(new PutRecordOp(metadata, payload, locator));
             return result;
         }
 
@@ -169,11 +169,11 @@ namespace Naos.Database.Protocol.FileSystem
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
-                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 

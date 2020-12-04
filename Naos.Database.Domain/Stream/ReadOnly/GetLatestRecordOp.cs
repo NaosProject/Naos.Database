@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the latest record.
     /// </summary>
-    public partial class GetLatestRecordOp : ReturningOperationBase<StreamRecord>
+    public partial class GetLatestRecordOp : ReturningOperationBase<StreamRecord>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestRecordOp"/> class.
@@ -20,14 +20,17 @@ namespace Naos.Database.Domain
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public GetLatestRecordOp(
             TypeRepresentationWithAndWithoutVersion identifierType = null,
             TypeRepresentationWithAndWithoutVersion objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            IResourceLocator specifiedResourceLocator = null)
         {
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
@@ -47,5 +50,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The type version match strategy.</value>
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

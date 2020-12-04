@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
         "Microsoft.Naming",
         "CA1711:IdentifiersShouldNotHaveIncorrectSuffix",
         Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public interface IPruneOperation
+    public interface IPruneOperation : ISpecifyResourceLocator
     {
     }
 }

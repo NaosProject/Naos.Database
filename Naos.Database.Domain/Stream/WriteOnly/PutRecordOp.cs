@@ -14,33 +14,26 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event to record the execution of <see cref="GetNextUniqueLongOp"/>.
     /// </summary>
-    public partial class PutRecordOp : ReturningOperationBase<long>
+    public partial class PutRecordOp : ReturningOperationBase<long>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutRecordOp"/> class.
         /// </summary>
-        /// <param name="locator">The locator.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="payload">The payload.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public PutRecordOp(
-            IResourceLocator locator,
             StreamRecordMetadata metadata,
-            DescribedSerialization payload)
+            DescribedSerialization payload,
+            IResourceLocator specifiedResourceLocator = null)
         {
-            locator.MustForArg(nameof(locator)).NotBeNull();
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
 
-            this.Locator = locator;
             this.Metadata = metadata;
             this.Payload = payload;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
-
-        /// <summary>
-        /// Gets the locator.
-        /// </summary>
-        /// <value>The locator.</value>
-        public IResourceLocator Locator { get; private set; }
 
         /// <summary>
         /// Gets the metadata.
@@ -53,5 +46,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The payload.</value>
         public DescribedSerialization Payload { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

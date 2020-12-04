@@ -88,5 +88,22 @@ namespace Naos.Database.Protocol.Memory
             var result = await Task.FromResult(syncResult);
             return result;
         }
+
+        /// <inheritdoc />
+        public long Execute(
+            PutRecordOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<long> ExecuteAsync(
+            PutRecordOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

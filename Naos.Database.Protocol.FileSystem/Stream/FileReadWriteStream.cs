@@ -49,11 +49,13 @@ namespace Naos.Database.Protocol.FileSystem
         private const string MetadataFileExtension = "meta";
 
         private readonly object fileLock = new object();
+        private readonly object singleLocatorLock = new object();
 
         private readonly object nextInternalRecordIdentifierLock = new object();
         private readonly object nextUniqueLongLock = new object();
         private readonly ObcDateTimeStringSerializer dateTimeStringSerializer = new ObcDateTimeStringSerializer();
         private readonly ISerializer metadataSerializer;
+        private FileSystemDatabaseLocator singleLocator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileReadWriteStream"/> class.
@@ -352,14 +354,8 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             GetLatestRecordOp operation)
         {
-            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-            if (allLocators.Count != 1)
-            {
-                throw new NotSupportedException(Invariant($"Cannot execute '{nameof(GetLatestRecordOp)}' with more than one locator as there is no way to know which one to target; there are {allLocators.Count}."));
-            }
-
-            var singleFileLocator = allLocators.Single();
-            var rootPath = this.GetRootPathFromLocator(singleFileLocator);
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
 
             var metadataPathsThatCouldMatch = Directory.GetFiles(
                 rootPath,
@@ -381,7 +377,8 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
-            var rootPath = this.GetRootPathFromLocator(operation.Locator);
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
 
             var metadataPathsThatCouldMatch = Directory.GetFiles(
                 rootPath,
@@ -415,7 +412,9 @@ namespace Naos.Database.Protocol.FileSystem
         {
             lock (this.fileLock)
             {
-                var rootPath = this.GetRootPathFromLocator(operation.Locator);
+                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+
                 var timestampString = this.dateTimeStringSerializer.SerializeToString(operation.Metadata.TimestampUtc).Replace(":", "-");
                 var recordIdentifierTrackingFilePath = Path.Combine(rootPath, RecordIdentifierTrackingFileName);
 
@@ -472,10 +471,9 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         private string GetRootPathFromLocator(
-            IResourceLocator resourceLocator)
+            FileSystemDatabaseLocator resourceLocator)
         {
-            var fileLocator = resourceLocator as FileSystemDatabaseLocator ?? throw new InvalidOperationException(Invariant($"Resource locator was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{resourceLocator?.GetType()?.ToStringReadable() ?? "<null>"}'."));
-            var result = Path.Combine(fileLocator.RootFolderPath, this.Name);
+            var result = Path.Combine(resourceLocator.RootFolderPath, this.Name);
             return result;
         }
 
@@ -558,6 +556,35 @@ namespace Naos.Database.Protocol.FileSystem
 
             var result = new StreamRecord(internalRecordId, metadata, payload);
             return result;
+        }
+
+        private FileSystemDatabaseLocator TryGetSingleLocator()
+        {
+            if (this.singleLocator != null)
+            {
+                return this.singleLocator;
+            }
+            else
+            {
+                lock (this.singleLocatorLock)
+                {
+                    if (this.singleLocator != null)
+                    {
+                        return this.singleLocator;
+                    }
+
+                    var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+                    if (allLocators.Count != 1)
+                    {
+                        throw new NotSupportedException(Invariant($"The attempted operation cannot be performed because it expected a single {nameof(IResourceLocator)} to be available and there are: {allLocators.Count}."));
+                    }
+
+                    var result = allLocators.Single().ConfirmAndConvert<FileSystemDatabaseLocator>();
+
+                    this.singleLocator = result;
+                    return this.singleLocator;
+                }
+            }
         }
     }
 }

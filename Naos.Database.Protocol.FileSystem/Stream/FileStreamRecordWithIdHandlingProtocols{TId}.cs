@@ -88,18 +88,26 @@ namespace Naos.Database.Protocol.FileSystem
         {
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var identifierType = typeof(TId).ToRepresentation().ToWithAndWithoutVersion();
-            var items = new List<LocatedStringSerializedIdentifier>();
+            var items = new List<Tuple<IResourceLocator, StringSerializedIdentifier>>();
             foreach (var id in operation.IdsToMatch)
             {
                 var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(id));
                 var stringSerializedId = serializer.SerializeToString(id);
                 var identified = new StringSerializedIdentifier(stringSerializedId, identifierType);
-                var located = new LocatedStringSerializedIdentifier(identified, locator);
-                items.Add(located);
+                items.Add(new Tuple<IResourceLocator, StringSerializedIdentifier>(locator, identified));
             }
 
-            var delegatedOperation = new GetHandlingStatusOfRecordsByIdOp(items);
-            var result = this.stream.Execute(delegatedOperation);
+            var groupedByLocators = items.GroupBy(_ => _.Item1).ToList();
+            var delegatedOperations = groupedByLocators.Select(
+                                                            _ => new GetHandlingStatusOfRecordsByIdOp(
+                                                                _.Select(__ => __.Item2).ToList(),
+                                                                operation.HandlingStatusCompositionStrategy,
+                                                                operation.TypeVersionMatchStrategy,
+                                                                _.Key))
+                                                       .ToList();
+
+            var results = delegatedOperations.Select(_ => this.stream.Execute(_)).ToList();
+            var result = results.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
             return result;
         }
 

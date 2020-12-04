@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     /// <summary>
-    /// Strategy on how to handle an existing record encountered during a write.
+    /// Handling statuses.
     /// </summary>
     public enum HandlingStatus
     {

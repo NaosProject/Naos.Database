@@ -151,9 +151,7 @@
     <Compile Include="Stream\Handling\History\GetHandlingStatusOfRecordSetByTagOp.designer.cs">
       <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Model\LocatedStringSerializedIdentifier.designer.cs">
-      <DependentUpon>LocatedStringSerializedIdentifier.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.cs" />
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
     </Compile>
@@ -164,7 +162,6 @@
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry{TObject}.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Model\LocatedStringSerializedIdentifier.cs" />
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
@@ -247,6 +244,7 @@
     <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Model\TagMatchStrategy.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp.cs</DependentUpon>
     </Compile>

@@ -70,7 +70,7 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.LocatedIdsToMatch.IsEqualTo(other.LocatedIdsToMatch)
+            var result = this.IdsToMatch.IsEqualTo(other.IdsToMatch)
                       && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy);
 
             return result;
@@ -81,7 +81,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.LocatedIdsToMatch)
+            .Hash(this.IdsToMatch)
             .Hash(this.TypeVersionMatchStrategy)
             .Value;
 
@@ -89,10 +89,10 @@ namespace Naos.Database.Domain
         public new GetHandlingStatusOfRecordsByIdOp DeepClone() => (GetHandlingStatusOfRecordsByIdOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="LocatedIdsToMatch" />.
+        /// Deep clones this object with a new <see cref="IdsToMatch" />.
         /// </summary>
-        /// <param name="locatedIdsToMatch">The new <see cref="LocatedIdsToMatch" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetHandlingStatusOfRecordsByIdOp" /> using the specified <paramref name="locatedIdsToMatch" /> for <see cref="LocatedIdsToMatch" /> and a deep clone of every other property.</returns>
+        /// <param name="locatedIdsToMatch">The new <see cref="IdsToMatch" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetHandlingStatusOfRecordsByIdOp" /> using the specified <paramref name="locatedIdsToMatch" /> for <see cref="IdsToMatch" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -108,7 +108,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetHandlingStatusOfRecordsByIdOp DeepCloneWithLocatedIdsToMatch(IReadOnlyCollection<LocatedStringSerializedIdentifier> locatedIdsToMatch)
+        public GetHandlingStatusOfRecordsByIdOp DeepCloneWithLocatedIdsToMatch(IReadOnlyCollection<StringSerializedIdentifier> locatedIdsToMatch)
         {
             var result = new GetHandlingStatusOfRecordsByIdOp(
                                  locatedIdsToMatch,
@@ -140,7 +140,7 @@ namespace Naos.Database.Domain
         public GetHandlingStatusOfRecordsByIdOp DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
         {
             var result = new GetHandlingStatusOfRecordsByIdOp(
-                                 this.LocatedIdsToMatch?.Select(i => i?.DeepClone()).ToList(),
+                                 this.IdsToMatch?.Select(i => i?.DeepClone()).ToList(),
                                  typeVersionMatchStrategy);
 
             return result;
@@ -150,7 +150,7 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new GetHandlingStatusOfRecordsByIdOp(
-                                 this.LocatedIdsToMatch?.Select(i => i?.DeepClone()).ToList(),
+                                 this.IdsToMatch?.Select(i => i?.DeepClone()).ToList(),
                                  this.TypeVersionMatchStrategy);
 
             return result;
@@ -160,7 +160,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: LocatedIdsToMatch = {this.LocatedIdsToMatch?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: LocatedIdsToMatch = {this.IdsToMatch?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

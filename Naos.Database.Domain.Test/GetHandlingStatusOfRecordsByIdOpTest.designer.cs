@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: LocatedIdsToMatch = {systemUnderTest.LocatedIdsToMatch?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: LocatedIdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -100,7 +100,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
                         var result = new GetHandlingStatusOfRecordsByIdOp(
-                                             new LocatedStringSerializedIdentifier[0].Concat(referenceObject.LocatedIdsToMatch).Concat(new LocatedStringSerializedIdentifier[] { null }).Concat(referenceObject.LocatedIdsToMatch).ToList(),
+                                             new LocatedStringSerializedIdentifier[0].Concat(referenceObject.IdsToMatch).Concat(new LocatedStringSerializedIdentifier[] { null }).Concat(referenceObject.IdsToMatch).ToList(),
                                              referenceObject.TypeVersionMatchStrategy);
 
                         return result;
@@ -121,9 +121,9 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
-                                                      referenceObject.LocatedIdsToMatch,
+                                                      referenceObject.IdsToMatch,
                                                       referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.LocatedIdsToMatch,
+                            ExpectedPropertyValue = referenceObject.IdsToMatch,
                         };
 
                         return result;
@@ -141,7 +141,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = new GetHandlingStatusOfRecordsByIdOp(
-                                                      referenceObject.LocatedIdsToMatch,
+                                                      referenceObject.IdsToMatch,
                                                       referenceObject.TypeVersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
@@ -161,12 +161,12 @@ namespace Naos.Database.Domain.Test
                     {
                         var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.LocatedIdsToMatch.IsEqualTo(_.LocatedIdsToMatch));
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.IdsToMatch.IsEqualTo(_.IdsToMatch));
 
                         var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.LocatedIdsToMatch,
+                            DeepCloneWithValue = referenceObject.IdsToMatch,
                         };
 
                         return result;
@@ -204,16 +204,16 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetHandlingStatusOfRecordsByIdOp[]
                     {
                         new GetHandlingStatusOfRecordsByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.LocatedIdsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetHandlingStatusOfRecordsByIdOp[]
                     {
                         new GetHandlingStatusOfRecordsByIdOp(
-                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.LocatedIdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.LocatedIdsToMatch)).LocatedIdsToMatch,
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.IdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdsToMatch)).IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                         new GetHandlingStatusOfRecordsByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.LocatedIdsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -518,13 +518,13 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.LocatedIdsToMatch == null)
+                if (systemUnderTest.IdsToMatch == null)
                 {
-                    actual.LocatedIdsToMatch.AsTest().Must().BeNull();
+                    actual.IdsToMatch.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.LocatedIdsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.LocatedIdsToMatch);
+                    actual.IdsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.IdsToMatch);
                 }
             }
 

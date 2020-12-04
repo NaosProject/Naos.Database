@@ -330,10 +330,6 @@
     <Compile Include="GetLatestRecordOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="LocatedStringSerializedIdentifierTest.cs" />
-    <Compile Include="LocatedStringSerializedIdentifierTest.designer.cs">
-      <DependentUpon>LocatedStringSerializedIdentifierTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="PutRecordOpTest.cs" />
     <Compile Include="PutRecordOpTest.designer.cs">
       <DependentUpon>PutRecordOpTest.cs</DependentUpon>

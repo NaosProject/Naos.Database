@@ -39,6 +39,7 @@ namespace Naos.Database.Protocol.Memory
         IReturningProtocol<PutRecordOp, long>
     {
         private readonly object streamLock = new object();
+        private readonly object handlingLock = new object();
         private readonly object singleLocatorLock = new object();
 
         private readonly Dictionary<MemoryDatabaseLocator, List<StreamRecord>> locatorToRecordPartitionMap = new Dictionary<MemoryDatabaseLocator, List<StreamRecord>>();
@@ -304,6 +305,10 @@ namespace Naos.Database.Protocol.Memory
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
+
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             throw new System.NotImplementedException();
         }
 
@@ -311,6 +316,8 @@ namespace Naos.Database.Protocol.Memory
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             throw new System.NotImplementedException();
         }
 
@@ -318,6 +325,8 @@ namespace Naos.Database.Protocol.Memory
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByTagOp operation)
         {
+            // var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+            // do for each locator
             throw new System.NotImplementedException();
         }
 

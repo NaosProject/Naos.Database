@@ -9,6 +9,7 @@ namespace Naos.Database.Protocol.FileSystem
     using System;
     using System.Threading.Tasks;
     using Naos.Database.Domain;
+    using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
 
@@ -25,6 +26,7 @@ namespace Naos.Database.Protocol.FileSystem
         private readonly FileReadWriteStream stream;
 
         private readonly IStreamReadProtocols delegatedProtocols;
+        private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileStreamReadWriteWithIdProtocols{TId}"/> class.
@@ -36,6 +38,7 @@ namespace Naos.Database.Protocol.FileSystem
 
             this.stream = stream;
             this.delegatedProtocols = stream.GetStreamReadingProtocols();
+            this.locatorProtocols = stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
         /// <inheritdoc />
@@ -45,8 +48,10 @@ namespace Naos.Database.Protocol.FileSystem
             operation.MustForArg(nameof(operation)).NotBeNull();
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
+                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 operation.ObjectType,

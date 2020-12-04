@@ -8,6 +8,7 @@ namespace Naos.Database.Protocol.FileSystem
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace Naos.Database.Protocol.FileSystem
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.String.Recipes;
+    using OBeautifulCode.Type.Recipes;
+    using static System.FormattableString;
 
     /// <summary>
     /// File system implementation of <see cref="IReadWriteStream"/>, it is thread resilient but not necessarily thread safe.
@@ -34,16 +38,18 @@ namespace Naos.Database.Protocol.FileSystem
         IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByIdOp, HandlingStatus>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-        IReturningProtocol<TryHandleRecordOp, StreamRecord>
+        IReturningProtocol<TryHandleRecordOp, StreamRecord>,
+        IReturningProtocol<PutRecordOp, long>
     {
+        private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
+        private const string BinaryFileExtension = "bin";
+        private const string MetadataFileExtension = "meta";
+
         private readonly object fileLock = new object();
 
-        /// <summary>
-        /// Gets the locking object for the specific <see cref="IStream"/>.
-        /// </summary>
-        /// <value>The file lock.</value>
-        // ReSharper disable once ConvertToAutoProperty - prefer proper backing field for safety given it's used for locking
-        public object FileLock => this.fileLock;
+        private readonly object nextInternalRecordIdentifierLock = new object();
+        private readonly ObcDateTimeStringSerializer dateTimeStringSerializer = new ObcDateTimeStringSerializer();
+        private readonly ISerializer metadataSerializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileReadWriteStream"/> class.
@@ -65,6 +71,8 @@ namespace Naos.Database.Protocol.FileSystem
             defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
             serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
             resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
+
+            this.metadataSerializer = serializerFactory.BuildSerializer(defaultSerializerRepresentation);
 
             this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
             this.SerializerFactory = serializerFactory;
@@ -246,7 +254,128 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
-            throw new System.NotImplementedException();
+            var rootPath = this.GetRootPathFromLocator(operation.Locator);
+
+            var metadataPathsThatCouldMatch = Directory.GetFiles(
+                rootPath,
+                Invariant($"*{operation.StringSerializedId}*.{MetadataFileExtension}"),
+                SearchOption.TopDirectoryOnly);
+
+            var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+            if (!orderedDescendingByInternalRecordId.Any())
+            {
+                return default;
+            }
+
+            foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
+            {
+                var fileText = File.ReadAllText(metadataFilePathToTest);
+                var metadata = this.metadataSerializer.Deserialize<StreamRecordMetadata>(fileText);
+                if (metadata.FuzzyMatchTypesAndId(operation.StringSerializedId, operation.IdentifierType, operation.ObjectType, operation.TypeVersionMatchStrategy))
+                {
+                    var recordSerializer = this.SerializerFactory.BuildSerializer(metadata.SerializerRepresentation);
+                    var filePathBase = metadataFilePathToTest.Substring(0, metadataFilePathToTest.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
+                    var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
+                    string stringPayload;
+                    SerializationFormat serializationFormat;
+                    if (File.Exists(binaryFilePath))
+                    {
+                        var bytes = File.ReadAllBytes(binaryFilePath);
+                        stringPayload = Convert.ToBase64String(bytes);
+                        serializationFormat = SerializationFormat.Binary;
+                    }
+                    else
+                    {
+                        var stringFilePath = Invariant($"{filePathBase}.{metadata.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)}");
+                        if (!File.Exists(stringFilePath))
+                        {
+                            throw new InvalidOperationException(Invariant($"Expected payload file '{stringFilePath}' to exist to accompany metadata file '{metadataFilePathToTest}' but was not found."));
+                        }
+
+                        stringPayload = File.ReadAllText(stringFilePath);
+                        serializationFormat = SerializationFormat.String;
+                    }
+
+                    var internalRecordIdString = Path.GetFileName(metadataFilePathToTest).Split(new[] { "___" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                    var internalRecordId = long.Parse(internalRecordIdString);
+                    var payload = new DescribedSerialization(
+                        metadata.TypeRepresentationOfObject.WithVersion,
+                        stringPayload,
+                        metadata.SerializerRepresentation,
+                        serializationFormat);
+
+                    var result = new StreamRecord(internalRecordId, metadata, payload);
+                }
+            }
+
+            return default;
+        }
+
+        /// <inheritdoc />
+        public long Execute(
+            PutRecordOp operation)
+        {
+            var rootPath = this.GetRootPathFromLocator(operation.Locator);
+            var timestampString = this.dateTimeStringSerializer.SerializeToString(operation.Metadata.TimestampUtc).Replace(":", "-");
+            var recordIdentifierTrackingFilePath = Path.Combine(rootPath, RecordIdentifierTrackingFileName);
+
+            long newId;
+
+            lock (this.nextInternalRecordIdentifierLock)
+            {
+                // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
+                using (var fileStream = new FileStream(
+                    recordIdentifierTrackingFilePath,
+                    FileMode.OpenOrCreate,
+                    FileAccess.ReadWrite,
+                    FileShare.None))
+                {
+                    string currentIdString;
+                    var reader = new StreamReader(fileStream);
+                    currentIdString = reader.ReadToEnd();
+                    currentIdString = string.IsNullOrWhiteSpace(currentIdString) ? 0.ToString(CultureInfo.InvariantCulture) : currentIdString;
+                    var currentId = long.Parse(currentIdString, CultureInfo.InvariantCulture);
+                    newId = currentId + 1;
+                    fileStream.Position = 0;
+                    var writer = new StreamWriter(fileStream);
+                    writer.Write(newId.ToString(CultureInfo.InvariantCulture));
+
+                    // necessary to flush buffer.
+                    writer.Close();
+                }
+            }
+
+            var fileExtension = operation.Payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
+                operation.Payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
+            var filePathIdentifier = operation.Metadata.StringSerializedId.EncodeForFilePath();
+            var fileBaseName = Invariant($"{newId}___{timestampString}___{filePathIdentifier}");
+            var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
+            var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
+            var metadataFilePath = Path.Combine(rootPath, metadataFileName);
+            var payloadFilePath = Path.Combine(rootPath, payloadFileName);
+
+            var stringSerializedMetadata = this.metadataSerializer.SerializeToString(operation.Metadata);
+            File.WriteAllText(metadataFilePath, stringSerializedMetadata);
+            if (fileExtension == BinaryFileExtension)
+            {
+                var serializedBytes = Convert.FromBase64String(operation.Payload.SerializedPayload);
+
+                File.WriteAllBytes(payloadFilePath, serializedBytes);
+            }
+            else
+            {
+                File.WriteAllText(payloadFilePath, operation.Payload.SerializedPayload);
+            }
+
+            return newId;
+        }
+
+        private string GetRootPathFromLocator(
+            IResourceLocator resourceLocator)
+        {
+            var fileLocator = resourceLocator as FileSystemDatabaseLocator ?? throw new InvalidOperationException(Invariant($"Resource locator was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{resourceLocator?.GetType()?.ToStringReadable() ?? "<null>"}'."));
+            var result = Path.Combine(fileLocator.RootFolderPath, this.Name);
+            return result;
         }
     }
 }

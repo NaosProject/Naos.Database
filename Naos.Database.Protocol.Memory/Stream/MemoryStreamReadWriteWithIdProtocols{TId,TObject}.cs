@@ -32,6 +32,7 @@ namespace Naos.Database.Protocol.Memory
     {
         private readonly MemoryReadWriteStream stream;
         private readonly MemoryStreamReadWriteProtocols delegatedProtocols;
+        private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocol;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamReadWriteWithIdProtocols{TId,TObject}"/> class.
@@ -43,6 +44,7 @@ namespace Naos.Database.Protocol.Memory
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;
             this.delegatedProtocols = new MemoryStreamReadWriteProtocols(stream);
+            this.locatorProtocol = this.stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
         /// <inheritdoc />
@@ -52,8 +54,10 @@ namespace Naos.Database.Protocol.Memory
             operation.MustForArg(nameof(operation)).NotBeNull();
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
+                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
@@ -118,7 +122,10 @@ namespace Naos.Database.Protocol.Memory
                 operation.Tags ?? new Dictionary<string, string>(),
                 DateTime.UtcNow,
                 objectTimestamp);
-            var result = this.stream.AddItem(metadata, describedSerialization);
+
+            var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var result = this.stream.Execute(new PutRecordOp(locator, metadata, describedSerialization));
+
             return result;
         }
 
@@ -138,8 +145,10 @@ namespace Naos.Database.Protocol.Memory
             operation.MustForArg(nameof(operation)).NotBeNull();
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
+                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),

@@ -31,6 +31,7 @@ namespace Naos.Database.Protocol.Memory
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "temp")]
         private readonly MemoryReadWriteStream stream;
         private readonly MemoryStreamReadWriteProtocols delegatedProtocols;
+        private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamReadWriteWithIdProtocols{TId}"/> class.
@@ -43,6 +44,7 @@ namespace Naos.Database.Protocol.Memory
 
             this.stream = stream;
             this.delegatedProtocols = new MemoryStreamReadWriteProtocols(stream);
+            this.locatorProtocols = stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
         /// <inheritdoc />
@@ -52,8 +54,9 @@ namespace Naos.Database.Protocol.Memory
             operation.MustForArg(nameof(operation)).NotBeNull();
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
-
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var delegatedOperation = new GetLatestRecordByIdOp(
+                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 operation.ObjectType,

@@ -33,7 +33,8 @@ namespace Naos.Database.Protocol.Memory
         IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByIdOp, HandlingStatus>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-        IReturningProtocol<TryHandleRecordOp, StreamRecord>
+        IReturningProtocol<TryHandleRecordOp, StreamRecord>,
+        IReturningProtocol<PutRecordOp, long>
     {
         private readonly object streamLock = new object();
 
@@ -94,25 +95,6 @@ namespace Naos.Database.Protocol.Memory
         /// </summary>
         /// <value>The default serialization format.</value>
         public SerializationFormat DefaultSerializationFormat { get; private set; }
-
-        /// <summary>
-        /// Safely add an item to the internal collection; should really only be used in testing and is not part of the <see cref="IReadWriteStream"/> language.
-        /// </summary>
-        /// <param name="metadata">The metadata.</param>
-        /// <param name="payload">The payload.</param>
-        /// <returns>Internal identifier.</returns>
-        public long AddItem(
-            StreamRecordMetadata metadata,
-            DescribedSerialization payload)
-        {
-            lock (this.streamLock)
-            {
-                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryEntries);
-                var itemToAdd = new StreamRecord(id, metadata, payload);
-                this.records.Add(itemToAdd);
-                return id;
-            }
-        }
 
         /// <inheritdoc />
         public void Execute(
@@ -368,6 +350,19 @@ namespace Naos.Database.Protocol.Memory
                                     operation.TypeVersionMatchStrategy));
 
                 return result;
+            }
+        }
+
+        /// <inheritdoc />
+        public long Execute(
+            PutRecordOp operation)
+        {
+            lock (this.streamLock)
+            {
+                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryEntries);
+                var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
+                this.records.Add(itemToAdd);
+                return id;
             }
         }
     }

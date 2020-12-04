@@ -32,16 +32,8 @@ namespace Naos.Database.Protocol.FileSystem
         : IStreamReadWithIdProtocols<TId, TObject>,
           IStreamWriteWithIdProtocols<TId, TObject>
     {
-        private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
-        private const string BinaryFileExtension = "bin";
-        private const string MetadataFileExtension = "meta";
-
-        private readonly object nextInternalRecordIdentifierLock = new object();
-        private readonly ObcDateTimeStringSerializer dateTimeStringSerializer = new ObcDateTimeStringSerializer();
         private readonly FileReadWriteStream stream;
-        private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> resourceLocatorUsingIdProtocols;
-        private readonly ISerializer serializer;
-        private readonly SerializerRepresentation serializerRepresentation;
+        private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
         private readonly IStreamReadProtocols delegatedProtocols;
 
         /// <summary>
@@ -56,9 +48,7 @@ namespace Naos.Database.Protocol.FileSystem
             this.stream = stream;
             this.delegatedProtocols = stream.GetStreamReadingProtocols();
 
-            this.resourceLocatorUsingIdProtocols = this.stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
-            this.serializerRepresentation = this.stream.DefaultSerializerRepresentation;
-            this.serializer = this.stream.SerializerFactory.BuildSerializer(this.serializerRepresentation);
+            this.locatorProtocols = this.stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
         /// <inheritdoc />
@@ -67,57 +57,19 @@ namespace Naos.Database.Protocol.FileSystem
             GetLatestObjectByIdOp<TId, TObject> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var stringSerializedId = this.ConvertIdToString(operation.Id);
-            var resourceLocator = this.resourceLocatorUsingIdProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var rootPath = this.GetRootPathFromLocator(resourceLocator);
 
-            var metadataPathsThatCouldMatch = Directory.GetFiles(
-                rootPath,
-                Invariant($"*{stringSerializedId}*.{MetadataFileExtension}"),
-                SearchOption.TopDirectoryOnly);
-
-            var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-            if (!orderedDescendingByInternalRecordId.Any())
-            {
-                return default;
-            }
-
-            var resultTypeRepresentation = typeof(TObject).ToRepresentation().ToWithAndWithoutVersion();
-            var typeRepresentationToCheck = operation.TypeVersionMatchStrategy == TypeVersionMatchStrategy.Specific
-                ? resultTypeRepresentation.WithVersion
-                : resultTypeRepresentation.WithoutVersion;
-            foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
-            {
-                var fileText = File.ReadAllText(metadataFilePathToTest);
-                var metadata = this.serializer.Deserialize<StreamRecordMetadata>(fileText);
-                if (metadata.TypeRepresentationOfObject.WithoutVersion == typeRepresentationToCheck)
-                {
-                    var recordSerializer = this.stream.SerializerFactory.BuildSerializer(metadata.SerializerRepresentation);
-                    var filePathBase = metadataFilePathToTest.Substring(0, metadataFilePathToTest.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
-                    var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
-                    TObject result;
-                    if (File.Exists(binaryFilePath))
-                    {
-                        var bytes = File.ReadAllBytes(binaryFilePath);
-                        result = recordSerializer.Deserialize<TObject>(bytes);
-                    }
-                    else
-                    {
-                        var stringFilePath = Invariant($"{filePathBase}.{metadata.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)}");
-                        if (!File.Exists(stringFilePath))
-                        {
-                            throw new InvalidOperationException(Invariant($"Expected payload file '{stringFilePath}' to exist to accompany metadata file '{metadataFilePathToTest}' but was not found."));
-                        }
-
-                        var text = File.ReadAllText(stringFilePath);
-                        result = recordSerializer.Deserialize<TObject>(text);
-                    }
-
-                    return result;
-                }
-            }
-
-            return default;
+            var resourceLocator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var stringSerializedId = this.ConvertIdToString(operation.Id, serializer);
+            var delegatedOperation = new GetLatestRecordByIdOp(
+                resourceLocator,
+                stringSerializedId,
+                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                operation.TypeVersionMatchStrategy);
+            var record = this.stream.Execute(delegatedOperation);
+            var result = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            return result;
         }
 
         /// <inheritdoc />
@@ -136,97 +88,36 @@ namespace Naos.Database.Protocol.FileSystem
             PutWithIdAndReturnInternalRecordIdOp<TId, TObject> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var resourceLocator = this.resourceLocatorUsingIdProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var rootPath = this.GetRootPathFromLocator(resourceLocator);
 
             var identifierTypeRepresentation = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
             var objectTypeRepresentation = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
 
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var objectTimestamp = operation.ObjectToPut is IHaveTimestampUtc objectWithTimestamp
                 ? objectWithTimestamp.TimestampUtc
                 : (DateTime?)null;
-            var stringSerializedId = this.ConvertIdToString(operation.Id);
-            var streamRecordMetadata = new StreamRecordMetadata(
+            var stringSerializedId = this.ConvertIdToString(operation.Id, serializer);
+            var metadata = new StreamRecordMetadata(
                 stringSerializedId,
-                this.serializerRepresentation,
+                this.stream.DefaultSerializerRepresentation,
                 identifierTypeRepresentation.ToWithAndWithoutVersion(),
                 objectTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
                 DateTime.UtcNow,
                 objectTimestamp);
 
-            var stringSerializedMetadata = this.serializer.SerializeToString(streamRecordMetadata);
-            byte[] serializedBytes = null;
-            string serializedString = null;
-            string fileExtension;
-            switch (this.stream.DefaultSerializationFormat)
-            {
-                case SerializationFormat.String:
-                    serializedString = this.serializer.SerializeToString(operation.ObjectToPut);
-                    fileExtension = this.serializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
-                    break;
-                case SerializationFormat.Binary:
-                    serializedBytes = this.serializer.SerializeToBytes(operation.ObjectToPut);
-                    fileExtension = BinaryFileExtension;
-                    break;
-                default:
-                    throw new NotSupportedException(Invariant($"{nameof(SerializationFormat)} from {nameof(this.stream)} of '{this.stream.DefaultSerializationFormat}' is not supported."));
-            }
+            var payload = operation.ObjectToPut.ToDescribedSerializationUsingSpecificSerializer(
+                serializer,
+                this.stream.DefaultSerializationFormat);
 
-            var timestampString = this.dateTimeStringSerializer.SerializeToString(streamRecordMetadata.TimestampUtc).Replace(":", "-");
-            var recordIdentifierTrackingFilePath = Path.Combine(rootPath, RecordIdentifierTrackingFileName);
-
-            long newId;
-
-            lock (this.nextInternalRecordIdentifierLock)
-            {
-                // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
-                using (var fileStream = new FileStream(
-                    recordIdentifierTrackingFilePath,
-                    FileMode.OpenOrCreate,
-                    FileAccess.ReadWrite,
-                    FileShare.None))
-                {
-                    string currentIdString;
-                    var reader = new StreamReader(fileStream);
-                    currentIdString = reader.ReadToEnd();
-                    currentIdString = string.IsNullOrWhiteSpace(currentIdString) ? 0.ToString(CultureInfo.InvariantCulture) : currentIdString;
-                    var currentId = long.Parse(currentIdString, CultureInfo.InvariantCulture);
-                    newId = currentId + 1;
-                    fileStream.Position = 0;
-                    var writer = new StreamWriter(fileStream);
-                    writer.Write(newId.ToString(CultureInfo.InvariantCulture));
-
-                    // necessary to flush buffer.
-                    writer.Close();
-                }
-            }
-
-            var filePathIdentifier = stringSerializedId.EncodeForFilePath();
-            var fileBaseName = Invariant($"{newId}___{timestampString}___{filePathIdentifier}");
-            var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
-            var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
-            var metadataFilePath = Path.Combine(rootPath, metadataFileName);
-            var payloadFilePath = Path.Combine(rootPath, payloadFileName);
-
-            File.WriteAllText(metadataFilePath, stringSerializedMetadata);
-            if (fileExtension == BinaryFileExtension)
-            {
-                serializedBytes.MustForOp(nameof(serializedBytes)).NotBeNull(payloadFilePath);
-
-                // ReSharper disable once AssignNullToNotNullAttribute -- checked above with must
-                File.WriteAllBytes(payloadFilePath, serializedBytes);
-            }
-            else
-            {
-                File.WriteAllText(payloadFilePath, serializedString);
-            }
-
-            return newId;
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var result = this.stream.Execute(new PutRecordOp(locator, metadata, payload));
+            return result;
         }
 
         private string ConvertIdToString(
-            TId identifier)
+            TId identifier,
+            ISerializer serializer)
         {
             var identifierType = identifier?.GetType() ?? typeof(TId);
             if (identifierType == typeof(string)
@@ -238,7 +129,7 @@ namespace Naos.Database.Protocol.FileSystem
             }
             else
             {
-                var result = this.serializer.SerializeToString(identifier);
+                var result = serializer.SerializeToString(identifier);
                 return result;
             }
         }
@@ -268,14 +159,6 @@ namespace Naos.Database.Protocol.FileSystem
             await Task.FromResult(true);
         }
 
-        private string GetRootPathFromLocator(
-            IResourceLocator resourceLocator)
-        {
-            var fileLocator = resourceLocator as FileSystemDatabaseLocator ?? throw new InvalidOperationException(Invariant($"Resource locator was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{resourceLocator?.GetType()?.ToStringReadable() ?? "<null>"}'."));
-            var result = Path.Combine(fileLocator.RootFolderPath, this.stream.Name);
-            return result;
-        }
-
         /// <inheritdoc />
         public StreamRecordWithId<TId, TObject> Execute(
             GetLatestRecordByIdOp<TId, TObject> operation)
@@ -283,8 +166,10 @@ namespace Naos.Database.Protocol.FileSystem
             operation.MustForArg(nameof(operation)).NotBeNull();
             var recordSerializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var serializedObjectId = recordSerializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
             var delegatedOperation = new GetLatestRecordByIdOp(
+                locator,
                 serializedObjectId,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),

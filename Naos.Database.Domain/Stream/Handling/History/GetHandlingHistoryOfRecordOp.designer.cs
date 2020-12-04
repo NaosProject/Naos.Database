@@ -71,6 +71,7 @@ namespace Naos.Database.Domain
             }
 
             var result = this.InternalRecordId.IsEqualTo(other.InternalRecordId)
+                      && this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -82,6 +83,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.InternalRecordId)
+            .Hash(this.Concern)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -112,6 +114,37 @@ namespace Naos.Database.Domain
         {
             var result = new GetHandlingHistoryOfRecordOp(
                                  internalRecordId,
+                                 this.Concern?.DeepClone(),
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Concern" />.
+        /// </summary>
+        /// <param name="concern">The new <see cref="Concern" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetHandlingHistoryOfRecordOp" /> using the specified <paramref name="concern" /> for <see cref="Concern" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public GetHandlingHistoryOfRecordOp DeepCloneWithConcern(string concern)
+        {
+            var result = new GetHandlingHistoryOfRecordOp(
+                                 this.InternalRecordId,
+                                 concern,
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
@@ -141,6 +174,7 @@ namespace Naos.Database.Domain
         {
             var result = new GetHandlingHistoryOfRecordOp(
                                  this.InternalRecordId,
+                                 this.Concern?.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -151,6 +185,7 @@ namespace Naos.Database.Domain
         {
             var result = new GetHandlingHistoryOfRecordOp(
                                  this.InternalRecordId,
+                                 this.Concern?.DeepClone(),
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
@@ -208,7 +243,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetHandlingHistoryOfRecordOp: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetHandlingHistoryOfRecordOp: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

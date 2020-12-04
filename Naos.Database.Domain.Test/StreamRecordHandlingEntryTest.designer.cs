@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StreamRecordHandlingEntry>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntry: InternalHandlingEntryId = {systemUnderTest.InternalHandlingEntryId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeRepresentationOfEntry = {systemUnderTest.TypeRepresentationOfEntry?.ToString() ?? "<null>"}, Payload = {systemUnderTest.Payload?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectTimestampUtc = {systemUnderTest.ObjectTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntry: InternalHandlingEntryId = {systemUnderTest.InternalHandlingEntryId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeRepresentationOfEntry = {systemUnderTest.TypeRepresentationOfEntry?.ToString() ?? "<null>"}, Payload = {systemUnderTest.Payload?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectTimestampUtc = {systemUnderTest.ObjectTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -65,6 +65,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              null,
                                              referenceObject.TypeRepresentationOfEntry,
                                              referenceObject.Payload,
@@ -87,6 +88,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.TypeRepresentationOfEntry,
                                              referenceObject.Payload,
@@ -109,6 +111,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              null,
                                              referenceObject.Payload,
@@ -131,6 +134,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.TypeRepresentationOfEntry,
                                              null,
@@ -153,6 +157,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.TypeRepresentationOfEntry,
                                              referenceObject.Payload,
@@ -175,6 +180,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.TypeRepresentationOfEntry,
                                              referenceObject.Payload,
@@ -203,6 +209,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StreamRecordHandlingEntry(
                                              referenceObject.InternalHandlingEntryId,
+                                             referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.TypeRepresentationOfEntry,
                                              referenceObject.Payload,
@@ -229,6 +236,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -245,6 +253,32 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
                 {
+                    Name = "InternalRecordId should return same 'internalRecordId' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = new StreamRecordHandlingEntry(
+                                                      referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeRepresentationOfEntry,
+                                                      referenceObject.Payload,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.ObjectTimestampUtc),
+                            ExpectedPropertyValue = referenceObject.InternalRecordId,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "InternalRecordId",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StreamRecordHandlingEntry>
+                {
                     Name = "Concern should return same 'concern' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
@@ -254,6 +288,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -279,6 +314,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -304,6 +340,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -329,6 +366,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -354,6 +392,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -379,6 +418,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StreamRecordHandlingEntry(
                                                       referenceObject.InternalHandlingEntryId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.TypeRepresentationOfEntry,
                                                       referenceObject.Payload,
@@ -409,6 +449,26 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.InternalHandlingEntryId,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StreamRecordHandlingEntry>
+                {
+                    Name = "DeepCloneWithInternalRecordId should deep clone object and replace InternalRecordId with the provided internalRecordId",
+                    WithPropertyName = "InternalRecordId",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StreamRecordHandlingEntry>();
+
+                        var referenceObject = A.Dummy<StreamRecordHandlingEntry>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StreamRecordHandlingEntry>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.InternalRecordId,
                         };
 
                         return result;
@@ -547,6 +607,7 @@ namespace Naos.Database.Domain.Test
                     {
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -558,6 +619,7 @@ namespace Naos.Database.Domain.Test
                     {
                         new StreamRecordHandlingEntry(
                                 A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.InternalHandlingEntryId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId)).InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -566,6 +628,16 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
+                        new StreamRecordHandlingEntry(
+                                ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -574,6 +646,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.TypeRepresentationOfEntry.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry)).TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -582,6 +655,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 A.Dummy<StreamRecordHandlingEntry>().Whose(_ => !_.Payload.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Payload)).Payload,
@@ -590,6 +664,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -598,6 +673,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -606,6 +682,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.ObjectTimestampUtc),
                         new StreamRecordHandlingEntry(
                                 ReferenceObjectForEquatableTestScenarios.InternalHandlingEntryId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeRepresentationOfEntry,
                                 ReferenceObjectForEquatableTestScenarios.Payload,
@@ -930,7 +1007,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "InternalHandlingEntryId", "Concern", "TypeRepresentationOfEntry", "Payload", "Tags", "TimestampUtc", "ObjectTimestampUtc" };
+                var propertyNames = new string[] { "InternalHandlingEntryId", "InternalRecordId", "Concern", "TypeRepresentationOfEntry", "Payload", "Tags", "TimestampUtc", "ObjectTimestampUtc" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

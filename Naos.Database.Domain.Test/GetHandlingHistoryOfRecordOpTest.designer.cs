@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetHandlingHistoryOfRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingHistoryOfRecordOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingHistoryOfRecordOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -60,6 +60,42 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetHandlingHistoryOfRecordOp>
                 {
+                    Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingHistoryOfRecordOp>();
+
+                        var result = new GetHandlingHistoryOfRecordOp(
+                                             referenceObject.InternalRecordId,
+                                             null,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "concern", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetHandlingHistoryOfRecordOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingHistoryOfRecordOp>();
+
+                        var result = new GetHandlingHistoryOfRecordOp(
+                                             referenceObject.InternalRecordId,
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetHandlingHistoryOfRecordOp>
+                {
                     Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
                     ConstructionFunc = () =>
                     {
@@ -67,6 +103,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new GetHandlingHistoryOfRecordOp(
                                              referenceObject.InternalRecordId,
+                                             referenceObject.Concern,
                                              null);
 
                         return result;
@@ -88,6 +125,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new GetHandlingHistoryOfRecordOp(
                                                       referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.InternalRecordId,
                         };
@@ -95,6 +133,27 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "InternalRecordId",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetHandlingHistoryOfRecordOp>
+                {
+                    Name = "Concern should return same 'concern' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetHandlingHistoryOfRecordOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetHandlingHistoryOfRecordOp>
+                        {
+                            SystemUnderTest = new GetHandlingHistoryOfRecordOp(
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.Concern,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Concern",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetHandlingHistoryOfRecordOp>
@@ -108,6 +167,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new GetHandlingHistoryOfRecordOp(
                                                       referenceObject.InternalRecordId,
+                                                      referenceObject.Concern,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -133,6 +193,26 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.InternalRecordId,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetHandlingHistoryOfRecordOp>
+                {
+                    Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
+                    WithPropertyName = "Concern",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetHandlingHistoryOfRecordOp>();
+
+                        var referenceObject = A.Dummy<GetHandlingHistoryOfRecordOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetHandlingHistoryOfRecordOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Concern,
                         };
 
                         return result;
@@ -171,15 +251,22 @@ namespace Naos.Database.Domain.Test
                     {
                         new GetHandlingHistoryOfRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetHandlingHistoryOfRecordOp[]
                     {
                         new GetHandlingHistoryOfRecordOp(
                                 A.Dummy<GetHandlingHistoryOfRecordOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetHandlingHistoryOfRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                A.Dummy<GetHandlingHistoryOfRecordOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new GetHandlingHistoryOfRecordOp(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<GetHandlingHistoryOfRecordOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -510,7 +597,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "InternalRecordId", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "InternalRecordId", "Concern", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -94,6 +94,7 @@ namespace Naos.Database.Protocol.Memory
             var groupedByLocators = items.GroupBy(_ => _.Item1).ToList();
             var delegatedOperations = groupedByLocators.Select(
                                                             _ => new GetHandlingStatusOfRecordsByIdOp(
+                                                                operation.Concern,
                                                                 _.Select(__ => __.Item2).ToList(),
                                                                 operation.HandlingStatusCompositionStrategy,
                                                                 operation.TypeVersionMatchStrategy,

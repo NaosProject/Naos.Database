@@ -43,6 +43,7 @@ namespace Naos.Database.Protocol.Memory
         private readonly object singleLocatorLock = new object();
 
         private readonly Dictionary<MemoryDatabaseLocator, List<StreamRecord>> locatorToRecordPartitionMap = new Dictionary<MemoryDatabaseLocator, List<StreamRecord>>();
+        private readonly Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>> locatorToHandlingEntriesByConcernMap = new Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>>();
         private bool created = false;
         private long uniqueLongForExternalProtocol = 0;
         private long uniqueLongForInMemoryEntries = 0;
@@ -306,9 +307,17 @@ namespace Naos.Database.Protocol.Memory
             GetHandlingHistoryOfRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-            throw new System.NotImplementedException();
+
+            lock (this.handlingLock)
+            {
+                var concern = operation.Concern;
+
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, concern);
+
+                var entriesForInternalRecordId = entries.Where(_ => _.InternalRecordId == operation.InternalRecordId).ToList();
+                return entriesForInternalRecordId;
+            }
         }
 
         /// <inheritdoc />
@@ -317,6 +326,11 @@ namespace Naos.Database.Protocol.Memory
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+            }
+
             throw new System.NotImplementedException();
         }
 
@@ -324,8 +338,13 @@ namespace Naos.Database.Protocol.Memory
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByTagOp operation)
         {
-            // var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-            // do for each locator
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+
+            lock (this.handlingLock)
+            {
+            }
+
             throw new System.NotImplementedException();
         }
 
@@ -431,6 +450,27 @@ namespace Naos.Database.Protocol.Memory
                     return this.singleLocator;
                 }
             }
+        }
+
+        private List<StreamRecordHandlingEntry> GetStreamRecordHandlingEntriesForConcern(
+            MemoryDatabaseLocator memoryDatabaseLocator,
+            string concern)
+        {
+            var foundLocator = this.locatorToHandlingEntriesByConcernMap.TryGetValue(memoryDatabaseLocator, out var concernToEntriesMap);
+            if (!foundLocator)
+            {
+                concernToEntriesMap = new Dictionary<string, List<StreamRecordHandlingEntry>>();
+                this.locatorToHandlingEntriesByConcernMap.Add(memoryDatabaseLocator, concernToEntriesMap);
+            }
+
+            var foundConcern = concernToEntriesMap.TryGetValue(concern, out var entries);
+            if (!foundConcern)
+            {
+                entries = new List<StreamRecordHandlingEntry>();
+                concernToEntriesMap.Add(concern, entries);
+            }
+
+            return entries;
         }
     }
 }

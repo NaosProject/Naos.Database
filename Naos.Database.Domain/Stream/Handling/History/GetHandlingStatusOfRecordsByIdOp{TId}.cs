@@ -19,20 +19,31 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="GetHandlingStatusOfRecordsByIdOp{TId}"/> class.
         /// </summary>
+        /// <param name="concern">The handling concern.</param>
         /// <param name="idsToMatch">The object identifiers to treat as a composite status.</param>
         /// <param name="handlingStatusCompositionStrategy">The optional strategy for composing statuses.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
         public GetHandlingStatusOfRecordsByIdOp(
+            string concern,
             IReadOnlyCollection<TId> idsToMatch,
             HandlingStatusCompositionStrategy handlingStatusCompositionStrategy = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
+            concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
+
             idsToMatch.MustForArg(nameof(idsToMatch)).NotBeNull();
 
+            this.Concern = concern;
             this.IdsToMatch = idsToMatch;
             this.HandlingStatusCompositionStrategy = handlingStatusCompositionStrategy;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
+
+        /// <summary>
+        /// Gets the handling concern.
+        /// </summary>
+        /// <value>The handling concern.</value>
+        public string Concern { get; private set; }
 
         /// <summary>
         /// Gets the object identifiers to match.

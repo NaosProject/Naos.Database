@@ -49,12 +49,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetHandlingHistoryOfRecordOp(
-                                 A.Dummy<long>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingStatusOfRecordsByIdOp(
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<StringSerializedIdentifier>>(),
                                  A.Dummy<HandlingStatusCompositionStrategy>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
@@ -62,12 +58,14 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingStatusOfRecordsByIdOp<Version>(
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<Version>>(),
                                  A.Dummy<HandlingStatusCompositionStrategy>(),
                                  A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingStatusOfRecordSetByTagOp(
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<HandlingStatusCompositionStrategy>(),
                                  A.Dummy<TagMatchStrategy>()));
@@ -79,6 +77,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntry(
                                  A.Dummy<long>(),
+                                 A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<DescribedSerialization>(),
@@ -89,11 +88,18 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntry<Version>(
                                  A.Dummy<long>(),
+                                 A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<Version>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<DateTime>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetHandlingHistoryOfRecordOp(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StringSerializedIdentifier(

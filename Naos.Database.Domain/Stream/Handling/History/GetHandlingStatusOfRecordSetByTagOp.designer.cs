@@ -70,7 +70,8 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.TagsToMatch.IsEqualTo(other.TagsToMatch)
+            var result = this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
+                      && this.TagsToMatch.IsEqualTo(other.TagsToMatch)
                       && this.HandlingStatusCompositionStrategy.IsEqualTo(other.HandlingStatusCompositionStrategy)
                       && this.TagMatchStrategy.IsEqualTo(other.TagMatchStrategy);
 
@@ -82,6 +83,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
+            .Hash(this.Concern)
             .Hash(this.TagsToMatch)
             .Hash(this.HandlingStatusCompositionStrategy)
             .Hash(this.TagMatchStrategy)
@@ -89,6 +91,37 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public new GetHandlingStatusOfRecordSetByTagOp DeepClone() => (GetHandlingStatusOfRecordSetByTagOp)this.DeepCloneInternal();
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Concern" />.
+        /// </summary>
+        /// <param name="concern">The new <see cref="Concern" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetHandlingStatusOfRecordSetByTagOp" /> using the specified <paramref name="concern" /> for <see cref="Concern" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithConcern(string concern)
+        {
+            var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 concern,
+                                 this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
+                                 this.HandlingStatusCompositionStrategy?.DeepClone(),
+                                 this.TagMatchStrategy?.DeepClone());
+
+            return result;
+        }
 
         /// <summary>
         /// Deep clones this object with a new <see cref="TagsToMatch" />.
@@ -113,6 +146,7 @@ namespace Naos.Database.Domain
         public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithTagsToMatch(IReadOnlyDictionary<string, string> tagsToMatch)
         {
             var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 this.Concern?.DeepClone(),
                                  tagsToMatch,
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
                                  this.TagMatchStrategy?.DeepClone());
@@ -143,6 +177,7 @@ namespace Naos.Database.Domain
         public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithHandlingStatusCompositionStrategy(HandlingStatusCompositionStrategy handlingStatusCompositionStrategy)
         {
             var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 this.Concern?.DeepClone(),
                                  this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
                                  handlingStatusCompositionStrategy,
                                  this.TagMatchStrategy?.DeepClone());
@@ -173,6 +208,7 @@ namespace Naos.Database.Domain
         public GetHandlingStatusOfRecordSetByTagOp DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
         {
             var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 this.Concern?.DeepClone(),
                                  this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
                                  tagMatchStrategy);
@@ -184,6 +220,7 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                 this.Concern?.DeepClone(),
                                  this.TagsToMatch?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
                                  this.TagMatchStrategy?.DeepClone());
@@ -195,7 +232,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordSetByTagOp: TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {this.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordSetByTagOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {this.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy?.ToString() ?? "<null>"}.");
 
             return result;
         }

@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Collection.Recipes;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -50,6 +51,9 @@ namespace Naos.Database.Domain
             this HandlingStatusCompositionStrategy strategy,
             IReadOnlyCollection<HandlingStatus> statuses)
         {
+            strategy.MustForArg(nameof(strategy)).NotBeNull();
+            statuses.MustForArg(nameof(statuses)).NotBeNullNorEmptyEnumerable();
+
             if (statuses.Any(_ => _ == HandlingStatus.Failed))
             {
                 return HandlingStatus.Failed;
@@ -60,7 +64,7 @@ namespace Naos.Database.Domain
                 return HandlingStatus.Running;
             }
 
-            if (statuses.Any(_ => _ == HandlingStatus.Canceled))
+            if (!strategy.IgnoreCancel && statuses.Any(_ => _ == HandlingStatus.Canceled))
             {
                 return HandlingStatus.Canceled;
             }
@@ -85,7 +89,7 @@ namespace Naos.Database.Domain
                 return HandlingStatus.None;
             }
 
-            if (statuses.All(_ => _ == HandlingStatus.Completed))
+            if (statuses.All(_ => strategy.IgnoreCancel ? (_ == HandlingStatus.Canceled || _ == HandlingStatus.Completed) : _ == HandlingStatus.Completed))
             {
                 return HandlingStatus.Completed;
             }
@@ -101,9 +105,9 @@ namespace Naos.Database.Domain
         /// <returns>HandlingStatus.</returns>
         public static HandlingStatus ReduceToCompositeHandlingStatus(
             this IReadOnlyCollection<HandlingStatus> statuses,
-            HandlingStatusCompositionStrategy strategy)
+            HandlingStatusCompositionStrategy strategy = null)
         {
-            var result = strategy.ReduceToCompositeHandlingStatus(statuses);
+            var result = (strategy ?? new HandlingStatusCompositionStrategy()).ReduceToCompositeHandlingStatus(statuses);
             return result;
         }
     }

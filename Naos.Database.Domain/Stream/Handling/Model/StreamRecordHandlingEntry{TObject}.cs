@@ -23,6 +23,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StreamRecordHandlingEntry{TObject}"/> class.
         /// </summary>
         /// <param name="internalHandlingEntryId">The internal handling entry identifier.</param>
+        /// <param name="internalRecordId">The internal record identifier.</param>
         /// <param name="concern">The concern.</param>
         /// <param name="typeRepresentationOfEntry">The type representation of entry.</param>
         /// <param name="payload">The payload.</param>
@@ -30,6 +31,7 @@ namespace Naos.Database.Domain
         /// <param name="timestampUtc">The timestamp UTC.</param>
         public StreamRecordHandlingEntry(
             long internalHandlingEntryId,
+            long internalRecordId,
             string concern,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfEntry,
             TObject payload,
@@ -45,6 +47,7 @@ namespace Naos.Database.Domain
             }
 
             this.InternalHandlingEntryId = internalHandlingEntryId;
+            this.InternalRecordId = internalRecordId;
             this.Concern = concern;
             this.TypeRepresentationOfEntry = typeRepresentationOfEntry;
             this.Payload = payload;
@@ -57,6 +60,12 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The internal handling entry identifier.</value>
         public long InternalHandlingEntryId { get; private set; }
+
+        /// <summary>
+        /// Gets the internal record identifier.
+        /// </summary>
+        /// <value>The internal record identifier.</value>
+        public long InternalRecordId { get; private set; }
 
         /// <summary>
         /// Gets the concern.

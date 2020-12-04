@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -18,6 +19,7 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="stringSerializedId">The string serialized identifier.</param>
         /// <param name="identifierType">Type of the identifier.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StringSerializedIdentifier(
             string stringSerializedId,
             TypeRepresentationWithAndWithoutVersion identifierType)

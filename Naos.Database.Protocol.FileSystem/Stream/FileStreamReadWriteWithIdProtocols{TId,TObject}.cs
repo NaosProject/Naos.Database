@@ -60,7 +60,7 @@ namespace Naos.Database.Protocol.FileSystem
 
             var resourceLocator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var stringSerializedId = this.ConvertIdToString(operation.Id, serializer);
+            var stringSerializedId = ConvertIdToString(operation.Id, serializer);
             var delegatedOperation = new GetLatestRecordByIdOp(
                 resourceLocator,
                 stringSerializedId,
@@ -96,7 +96,7 @@ namespace Naos.Database.Protocol.FileSystem
             var objectTimestamp = operation.ObjectToPut is IHaveTimestampUtc objectWithTimestamp
                 ? objectWithTimestamp.TimestampUtc
                 : (DateTime?)null;
-            var stringSerializedId = this.ConvertIdToString(operation.Id, serializer);
+            var stringSerializedId = ConvertIdToString(operation.Id, serializer);
             var metadata = new StreamRecordMetadata(
                 stringSerializedId,
                 this.stream.DefaultSerializerRepresentation,
@@ -115,7 +115,7 @@ namespace Naos.Database.Protocol.FileSystem
             return result;
         }
 
-        private string ConvertIdToString(
+        private static string ConvertIdToString(
             TId identifier,
             ISerializer serializer)
         {

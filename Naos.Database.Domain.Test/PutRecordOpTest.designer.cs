@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PutRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutRecordOp: Locator = {systemUnderTest.Locator?.ToString() ?? "<null>"}, Metadata = {systemUnderTest.Metadata?.ToString() ?? "<null>"}, Payload = {systemUnderTest.Payload?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {systemUnderTest.Metadata?.ToString() ?? "<null>"}, Payload = {systemUnderTest.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -60,33 +60,15 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<PutRecordOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'locator' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<PutRecordOp>();
-
-                        var result = new PutRecordOp(
-                                             null,
-                                             referenceObject.Metadata,
-                                             referenceObject.Payload);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "locator", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PutRecordOp>
-                {
                     Name = "constructor should throw ArgumentNullException when parameter 'metadata' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<PutRecordOp>();
 
                         var result = new PutRecordOp(
-                                             referenceObject.Locator,
                                              null,
-                                             referenceObject.Payload);
+                                             referenceObject.Payload,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
@@ -102,38 +84,35 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PutRecordOp>();
 
                         var result = new PutRecordOp(
-                                             referenceObject.Locator,
                                              referenceObject.Metadata,
-                                             null);
+                                             null,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "payload", },
-                });
-
-        private static readonly ConstructorPropertyAssignmentTestScenarios<PutRecordOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PutRecordOp>()
+                })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PutRecordOp>
+                new ConstructorArgumentValidationTestScenario<PutRecordOp>
                 {
-                    Name = "Locator should return same 'locator' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<PutRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PutRecordOp>
-                        {
-                            SystemUnderTest = new PutRecordOp(
-                                                      referenceObject.Locator,
-                                                      referenceObject.Metadata,
-                                                      referenceObject.Payload),
-                            ExpectedPropertyValue = referenceObject.Locator,
-                        };
+                        var result = new PutRecordOp(
+                                             referenceObject.Metadata,
+                                             referenceObject.Payload,
+                                             null);
 
                         return result;
                     },
-                    PropertyName = "Locator",
-                })
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
+                });
+
+        private static readonly ConstructorPropertyAssignmentTestScenarios<PutRecordOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PutRecordOp>()
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PutRecordOp>
                 {
@@ -145,9 +124,9 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PutRecordOp>
                         {
                             SystemUnderTest = new PutRecordOp(
-                                                      referenceObject.Locator,
                                                       referenceObject.Metadata,
-                                                      referenceObject.Payload),
+                                                      referenceObject.Payload,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Metadata,
                         };
 
@@ -166,38 +145,39 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PutRecordOp>
                         {
                             SystemUnderTest = new PutRecordOp(
-                                                      referenceObject.Locator,
                                                       referenceObject.Metadata,
-                                                      referenceObject.Payload),
+                                                      referenceObject.Payload,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Payload,
                         };
 
                         return result;
                     },
                     PropertyName = "Payload",
-                });
-
-        private static readonly DeepCloneWithTestScenarios<PutRecordOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PutRecordOp>()
+                })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PutRecordOp>
+                new ConstructorPropertyAssignmentTestScenario<PutRecordOp>
                 {
-                    Name = "DeepCloneWithLocator should deep clone object and replace Locator with the provided locator",
-                    WithPropertyName = "Locator",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PutRecordOp>();
+                        var referenceObject = A.Dummy<PutRecordOp>();
 
-                        var referenceObject = A.Dummy<PutRecordOp>().ThatIs(_ => !systemUnderTest.Locator.IsEqualTo(_.Locator));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<PutRecordOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<PutRecordOp>
                         {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Locator,
+                            SystemUnderTest = new PutRecordOp(
+                                                      referenceObject.Metadata,
+                                                      referenceObject.Payload,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
 
                         return result;
                     },
-                })
+                    PropertyName = "SpecifiedResourceLocator",
+                });
+
+        private static readonly DeepCloneWithTestScenarios<PutRecordOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PutRecordOp>()
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<PutRecordOp>
                 {
@@ -237,6 +217,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutRecordOp>
+                {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutRecordOp>();
+
+                        var referenceObject = A.Dummy<PutRecordOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutRecordOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly PutRecordOp ReferenceObjectForEquatableTestScenarios = A.Dummy<PutRecordOp>();
@@ -250,24 +250,24 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PutRecordOp[]
                     {
                         new PutRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 ReferenceObjectForEquatableTestScenarios.Metadata,
-                                ReferenceObjectForEquatableTestScenarios.Payload),
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PutRecordOp[]
                     {
                         new PutRecordOp(
-                                A.Dummy<PutRecordOp>().Whose(_ => !_.Locator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Locator)).Locator,
-                                ReferenceObjectForEquatableTestScenarios.Metadata,
-                                ReferenceObjectForEquatableTestScenarios.Payload),
-                        new PutRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 A.Dummy<PutRecordOp>().Whose(_ => !_.Metadata.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Metadata)).Metadata,
-                                ReferenceObjectForEquatableTestScenarios.Payload),
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new PutRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 ReferenceObjectForEquatableTestScenarios.Metadata,
-                                A.Dummy<PutRecordOp>().Whose(_ => !_.Payload.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Payload)).Payload),
+                                A.Dummy<PutRecordOp>().Whose(_ => !_.Payload.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Payload)).Payload,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new PutRecordOp(
+                                ReferenceObjectForEquatableTestScenarios.Metadata,
+                                ReferenceObjectForEquatableTestScenarios.Payload,
+                                A.Dummy<PutRecordOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -288,14 +288,14 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
                         A.Dummy<PruneBeforeInternalRecordDateOp>(),
-                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp>(),
+                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
@@ -570,15 +570,6 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.Locator == null)
-                {
-                    actual.Locator.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Locator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Locator);
-                }
-
                 if (systemUnderTest.Metadata == null)
                 {
                     actual.Metadata.AsTest().Must().BeNull();
@@ -595,6 +586,15 @@ namespace Naos.Database.Domain.Test
                 else
                 {
                     actual.Payload.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Payload);
+                }
+
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
                 }
             }
 
@@ -614,7 +614,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Locator", "Metadata", "Payload" };
+                var propertyNames = new string[] { "Metadata", "Payload", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

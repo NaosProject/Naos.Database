@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {systemUnderTest.MaxInternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {systemUnderTest.MaxInternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -67,7 +67,8 @@ namespace Naos.Database.Domain.Test
 
                         var result = new PruneBeforeInternalRecordIdOp(
                                              referenceObject.MaxInternalRecordId,
-                                             null);
+                                             null,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
@@ -84,12 +85,31 @@ namespace Naos.Database.Domain.Test
 
                         var result = new PruneBeforeInternalRecordIdOp(
                                              referenceObject.MaxInternalRecordId,
-                                             Invariant($"  {Environment.NewLine}  "));
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordIdOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
+
+                        var result = new PruneBeforeInternalRecordIdOp(
+                                             referenceObject.MaxInternalRecordId,
+                                             referenceObject.Details,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<PruneBeforeInternalRecordIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PruneBeforeInternalRecordIdOp>()
@@ -105,7 +125,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordIdOp(
                                                       referenceObject.MaxInternalRecordId,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.MaxInternalRecordId,
                         };
 
@@ -125,13 +146,35 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordIdOp(
                                                       referenceObject.MaxInternalRecordId,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
                     PropertyName = "Details",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordIdOp>
+                {
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordIdOp>
+                        {
+                            SystemUnderTest = new PruneBeforeInternalRecordIdOp(
+                                                      referenceObject.MaxInternalRecordId,
+                                                      referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SpecifiedResourceLocator",
                 });
 
         private static readonly DeepCloneWithTestScenarios<PruneBeforeInternalRecordIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PruneBeforeInternalRecordIdOp>()
@@ -174,6 +217,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PruneBeforeInternalRecordIdOp>
+                {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PruneBeforeInternalRecordIdOp>();
+
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PruneBeforeInternalRecordIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly PruneBeforeInternalRecordIdOp ReferenceObjectForEquatableTestScenarios = A.Dummy<PruneBeforeInternalRecordIdOp>();
@@ -188,16 +251,23 @@ namespace Naos.Database.Domain.Test
                     {
                         new PruneBeforeInternalRecordIdOp(
                                 ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PruneBeforeInternalRecordIdOp[]
                     {
                         new PruneBeforeInternalRecordIdOp(
                                 A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.MaxInternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId)).MaxInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new PruneBeforeInternalRecordIdOp(
                                 ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId,
-                                A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
+                                A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new PruneBeforeInternalRecordIdOp(
+                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -224,8 +294,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
@@ -499,6 +569,15 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
+
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                }
             }
 
             [Fact]
@@ -517,7 +596,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "MaxInternalRecordId", "Details" };
+                var propertyNames = new string[] { "MaxInternalRecordId", "Details", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

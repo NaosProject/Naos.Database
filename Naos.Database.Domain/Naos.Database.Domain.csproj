@@ -196,6 +196,15 @@
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
       <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.designer.cs">
+      <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.designer.cs">
+      <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Management\PruneOperationExecutedEvent.designer.cs">
+      <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Management\PruneOperationRequestedEvent.cs" />
     <Compile Include="Stream\Management\PruneOperationRequestedEvent.designer.cs">
       <DependentUpon>PruneOperationRequestedEvent.cs</DependentUpon>
@@ -225,6 +234,12 @@
     </Compile>
     <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">
+      <DependentUpon>GetLatestRecordByIdOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
+      <DependentUpon>GetLatestRecordOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\WriteOnly\PutRecordOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
@@ -275,6 +290,9 @@
     </Compile>
     <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.designer.cs">
       <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\WriteOnly\PutRecordOp.designer.cs">
+      <DependentUpon>PutRecordOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>

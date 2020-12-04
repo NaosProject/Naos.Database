@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetLatestRecordByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestRecordByIdOp: Locator = {systemUnderTest.Locator?.ToString() ?? "<null>"}, StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestRecordByIdOp: StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -60,37 +60,17 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'locator' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
-
-                        var result = new GetLatestRecordByIdOp(
-                                             null,
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.TypeVersionMatchStrategy);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "locator", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp>
-                {
                     Name = "constructor should throw ArgumentNullException when parameter 'stringSerializedId' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
 
                         var result = new GetLatestRecordByIdOp(
-                                             referenceObject.Locator,
                                              null,
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
@@ -106,11 +86,11 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
 
                         var result = new GetLatestRecordByIdOp(
-                                             referenceObject.Locator,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
@@ -126,11 +106,11 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
 
                         var result = new GetLatestRecordByIdOp(
-                                             referenceObject.Locator,
                                              referenceObject.StringSerializedId,
                                              null,
                                              referenceObject.ObjectType,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
@@ -146,42 +126,39 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
 
                         var result = new GetLatestRecordByIdOp(
-                                             referenceObject.Locator,
                                              referenceObject.StringSerializedId,
                                              referenceObject.IdentifierType,
                                              null,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "objectType", },
-                });
-
-        private static readonly ConstructorPropertyAssignmentTestScenarios<GetLatestRecordByIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetLatestRecordByIdOp>()
+                })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordByIdOp>
+                new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp>
                 {
-                    Name = "Locator should return same 'locator' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp>
-                        {
-                            SystemUnderTest = new GetLatestRecordByIdOp(
-                                                      referenceObject.Locator,
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.Locator,
-                        };
+                        var result = new GetLatestRecordByIdOp(
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.IdentifierType,
+                                             referenceObject.ObjectType,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             null);
 
                         return result;
                     },
-                    PropertyName = "Locator",
-                })
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
+                });
+
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetLatestRecordByIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetLatestRecordByIdOp>()
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetLatestRecordByIdOp>
                 {
@@ -193,11 +170,11 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp>
                         {
                             SystemUnderTest = new GetLatestRecordByIdOp(
-                                                      referenceObject.Locator,
                                                       referenceObject.StringSerializedId,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.StringSerializedId,
                         };
 
@@ -216,11 +193,11 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp>
                         {
                             SystemUnderTest = new GetLatestRecordByIdOp(
-                                                      referenceObject.Locator,
                                                       referenceObject.StringSerializedId,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.IdentifierType,
                         };
 
@@ -239,11 +216,11 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp>
                         {
                             SystemUnderTest = new GetLatestRecordByIdOp(
-                                                      referenceObject.Locator,
                                                       referenceObject.StringSerializedId,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.ObjectType,
                         };
 
@@ -262,40 +239,43 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp>
                         {
                             SystemUnderTest = new GetLatestRecordByIdOp(
-                                                      referenceObject.Locator,
                                                       referenceObject.StringSerializedId,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
 
                         return result;
                     },
                     PropertyName = "TypeVersionMatchStrategy",
-                });
-
-        private static readonly DeepCloneWithTestScenarios<GetLatestRecordByIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetLatestRecordByIdOp>()
+                })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestRecordByIdOp>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordByIdOp>
                 {
-                    Name = "DeepCloneWithLocator should deep clone object and replace Locator with the provided locator",
-                    WithPropertyName = "Locator",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetLatestRecordByIdOp>();
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp>();
 
-                        var referenceObject = A.Dummy<GetLatestRecordByIdOp>().ThatIs(_ => !systemUnderTest.Locator.IsEqualTo(_.Locator));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordByIdOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp>
                         {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Locator,
+                            SystemUnderTest = new GetLatestRecordByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
 
                         return result;
                     },
-                })
+                    PropertyName = "SpecifiedResourceLocator",
+                });
+
+        private static readonly DeepCloneWithTestScenarios<GetLatestRecordByIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetLatestRecordByIdOp>()
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<GetLatestRecordByIdOp>
                 {
@@ -375,6 +355,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetLatestRecordByIdOp>
+                {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetLatestRecordByIdOp>();
+
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordByIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly GetLatestRecordByIdOp ReferenceObjectForEquatableTestScenarios = A.Dummy<GetLatestRecordByIdOp>();
@@ -388,44 +388,44 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetLatestRecordByIdOp[]
                     {
                         new GetLatestRecordByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetLatestRecordByIdOp[]
                     {
                         new GetLatestRecordByIdOp(
-                                A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.Locator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Locator)).Locator,
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
-                        new GetLatestRecordByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.StringSerializedId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StringSerializedId)).StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetLatestRecordByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.IdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdentifierType)).IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetLatestRecordByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetLatestRecordByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.Locator,
                                 ReferenceObjectForEquatableTestScenarios.StringSerializedId,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
+                                A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new GetLatestRecordByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                A.Dummy<GetLatestRecordByIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -446,14 +446,14 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
                         A.Dummy<PruneBeforeInternalRecordDateOp>(),
-                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
                         A.Dummy<PutRecordOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp>(),
+                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
@@ -728,15 +728,6 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.Locator == null)
-                {
-                    actual.Locator.AsTest().Must().BeNull();
-                }
-                else
-                {
-                    actual.Locator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Locator);
-                }
-
                 if (systemUnderTest.IdentifierType == null)
                 {
                     actual.IdentifierType.AsTest().Must().BeNull();
@@ -753,6 +744,15 @@ namespace Naos.Database.Domain.Test
                 else
                 {
                     actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
+                }
+
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
                 }
             }
 
@@ -772,7 +772,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Locator", "StringSerializedId", "IdentifierType", "ObjectType", "TypeVersionMatchStrategy" };
+                var propertyNames = new string[] { "StringSerializedId", "IdentifierType", "ObjectType", "TypeVersionMatchStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

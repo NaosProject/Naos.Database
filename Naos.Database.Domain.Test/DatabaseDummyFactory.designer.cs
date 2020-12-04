@@ -125,14 +125,13 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneBeforeInternalRecordDateOp(
-                                 A.Dummy<DateTime>(),
-                                 A.Dummy<string>()));
+                () => new PruneOperationRequestedEvent(
+                                 A.Dummy<IPruneOperation>(),
+                                 A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneBeforeInternalRecordIdOp(
-                                 A.Dummy<long>(),
-                                 A.Dummy<string>()));
+                () => new PruneSummary(
+                                 A.Dummy<IReadOnlyList<long>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationExecutedEvent(
@@ -141,13 +140,10 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneOperationRequestedEvent(
-                                 A.Dummy<IPruneOperation>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneSummary(
-                                 A.Dummy<IReadOnlyList<long>>()));
+                () => new PruneBeforeInternalRecordDateOp(
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord(
@@ -195,9 +191,9 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutRecordOp(
-                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<StreamRecordMetadata>(),
-                                 A.Dummy<DescribedSerialization>()));
+                                 A.Dummy<DescribedSerialization>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new UniqueLongIssuedEvent(
@@ -222,11 +218,11 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp(
-                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp<Version>(
@@ -235,15 +231,22 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestRecordOp(
-                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
+                () => new GetLatestRecordOp<Version>(
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestRecordOp<Version>(
+                () => new GetLatestRecordOp(
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneBeforeInternalRecordIdOp(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CreateStreamOp(

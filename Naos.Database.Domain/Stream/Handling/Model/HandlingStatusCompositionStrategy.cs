@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Collection.Recipes;
     using OBeautifulCode.Type;
@@ -47,6 +48,7 @@ namespace Naos.Database.Domain
         /// <param name="strategy">The strategy.</param>
         /// <param name="statuses">The statuses.</param>
         /// <returns>HandlingStatus.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         public static HandlingStatus ReduceToCompositeHandlingStatus(
             this HandlingStatusCompositionStrategy strategy,
             IReadOnlyCollection<HandlingStatus> statuses)

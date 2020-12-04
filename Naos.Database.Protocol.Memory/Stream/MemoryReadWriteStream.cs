@@ -311,9 +311,7 @@ namespace Naos.Database.Protocol.Memory
 
             lock (this.handlingLock)
             {
-                var concern = operation.Concern;
-
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
 
                 var entriesForInternalRecordId = entries.Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId).ToList();
                 return entriesForInternalRecordId;
@@ -329,9 +327,18 @@ namespace Naos.Database.Protocol.Memory
 
             lock (this.handlingLock)
             {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var statuses = entries.Where(
+                                           _ => operation.IdsToMatch.Any(
+                                               __ => __.StringSerializedId.Equals(_.Metadata.StringSerializedId)
+                                                  && __.IdentifierType.EqualsAccordingToStrategy(
+                                                         _.Metadata.TypeRepresentationOfId,
+                                                         operation.TypeVersionMatchStrategy)))
+                                      .Select(_ => _.Metadata.Status)
+                                      .ToList();
+                var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
+                return result;
             }
-
-            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -343,9 +350,22 @@ namespace Naos.Database.Protocol.Memory
 
             lock (this.handlingLock)
             {
-            }
+                var statuses = new List<HandlingStatus>();
+                foreach (var locator in allLocators)
+                {
+                    locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
+                    var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, operation.Concern);
+                    var statusesForLocator = entries.Where(
+                                               _ => operation.TagsToMatch.FuzzyMatchAccordingToStrategy(_.Metadata.Tags, operation.TagMatchStrategy))
+                                          .Select(_ => _.Metadata.Status)
+                                          .ToList();
 
-            throw new System.NotImplementedException();
+                    statuses.AddRange(statusesForLocator);
+                }
+
+                var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
+                return result;
+            }
         }
 
         /// <inheritdoc />

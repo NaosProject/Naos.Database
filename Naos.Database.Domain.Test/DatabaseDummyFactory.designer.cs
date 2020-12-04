@@ -77,6 +77,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TagMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecordHandlingEntry(
+                                 A.Dummy<long>(),
+                                 A.Dummy<StreamRecordHandlingEntryMetadata>(),
+                                 A.Dummy<DescribedSerialization>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntryMetadata(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
@@ -92,12 +98,6 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandlingStatusCompositionStrategy(
                                  A.Dummy<bool>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordHandlingEntry(
-                                 A.Dummy<long>(),
-                                 A.Dummy<StreamRecordHandlingEntryMetadata>(),
-                                 A.Dummy<DescribedSerialization>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StringSerializedIdentifier(

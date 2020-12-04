@@ -51,6 +51,7 @@ namespace Naos.Database.Protocol.FileSystem
         private const string MetadataFileExtension = "meta";
 
         private readonly object fileLock = new object();
+        private readonly object handlingLock = new object();
         private readonly object singleLocatorLock = new object();
 
         private readonly object nextInternalRecordIdentifierLock = new object();
@@ -379,18 +380,17 @@ namespace Naos.Database.Protocol.FileSystem
             var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
             var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
             var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
-            lock (this.fileLock)
+            lock (this.handlingLock)
             {
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    "*___RecordId-" + operation.InternalRecordId + "___*",
+                    Invariant($"*___RecordId-{operation.InternalRecordId}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var result = new List<StreamRecordHandlingEntry>();
                 foreach (var file in files)
                 {
-                    var text = File.ReadAllText(file);
-                    var item = this.internalSerializer.Deserialize<StreamRecordHandlingEntry>(text);
+                    var item = this.GetStreamRecordHandlingEntryFromMetadataFile(file);
                     result.Add(item);
                 }
 
@@ -406,7 +406,7 @@ namespace Naos.Database.Protocol.FileSystem
             var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
             var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
             var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
-            lock (this.fileLock)
+            lock (this.handlingLock)
             {
                 var files = operation.IdsToMatch.SelectMany(
                                           _ => Directory.GetFiles(
@@ -436,7 +436,38 @@ namespace Naos.Database.Protocol.FileSystem
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByTagOp operation)
         {
-            throw new System.NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+            lock (this.handlingLock)
+            {
+                var statuses = new List<HandlingStatus>();
+                foreach (var locator in allLocators)
+                {
+                    locator.MustForOp("locatorFromAllLocators").BeOfType<FileSystemDatabaseLocator>();
+                    var rootPath = this.GetRootPathFromLocator((FileSystemDatabaseLocator)locator);
+                    var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+                    var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
+
+                    var files = Directory.GetFiles(
+                                              concernDirectory,
+                                              "*." + MetadataFileExtension,
+                                              SearchOption.TopDirectoryOnly)
+                                         .ToList();
+
+                    foreach (var file in files)
+                    {
+                        var text = File.ReadAllText(file);
+                        var metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(text);
+                        if (operation.TagsToMatch.FuzzyMatchAccordingToStrategy(metadata.Tags, operation.TagMatchStrategy))
+                        {
+                            statuses.Add(metadata.Status);
+                        }
+                    }
+                }
+
+                var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
+                return result;
+            }
         }
 
         /// <inheritdoc />
@@ -723,7 +754,7 @@ namespace Naos.Database.Protocol.FileSystem
         {
             if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentException(nameof(filePath));
+                throw new ArgumentException("File path is null or whitespace.", nameof(filePath));
             }
 
             var internalRecordIdString = Path.GetFileName(filePath)
@@ -748,7 +779,7 @@ namespace Naos.Database.Protocol.FileSystem
         {
             if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentException(nameof(filePath));
+                throw new ArgumentException("File path is null or whitespace.", nameof(filePath));
             }
 
             var internalRecordIdString = Path.GetFileName(filePath)
@@ -773,7 +804,7 @@ namespace Naos.Database.Protocol.FileSystem
         {
             if (string.IsNullOrWhiteSpace(filePath))
             {
-                throw new ArgumentException(nameof(filePath));
+                throw new ArgumentException("File path is null or whitespace.", nameof(filePath));
             }
 
             var internalRecordDateString = Path.GetFileName(filePath)

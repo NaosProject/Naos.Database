@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CanceledBlockedHandlingEvent.cs" company="Naos Project">
+// <copyright file="CanceledBlockedRecordHandlingEvent.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -15,14 +15,14 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event container to signal a block to a <see cref="IReadWriteStream"/> as a <see cref="BlockedHandlingEvent"/> should be ignored.
     /// </summary>
-    public partial class CanceledBlockedHandlingEvent : EventBaseBase, IHaveDetails
+    public partial class CanceledBlockedRecordHandlingEvent : EventBaseBase, IHaveDetails
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanceledBlockedHandlingEvent"/> class.
+        /// Initializes a new instance of the <see cref="CanceledBlockedRecordHandlingEvent"/> class.
         /// </summary>
-        /// <param name="details">The details about the block.</param>
+        /// <param name="details">The details about the cancellation.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        public CanceledBlockedHandlingEvent(
+        public CanceledBlockedRecordHandlingEvent(
             string details,
             DateTime timestampUtc)
             : base(timestampUtc)

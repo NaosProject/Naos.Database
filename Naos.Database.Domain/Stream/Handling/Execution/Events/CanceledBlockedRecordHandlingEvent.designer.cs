@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class CanceledBlockedHandlingEvent : IModel<CanceledBlockedHandlingEvent>
+    public partial class CanceledBlockedRecordHandlingEvent : IModel<CanceledBlockedRecordHandlingEvent>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="CanceledBlockedHandlingEvent"/> are equal.
+        /// Determines whether two objects of type <see cref="CanceledBlockedRecordHandlingEvent"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(CanceledBlockedHandlingEvent left, CanceledBlockedHandlingEvent right)
+        public static bool operator ==(CanceledBlockedRecordHandlingEvent left, CanceledBlockedRecordHandlingEvent right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="CanceledBlockedHandlingEvent"/> are not equal.
+        /// Determines whether two objects of type <see cref="CanceledBlockedRecordHandlingEvent"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(CanceledBlockedHandlingEvent left, CanceledBlockedHandlingEvent right) => !(left == right);
+        public static bool operator !=(CanceledBlockedRecordHandlingEvent left, CanceledBlockedRecordHandlingEvent right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(CanceledBlockedHandlingEvent other)
+        public bool Equals(CanceledBlockedRecordHandlingEvent other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -77,7 +77,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as CanceledBlockedHandlingEvent);
+        public override bool Equals(object obj) => this == (obj as CanceledBlockedRecordHandlingEvent);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -86,7 +86,7 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new CanceledBlockedHandlingEvent DeepClone() => (CanceledBlockedHandlingEvent)this.DeepCloneInternal();
+        public new CanceledBlockedRecordHandlingEvent DeepClone() => (CanceledBlockedRecordHandlingEvent)this.DeepCloneInternal();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
@@ -106,7 +106,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override EventBaseBase DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new CanceledBlockedHandlingEvent(
+            var result = new CanceledBlockedRecordHandlingEvent(
                                  this.Details?.DeepClone(),
                                  timestampUtc);
 
@@ -117,7 +117,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Details" />.
         /// </summary>
         /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CanceledBlockedHandlingEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="CanceledBlockedRecordHandlingEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -133,9 +133,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CanceledBlockedHandlingEvent DeepCloneWithDetails(string details)
+        public CanceledBlockedRecordHandlingEvent DeepCloneWithDetails(string details)
         {
-            var result = new CanceledBlockedHandlingEvent(
+            var result = new CanceledBlockedRecordHandlingEvent(
                                  details,
                                  this.TimestampUtc);
 
@@ -145,7 +145,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         protected override EventBaseBase DeepCloneInternal()
         {
-            var result = new CanceledBlockedHandlingEvent(
+            var result = new CanceledBlockedRecordHandlingEvent(
                                  this.Details?.DeepClone(),
                                  this.TimestampUtc);
 
@@ -156,7 +156,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.CanceledBlockedHandlingEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.CanceledBlockedRecordHandlingEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

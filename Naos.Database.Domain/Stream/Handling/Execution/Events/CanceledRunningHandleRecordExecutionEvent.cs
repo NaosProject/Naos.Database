@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BlockedHandlingEvent.cs" company="Naos Project">
+// <copyright file="CanceledRunningHandleRecordExecutionEvent.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -10,24 +10,26 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event container to signal a block to a <see cref="IReadWriteStream"/> indicating the stream should not be processed beyond this event without an associated <see cref="CanceledBlockedHandlingEvent"/>.
+    /// Event indicating that the <see cref="HandleRecordOp"/> running execution was canceled externally.
     /// </summary>
-    public partial class BlockedHandlingEvent : EventBaseBase, IHaveDetails
+    public partial class CanceledRunningHandleRecordExecutionEvent : EventBase<long>, IHaveDetails
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BlockedHandlingEvent"/> class.
+        /// Initializes a new instance of the <see cref="CanceledRunningHandleRecordExecutionEvent"/> class.
         /// </summary>
-        /// <param name="details">The details about the block.</param>
+        /// <param name="id">The internal record identifier concerned with this handling sequence (the effective aggregate identifier of a record handling scenario).</param>
+        /// <param name="details">The details about the cancellation.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        public BlockedHandlingEvent(
+        public CanceledRunningHandleRecordExecutionEvent(
+            long id,
             string details,
             DateTime timestampUtc)
-            : base(timestampUtc)
+        : base(id, timestampUtc)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+
             this.Details = details;
         }
 

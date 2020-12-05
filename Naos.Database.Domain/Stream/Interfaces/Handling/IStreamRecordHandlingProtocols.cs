@@ -16,7 +16,14 @@ namespace Naos.Database.Domain
         : ISyncAndAsyncReturningProtocol<TryHandleRecordOp, StreamRecord>,
           ISyncAndAsyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
           ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
-          ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>
+          ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
+          ISyncAndAsyncVoidProtocol<BlockRecordHandlingOp>,
+          ISyncAndAsyncVoidProtocol<CancelBlockedRecordHandlingOp>,
+          ISyncAndAsyncVoidProtocol<CancelHandleRecordExecutionRequestOp>,
+          ISyncAndAsyncVoidProtocol<CancelRunningHandleRecordExecutionOp>,
+          ISyncAndAsyncVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
+          ISyncAndAsyncVoidProtocol<FailRunningHandleRecordExecutionOp>,
+          ISyncAndAsyncVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>
     {
     }
 }

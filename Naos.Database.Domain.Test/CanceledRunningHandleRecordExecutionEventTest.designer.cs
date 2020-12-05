@@ -35,37 +35,38 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class BlockedHandlingEventTest
+    public static partial class CanceledRunningHandleRecordExecutionEventTest
     {
-        private static readonly StringRepresentationTestScenarios<BlockedHandlingEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<BlockedHandlingEvent>()
+        private static readonly StringRepresentationTestScenarios<CanceledRunningHandleRecordExecutionEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<CanceledRunningHandleRecordExecutionEvent>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<BlockedHandlingEvent>
+                new StringRepresentationTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
+                        var systemUnderTest = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<BlockedHandlingEvent>
+                        var result = new SystemUnderTestExpectedStringRepresentation<CanceledRunningHandleRecordExecutionEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.BlockedHandlingEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CanceledRunningHandleRecordExecutionEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<BlockedHandlingEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<BlockedHandlingEvent>()
+        private static readonly ConstructorArgumentValidationTestScenarios<CanceledRunningHandleRecordExecutionEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<CanceledRunningHandleRecordExecutionEvent>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent>
+                new ConstructorArgumentValidationTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var result = new BlockedHandlingEvent(
+                        var result = new CanceledRunningHandleRecordExecutionEvent(
+                                             referenceObject.Id,
                                              null,
                                              referenceObject.TimestampUtc);
 
@@ -75,14 +76,15 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<BlockedHandlingEvent>
+                new ConstructorArgumentValidationTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var result = new BlockedHandlingEvent(
+                        var result = new CanceledRunningHandleRecordExecutionEvent(
+                                             referenceObject.Id,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.TimestampUtc);
 
@@ -92,18 +94,40 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<BlockedHandlingEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<BlockedHandlingEvent>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<CanceledRunningHandleRecordExecutionEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CanceledRunningHandleRecordExecutionEvent>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent>
+                new ConstructorPropertyAssignmentTestScenario<CanceledRunningHandleRecordExecutionEvent>
+                {
+                    Name = "Id should return same 'id' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<CanceledRunningHandleRecordExecutionEvent>
+                        {
+                            SystemUnderTest = new CanceledRunningHandleRecordExecutionEvent(
+                                                      referenceObject.Id,
+                                                      referenceObject.Details,
+                                                      referenceObject.TimestampUtc),
+                            ExpectedPropertyValue = referenceObject.Id,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Id",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent>
+                        var result = new SystemUnderTestExpectedPropertyValue<CanceledRunningHandleRecordExecutionEvent>
                         {
-                            SystemUnderTest = new BlockedHandlingEvent(
+                            SystemUnderTest = new CanceledRunningHandleRecordExecutionEvent(
+                                                      referenceObject.Id,
                                                       referenceObject.Details,
                                                       referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -114,16 +138,17 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Details",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<BlockedHandlingEvent>
+                new ConstructorPropertyAssignmentTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<BlockedHandlingEvent>();
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<BlockedHandlingEvent>
+                        var result = new SystemUnderTestExpectedPropertyValue<CanceledRunningHandleRecordExecutionEvent>
                         {
-                            SystemUnderTest = new BlockedHandlingEvent(
+                            SystemUnderTest = new CanceledRunningHandleRecordExecutionEvent(
+                                                      referenceObject.Id,
                                                       referenceObject.Details,
                                                       referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
@@ -134,19 +159,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TimestampUtc",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<BlockedHandlingEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<BlockedHandlingEvent>()
+        private static readonly DeepCloneWithTestScenarios<CanceledRunningHandleRecordExecutionEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CanceledRunningHandleRecordExecutionEvent>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<BlockedHandlingEvent>
+                new DeepCloneWithTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
+                        var systemUnderTest = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var referenceObject = A.Dummy<BlockedHandlingEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent>
+                        var result = new SystemUnderTestDeepCloneWithValue<CanceledRunningHandleRecordExecutionEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -156,17 +181,37 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<BlockedHandlingEvent>
+                new DeepCloneWithTestScenario<CanceledRunningHandleRecordExecutionEvent>
+                {
+                    Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
+                    WithPropertyName = "Id",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
+
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<CanceledRunningHandleRecordExecutionEvent>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Id,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
+                        var systemUnderTest = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-                        var referenceObject = A.Dummy<BlockedHandlingEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<CanceledRunningHandleRecordExecutionEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<BlockedHandlingEvent>
+                        var result = new SystemUnderTestDeepCloneWithValue<CanceledRunningHandleRecordExecutionEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
@@ -176,27 +221,34 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly BlockedHandlingEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<BlockedHandlingEvent>();
+        private static readonly CanceledRunningHandleRecordExecutionEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
-        private static readonly EquatableTestScenarios<BlockedHandlingEvent> EquatableTestScenarios = new EquatableTestScenarios<BlockedHandlingEvent>()
+        private static readonly EquatableTestScenarios<CanceledRunningHandleRecordExecutionEvent> EquatableTestScenarios = new EquatableTestScenarios<CanceledRunningHandleRecordExecutionEvent>()
             .AddScenario(() =>
-                new EquatableTestScenario<BlockedHandlingEvent>
+                new EquatableTestScenario<CanceledRunningHandleRecordExecutionEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new BlockedHandlingEvent[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CanceledRunningHandleRecordExecutionEvent[]
                     {
-                        new BlockedHandlingEvent(
+                        new CanceledRunningHandleRecordExecutionEvent(
+                                ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new BlockedHandlingEvent[]
+                    ObjectsThatAreNotEqualToReferenceObject = new CanceledRunningHandleRecordExecutionEvent[]
                     {
-                        new BlockedHandlingEvent(
+                        new CanceledRunningHandleRecordExecutionEvent(
+                                ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<BlockedHandlingEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
-                        new BlockedHandlingEvent(
-                                A.Dummy<BlockedHandlingEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                A.Dummy<CanceledRunningHandleRecordExecutionEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                        new CanceledRunningHandleRecordExecutionEvent(
+                                A.Dummy<CanceledRunningHandleRecordExecutionEvent>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc),
+                        new CanceledRunningHandleRecordExecutionEvent(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                A.Dummy<CanceledRunningHandleRecordExecutionEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -206,7 +258,14 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CanceledBlockedHandlingEvent>(),
+                        A.Dummy<BlockedHandlingEvent>(),
+                        A.Dummy<CanceledBlockedRecordHandlingEvent>(),
+                        A.Dummy<CanceledRequestedHandleRecordExecutionEvent>(),
+                        A.Dummy<CompletedHandleRecordExecutionEvent>(),
+                        A.Dummy<FailedHandleRecordExecutionEvent>(),
+                        A.Dummy<RequestedHandleRecordExecutionEvent>(),
+                        A.Dummy<RunningHandleRecordExecutionEvent>(),
+                        A.Dummy<SelfCanceledRunningHandleRecordExecutionEvent>(),
                         A.Dummy<CanceledPruneRequestedEvent>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
                         A.Dummy<PruneOperationRequestedEvent>(),
@@ -232,12 +291,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void BlockedHandlingEvent___Should_implement_IModel_of_BlockedHandlingEvent___When_reflecting()
+            public static void CanceledRunningHandleRecordExecutionEvent___Should_implement_IModel_of_CanceledRunningHandleRecordExecutionEvent___When_reflecting()
             {
                 // Arrange
-                var type = typeof(BlockedHandlingEvent);
+                var type = typeof(CanceledRunningHandleRecordExecutionEvent);
 
-                var expectedModelMethods = typeof(IModel<BlockedHandlingEvent>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<CanceledRunningHandleRecordExecutionEvent>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -247,7 +306,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<BlockedHandlingEvent>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<CanceledRunningHandleRecordExecutionEvent>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -265,10 +324,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void BlockedHandlingEvent___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void CanceledRunningHandleRecordExecutionEvent___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(BlockedHandlingEvent);
+                var type = typeof(CanceledRunningHandleRecordExecutionEvent);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -441,10 +500,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
+                var systemUnderTest = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
                 // Act
-                var actual = (BlockedHandlingEvent)systemUnderTest.Clone();
+                var actual = (CanceledRunningHandleRecordExecutionEvent)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -468,7 +527,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<BlockedHandlingEvent>();
+                var systemUnderTest = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -494,7 +553,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TimestampUtc", "Details" };
+                var propertyNames = new string[] { "TimestampUtc", "Id", "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -511,12 +570,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (BlockedHandlingEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (CanceledRunningHandleRecordExecutionEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(BlockedHandlingEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(CanceledRunningHandleRecordExecutionEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -584,7 +643,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent>();
+                var expected = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -613,7 +672,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent>();
+                var expected = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -642,7 +701,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent>();
+                var expected = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -671,7 +730,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<BlockedHandlingEvent>();
+                var expected = A.Dummy<CanceledRunningHandleRecordExecutionEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -705,8 +764,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                BlockedHandlingEvent systemUnderTest1 = null;
-                BlockedHandlingEvent systemUnderTest2 = null;
+                CanceledRunningHandleRecordExecutionEvent systemUnderTest1 = null;
+                CanceledRunningHandleRecordExecutionEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -736,7 +795,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    BlockedHandlingEvent systemUnderTest = null;
+                    CanceledRunningHandleRecordExecutionEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -885,8 +944,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                BlockedHandlingEvent systemUnderTest1 = null;
-                BlockedHandlingEvent systemUnderTest2 = null;
+                CanceledRunningHandleRecordExecutionEvent systemUnderTest1 = null;
+                CanceledRunningHandleRecordExecutionEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -916,7 +975,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    BlockedHandlingEvent systemUnderTest = null;
+                    CanceledRunningHandleRecordExecutionEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1205,14 +1264,157 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_BlockedHandlingEvent___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_EventBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    BlockedHandlingEvent systemUnderTest = null;
+                    EventBase<long> systemUnderTest = null;
+
+                    // Act
+                    var actual = scenario.ReferenceObject.Equals((EventBase<long>)systemUnderTest);
+
+                    // Assert
+                    actual.AsTest().Must().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_EventBase___Should_return_true___When_parameter_other_is_same_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actual = scenario.ReferenceObject.Equals((EventBase<long>)scenario.ReferenceObject);
+
+                    // Assert
+                    actual.AsTest().Must().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_EventBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<long>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_EventBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<long>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_EventBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange, Act
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((EventBase<long>)_)).ToList();
+
+                    // Assert
+                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void Equals_with_CanceledRunningHandleRecordExecutionEvent___Should_return_false___When_parameter_other_is_null()
+            {
+                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange
+                    CanceledRunningHandleRecordExecutionEvent systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1236,7 +1438,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_BlockedHandlingEvent___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_CanceledRunningHandleRecordExecutionEvent___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1264,7 +1466,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_BlockedHandlingEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_CanceledRunningHandleRecordExecutionEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1292,7 +1494,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_BlockedHandlingEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_CanceledRunningHandleRecordExecutionEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1320,7 +1522,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_BlockedHandlingEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_CanceledRunningHandleRecordExecutionEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

@@ -258,17 +258,45 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
-    <Compile Include="BlockedHandlingEventTest.cs" />
-    <Compile Include="BlockedHandlingEventTest.designer.cs">
-      <DependentUpon>BlockedHandlingEventTest.cs</DependentUpon>
+    <Compile Include="BlockRecordHandlingOpTest.cs" />
+    <Compile Include="BlockRecordHandlingOpTest.designer.cs">
+      <DependentUpon>BlockRecordHandlingOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CanceledBlockedHandlingEventTest.cs" />
-    <Compile Include="CanceledBlockedHandlingEventTest.designer.cs">
-      <DependentUpon>CanceledBlockedHandlingEventTest.cs</DependentUpon>
+    <Compile Include="CancelBlockedRecordHandlingOpTest.cs" />
+    <Compile Include="CancelBlockedRecordHandlingOpTest.designer.cs">
+      <DependentUpon>CancelBlockedRecordHandlingOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CanceledBlockedRecordHandlingEventTest.cs" />
+    <Compile Include="CanceledBlockedRecordHandlingEventTest.designer.cs">
+      <DependentUpon>CanceledBlockedRecordHandlingEventTest.cs</DependentUpon>
     </Compile>
     <Compile Include="CanceledPruneRequestedEventTest.cs" />
     <Compile Include="CanceledPruneRequestedEventTest.designer.cs">
       <DependentUpon>CanceledPruneRequestedEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CanceledRequestedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="CanceledRequestedHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>CanceledRequestedHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CanceledRunningHandleRecordExecutionEventTest.cs" />
+    <Compile Include="CanceledRunningHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>CanceledRunningHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CancelHandleRecordExecutionRequestOpTest.cs" />
+    <Compile Include="CancelHandleRecordExecutionRequestOpTest.designer.cs">
+      <DependentUpon>CancelHandleRecordExecutionRequestOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CancelRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="CancelRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>CancelRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompletedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="CompletedHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>CompletedHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompleteRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="CompleteRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>CompleteRunningHandleRecordExecutionOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="CreateStreamOpTest.cs" />
@@ -285,6 +313,14 @@
     <Compile Include="DeleteStreamOpTest.cs" />
     <Compile Include="DeleteStreamOpTest.designer.cs">
       <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FailedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="FailedHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>FailedHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FailRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="FailRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>FailRunningHandleRecordExecutionOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="GetHandlingHistoryOfRecordOpTest.cs" />
     <Compile Include="GetHandlingHistoryOfRecordOpTest.designer.cs">
@@ -337,6 +373,22 @@
     <Compile Include="PutRecordOpTest.cs" />
     <Compile Include="PutRecordOpTest.designer.cs">
       <DependentUpon>PutRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RequestedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="RequestedHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>RequestedHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RunningHandleRecordExecutionEventTest.cs" />
+    <Compile Include="RunningHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>RunningHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelfCanceledRunningHandleRecordExecutionEventTest.cs" />
+    <Compile Include="SelfCanceledRunningHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>SelfCanceledRunningHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelfCancelRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="SelfCancelRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>SelfCancelRunningHandleRecordExecutionOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="StreamRecordHandlingEntryMetadataTest.cs" />
     <Compile Include="StreamRecordHandlingEntryMetadataTest.designer.cs">

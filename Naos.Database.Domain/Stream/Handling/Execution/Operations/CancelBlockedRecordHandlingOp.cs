@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event container to signal a block to a <see cref="IReadWriteStream"/> as a <see cref="BlockedHandlingEvent"/> should be ignored.
+    /// Event container to signal a block to a <see cref="IReadWriteStream"/> as a <see cref="BlockedRecordHandlingEvent"/> should be ignored.
     /// </summary>
     public partial class CancelBlockedRecordHandlingOp : VoidOperationBase, IHaveDetails
     {

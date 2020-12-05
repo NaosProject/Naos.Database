@@ -53,7 +53,8 @@ namespace Naos.Database.Protocol.Memory
         private readonly Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>> locatorToHandlingEntriesByConcernMap = new Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>>();
         private bool created = false;
         private long uniqueLongForExternalProtocol = 0;
-        private long uniqueLongForInMemoryEntries = 0;
+        private long uniqueLongForInMemoryRecords = 0;
+        private long uniqueLongForInMemoryHandlingEntries = 0;
         private MemoryDatabaseLocator singleLocator;
 
         /// <summary>
@@ -379,6 +380,39 @@ namespace Naos.Database.Protocol.Memory
         public StreamRecord Execute(
             TryHandleRecordOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var allIds = entries.Select(_ => _.Metadata.InternalRecordId).ToList();
+
+                lock (this.streamLock)
+                {
+                    var recordsToConsiderForHandling = this.locatorToRecordPartitionMap[memoryDatabaseLocator]
+                                                .Where(_ => !allIds.Contains(_.InternalRecordId))
+                                                .ToList();
+                    var matchingRecords = recordsToConsiderForHandling
+                                         .Where(_ => _.FuzzyMatch(operation.IdentifierType, operation.ObjectType, operation.TypeVersionMatchStrategy))
+                                         .ToList();
+                    var recordToHandle = matchingRecords.FirstOrDefault();
+                    if (recordToHandle == null)
+                    {
+                        return null;
+                    }
+
+                    var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+
+                    entries.Add(new StreamRecordHandlingEntry(requestedEntryId, requestedMetadata, requestedPayload));
+
+
+                    // insert an execute op request for concern
+                    // insert an in progress
+                    // return the chosen one
+                }
+            }
+
             throw new System.NotImplementedException();
         }
 
@@ -443,7 +477,7 @@ namespace Naos.Database.Protocol.Memory
                     this.locatorToRecordPartitionMap.Add(memoryDatabaseLocator, recordPartition);
                 }
 
-                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryEntries);
+                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryRecords);
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
                 recordPartition.Add(itemToAdd);
                 return id;
@@ -499,11 +533,77 @@ namespace Naos.Database.Protocol.Memory
 
             return entries;
         }
+
+        /// <inheritdoc />
+        public void Execute(
+            BlockRecordHandlingOp operation)
+        {
+            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+            foreach (var locator in allLocators)
+            {
+                locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
+                var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, Concerns.RecordHandlingConcern);
+
+                var utcNow = DateTime.UtcNow;
+                var blockEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
+                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                var blockedPayload =
+                    blockEvent.ToDescribedSerializationUsingSpecificFactory(
+                        this.DefaultSerializerRepresentation,
+                        this.SerializerFactory,
+                        this.DefaultSerializationFormat);
+
+                var blockedMetadata = new StreamRecordHandlingEntryMetadata(
+                    0,
+                    Concerns.RecordHandlingConcern,
+                    HandlingStatus.Requested,
+                    null,
+                    this.DefaultSerializerRepresentation,
+                    NullStreamIdentifier.TypeRepresentation,
+                    blockedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    null,
+                    utcNow,
+                    blockEvent.TimestampUtc);
+
+                var blockEntry = new StreamRecordHandlingEntry(id, blockedMetadata, blockedPayload);
+                entries.Add(blockEntry);
+            }
+        }
+
         /// <inheritdoc />
         public void Execute(
             CancelBlockedRecordHandlingOp operation)
         {
-            throw new NotImplementedException();
+            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+            foreach (var locator in allLocators)
+            {
+                locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
+                var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, Concerns.RecordHandlingConcern);
+
+                var utcNow = DateTime.UtcNow;
+                var blockEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
+                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                var blockedPayload =
+                    blockEvent.ToDescribedSerializationUsingSpecificFactory(
+                        this.DefaultSerializerRepresentation,
+                        this.SerializerFactory,
+                        this.DefaultSerializationFormat);
+
+                var blockedMetadata = new StreamRecordHandlingEntryMetadata(
+                    0,
+                    Concerns.RecordHandlingConcern,
+                    HandlingStatus.Requested,
+                    null,
+                    this.DefaultSerializerRepresentation,
+                    NullStreamIdentifier.TypeRepresentation,
+                    blockedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    null,
+                    utcNow,
+                    blockEvent.TimestampUtc);
+
+                var blockEntry = new StreamRecordHandlingEntry(id, blockedMetadata, blockedPayload);
+                entries.Add(blockEntry);
+            }
         }
 
         /// <inheritdoc />

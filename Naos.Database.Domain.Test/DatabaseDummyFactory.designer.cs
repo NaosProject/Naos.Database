@@ -43,7 +43,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new BlockedHandlingEvent(
+                () => new BlockedRecordHandlingEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>()));
 
@@ -100,28 +100,33 @@ namespace Naos.Database.Domain.Test
                 () => new CancelHandleRecordExecutionRequestOp(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CancelRunningHandleRecordExecutionOp(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CompleteRunningHandleRecordExecutionOp(
                                  A.Dummy<long>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailRunningHandleRecordExecutionOp(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new SelfCancelRunningHandleRecordExecutionOp(
                                  A.Dummy<long>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 

@@ -189,7 +189,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<BlockedHandlingEvent>(),
+                        A.Dummy<BlockedRecordHandlingEvent>(),
                         A.Dummy<CanceledBlockedRecordHandlingEvent>(),
                         A.Dummy<CanceledRequestedHandleRecordExecutionEvent>(),
                         A.Dummy<CanceledRunningHandleRecordExecutionEvent>(),

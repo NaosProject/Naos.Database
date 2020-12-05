@@ -125,7 +125,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new BlockedHandlingEvent(
+                () => new BlockedRecordHandlingEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 

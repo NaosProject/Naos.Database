@@ -42,7 +42,14 @@ namespace Naos.Database.Protocol.FileSystem
         IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
         IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
         IReturningProtocol<TryHandleRecordOp, StreamRecord>,
-        IReturningProtocol<PutRecordOp, long>
+        IReturningProtocol<PutRecordOp, long>,
+        IVoidProtocol<BlockRecordHandlingOp>,
+        IVoidProtocol<CancelBlockedRecordHandlingOp>,
+        IVoidProtocol<CancelHandleRecordExecutionRequestOp>,
+        IVoidProtocol<CancelRunningHandleRecordExecutionOp>,
+        IVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
+        IVoidProtocol<FailRunningHandleRecordExecutionOp>,
+        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>
     {
         private const string RecordHandlingTrackingDirectoryName = "_HandlingTracking";
         private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
@@ -852,6 +859,55 @@ namespace Naos.Database.Protocol.FileSystem
                     return this.singleLocator;
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            BlockRecordHandlingOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CancelBlockedRecordHandlingOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CancelHandleRecordExecutionRequestOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CancelRunningHandleRecordExecutionOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CompleteRunningHandleRecordExecutionOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            FailRunningHandleRecordExecutionOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            SelfCancelRunningHandleRecordExecutionOp operation)
+        {
+            throw new NotImplementedException();
         }
     }
 }

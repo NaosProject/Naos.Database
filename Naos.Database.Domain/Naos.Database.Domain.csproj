@@ -130,9 +130,30 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
     <Compile Include="ResourceLocation\ISpecifyResourceLocator.cs" />
     <Compile Include="ResourceLocation\ResourceLocatorExtensions.cs" />
+    <Compile Include="Stream\Handling\Execution\Events\CanceledRequestedHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>CanceledRequestedHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\CanceledRunningHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>CanceledRunningHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\CompletedHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>CompletedHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\FailedHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>FailedHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>RequestedHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\RunningHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>RunningHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\SelfCanceledRunningHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>SelfCanceledRunningHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\BlockRecordHandlingOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\BlockedHandlingEvent.designer.cs">
-      <DependentUpon>BlockedHandlingEvent.cs</DependentUpon>
+    <Compile Include="Stream\Handling\Execution\Events\BlockedRecordHandlingEvent.designer.cs">
+      <DependentUpon>BlockedRecordHandlingEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\BlockRecordHandlingOp.designer.cs">
       <DependentUpon>BlockRecordHandlingOp.cs</DependentUpon>
@@ -152,11 +173,26 @@
       <DependentUpon>CancelBlockedRecordHandlingOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CancelHandleRecordExecutionRequestOp.cs" />
+    <Compile Include="Stream\Handling\Execution\Operations\CancelHandleRecordExecutionRequestOp.designer.cs">
+      <DependentUpon>CancelHandleRecordExecutionRequestOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CancelRunningHandleRecordExecutionOp.cs" />
+    <Compile Include="Stream\Handling\Execution\Operations\CancelRunningHandleRecordExecutionOp.designer.cs">
+      <DependentUpon>CancelRunningHandleRecordExecutionOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CompleteRunningHandleRecordExecutionOp.cs" />
+    <Compile Include="Stream\Handling\Execution\Operations\CompleteRunningHandleRecordExecutionOp.designer.cs">
+      <DependentUpon>CompleteRunningHandleRecordExecutionOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\FailRunningHandleRecordExecutionOp.cs" />
     <Compile Include="Stream\Handling\Execution\Concerns.cs" />
+    <Compile Include="Stream\Handling\Execution\Operations\FailRunningHandleRecordExecutionOp.designer.cs">
+      <DependentUpon>FailRunningHandleRecordExecutionOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\SelfCancelRunningHandleRecordExecutionOp.cs" />
+    <Compile Include="Stream\Handling\Execution\Operations\SelfCancelRunningHandleRecordExecutionOp.designer.cs">
+      <DependentUpon>SelfCancelRunningHandleRecordExecutionOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
     <Compile Include="Stream\Handling\Query\GetHandlingHistoryOfRecordOp.designer.cs">
       <DependentUpon>GetHandlingHistoryOfRecordOp.cs</DependentUpon>
@@ -252,6 +288,7 @@
     <Compile Include="Stream\Model\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Model\StreamRecordExtensions.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadata.designer.cs">
       <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
     </Compile>
@@ -303,7 +340,7 @@
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\BlockedHandlingEvent.cs" />
+    <Compile Include="Stream\Handling\Execution\Events\BlockedRecordHandlingEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\CanceledBlockedRecordHandlingEvent.cs" />
     <Compile Include="Legacy\IConnectionDefinition.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />

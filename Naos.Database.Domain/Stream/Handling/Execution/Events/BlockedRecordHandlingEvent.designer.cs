@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class BlockedHandlingEvent : IModel<BlockedHandlingEvent>
+    public partial class BlockedRecordHandlingEvent : IModel<BlockedRecordHandlingEvent>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="BlockedHandlingEvent"/> are equal.
+        /// Determines whether two objects of type <see cref="BlockedRecordHandlingEvent"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(BlockedHandlingEvent left, BlockedHandlingEvent right)
+        public static bool operator ==(BlockedRecordHandlingEvent left, BlockedRecordHandlingEvent right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="BlockedHandlingEvent"/> are not equal.
+        /// Determines whether two objects of type <see cref="BlockedRecordHandlingEvent"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(BlockedHandlingEvent left, BlockedHandlingEvent right) => !(left == right);
+        public static bool operator !=(BlockedRecordHandlingEvent left, BlockedRecordHandlingEvent right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(BlockedHandlingEvent other)
+        public bool Equals(BlockedRecordHandlingEvent other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -77,7 +77,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as BlockedHandlingEvent);
+        public override bool Equals(object obj) => this == (obj as BlockedRecordHandlingEvent);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -86,7 +86,7 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new BlockedHandlingEvent DeepClone() => (BlockedHandlingEvent)this.DeepCloneInternal();
+        public new BlockedRecordHandlingEvent DeepClone() => (BlockedRecordHandlingEvent)this.DeepCloneInternal();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
@@ -106,7 +106,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override EventBaseBase DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new BlockedHandlingEvent(
+            var result = new BlockedRecordHandlingEvent(
                                  this.Details?.DeepClone(),
                                  timestampUtc);
 
@@ -117,7 +117,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Details" />.
         /// </summary>
         /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="BlockedHandlingEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="BlockedRecordHandlingEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -133,9 +133,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public BlockedHandlingEvent DeepCloneWithDetails(string details)
+        public BlockedRecordHandlingEvent DeepCloneWithDetails(string details)
         {
-            var result = new BlockedHandlingEvent(
+            var result = new BlockedRecordHandlingEvent(
                                  details,
                                  this.TimestampUtc);
 
@@ -145,7 +145,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         protected override EventBaseBase DeepCloneInternal()
         {
-            var result = new BlockedHandlingEvent(
+            var result = new BlockedRecordHandlingEvent(
                                  this.Details?.DeepClone(),
                                  this.TimestampUtc);
 

@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -16,5 +17,10 @@ namespace Naos.Database.Domain
     /// </summary>
     public partial class NullStreamIdentifier : IModelViaCodeGen
     {
+        /// <summary>
+        /// The type representation of <see cref="NullStreamIdentifier"/>.
+        /// </summary>
+        public static readonly TypeRepresentationWithAndWithoutVersion TypeRepresentation =
+            typeof(NullStreamIdentifier).ToRepresentation().ToWithAndWithoutVersion();
     }
 }

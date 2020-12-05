@@ -52,7 +52,8 @@ namespace Naos.Database.Protocol.FileSystem
                 operation.Concern,
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                operation.SpecifiedResourceLocator);
             var record = this.stream.Execute(delegatedOperation);
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);

@@ -125,24 +125,28 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TryHandleRecordOp<Version>(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TryHandleRecordWithIdOp<Version, Version>(
                                  A.Dummy<string>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TryHandleRecordWithIdOp<Version>(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CanceledPruneRequestedEvent(

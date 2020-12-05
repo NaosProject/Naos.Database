@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// Handles a record.
     /// </summary>
     /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-    public partial class TryHandleRecordWithIdOp<TId> : ReturningOperationBase<StreamRecordWithId<TId>>
+    public partial class TryHandleRecordWithIdOp<TId> : ReturningOperationBase<StreamRecordWithId<TId>>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId}"/> class.
@@ -20,14 +20,17 @@ namespace Naos.Database.Domain
         /// <param name="concern">The concern.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public TryHandleRecordWithIdOp(
             string concern,
             TypeRepresentationWithAndWithoutVersion objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            IResourceLocator specifiedResourceLocator = null)
         {
             this.Concern = concern;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
@@ -47,5 +50,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The type version match strategy.</value>
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

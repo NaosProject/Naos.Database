@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Handles a record.
     /// </summary>
-    public partial class TryHandleRecordOp : ReturningOperationBase<StreamRecord>
+    public partial class TryHandleRecordOp : ReturningOperationBase<StreamRecord>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordOp"/> class.
@@ -20,16 +20,19 @@ namespace Naos.Database.Domain
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public TryHandleRecordOp(
             string concern,
             TypeRepresentationWithAndWithoutVersion identifierType = null,
             TypeRepresentationWithAndWithoutVersion objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            IResourceLocator specifiedResourceLocator = null)
         {
             this.Concern = concern;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
@@ -55,5 +58,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The type version match strategy.</value>
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

@@ -61,6 +61,11 @@ namespace Naos.Database.Domain
                 return HandlingStatus.None;
             }
 
+            if (statuses.Any(_ => _ == HandlingStatus.Blocked))
+            {
+                return HandlingStatus.Blocked;
+            }
+
             if (statuses.Any(_ => _ == HandlingStatus.Failed))
             {
                 return HandlingStatus.Failed;

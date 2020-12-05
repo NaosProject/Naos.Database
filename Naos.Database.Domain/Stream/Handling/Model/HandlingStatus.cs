@@ -50,5 +50,10 @@ namespace Naos.Database.Domain
         /// The operation's protocol canceled it's own execution.
         /// </summary>
         SelfCanceled,
+
+        /// <summary>
+        /// The blocked
+        /// </summary>
+        Blocked,
     }
 }

@@ -335,6 +335,12 @@ namespace Naos.Database.Protocol.Memory
 
             lock (this.handlingLock)
             {
+                var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingConcern);
+                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.Blocked)
+                {
+                    return HandlingStatus.Blocked;
+                }
+
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var statuses = entries.Where(
                                            _ => operation.IdsToMatch.Any(
@@ -362,6 +368,12 @@ namespace Naos.Database.Protocol.Memory
                 foreach (var locator in allLocators)
                 {
                     locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
+                    var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, Concerns.RecordHandlingConcern);
+                    if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.Blocked)
+                    {
+                        return HandlingStatus.Blocked;
+                    }
+
                     var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, operation.Concern);
                     var statusesForLocator = entries.Where(
                                                _ => operation.TagsToMatch.FuzzyMatchAccordingToStrategy(_.Metadata.Tags, operation.TagMatchStrategy))
@@ -556,7 +568,7 @@ namespace Naos.Database.Protocol.Memory
                 var blockedMetadata = new StreamRecordHandlingEntryMetadata(
                     0,
                     Concerns.RecordHandlingConcern,
-                    HandlingStatus.Requested,
+                    HandlingStatus.Blocked,
                     null,
                     this.DefaultSerializerRepresentation,
                     NullStreamIdentifier.TypeRepresentation,

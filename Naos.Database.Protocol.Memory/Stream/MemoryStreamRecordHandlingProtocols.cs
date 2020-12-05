@@ -101,5 +101,110 @@ namespace Naos.Database.Protocol.Memory
             var result = await Task.FromResult(syncResult);
             return result;
         }
+
+        /// <inheritdoc />
+        public void Execute(
+            BlockRecordHandlingOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            BlockRecordHandlingOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CancelBlockedRecordHandlingOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            CancelBlockedRecordHandlingOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CancelHandleRecordExecutionRequestOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            CancelHandleRecordExecutionRequestOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CancelRunningHandleRecordExecutionOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            CancelRunningHandleRecordExecutionOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            CompleteRunningHandleRecordExecutionOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            CompleteRunningHandleRecordExecutionOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            FailRunningHandleRecordExecutionOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            FailRunningHandleRecordExecutionOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            SelfCancelRunningHandleRecordExecutionOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            SelfCancelRunningHandleRecordExecutionOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
     }
 }

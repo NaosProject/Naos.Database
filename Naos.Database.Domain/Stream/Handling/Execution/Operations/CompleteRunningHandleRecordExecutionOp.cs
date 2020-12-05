@@ -14,23 +14,31 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Operation to mark a running operation as completed.
     /// </summary>
-    public partial class CompleteRunningHandleRecordExecutionOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags
+    public partial class CompleteRunningHandleRecordExecutionOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags, IHaveHandleRecordConcern
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompleteRunningHandleRecordExecutionOp"/> class.
         /// </summary>
         /// <param name="id">The internal record identifier concerned with this handling sequence (the effective aggregate identifier of a record handling scenario).</param>
+        /// <param name="concern">Record handling concern.</param>
         /// <param name="tags">The optional tags for produced events.</param>
         public CompleteRunningHandleRecordExecutionOp(
             long id,
+            string concern,
             IReadOnlyDictionary<string, string> tags = null)
         {
+            concern.ThrowIfInvalidOrReservedConcern();
+
             this.Id = id;
+            this.Concern = concern;
             this.Tags = tags;
         }
 
         /// <inheritdoc />
         public long Id { get; private set; }
+
+        /// <inheritdoc />
+        public string Concern { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }

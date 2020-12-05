@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<CompleteRunningHandleRecordExecutionOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CompleteRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CompleteRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -60,6 +60,42 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
                 {
+                    Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var result = new CompleteRunningHandleRecordExecutionOp(
+                                             referenceObject.Id,
+                                             null,
+                                             referenceObject.Tags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "concern", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var result = new CompleteRunningHandleRecordExecutionOp(
+                                             referenceObject.Id,
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.Tags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
                     Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
@@ -67,6 +103,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
+                                             referenceObject.Concern,
                                              null);
 
                         return result;
@@ -84,6 +121,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
+                                             referenceObject.Concern,
                                              new Dictionary<string, string>());
 
                         return result;
@@ -107,6 +145,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
+                                             referenceObject.Concern,
                                              dictionaryWithNullValue);
 
                         return result;
@@ -128,6 +167,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
                                                       referenceObject.Id,
+                                                      referenceObject.Concern,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
@@ -135,6 +175,27 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "Id",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
+                    Name = "Concern should return same 'concern' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
+                                                      referenceObject.Id,
+                                                      referenceObject.Concern,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.Concern,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Concern",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<CompleteRunningHandleRecordExecutionOp>
@@ -148,6 +209,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
                                                       referenceObject.Id,
+                                                      referenceObject.Concern,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
@@ -173,6 +235,26 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Id,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
+                    Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
+                    WithPropertyName = "Concern",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Concern,
                         };
 
                         return result;
@@ -211,15 +293,22 @@ namespace Naos.Database.Domain.Test
                     {
                         new CompleteRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new CompleteRunningHandleRecordExecutionOp[]
                     {
                         new CompleteRunningHandleRecordExecutionOp(
                                 A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new CompleteRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
+                                A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new CompleteRunningHandleRecordExecutionOp(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -557,7 +646,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "Tags" };
+                var propertyNames = new string[] { "Id", "Concern", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

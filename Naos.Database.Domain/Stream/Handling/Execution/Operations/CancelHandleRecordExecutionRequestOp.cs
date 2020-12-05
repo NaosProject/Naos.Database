@@ -14,27 +14,35 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Operation to mark a request operation execution as canceled.
     /// </summary>
-    public partial class CancelHandleRecordExecutionRequestOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags, IHaveDetails
+    public partial class CancelHandleRecordExecutionRequestOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags, IHaveHandleRecordConcern, IHaveDetails
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CancelHandleRecordExecutionRequestOp"/> class.
         /// </summary>
         /// <param name="id">The internal record identifier concerned with this handling sequence (the effective aggregate identifier of a record handling scenario).</param>
+        /// <param name="concern">Record handling concern.</param>
         /// <param name="details">The details for produced events.</param>
         /// <param name="tags">The optional tags for produced events.</param>
         public CancelHandleRecordExecutionRequestOp(
             long id,
+            string concern,
             string details,
             IReadOnlyDictionary<string, string> tags = null)
         {
+            concern.ThrowIfInvalidOrReservedConcern();
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+
             this.Id = id;
+            this.Concern = concern;
             this.Details = details;
             this.Tags = tags;
         }
 
         /// <inheritdoc />
         public long Id { get; private set; }
+
+        /// <inheritdoc />
+        public string Concern { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }

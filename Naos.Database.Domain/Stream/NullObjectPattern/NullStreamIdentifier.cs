@@ -20,6 +20,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// The type representation of <see cref="NullStreamIdentifier"/>.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = NaosSuppressBecause.CA2104_DoNotDeclareReadOnlyMutableReferenceTypes_TypeIsImmutable)]
         public static readonly TypeRepresentationWithAndWithoutVersion TypeRepresentation =
             typeof(NullStreamIdentifier).ToRepresentation().ToWithAndWithoutVersion();
     }

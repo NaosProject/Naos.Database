@@ -346,7 +346,8 @@ namespace Naos.Database.Protocol.Memory
                                            _ => operation.IdsToMatch.Any(
                                                __ => __.StringSerializedId.Equals(_.Metadata.StringSerializedId)
                                                   && __.IdentifierType.EqualsAccordingToStrategy(
-                                                         _.Metadata.TypeRepresentationOfId,
+                                                         _.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                                             operation.TypeVersionMatchStrategy),
                                                          operation.TypeVersionMatchStrategy)))
                                       .Select(_ => _.Metadata.Status)
                                       .ToList();
@@ -367,14 +368,13 @@ namespace Naos.Database.Protocol.Memory
                 var statuses = new List<HandlingStatus>();
                 foreach (var locator in allLocators)
                 {
-                    locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
-                    var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, Concerns.RecordHandlingConcern);
+                    var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
                     if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.Blocked)
                     {
                         return HandlingStatus.Blocked;
                     }
 
-                    var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, operation.Concern);
+                    var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                     var statusesForLocator = entries.Where(
                                                _ => operation.TagsToMatch.FuzzyMatchAccordingToStrategy(_.Metadata.Tags, operation.TagMatchStrategy))
                                           .Select(_ => _.Metadata.Status)
@@ -562,9 +562,19 @@ namespace Naos.Database.Protocol.Memory
         }
 
         private List<StreamRecordHandlingEntry> GetStreamRecordHandlingEntriesForConcern(
-            MemoryDatabaseLocator memoryDatabaseLocator,
+            IResourceLocator locator,
             string concern)
         {
+            if (locator == null)
+            {
+                throw new ArgumentNullException(nameof(locator));
+            }
+
+            if (!(locator is MemoryDatabaseLocator memoryDatabaseLocator))
+            {
+                throw new ArgumentException(Invariant($"Only {nameof(MemoryDatabaseLocator)}'s are supported; specified type: {locator.GetType().ToStringReadable()} - {locator.ToString()}"), nameof(locator));
+            }
+
             var foundLocator = this.locatorToHandlingEntriesByConcernMap.TryGetValue(memoryDatabaseLocator, out var concernToEntriesMap);
             if (!foundLocator)
             {
@@ -589,8 +599,7 @@ namespace Naos.Database.Protocol.Memory
             var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
             foreach (var locator in allLocators)
             {
-                locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
-                var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, Concerns.RecordHandlingConcern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
 
                 var utcNow = DateTime.UtcNow;
                 var blockEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
@@ -625,8 +634,7 @@ namespace Naos.Database.Protocol.Memory
             var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
             foreach (var locator in allLocators)
             {
-                locator.MustForOp("locatorFromAllLocators").BeOfType<MemoryDatabaseLocator>();
-                var entries = this.GetStreamRecordHandlingEntriesForConcern((MemoryDatabaseLocator)locator, Concerns.RecordHandlingConcern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
 
                 var utcNow = DateTime.UtcNow;
                 var blockEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);

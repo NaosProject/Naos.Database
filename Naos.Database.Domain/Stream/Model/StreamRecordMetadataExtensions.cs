@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
@@ -27,8 +28,8 @@ namespace Naos.Database.Domain
         /// <returns><c>true</c> if matching, <c>false</c> otherwise.</returns>
         public static bool FuzzyMatchTypes(
             this StreamRecordMetadata streamRecordMetadata,
-            TypeRepresentationWithAndWithoutVersion identifierType,
-            TypeRepresentationWithAndWithoutVersion objectType,
+            TypeRepresentation identifierType,
+            TypeRepresentation objectType,
             TypeVersionMatchStrategy typeVersionMatchStrategy)
         {
             var match = true;
@@ -36,12 +37,12 @@ namespace Naos.Database.Domain
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse -- prefer this for safety in refactoring order
             if (match && identifierType != null)
             {
-                match = streamRecordMetadata.TypeRepresentationOfId.EqualsAccordingToStrategy(identifierType, typeVersionMatchStrategy);
+                match = streamRecordMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(typeVersionMatchStrategy).EqualsAccordingToStrategy(identifierType, typeVersionMatchStrategy);
             }
 
             if (match && objectType != null)
             {
-                match = streamRecordMetadata.TypeRepresentationOfObject.EqualsAccordingToStrategy(objectType, typeVersionMatchStrategy);
+                match = streamRecordMetadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(typeVersionMatchStrategy).EqualsAccordingToStrategy(objectType, typeVersionMatchStrategy);
             }
 
             return match;
@@ -60,8 +61,8 @@ namespace Naos.Database.Domain
         public static bool FuzzyMatchTypesAndId(
             this StreamRecordMetadata streamRecordMetadata,
             string stringSerializedId,
-            TypeRepresentationWithAndWithoutVersion identifierType,
-            TypeRepresentationWithAndWithoutVersion objectType,
+            TypeRepresentation identifierType,
+            TypeRepresentation objectType,
             TypeVersionMatchStrategy typeVersionMatchStrategy)
         {
             var result = streamRecordMetadata.FuzzyMatchTypes(identifierType, objectType, typeVersionMatchStrategy);

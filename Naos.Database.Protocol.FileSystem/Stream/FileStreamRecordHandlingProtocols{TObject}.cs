@@ -51,7 +51,7 @@ namespace Naos.Database.Protocol.FileSystem
             var delegatedOperation = new TryHandleRecordOp(
                 operation.Concern,
                 operation.IdentifierType,
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
                 operation.SpecifiedResourceLocator,
                 operation.Tags);

@@ -43,8 +43,8 @@ namespace Naos.Database.Protocol.Memory
         {
             var delegatedOperation = new TryHandleRecordOp(
                 operation.Concern,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
                 operation.SpecifiedResourceLocator,
                 operation.Tags);

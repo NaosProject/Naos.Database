@@ -84,7 +84,7 @@ namespace Naos.Database.Protocol.Memory
         {
             var delegatedOperation = new GetLatestRecordOp(
                 operation.IdentifierType,
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
@@ -108,7 +108,7 @@ namespace Naos.Database.Protocol.Memory
         {
             var delegatedOperation = new GetLatestRecordOp(
                 operation.IdentifierType,
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);

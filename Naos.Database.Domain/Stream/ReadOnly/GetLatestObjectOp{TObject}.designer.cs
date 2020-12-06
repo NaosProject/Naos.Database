@@ -18,6 +18,7 @@ namespace Naos.Database.Domain
     using global::Naos.Protocol.Domain;
 
     using global::OBeautifulCode.Equality.Recipes;
+    using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -108,7 +109,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectOp<TObject> DeepCloneWithIdentifierType(TypeRepresentationWithAndWithoutVersion identifierType)
+        public GetLatestObjectOp<TObject> DeepCloneWithIdentifierType(TypeRepresentation identifierType)
         {
             var result = new GetLatestObjectOp<TObject>(
                                  identifierType,

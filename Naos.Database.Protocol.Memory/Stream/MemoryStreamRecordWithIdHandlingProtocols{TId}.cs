@@ -47,7 +47,7 @@ namespace Naos.Database.Protocol.Memory
         {
             var delegatedOperation = new TryHandleRecordOp(
                 operation.Concern,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
                 operation.ObjectType,
                 operation.TypeVersionMatchStrategy,
                 operation.SpecifiedResourceLocator,
@@ -83,7 +83,7 @@ namespace Naos.Database.Protocol.Memory
             GetHandlingStatusOfRecordsByIdOp<TId> operation)
         {
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var identifierType = typeof(TId).ToRepresentation().ToWithAndWithoutVersion();
+            var identifierType = typeof(TId).ToRepresentation();
             var items = new List<Tuple<IResourceLocator, StringSerializedIdentifier>>();
             foreach (var id in operation.IdsToMatch)
             {

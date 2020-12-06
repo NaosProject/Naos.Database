@@ -52,7 +52,7 @@ namespace Naos.Database.Protocol.FileSystem
 
             var delegatedOperation = new GetLatestRecordByIdOp(
                 serializedObjectId,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
                 operation.ObjectType,
                 operation.TypeVersionMatchStrategy,
                 locator);

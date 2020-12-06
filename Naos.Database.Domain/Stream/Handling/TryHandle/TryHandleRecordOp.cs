@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -26,8 +27,8 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags to write with produced events.</param>
         public TryHandleRecordOp(
             string concern,
-            TypeRepresentationWithAndWithoutVersion identifierType = null,
-            TypeRepresentationWithAndWithoutVersion objectType = null,
+            TypeRepresentation identifierType = null,
+            TypeRepresentation objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
@@ -50,13 +51,13 @@ namespace Naos.Database.Domain
         /// Gets the type of the identifier.
         /// </summary>
         /// <value>The type of the identifier.</value>
-        public TypeRepresentationWithAndWithoutVersion IdentifierType { get; private set; }
+        public TypeRepresentation IdentifierType { get; private set; }
 
         /// <summary>
         /// Gets the type of the object.
         /// </summary>
         /// <value>The type of the object.</value>
-        public TypeRepresentationWithAndWithoutVersion ObjectType { get; private set; }
+        public TypeRepresentation ObjectType { get; private set; }
 
         /// <summary>
         /// Gets the type version match strategy.

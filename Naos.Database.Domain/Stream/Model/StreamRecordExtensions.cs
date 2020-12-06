@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Representation.System;
 
     /// <summary>
     /// Extensions to <see cref="StreamRecord"/>.
@@ -24,8 +25,8 @@ namespace Naos.Database.Domain
         /// <returns><c>true</c> if matches per inputs, <c>false</c> otherwise.</returns>
         public static bool FuzzyMatch(
             this StreamRecord record,
-            TypeRepresentationWithAndWithoutVersion identifierType,
-            TypeRepresentationWithAndWithoutVersion objectType,
+            TypeRepresentation identifierType,
+            TypeRepresentation objectType,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             if (identifierType == null && objectType == null)
@@ -35,19 +36,27 @@ namespace Naos.Database.Domain
             }
             else if (identifierType != null && objectType == null)
             {
-                var result = identifierType.EqualsAccordingToStrategy(record.Metadata.TypeRepresentationOfId, typeVersionMatchStrategy);
+                var result = identifierType.EqualsAccordingToStrategy(
+                    record.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(typeVersionMatchStrategy),
+                    typeVersionMatchStrategy);
                 return result;
             }
             else if (identifierType == null && objectType != null)
             {
-                var result = objectType.EqualsAccordingToStrategy(record.Metadata.TypeRepresentationOfObject, typeVersionMatchStrategy);
+                var result = objectType.EqualsAccordingToStrategy(
+                    record.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(typeVersionMatchStrategy),
+                    typeVersionMatchStrategy);
                 return result;
             }
             else if (identifierType != null && objectType != null)
             {
                 var result =
-                    identifierType.EqualsAccordingToStrategy(record.Metadata.TypeRepresentationOfId, typeVersionMatchStrategy)
-                 && objectType.EqualsAccordingToStrategy(record.Metadata.TypeRepresentationOfObject, typeVersionMatchStrategy);
+                    identifierType.EqualsAccordingToStrategy(
+                        record.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(typeVersionMatchStrategy),
+                        typeVersionMatchStrategy)
+                 && objectType.EqualsAccordingToStrategy(
+                        record.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(typeVersionMatchStrategy),
+                        typeVersionMatchStrategy);
                 return result;
             }
             else

@@ -58,8 +58,8 @@ namespace Naos.Database.Protocol.Memory
 
             var delegatedOperation = new GetLatestRecordByIdOp(
                 serializedObjectId,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
                 locator);
 
@@ -149,8 +149,8 @@ namespace Naos.Database.Protocol.Memory
 
             var delegatedOperation = new GetLatestRecordByIdOp(
                 serializedObjectId,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
                 locator);
 

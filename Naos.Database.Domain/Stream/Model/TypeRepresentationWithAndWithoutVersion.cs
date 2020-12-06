@@ -51,9 +51,9 @@ namespace Naos.Database.Domain
     /// </summary>
     public static class TypeRepresentationWithAndWithoutVersionExtensions
     {
-        private static VersionlessTypeRepresentationEqualityComparer versionlessComparer = new VersionlessTypeRepresentationEqualityComparer();
+        private static readonly VersionlessTypeRepresentationEqualityComparer VersionlessComparer = new VersionlessTypeRepresentationEqualityComparer();
 
-            /// <summary>
+        /// <summary>
         /// Converts to a <see cref="TypeRepresentation"/> to a <see cref="TypeRepresentationWithAndWithoutVersion"/>.
         /// </summary>
         /// <param name="typeRepresentationWithVersion">The type representation with version to convert.</param>
@@ -66,26 +66,47 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Compares a <see cref="TypeRepresentationWithAndWithoutVersion"/> to an external <see cref="TypeRepresentation"/>
+        /// Gets the correct <see cref="TypeRepresentation"/> by the provided <see cref="TypeVersionMatchStrategy"/>.
+        /// </summary>
+        /// <param name="typeRepresentationWithAndWithoutVersion">The type representation with and without version.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <returns>Appropriate <see cref="TypeRepresentation"/> according to strategy.</returns>
+        public static TypeRepresentation GetTypeRepresentationByStrategy(
+            this TypeRepresentationWithAndWithoutVersion typeRepresentationWithAndWithoutVersion,
+            TypeVersionMatchStrategy typeVersionMatchStrategy)
+        {
+            switch (typeVersionMatchStrategy)
+            {
+                case TypeVersionMatchStrategy.Any:
+                    return typeRepresentationWithAndWithoutVersion.WithoutVersion;
+                case TypeVersionMatchStrategy.Specific:
+                    return typeRepresentationWithAndWithoutVersion.WithVersion;
+                default:
+                    throw new NotSupportedException(Invariant($"The {nameof(TypeVersionMatchStrategy)} '{typeVersionMatchStrategy}' is not supported (only '{nameof(TypeVersionMatchStrategy.Any)}' and '{nameof(TypeVersionMatchStrategy.Specific)}')."));
+            }
+        }
+
+        /// <summary>
+        /// Compares a <see cref="TypeRepresentation"/> to an external <see cref="TypeRepresentation"/>
         /// using the provided <see cref="TypeVersionMatchStrategy"/> to determine whether or not to include the version.
         /// </summary>
-        /// <param name="first">The <see cref="TypeRepresentationWithAndWithoutVersion"/> to compare.</param>
-        /// <param name="second">The <see cref="TypeRepresentationWithAndWithoutVersion"/> to compare against.</param>
+        /// <param name="first">The <see cref="TypeRepresentation"/> to compare.</param>
+        /// <param name="second">The <see cref="TypeRepresentation"/> to compare against.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         /// <returns><c>true</c> if equal according to strategy, <c>false</c> otherwise.</returns>
         public static bool EqualsAccordingToStrategy(
-            this TypeRepresentationWithAndWithoutVersion first,
-            TypeRepresentationWithAndWithoutVersion second,
+            this TypeRepresentation first,
+            TypeRepresentation second,
             TypeVersionMatchStrategy typeVersionMatchStrategy)
         {
             bool result;
             switch (typeVersionMatchStrategy)
             {
                 case TypeVersionMatchStrategy.Any:
-                    result = versionlessComparer.Equals(first.WithoutVersion, second.WithoutVersion);
+                    result = VersionlessComparer.Equals(first, second);
                     break;
                 case TypeVersionMatchStrategy.Specific:
-                    result = second.WithVersion.Equals(first.WithVersion);
+                    result = second.Equals(first);
                     break;
                 default:
                     throw new NotSupportedException(Invariant($"{nameof(TypeVersionMatchStrategy)} {typeVersionMatchStrategy} is not supported."));

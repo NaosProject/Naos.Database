@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Representation.System;
     using static System.FormattableString;
 
     /// <summary>
@@ -23,7 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         public GetLatestRecordByIdOp(
             TId id,
-            TypeRepresentationWithAndWithoutVersion objectType = null,
+            TypeRepresentation objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             this.Id = id;
@@ -41,7 +42,7 @@ namespace Naos.Database.Domain
         /// Gets the type of the object.
         /// </summary>
         /// <value>The type of the object.</value>
-        public TypeRepresentationWithAndWithoutVersion ObjectType { get; private set; }
+        public TypeRepresentation ObjectType { get; private set; }
 
         /// <summary>
         /// Gets the type version match strategy.

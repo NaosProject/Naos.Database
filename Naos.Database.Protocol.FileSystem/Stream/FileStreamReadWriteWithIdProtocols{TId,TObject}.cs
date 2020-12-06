@@ -63,8 +63,8 @@ namespace Naos.Database.Protocol.FileSystem
             var stringSerializedId = ConvertIdToString(operation.Id, serializer);
             var delegatedOperation = new GetLatestRecordByIdOp(
                 stringSerializedId,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
                 resourceLocator);
             var record = this.stream.Execute(delegatedOperation);
@@ -170,8 +170,8 @@ namespace Naos.Database.Protocol.FileSystem
 
             var delegatedOperation = new GetLatestRecordByIdOp(
                 serializedObjectId,
-                typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
-                typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
+                typeof(TId).ToRepresentation(),
+                typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
                 locator);
 

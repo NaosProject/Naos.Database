@@ -258,6 +258,10 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include="BlockedRecordHandlingEventTest.cs" />
+    <Compile Include="BlockedRecordHandlingEventTest.designer.cs">
+      <DependentUpon>BlockedRecordHandlingEventTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="BlockRecordHandlingOpTest.cs" />
     <Compile Include="BlockRecordHandlingOpTest.designer.cs">
       <DependentUpon>BlockRecordHandlingOpTest.cs</DependentUpon>

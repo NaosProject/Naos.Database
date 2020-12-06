@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<TryHandleRecordWithIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -69,7 +69,8 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.ObjectType,
                                              referenceObject.TypeVersionMatchStrategy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.SpecifiedResourceLocator,
+                                             referenceObject.Tags);
 
                         return result;
                     },
@@ -88,7 +89,8 @@ namespace Naos.Database.Domain.Test
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.ObjectType,
                                              referenceObject.TypeVersionMatchStrategy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.SpecifiedResourceLocator,
+                                             referenceObject.Tags);
 
                         return result;
                     },
@@ -107,7 +109,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              null,
                                              referenceObject.TypeVersionMatchStrategy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.SpecifiedResourceLocator,
+                                             referenceObject.Tags);
 
                         return result;
                     },
@@ -126,12 +129,79 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.ObjectType,
                                              referenceObject.TypeVersionMatchStrategy,
-                                             null);
+                                             null,
+                                             referenceObject.Tags);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new TryHandleRecordWithIdOp<Version>(
+                                             referenceObject.Concern,
+                                             referenceObject.ObjectType,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "tags", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new TryHandleRecordWithIdOp<Version>(
+                                             referenceObject.Concern,
+                                             referenceObject.ObjectType,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator,
+                                             new Dictionary<string, string>());
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
+
+                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
+
+                        dictionaryWithNullValue[randomKey] = null;
+
+                        var result = new TryHandleRecordWithIdOp<Version>(
+                                             referenceObject.Concern,
+                                             referenceObject.ObjectType,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator,
+                                             dictionaryWithNullValue);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<TryHandleRecordWithIdOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<TryHandleRecordWithIdOp<Version>>()
@@ -149,7 +219,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.TypeVersionMatchStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
 
@@ -171,7 +242,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.TypeVersionMatchStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.ObjectType,
                         };
 
@@ -193,7 +265,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.TypeVersionMatchStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
 
@@ -215,13 +288,37 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.TypeVersionMatchStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
 
                         return result;
                     },
                     PropertyName = "SpecifiedResourceLocator",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
+                                                      referenceObject.Concern,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Tags",
                 });
 
         private static readonly DeepCloneWithTestScenarios<TryHandleRecordWithIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<TryHandleRecordWithIdOp<Version>>()
@@ -304,6 +401,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly TryHandleRecordWithIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<TryHandleRecordWithIdOp<Version>>();
@@ -320,7 +437,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new TryHandleRecordWithIdOp<Version>[]
                     {
@@ -328,22 +446,32 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
-                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new TryHandleRecordWithIdOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -372,14 +500,14 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<PruneBeforeInternalRecordDateOp>(),
                         A.Dummy<PruneBeforeInternalRecordIdOp>(),
-                        A.Dummy<GetLatestRecordByIdOp>(),
-                        A.Dummy<GetLatestRecordOp>(),
-                        A.Dummy<PutRecordOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
+                        A.Dummy<GetLatestRecordByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
+                        A.Dummy<PutRecordOp>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
@@ -671,6 +799,15 @@ namespace Naos.Database.Domain.Test
                 {
                     actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
                 }
+
+                if (systemUnderTest.Tags == null)
+                {
+                    actual.Tags.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                }
             }
 
             [Fact]
@@ -689,7 +826,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "ObjectType", "TypeVersionMatchStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Concern", "ObjectType", "TypeVersionMatchStrategy", "SpecifiedResourceLocator", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

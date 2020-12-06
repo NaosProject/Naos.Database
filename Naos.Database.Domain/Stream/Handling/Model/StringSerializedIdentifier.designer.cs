@@ -16,6 +16,7 @@ namespace Naos.Database.Domain
     using global::System.Linq;
 
     using global::OBeautifulCode.Equality.Recipes;
+    using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -145,7 +146,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StringSerializedIdentifier DeepCloneWithIdentifierType(TypeRepresentationWithAndWithoutVersion identifierType)
+        public StringSerializedIdentifier DeepCloneWithIdentifierType(TypeRepresentation identifierType)
         {
             var result = new StringSerializedIdentifier(
                                  this.StringSerializedId?.DeepClone(),

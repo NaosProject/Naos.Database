@@ -335,12 +335,8 @@ namespace Naos.Database.Protocol.FileSystem
             GetNextUniqueLongOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var resourceLocator = this.ResourceLocatorProtocols.Execute(new GetResourceLocatorForUniqueIdentifierOp());
-            var fileLocator = resourceLocator as FileSystemDatabaseLocator
-                           ?? throw new InvalidOperationException(
-                                  Invariant(
-                                      $"Resource locator was expected to be a {nameof(FileSystemDatabaseLocator)} but was a '{resourceLocator?.GetType()?.ToStringReadable() ?? "<null>"}'."));
-            var rootPath = Path.Combine(fileLocator.RootFolderPath, this.Name);
+            var locator = this.ResourceLocatorProtocols.Execute(new GetResourceLocatorForUniqueIdentifierOp());
+            var rootPath = this.GetRootPathFromLocator(locator);
             var trackingFilePath = Path.Combine(rootPath, NextUniqueLongTrackingFileName);
 
             long nextLong;
@@ -428,7 +424,8 @@ namespace Naos.Database.Protocol.FileSystem
                     var text = File.ReadAllText(file.Item2);
                     var item = this.internalSerializer.Deserialize<StreamRecordHandlingEntry>(text);
 
-                    if (item.Metadata.TypeRepresentationOfId.EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.TypeVersionMatchStrategy))
+                    if (item.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)
+                            .EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.TypeVersionMatchStrategy))
                     {
                         statuses.Add(item.Metadata.Status);
                     }
@@ -450,8 +447,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var statuses = new List<HandlingStatus>();
                 foreach (var locator in allLocators)
                 {
-                    locator.MustForOp("locatorFromAllLocators").BeOfType<FileSystemDatabaseLocator>();
-                    var rootPath = this.GetRootPathFromLocator((FileSystemDatabaseLocator)locator);
+                    var rootPath = this.GetRootPathFromLocator(locator);
                     var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
                     var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
 
@@ -614,9 +610,19 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         private string GetRootPathFromLocator(
-            FileSystemDatabaseLocator resourceLocator)
+            IResourceLocator locator)
         {
-            var result = Path.Combine(resourceLocator.RootFolderPath, this.Name);
+            if (locator == null)
+            {
+                throw new ArgumentNullException(nameof(locator));
+            }
+
+            if (!(locator is FileSystemDatabaseLocator fileSystemLocator))
+            {
+                throw new ArgumentException(Invariant($"Only {nameof(FileSystemDatabaseLocator)}'s are supported; specified type: {locator.GetType().ToStringReadable()} - {locator.ToString()}"), nameof(locator));
+            }
+
+            var result = Path.Combine(fileSystemLocator.RootFolderPath, this.Name);
             return result;
         }
 

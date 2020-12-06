@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Representation.System;
     using static System.FormattableString;
 
     /// <summary>
@@ -21,7 +22,7 @@ namespace Naos.Database.Domain
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         public GetLatestRecordOp(
-            TypeRepresentationWithAndWithoutVersion identifierType = null,
+            TypeRepresentation identifierType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             this.IdentifierType = identifierType;
@@ -32,7 +33,7 @@ namespace Naos.Database.Domain
         /// Gets the type of the identifier.
         /// </summary>
         /// <value>The type of the identifier.</value>
-        public TypeRepresentationWithAndWithoutVersion IdentifierType { get; private set; }
+        public TypeRepresentation IdentifierType { get; private set; }
 
         /// <summary>
         /// Gets the type version match strategy.

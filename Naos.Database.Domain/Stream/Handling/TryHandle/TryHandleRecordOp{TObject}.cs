@@ -6,13 +6,15 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Try to handle a record of type <typeparamref name="TObject"/> for a specified concern.
     /// </summary>
     /// <typeparam name="TObject">Type of the object in the record.</typeparam>
-    public partial class TryHandleRecordOp<TObject> : ReturningOperationBase<StreamRecord<TObject>>, ISpecifyResourceLocator
+    public partial class TryHandleRecordOp<TObject> : ReturningOperationBase<StreamRecord<TObject>>, ISpecifyResourceLocator, IHaveTags
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordOp{TObject}"/> class.
@@ -21,16 +23,19 @@ namespace Naos.Database.Domain
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
+        /// <param name="tags">The optional tags to write with produced events.</param>
         public TryHandleRecordOp(
             string concern,
             TypeRepresentationWithAndWithoutVersion identifierType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
-            IResourceLocator specifiedResourceLocator = null)
+            IResourceLocator specifiedResourceLocator = null,
+            IReadOnlyDictionary<string, string> tags = null)
         {
             this.Concern = concern;
             this.IdentifierType = identifierType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
+            this.Tags = tags;
         }
 
         /// <summary>
@@ -53,5 +58,8 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<string, string> Tags { get; private set; }
     }
 }

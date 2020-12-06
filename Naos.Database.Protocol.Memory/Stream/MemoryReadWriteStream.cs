@@ -414,18 +414,54 @@ namespace Naos.Database.Protocol.Memory
                         return null;
                     }
 
-                    var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                    var requestedTimestamp = DateTime.UtcNow;
+                    var requestedEvent = new RequestedHandleRecordExecutionEvent(recordToHandle.InternalRecordId, requestedTimestamp, recordToHandle);
+                    var requestedPayload = requestedEvent.ToDescribedSerializationUsingSpecificFactory(
+                        this.DefaultSerializerRepresentation,
+                        this.SerializerFactory,
+                        this.DefaultSerializationFormat);
 
+                    var requestedMetadata = new StreamRecordHandlingEntryMetadata(
+                        recordToHandle.InternalRecordId,
+                        operation.Concern,
+                        HandlingStatus.Requested,
+                        recordToHandle.Metadata.StringSerializedId,
+                        requestedPayload.SerializerRepresentation,
+                        recordToHandle.Metadata.TypeRepresentationOfId,
+                        requestedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                        operation.Tags,
+                        requestedTimestamp,
+                        requestedEvent.TimestampUtc);
+
+                    var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
                     entries.Add(new StreamRecordHandlingEntry(requestedEntryId, requestedMetadata, requestedPayload));
 
+                    var runningTimestamp = DateTime.UtcNow;
 
-                    // insert an execute op request for concern
-                    // insert an in progress
-                    // return the chosen one
+                    var runningEvent = new RunningHandleRecordExecutionEvent(recordToHandle.InternalRecordId, runningTimestamp);
+                    var runningPayload = requestedEvent.ToDescribedSerializationUsingSpecificFactory(
+                        this.DefaultSerializerRepresentation,
+                        this.SerializerFactory,
+                        this.DefaultSerializationFormat);
+
+                    var runningMetadata = new StreamRecordHandlingEntryMetadata(
+                        recordToHandle.InternalRecordId,
+                        operation.Concern,
+                        HandlingStatus.Running,
+                        recordToHandle.Metadata.StringSerializedId,
+                        runningPayload.SerializerRepresentation,
+                        recordToHandle.Metadata.TypeRepresentationOfId,
+                        runningPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                        operation.Tags,
+                        runningTimestamp,
+                        runningEvent.TimestampUtc);
+
+                    var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                    entries.Add(new StreamRecordHandlingEntry(runningEntryId, runningMetadata, requestedPayload));
+
+                    return recordToHandle;
                 }
             }
-
-            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />

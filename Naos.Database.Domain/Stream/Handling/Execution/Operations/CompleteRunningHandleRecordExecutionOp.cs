@@ -14,23 +14,26 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Operation to mark a running operation as completed.
     /// </summary>
-    public partial class CompleteRunningHandleRecordExecutionOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags, IHaveHandleRecordConcern
+    public partial class CompleteRunningHandleRecordExecutionOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags, IHaveHandleRecordConcern, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompleteRunningHandleRecordExecutionOp"/> class.
         /// </summary>
         /// <param name="id">The internal record identifier concerned with this handling sequence (the effective aggregate identifier of a record handling scenario).</param>
         /// <param name="concern">Record handling concern.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags for produced events.</param>
         public CompleteRunningHandleRecordExecutionOp(
             long id,
             string concern,
+            IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
 
             this.Id = id;
             this.Concern = concern;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
         }
 
@@ -39,6 +42,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public string Concern { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }

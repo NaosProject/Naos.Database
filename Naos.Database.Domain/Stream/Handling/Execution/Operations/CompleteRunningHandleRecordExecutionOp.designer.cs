@@ -72,6 +72,7 @@ namespace Naos.Database.Domain
 
             var result = this.Id.IsEqualTo(other.Id)
                       && this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
+                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator)
                       && this.Tags.IsEqualTo(other.Tags);
 
             return result;
@@ -84,6 +85,7 @@ namespace Naos.Database.Domain
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.Id)
             .Hash(this.Concern)
+            .Hash(this.SpecifiedResourceLocator)
             .Hash(this.Tags)
             .Value;
 
@@ -115,6 +117,7 @@ namespace Naos.Database.Domain
             var result = new CompleteRunningHandleRecordExecutionOp(
                                  id,
                                  this.Concern?.DeepClone(),
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
 
             return result;
@@ -145,6 +148,38 @@ namespace Naos.Database.Domain
             var result = new CompleteRunningHandleRecordExecutionOp(
                                  this.Id,
                                  concern,
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
+                                 this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
+        /// </summary>
+        /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="CompleteRunningHandleRecordExecutionOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public CompleteRunningHandleRecordExecutionOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
+        {
+            var result = new CompleteRunningHandleRecordExecutionOp(
+                                 this.Id,
+                                 this.Concern?.DeepClone(),
+                                 specifiedResourceLocator,
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
 
             return result;
@@ -175,6 +210,7 @@ namespace Naos.Database.Domain
             var result = new CompleteRunningHandleRecordExecutionOp(
                                  this.Id,
                                  this.Concern?.DeepClone(),
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
                                  tags);
 
             return result;
@@ -186,7 +222,56 @@ namespace Naos.Database.Domain
             var result = new CompleteRunningHandleRecordExecutionOp(
                                  this.Id,
                                  this.Concern?.DeepClone(),
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()));
+
+            return result;
+        }
+
+        private static object DeepCloneInterface(object value)
+        {
+            object result;
+
+            if (ReferenceEquals(value, null))
+            {
+                result = null;
+            }
+            else
+            {
+                var type = value.GetType();
+
+                if (type.IsValueType)
+                {
+                    result = value;
+                }
+                else if (value is string valueAsString)
+                {
+                    result = valueAsString.DeepClone();
+                }
+                else if (value is global::System.Version valueAsVersion)
+                {
+                    result = valueAsVersion.DeepClone();
+                }
+                else if (value is global::System.Uri valueAsUri)
+                {
+                    result = valueAsUri.DeepClone();
+                }
+                else
+                {
+                    var deepCloneableInterface = typeof(IDeepCloneable<>).MakeGenericType(type);
+
+                    if (deepCloneableInterface.IsAssignableFrom(type))
+                    {
+                        var deepCloneMethod = deepCloneableInterface.GetMethod(nameof(IDeepCloneable<object>.DeepClone));
+
+                        result = deepCloneMethod.Invoke(value, null);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
+                    }
+                }
+            }
 
             return result;
         }
@@ -195,7 +280,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.CompleteRunningHandleRecordExecutionOp: Id = {this.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.CompleteRunningHandleRecordExecutionOp: Id = {this.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}.");
 
             return result;
         }

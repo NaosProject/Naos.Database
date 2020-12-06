@@ -101,6 +101,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -108,12 +109,14 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CompleteRunningHandleRecordExecutionOp(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -121,6 +124,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -128,6 +132,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<SelfCancelRunningHandleRecordExecutionOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.SelfCancelRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.SelfCancelRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -69,6 +69,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              null,
                                              referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
                         return result;
@@ -88,6 +89,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
                         return result;
@@ -107,6 +109,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Concern,
                                              null,
+                                             referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
                         return result;
@@ -126,12 +129,33 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Concern,
                                              Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<SelfCancelRunningHandleRecordExecutionOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>();
+
+                        var result = new SelfCancelRunningHandleRecordExecutionOp(
+                                             referenceObject.Id,
+                                             referenceObject.Concern,
+                                             referenceObject.Details,
+                                             null,
+                                             referenceObject.Tags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<SelfCancelRunningHandleRecordExecutionOp>
@@ -145,6 +169,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Concern,
                                              referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator,
                                              null);
 
                         return result;
@@ -164,6 +189,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Concern,
                                              referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator,
                                              new Dictionary<string, string>());
 
                         return result;
@@ -189,6 +215,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Concern,
                                              referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator,
                                              dictionaryWithNullValue);
 
                         return result;
@@ -212,6 +239,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
                                                       referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
@@ -234,6 +262,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
                                                       referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
@@ -256,6 +285,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
                                                       referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
@@ -263,6 +293,29 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "Details",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<SelfCancelRunningHandleRecordExecutionOp>
+                {
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<SelfCancelRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = new SelfCancelRunningHandleRecordExecutionOp(
+                                                      referenceObject.Id,
+                                                      referenceObject.Concern,
+                                                      referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SpecifiedResourceLocator",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<SelfCancelRunningHandleRecordExecutionOp>
@@ -278,6 +331,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
                                                       referenceObject.Details,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
@@ -331,26 +385,6 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<SelfCancelRunningHandleRecordExecutionOp>
                 {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>();
-
-                        var referenceObject = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<SelfCancelRunningHandleRecordExecutionOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<SelfCancelRunningHandleRecordExecutionOp>
-                {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -363,6 +397,46 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<SelfCancelRunningHandleRecordExecutionOp>
+                {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>();
+
+                        var referenceObject = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<SelfCancelRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<SelfCancelRunningHandleRecordExecutionOp>
+                {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>();
+
+                        var referenceObject = A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<SelfCancelRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
                         };
 
                         return result;
@@ -383,6 +457,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new SelfCancelRunningHandleRecordExecutionOp[]
@@ -391,22 +466,32 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new SelfCancelRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new SelfCancelRunningHandleRecordExecutionOp(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new SelfCancelRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
+                                A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
                         new SelfCancelRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                A.Dummy<SelfCancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -717,6 +802,15 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                }
+
                 if (systemUnderTest.Tags == null)
                 {
                     actual.Tags.AsTest().Must().BeNull();
@@ -743,7 +837,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "Concern", "Tags", "Details" };
+                var propertyNames = new string[] { "Id", "Concern", "Details", "SpecifiedResourceLocator", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

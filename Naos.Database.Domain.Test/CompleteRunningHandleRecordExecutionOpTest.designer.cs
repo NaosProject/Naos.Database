@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<CompleteRunningHandleRecordExecutionOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CompleteRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CompleteRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,6 +68,7 @@ namespace Naos.Database.Domain.Test
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
                                              null,
+                                             referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
                         return result;
@@ -86,12 +87,32 @@ namespace Naos.Database.Domain.Test
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
                                              Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var result = new CompleteRunningHandleRecordExecutionOp(
+                                             referenceObject.Id,
+                                             referenceObject.Concern,
+                                             null,
+                                             referenceObject.Tags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
@@ -104,6 +125,7 @@ namespace Naos.Database.Domain.Test
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
                                              referenceObject.Concern,
+                                             referenceObject.SpecifiedResourceLocator,
                                              null);
 
                         return result;
@@ -122,6 +144,7 @@ namespace Naos.Database.Domain.Test
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
                                              referenceObject.Concern,
+                                             referenceObject.SpecifiedResourceLocator,
                                              new Dictionary<string, string>());
 
                         return result;
@@ -146,6 +169,7 @@ namespace Naos.Database.Domain.Test
                         var result = new CompleteRunningHandleRecordExecutionOp(
                                              referenceObject.Id,
                                              referenceObject.Concern,
+                                             referenceObject.SpecifiedResourceLocator,
                                              dictionaryWithNullValue);
 
                         return result;
@@ -168,6 +192,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
@@ -189,6 +214,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
@@ -196,6 +222,28 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "Concern",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
+                                                      referenceObject.Id,
+                                                      referenceObject.Concern,
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SpecifiedResourceLocator",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<CompleteRunningHandleRecordExecutionOp>
@@ -210,6 +258,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new CompleteRunningHandleRecordExecutionOp(
                                                       referenceObject.Id,
                                                       referenceObject.Concern,
+                                                      referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
@@ -263,6 +312,26 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<CompleteRunningHandleRecordExecutionOp>
                 {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                        var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<CompleteRunningHandleRecordExecutionOp>
+                {
                     Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
                     WithPropertyName = "Tags",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -294,6 +363,7 @@ namespace Naos.Database.Domain.Test
                         new CompleteRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new CompleteRunningHandleRecordExecutionOp[]
@@ -301,14 +371,22 @@ namespace Naos.Database.Domain.Test
                         new CompleteRunningHandleRecordExecutionOp(
                                 A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new CompleteRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new CompleteRunningHandleRecordExecutionOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
+                                A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new CompleteRunningHandleRecordExecutionOp(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 A.Dummy<CompleteRunningHandleRecordExecutionOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -620,6 +698,15 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                }
+
                 if (systemUnderTest.Tags == null)
                 {
                     actual.Tags.AsTest().Must().BeNull();
@@ -646,7 +733,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "Concern", "Tags" };
+                var propertyNames = new string[] { "Id", "Concern", "SpecifiedResourceLocator", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

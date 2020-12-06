@@ -45,7 +45,8 @@ namespace Naos.Database.Protocol.Memory
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation().ToWithAndWithoutVersion(),
                 operation.TypeVersionMatchStrategy,
-                operation.SpecifiedResourceLocator);
+                operation.SpecifiedResourceLocator,
+                operation.Tags);
             var record = this.stream.Execute(delegatedOperation);
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);

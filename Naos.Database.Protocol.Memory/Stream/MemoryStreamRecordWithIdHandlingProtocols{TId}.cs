@@ -49,7 +49,9 @@ namespace Naos.Database.Protocol.Memory
                 operation.Concern,
                 typeof(TId).ToRepresentation().ToWithAndWithoutVersion(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                operation.SpecifiedResourceLocator,
+                operation.Tags);
             var record = this.stream.Execute(delegatedOperation);
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);

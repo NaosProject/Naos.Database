@@ -477,7 +477,7 @@ namespace Naos.Database.Protocol.FileSystem
         public StreamRecord Execute(
             TryHandleRecordOp operation)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

@@ -42,14 +42,19 @@ namespace Naos.Database.Domain
         Failed,
 
         /// <summary>
-        /// The operation was canceled externally.
+        /// The operation's request was canceled.
         /// </summary>
         Canceled,
 
         /// <summary>
+        /// The operation's execution was canceled externally.
+        /// </summary>
+        CanceledRunning,
+
+        /// <summary>
         /// The operation's protocol canceled it's own execution.
         /// </summary>
-        SelfCanceled,
+        SelfCanceledRunning,
 
         /// <summary>
         /// The blocked

@@ -397,7 +397,11 @@ namespace Naos.Database.Protocol.Memory
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries =
+                    this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern)
+                        .Where(_ => _.Metadata.Status != HandlingStatus.CanceledRunning)
+                        .ToList();
+
                 var allIds = entries.Select(_ => _.Metadata.InternalRecordId).ToList();
 
                 lock (this.streamLock)
@@ -600,6 +604,11 @@ namespace Naos.Database.Protocol.Memory
             foreach (var locator in allLocators)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
+                var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.Blocked)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot block when a block already is in place that does not exist; most Recent Entry is: {mostRecentEntry?.ToString()}."));
+                }
 
                 var utcNow = DateTime.UtcNow;
                 var blockEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
@@ -635,6 +644,11 @@ namespace Naos.Database.Protocol.Memory
             foreach (var locator in allLocators)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
+                var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecentEntry == null || mostRecentEntry.Metadata.Status != HandlingStatus.Blocked)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot cancel a block that does not exist; most Recent Entry is: {mostRecentEntry?.ToString() ?? "<null>"}."));
+                }
 
                 var utcNow = DateTime.UtcNow;
                 var blockEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
@@ -666,35 +680,235 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             CancelHandleRecordExecutionRequestOp operation)
         {
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecent == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot cancel a requested {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Requested)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot cancel a requested {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new CanceledRequestedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.Canceled,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+            }
         }
 
         /// <inheritdoc />
         public void Execute(
             CancelRunningHandleRecordExecutionOp operation)
         {
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecent == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot cancel a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Running)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot cancel a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new CanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.CanceledRunning,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+            }
         }
 
         /// <inheritdoc />
         public void Execute(
             CompleteRunningHandleRecordExecutionOp operation)
         {
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecent == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot complete a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Running)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot complete a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new CompletedHandleRecordExecutionEvent(operation.Id, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.Completed,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+            }
         }
 
         /// <inheritdoc />
         public void Execute(
             FailRunningHandleRecordExecutionOp operation)
         {
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecent == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot fail a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Running)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot fail a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new FailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.Failed,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+            }
         }
 
         /// <inheritdoc />
         public void Execute(
             SelfCancelRunningHandleRecordExecutionOp operation)
         {
-            throw new NotImplementedException();
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                if (mostRecent == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot self cancel a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Running)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot self cancel a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new SelfCanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.SelfCanceledRunning,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+            }
         }
     }
 }

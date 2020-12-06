@@ -81,9 +81,9 @@ namespace Naos.Database.Domain
                 return HandlingStatus.Canceled;
             }
 
-            if (statuses.Any(_ => _ == HandlingStatus.SelfCanceled))
+            if (statuses.Any(_ => _ == HandlingStatus.SelfCanceledRunning))
             {
-                return HandlingStatus.SelfCanceled;
+                return HandlingStatus.SelfCanceledRunning;
             }
 
             if (statuses.Any(_ => _ == HandlingStatus.Unknown))

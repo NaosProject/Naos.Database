@@ -383,12 +383,10 @@ namespace Naos.Database.Protocol.FileSystem
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
+            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.handlingLock)
             {
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
                     concernDirectory,
                     Invariant($"*___RecordId-{operation.InternalRecordId}___*.{MetadataFileExtension}"),
@@ -409,16 +407,14 @@ namespace Naos.Database.Protocol.FileSystem
         public HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
 
-            if (IsMostRecentBlocked(Path.Combine(handleDirectory, Concerns.RecordHandlingConcern)))
+            if (this.IsMostRecentBlocked(locator))
             {
                 return HandlingStatus.Blocked;
             }
 
-            var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
+            var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
             lock (this.handlingLock)
             {
                 var files = operation.IdsToMatch.SelectMany(
@@ -457,16 +453,12 @@ namespace Naos.Database.Protocol.FileSystem
                 var statuses = new List<HandlingStatus>();
                 foreach (var locator in allLocators)
                 {
-                    var rootPath = this.GetRootPathFromLocator(locator);
-                    var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-
-                    if (IsMostRecentBlocked(Path.Combine(handleDirectory, Concerns.RecordHandlingConcern)))
+                    if (this.IsMostRecentBlocked(locator))
                     {
                         return HandlingStatus.Blocked;
                     }
 
-                    var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
-
+                    var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                     var files = Directory.GetFiles(
                                               concernDirectory,
                                               "*." + MetadataFileExtension,
@@ -506,26 +498,23 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 foreach (var locator in allLocators)
                 {
-                    var rootPath = this.GetRootPathFromLocator(locator);
-                    var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-                    var handlingConcernDirectory = Path.Combine(handleDirectory, Concerns.RecordHandlingConcern);
-                    var blocked = IsMostRecentBlocked(handlingConcernDirectory);
+                    var blocked = this.IsMostRecentBlocked(locator);
                     if (blocked)
                     {
                         return null;
                     }
 
-                    var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
-                    var tupleOfIdsToHandleAndIdsToIgnore = GetIdsToHandleAndIdsToIgnore(concernDirectory);
-
                     lock (this.fileLock)
                     {
+                        var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
+                        var tupleOfIdsToHandleAndIdsToIgnore = GetIdsToHandleAndIdsToIgnore(concernDirectory);
+                        var rootPath = this.GetRootPathFromLocator(locator);
                         var recordToHandleDetails =
-                            Directory.GetFiles(concernDirectory, "*." + MetadataFileExtension, SearchOption.TopDirectoryOnly)
+                            Directory.GetFiles(rootPath, "*." + MetadataFileExtension, SearchOption.TopDirectoryOnly)
                                      .Select(
                                           _ => new
                                                {
-                                                   Id = GetInternalRecordIdFromEntryFilePath(_),
+                                                   Id = GetInternalRecordIdFromRecordFilePath(_),
                                                    Path = _,
                                                })
                                      .Where(_ => !tupleOfIdsToHandleAndIdsToIgnore.Item2.Contains(_.Id))
@@ -578,7 +567,7 @@ namespace Naos.Database.Protocol.FileSystem
                                     requestedEvent.TimestampUtc);
 
                                 var requestedEntryId = this.GetNextRecordHandlingEntryId(locator);
-                                this.PutRecordHandlingEntry(concernDirectory, requestedEntryId, requestedMetadata, requestedPayload);
+                                this.PutRecordHandlingEntry(locator, operation.Concern, requestedEntryId, requestedMetadata, requestedPayload);
                             }
 
                             var runningTimestamp = DateTime.UtcNow;
@@ -602,7 +591,7 @@ namespace Naos.Database.Protocol.FileSystem
                                 runningEvent.TimestampUtc);
 
                             var runningEntryId = this.GetNextRecordHandlingEntryId(locator);
-                            this.PutRecordHandlingEntry(concernDirectory, runningEntryId, runningMetadata, runningPayload);
+                            this.PutRecordHandlingEntry(locator, operation.Concern, runningEntryId, runningMetadata, runningPayload);
 
                             return recordToHandle;
                         }
@@ -611,6 +600,21 @@ namespace Naos.Database.Protocol.FileSystem
 
                 return null;
             }
+        }
+
+        private string GetHandlingConcernDirectory(
+            IResourceLocator locator,
+            string concern)
+        {
+            var rootPath = this.GetRootPathFromLocator(locator);
+            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+            var handlingConcernDirectory = Path.Combine(handleDirectory, concern);
+            if (!Directory.Exists(handlingConcernDirectory))
+            {
+                Directory.CreateDirectory(handlingConcernDirectory);
+            }
+
+            return handlingConcernDirectory;
         }
 
         /// <inheritdoc />
@@ -751,10 +755,7 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 foreach (var locator in allLocators)
                 {
-                    var rootPath = this.GetRootPathFromLocator(locator);
-                    var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-                    var handlingConcernDirectory = Path.Combine(handleDirectory, Concerns.RecordHandlingConcern);
-                    var blocked = IsMostRecentBlocked(handlingConcernDirectory);
+                    var blocked = this.IsMostRecentBlocked(locator);
 
                     if (blocked)
                     {
@@ -782,11 +783,9 @@ namespace Naos.Database.Protocol.FileSystem
                         blockEvent.TimestampUtc);
 
                     var entryId = this.GetNextRecordHandlingEntryId(locator);
-                    this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                    this.PutRecordHandlingEntry(locator, Concerns.RecordHandlingConcern, entryId, metadata, payload);
                 }
             }
-
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -799,10 +798,7 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 foreach (var locator in allLocators)
                 {
-                    var rootPath = this.GetRootPathFromLocator(locator);
-                    var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-                    var handlingConcernDirectory = Path.Combine(handleDirectory, Concerns.RecordHandlingConcern);
-                    var blocked = IsMostRecentBlocked(handlingConcernDirectory);
+                    var blocked = this.IsMostRecentBlocked(locator);
 
                     if (!blocked)
                     {
@@ -830,7 +826,7 @@ namespace Naos.Database.Protocol.FileSystem
                         cancelBlockedEvent.TimestampUtc);
 
                     var entryId = this.GetNextRecordHandlingEntryId(locator);
-                    this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                    this.PutRecordHandlingEntry(locator, Concerns.RecordHandlingConcern, entryId, metadata, payload);
                 }
             }
         }
@@ -840,14 +836,13 @@ namespace Naos.Database.Protocol.FileSystem
             CancelHandleRecordExecutionRequestOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
             lock (this.handlingLock)
             {
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
+
                 var files = Directory.GetFiles(
-                    handlingConcernDirectory,
-                    Invariant($"___Id-{operation.Id}___Status-{HandlingStatus.Requested}*.{MetadataFileExtension}"),
+                    concernDirectory,
+                    Invariant($"*___Id-{operation.Id}___Status-{HandlingStatus.Requested}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -859,7 +854,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecentString = File.ReadAllText(mostRecentFilePath);
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new CanceledRequestedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
@@ -881,7 +876,7 @@ namespace Naos.Database.Protocol.FileSystem
                     newEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
             }
         }
 
@@ -890,15 +885,13 @@ namespace Naos.Database.Protocol.FileSystem
             CancelRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
+            var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
 
             lock (this.handlingLock)
             {
                 var files = Directory.GetFiles(
-                    handlingConcernDirectory,
-                    Invariant($"___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    concernDirectory,
+                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -910,7 +903,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecentString = File.ReadAllText(mostRecentFilePath);
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
@@ -937,7 +930,7 @@ namespace Naos.Database.Protocol.FileSystem
                     newEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
             }
         }
 
@@ -946,15 +939,13 @@ namespace Naos.Database.Protocol.FileSystem
             CompleteRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
 
             lock (this.handlingLock)
             {
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
-                    handlingConcernDirectory,
-                    Invariant($"___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    concernDirectory,
+                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -966,7 +957,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecentString = File.ReadAllText(mostRecentFilePath);
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
@@ -993,7 +984,7 @@ namespace Naos.Database.Protocol.FileSystem
                     newEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
             }
         }
 
@@ -1002,15 +993,13 @@ namespace Naos.Database.Protocol.FileSystem
             FailRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
 
             lock (this.handlingLock)
             {
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
-                    handlingConcernDirectory,
-                    Invariant($"___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    concernDirectory,
+                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1022,7 +1011,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecentString = File.ReadAllText(mostRecentFilePath);
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
@@ -1049,7 +1038,7 @@ namespace Naos.Database.Protocol.FileSystem
                     newEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
             }
         }
 
@@ -1058,15 +1047,13 @@ namespace Naos.Database.Protocol.FileSystem
             SelfCancelRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
 
             lock (this.handlingLock)
             {
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
-                    handlingConcernDirectory,
-                    Invariant($"___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    concernDirectory,
+                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1078,7 +1065,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecentString = File.ReadAllText(mostRecentFilePath);
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
@@ -1105,7 +1092,7 @@ namespace Naos.Database.Protocol.FileSystem
                     newEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
             }
         }
 
@@ -1114,15 +1101,13 @@ namespace Naos.Database.Protocol.FileSystem
             RetryFailedHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
-            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
 
             lock (this.handlingLock)
             {
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
-                    handlingConcernDirectory,
-                    Invariant($"___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    concernDirectory,
+                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1134,7 +1119,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecentString = File.ReadAllText(mostRecentFilePath);
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Failed)
                 {
@@ -1151,7 +1136,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     operation.Id,
                     operation.Concern,
-                    HandlingStatus.SelfCanceledRunning,
+                    HandlingStatus.RetryFailed,
                     mostRecent.Metadata.StringSerializedId,
                     payload.SerializerRepresentation,
                     mostRecent.Metadata.TypeRepresentationOfId,
@@ -1161,7 +1146,7 @@ namespace Naos.Database.Protocol.FileSystem
                     newEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
             }
         }
 
@@ -1420,7 +1405,10 @@ namespace Naos.Database.Protocol.FileSystem
                 throw new ArgumentException("File path is null or whitespace.", nameof(filePath));
             }
 
-            var tokens = Path.GetFileName(filePath)
+            var fileName = Path.GetFileName(filePath);
+            var extensionWithLeadingDot = Path.GetExtension(filePath);
+            var fileNameWithoutExtension = fileName.Replace(extensionWithLeadingDot, string.Empty);
+            var tokens = fileNameWithoutExtension
                                             ?.Split(
                                                   new[]
                                                   {
@@ -1509,11 +1497,13 @@ namespace Naos.Database.Protocol.FileSystem
                 existingInternalRecordIdsToIgnore);
         }
 
-        private static bool IsMostRecentBlocked(
-            string handlingConcernDirectory)
+        private bool IsMostRecentBlocked(
+            IResourceLocator locator)
         {
+            var concernDirectory = this.GetHandlingConcernDirectory(locator, Concerns.RecordHandlingConcern);
+
             var files = Directory.GetFiles(
-                handlingConcernDirectory,
+                concernDirectory,
                 "*." + MetadataFileExtension,
                 SearchOption.TopDirectoryOnly);
 
@@ -1573,16 +1563,17 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         private void PutRecordHandlingEntry(
-            string concernDirectory,
+            IResourceLocator locator,
+            string concern,
             long entryId,
             StreamRecordHandlingEntryMetadata metadata,
             DescribedSerialization payload)
         {
+            var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
             var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "-");
             var fileExtension = payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                 payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
-            var filePathIdentifier = metadata.StringSerializedId.EncodeForFilePath();
-            var fileBaseName = Invariant($"{entryId}___{timestampString}___Id-{filePathIdentifier}___Status-{metadata.Status}");
+            var fileBaseName = Invariant($"{entryId}___{timestampString}___Id-{metadata.InternalRecordId}___Status-{metadata.Status}");
             var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
             var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
             var metadataFilePath = Path.Combine(concernDirectory, metadataFileName);

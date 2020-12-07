@@ -45,7 +45,6 @@ namespace Naos.Database.Domain
             DateTime? objectTimestampUtc)
         {
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
-            tags.MustForArg(nameof(tags)).NotBeNull();
             serializerRepresentation.MustForArg(nameof(serializerRepresentation)).NotBeNull();
             typeRepresentationOfId.MustForArg(nameof(typeRepresentationOfId)).NotBeNull();
             typeRepresentationOfObject.MustForArg(nameof(typeRepresentationOfObject)).NotBeNull();

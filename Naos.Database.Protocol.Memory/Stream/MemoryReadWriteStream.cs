@@ -429,11 +429,11 @@ namespace Naos.Database.Protocol.Memory
                         var mostRecent = groupedById.OrderByDescending(_ => _.InternalHandlingEntryId).First();
                         if (mostRecent.Metadata.Status.IsHandlingNeeded())
                         {
-                            existingInternalRecordIdsToConsider.Add(mostRecent.Metadata.InternalRecordId);
+                            existingInternalRecordIdsToConsider.Add(groupedById.Key);
                         }
                         else
                         {
-                            existingInternalRecordIdsToIgnore.Add(mostRecent.Metadata.InternalRecordId);
+                            existingInternalRecordIdsToIgnore.Add(groupedById.Key);
                         }
                     }
 
@@ -655,7 +655,7 @@ namespace Naos.Database.Protocol.Memory
                 var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
                 if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.Blocked)
                 {
-                    throw new InvalidOperationException(Invariant($"Cannot block when a block already is in place that does not exist; most Recent Entry is: {mostRecentEntry?.ToString()}."));
+                    throw new InvalidOperationException(Invariant($"Cannot block when a block already is in place that does not have a cancel; most Recent Entry is: {mostRecentEntry?.ToString()}."));
                 }
 
                 var utcNow = DateTime.UtcNow;
@@ -734,17 +734,12 @@ namespace Naos.Database.Protocol.Memory
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.Status == HandlingStatus.Requested && _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
                     throw new InvalidOperationException(
                         Invariant(
                             $"Cannot cancel a requested {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
-                }
-
-                if (mostRecent.Metadata.Status != HandlingStatus.Requested)
-                {
-                    throw new InvalidOperationException(Invariant($"Cannot cancel a requested {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
@@ -781,7 +776,7 @@ namespace Naos.Database.Protocol.Memory
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
                     throw new InvalidOperationException(
@@ -828,7 +823,7 @@ namespace Naos.Database.Protocol.Memory
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
                     throw new InvalidOperationException(
@@ -875,7 +870,7 @@ namespace Naos.Database.Protocol.Memory
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
                     throw new InvalidOperationException(
@@ -922,7 +917,7 @@ namespace Naos.Database.Protocol.Memory
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
                     throw new InvalidOperationException(

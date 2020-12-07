@@ -411,6 +411,12 @@ namespace Naos.Database.Protocol.FileSystem
             var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
             var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+
+            if (IsMostRecentBlocked(Path.Combine(handleDirectory, Concerns.RecordHandlingConcern)))
+            {
+                return HandlingStatus.Blocked;
+            }
+
             var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
             lock (this.handlingLock)
             {
@@ -452,6 +458,12 @@ namespace Naos.Database.Protocol.FileSystem
                 {
                     var rootPath = this.GetRootPathFromLocator(locator);
                     var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+
+                    if (IsMostRecentBlocked(Path.Combine(handleDirectory, Concerns.RecordHandlingConcern)))
+                    {
+                        return HandlingStatus.Blocked;
+                    }
+
                     var concernDirectory = Path.Combine(handleDirectory, operation.Concern);
 
                     var files = Directory.GetFiles(

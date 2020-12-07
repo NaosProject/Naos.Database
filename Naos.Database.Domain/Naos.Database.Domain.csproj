@@ -194,6 +194,7 @@
       <DependentUpon>SelfCancelRunningHandleRecordExecutionOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
+    <Compile Include="Stream\Handling\Model\HandlingStatusExtensions.cs" />
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>

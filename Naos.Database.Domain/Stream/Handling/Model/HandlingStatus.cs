@@ -42,6 +42,11 @@ namespace Naos.Database.Domain
         Failed,
 
         /// <summary>
+        /// The retry failed
+        /// </summary>
+        RetryFailed,
+
+        /// <summary>
         /// The operation's request was canceled.
         /// </summary>
         Canceled,

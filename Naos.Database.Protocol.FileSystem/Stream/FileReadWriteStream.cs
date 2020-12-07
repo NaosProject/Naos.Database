@@ -1364,7 +1364,7 @@ namespace Naos.Database.Protocol.FileSystem
                 throw new InvalidOperationException(Invariant($"Failed to extract tokens from file path: '{filePath}'."));
             }
 
-            var token = tokens.SingleOrDefault(_ => _.StartsWith(tokenName + "-", StringComparison.InvariantCulture));
+            var token = tokens.SingleOrDefault(_ => _.StartsWith(tokenName + "-", StringComparison.Ordinal));
             if (token == null)
             {
                 throw new InvalidOperationException(Invariant($"Failed to find token ({tokenName}) from file path: '{filePath}'."));

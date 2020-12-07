@@ -477,6 +477,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public StreamRecord Execute(
             TryHandleRecordOp operation)
         {
@@ -1363,7 +1364,7 @@ namespace Naos.Database.Protocol.FileSystem
                 throw new InvalidOperationException(Invariant($"Failed to extract tokens from file path: '{filePath}'."));
             }
 
-            var token = tokens.SingleOrDefault(_ => _.StartsWith(tokenName + "-"));
+            var token = tokens.SingleOrDefault(_ => _.StartsWith(tokenName + "-", StringComparison.InvariantCulture));
             if (token == null)
             {
                 throw new InvalidOperationException(Invariant($"Failed to find token ({tokenName}) from file path: '{filePath}'."));
@@ -1458,6 +1459,7 @@ namespace Naos.Database.Protocol.FileSystem
             return result;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
         private long GetNextRecordHandlingEntryId(IResourceLocator locator)
         {
             if (locator == null)

@@ -389,6 +389,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public StreamRecord Execute(
             TryHandleRecordOp operation)
         {

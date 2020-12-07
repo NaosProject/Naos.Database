@@ -50,7 +50,8 @@ namespace Naos.Database.Protocol.FileSystem
         IVoidProtocol<CancelRunningHandleRecordExecutionOp>,
         IVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
         IVoidProtocol<FailRunningHandleRecordExecutionOp>,
-        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>
+        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
+        IVoidProtocol<RetryFailedHandleRecordExecutionOp>
     {
         private const string RecordHandlingTrackingDirectoryName = "_HandlingTracking";
         private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
@@ -1086,6 +1087,62 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new SelfCanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.SelfCanceledRunning,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = this.GetNextRecordHandlingEntryId(locator);
+                this.PutRecordHandlingEntry(handlingConcernDirectory, entryId, metadata, payload);
+            }
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            RetryFailedHandleRecordExecutionOp operation)
+        {
+            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(locator);
+            var handleDirectory = Path.Combine(rootPath, RecordHandlingTrackingDirectoryName);
+            var handlingConcernDirectory = Path.Combine(handleDirectory, operation.Concern);
+
+            lock (this.handlingLock)
+            {
+                var files = Directory.GetFiles(
+                    handlingConcernDirectory,
+                    Invariant($"___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
+
+                var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
+                if (mostRecentFilePath == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot retry a failed {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                var mostRecentString = File.ReadAllText(mostRecentFilePath);
+                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentString);
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Failed)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot retry non-failed execution of {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new RetryFailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
                 var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,

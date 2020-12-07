@@ -206,5 +206,20 @@ namespace Naos.Database.Protocol.Memory
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
         }
+
+        /// <inheritdoc />
+        public void Execute(
+            RetryFailedHandleRecordExecutionOp operation)
+        {
+            this.stream.Execute(operation);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            RetryFailedHandleRecordExecutionOp operation)
+        {
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await.
+        }
     }
 }

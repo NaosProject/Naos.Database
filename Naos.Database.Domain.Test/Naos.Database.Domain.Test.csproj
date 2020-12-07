@@ -382,6 +382,14 @@
     <Compile Include="RequestedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>RequestedHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="RetryFailedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="RetryFailedHandleRecordExecutionEventTest.designer.cs">
+      <DependentUpon>RetryFailedHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RetryFailedHandleRecordExecutionOpTest.cs" />
+    <Compile Include="RetryFailedHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>RetryFailedHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="RunningHandleRecordExecutionEventTest.cs" />
     <Compile Include="RunningHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>RunningHandleRecordExecutionEventTest.cs</DependentUpon>

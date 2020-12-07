@@ -43,7 +43,8 @@ namespace Naos.Database.Protocol.Memory
         IVoidProtocol<CancelRunningHandleRecordExecutionOp>,
         IVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
         IVoidProtocol<FailRunningHandleRecordExecutionOp>,
-        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>
+        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
+        IVoidProtocol<RetryFailedHandleRecordExecutionOp>
     {
         private readonly object streamLock = new object();
         private readonly object handlingLock = new object();
@@ -933,6 +934,53 @@ namespace Naos.Database.Protocol.Memory
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new SelfCanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.Id,
+                    operation.Concern,
+                    HandlingStatus.SelfCanceledRunning,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+            }
+        }
+
+        /// <inheritdoc />
+        public void Execute(
+            RetryFailedHandleRecordExecutionOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
+                if (mostRecent == null)
+                {
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Cannot retry a failed {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                }
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Failed)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot retry non-failed execution of {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new RetryFailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
                 var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,

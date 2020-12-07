@@ -142,8 +142,12 @@
     <Compile Include="Stream\Handling\Execution\Events\FailedHandleRecordExecutionEvent.designer.cs">
       <DependentUpon>FailedHandleRecordExecutionEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.designer.cs">
       <DependentUpon>RequestedHandleRecordExecutionEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.designer.cs">
+      <DependentUpon>RetryFailedHandleRecordExecutionEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Execution\Events\RunningHandleRecordExecutionEvent.designer.cs">
       <DependentUpon>RunningHandleRecordExecutionEvent.cs</DependentUpon>
@@ -184,10 +188,14 @@
     <Compile Include="Stream\Handling\Execution\Operations\CompleteRunningHandleRecordExecutionOp.designer.cs">
       <DependentUpon>CompleteRunningHandleRecordExecutionOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\Execution\Operations\RetryFailedHandleRecordExecutionOp.cs" />
     <Compile Include="Stream\Handling\Execution\Operations\FailRunningHandleRecordExecutionOp.cs" />
     <Compile Include="Stream\Handling\Execution\Concerns.cs" />
     <Compile Include="Stream\Handling\Execution\Operations\FailRunningHandleRecordExecutionOp.designer.cs">
       <DependentUpon>FailRunningHandleRecordExecutionOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\Handling\Execution\Operations\RetryFailedHandleRecordExecutionOp.designer.cs">
+      <DependentUpon>RetryFailedHandleRecordExecutionOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\SelfCancelRunningHandleRecordExecutionOp.cs" />
     <Compile Include="Stream\Handling\Execution\Operations\SelfCancelRunningHandleRecordExecutionOp.designer.cs">

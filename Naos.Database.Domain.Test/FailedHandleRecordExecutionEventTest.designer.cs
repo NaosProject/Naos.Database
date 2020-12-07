@@ -261,6 +261,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CanceledRequestedHandleRecordExecutionEvent>(),
                         A.Dummy<CanceledRunningHandleRecordExecutionEvent>(),
                         A.Dummy<CompletedHandleRecordExecutionEvent>(),
+                        A.Dummy<RetryFailedHandleRecordExecutionEvent>(),
                         A.Dummy<RequestedHandleRecordExecutionEvent>(),
                         A.Dummy<RunningHandleRecordExecutionEvent>(),
                         A.Dummy<SelfCanceledRunningHandleRecordExecutionEvent>(),

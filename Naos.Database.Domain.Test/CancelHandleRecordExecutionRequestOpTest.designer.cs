@@ -504,6 +504,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CancelBlockedRecordHandlingOp>(),
                         A.Dummy<CancelRunningHandleRecordExecutionOp>(),
                         A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
+                        A.Dummy<RetryFailedHandleRecordExecutionOp>(),
                         A.Dummy<FailRunningHandleRecordExecutionOp>(),
                         A.Dummy<SelfCancelRunningHandleRecordExecutionOp>(),
                         A.Dummy<GetHandlingHistoryOfRecordOp>(),

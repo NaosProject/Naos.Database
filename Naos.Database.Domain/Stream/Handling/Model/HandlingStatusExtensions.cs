@@ -77,6 +77,11 @@ namespace Naos.Database.Domain
                 return HandlingStatus.Canceled;
             }
 
+            if (!strategy.IgnoreCancel && statuses.Any(_ => _ == HandlingStatus.CanceledRunning))
+            {
+                return HandlingStatus.CanceledRunning;
+            }
+
             if (statuses.Any(_ => _ == HandlingStatus.SelfCanceledRunning))
             {
                 return HandlingStatus.SelfCanceledRunning;
@@ -90,6 +95,11 @@ namespace Naos.Database.Domain
             if (statuses.Any(_ => _ == HandlingStatus.Requested))
             {
                 return HandlingStatus.Requested;
+            }
+
+            if (statuses.Any(_ => _ == HandlingStatus.RetryFailed))
+            {
+                return HandlingStatus.RetryFailed;
             }
 
             if (statuses.Any(_ => _ == HandlingStatus.None))

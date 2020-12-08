@@ -389,7 +389,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___RecordId-{operation.InternalRecordId}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.InternalRecordId.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var result = new List<StreamRecordHandlingEntry>();
@@ -420,7 +420,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var files = operation.IdsToMatch.SelectMany(
                                           _ => Directory.GetFiles(
                                               concernDirectory,
-                                              "*___Id-" + _.StringSerializedId.EncodeForFilePath() + "___*." + MetadataFileExtension,
+                                              "*___ExtId-" + _.StringSerializedId.EncodeForFilePath() + "___*." + MetadataFileExtension,
                                               SearchOption.TopDirectoryOnly).Select(__ => new Tuple<StringSerializedIdentifier, string>(_, __)))
                                      .ToList();
 
@@ -722,7 +722,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var fileExtension = operation.Payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                     operation.Payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
                 var filePathIdentifier = operation.Metadata.StringSerializedId.EncodeForFilePath();
-                var fileBaseName = Invariant($"{newId}___{timestampString}___{filePathIdentifier}");
+                var fileBaseName = Invariant($"{newId.PadWithLeadingZeros()}___{timestampString}___{filePathIdentifier}");
                 var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
                 var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
                 var metadataFilePath = Path.Combine(rootPath, metadataFileName);
@@ -842,7 +842,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id}___Status-{HandlingStatus.Requested}*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___Status-{HandlingStatus.Requested}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -853,7 +853,6 @@ namespace Naos.Database.Protocol.FileSystem
                             $"Cannot cancel a requested {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
                 }
 
-                var mostRecentString = File.ReadAllText(mostRecentFilePath);
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 var timestamp = DateTime.UtcNow;
@@ -891,7 +890,7 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -902,7 +901,6 @@ namespace Naos.Database.Protocol.FileSystem
                             $"Cannot cancel a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
                 }
 
-                var mostRecentString = File.ReadAllText(mostRecentFilePath);
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
@@ -945,7 +943,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -956,7 +954,6 @@ namespace Naos.Database.Protocol.FileSystem
                             $"Cannot complete a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
                 }
 
-                var mostRecentString = File.ReadAllText(mostRecentFilePath);
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
@@ -999,7 +996,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1010,7 +1007,6 @@ namespace Naos.Database.Protocol.FileSystem
                             $"Cannot fail a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
                 }
 
-                var mostRecentString = File.ReadAllText(mostRecentFilePath);
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
@@ -1053,7 +1049,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1064,7 +1060,6 @@ namespace Naos.Database.Protocol.FileSystem
                             $"Cannot self cancel a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
                 }
 
-                var mostRecentString = File.ReadAllText(mostRecentFilePath);
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
@@ -1107,7 +1102,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1118,7 +1113,6 @@ namespace Naos.Database.Protocol.FileSystem
                             $"Cannot retry a failed {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
                 }
 
-                var mostRecentString = File.ReadAllText(mostRecentFilePath);
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
                 if (mostRecent.Metadata.Status != HandlingStatus.Failed)
@@ -1407,7 +1401,7 @@ namespace Naos.Database.Protocol.FileSystem
 
             var fileName = Path.GetFileName(filePath);
             var extensionWithLeadingDot = Path.GetExtension(filePath);
-            var fileNameWithoutExtension = fileName.Replace(extensionWithLeadingDot, string.Empty);
+            var fileNameWithoutExtension = fileName.Substring(0, fileName.Length - extensionWithLeadingDot.Length);
             var tokens = fileNameWithoutExtension
                                             ?.Split(
                                                   new[]
@@ -1573,7 +1567,7 @@ namespace Naos.Database.Protocol.FileSystem
             var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "-");
             var fileExtension = payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                 payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
-            var fileBaseName = Invariant($"{entryId}___{timestampString}___Id-{metadata.InternalRecordId}___Status-{metadata.Status}");
+            var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId.EncodeForFilePath()}___Status-{metadata.Status}");
             var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
             var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
             var metadataFilePath = Path.Combine(concernDirectory, metadataFileName);

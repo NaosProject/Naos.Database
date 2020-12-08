@@ -107,6 +107,23 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <summary>
+        /// Pads the long with leading zeros so it will sort correctly in a file list.
+        /// </summary>
+        /// <remarks>
+        /// The default number of digits is based on max capacity of an NT File System's single folder of 4,294,967,295: https://superuser.com/questions/446282/max-files-per-directory-on-ntfs-vol-vs-fat32.
+        /// Which is of course totally arbitrary but needed to make a decision so 10 digits is default and will overflow at 10 billion.
+        /// </remarks>
+        /// <param name="input">The input.</param>
+        /// <param name="minimumNumberOfDigits">The number of zeros.</param>
+        /// <returns>System.String.</returns>
+        public static string PadWithLeadingZeros(
+            this long input,
+            int minimumNumberOfDigits = 10)
+        {
+            return input.ToString("D" + minimumNumberOfDigits);
+        }
+
+        /// <summary>
         /// Decodes for file path.
         /// </summary>
         /// <param name="input">The input.</param>

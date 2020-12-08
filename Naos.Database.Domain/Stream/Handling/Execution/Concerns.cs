@@ -20,6 +20,11 @@ namespace Naos.Database.Domain
         public const string RecordHandlingConcern = "RecordHandling";
 
         /// <summary>
+        /// The internal record identifier of global blocking when interacting with the <see cref="RecordHandlingConcern"/>.
+        /// </summary>
+        public const long GlobalBlockingRecordId = 0;
+
+        /// <summary>
         /// Throws if the concern specified is reserved.
         /// </summary>
         /// <param name="concern">The concern to check.</param>

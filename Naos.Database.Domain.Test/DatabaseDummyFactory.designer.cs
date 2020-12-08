@@ -53,7 +53,8 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CompletedHandleRecordExecutionEvent(
                                  A.Dummy<long>(),
-                                 A.Dummy<DateTime>()));
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailedHandleRecordExecutionEvent(
@@ -71,12 +72,14 @@ namespace Naos.Database.Domain.Test
                 () => new RequestedHandleRecordExecutionEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<DateTime>(),
-                                 A.Dummy<StreamRecord>()));
+                                 A.Dummy<StreamRecord>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RunningHandleRecordExecutionEvent(
                                  A.Dummy<long>(),
-                                 A.Dummy<DateTime>()));
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new SelfCanceledRunningHandleRecordExecutionEvent(

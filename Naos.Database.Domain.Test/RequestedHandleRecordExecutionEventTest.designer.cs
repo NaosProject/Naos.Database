@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<RequestedHandleRecordExecutionEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.RequestedHandleRecordExecutionEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordToHandle = {systemUnderTest.RecordToHandle?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.RequestedHandleRecordExecutionEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordToHandle = {systemUnderTest.RecordToHandle?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,12 +68,51 @@ namespace Naos.Database.Domain.Test
                         var result = new RequestedHandleRecordExecutionEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             null);
+                                             null,
+                                             referenceObject.Details);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "recordToHandle", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<RequestedHandleRecordExecutionEvent>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RequestedHandleRecordExecutionEvent>();
+
+                        var result = new RequestedHandleRecordExecutionEvent(
+                                             referenceObject.Id,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.RecordToHandle,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "details", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<RequestedHandleRecordExecutionEvent>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RequestedHandleRecordExecutionEvent>();
+
+                        var result = new RequestedHandleRecordExecutionEvent(
+                                             referenceObject.Id,
+                                             referenceObject.TimestampUtc,
+                                             referenceObject.RecordToHandle,
+                                             Invariant($"  {Environment.NewLine}  "));
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<RequestedHandleRecordExecutionEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<RequestedHandleRecordExecutionEvent>()
@@ -90,7 +129,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new RequestedHandleRecordExecutionEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.RecordToHandle),
+                                                      referenceObject.RecordToHandle,
+                                                      referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -111,7 +151,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new RequestedHandleRecordExecutionEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.RecordToHandle),
+                                                      referenceObject.RecordToHandle,
+                                                      referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
                         };
 
@@ -132,13 +173,36 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new RequestedHandleRecordExecutionEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.RecordToHandle),
+                                                      referenceObject.RecordToHandle,
+                                                      referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.RecordToHandle,
                         };
 
                         return result;
                     },
                     PropertyName = "RecordToHandle",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<RequestedHandleRecordExecutionEvent>
+                {
+                    Name = "Details should return same 'details' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RequestedHandleRecordExecutionEvent>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<RequestedHandleRecordExecutionEvent>
+                        {
+                            SystemUnderTest = new RequestedHandleRecordExecutionEvent(
+                                                      referenceObject.Id,
+                                                      referenceObject.TimestampUtc,
+                                                      referenceObject.RecordToHandle,
+                                                      referenceObject.Details),
+                            ExpectedPropertyValue = referenceObject.Details,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Details",
                 });
 
         private static readonly DeepCloneWithTestScenarios<RequestedHandleRecordExecutionEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<RequestedHandleRecordExecutionEvent>()
@@ -201,6 +265,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<RequestedHandleRecordExecutionEvent>
+                {
+                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
+                    WithPropertyName = "Details",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<RequestedHandleRecordExecutionEvent>();
+
+                        var referenceObject = A.Dummy<RequestedHandleRecordExecutionEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<RequestedHandleRecordExecutionEvent>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Details,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly RequestedHandleRecordExecutionEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<RequestedHandleRecordExecutionEvent>();
@@ -216,22 +300,31 @@ namespace Naos.Database.Domain.Test
                         new RequestedHandleRecordExecutionEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.RecordToHandle),
+                                ReferenceObjectForEquatableTestScenarios.RecordToHandle,
+                                ReferenceObjectForEquatableTestScenarios.Details),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new RequestedHandleRecordExecutionEvent[]
                     {
                         new RequestedHandleRecordExecutionEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<RequestedHandleRecordExecutionEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.RecordToHandle),
+                                ReferenceObjectForEquatableTestScenarios.RecordToHandle,
+                                ReferenceObjectForEquatableTestScenarios.Details),
                         new RequestedHandleRecordExecutionEvent(
                                 A.Dummy<RequestedHandleRecordExecutionEvent>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.RecordToHandle),
+                                ReferenceObjectForEquatableTestScenarios.RecordToHandle,
+                                ReferenceObjectForEquatableTestScenarios.Details),
                         new RequestedHandleRecordExecutionEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<RequestedHandleRecordExecutionEvent>().Whose(_ => !_.RecordToHandle.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordToHandle)).RecordToHandle),
+                                A.Dummy<RequestedHandleRecordExecutionEvent>().Whose(_ => !_.RecordToHandle.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordToHandle)).RecordToHandle,
+                                ReferenceObjectForEquatableTestScenarios.Details),
+                        new RequestedHandleRecordExecutionEvent(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.TimestampUtc,
+                                ReferenceObjectForEquatableTestScenarios.RecordToHandle,
+                                A.Dummy<RequestedHandleRecordExecutionEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -545,7 +638,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TimestampUtc", "Id", "RecordToHandle" };
+                var propertyNames = new string[] { "TimestampUtc", "Id", "RecordToHandle", "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

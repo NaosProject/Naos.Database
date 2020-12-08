@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event indicating that a protocol canceled it's own execution of the operation.
     /// </summary>
-    public partial class SelfCanceledRunningHandleRecordExecutionEvent : EventBase<long>
+    public partial class SelfCanceledRunningHandleRecordExecutionEvent : EventBase<long>, IHaveDetails
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SelfCanceledRunningHandleRecordExecutionEvent"/> class.
@@ -33,9 +33,7 @@ namespace Naos.Database.Domain
             this.Details = details;
         }
 
-        /// <summary>
-        /// Gets the details of the cancellation.
-        /// </summary>
+        /// <inheritdoc />
         public string Details { get; private set; }
     }
 }

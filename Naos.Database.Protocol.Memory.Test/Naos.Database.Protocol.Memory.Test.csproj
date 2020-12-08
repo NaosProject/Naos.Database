@@ -271,6 +271,10 @@
       <Project>{66C9F503-C870-473A-ADCD-8849A7B29566}</Project>
       <Name>Naos.Database.Protocol.Memory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Naos.Database.Serialization.Json\Naos.Database.Serialization.Json.csproj">
+      <Project>{B3CE9E62-76AA-49F9-A3B5-29A537C43E77}</Project>
+      <Name>Naos.Database.Serialization.Json</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

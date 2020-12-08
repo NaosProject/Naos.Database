@@ -670,7 +670,7 @@ namespace Naos.Database.Protocol.Memory
                         this.DefaultSerializationFormat);
 
                 var blockedMetadata = new StreamRecordHandlingEntryMetadata(
-                    0,
+                    Concerns.GlobalBlockingRecordId,
                     Concerns.RecordHandlingConcern,
                     HandlingStatus.Blocked,
                     null,
@@ -710,7 +710,7 @@ namespace Naos.Database.Protocol.Memory
                         this.DefaultSerializationFormat);
 
                 var blockedMetadata = new StreamRecordHandlingEntryMetadata(
-                    0,
+                    Concerns.GlobalBlockingRecordId,
                     Concerns.RecordHandlingConcern,
                     HandlingStatus.Requested,
                     null,

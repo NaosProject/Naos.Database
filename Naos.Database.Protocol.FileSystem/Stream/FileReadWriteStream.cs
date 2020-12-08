@@ -424,19 +424,27 @@ namespace Naos.Database.Protocol.FileSystem
                                               SearchOption.TopDirectoryOnly).Select(__ => new Tuple<StringSerializedIdentifier, string>(_, __)))
                                      .ToList();
 
-                var statuses = new List<HandlingStatus>();
+                var recordIdToStatusAndEntryIdMap = new Dictionary<long, List<Tuple<HandlingStatus, long>>>();
                 foreach (var file in files)
                 {
-                    var text = File.ReadAllText(file.Item2);
-                    var item = this.internalSerializer.Deserialize<StreamRecordHandlingEntry>(text);
+                    var filePath = file.Item2;
+                    var text = File.ReadAllText(filePath);
+                    var metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(text);
 
-                    if (item.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)
+                    if (metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)
                             .EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.TypeVersionMatchStrategy))
                     {
-                        statuses.Add(item.Metadata.Status);
+                        if (!recordIdToStatusAndEntryIdMap.ContainsKey(metadata.InternalRecordId))
+                        {
+                            recordIdToStatusAndEntryIdMap.Add(metadata.InternalRecordId, new List<Tuple<HandlingStatus, long>>());
+                        }
+
+                        var entryId = GetRootIdFromFilePath(filePath);
+                        recordIdToStatusAndEntryIdMap[metadata.InternalRecordId].Add(new Tuple<HandlingStatus, long>(metadata.Status, entryId));
                     }
                 }
 
+                var statuses = recordIdToStatusAndEntryIdMap.Select(_ => _.Value.OrderByDescending(__ => __.Item2).First().Item1).ToList();
                 var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
                 return result;
             }
@@ -465,15 +473,25 @@ namespace Naos.Database.Protocol.FileSystem
                                               SearchOption.TopDirectoryOnly)
                                          .ToList();
 
+                    var recordIdToStatusAndEntryIdMap = new Dictionary<long, List<Tuple<HandlingStatus, long>>>();
                     foreach (var file in files)
                     {
                         var text = File.ReadAllText(file);
                         var metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(text);
                         if (operation.TagsToMatch.FuzzyMatchAccordingToStrategy(metadata.Tags, operation.TagMatchStrategy))
                         {
-                            statuses.Add(metadata.Status);
+                            if (!recordIdToStatusAndEntryIdMap.ContainsKey(metadata.InternalRecordId))
+                            {
+                                recordIdToStatusAndEntryIdMap.Add(metadata.InternalRecordId, new List<Tuple<HandlingStatus, long>>());
+                            }
+
+                            var entryId = GetRootIdFromFilePath(file);
+                            recordIdToStatusAndEntryIdMap[metadata.InternalRecordId].Add(new Tuple<HandlingStatus, long>(metadata.Status, entryId));
                         }
                     }
+
+                    var locatorStatuses = recordIdToStatusAndEntryIdMap.Select(_ => _.Value.OrderByDescending(__ => __.Item2).First().Item1).ToList();
+                    statuses.AddRange(locatorStatuses);
                 }
 
                 var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
@@ -771,7 +789,7 @@ namespace Naos.Database.Protocol.FileSystem
                             this.DefaultSerializationFormat);
 
                     var metadata = new StreamRecordHandlingEntryMetadata(
-                        0,
+                        Concerns.GlobalBlockingRecordId,
                         Concerns.RecordHandlingConcern,
                         HandlingStatus.Blocked,
                         null,
@@ -814,7 +832,7 @@ namespace Naos.Database.Protocol.FileSystem
                             this.DefaultSerializationFormat);
 
                     var metadata = new StreamRecordHandlingEntryMetadata(
-                        0,
+                        Concerns.GlobalBlockingRecordId,
                         Concerns.RecordHandlingConcern,
                         HandlingStatus.Requested,
                         null,
@@ -842,7 +860,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___Status-{HandlingStatus.Requested}*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -854,6 +872,11 @@ namespace Naos.Database.Protocol.FileSystem
                 }
 
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
+
+                if (mostRecent.Metadata.Status != HandlingStatus.Running && mostRecent.Metadata.Status != HandlingStatus.Failed)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot cancel an execution {nameof(HandleRecordOp)} unless it is {nameof(HandlingStatus.Requested)} or {nameof(HandlingStatus.Failed)}, the most recent status is {mostRecent.Metadata.Status}."));
+                }
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new CanceledRequestedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
@@ -1431,6 +1454,31 @@ namespace Naos.Database.Protocol.FileSystem
             return tokenValue;
         }
 
+        private static long GetRootIdFromFilePath(
+            string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+            {
+                throw new ArgumentException("File path is null or whitespace.", nameof(filePath));
+            }
+
+            var rootId = Path.GetFileName(filePath)
+                                            ?.Split(
+                                                  new[]
+                                                  {
+                                                      "___",
+                                                  },
+                                                  StringSplitOptions.RemoveEmptyEntries)[0];
+
+            if (string.IsNullOrWhiteSpace(rootId))
+            {
+                throw new InvalidOperationException(Invariant($"Failed to extract root id from file path: '{filePath}'."));
+            }
+
+            var result = long.Parse(rootId, CultureInfo.InvariantCulture);
+            return result;
+        }
+
         private DateTime GetInternalRecordDateFromFilePath(
             string filePath)
         {
@@ -1567,7 +1615,7 @@ namespace Naos.Database.Protocol.FileSystem
             var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "-");
             var fileExtension = payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                 payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
-            var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId.EncodeForFilePath()}___Status-{metadata.Status}");
+            var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId?.EncodeForFilePath() ?? nameof(NullStreamIdentifier)}___Status-{metadata.Status}");
             var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
             var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
             var metadataFilePath = Path.Combine(concernDirectory, metadataFileName);

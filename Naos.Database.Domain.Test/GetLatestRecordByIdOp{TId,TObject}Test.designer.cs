@@ -221,7 +221,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),

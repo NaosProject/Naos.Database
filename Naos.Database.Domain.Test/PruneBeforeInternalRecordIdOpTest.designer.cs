@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -116,7 +116,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordIdOp>
                 {
-                    Name = "MaxInternalRecordId should return same 'maxInternalRecordId' parameter passed to constructor when getting",
+                    Name = "InternalRecordId should return same 'internalRecordId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
@@ -132,7 +132,7 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
-                    PropertyName = "MaxInternalRecordId",
+                    PropertyName = "InternalRecordId",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordIdOp>
@@ -181,8 +181,8 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<PruneBeforeInternalRecordIdOp>
                 {
-                    Name = "DeepCloneWithMaxInternalRecordId should deep clone object and replace MaxInternalRecordId with the provided maxInternalRecordId",
-                    WithPropertyName = "MaxInternalRecordId",
+                    Name = "DeepCloneWithInternalRecordId should deep clone object and replace InternalRecordId with the provided internalRecordId",
+                    WithPropertyName = "InternalRecordId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<PruneBeforeInternalRecordIdOp>();
@@ -308,7 +308,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
@@ -605,7 +605,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "MaxInternalRecordId", "Details", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "InternalRecordId", "Details", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -93,8 +93,8 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Deep clones this object with a new <see cref="InternalRecordId" />.
         /// </summary>
-        /// <param name="maxInternalRecordId">The new <see cref="InternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneBeforeInternalRecordIdOp" /> using the specified <paramref name="maxInternalRecordId" /> for <see cref="InternalRecordId" /> and a deep clone of every other property.</returns>
+        /// <param name="internalRecordId">The new <see cref="InternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="PruneBeforeInternalRecordIdOp" /> using the specified <paramref name="internalRecordId" /> for <see cref="InternalRecordId" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -110,10 +110,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneBeforeInternalRecordIdOp DeepCloneWithMaxInternalRecordId(long maxInternalRecordId)
+        public PruneBeforeInternalRecordIdOp DeepCloneWithInternalRecordId(long internalRecordId)
         {
             var result = new PruneBeforeInternalRecordIdOp(
-                                 maxInternalRecordId,
+                                 internalRecordId,
                                  this.Details?.DeepClone(),
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
@@ -243,7 +243,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

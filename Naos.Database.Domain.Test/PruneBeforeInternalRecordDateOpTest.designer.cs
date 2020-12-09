@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: MaxInternalRecordDate = {systemUnderTest.InternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: InternalRecordDate = {systemUnderTest.InternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -116,7 +116,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordDateOp>
                 {
-                    Name = "MaxInternalRecordDate should return same 'maxInternalRecordDate' parameter passed to constructor when getting",
+                    Name = "InternalRecordDate should return same 'internalRecordDate' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
@@ -132,7 +132,7 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
-                    PropertyName = "MaxInternalRecordDate",
+                    PropertyName = "InternalRecordDate",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordDateOp>
@@ -181,8 +181,8 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<PruneBeforeInternalRecordDateOp>
                 {
-                    Name = "DeepCloneWithMaxInternalRecordDate should deep clone object and replace MaxInternalRecordDate with the provided maxInternalRecordDate",
-                    WithPropertyName = "MaxInternalRecordDate",
+                    Name = "DeepCloneWithInternalRecordDate should deep clone object and replace InternalRecordDate with the provided internalRecordDate",
+                    WithPropertyName = "InternalRecordDate",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<PruneBeforeInternalRecordDateOp>();
@@ -308,7 +308,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
@@ -605,7 +605,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "MaxInternalRecordDate", "Details", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "InternalRecordDate", "Details", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

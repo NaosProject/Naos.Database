@@ -406,7 +406,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetStreamFromRepresentationOp<FileStreamRepresentation, NullReadWriteStream>(
+                () => new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>(
                                  A.Dummy<FileStreamRepresentation>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

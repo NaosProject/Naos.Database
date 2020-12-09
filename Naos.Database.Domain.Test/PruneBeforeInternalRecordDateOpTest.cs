@@ -57,7 +57,7 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "maxInternalRecordDate",
+                                                                   "internalRecordDate",
                                                                    "UTC",
                                                                },
                         })

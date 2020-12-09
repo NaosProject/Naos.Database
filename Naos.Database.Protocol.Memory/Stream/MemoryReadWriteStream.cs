@@ -350,7 +350,8 @@ namespace Naos.Database.Protocol.Memory
                                                          _.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
                                                              operation.TypeVersionMatchStrategy),
                                                          operation.TypeVersionMatchStrategy)))
-                                      .Select(_ => _.Metadata.Status)
+                                      .GroupBy(_ => _.Metadata.InternalRecordId)
+                                      .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
                                       .ToList();
                 var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
                 return result;
@@ -377,9 +378,12 @@ namespace Naos.Database.Protocol.Memory
 
                     var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                     var statusesForLocator = entries.Where(
-                                               _ => operation.TagsToMatch.FuzzyMatchAccordingToStrategy(_.Metadata.Tags, operation.TagMatchStrategy))
-                                          .Select(_ => _.Metadata.Status)
-                                          .ToList();
+                                                         _ => operation.TagsToMatch.FuzzyMatchAccordingToStrategy(
+                                                             _.Metadata.Tags,
+                                                             operation.TagMatchStrategy))
+                                                    .GroupBy(_ => _.Metadata.InternalRecordId)
+                                                    .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
+                                                    .ToList();
 
                     statuses.AddRange(statusesForLocator);
                 }
@@ -483,7 +487,7 @@ namespace Naos.Database.Protocol.Memory
                                     requestedEvent.TimestampUtc);
 
                                 var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                                entries.Add(new StreamRecordHandlingEntry(requestedEntryId, requestedMetadata, requestedPayload));
+                                this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, requestedEntryId, operation.Concern, requestedMetadata, requestedPayload);
                             }
 
                             var runningTimestamp = DateTime.UtcNow;
@@ -507,7 +511,7 @@ namespace Naos.Database.Protocol.Memory
                                 runningEvent.TimestampUtc);
 
                             var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                            entries.Add(new StreamRecordHandlingEntry(runningEntryId, runningMetadata, runningPayload));
+                            this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, runningEntryId, operation.Concern, runningMetadata, runningPayload);
 
                             return recordToHandle;
                         }
@@ -629,31 +633,34 @@ namespace Naos.Database.Protocol.Memory
                 throw new ArgumentException(Invariant($"Only {nameof(MemoryDatabaseLocator)}'s are supported; specified type: {locator.GetType().ToStringReadable()} - {locator.ToString()}"), nameof(locator));
             }
 
-            var foundLocator = this.locatorToHandlingEntriesByConcernMap.TryGetValue(memoryDatabaseLocator, out var concernToEntriesMap);
-            if (!foundLocator)
+            lock (this.handlingLock)
             {
-                concernToEntriesMap = new Dictionary<string, List<StreamRecordHandlingEntry>>();
-                this.locatorToHandlingEntriesByConcernMap.Add(memoryDatabaseLocator, concernToEntriesMap);
-            }
+                if (!this.locatorToHandlingEntriesByConcernMap.ContainsKey(memoryDatabaseLocator))
+                {
+                    var newConcernToEntriesMap = new Dictionary<string, List<StreamRecordHandlingEntry>>();
+                    this.locatorToHandlingEntriesByConcernMap.Add(memoryDatabaseLocator, newConcernToEntriesMap);
+                }
 
-            var foundConcern = concernToEntriesMap.TryGetValue(concern, out var entries);
-            if (!foundConcern)
-            {
-                entries = new List<StreamRecordHandlingEntry>();
-                concernToEntriesMap.Add(concern, entries);
-            }
+                if (!this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator].ContainsKey(concern))
+                {
+                    this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator].Add(concern, new List<StreamRecordHandlingEntry>());
+                }
 
-            return entries;
+                var entries = this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern];
+
+                return entries;
+            }
         }
 
         /// <inheritdoc />
         public void Execute(
             BlockRecordHandlingOp operation)
         {
+            var concern = Concerns.RecordHandlingConcern;
             var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
             foreach (var locator in allLocators)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
                 var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
                 if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.Blocked)
                 {
@@ -662,27 +669,26 @@ namespace Naos.Database.Protocol.Memory
 
                 var utcNow = DateTime.UtcNow;
                 var blockEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
-                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                var blockedPayload =
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                var payload =
                     blockEvent.ToDescribedSerializationUsingSpecificFactory(
                         this.DefaultSerializerRepresentation,
                         this.SerializerFactory,
                         this.DefaultSerializationFormat);
 
-                var blockedMetadata = new StreamRecordHandlingEntryMetadata(
+                var metadata = new StreamRecordHandlingEntryMetadata(
                     Concerns.GlobalBlockingRecordId,
-                    Concerns.RecordHandlingConcern,
+                    concern,
                     HandlingStatus.Blocked,
                     null,
                     this.DefaultSerializerRepresentation,
                     NullStreamIdentifier.TypeRepresentation,
-                    blockedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     null,
                     utcNow,
                     blockEvent.TimestampUtc);
 
-                var blockEntry = new StreamRecordHandlingEntry(id, blockedMetadata, blockedPayload);
-                entries.Add(blockEntry);
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, concern, metadata, payload);
             }
         }
 
@@ -690,6 +696,8 @@ namespace Naos.Database.Protocol.Memory
         public void Execute(
             CancelBlockedRecordHandlingOp operation)
         {
+            var concern = Concerns.RecordHandlingConcern;
+
             var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
             foreach (var locator in allLocators)
             {
@@ -702,27 +710,26 @@ namespace Naos.Database.Protocol.Memory
 
                 var utcNow = DateTime.UtcNow;
                 var blockEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
-                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                var blockedPayload =
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                var payload =
                     blockEvent.ToDescribedSerializationUsingSpecificFactory(
                         this.DefaultSerializerRepresentation,
                         this.SerializerFactory,
                         this.DefaultSerializationFormat);
 
-                var blockedMetadata = new StreamRecordHandlingEntryMetadata(
+                var metadata = new StreamRecordHandlingEntryMetadata(
                     Concerns.GlobalBlockingRecordId,
                     Concerns.RecordHandlingConcern,
                     HandlingStatus.Requested,
                     null,
                     this.DefaultSerializerRepresentation,
                     NullStreamIdentifier.TypeRepresentation,
-                    blockedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     null,
                     utcNow,
                     blockEvent.TimestampUtc);
 
-                var blockEntry = new StreamRecordHandlingEntry(id, blockedMetadata, blockedPayload);
-                entries.Add(blockEntry);
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, concern, metadata, payload);
             }
         }
 
@@ -731,11 +738,11 @@ namespace Naos.Database.Protocol.Memory
             CancelHandleRecordExecutionRequestOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.Status == HandlingStatus.Requested && _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
@@ -764,7 +771,7 @@ namespace Naos.Database.Protocol.Memory
                     newEvent.TimestampUtc);
 
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
             }
         }
 
@@ -773,11 +780,11 @@ namespace Naos.Database.Protocol.Memory
             CancelRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
@@ -811,7 +818,7 @@ namespace Naos.Database.Protocol.Memory
                     newEvent.TimestampUtc);
 
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
             }
         }
 
@@ -820,11 +827,11 @@ namespace Naos.Database.Protocol.Memory
             CompleteRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
@@ -858,7 +865,7 @@ namespace Naos.Database.Protocol.Memory
                     newEvent.TimestampUtc);
 
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
             }
         }
 
@@ -867,11 +874,11 @@ namespace Naos.Database.Protocol.Memory
             FailRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
@@ -905,7 +912,7 @@ namespace Naos.Database.Protocol.Memory
                     newEvent.TimestampUtc);
 
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
             }
         }
 
@@ -914,11 +921,11 @@ namespace Naos.Database.Protocol.Memory
             SelfCancelRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
@@ -952,7 +959,7 @@ namespace Naos.Database.Protocol.Memory
                     newEvent.TimestampUtc);
 
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
             }
         }
 
@@ -961,11 +968,11 @@ namespace Naos.Database.Protocol.Memory
             RetryFailedHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.handlingLock)
             {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.Id);
                 if (mostRecent == null)
                 {
@@ -989,7 +996,7 @@ namespace Naos.Database.Protocol.Memory
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     operation.Id,
                     operation.Concern,
-                    HandlingStatus.SelfCanceledRunning,
+                    HandlingStatus.RetryFailed,
                     mostRecent.Metadata.StringSerializedId,
                     payload.SerializerRepresentation,
                     mostRecent.Metadata.TypeRepresentationOfId,
@@ -999,7 +1006,28 @@ namespace Naos.Database.Protocol.Memory
                     newEvent.TimestampUtc);
 
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                entries.Add(new StreamRecordHandlingEntry(entryId, metadata, payload));
+                this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            }
+        }
+
+        private void WriteHandlingEntryToMemoryMap(
+            IResourceLocator locator,
+            long requestedEntryId,
+            string concern,
+            StreamRecordHandlingEntryMetadata requestedMetadata,
+            DescribedSerialization requestedPayload)
+        {
+            lock (this.handlingLock)
+            {
+                // do not need this call but it has the confirm key path exists logic and i do not want to refactor yet another method for them to share...
+                this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
+
+                // above will throw if this cast would...
+                var memoryLocator = (MemoryDatabaseLocator)locator;
+
+                // the reference would get broken in non-obvious ways when using variables so direct keying the map.
+                this.locatorToHandlingEntriesByConcernMap[memoryLocator][concern]
+                    .Add(new StreamRecordHandlingEntry(requestedEntryId, requestedMetadata, requestedPayload));
             }
         }
     }

@@ -42,12 +42,12 @@ namespace Naos.Database.Domain.Test
 
                                                    var result = new PruneBeforeInternalRecordDateOp(
                                                        new DateTime(
-                                                           referenceObject.MaxInternalRecordDate.Year,
-                                                           referenceObject.MaxInternalRecordDate.Month,
-                                                           referenceObject.MaxInternalRecordDate.Day,
-                                                           referenceObject.MaxInternalRecordDate.Hour,
-                                                           referenceObject.MaxInternalRecordDate.Minute,
-                                                           referenceObject.MaxInternalRecordDate.Second,
+                                                           referenceObject.InternalRecordDate.Year,
+                                                           referenceObject.InternalRecordDate.Month,
+                                                           referenceObject.InternalRecordDate.Day,
+                                                           referenceObject.InternalRecordDate.Hour,
+                                                           referenceObject.InternalRecordDate.Minute,
+                                                           referenceObject.InternalRecordDate.Second,
                                                            DateTimeKind.Unspecified), 
                                                        referenceObject.Details,
                                                        referenceObject.SpecifiedResourceLocator);
@@ -71,7 +71,7 @@ namespace Naos.Database.Domain.Test
                                                    var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                                                    var result = new PruneBeforeInternalRecordDateOp(
-                                                       referenceObject.MaxInternalRecordDate,
+                                                       referenceObject.InternalRecordDate,
                                                        null,
                                                        referenceObject.SpecifiedResourceLocator);
 
@@ -93,7 +93,7 @@ namespace Naos.Database.Domain.Test
                                                    var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                                                    var result = new PruneBeforeInternalRecordDateOp(
-                                                       referenceObject.MaxInternalRecordDate,
+                                                       referenceObject.InternalRecordDate,
                                                        Invariant($"  {Environment.NewLine}  "),
                                                        referenceObject.SpecifiedResourceLocator);
 

@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: MaxInternalRecordDate = {systemUnderTest.MaxInternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: MaxInternalRecordDate = {systemUnderTest.InternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,7 +66,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                         var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.MaxInternalRecordDate,
+                                             referenceObject.InternalRecordDate,
                                              null,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -84,7 +84,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                         var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.MaxInternalRecordDate,
+                                             referenceObject.InternalRecordDate,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -102,7 +102,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                         var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.MaxInternalRecordDate,
+                                             referenceObject.InternalRecordDate,
                                              referenceObject.Details,
                                              null);
 
@@ -124,10 +124,10 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
-                                                      referenceObject.MaxInternalRecordDate,
+                                                      referenceObject.InternalRecordDate,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.MaxInternalRecordDate,
+                            ExpectedPropertyValue = referenceObject.InternalRecordDate,
                         };
 
                         return result;
@@ -145,7 +145,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
-                                                      referenceObject.MaxInternalRecordDate,
+                                                      referenceObject.InternalRecordDate,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -166,7 +166,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
-                                                      referenceObject.MaxInternalRecordDate,
+                                                      referenceObject.InternalRecordDate,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
@@ -187,12 +187,12 @@ namespace Naos.Database.Domain.Test
                     {
                         var systemUnderTest = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>().ThatIs(_ => !systemUnderTest.MaxInternalRecordDate.IsEqualTo(_.MaxInternalRecordDate));
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>().ThatIs(_ => !systemUnderTest.InternalRecordDate.IsEqualTo(_.InternalRecordDate));
 
                         var result = new SystemUnderTestDeepCloneWithValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.MaxInternalRecordDate,
+                            DeepCloneWithValue = referenceObject.InternalRecordDate,
                         };
 
                         return result;
@@ -250,22 +250,22 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PruneBeforeInternalRecordDateOp[]
                     {
                         new PruneBeforeInternalRecordDateOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PruneBeforeInternalRecordDateOp[]
                     {
                         new PruneBeforeInternalRecordDateOp(
-                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.MaxInternalRecordDate.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate)).MaxInternalRecordDate,
+                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.InternalRecordDate.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordDate)).InternalRecordDate,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new PruneBeforeInternalRecordDateOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
                                 A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new PruneBeforeInternalRecordDateOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },

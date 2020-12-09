@@ -41,7 +41,7 @@ namespace Naos.Database.Domain.Test
                                                    var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
 
                                                    var result = new PruneBeforeInternalRecordIdOp(
-                                                       referenceObject.MaxInternalRecordId,
+                                                       referenceObject.InternalRecordId,
                                                        null,
                                                        referenceObject.SpecifiedResourceLocator);
 
@@ -63,7 +63,7 @@ namespace Naos.Database.Domain.Test
                                                    var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
 
                                                    var result = new PruneBeforeInternalRecordIdOp(
-                                                       referenceObject.MaxInternalRecordId,
+                                                       referenceObject.InternalRecordId,
                                                        Invariant($"  {Environment.NewLine}  "),
                                                        referenceObject.SpecifiedResourceLocator);
 

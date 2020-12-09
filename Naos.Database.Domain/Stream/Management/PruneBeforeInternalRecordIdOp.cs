@@ -19,26 +19,26 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneBeforeInternalRecordIdOp"/> class.
         /// </summary>
-        /// <param name="maxInternalRecordId">The maximum internal record identifier.</param>
+        /// <param name="internalRecordId">The internal record identifier to use, all records older will be pruned.</param>
         /// <param name="details">The pruning context.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public PruneBeforeInternalRecordIdOp(
-            long maxInternalRecordId,
+            long internalRecordId,
             string details,
             IResourceLocator specifiedResourceLocator = null)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 
-            this.MaxInternalRecordId = maxInternalRecordId;
+            this.InternalRecordId = internalRecordId;
             this.Details = details;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
-        /// Gets the maximum internal record identifier.
+        /// Gets the internal record identifier to use, all records older will be pruned.
         /// </summary>
-        /// <value>The maximum internal record identifier.</value>
-        public long MaxInternalRecordId { get; private set; }
+        /// <value>The internal record identifier to use, all records older will be pruned..</value>
+        public long InternalRecordId { get; private set; }
 
         /// <summary>
         /// Gets the details.

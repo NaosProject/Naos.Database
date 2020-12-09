@@ -70,7 +70,7 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.MaxInternalRecordId.IsEqualTo(other.MaxInternalRecordId)
+            var result = this.InternalRecordId.IsEqualTo(other.InternalRecordId)
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
@@ -82,7 +82,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.MaxInternalRecordId)
+            .Hash(this.InternalRecordId)
             .Hash(this.Details)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
@@ -91,10 +91,10 @@ namespace Naos.Database.Domain
         public new PruneBeforeInternalRecordIdOp DeepClone() => (PruneBeforeInternalRecordIdOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="MaxInternalRecordId" />.
+        /// Deep clones this object with a new <see cref="InternalRecordId" />.
         /// </summary>
-        /// <param name="maxInternalRecordId">The new <see cref="MaxInternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneBeforeInternalRecordIdOp" /> using the specified <paramref name="maxInternalRecordId" /> for <see cref="MaxInternalRecordId" /> and a deep clone of every other property.</returns>
+        /// <param name="maxInternalRecordId">The new <see cref="InternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="PruneBeforeInternalRecordIdOp" /> using the specified <paramref name="maxInternalRecordId" /> for <see cref="InternalRecordId" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -143,7 +143,7 @@ namespace Naos.Database.Domain
         public PruneBeforeInternalRecordIdOp DeepCloneWithDetails(string details)
         {
             var result = new PruneBeforeInternalRecordIdOp(
-                                 this.MaxInternalRecordId,
+                                 this.InternalRecordId,
                                  details,
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
@@ -173,7 +173,7 @@ namespace Naos.Database.Domain
         public PruneBeforeInternalRecordIdOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
             var result = new PruneBeforeInternalRecordIdOp(
-                                 this.MaxInternalRecordId,
+                                 this.InternalRecordId,
                                  this.Details?.DeepClone(),
                                  specifiedResourceLocator);
 
@@ -184,7 +184,7 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new PruneBeforeInternalRecordIdOp(
-                                 this.MaxInternalRecordId,
+                                 this.InternalRecordId,
                                  this.Details?.DeepClone(),
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
@@ -243,7 +243,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {this.MaxInternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

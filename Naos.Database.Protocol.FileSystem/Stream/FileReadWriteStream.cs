@@ -11,9 +11,7 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading;
-    using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
@@ -171,8 +169,8 @@ namespace Naos.Database.Protocol.FileSystem
         public override void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(locator);
 
             lock (this.fileLock)
             {
@@ -183,10 +181,30 @@ namespace Naos.Database.Protocol.FileSystem
                         SearchOption.TopDirectoryOnly);
                 foreach (var fileToConsiderRemoving in filesToPotentiallyRemove)
                 {
-                    var internalRecordDate = this.GetInternalRecordDateFromFilePath(fileToConsiderRemoving);
-                    if (internalRecordDate < operation.MaxInternalRecordDate)
+                    var internalRecordDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
+                    if (internalRecordDate < operation.InternalRecordDate)
                     {
                         File.Delete(fileToConsiderRemoving);
+                    }
+                }
+
+                var concerns = Directory.GetDirectories(rootPath);
+                foreach (var concern in concerns)
+                {
+                    var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
+                    var handlingFilesToConsiderRemoving
+                        = Directory.GetFiles(
+                            concernDirectory,
+                            Invariant($"*___*"),
+                            SearchOption.TopDirectoryOnly);
+
+                    foreach (var fileToConsiderRemoving in handlingFilesToConsiderRemoving)
+                    {
+                        var internalEntryDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
+                        if (internalEntryDate < operation.InternalRecordDate)
+                        {
+                            File.Delete(fileToConsiderRemoving);
+                        }
                     }
                 }
             }
@@ -196,8 +214,8 @@ namespace Naos.Database.Protocol.FileSystem
         public override void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(locator);
 
             lock (this.fileLock)
             {
@@ -209,9 +227,29 @@ namespace Naos.Database.Protocol.FileSystem
                 foreach (var fileToConsiderRemoving in filesToPotentiallyRemove)
                 {
                     var internalRecordId = GetInternalRecordIdFromRecordFilePath(fileToConsiderRemoving);
-                    if (internalRecordId < operation.MaxInternalRecordId)
+                    if (internalRecordId < operation.InternalRecordId)
                     {
                         File.Delete(fileToConsiderRemoving);
+                    }
+                }
+
+                var concerns = Directory.GetDirectories(rootPath);
+                foreach (var concern in concerns)
+                {
+                    var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
+                    var handlingFilesToConsiderRemoving
+                        = Directory.GetFiles(
+                            concernDirectory,
+                            Invariant($"*___*"),
+                            SearchOption.TopDirectoryOnly);
+
+                    foreach (var fileToConsiderRemoving in handlingFilesToConsiderRemoving)
+                    {
+                        var internalRecordId = GetInternalRecordIdFromEntryFilePath(fileToConsiderRemoving);
+                        if (internalRecordId < operation.InternalRecordId)
+                        {
+                            File.Delete(fileToConsiderRemoving);
+                        }
                     }
                 }
             }
@@ -1364,7 +1402,7 @@ namespace Naos.Database.Protocol.FileSystem
             return result;
         }
 
-        private DateTime GetInternalRecordDateFromFilePath(
+        private DateTime GetRootDateFromFilePath(
             string filePath)
         {
             if (string.IsNullOrWhiteSpace(filePath))

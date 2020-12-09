@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {systemUnderTest.MaxInternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordIdOp: MaxInternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,7 +66,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
 
                         var result = new PruneBeforeInternalRecordIdOp(
-                                             referenceObject.MaxInternalRecordId,
+                                             referenceObject.InternalRecordId,
                                              null,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -84,7 +84,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
 
                         var result = new PruneBeforeInternalRecordIdOp(
-                                             referenceObject.MaxInternalRecordId,
+                                             referenceObject.InternalRecordId,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -102,7 +102,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>();
 
                         var result = new PruneBeforeInternalRecordIdOp(
-                                             referenceObject.MaxInternalRecordId,
+                                             referenceObject.InternalRecordId,
                                              referenceObject.Details,
                                              null);
 
@@ -124,10 +124,10 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordIdOp(
-                                                      referenceObject.MaxInternalRecordId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.MaxInternalRecordId,
+                            ExpectedPropertyValue = referenceObject.InternalRecordId,
                         };
 
                         return result;
@@ -145,7 +145,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordIdOp(
-                                                      referenceObject.MaxInternalRecordId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -166,7 +166,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordIdOp(
-                                                      referenceObject.MaxInternalRecordId,
+                                                      referenceObject.InternalRecordId,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
@@ -187,12 +187,12 @@ namespace Naos.Database.Domain.Test
                     {
                         var systemUnderTest = A.Dummy<PruneBeforeInternalRecordIdOp>();
 
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>().ThatIs(_ => !systemUnderTest.MaxInternalRecordId.IsEqualTo(_.MaxInternalRecordId));
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordIdOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
 
                         var result = new SystemUnderTestDeepCloneWithValue<PruneBeforeInternalRecordIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.MaxInternalRecordId,
+                            DeepCloneWithValue = referenceObject.InternalRecordId,
                         };
 
                         return result;
@@ -250,22 +250,22 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PruneBeforeInternalRecordIdOp[]
                     {
                         new PruneBeforeInternalRecordIdOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PruneBeforeInternalRecordIdOp[]
                     {
                         new PruneBeforeInternalRecordIdOp(
-                                A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.MaxInternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId)).MaxInternalRecordId,
+                                A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new PruneBeforeInternalRecordIdOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new PruneBeforeInternalRecordIdOp(
-                                ReferenceObjectForEquatableTestScenarios.MaxInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<PruneBeforeInternalRecordIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },

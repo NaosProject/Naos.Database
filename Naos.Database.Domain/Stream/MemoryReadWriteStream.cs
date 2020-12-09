@@ -167,9 +167,19 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
-                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.Metadata.TimestampUtc >= operation.MaxInternalRecordDate);
+                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.Metadata.TimestampUtc >= operation.InternalRecordDate);
                 this.locatorToRecordPartitionMap[memoryDatabaseLocator].Clear();
                 this.locatorToRecordPartitionMap[memoryDatabaseLocator].AddRange(newList);
+
+                lock (this.handlingLock)
+                {
+                    foreach (var concern in this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator].Keys)
+                    {
+                        var newHandlingList = this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Where(_ => _.Metadata.TimestampUtc >= operation.InternalRecordDate);
+                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Clear();
+                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].AddRange(newHandlingList);
+                    }
+                }
             }
         }
 
@@ -183,9 +193,19 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
-                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.InternalRecordId >= operation.MaxInternalRecordId);
+                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.InternalRecordId >= operation.InternalRecordId);
                 this.locatorToRecordPartitionMap[memoryDatabaseLocator].Clear();
                 this.locatorToRecordPartitionMap[memoryDatabaseLocator].AddRange(newList);
+
+                lock (this.handlingLock)
+                {
+                    foreach (var concern in this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator].Keys)
+                    {
+                        var newHandlingList = this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Where(_ => _.Metadata.InternalRecordId >= operation.InternalRecordId);
+                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Clear();
+                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].AddRange(newHandlingList);
+                    }
+                }
             }
         }
 

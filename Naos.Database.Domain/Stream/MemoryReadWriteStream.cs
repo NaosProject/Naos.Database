@@ -45,12 +45,14 @@ namespace Naos.Database.Domain
         /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
         /// <param name="defaultSerializationFormat">The default serialization format.</param>
         /// <param name="serializerFactory">The serializer factory.</param>
+        /// <param name="resourceLocatorProtocols">The optional resource locator protocols; DEFAULT will be a single <see cref="MemoryDatabaseLocator"/> named 'Default'.</param>
         public MemoryReadWriteStream(
             string name,
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
-            ISerializerFactory serializerFactory)
-        : base(name, new SingleResourceLocatorProtocol(new MemoryDatabaseLocator(name)), serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat)
+            ISerializerFactory serializerFactory,
+            IResourceLocatorProtocols resourceLocatorProtocols = null)
+        : base(name, resourceLocatorProtocols ?? new SingleResourceLocatorProtocol(new MemoryDatabaseLocator("Default")), serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat)
         {
             this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
         }
@@ -163,21 +165,24 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.streamLock)
             {
-                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.Metadata.TimestampUtc >= operation.InternalRecordDate);
-                this.locatorToRecordPartitionMap[memoryDatabaseLocator].Clear();
-                this.locatorToRecordPartitionMap[memoryDatabaseLocator].AddRange(newList);
+                var newList = this.locatorToRecordPartitionMap[locator].Where(_ => _.Metadata.TimestampUtc >= operation.InternalRecordDate);
+                this.locatorToRecordPartitionMap[locator].Clear();
+                this.locatorToRecordPartitionMap[locator].AddRange(newList);
 
                 lock (this.handlingLock)
                 {
-                    foreach (var concern in this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator].Keys)
+                    if (this.locatorToHandlingEntriesByConcernMap.ContainsKey(locator) && this.locatorToHandlingEntriesByConcernMap[locator].Any())
                     {
-                        var newHandlingList = this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Where(_ => _.Metadata.TimestampUtc >= operation.InternalRecordDate);
-                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Clear();
-                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].AddRange(newHandlingList);
+                        foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
+                        {
+                            var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern]
+                                                      .Where(_ => _.Metadata.TimestampUtc >= operation.InternalRecordDate);
+                            this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
+                            this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
+                        }
                     }
                 }
             }
@@ -189,21 +194,25 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.streamLock)
             {
-                var newList = this.locatorToRecordPartitionMap[memoryDatabaseLocator].Where(_ => _.InternalRecordId >= operation.InternalRecordId);
-                this.locatorToRecordPartitionMap[memoryDatabaseLocator].Clear();
-                this.locatorToRecordPartitionMap[memoryDatabaseLocator].AddRange(newList);
+                var newList = this.locatorToRecordPartitionMap[locator].Where(_ => _.InternalRecordId >= operation.InternalRecordId);
+                this.locatorToRecordPartitionMap[locator].Clear();
+                this.locatorToRecordPartitionMap[locator].AddRange(newList);
 
                 lock (this.handlingLock)
                 {
-                    foreach (var concern in this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator].Keys)
+                    if (this.locatorToHandlingEntriesByConcernMap.ContainsKey(locator) && this.locatorToHandlingEntriesByConcernMap[locator].Any())
                     {
-                        var newHandlingList = this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Where(_ => _.Metadata.InternalRecordId >= operation.InternalRecordId);
-                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].Clear();
-                        this.locatorToHandlingEntriesByConcernMap[memoryDatabaseLocator][concern].AddRange(newHandlingList);
+                        foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
+                        {
+                            var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern]
+                                                      .Where(_ => _.Metadata.InternalRecordId >= operation.InternalRecordId);
+                            this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
+                            this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
+                        }
                     }
                 }
             }

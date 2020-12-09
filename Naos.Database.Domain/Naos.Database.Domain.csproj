@@ -340,6 +340,16 @@
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\StandardStream\IStandardReadWriteStream.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId}.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamRecordHandlingProtocols.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamRecordHandlingProtocols{TObject}.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
+    <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId}.cs" />
+    <Compile Include="Stream\StandardStream\StandardReadWriteStreamBase.cs" />
     <Compile Include="Stream\WriteOnly\PutRecordOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>

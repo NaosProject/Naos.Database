@@ -633,7 +633,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
                 var recordIdentifierTrackingFilePath = Path.Combine(rootPath, RecordIdentifierTrackingFileName);
 
-                var timestampString = this.dateTimeStringSerializer.SerializeToString(operation.Metadata.TimestampUtc).Replace(":", "-");
+                var timestampString = this.dateTimeStringSerializer.SerializeToString(operation.Metadata.TimestampUtc).Replace(":", "--");
 
                 long newId;
 
@@ -1423,7 +1423,7 @@ namespace Naos.Database.Protocol.FileSystem
                 throw new InvalidOperationException(Invariant($"Failed to extract internal record id from file path: '{filePath}'."));
             }
 
-            var prepped = internalRecordDateString.Replace("-", ":");
+            var prepped = internalRecordDateString.Replace("--", ":");
             var result = this.dateTimeStringSerializer.Deserialize<DateTime>(prepped);
             return result;
         }
@@ -1535,7 +1535,7 @@ namespace Naos.Database.Protocol.FileSystem
             DescribedSerialization payload)
         {
             var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
-            var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "-");
+            var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "--");
             var fileExtension = payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                 payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
             var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId?.EncodeForFilePath() ?? nameof(NullStreamIdentifier)}___Status-{metadata.Status}");

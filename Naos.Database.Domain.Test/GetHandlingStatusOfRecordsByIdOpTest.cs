@@ -144,7 +144,7 @@ namespace Naos.Database.Domain.Test
                                                                                         .Concat(
                                                                                              new StringSerializedIdentifier[]
                                                                                              {
-                                                                                                 null
+                                                                                                 null,
                                                                                              })
                                                                                         .Concat(referenceObject.IdsToMatch)
                                                                                         .ToList(),

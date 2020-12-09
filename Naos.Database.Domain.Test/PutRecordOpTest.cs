@@ -29,6 +29,52 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static PutRecordOpTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PutRecordOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'metadata' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<PutRecordOp>();
+
+                                                   var result = new PutRecordOp(
+                                                       null,
+                                                       referenceObject.Payload,
+                                                       referenceObject.SpecifiedResourceLocator);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "metadata",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PutRecordOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'payload' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<PutRecordOp>();
+
+                                                   var result = new PutRecordOp(
+                                                       referenceObject.Metadata,
+                                                       null,
+                                                       referenceObject.SpecifiedResourceLocator);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "payload",
+                                                               },
+                        });
         }
     }
 }

@@ -29,6 +29,82 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static CompleteRunningHandleRecordExecutionOpTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'concern' is reserved scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                                                   var result = new CompleteRunningHandleRecordExecutionOp(
+                                                       referenceObject.Id,
+                                                       Concerns.RecordHandlingConcern,
+                                                       referenceObject.Details,
+                                                       referenceObject.SpecifiedResourceLocator,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "Concern",
+                                                                   "reserved",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                                                   var result = new CompleteRunningHandleRecordExecutionOp(
+                                                       referenceObject.Id,
+                                                       null,
+                                                       referenceObject.Details,
+                                                       referenceObject.SpecifiedResourceLocator,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CompleteRunningHandleRecordExecutionOp>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CompleteRunningHandleRecordExecutionOp>();
+
+                                                   var result = new CompleteRunningHandleRecordExecutionOp(
+                                                       referenceObject.Id,
+                                                       Invariant($"  {Environment.NewLine}  "),
+                                                       referenceObject.Details,
+                                                       referenceObject.SpecifiedResourceLocator,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                                   "white space",
+                                                               },
+                        });
         }
     }
 }

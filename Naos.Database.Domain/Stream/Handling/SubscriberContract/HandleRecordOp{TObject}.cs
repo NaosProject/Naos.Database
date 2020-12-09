@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Try to handle a record of type <typeparamref name="TObject"/> for a specified concern.
@@ -21,6 +22,8 @@ namespace Naos.Database.Domain
         public HandleRecordOp(
             StreamRecord<TObject> recordToHandle)
         {
+            recordToHandle.MustForArg(nameof(recordToHandle)).NotBeNull();
+
             this.RecordToHandle = recordToHandle;
         }
 

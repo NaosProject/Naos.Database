@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -32,6 +33,8 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
         {
+            concern.ThrowIfInvalidOrReservedConcern();
+
             this.Concern = concern;
             this.IdentifierType = identifierType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;

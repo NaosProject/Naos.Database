@@ -29,8 +29,8 @@ namespace Naos.Database.Domain
             string details,
             IResourceLocator specifiedResourceLocator = null)
         {
-            maxInternalRecordDate.Kind.MustForArg(Invariant($"{nameof(maxInternalRecordDate)}.{nameof(maxInternalRecordDate.Kind)}")).BeEqualTo(DateTimeKind.Utc);
-            details.MustForArg(nameof(details)).NotBeNull();
+            maxInternalRecordDate.Kind.MustForArg(Invariant($"{nameof(maxInternalRecordDate)}.{nameof(maxInternalRecordDate.Kind)}")).BeEqualTo(DateTimeKind.Utc, "Timestamp must be UTC.");
+            details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 
             this.MaxInternalRecordDate = maxInternalRecordDate;
             this.Details = details;

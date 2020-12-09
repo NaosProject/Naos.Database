@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
     /// Handles a record.
@@ -21,6 +22,8 @@ namespace Naos.Database.Domain
         public HandleRecordWithIdOp(
             StreamRecordWithId<TId> recordToHandle)
         {
+            recordToHandle.MustForArg(nameof(recordToHandle)).NotBeNull();
+
             this.RecordToHandle = recordToHandle;
         }
 

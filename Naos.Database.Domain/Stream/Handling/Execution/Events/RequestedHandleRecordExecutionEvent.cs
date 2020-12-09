@@ -10,12 +10,13 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Type;
     using OBeautifulCode.Validation.Recipes;
 
     /// <summary>
     /// Event indicating that a record needs to be executed via <see cref="HandleRecordOp"/>.
     /// </summary>
-    public partial class RequestedHandleRecordExecutionEvent : EventBase<long>, IHaveDetails
+    public partial class RequestedHandleRecordExecutionEvent : EventBase<long>, IHaveDetails, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestedHandleRecordExecutionEvent"/> class.

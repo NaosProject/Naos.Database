@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
             string details,
             IResourceLocator specifiedResourceLocator = null)
         {
-            details.MustForArg(nameof(details)).NotBeNull();
+            details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 
             this.MaxInternalRecordId = maxInternalRecordId;
             this.Details = details;

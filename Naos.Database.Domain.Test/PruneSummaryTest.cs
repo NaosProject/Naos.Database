@@ -29,6 +29,25 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static PruneSummaryTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PruneSummary>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'internalRecordIdsRemoved' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var result = new PruneSummary(null);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "internalRecordIdsRemoved",
+                                                               },
+                        });
         }
     }
 }

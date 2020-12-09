@@ -27,6 +27,8 @@ namespace Naos.Database.Domain
             DateTime timestampUtc)
             : base(timestampUtc)
         {
+            pruneOperation.MustForArg(nameof(pruneOperation)).NotBeNull();
+
             this.PruneOperation = pruneOperation;
         }
 

@@ -38,7 +38,7 @@ namespace Naos.Database.Domain
 
             if (string.IsNullOrWhiteSpace(concern))
             {
-                throw new ArgumentException("Cannot be whitespace.", nameof(concern));
+                throw new ArgumentException("Cannot be white space.", nameof(concern));
             }
 
             if (concern == RecordHandlingConcern)

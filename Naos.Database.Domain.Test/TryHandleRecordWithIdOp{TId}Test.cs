@@ -29,6 +29,82 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static TryHandleRecordWithIdOpTIdTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'concern' is reserved scenario",
+                            ConstructionFunc = () =>
+                            {
+                                var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                                var result = new TryHandleRecordWithIdOp<Version>(
+                                    Concerns.RecordHandlingConcern,
+                                    referenceObject.ObjectType,
+                                    referenceObject.TypeVersionMatchStrategy,
+                                    referenceObject.SpecifiedResourceLocator,
+                                    referenceObject.Tags);
+
+                                return result;
+                            },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "Concern",
+                                                                   "reserved",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                            ConstructionFunc = () =>
+                            {
+                                var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                                var result = new TryHandleRecordWithIdOp<Version>(
+                                    null,
+                                    referenceObject.ObjectType,
+                                    referenceObject.TypeVersionMatchStrategy,
+                                    referenceObject.SpecifiedResourceLocator,
+                                    referenceObject.Tags);
+
+                                return result;
+                            },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                            ConstructionFunc = () =>
+                            {
+                                var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                                var result = new TryHandleRecordWithIdOp<Version>(
+                                    Invariant($"  {Environment.NewLine}  "),
+                                    referenceObject.ObjectType,
+                                    referenceObject.TypeVersionMatchStrategy,
+                                    referenceObject.SpecifiedResourceLocator,
+                                    referenceObject.Tags);
+
+                                return result;
+                            },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                                   "white space",
+                                                               },
+                        });
         }
     }
 }

@@ -33,6 +33,8 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
         {
+            concern.ThrowIfInvalidOrReservedConcern();
+
             this.Concern = concern;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;

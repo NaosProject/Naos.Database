@@ -32,6 +32,8 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
         {
+            concern.ThrowIfInvalidOrReservedConcern();
+
             this.Concern = concern;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;

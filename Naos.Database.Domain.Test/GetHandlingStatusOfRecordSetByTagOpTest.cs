@@ -29,6 +29,102 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static GetHandlingStatusOfRecordSetByTagOpTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                                                   var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                                       null,
+                                                       referenceObject.TagsToMatch,
+                                                       referenceObject.HandlingStatusCompositionStrategy,
+                                                       referenceObject.TagMatchStrategy);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                                                   var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                                       Invariant($"  {Environment.NewLine}  "),
+                                                       referenceObject.TagsToMatch,
+                                                       referenceObject.HandlingStatusCompositionStrategy,
+                                                       referenceObject.TagMatchStrategy);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                                   "white space",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                                                   var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                                       referenceObject.Concern,
+                                                       null,
+                                                       referenceObject.HandlingStatusCompositionStrategy,
+                                                       referenceObject.TagMatchStrategy);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "tagsToMatch",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<GetHandlingStatusOfRecordSetByTagOp>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty dictionary scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<GetHandlingStatusOfRecordSetByTagOp>();
+
+                                                   var result = new GetHandlingStatusOfRecordSetByTagOp(
+                                                       referenceObject.Concern,
+                                                       new Dictionary<string, string>(),
+                                                       referenceObject.HandlingStatusCompositionStrategy,
+                                                       referenceObject.TagMatchStrategy);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "tagsToMatch",
+                                                                   "is an empty dictionary",
+                                                               },
+                        });
         }
     }
 }

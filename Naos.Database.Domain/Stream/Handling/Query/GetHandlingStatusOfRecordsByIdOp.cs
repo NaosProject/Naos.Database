@@ -32,7 +32,7 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null)
         {
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
-            idsToMatch.MustForArg(nameof(idsToMatch)).NotBeNull();
+            idsToMatch.MustForArg(nameof(idsToMatch)).NotBeNullNorEmptyEnumerableNorContainAnyNulls();
 
             this.Concern = concern;
             this.IdsToMatch = idsToMatch;

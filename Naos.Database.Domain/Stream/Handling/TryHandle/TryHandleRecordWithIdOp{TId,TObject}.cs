@@ -30,6 +30,8 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
         {
+            concern.ThrowIfInvalidOrReservedConcern();
+
             this.Concern = concern;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;

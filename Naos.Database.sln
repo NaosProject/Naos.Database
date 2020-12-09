@@ -13,10 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		RepoConfig.state = RepoConfig.state
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Protocol.Memory", "Naos.Database.Protocol.Memory\Naos.Database.Protocol.Memory.csproj", "{66C9F503-C870-473A-ADCD-8849A7B29566}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Protocol.Memory.Test", "Naos.Database.Protocol.Memory.Test\Naos.Database.Protocol.Memory.Test.csproj", "{6167F92B-9112-4159-A4C9-0E54556B42BC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Domain.Test", "Naos.Database.Domain.Test\Naos.Database.Domain.Test.csproj", "{CED5ED1F-21B8-439D-8C2A-9B225C179B5C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naos.Database.Serialization.Json", "Naos.Database.Serialization.Json\Naos.Database.Serialization.Json.csproj", "{B3CE9E62-76AA-49F9-A3B5-29A537C43E77}"
@@ -37,14 +33,6 @@ Global
 		{484A1706-0975-4905-AB9C-B0418B83BE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{484A1706-0975-4905-AB9C-B0418B83BE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{484A1706-0975-4905-AB9C-B0418B83BE7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66C9F503-C870-473A-ADCD-8849A7B29566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66C9F503-C870-473A-ADCD-8849A7B29566}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66C9F503-C870-473A-ADCD-8849A7B29566}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66C9F503-C870-473A-ADCD-8849A7B29566}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6167F92B-9112-4159-A4C9-0E54556B42BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6167F92B-9112-4159-A4C9-0E54556B42BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6167F92B-9112-4159-A4C9-0E54556B42BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6167F92B-9112-4159-A4C9-0E54556B42BC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CED5ED1F-21B8-439D-8C2A-9B225C179B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CED5ED1F-21B8-439D-8C2A-9B225C179B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CED5ED1F-21B8-439D-8C2A-9B225C179B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU

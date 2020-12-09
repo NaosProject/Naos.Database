@@ -13,7 +13,6 @@ namespace Naos.Protocol.SqlServer.Test
     using System.IO;
     using Naos.Database.Domain;
     using Naos.Database.Protocol.FileSystem;
-    using Naos.Database.Protocol.Memory;
     using Naos.Protocol.Domain;
     using Naos.Protocol.Serialization.Json;
     using OBeautifulCode.Assertion.Recipes;

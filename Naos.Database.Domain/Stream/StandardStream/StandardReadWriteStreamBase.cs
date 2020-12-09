@@ -6,12 +6,14 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
+    using static System.FormattableString;
 
     /// <summary>
     /// Stream interface, a stream is a list of objects ordered by timestamp.
@@ -38,8 +40,12 @@ namespace Naos.Database.Domain
             : base(name, resourceLocatorProtocols)
         {
             serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
-            serializerFactory.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
-            serializerFactory.MustForArg(nameof(defaultSerializationFormat)).NotBeNull();
+            defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
+
+            if (defaultSerializationFormat == SerializationFormat.Invalid)
+            {
+                throw new ArgumentException(Invariant($"Cannot specify a {nameof(SerializationFormat)} of {SerializationFormat.Invalid}."));
+            }
 
             this.SerializerFactory = serializerFactory;
             this.DefaultSerializerRepresentation = defaultSerializerRepresentation;

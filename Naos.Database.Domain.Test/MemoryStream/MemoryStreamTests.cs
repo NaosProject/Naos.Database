@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Protocol.Memory.Test
+namespace Naos.Database.Domain.Test
 {
     using System;
     using System.Collections.Generic;

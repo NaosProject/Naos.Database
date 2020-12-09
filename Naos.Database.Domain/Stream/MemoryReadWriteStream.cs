@@ -4,13 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Protocol.Memory
+namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-    using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Protocol.Domain;
@@ -25,26 +24,7 @@ namespace Naos.Database.Protocol.Memory
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public class MemoryReadWriteStream :
-        ReadWriteStreamBase,
-        IStreamManagementProtocolFactory,
-        IStreamRecordHandlingProtocolFactory,
-        IStreamManagementProtocols,
-        IReturningProtocol<GetNextUniqueLongOp, long>,
-        IReturningProtocol<GetLatestRecordOp, StreamRecord>,
-        IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
-        IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
-        IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
-        IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-        IReturningProtocol<TryHandleRecordOp, StreamRecord>,
-        IReturningProtocol<PutRecordOp, long>,
-        IVoidProtocol<BlockRecordHandlingOp>,
-        IVoidProtocol<CancelBlockedRecordHandlingOp>,
-        IVoidProtocol<CancelHandleRecordExecutionRequestOp>,
-        IVoidProtocol<CancelRunningHandleRecordExecutionOp>,
-        IVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
-        IVoidProtocol<FailRunningHandleRecordExecutionOp>,
-        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
-        IVoidProtocol<RetryFailedHandleRecordExecutionOp>
+        StandardReadWriteStreamBase
     {
         private readonly object streamLock = new object();
         private readonly object handlingLock = new object();
@@ -70,17 +50,8 @@ namespace Naos.Database.Protocol.Memory
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory)
-        : base(name, new SingleResourceLocatorProtocol(new MemoryDatabaseLocator(name)))
+        : base(name, new SingleResourceLocatorProtocol(new MemoryDatabaseLocator(name)), serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat)
         {
-            this.DefaultSerializerRepresentation = defaultSerializerRepresentation ?? throw new ArgumentNullException(nameof(defaultSerializerRepresentation));
-
-            if (defaultSerializationFormat == SerializationFormat.Invalid)
-            {
-                throw new ArgumentException(Invariant($"Cannot specify a {nameof(SerializationFormat)} of {SerializationFormat.Invalid}."));
-            }
-
-            this.DefaultSerializationFormat = defaultSerializationFormat;
-            this.SerializerFactory = serializerFactory ?? throw new ArgumentNullException(nameof(serializerFactory));
             this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
         }
 
@@ -93,26 +64,8 @@ namespace Naos.Database.Protocol.Memory
         /// <value>The identifier.</value>
         public string Id { get; private set; }
 
-        /// <summary>
-        /// Gets the serializer factory.
-        /// </summary>
-        /// <value>The serializer factory.</value>
-        public ISerializerFactory SerializerFactory { get; private set; }
-
-        /// <summary>
-        /// Gets the default serializer representation.
-        /// </summary>
-        /// <value>The default serializer representation.</value>
-        public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
-
-        /// <summary>
-        /// Gets the default serialization format.
-        /// </summary>
-        /// <value>The default serialization format.</value>
-        public SerializationFormat DefaultSerializationFormat { get; private set; }
-
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -153,15 +106,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            CreateStreamOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just to get the async.
-        }
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             DeleteStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -199,48 +144,12 @@ namespace Naos.Database.Protocol.Memory
             }
         }
 
-        /// <inheritdoc />
-        public async Task ExecuteAsync(
-            DeleteStreamOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just to get the async.
-        }
-
-        /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new MemoryStreamReadWriteWithIdProtocols<TId>(this);
-
-        /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>() => new MemoryStreamReadWriteWithIdProtocols<TId, TObject>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteProtocols GetStreamWritingProtocols() => new MemoryStreamReadWriteProtocols(this);
-
-        /// <inheritdoc />
-        public override IStreamReadProtocols GetStreamReadingProtocols() => new MemoryStreamReadWriteProtocols(this);
-
-        /// <inheritdoc />
-        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new MemoryStreamReadWriteProtocols<TObject>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>() => new MemoryStreamReadWriteWithIdProtocols<TId>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>() => new MemoryStreamReadWriteWithIdProtocols<TId, TObject>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
-        {
-            var result = new MemoryStreamReadWriteProtocols<TObject>(this);
-            return result;
-        }
-
         /// <summary>
         /// Executes the specified operation.
         /// </summary>
         /// <param name="operation">The operation.</param>
         /// <returns>System.Int64.</returns>
-        public long Execute(
+        public override long Execute(
             GetNextUniqueLongOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -249,22 +158,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public IStreamManagementProtocols GetStreamManagementProtocols() => this;
-
-        /// <inheritdoc />
-        public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols() => new MemoryStreamRecordHandlingProtocols(this);
-
-        /// <inheritdoc />
-        public IStreamRecordHandlingProtocols<TObject> GetStreamRecordHandlingProtocols<TObject>() => new MemoryStreamRecordHandlingProtocols<TObject>(this);
-
-        /// <inheritdoc />
-        public IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>() => new MemoryStreamRecordWithIdHandlingProtocols<TId>(this);
-
-        /// <inheritdoc />
-        public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new MemoryStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -280,15 +174,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PruneBeforeInternalRecordDateOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -304,15 +190,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PruneBeforeInternalRecordIdOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyList<StreamRecordHandlingEntry> Execute(
+        public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -328,7 +206,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
+        public override HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -359,7 +237,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
+        public override HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByTagOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -395,7 +273,7 @@ namespace Naos.Database.Protocol.Memory
 
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-        public StreamRecord Execute(
+        public override StreamRecord Execute(
             TryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -523,7 +401,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public StreamRecord Execute(
+        public override StreamRecord Execute(
             GetLatestRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -544,7 +422,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public StreamRecord Execute(
+        public override StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -567,7 +445,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public long Execute(
+        public override long Execute(
             PutRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -653,7 +531,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             BlockRecordHandlingOp operation)
         {
             var concern = Concerns.RecordHandlingConcern;
@@ -693,7 +571,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CancelBlockedRecordHandlingOp operation)
         {
             var concern = Concerns.RecordHandlingConcern;
@@ -734,7 +612,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CancelHandleRecordExecutionRequestOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -776,7 +654,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CancelRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -823,7 +701,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CompleteRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -870,7 +748,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             FailRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -917,7 +795,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             SelfCancelRunningHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -964,7 +842,7 @@ namespace Naos.Database.Protocol.Memory
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             RetryFailedHandleRecordExecutionOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();

@@ -374,6 +374,7 @@
     <Compile Include="HandlingStatusCompositionStrategyTest.designer.cs">
       <DependentUpon>HandlingStatusCompositionStrategyTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="MemoryStream\MemoryStreamTests.cs" />
     <Compile Include="PutRecordOpTest.cs" />
     <Compile Include="PutRecordOpTest.designer.cs">
       <DependentUpon>PutRecordOpTest.cs</DependentUpon>

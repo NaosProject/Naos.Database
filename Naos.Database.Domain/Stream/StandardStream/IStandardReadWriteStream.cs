@@ -7,12 +7,14 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Standard streams reduced to core calls to participate in the StandardStream specific protocols.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public interface IStandardReadWriteStream
         :
           IReadWriteStream,

@@ -32,26 +32,7 @@ namespace Naos.Database.Protocol.FileSystem
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class FileReadWriteStream :
-        ReadWriteStreamBase,
-        IStreamManagementProtocolFactory,
-        IStreamRecordHandlingProtocolFactory,
-        IStreamManagementProtocols,
-        IReturningProtocol<GetNextUniqueLongOp, long>,
-        IReturningProtocol<GetLatestRecordOp, StreamRecord>,
-        IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
-        IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
-        IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
-        IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-        IReturningProtocol<TryHandleRecordOp, StreamRecord>,
-        IReturningProtocol<PutRecordOp, long>,
-        IVoidProtocol<BlockRecordHandlingOp>,
-        IVoidProtocol<CancelBlockedRecordHandlingOp>,
-        IVoidProtocol<CancelHandleRecordExecutionRequestOp>,
-        IVoidProtocol<CancelRunningHandleRecordExecutionOp>,
-        IVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
-        IVoidProtocol<FailRunningHandleRecordExecutionOp>,
-        IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
-        IVoidProtocol<RetryFailedHandleRecordExecutionOp>
+        StandardReadWriteStreamBase
     {
         private const string RecordHandlingTrackingDirectoryName = "_HandlingTracking";
         private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
@@ -85,37 +66,12 @@ namespace Naos.Database.Protocol.FileSystem
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
             IResourceLocatorProtocols resourceLocatorProtocols)
-        : base(name, resourceLocatorProtocols)
+        : base(name, resourceLocatorProtocols, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat)
         {
             name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
-            defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
-            serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
-            resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
 
             this.internalSerializer = serializerFactory.BuildSerializer(defaultSerializerRepresentation);
-
-            this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
-            this.SerializerFactory = serializerFactory;
-            this.DefaultSerializationFormat = defaultSerializationFormat;
         }
-
-        /// <summary>
-        /// Gets the default serializer description.
-        /// </summary>
-        /// <value>The default serializer description.</value>
-        public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
-
-        /// <summary>
-        /// Gets the default serialization format.
-        /// </summary>
-        /// <value>The default serialization format.</value>
-        public SerializationFormat DefaultSerializationFormat { get; private set; }
-
-        /// <summary>
-        /// Gets the serializer factory.
-        /// </summary>
-        /// <value>The serializer factory.</value>
-        public ISerializerFactory SerializerFactory { get; private set; }
 
         /// <inheritdoc />
         public override IStreamRepresentation StreamRepresentation
@@ -134,46 +90,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override IStreamReadProtocols GetStreamReadingProtocols() => new FileStreamReadWriteProtocols(this);
-
-        /// <inheritdoc />
-        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new FileStreamReadWriteProtocols<TObject>(this);
-
-        /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new FileStreamReadWriteWithIdProtocols<TId>(this);
-
-        /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>() => new FileStreamReadWriteWithIdProtocols<TId, TObject>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteProtocols GetStreamWritingProtocols() => new FileStreamReadWriteProtocols(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>() => new FileStreamReadWriteProtocols<TObject>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>() => new FileStreamReadWriteWithIdProtocols<TId>(this);
-
-        /// <inheritdoc />
-        public override IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>() => new FileStreamReadWriteWithIdProtocols<TId, TObject>(this);
-
-        /// <inheritdoc />
-        public IStreamManagementProtocols GetStreamManagementProtocols() => new FileStreamManagementProtocols(this);
-
-        /// <inheritdoc />
-        public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols() => new FileStreamRecordHandlingProtocols(this);
-
-        /// <inheritdoc />
-        public IStreamRecordHandlingProtocols<TObject> GetStreamRecordHandlingProtocols<TObject>() => new FileStreamRecordHandlingProtocols<TObject>(this);
-
-        /// <inheritdoc />
-        public IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>() => new FileStreamRecordWithIdHandlingProtocols<TId>(this);
-
-        /// <inheritdoc />
-        public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new FileStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -217,15 +134,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            CreateStreamOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             DeleteStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -259,15 +168,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            DeleteStreamOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
             var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -292,15 +193,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PruneBeforeInternalRecordDateOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
             var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -325,17 +218,9 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PruneBeforeInternalRecordIdOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
-        public long Execute(
+        public override long Execute(
             GetNextUniqueLongOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -380,7 +265,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public IReadOnlyList<StreamRecordHandlingEntry> Execute(
+        public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -404,7 +289,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
+        public override HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -451,7 +336,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
+        public override HandlingStatus Execute(
             GetHandlingStatusOfRecordSetByTagOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -501,7 +386,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-        public StreamRecord Execute(
+        public override StreamRecord Execute(
             TryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -636,7 +521,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public StreamRecord Execute(
+        public override StreamRecord Execute(
             GetLatestRecordOp operation)
         {
             var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -661,7 +546,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public StreamRecord Execute(
+        public override StreamRecord Execute(
             GetLatestRecordByIdOp operation)
         {
             lock (this.fileLock)
@@ -671,7 +556,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId}*.{MetadataFileExtension}"),
+                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -701,7 +586,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
-        public long Execute(
+        public override long Execute(
             PutRecordOp operation)
         {
             lock (this.fileLock)
@@ -764,7 +649,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             BlockRecordHandlingOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -807,7 +692,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CancelBlockedRecordHandlingOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -850,7 +735,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CancelHandleRecordExecutionRequestOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -903,7 +788,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CancelRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -956,7 +841,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             CompleteRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -1009,7 +894,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             FailRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -1062,7 +947,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             SelfCancelRunningHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -1115,7 +1000,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public void Execute(
+        public override void Execute(
             RetryFailedHandleRecordExecutionOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();

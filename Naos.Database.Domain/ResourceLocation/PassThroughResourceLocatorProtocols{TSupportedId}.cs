@@ -57,6 +57,7 @@ namespace Naos.Database.Domain
         /// Gets the resource locator by identifier protocol.
         /// </summary>
         /// <value>The resource locator by identifier protocol.</value>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "It is in fact the backing logic of the method.")]
         public Func<GetResourceLocatorByIdOp<TSupportedId>, IResourceLocator> ResourceLocatorByIdProtocol { get; private set; }
 
         /// <inheritdoc />

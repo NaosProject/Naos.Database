@@ -77,14 +77,14 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.73.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.73\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.88\lib\net462\Naos.Protocol.Domain.dll</HintPath>
+    <Reference Include="Naos.Protocol.Domain, Version=1.0.91.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Domain.1.0.91\lib\net462\Naos.Protocol.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.88\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.91.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.91\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.88\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
+    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.91.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.91\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.24.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.24\lib\net462\Naos.Telemetry.Domain.dll</HintPath>

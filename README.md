@@ -1,3 +1,8 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/36b5onyj9ddkq6gr?svg=true)](https://ci.appveyor.com/project/Naos-Project/naos-database)
+
+Naos.Database
+===============
+
 Overview
 ------------
 **Naos.Database** provides a grammar for the persitence and management of data along with in-memory and file system implementations.  Store-specific implementations exist in other projects (e.g. `Naos.SqlServer.Protocol.Client` for Microsoft Sql Server).

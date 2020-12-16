@@ -58,14 +58,16 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
+        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         public static void Put<TObject>(
             this IWriteOnlyStream stream,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyDictionary<string, string> tags = null,
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TObject>(objectToPut, tags);
+            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy);
             var protocol = stream.GetStreamWritingProtocols<TObject>();
             protocol.Execute(operation);
         }
@@ -77,15 +79,17 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
+        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <returns>Task for async.</returns>
         public static async Task PutAsync<TObject>(
             this IWriteOnlyStream stream,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyDictionary<string, string> tags = null,
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TObject>(objectToPut, tags);
+            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy);
             var protocol = stream.GetStreamWritingProtocols<TObject>();
             await protocol.ExecuteAsync(operation);
         }
@@ -99,21 +103,23 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
-        public static void Put<TId, TObject>(
+        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        public static void PutWithId<TId, TObject>(
             this IWriteOnlyStream stream,
             TId id,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyDictionary<string, string> tags = null,
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags);
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             protocol.Execute(operation);
         }
 
         /// <summary>
-        /// Wraps <see cref="PutOp{TObject}"/>.
+        /// Wraps <see cref="PutWithIdOp{TId, TObject}"/>.
         /// </summary>
         /// <typeparam name="TId">The type of the identifier.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -121,16 +127,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
+        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <returns>Task for async.</returns>
-        public static async Task PutAsync<TId, TObject>(
+        public static async Task PutWithIdAsync<TId, TObject>(
             this IWriteOnlyStream stream,
             TId id,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyDictionary<string, string> tags = null,
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags);
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             await protocol.ExecuteAsync(operation);
         }

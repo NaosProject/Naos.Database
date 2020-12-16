@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     public enum ExistingRecordEncounteredStrategy
     {
         /// <summary>
-        /// Do not apply any strategy.
+        /// Do not apply any strategy, will put a new record regardless of any existing records.
         /// </summary>
         None,
 

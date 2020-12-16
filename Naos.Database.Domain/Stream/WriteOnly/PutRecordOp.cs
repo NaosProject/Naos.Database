@@ -22,10 +22,12 @@ namespace Naos.Database.Domain
         /// <param name="metadata">The metadata.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
+        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         public PutRecordOp(
             StreamRecordMetadata metadata,
             DescribedSerialization payload,
-            IResourceLocator specifiedResourceLocator = null)
+            IResourceLocator specifiedResourceLocator = null,
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
@@ -33,6 +35,7 @@ namespace Naos.Database.Domain
             this.Metadata = metadata;
             this.Payload = payload;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
+            this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
         }
 
         /// <summary>
@@ -49,5 +52,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }
+
+        /// <summary>
+        /// Gets the existing record encountered strategy.
+        /// </summary>
+        /// <value>The existing record encountered strategy.</value>
+        public ExistingRecordEncounteredStrategy ExistingRecordEncounteredStrategy { get; private set; }
     }
 }

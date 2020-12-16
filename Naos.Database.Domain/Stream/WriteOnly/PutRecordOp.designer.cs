@@ -73,7 +73,8 @@ namespace Naos.Database.Domain
 
             var result = this.Metadata.IsEqualTo(other.Metadata)
                       && this.Payload.IsEqualTo(other.Payload)
-                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
+                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator)
+                      && this.ExistingRecordEncounteredStrategy.IsEqualTo(other.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -86,6 +87,7 @@ namespace Naos.Database.Domain
             .Hash(this.Metadata)
             .Hash(this.Payload)
             .Hash(this.SpecifiedResourceLocator)
+            .Hash(this.ExistingRecordEncounteredStrategy)
             .Value;
 
         /// <inheritdoc />
@@ -116,7 +118,8 @@ namespace Naos.Database.Domain
             var result = new PutRecordOp(
                                  metadata,
                                  this.Payload?.DeepClone(),
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
+                                 this.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -146,7 +149,8 @@ namespace Naos.Database.Domain
             var result = new PutRecordOp(
                                  this.Metadata?.DeepClone(),
                                  payload,
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
+                                 this.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -176,7 +180,39 @@ namespace Naos.Database.Domain
             var result = new PutRecordOp(
                                  this.Metadata?.DeepClone(),
                                  this.Payload?.DeepClone(),
-                                 specifiedResourceLocator);
+                                 specifiedResourceLocator,
+                                 this.ExistingRecordEncounteredStrategy);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="ExistingRecordEncounteredStrategy" />.
+        /// </summary>
+        /// <param name="existingRecordEncounteredStrategy">The new <see cref="ExistingRecordEncounteredStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="PutRecordOp" /> using the specified <paramref name="existingRecordEncounteredStrategy" /> for <see cref="ExistingRecordEncounteredStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public PutRecordOp DeepCloneWithExistingRecordEncounteredStrategy(ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy)
+        {
+            var result = new PutRecordOp(
+                                 this.Metadata?.DeepClone(),
+                                 this.Payload?.DeepClone(),
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
+                                 existingRecordEncounteredStrategy);
 
             return result;
         }
@@ -187,7 +223,8 @@ namespace Naos.Database.Domain
             var result = new PutRecordOp(
                                  this.Metadata?.DeepClone(),
                                  this.Payload?.DeepClone(),
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
+                                 this.ExistingRecordEncounteredStrategy);
 
             return result;
         }
@@ -244,7 +281,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

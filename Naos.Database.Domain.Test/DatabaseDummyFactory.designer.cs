@@ -383,7 +383,8 @@ namespace Naos.Database.Domain.Test
                 () => new PutRecordOp(
                                  A.Dummy<StreamRecordMetadata>(),
                                  A.Dummy<DescribedSerialization>(),
-                                 A.Dummy<IResourceLocator>()));
+                                 A.Dummy<IResourceLocator>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new UniqueLongIssuedEvent(
@@ -419,7 +420,8 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutAndReturnInternalRecordIdOp<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutWithIdOp<Version, Version>(
@@ -431,7 +433,8 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutOp<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

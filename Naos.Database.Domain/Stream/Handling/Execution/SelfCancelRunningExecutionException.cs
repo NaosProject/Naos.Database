@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags for the event produced.</param>
         public SelfCancelRunningExecutionException(
             string details,
-            IReadOnlyDictionary<string, string> tags)
+            IReadOnlyDictionary<string, string> tags = null)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 

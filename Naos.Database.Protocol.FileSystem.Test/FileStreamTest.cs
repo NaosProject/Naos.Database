@@ -171,7 +171,6 @@ namespace Naos.Protocol.SqlServer.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-
             var stream = new FileReadWriteStream(
                 streamName,
                 defaultSerializerRepresentation,
@@ -195,8 +194,7 @@ namespace Naos.Protocol.SqlServer.Test
                                     { "Run", Guid.NewGuid().ToString().ToUpper(CultureInfo.InvariantCulture) },
                                 };
 
-                stream.GetStreamWritingWithIdProtocols<string, MyObject>()
-                      .Execute(new PutWithIdOp<string, MyObject>(firstObject.Id, firstObject, firstObject.Tags));
+                stream.PutWithId(firstObject.Id, firstObject, firstObject.Tags);
                 var first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
                 first.MustForTest().NotBeNull();
                 var getFirstStatusByIdOp = new GetHandlingStatusOfRecordSetByTagOp(

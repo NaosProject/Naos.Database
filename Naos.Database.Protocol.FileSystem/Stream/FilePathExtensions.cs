@@ -34,10 +34,10 @@ namespace Naos.Database.Protocol.FileSystem
         {
             var illegalCharToCoreReplacementTokenMap = new Dictionary<char, string>
                                                                                      {
-                                                                                         { '"', "quote" },
+                                                                                         { '"', "q" },
                                                                                          { '<', "lt" },
                                                                                          { '>', "gt" },
-                                                                                         { '|', "pipe" },
+                                                                                         { '|', "pi" },
                                                                                          { char.MinValue, "min" },
                                                                                          { '\x0001', "x1" },
                                                                                          { '\x0002', "x2" },
@@ -70,17 +70,17 @@ namespace Naos.Database.Protocol.FileSystem
                                                                                          { '\x001D', "x1D" },
                                                                                          { '\x001E', "x1E" },
                                                                                          { '\x001F', "x1F" },
-                                                                                         { ':', "colon" },
+                                                                                         { ':', "col" },
                                                                                          { '*', "star" },
-                                                                                         { '?', "ques" },
-                                                                                         { '\\', "back" },
-                                                                                         { '/', "slash" },
+                                                                                         { '?', "que" },
+                                                                                         { '\\', "bs" },
+                                                                                         { '/', "fs" },
                                                                                      };
 
             IllegalToReplacementTokenMap =
                 illegalCharToCoreReplacementTokenMap.ToDictionary(
                     k => k.Key.ToString(),
-                    v => Invariant($"___{v.Value}___"));
+                    v => Invariant($"-{v.Value}-"));
 
             var illegalToCheck = Path.GetInvalidPathChars().Concat(Path.GetInvalidFileNameChars()).Distinct().OrderBy(_ => _).ToList();
             illegalCharToCoreReplacementTokenMap

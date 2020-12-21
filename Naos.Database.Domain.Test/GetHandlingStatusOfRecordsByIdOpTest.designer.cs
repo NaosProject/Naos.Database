@@ -495,6 +495,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
                         A.Dummy<PruneBeforeInternalRecordDateOp>(),
                         A.Dummy<PruneBeforeInternalRecordIdOp>(),
+                        A.Dummy<DoesAnyExistByIdOp<Version>>(),
+                        A.Dummy<DoesAnyExistByIdOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetLatestRecordByIdOp>(),

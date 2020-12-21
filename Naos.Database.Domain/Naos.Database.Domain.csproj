@@ -300,6 +300,7 @@
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\MemoryReadWriteStream.cs" />
+    <Compile Include="Stream\Model\ExistingRecordNotEncounteredStrategy.cs" />
     <Compile Include="Stream\Model\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
@@ -324,6 +325,14 @@
     <Compile Include="Stream\Model\TagMatchStrategy.cs" />
     <Compile Include="Stream\Model\TagMatchStrategy.designer.cs">
       <DependentUpon>TagMatchStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp.designer.cs">
+      <DependentUpon>DoesAnyExistByIdOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp{TId}.cs" />
+    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp.cs" />
+    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp{TId}.designer.cs">
+      <DependentUpon>DoesAnyExistByIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>

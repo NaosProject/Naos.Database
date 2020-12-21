@@ -318,6 +318,14 @@
     <Compile Include="DeleteStreamOpTest.designer.cs">
       <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="DoesAnyExistByIdOpTest.cs" />
+    <Compile Include="DoesAnyExistByIdOpTest.designer.cs">
+      <DependentUpon>DoesAnyExistByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DoesAnyExistByIdOp{TId}Test.cs" />
+    <Compile Include="DoesAnyExistByIdOp{TId}Test.designer.cs">
+      <DependentUpon>DoesAnyExistByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="FailedHandleRecordExecutionEventTest.cs" />
     <Compile Include="FailedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>FailedHandleRecordExecutionEventTest.cs</DependentUpon>
@@ -447,6 +455,7 @@
     <Compile Include="PruneSummaryTest.designer.cs">
       <DependentUpon>PruneSummaryTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\StreamExtensionsTests.cs" />
     <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
     <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs</DependentUpon>

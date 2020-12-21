@@ -59,6 +59,7 @@ namespace Naos.Database.Domain
                 typeof(TId).ToRepresentation(),
                 typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
@@ -150,6 +151,7 @@ namespace Naos.Database.Domain
                 typeof(TId).ToRepresentation(),
                 typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);

@@ -23,6 +23,7 @@ namespace Naos.Database.Domain
           IStreamManagementProtocols,
           IReturningProtocol<GetNextUniqueLongOp, long>,
           IReturningProtocol<GetLatestRecordOp, StreamRecord>,
+          IReturningProtocol<DoesAnyExistByIdOp, bool>,
           IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
           IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
           IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,

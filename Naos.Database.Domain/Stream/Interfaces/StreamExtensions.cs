@@ -11,6 +11,7 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
 
     /// <summary>
     /// Extension methods on <see cref="IReadOnlyStream"/>, <see cref="IWriteOnlyStream"/>, <see cref="IStream"/>.
@@ -151,15 +152,17 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <returns>The object.</returns>
-        public static TObject GetLatestObjectByIdOp<TId, TObject>(
+        public static TObject GetLatestObjectById<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy);
+            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -173,16 +176,64 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <returns>The object.</returns>
         public static async Task<TObject> GetLatestObjectByIdOpAsync<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
+        {
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
+            var result = await protocol.ExecuteAsync(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Wraps <see cref="DoesAnyExistByIdOp{TId}"/>.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="stream">The stream.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="objectType">The optional type of the object.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <returns>The object.</returns>
+        public static bool DoesAnyExistById<TId>(
+            this IReadOnlyStream stream,
+            TId identifier,
+            TypeRepresentation objectType,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy);
-            var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
+            var operation = new DoesAnyExistByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
+            var result = protocol.Execute(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Wraps <see cref="DoesAnyExistByIdOp{TId}"/>.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="stream">The stream.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="objectType">The optional type of the object.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <returns>The object.</returns>
+        public static async Task<bool> DoesAnyExistByIdOpAsync<TId>(
+            this IReadOnlyStream stream,
+            TId identifier,
+            TypeRepresentation objectType,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+        {
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var operation = new DoesAnyExistByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

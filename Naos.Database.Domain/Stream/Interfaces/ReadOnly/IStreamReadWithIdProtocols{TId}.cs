@@ -13,7 +13,8 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Type of ID used.</typeparam>
     public interface IStreamReadWithIdProtocols<TId> :
-        ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp<TId>, StreamRecordWithId<TId>>
+        ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp<TId>, StreamRecordWithId<TId>>,
+        ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId>, bool>
     {
     }
 }

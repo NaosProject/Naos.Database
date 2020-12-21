@@ -256,6 +256,44 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        public override bool Execute(
+            DoesAnyExistByIdOp operation)
+        {
+            lock (this.fileLock)
+            {
+                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+
+                var metadataPathsThatCouldMatch = Directory.GetFiles(
+                    rootPath,
+                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
+
+                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                if (!orderedDescendingByInternalRecordId.Any())
+                {
+                    return default;
+                }
+
+                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
+                {
+                    var fileText = File.ReadAllText(metadataFilePathToTest);
+                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
+                    if (metadata.FuzzyMatchTypesAndId(
+                        operation.StringSerializedId,
+                        operation.IdentifierType,
+                        operation.ObjectType,
+                        operation.TypeVersionMatchStrategy))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
         public override long Execute(

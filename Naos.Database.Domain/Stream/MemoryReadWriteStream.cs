@@ -219,6 +219,29 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public override bool Execute(
+            DoesAnyExistByIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.streamLock)
+            {
+                var result =
+                    this.locatorToRecordPartitionMap[memoryDatabaseLocator].OrderByDescending(_ => _.InternalRecordId)
+                        .FirstOrDefault(
+                             _ => _.Metadata.FuzzyMatchTypesAndId(
+                                 operation.StringSerializedId,
+                                 operation.IdentifierType,
+                                 operation.ObjectType,
+                                 operation.TypeVersionMatchStrategy));
+
+                return result != null;
+            }
+        }
+
+        /// <inheritdoc />
         public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {

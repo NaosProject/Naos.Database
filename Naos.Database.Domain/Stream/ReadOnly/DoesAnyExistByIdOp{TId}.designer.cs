@@ -18,21 +18,22 @@ namespace Naos.Database.Domain
     using global::Naos.Protocol.Domain;
 
     using global::OBeautifulCode.Equality.Recipes;
+    using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class GetLatestRecordByIdOp<TId, TObject> : IModel<GetLatestRecordByIdOp<TId, TObject>>
+    public partial class DoesAnyExistByIdOp<TId> : IModel<DoesAnyExistByIdOp<TId>>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="GetLatestRecordByIdOp{TId, TObject}"/> are equal.
+        /// Determines whether two objects of type <see cref="DoesAnyExistByIdOp{TId}"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(GetLatestRecordByIdOp<TId, TObject> left, GetLatestRecordByIdOp<TId, TObject> right)
+        public static bool operator ==(DoesAnyExistByIdOp<TId> left, DoesAnyExistByIdOp<TId> right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +51,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="GetLatestRecordByIdOp{TId, TObject}"/> are not equal.
+        /// Determines whether two objects of type <see cref="DoesAnyExistByIdOp{TId}"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(GetLatestRecordByIdOp<TId, TObject> left, GetLatestRecordByIdOp<TId, TObject> right) => !(left == right);
+        public static bool operator !=(DoesAnyExistByIdOp<TId> left, DoesAnyExistByIdOp<TId> right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(GetLatestRecordByIdOp<TId, TObject> other)
+        public bool Equals(DoesAnyExistByIdOp<TId> other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -71,30 +72,32 @@ namespace Naos.Database.Domain
             }
 
             var result = this.Id.IsEqualTo(other.Id)
+                      && this.ObjectType.IsEqualTo(other.ObjectType)
                       && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy)
-                      && this.ExistingRecordNotEncounteredStrategy.IsEqualTo(other.ExistingRecordNotEncounteredStrategy);
+                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as GetLatestRecordByIdOp<TId, TObject>);
+        public override bool Equals(object obj) => this == (obj as DoesAnyExistByIdOp<TId>);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.Id)
+            .Hash(this.ObjectType)
             .Hash(this.TypeVersionMatchStrategy)
-            .Hash(this.ExistingRecordNotEncounteredStrategy)
+            .Hash(this.SpecifiedResourceLocator)
             .Value;
 
         /// <inheritdoc />
-        public new GetLatestRecordByIdOp<TId, TObject> DeepClone() => (GetLatestRecordByIdOp<TId, TObject>)this.DeepCloneInternal();
+        public new DoesAnyExistByIdOp<TId> DeepClone() => (DoesAnyExistByIdOp<TId>)this.DeepCloneInternal();
 
         /// <summary>
         /// Deep clones this object with a new <see cref="Id" />.
         /// </summary>
         /// <param name="id">The new <see cref="Id" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestRecordByIdOp{TId, TObject}" /> using the specified <paramref name="id" /> for <see cref="Id" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="id" /> for <see cref="Id" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -110,12 +113,44 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestRecordByIdOp<TId, TObject> DeepCloneWithId(TId id)
+        public DoesAnyExistByIdOp<TId> DeepCloneWithId(TId id)
         {
-            var result = new GetLatestRecordByIdOp<TId, TObject>(
+            var result = new DoesAnyExistByIdOp<TId>(
                                  id,
+                                 this.ObjectType?.DeepClone(),
                                  this.TypeVersionMatchStrategy,
-                                 this.ExistingRecordNotEncounteredStrategy);
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="ObjectType" />.
+        /// </summary>
+        /// <param name="objectType">The new <see cref="ObjectType" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="objectType" /> for <see cref="ObjectType" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public DoesAnyExistByIdOp<TId> DeepCloneWithObjectType(TypeRepresentation objectType)
+        {
+            var result = new DoesAnyExistByIdOp<TId>(
+                                 DeepCloneGeneric(this.Id),
+                                 objectType,
+                                 this.TypeVersionMatchStrategy,
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
         }
@@ -124,7 +159,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="TypeVersionMatchStrategy" />.
         /// </summary>
         /// <param name="typeVersionMatchStrategy">The new <see cref="TypeVersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestRecordByIdOp{TId, TObject}" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -140,21 +175,22 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestRecordByIdOp<TId, TObject> DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
+        public DoesAnyExistByIdOp<TId> DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
         {
-            var result = new GetLatestRecordByIdOp<TId, TObject>(
+            var result = new DoesAnyExistByIdOp<TId>(
                                  DeepCloneGeneric(this.Id),
+                                 this.ObjectType?.DeepClone(),
                                  typeVersionMatchStrategy,
-                                 this.ExistingRecordNotEncounteredStrategy);
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="ExistingRecordNotEncounteredStrategy" />.
+        /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
         /// </summary>
-        /// <param name="existingRecordNotEncounteredStrategy">The new <see cref="ExistingRecordNotEncounteredStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestRecordByIdOp{TId, TObject}" /> using the specified <paramref name="existingRecordNotEncounteredStrategy" /> for <see cref="ExistingRecordNotEncounteredStrategy" /> and a deep clone of every other property.</returns>
+        /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -170,12 +206,13 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestRecordByIdOp<TId, TObject> DeepCloneWithExistingRecordNotEncounteredStrategy(ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy)
+        public DoesAnyExistByIdOp<TId> DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
-            var result = new GetLatestRecordByIdOp<TId, TObject>(
+            var result = new DoesAnyExistByIdOp<TId>(
                                  DeepCloneGeneric(this.Id),
+                                 this.ObjectType?.DeepClone(),
                                  this.TypeVersionMatchStrategy,
-                                 existingRecordNotEncounteredStrategy);
+                                 specifiedResourceLocator);
 
             return result;
         }
@@ -183,10 +220,11 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new GetLatestRecordByIdOp<TId, TObject>(
+            var result = new DoesAnyExistByIdOp<TId>(
                                  DeepCloneGeneric(this.Id),
+                                 this.ObjectType?.DeepClone(),
                                  this.TypeVersionMatchStrategy,
-                                 this.ExistingRecordNotEncounteredStrategy);
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
         }
@@ -232,25 +270,21 @@ namespace Naos.Database.Domain
             return (TId)result;
         }
 
-        private static TObject DeepCloneGeneric(TObject value)
+        private static object DeepCloneInterface(object value)
         {
             object result;
 
-            var type = typeof(TObject);
-
-            if (type.IsValueType)
+            if (ReferenceEquals(value, null))
             {
-                result = value;
+                result = null;
             }
             else
             {
-                if (ReferenceEquals(value, null))
+                var type = value.GetType();
+
+                if (type.IsValueType)
                 {
-                    result = default;
-                }
-                else if (value is IDeepCloneable<TObject> deepCloneableValue)
-                {
-                    result = deepCloneableValue.DeepClone();
+                    result = value;
                 }
                 else if (value is string valueAsString)
                 {
@@ -266,18 +300,29 @@ namespace Naos.Database.Domain
                 }
                 else
                 {
-                    throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
+                    var deepCloneableInterface = typeof(IDeepCloneable<>).MakeGenericType(type);
+
+                    if (deepCloneableInterface.IsAssignableFrom(type))
+                    {
+                        var deepCloneMethod = deepCloneableInterface.GetMethod(nameof(IDeepCloneable<object>.DeepClone));
+
+                        result = deepCloneMethod.Invoke(value, null);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
+                    }
                 }
             }
 
-            return (TObject)result;
+            return result;
         }
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, ExistingRecordNotEncounteredStrategy = {this.ExistingRecordNotEncounteredStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

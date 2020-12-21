@@ -82,7 +82,8 @@ namespace Naos.Database.Domain
             var delegatedOperation = new GetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 
@@ -106,7 +107,8 @@ namespace Naos.Database.Domain
             var delegatedOperation = new GetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy);
+                operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 

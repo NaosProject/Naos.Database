@@ -339,17 +339,14 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TagMatchScope>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestObjectByIdOp<Version, Version>(
+                () => new DoesAnyExistByIdOp<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestObjectOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestRecordByIdOp(
+                () => new DoesAnyExistByIdOp(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
@@ -357,27 +354,52 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetLatestObjectByIdOp<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetLatestObjectOp<Version>(
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetLatestRecordByIdOp(
+                                 A.Dummy<string>(),
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordOp(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutRecordOp(

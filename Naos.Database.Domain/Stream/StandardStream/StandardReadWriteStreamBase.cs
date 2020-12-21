@@ -211,5 +211,9 @@ namespace Naos.Database.Domain
             this.Execute(operation);
             await Task.FromResult(true); // just for await...
         }
+
+        /// <inheritdoc />
+        public abstract bool Execute(
+            DoesAnyExistByIdOp operation);
     }
 }

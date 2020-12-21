@@ -55,6 +55,7 @@ namespace Naos.Database.Domain
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
                 operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
@@ -80,6 +81,34 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<StreamRecordWithId<TId>> ExecuteAsync(
             GetLatestRecordByIdOp<TId> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public bool Execute(
+            DoesAnyExistByIdOp<TId> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var delegatedOperation = new DoesAnyExistByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy,
+                locator);
+
+            var result = this.delegatedProtocols.Execute(delegatedOperation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> ExecuteAsync(
+            DoesAnyExistByIdOp<TId> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

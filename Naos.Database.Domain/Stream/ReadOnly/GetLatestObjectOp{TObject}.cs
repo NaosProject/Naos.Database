@@ -21,12 +21,15 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         public GetLatestObjectOp(
             TypeRepresentation identifierType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             this.IdentifierType = identifierType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
         }
 
         /// <summary>
@@ -40,5 +43,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The type version match strategy.</value>
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the existing record not encountered strategy.
+        /// </summary>
+        /// <value>The existing record not encountered strategy.</value>
+        public ExistingRecordNotEncounteredStrategy ExistingRecordNotEncounteredStrategy { get; private set; }
     }
 }

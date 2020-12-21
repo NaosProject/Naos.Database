@@ -74,6 +74,7 @@ namespace Naos.Database.Domain
             var result = this.IdentifierType.IsEqualTo(other.IdentifierType)
                       && this.ObjectType.IsEqualTo(other.ObjectType)
                       && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy)
+                      && this.ExistingRecordNotEncounteredStrategy.IsEqualTo(other.ExistingRecordNotEncounteredStrategy)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -87,6 +88,7 @@ namespace Naos.Database.Domain
             .Hash(this.IdentifierType)
             .Hash(this.ObjectType)
             .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.ExistingRecordNotEncounteredStrategy)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -119,6 +121,7 @@ namespace Naos.Database.Domain
                                  identifierType,
                                  this.ObjectType?.DeepClone(),
                                  this.TypeVersionMatchStrategy,
+                                 this.ExistingRecordNotEncounteredStrategy,
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
@@ -150,6 +153,7 @@ namespace Naos.Database.Domain
                                  this.IdentifierType?.DeepClone(),
                                  objectType,
                                  this.TypeVersionMatchStrategy,
+                                 this.ExistingRecordNotEncounteredStrategy,
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
@@ -181,6 +185,39 @@ namespace Naos.Database.Domain
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  typeVersionMatchStrategy,
+                                 this.ExistingRecordNotEncounteredStrategy,
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="ExistingRecordNotEncounteredStrategy" />.
+        /// </summary>
+        /// <param name="existingRecordNotEncounteredStrategy">The new <see cref="ExistingRecordNotEncounteredStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetLatestRecordOp" /> using the specified <paramref name="existingRecordNotEncounteredStrategy" /> for <see cref="ExistingRecordNotEncounteredStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public GetLatestRecordOp DeepCloneWithExistingRecordNotEncounteredStrategy(ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy)
+        {
+            var result = new GetLatestRecordOp(
+                                 this.IdentifierType?.DeepClone(),
+                                 this.ObjectType?.DeepClone(),
+                                 this.TypeVersionMatchStrategy,
+                                 existingRecordNotEncounteredStrategy,
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
@@ -212,6 +249,7 @@ namespace Naos.Database.Domain
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.TypeVersionMatchStrategy,
+                                 this.ExistingRecordNotEncounteredStrategy,
                                  specifiedResourceLocator);
 
             return result;
@@ -224,6 +262,7 @@ namespace Naos.Database.Domain
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.TypeVersionMatchStrategy,
+                                 this.ExistingRecordNotEncounteredStrategy,
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
@@ -281,7 +320,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetLatestRecordOp: IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetLatestRecordOp: IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, ExistingRecordNotEncounteredStrategy = {this.ExistingRecordNotEncounteredStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

@@ -604,6 +604,22 @@ namespace Naos.Database.Protocol.FileSystem
             var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
             lock (this.fileLock)
             {
+                StreamRecord ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return null;
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
                     Invariant($"*.{MetadataFileExtension}"),
@@ -612,12 +628,20 @@ namespace Naos.Database.Protocol.FileSystem
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
                 if (!orderedDescendingByInternalRecordId.Any())
                 {
-                    return default;
+                    return ProcessDefaultReturn();
                 }
 
                 var latest = orderedDescendingByInternalRecordId.First();
                 var result = this.GetStreamRecordFromMetadataFile(latest);
-                return result;
+
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return ProcessDefaultReturn();
+                }
             }
         }
 
@@ -627,6 +651,22 @@ namespace Naos.Database.Protocol.FileSystem
         {
             lock (this.fileLock)
             {
+                StreamRecord ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return null;
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
                 var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
                 var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
 
@@ -638,7 +678,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
                 if (!orderedDescendingByInternalRecordId.Any())
                 {
-                    return default;
+                    return ProcessDefaultReturn();
                 }
 
                 foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
@@ -656,7 +696,7 @@ namespace Naos.Database.Protocol.FileSystem
                     }
                 }
 
-                return default;
+                return ProcessDefaultReturn();
             }
         }
 

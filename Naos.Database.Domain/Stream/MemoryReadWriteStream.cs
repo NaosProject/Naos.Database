@@ -99,7 +99,7 @@ namespace Naos.Database.Domain
                         default:
                             throw new NotSupportedException(
                                 Invariant(
-                                    $"Operation {nameof(operation.ExistingStreamEncounteredStrategy)} of '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
+                                    $"{nameof(ExistingStreamEncounteredStrategy)} '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
                     }
                 }
 
@@ -134,6 +134,8 @@ namespace Naos.Database.Domain
                                     $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
                         case ExistingStreamNotEncounteredStrategy.Skip:
                             break;
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(ExistingStreamNotEncounteredStrategy)} {operation.ExistingStreamNotEncounteredStrategy} is not supported."));
                     }
                 }
                 else
@@ -463,14 +465,32 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+
                 var result =
-                    this.locatorToRecordPartitionMap[memoryDatabaseLocator].OrderByDescending(_ => _.InternalRecordId)
+                    partition?.OrderByDescending(_ => _.InternalRecordId)
                            .FirstOrDefault(
                                 _ => _.Metadata.FuzzyMatchTypes(
                                     operation.IdentifierType,
                                     operation.ObjectType,
                                     operation.TypeVersionMatchStrategy));
-                return result;
+
+                if (result != null)
+                {
+                    return result;
+                }
+
+                switch (operation.ExistingRecordNotEncounteredStrategy)
+                {
+                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        return null;
+                    case ExistingRecordNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                }
             }
         }
 
@@ -484,16 +504,33 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
-                var result =
-                    this.locatorToRecordPartitionMap[memoryDatabaseLocator].OrderByDescending(_ => _.InternalRecordId)
-                           .FirstOrDefault(
-                                _ => _.Metadata.FuzzyMatchTypesAndId(
-                                    operation.StringSerializedId,
-                                    operation.IdentifierType,
-                                    operation.ObjectType,
-                                    operation.TypeVersionMatchStrategy));
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
 
-                return result;
+                var result =
+                    partition?.OrderByDescending(_ => _.InternalRecordId)
+                        .FirstOrDefault(
+                             _ => _.Metadata.FuzzyMatchTypesAndId(
+                                 operation.StringSerializedId,
+                                 operation.IdentifierType,
+                                 operation.ObjectType,
+                                 operation.TypeVersionMatchStrategy));
+
+                if (result != null)
+                {
+                    return result;
+                }
+
+                switch (operation.ExistingRecordNotEncounteredStrategy)
+                {
+                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        return null;
+                    case ExistingRecordNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                }
             }
         }
 

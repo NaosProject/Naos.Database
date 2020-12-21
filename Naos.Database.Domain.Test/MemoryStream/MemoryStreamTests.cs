@@ -333,6 +333,46 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             stream.GetStreamManagementProtocols().Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
+
+        [Fact]
+        public static void DoesNotExistTest()
+        {
+            var streamName = "MS_DoesNotExistTest";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory());
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var existsFirst = stream.DoesAnyExistById(1L);
+            existsFirst.MustForTest().NotBeTrue();
+
+            stream.PutWithId(1L, Guid.NewGuid());
+
+            var existsSecond = stream.DoesAnyExistById(1L, typeof(string).ToRepresentation());
+            existsSecond.MustForTest().NotBeTrue();
+
+            var existsThird = stream.DoesAnyExistById(1L);
+            existsThird.MustForTest().BeTrue();
+
+            var existsFourth = stream.DoesAnyExistById(1L, typeof(Guid).ToRepresentation());
+            existsFourth.MustForTest().BeTrue();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
     }
 
     public class MyObject : IIdentifiableBy<string>, IHaveTags

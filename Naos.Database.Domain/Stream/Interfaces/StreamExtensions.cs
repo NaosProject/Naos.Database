@@ -204,7 +204,7 @@ namespace Naos.Database.Domain
         public static bool DoesAnyExistById<TId>(
             this IReadOnlyStream stream,
             TId identifier,
-            TypeRepresentation objectType,
+            TypeRepresentation objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
@@ -227,7 +227,7 @@ namespace Naos.Database.Domain
         public static async Task<bool> DoesAnyExistByIdOpAsync<TId>(
             this IReadOnlyStream stream,
             TId identifier,
-            TypeRepresentation objectType,
+            TypeRepresentation objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();

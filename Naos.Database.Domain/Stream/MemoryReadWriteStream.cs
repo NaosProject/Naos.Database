@@ -228,14 +228,15 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
                 var result =
-                    this.locatorToRecordPartitionMap[memoryDatabaseLocator].OrderByDescending(_ => _.InternalRecordId)
-                        .FirstOrDefault(
-                             _ => _.Metadata.FuzzyMatchTypesAndId(
-                                 operation.StringSerializedId,
-                                 operation.IdentifierType,
-                                 operation.ObjectType,
-                                 operation.TypeVersionMatchStrategy));
+                    partition?.OrderByDescending(_ => _.InternalRecordId)
+                                            .FirstOrDefault(
+                                                 _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                     operation.StringSerializedId,
+                                                     operation.IdentifierType,
+                                                     operation.ObjectType,
+                                                     operation.TypeVersionMatchStrategy));
 
                 return result != null;
             }

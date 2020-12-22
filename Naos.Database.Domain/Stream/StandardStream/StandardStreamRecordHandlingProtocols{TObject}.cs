@@ -47,6 +47,11 @@ namespace Naos.Database.Domain
                 operation.SpecifiedResourceLocator,
                 operation.Tags);
             var record = this.stream.Execute(delegatedOperation);
+            if (record == null || record.Payload == null || record.Payload.SerializedPayload == null)
+            {
+                return null;
+            }
+
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
             return result;

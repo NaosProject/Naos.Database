@@ -52,6 +52,10 @@ namespace Naos.Database.Domain
                 operation.SpecifiedResourceLocator,
                 operation.Tags);
             var record = this.stream.Execute(delegatedOperation);
+            if (record == null || record.Payload == null || record.Payload.SerializedPayload == null)
+            {
+                return null;
+            }
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);
             var id = serializer.Deserialize<TId>(record.Metadata.StringSerializedId);

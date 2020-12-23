@@ -215,5 +215,17 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public abstract bool Execute(
             DoesAnyExistByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract StreamRecordMetadata Execute(
+            GetLatestRecordMetadataByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract IReadOnlyList<StreamRecord> Execute(
+            GetAllRecordsByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataByIdOp operation);
     }
 }

@@ -11,19 +11,19 @@ namespace Naos.Database.Domain
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
     /// Gets all records metadata with provided identifier.
     /// </summary>
     /// <typeparam name="TId">Type of identifier.</typeparam>
-    public partial class GetAllRecordsMetadataByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordMetadata<TId>>>, ISpecifyResourceLocator
+    public partial class GetAllRecordsMetadataByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordMetadata<TId>>>, IIdentifiableBy<TId>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetAllRecordsMetadataByIdOp{TId}"/> class.
         /// </summary>
-        /// <param name="stringSerializedId">The identifier serialized as a string using the same serializer as the object.</param>
-        /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
+        /// <param name="id">The identifier.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
@@ -31,16 +31,14 @@ namespace Naos.Database.Domain
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public GetAllRecordsMetadataByIdOp(
-            string stringSerializedId,
-            TypeRepresentation identifierType = null,
+            TId id,
             TypeRepresentation objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null)
         {
-            this.StringSerializedId = stringSerializedId;
-            this.IdentifierType = identifierType;
+            this.Id = id;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
@@ -48,17 +46,8 @@ namespace Naos.Database.Domain
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
-        /// <summary>
-        /// Gets the string serialized identifier.
-        /// </summary>
-        /// <value>The string serialized identifier.</value>
-        public string StringSerializedId { get; private set; }
-
-        /// <summary>
-        /// Gets the type of the identifier.
-        /// </summary>
-        /// <value>The type of the identifier.</value>
-        public TypeRepresentation IdentifierType { get; private set; }
+        /// <inheritdoc />
+        public TId Id { get; private set; }
 
         /// <summary>
         /// Gets the type of the object.

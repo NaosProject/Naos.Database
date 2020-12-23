@@ -6,6 +6,8 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
@@ -109,6 +111,139 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<bool> ExecuteAsync(
             DoesAnyExistByIdOp<TId> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordWithId<TId>> Execute(
+            GetAllRecordsByIdOp<TId> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var delegatedOperation = new GetAllRecordsByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
+                operation.OrderRecordsStrategy,
+                locator);
+
+            var records = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var result = records?.Select(
+                                      _ =>
+                                      {
+                                          var metadata = new StreamRecordMetadata<TId>(
+                                              operation.Id,
+                                              _.Metadata.SerializerRepresentation,
+                                              _.Metadata.TypeRepresentationOfId,
+                                              _.Metadata.TypeRepresentationOfObject,
+                                              _.Metadata.Tags,
+                                              _.Metadata.TimestampUtc,
+                                              _.Metadata.ObjectTimestampUtc);
+
+                                          var localResult = new StreamRecordWithId<TId>(_.InternalRecordId, metadata, _.Payload);
+                                          return localResult;
+                                      })
+                                 .ToList();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordWithId<TId>>> ExecuteAsync(
+            GetAllRecordsByIdOp<TId> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public StreamRecordMetadata<TId> Execute(
+            GetLatestRecordMetadataByIdOp<TId> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var delegatedOperation = new GetLatestRecordMetadataByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
+                locator);
+
+            var metadata = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var result = new StreamRecordMetadata<TId>(
+                operation.Id,
+                metadata.SerializerRepresentation,
+                metadata.TypeRepresentationOfId,
+                metadata.TypeRepresentationOfObject,
+                metadata.Tags,
+                metadata.TimestampUtc,
+                metadata.ObjectTimestampUtc);
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecordMetadata<TId>> ExecuteAsync(
+            GetLatestRecordMetadataByIdOp<TId> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordMetadata<TId>> Execute(
+            GetAllRecordsMetadataByIdOp<TId> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+            var delegatedOperation = new GetAllRecordsMetadataByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation(),
+                operation.ObjectType,
+                operation.TypeVersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
+                operation.OrderRecordsStrategy,
+                locator);
+
+            var records = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var result = records?.Select(
+                                      _ =>
+                                      {
+                                          var metadata = new StreamRecordMetadata<TId>(
+                                              operation.Id,
+                                              _.SerializerRepresentation,
+                                              _.TypeRepresentationOfId,
+                                              _.TypeRepresentationOfObject,
+                                              _.Tags,
+                                              _.TimestampUtc,
+                                              _.ObjectTimestampUtc);
+                                          return metadata;
+                                      })
+                                 .ToList();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordMetadata<TId>>> ExecuteAsync(
+            GetAllRecordsMetadataByIdOp<TId> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

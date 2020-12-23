@@ -245,6 +245,131 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public override StreamRecordMetadata Execute(
+            GetLatestRecordMetadataByIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.streamLock)
+            {
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+
+                var result =
+                    partition?.OrderByDescending(_ => _.InternalRecordId)
+                              .FirstOrDefault(
+                                   _ => _.Metadata.FuzzyMatchTypesAndId(
+                                       operation.StringSerializedId,
+                                       operation.IdentifierType,
+                                       operation.ObjectType,
+                                       operation.TypeVersionMatchStrategy))?.Metadata;
+
+                if (result != null)
+                {
+                    return result;
+                }
+
+                switch (operation.ExistingRecordNotEncounteredStrategy)
+                {
+                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        return null;
+                    case ExistingRecordNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override IReadOnlyList<StreamRecord> Execute(
+            GetAllRecordsByIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.streamLock)
+            {
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+
+                var result =
+                    partition?
+                       .Where(
+                            _ => _.Metadata.FuzzyMatchTypesAndId(
+                                operation.StringSerializedId,
+                                operation.IdentifierType,
+                                operation.ObjectType,
+                                operation.TypeVersionMatchStrategy))
+                       .OrderBy(_ => _.InternalRecordId)
+                       .ToList();
+
+                if (result != null && result.Any())
+                {
+                    return result;
+                }
+
+                switch (operation.ExistingRecordNotEncounteredStrategy)
+                {
+                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        return new StreamRecord[0];
+                    case ExistingRecordNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataByIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.streamLock)
+            {
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+
+                var result =
+                    partition?
+                       .Where(
+                            _ => _.Metadata.FuzzyMatchTypesAndId(
+                                operation.StringSerializedId,
+                                operation.IdentifierType,
+                                operation.ObjectType,
+                                operation.TypeVersionMatchStrategy))
+                       .OrderBy(_ => _.InternalRecordId)
+                       .Select(_ => _.Metadata)
+                       .ToList();
+
+                if (result != null && result.Any())
+                {
+                    return result;
+                }
+
+                switch (operation.ExistingRecordNotEncounteredStrategy)
+                {
+                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        return new StreamRecordMetadata[0];
+                    case ExistingRecordNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                }
+            }
+        }
+
+        /// <inheritdoc />
         public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {

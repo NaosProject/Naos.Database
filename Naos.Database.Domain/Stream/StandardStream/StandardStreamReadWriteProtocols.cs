@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
 
@@ -113,6 +114,57 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<bool> ExecuteAsync(
             DoesAnyExistByIdOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecord> Execute(
+            GetAllRecordsByIdOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecord>> ExecuteAsync(
+            GetAllRecordsByIdOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public StreamRecordMetadata Execute(
+            GetLatestRecordMetadataByIdOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecordMetadata> ExecuteAsync(
+            GetLatestRecordMetadataByIdOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataByIdOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordMetadata>> ExecuteAsync(
+            GetAllRecordsMetadataByIdOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

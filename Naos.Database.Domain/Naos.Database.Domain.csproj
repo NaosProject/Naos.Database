@@ -335,9 +335,21 @@
     <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp{TId}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp.designer.cs">
+      <DependentUpon>GetAllRecordsByIdOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp{TId}.designer.cs">
+      <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp.cs" />
+    <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataByIdOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp{TId}.cs" />
+    <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
@@ -352,9 +364,15 @@
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp.designer.cs">
+      <DependentUpon>GetLatestRecordMetadataByIdOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp{TId}.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
+      <DependentUpon>GetLatestRecordMetadataByIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
       <DependentUpon>GetLatestRecordOp.cs</DependentUpon>

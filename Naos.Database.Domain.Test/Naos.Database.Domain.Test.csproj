@@ -334,6 +334,22 @@
     <Compile Include="FailRunningHandleRecordExecutionOpTest.designer.cs">
       <DependentUpon>FailRunningHandleRecordExecutionOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetAllRecordsByIdOpTest.cs" />
+    <Compile Include="GetAllRecordsByIdOpTest.designer.cs">
+      <DependentUpon>GetAllRecordsByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetAllRecordsByIdOp{TId}Test.cs" />
+    <Compile Include="GetAllRecordsByIdOp{TId}Test.designer.cs">
+      <DependentUpon>GetAllRecordsByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetAllRecordsMetadataByIdOpTest.cs" />
+    <Compile Include="GetAllRecordsMetadataByIdOpTest.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetAllRecordsMetadataByIdOp{TId}Test.cs" />
+    <Compile Include="GetAllRecordsMetadataByIdOp{TId}Test.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetHandlingHistoryOfRecordOpTest.cs" />
     <Compile Include="GetHandlingHistoryOfRecordOpTest.designer.cs">
       <DependentUpon>GetHandlingHistoryOfRecordOpTest.cs</DependentUpon>
@@ -369,6 +385,14 @@
     <Compile Include="GetLatestRecordByIdOp{TId}Test.cs" />
     <Compile Include="GetLatestRecordByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetLatestRecordMetadataByIdOpTest.cs" />
+    <Compile Include="GetLatestRecordMetadataByIdOpTest.designer.cs">
+      <DependentUpon>GetLatestRecordMetadataByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetLatestRecordMetadataByIdOp{TId}Test.cs" />
+    <Compile Include="GetLatestRecordMetadataByIdOp{TId}Test.designer.cs">
+      <DependentUpon>GetLatestRecordMetadataByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="GetLatestRecordOpTest.cs" />
     <Compile Include="GetLatestRecordOpTest.designer.cs">

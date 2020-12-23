@@ -35,212 +35,83 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class CancelRunningHandleRecordExecutionOpTest
+    public static partial class GetLatestRecordMetadataByIdOpTIdTest
     {
-        private static readonly StringRepresentationTestScenarios<CancelRunningHandleRecordExecutionOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<CancelRunningHandleRecordExecutionOp>()
+        private static readonly StringRepresentationTestScenarios<GetLatestRecordMetadataByIdOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetLatestRecordMetadataByIdOp<Version>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<CancelRunningHandleRecordExecutionOp>
+                new StringRepresentationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetLatestRecordMetadataByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CancelRunningHandleRecordExecutionOp: Id = {systemUnderTest.Id.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestRecordMetadataByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, ExistingRecordNotEncounteredStrategy = {systemUnderTest.ExistingRecordNotEncounteredStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<CancelRunningHandleRecordExecutionOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<CancelRunningHandleRecordExecutionOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<GetLatestRecordMetadataByIdOp<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetLatestRecordMetadataByIdOp<Version>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
+                new ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var result = new CancelRunningHandleRecordExecutionOp(
+                        var result = new GetLatestRecordMetadataByIdOp<Version>(
+                                             null,
+                                             referenceObject.ObjectType,
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.ExistingRecordNotEncounteredStrategy);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "id", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'objectType' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
+
+                        var result = new GetLatestRecordMetadataByIdOp<Version>(
                                              referenceObject.Id,
                                              null,
-                                             referenceObject.Details,
-                                             referenceObject.SpecifiedResourceLocator,
-                                             referenceObject.Tags);
+                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.ExistingRecordNotEncounteredStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "concern", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.Details,
-                                             referenceObject.SpecifiedResourceLocator,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             referenceObject.Concern,
-                                             null,
-                                             referenceObject.SpecifiedResourceLocator,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "details", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             referenceObject.Concern,
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.SpecifiedResourceLocator,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             referenceObject.Concern,
-                                             referenceObject.Details,
-                                             null,
-                                             referenceObject.Tags);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             referenceObject.Concern,
-                                             referenceObject.Details,
-                                             referenceObject.SpecifiedResourceLocator,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             referenceObject.Concern,
-                                             referenceObject.Details,
-                                             referenceObject.SpecifiedResourceLocator,
-                                             new Dictionary<string, string>());
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new CancelRunningHandleRecordExecutionOp(
-                                             referenceObject.Id,
-                                             referenceObject.Concern,
-                                             referenceObject.Details,
-                                             referenceObject.SpecifiedResourceLocator,
-                                             dictionaryWithNullValue);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one key-value pair with a null value", },
+                    ExpectedExceptionMessageContains = new[] { "objectType", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<CancelRunningHandleRecordExecutionOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CancelRunningHandleRecordExecutionOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetLatestRecordMetadataByIdOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetLatestRecordMetadataByIdOp<Version>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CancelRunningHandleRecordExecutionOp>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
                     Name = "Id should return same 'id' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
-                            SystemUnderTest = new CancelRunningHandleRecordExecutionOp(
+                            SystemUnderTest = new GetLatestRecordMetadataByIdOp<Version>(
                                                       referenceObject.Id,
-                                                      referenceObject.Concern,
-                                                      referenceObject.Details,
-                                                      referenceObject.SpecifiedResourceLocator,
-                                                      referenceObject.Tags),
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.ExistingRecordNotEncounteredStrategy),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -249,111 +120,85 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Id",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CancelRunningHandleRecordExecutionOp>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "Concern should return same 'concern' parameter passed to constructor when getting",
+                    Name = "ObjectType should return same 'objectType' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
-                            SystemUnderTest = new CancelRunningHandleRecordExecutionOp(
+                            SystemUnderTest = new GetLatestRecordMetadataByIdOp<Version>(
                                                       referenceObject.Id,
-                                                      referenceObject.Concern,
-                                                      referenceObject.Details,
-                                                      referenceObject.SpecifiedResourceLocator,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Concern,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.ExistingRecordNotEncounteredStrategy),
+                            ExpectedPropertyValue = referenceObject.ObjectType,
                         };
 
                         return result;
                     },
-                    PropertyName = "Concern",
+                    PropertyName = "ObjectType",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CancelRunningHandleRecordExecutionOp>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "Details should return same 'details' parameter passed to constructor when getting",
+                    Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
-                            SystemUnderTest = new CancelRunningHandleRecordExecutionOp(
+                            SystemUnderTest = new GetLatestRecordMetadataByIdOp<Version>(
                                                       referenceObject.Id,
-                                                      referenceObject.Concern,
-                                                      referenceObject.Details,
-                                                      referenceObject.SpecifiedResourceLocator,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Details,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.ExistingRecordNotEncounteredStrategy),
+                            ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "Details",
+                    PropertyName = "TypeVersionMatchStrategy",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CancelRunningHandleRecordExecutionOp>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    Name = "ExistingRecordNotEncounteredStrategy should return same 'existingRecordNotEncounteredStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
-                            SystemUnderTest = new CancelRunningHandleRecordExecutionOp(
+                            SystemUnderTest = new GetLatestRecordMetadataByIdOp<Version>(
                                                       referenceObject.Id,
-                                                      referenceObject.Concern,
-                                                      referenceObject.Details,
-                                                      referenceObject.SpecifiedResourceLocator,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.ExistingRecordNotEncounteredStrategy),
+                            ExpectedPropertyValue = referenceObject.ExistingRecordNotEncounteredStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "SpecifiedResourceLocator",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<CancelRunningHandleRecordExecutionOp>
-                        {
-                            SystemUnderTest = new CancelRunningHandleRecordExecutionOp(
-                                                      referenceObject.Id,
-                                                      referenceObject.Concern,
-                                                      referenceObject.Details,
-                                                      referenceObject.SpecifiedResourceLocator,
-                                                      referenceObject.Tags),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
+                    PropertyName = "ExistingRecordNotEncounteredStrategy",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<CancelRunningHandleRecordExecutionOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CancelRunningHandleRecordExecutionOp>()
+        private static readonly DeepCloneWithTestScenarios<GetLatestRecordMetadataByIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetLatestRecordMetadataByIdOp<Version>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CancelRunningHandleRecordExecutionOp>
+                new DeepCloneWithTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
                     Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
                     WithPropertyName = "Id",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Id,
@@ -363,135 +208,104 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CancelRunningHandleRecordExecutionOp>
+                new DeepCloneWithTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
-                    WithPropertyName = "Concern",
+                    Name = "DeepCloneWithObjectType should deep clone object and replace ObjectType with the provided objectType",
+                    WithPropertyName = "ObjectType",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Concern,
+                            DeepCloneWithValue = referenceObject.ObjectType,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CancelRunningHandleRecordExecutionOp>
+                new DeepCloneWithTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
-                    WithPropertyName = "Details",
+                    Name = "DeepCloneWithTypeVersionMatchStrategy should deep clone object and replace TypeVersionMatchStrategy with the provided typeVersionMatchStrategy",
+                    WithPropertyName = "TypeVersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Details,
+                            DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CancelRunningHandleRecordExecutionOp>
+                new DeepCloneWithTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
-                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
-                    WithPropertyName = "SpecifiedResourceLocator",
+                    Name = "DeepCloneWithExistingRecordNotEncounteredStrategy should deep clone object and replace ExistingRecordNotEncounteredStrategy with the provided existingRecordNotEncounteredStrategy",
+                    WithPropertyName = "ExistingRecordNotEncounteredStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                        var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().ThatIs(_ => !systemUnderTest.ExistingRecordNotEncounteredStrategy.IsEqualTo(_.ExistingRecordNotEncounteredStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CancelRunningHandleRecordExecutionOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordMetadataByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<CancelRunningHandleRecordExecutionOp>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
-
-                        var referenceObject = A.Dummy<CancelRunningHandleRecordExecutionOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<CancelRunningHandleRecordExecutionOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
+                            DeepCloneWithValue = referenceObject.ExistingRecordNotEncounteredStrategy,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly CancelRunningHandleRecordExecutionOp ReferenceObjectForEquatableTestScenarios = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+        private static readonly GetLatestRecordMetadataByIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
-        private static readonly EquatableTestScenarios<CancelRunningHandleRecordExecutionOp> EquatableTestScenarios = new EquatableTestScenarios<CancelRunningHandleRecordExecutionOp>()
+        private static readonly EquatableTestScenarios<GetLatestRecordMetadataByIdOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<GetLatestRecordMetadataByIdOp<Version>>()
             .AddScenario(() =>
-                new EquatableTestScenario<CancelRunningHandleRecordExecutionOp>
+                new EquatableTestScenario<GetLatestRecordMetadataByIdOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CancelRunningHandleRecordExecutionOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetLatestRecordMetadataByIdOp<Version>[]
                     {
-                        new CancelRunningHandleRecordExecutionOp(
+                        new GetLatestRecordMetadataByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordNotEncounteredStrategy),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new CancelRunningHandleRecordExecutionOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetLatestRecordMetadataByIdOp<Version>[]
                     {
-                        new CancelRunningHandleRecordExecutionOp(
-                                A.Dummy<CancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CancelRunningHandleRecordExecutionOp(
+                        new GetLatestRecordMetadataByIdOp<Version>(
+                                A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordNotEncounteredStrategy),
+                        new GetLatestRecordMetadataByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<CancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CancelRunningHandleRecordExecutionOp(
+                                A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordNotEncounteredStrategy),
+                        new GetLatestRecordMetadataByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<CancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CancelRunningHandleRecordExecutionOp(
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordNotEncounteredStrategy),
+                        new GetLatestRecordMetadataByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<CancelRunningHandleRecordExecutionOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator,
-                                ReferenceObjectForEquatableTestScenarios.Tags),
-                        new CancelRunningHandleRecordExecutionOp(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
-                                A.Dummy<CancelRunningHandleRecordExecutionOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                A.Dummy<GetLatestRecordMetadataByIdOp<Version>>().Whose(_ => !_.ExistingRecordNotEncounteredStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordNotEncounteredStrategy)).ExistingRecordNotEncounteredStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -503,6 +317,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<BlockRecordHandlingOp>(),
                         A.Dummy<CancelBlockedRecordHandlingOp>(),
                         A.Dummy<CancelHandleRecordExecutionRequestOp>(),
+                        A.Dummy<CancelRunningHandleRecordExecutionOp>(),
                         A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
                         A.Dummy<RetryFailedHandleRecordExecutionOp>(),
                         A.Dummy<FailRunningHandleRecordExecutionOp>(),
@@ -532,7 +347,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestRecordMetadataByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
@@ -566,12 +380,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void CancelRunningHandleRecordExecutionOp___Should_implement_IModel_of_CancelRunningHandleRecordExecutionOp___When_reflecting()
+            public static void GetLatestRecordMetadataByIdOp___Should_implement_IModel_of_GetLatestRecordMetadataByIdOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(CancelRunningHandleRecordExecutionOp);
+                var type = typeof(GetLatestRecordMetadataByIdOp<Version>);
 
-                var expectedModelMethods = typeof(IModel<CancelRunningHandleRecordExecutionOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetLatestRecordMetadataByIdOp<Version>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -581,7 +395,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<CancelRunningHandleRecordExecutionOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetLatestRecordMetadataByIdOp<Version>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -599,10 +413,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void CancelRunningHandleRecordExecutionOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetLatestRecordMetadataByIdOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(CancelRunningHandleRecordExecutionOp);
+                var type = typeof(GetLatestRecordMetadataByIdOp<Version>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -775,10 +589,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
                 // Act
-                var actual = (CancelRunningHandleRecordExecutionOp)systemUnderTest.Clone();
+                var actual = (GetLatestRecordMetadataByIdOp<Version>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -802,7 +616,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                var systemUnderTest = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -811,22 +625,22 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.SpecifiedResourceLocator == null)
+                if (systemUnderTest.Id == null)
                 {
-                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                    actual.Id.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                    actual.Id.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Id);
                 }
 
-                if (systemUnderTest.Tags == null)
+                if (systemUnderTest.ObjectType == null)
                 {
-                    actual.Tags.AsTest().Must().BeNull();
+                    actual.ObjectType.AsTest().Must().BeNull();
                 }
                 else
                 {
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                    actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
                 }
             }
 
@@ -846,7 +660,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "Concern", "Details", "SpecifiedResourceLocator", "Tags" };
+                var propertyNames = new string[] { "Id", "ObjectType", "TypeVersionMatchStrategy", "ExistingRecordNotEncounteredStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -863,12 +677,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (CancelRunningHandleRecordExecutionOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (GetLatestRecordMetadataByIdOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(CancelRunningHandleRecordExecutionOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(GetLatestRecordMetadataByIdOp<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var propertyType = propertyInfo.PropertyType;
 
@@ -936,7 +750,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                var expected = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -965,7 +779,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                var expected = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -994,7 +808,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                var expected = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1023,7 +837,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CancelRunningHandleRecordExecutionOp>();
+                var expected = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1057,8 +871,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CancelRunningHandleRecordExecutionOp systemUnderTest1 = null;
-                CancelRunningHandleRecordExecutionOp systemUnderTest2 = null;
+                GetLatestRecordMetadataByIdOp<Version> systemUnderTest1 = null;
+                GetLatestRecordMetadataByIdOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1088,7 +902,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CancelRunningHandleRecordExecutionOp systemUnderTest = null;
+                    GetLatestRecordMetadataByIdOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1237,8 +1051,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CancelRunningHandleRecordExecutionOp systemUnderTest1 = null;
-                CancelRunningHandleRecordExecutionOp systemUnderTest2 = null;
+                GetLatestRecordMetadataByIdOp<Version> systemUnderTest1 = null;
+                GetLatestRecordMetadataByIdOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1268,7 +1082,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CancelRunningHandleRecordExecutionOp systemUnderTest = null;
+                    GetLatestRecordMetadataByIdOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1557,17 +1371,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    VoidOperationBase systemUnderTest = null;
+                    ReturningOperationBase<StreamRecordMetadata<Version>> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((VoidOperationBase)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordMetadata<Version>>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1588,14 +1402,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((VoidOperationBase)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordMetadata<Version>>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1616,14 +1430,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordMetadata<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1644,14 +1458,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordMetadata<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1672,14 +1486,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_VoidOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((VoidOperationBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StreamRecordMetadata<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1700,14 +1514,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CancelRunningHandleRecordExecutionOp___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_GetLatestRecordMetadataByIdOp___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CancelRunningHandleRecordExecutionOp systemUnderTest = null;
+                    GetLatestRecordMetadataByIdOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1731,7 +1545,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CancelRunningHandleRecordExecutionOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetLatestRecordMetadataByIdOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1759,7 +1573,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CancelRunningHandleRecordExecutionOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetLatestRecordMetadataByIdOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1787,7 +1601,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CancelRunningHandleRecordExecutionOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetLatestRecordMetadataByIdOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1815,7 +1629,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CancelRunningHandleRecordExecutionOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetLatestRecordMetadataByIdOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using Naos.Protocol.Domain;
 
     /// <summary>
@@ -14,6 +15,9 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">Type of ID used.</typeparam>
     public interface IStreamReadWithIdProtocols<TId> :
         ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp<TId>, StreamRecordWithId<TId>>,
+        ISyncAndAsyncReturningProtocol<GetAllRecordsByIdOp<TId>, IReadOnlyList<StreamRecordWithId<TId>>>,
+        ISyncAndAsyncReturningProtocol<GetLatestRecordMetadataByIdOp<TId>, StreamRecordMetadata<TId>>,
+        ISyncAndAsyncReturningProtocol<GetAllRecordsMetadataByIdOp<TId>, IReadOnlyList<StreamRecordMetadata<TId>>>,
         ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId>, bool>
     {
     }

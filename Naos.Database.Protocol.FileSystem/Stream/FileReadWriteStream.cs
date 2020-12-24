@@ -294,6 +294,171 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        public override StreamRecordMetadata Execute(
+            GetLatestRecordMetadataByIdOp operation)
+        {
+            lock (this.fileLock)
+            {
+                StreamRecordMetadata ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return null;
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
+                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+
+                var metadataPathsThatCouldMatch = Directory.GetFiles(
+                    rootPath,
+                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
+
+                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                if (!orderedDescendingByInternalRecordId.Any())
+                {
+                    return ProcessDefaultReturn();
+                }
+
+                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
+                {
+                    var fileText = File.ReadAllText(metadataFilePathToTest);
+                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
+                    if (metadata.FuzzyMatchTypesAndId(
+                        operation.StringSerializedId,
+                        operation.IdentifierType,
+                        operation.ObjectType,
+                        operation.TypeVersionMatchStrategy))
+                    {
+                        return metadata;
+                    }
+                }
+
+                return ProcessDefaultReturn();
+            }
+        }
+
+        /// <inheritdoc />
+        public override IReadOnlyList<StreamRecord> Execute(
+            GetAllRecordsByIdOp operation)
+        {
+            lock (this.fileLock)
+            {
+                IReadOnlyList<StreamRecord> ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return new StreamRecord[0];
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
+                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+
+                var metadataPathsThatCouldMatch = Directory.GetFiles(
+                    rootPath,
+                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
+
+                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                if (!orderedDescendingByInternalRecordId.Any())
+                {
+                    return ProcessDefaultReturn();
+                }
+
+                var result = new List<StreamRecord>();
+                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
+                {
+                    var fileText = File.ReadAllText(metadataFilePathToTest);
+                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
+                    if (metadata.FuzzyMatchTypesAndId(
+                        operation.StringSerializedId,
+                        operation.IdentifierType,
+                        operation.ObjectType,
+                        operation.TypeVersionMatchStrategy))
+                    {
+                        var record = this.GetStreamRecordFromMetadataFile(metadataFilePathToTest);
+                        result.Add(record);
+                    }
+                }
+
+                return result.Any() ? result : ProcessDefaultReturn();
+            }
+        }
+
+        /// <inheritdoc />
+        public override IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataByIdOp operation)
+        {
+            lock (this.fileLock)
+            {
+                IReadOnlyList<StreamRecordMetadata> ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return new StreamRecordMetadata[0];
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
+                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+
+                var metadataPathsThatCouldMatch = Directory.GetFiles(
+                    rootPath,
+                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
+
+                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                if (!orderedDescendingByInternalRecordId.Any())
+                {
+                    return ProcessDefaultReturn();
+                }
+
+                var result = new List<StreamRecordMetadata>();
+                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
+                {
+                    var fileText = File.ReadAllText(metadataFilePathToTest);
+                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
+                    if (metadata.FuzzyMatchTypesAndId(
+                        operation.StringSerializedId,
+                        operation.IdentifierType,
+                        operation.ObjectType,
+                        operation.TypeVersionMatchStrategy))
+                    {
+                        result.Add(metadata);
+                    }
+                }
+
+                return result.Any() ? result : ProcessDefaultReturn();
+            }
+        }
+
+        /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
         public override long Execute(

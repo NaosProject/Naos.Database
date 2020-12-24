@@ -465,7 +465,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 idx < count;
                 idx++)
             {
-                allRecords[idx].Payload.SerializedPayload.MustForTest().BeEqualTo(idx.ToString());
+                allRecords[idx].Payload.SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadata[idx].MustForTest().BeEqualTo(allRecords[idx].Metadata);
             }
 
@@ -478,7 +478,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 idx < count;
                 idx++)
             {
-                allRecordsReverse[idx].Payload.SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString());
+                allRecordsReverse[idx].Payload.SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadataReverse[idx].MustForTest().BeEqualTo(allRecordsReverse[idx].Metadata);
             }
 

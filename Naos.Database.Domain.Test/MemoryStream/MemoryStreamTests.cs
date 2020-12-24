@@ -373,6 +373,46 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
+
+        [Fact]
+        public static void GetLatestRecordMetadataByIdTest()
+        {
+            var streamName = "MS_GetLatestRecordMetadataByIdTest";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory());
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var existsFirst = stream.GetLatestRecordMetadataById(1L);
+            existsFirst.MustForTest().BeNull();
+
+            stream.PutWithId(1L, Guid.NewGuid());
+
+            var existsSecond = stream.GetLatestRecordMetadataById(1L, typeof(string).ToRepresentation());
+            existsSecond.MustForTest().BeNull();
+
+            var existsThird = stream.GetLatestRecordMetadataById(1L);
+            existsThird.MustForTest().NotBeNull();
+
+            var existsFourth = stream.GetLatestRecordMetadataById(1L, typeof(Guid).ToRepresentation());
+            existsFourth.MustForTest().NotBeNull();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
     }
 
     public class MyObject : IIdentifiableBy<string>, IHaveTags

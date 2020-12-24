@@ -183,6 +183,11 @@ namespace Naos.Database.Domain
 
             var metadata = this.delegatedProtocols.Execute(delegatedOperation);
 
+            if (metadata == null)
+            {
+                return null;
+            }
+
             var result = new StreamRecordMetadata<TId>(
                 operation.Id,
                 metadata.SerializerRepresentation,

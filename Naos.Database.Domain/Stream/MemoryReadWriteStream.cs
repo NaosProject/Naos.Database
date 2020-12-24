@@ -294,35 +294,53 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                IReadOnlyList<StreamRecord> ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return new StreamRecord[0];
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
 
+                if (partition == null)
+                {
+                    return ProcessDefaultReturn();
+                }
+
                 var result =
-                    partition?
+                    partition
                        .Where(
                             _ => _.Metadata.FuzzyMatchTypesAndId(
                                 operation.StringSerializedId,
                                 operation.IdentifierType,
                                 operation.ObjectType,
                                 operation.TypeVersionMatchStrategy))
-                       .OrderBy(_ => _.InternalRecordId)
                        .ToList();
 
-                if (result != null && result.Any())
+                if (result.Any())
                 {
-                    return result;
+                    switch (operation.OrderRecordsStrategy)
+                    {
+                        case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                            return result.OrderBy(_ => _.InternalRecordId).ToList();
+                        case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                            return result.OrderByDescending(_ => _.InternalRecordId).ToList();
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                    }
                 }
 
-                switch (operation.ExistingRecordNotEncounteredStrategy)
-                {
-                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
-                        return new StreamRecord[0];
-                    case ExistingRecordNotEncounteredStrategy.Throw:
-                        throw new InvalidOperationException(
-                            Invariant(
-                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
-                    default:
-                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
-                }
+                return ProcessDefaultReturn();
             }
         }
 
@@ -336,36 +354,53 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                IReadOnlyList<StreamRecordMetadata> ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return new StreamRecordMetadata[0];
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
 
+                if (partition == null)
+                {
+                    return ProcessDefaultReturn();
+                }
+
                 var result =
-                    partition?
+                    partition
                        .Where(
                             _ => _.Metadata.FuzzyMatchTypesAndId(
                                 operation.StringSerializedId,
                                 operation.IdentifierType,
                                 operation.ObjectType,
                                 operation.TypeVersionMatchStrategy))
-                       .OrderBy(_ => _.InternalRecordId)
-                       .Select(_ => _.Metadata)
                        .ToList();
 
-                if (result != null && result.Any())
+                if (result.Any())
                 {
-                    return result;
+                    switch (operation.OrderRecordsStrategy)
+                    {
+                        case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                            return result.OrderBy(_ => _.InternalRecordId).Select(_ => _.Metadata).ToList();
+                        case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                            return result.OrderByDescending(_ => _.InternalRecordId).Select(_ => _.Metadata).ToList();
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                    }
                 }
 
-                switch (operation.ExistingRecordNotEncounteredStrategy)
-                {
-                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
-                        return new StreamRecordMetadata[0];
-                    case ExistingRecordNotEncounteredStrategy.Throw:
-                        throw new InvalidOperationException(
-                            Invariant(
-                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
-                    default:
-                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
-                }
+                return ProcessDefaultReturn();
             }
         }
 

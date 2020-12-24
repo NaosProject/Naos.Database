@@ -399,7 +399,22 @@ namespace Naos.Database.Protocol.FileSystem
                     }
                 }
 
-                return result.Any() ? result : ProcessDefaultReturn();
+                if (result.Any())
+                {
+                    switch (operation.OrderRecordsStrategy)
+                    {
+                        case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                            return result.OrderBy(_ => _.InternalRecordId).ToList();
+                        case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                            return result.OrderByDescending(_ => _.InternalRecordId).ToList();
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                    }
+                }
+                else
+                {
+                    return ProcessDefaultReturn();
+                }
             }
         }
 
@@ -439,7 +454,7 @@ namespace Naos.Database.Protocol.FileSystem
                     return ProcessDefaultReturn();
                 }
 
-                var result = new List<StreamRecordMetadata>();
+                var result = new List<Tuple<long, StreamRecordMetadata>>();
                 foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
                 {
                     var fileText = File.ReadAllText(metadataFilePathToTest);
@@ -450,11 +465,27 @@ namespace Naos.Database.Protocol.FileSystem
                         operation.ObjectType,
                         operation.TypeVersionMatchStrategy))
                     {
-                        result.Add(metadata);
+                        var internalRecordId = GetRootIdFromFilePath(metadataFilePathToTest);
+                        result.Add(new Tuple<long, StreamRecordMetadata>(internalRecordId, metadata));
                     }
                 }
 
-                return result.Any() ? result : ProcessDefaultReturn();
+                if (result.Any())
+                {
+                    switch (operation.OrderRecordsStrategy)
+                    {
+                        case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                            return result.OrderBy(_ => _.Item1).Select(_ => _.Item2).ToList();
+                        case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                            return result.OrderByDescending(_ => _.Item1).Select(_ => _.Item2).ToList();
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                    }
+                }
+                else
+                {
+                    return ProcessDefaultReturn();
+                }
             }
         }
 

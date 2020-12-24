@@ -4,7 +4,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Protocol.SqlServer.Test
+namespace Naos.Protocol.FileSystem.Test
 {
     using System;
     using System.Collections.Generic;

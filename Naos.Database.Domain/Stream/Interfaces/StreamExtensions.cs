@@ -264,6 +264,114 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
+        /// Wraps <see cref="GetAllRecordsByIdOp{TId}"/>.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="stream">The stream.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
+        /// <param name="orderRecordsStrategy">The order records strategy.</param>
+        /// <returns>Matching stream record .</returns>
+        public static IReadOnlyList<StreamRecordWithId<TId>> GetAllRecordsById<TId>(
+            this IReadOnlyStream stream,
+            TId identifier,
+            TypeRepresentation objectType = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
+            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
+        {
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var operation = new GetAllRecordsByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
+            var result = protocol.Execute(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Wraps <see cref="GetAllRecordsByIdOp{TId}"/>.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="stream">The stream.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
+        /// <param name="orderRecordsStrategy">The order records strategy.</param>
+        /// <returns>Matching stream record .</returns>
+        public static async Task<IReadOnlyList<StreamRecordWithId<TId>>> GetAllRecordsByIdAsync<TId>(
+            this IReadOnlyStream stream,
+            TId identifier,
+            TypeRepresentation objectType = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
+            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
+        {
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var operation = new GetAllRecordsByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
+            var result = await protocol.ExecuteAsync(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Wraps <see cref="GetAllRecordsMetadataByIdOp{TId}"/>.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="stream">The stream.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
+        /// <param name="orderRecordsStrategy">The order records strategy.</param>
+        /// <returns>Matching stream record metadata.</returns>
+        public static IReadOnlyList<StreamRecordMetadata<TId>> GetAllRecordsMetadataById<TId>(
+            this IReadOnlyStream stream,
+            TId identifier,
+            TypeRepresentation objectType = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
+            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
+        {
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var operation = new GetAllRecordsMetadataByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
+            var result = protocol.Execute(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Wraps <see cref="GetAllRecordsMetadataByIdOp{TId}"/>.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="stream">The stream.</param>
+        /// <param name="identifier">The identifier.</param>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
+        /// <param name="orderRecordsStrategy">The order records strategy.</param>
+        /// <returns>Matching stream record metadata.</returns>
+        public static async Task<IReadOnlyList<StreamRecordMetadata<TId>>> GetAllRecordsMetadataByIdAsync<TId>(
+            this IReadOnlyStream stream,
+            TId identifier,
+            TypeRepresentation objectType = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
+            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
+        {
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var operation = new GetAllRecordsMetadataByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
+            var result = await protocol.ExecuteAsync(operation);
+            return result;
+        }
+
+        /// <summary>
         /// Wraps <see cref="GetLatestRecordMetadataByIdOp{TId}"/>.
         /// </summary>
         /// <typeparam name="TId">The type of the identifier.</typeparam>

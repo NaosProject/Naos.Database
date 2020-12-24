@@ -431,6 +431,82 @@ namespace Naos.Protocol.SqlServer.Test
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
+
+        [Fact]
+        public static void GetAllRecordsAndMetadataByIdTest()
+        {
+            var streamName = "FS_GetAllRecordsAndMetadataByIdTest";
+
+            var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var count = 5;
+
+            var allRecordsFirst = stream.GetAllRecordsById(1L);
+            allRecordsFirst.MustForTest().BeEmptyEnumerable();
+            var allRecordsMetadataFirst = stream.GetAllRecordsMetadataById(1L);
+            allRecordsMetadataFirst.MustForTest().BeEmptyEnumerable();
+
+            for (int idx = 0;
+                idx < count;
+                idx++)
+            {
+                stream.PutWithId(1L, idx);
+            }
+
+            var allRecordsWrongId = stream.GetAllRecordsById(2L);
+            allRecordsWrongId.MustForTest().BeEmptyEnumerable();
+            var allRecordsMetadataWrongId = stream.GetAllRecordsMetadataById(2L);
+            allRecordsMetadataWrongId.MustForTest().BeEmptyEnumerable();
+
+            var allRecords = stream.GetAllRecordsById(1L);
+            allRecords.MustForTest().NotBeEmptyEnumerable();
+            var allRecordsMetadata = stream.GetAllRecordsMetadataById(1L);
+            allRecordsMetadata.MustForTest().NotBeEmptyEnumerable();
+
+            for (int idx = 0;
+                idx < count;
+                idx++)
+            {
+                allRecords[idx].Payload.SerializedPayload.MustForTest().BeEqualTo(idx.ToString());
+                allRecordsMetadata[idx].MustForTest().BeEqualTo(allRecords[idx].Metadata);
+            }
+
+            var allRecordsReverse = stream.GetAllRecordsById(1L, orderRecordsStrategy: OrderRecordsStrategy.ByInternalRecordIdDescending);
+            allRecordsReverse.MustForTest().NotBeEmptyEnumerable();
+            var allRecordsMetadataReverse = stream.GetAllRecordsMetadataById(1L, orderRecordsStrategy: OrderRecordsStrategy.ByInternalRecordIdDescending);
+            allRecordsMetadataReverse.MustForTest().NotBeEmptyEnumerable();
+
+            for (int idx = 0;
+                idx < count;
+                idx++)
+            {
+                allRecordsReverse[idx].Payload.SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString());
+                allRecordsMetadataReverse[idx].MustForTest().BeEqualTo(allRecordsReverse[idx].Metadata);
+            }
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
     }
 
     public class MyObject : IIdentifiableBy<string>, IHaveTags

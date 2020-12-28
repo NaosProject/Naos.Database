@@ -296,8 +296,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\xunit.core.2.4.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.4.1\build\xunit.core.props'))" />
     <Error Condition="!Exists('..\packages\xunit.core.2.4.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.4.1\build\xunit.core.targets'))" />
-    <Error Condition="!Exists('..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets'))" />
+    <Error Condition="!Exists('..\packages\Naos.Build.Analyzers.1.55.48\build\Naos.Build.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Naos.Build.Analyzers.1.55.48\build\Naos.Build.Analyzers.targets'))" />
   </Target>
   <Import Project="..\packages\xunit.core.2.4.1\build\xunit.core.targets" Condition="Exists('..\packages\xunit.core.2.4.1\build\xunit.core.targets')" />
-  <Import Project="..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.47\build\Naos.Build.Analyzers.targets')" />
+  <Import Project="..\packages\Naos.Build.Analyzers.1.55.48\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.48\build\Naos.Build.Analyzers.targets')" />
 </Project>

@@ -6,6 +6,9 @@
       <!-- We prefer 'Dropdown' (or 'drop-down') to 'DropDown'.  See <Deprecated><Term PreferredAlternate="Dropdown"> for more details  -->
       <Word>DropDown</Word>
 
+      <!-- We prefer 'Username' to 'UserName'.  See <Deprecated><Term PreferredAlternate="Username"> for more details  -->
+      <Word>UserName</Word>
+
     </Unrecognized>
     <Recognized>
       <!-- Describes data that was made anonymous -->
@@ -145,7 +148,7 @@
        -->
 
       <Term PreferredAlternate="Dropdown">DropDown</Term>
-
+      <Term PreferredAlternate="Username">UserName</Term>
     </Deprecated>
     <Compound>
       <Term CompoundAlternate="CellPhone">cellphone</Term>

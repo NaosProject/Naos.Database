@@ -550,7 +550,20 @@ namespace Naos.Database.Domain
                                                       operation.ObjectType,
                                                       operation.TypeVersionMatchStrategy))
                                              .ToList();
-                        var recordToHandle = matchingRecords.FirstOrDefault();
+
+                        StreamRecord recordToHandle;
+                        switch (operation.OrderRecordsStrategy)
+                        {
+                            case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                                recordToHandle = matchingRecords.OrderBy(_ => _.InternalRecordId).FirstOrDefault();
+                                break;
+                            case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                                recordToHandle = matchingRecords.OrderByDescending(_ => _.InternalRecordId).FirstOrDefault();
+                                break;
+                            default:
+                                throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                        }
+
                         if (recordToHandle != null)
                         {
                             if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))

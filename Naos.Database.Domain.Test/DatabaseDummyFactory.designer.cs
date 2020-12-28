@@ -231,6 +231,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
@@ -239,6 +240,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
@@ -246,6 +248,7 @@ namespace Naos.Database.Domain.Test
                 () => new TryHandleRecordWithIdOp<Version, Version>(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
@@ -254,6 +257,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 

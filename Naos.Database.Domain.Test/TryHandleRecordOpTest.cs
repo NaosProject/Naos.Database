@@ -45,6 +45,7 @@ namespace Naos.Database.Domain.Test
                                     referenceObject.IdentifierType,
                                     referenceObject.ObjectType,
                                     referenceObject.TypeVersionMatchStrategy,
+                                    referenceObject.OrderRecordsStrategy,
                                     referenceObject.SpecifiedResourceLocator,
                                     referenceObject.Tags);
 
@@ -71,6 +72,7 @@ namespace Naos.Database.Domain.Test
                                     referenceObject.IdentifierType,
                                     referenceObject.ObjectType,
                                     referenceObject.TypeVersionMatchStrategy,
+                                    referenceObject.OrderRecordsStrategy,
                                     referenceObject.SpecifiedResourceLocator,
                                     referenceObject.Tags);
 
@@ -96,6 +98,7 @@ namespace Naos.Database.Domain.Test
                                     referenceObject.IdentifierType,
                                     referenceObject.ObjectType,
                                     referenceObject.TypeVersionMatchStrategy,
+                                    referenceObject.OrderRecordsStrategy,
                                     referenceObject.SpecifiedResourceLocator,
                                     referenceObject.Tags);
 

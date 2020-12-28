@@ -24,12 +24,14 @@ namespace Naos.Database.Domain
         /// <param name="concern">The concern.</param>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
+        /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
         public TryHandleRecordOp(
             string concern,
             TypeRepresentation identifierType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null)
         {
@@ -38,6 +40,7 @@ namespace Naos.Database.Domain
             this.Concern = concern;
             this.IdentifierType = identifierType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.OrderRecordsStrategy = orderRecordsStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
         }
@@ -59,6 +62,12 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The type version match strategy.</value>
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the order records strategy.
+        /// </summary>
+        /// <value>The order records strategy.</value>
+        public OrderRecordsStrategy OrderRecordsStrategy { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<TryHandleRecordWithIdOp<Version, Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version, Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version, Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsStrategy = {systemUnderTest.OrderRecordsStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,6 +68,7 @@ namespace Naos.Database.Domain.Test
                         var result = new TryHandleRecordWithIdOp<Version, Version>(
                                              null,
                                              referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
@@ -87,6 +88,7 @@ namespace Naos.Database.Domain.Test
                         var result = new TryHandleRecordWithIdOp<Version, Version>(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags);
 
@@ -106,6 +108,7 @@ namespace Naos.Database.Domain.Test
                         var result = new TryHandleRecordWithIdOp<Version, Version>(
                                              referenceObject.Concern,
                                              referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.OrderRecordsStrategy,
                                              null,
                                              referenceObject.Tags);
 
@@ -125,6 +128,7 @@ namespace Naos.Database.Domain.Test
                         var result = new TryHandleRecordWithIdOp<Version, Version>(
                                              referenceObject.Concern,
                                              referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              null);
 
@@ -144,6 +148,7 @@ namespace Naos.Database.Domain.Test
                         var result = new TryHandleRecordWithIdOp<Version, Version>(
                                              referenceObject.Concern,
                                              referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              new Dictionary<string, string>());
 
@@ -169,6 +174,7 @@ namespace Naos.Database.Domain.Test
                         var result = new TryHandleRecordWithIdOp<Version, Version>(
                                              referenceObject.Concern,
                                              referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              dictionaryWithNullValue);
 
@@ -192,6 +198,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new TryHandleRecordWithIdOp<Version, Version>(
                                                       referenceObject.Concern,
                                                       referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Concern,
@@ -214,6 +221,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new TryHandleRecordWithIdOp<Version, Version>(
                                                       referenceObject.Concern,
                                                       referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
@@ -222,6 +230,29 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "TypeVersionMatchStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version, Version>>
+                {
+                    Name = "OrderRecordsStrategy should return same 'orderRecordsStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version, Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = new TryHandleRecordWithIdOp<Version, Version>(
+                                                      referenceObject.Concern,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.OrderRecordsStrategy,
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags),
+                            ExpectedPropertyValue = referenceObject.OrderRecordsStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "OrderRecordsStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version, Version>>
@@ -236,6 +267,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new TryHandleRecordWithIdOp<Version, Version>(
                                                       referenceObject.Concern,
                                                       referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
@@ -258,6 +290,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new TryHandleRecordWithIdOp<Version, Version>(
                                                       referenceObject.Concern,
                                                       referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags),
                             ExpectedPropertyValue = referenceObject.Tags,
@@ -304,6 +337,26 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version, Version>>
+                {
+                    Name = "DeepCloneWithOrderRecordsStrategy should deep clone object and replace OrderRecordsStrategy with the provided orderRecordsStrategy",
+                    WithPropertyName = "OrderRecordsStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version, Version>>();
+
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.OrderRecordsStrategy.IsEqualTo(_.OrderRecordsStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.OrderRecordsStrategy,
                         };
 
                         return result;
@@ -363,6 +416,7 @@ namespace Naos.Database.Domain.Test
                         new TryHandleRecordWithIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                     },
@@ -371,21 +425,31 @@ namespace Naos.Database.Domain.Test
                         new TryHandleRecordWithIdOp<Version, Version>(
                                 A.Dummy<TryHandleRecordWithIdOp<Version, Version>>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new TryHandleRecordWithIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<TryHandleRecordWithIdOp<Version, Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new TryHandleRecordWithIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                A.Dummy<TryHandleRecordWithIdOp<Version, Version>>().Whose(_ => !_.OrderRecordsStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy)).OrderRecordsStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags),
+                        new TryHandleRecordWithIdOp<Version, Version>(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 A.Dummy<TryHandleRecordWithIdOp<Version, Version>>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags),
                         new TryHandleRecordWithIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 A.Dummy<TryHandleRecordWithIdOp<Version, Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags),
                     },
@@ -742,7 +806,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "TypeVersionMatchStrategy", "SpecifiedResourceLocator", "Tags" };
+                var propertyNames = new string[] { "Concern", "TypeVersionMatchStrategy", "OrderRecordsStrategy", "SpecifiedResourceLocator", "Tags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

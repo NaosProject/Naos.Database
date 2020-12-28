@@ -49,6 +49,7 @@ namespace Naos.Database.Domain
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
                 operation.TypeVersionMatchStrategy,
+                operation.OrderRecordsStrategy,
                 operation.SpecifiedResourceLocator,
                 operation.Tags);
             var record = this.stream.Execute(delegatedOperation);

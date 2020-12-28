@@ -22,8 +22,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="concern">The concern.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
+        /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
-        /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
         public TryHandleRecordWithIdOp(
             string concern,

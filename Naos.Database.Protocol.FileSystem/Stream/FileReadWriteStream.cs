@@ -684,7 +684,8 @@ namespace Naos.Database.Protocol.FileSystem
                         var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
                         var tupleOfIdsToHandleAndIdsToIgnore = GetIdsToHandleAndIdsToIgnore(concernDirectory);
                         var rootPath = this.GetRootPathFromLocator(locator);
-                        var recordToHandleDetails =
+
+                        var predicate =
                             Directory.GetFiles(rootPath, "*." + MetadataFileExtension, SearchOption.TopDirectoryOnly)
                                      .Select(
                                           _ => new
@@ -705,16 +706,37 @@ namespace Naos.Database.Protocol.FileSystem
                                                          Path = _.Path,
                                                          Metadata = metadata,
                                                      };
-                                          })
-                                     .FirstOrDefault(
+                                          });
+
+                        string metadataFilePath;
+                        StreamRecordMetadata recordMetadata;
+                        switch (operation.OrderRecordsStrategy)
+                        {
+                            case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                                var ascItem = predicate.OrderBy(_ => _.Id).FirstOrDefault(
                                           _ => _.Metadata.FuzzyMatchTypes(
                                               operation.IdentifierType,
                                               operation.ObjectType,
                                               operation.TypeVersionMatchStrategy));
+                                metadataFilePath = ascItem?.Path;
+                                recordMetadata = ascItem?.Metadata;
+                                break;
+                            case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                                var descItem = predicate.OrderByDescending(_ => _.Id).FirstOrDefault(
+                                          _ => _.Metadata.FuzzyMatchTypes(
+                                              operation.IdentifierType,
+                                              operation.ObjectType,
+                                              operation.TypeVersionMatchStrategy));
+                                metadataFilePath = descItem?.Path;
+                                recordMetadata = descItem?.Metadata;
+                                break;
+                            default:
+                                throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                        }
 
-                        if (recordToHandleDetails != null)
+                        if (!string.IsNullOrWhiteSpace(metadataFilePath) && recordMetadata != null)
                         {
-                            var recordToHandle = this.GetStreamRecordFromMetadataFile(recordToHandleDetails.Path, recordToHandleDetails.Metadata);
+                            var recordToHandle = this.GetStreamRecordFromMetadataFile(metadataFilePath, recordMetadata);
                             if (!tupleOfIdsToHandleAndIdsToIgnore.Item1.Contains(recordToHandle.InternalRecordId))
                             {
                                 // first time needs a requested record

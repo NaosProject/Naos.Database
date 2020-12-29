@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutWithIdAndReturnInternalRecordIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectToPut = {systemUnderTest.ObjectToPut?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {systemUnderTest.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutWithIdAndReturnInternalRecordIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectToPut = {systemUnderTest.ObjectToPut?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {systemUnderTest.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -69,7 +69,8 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.ObjectToPut,
                                              referenceObject.Tags,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                                             referenceObject.ExistingRecordEncounteredStrategy,
+                                             referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
@@ -88,7 +89,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              null,
                                              referenceObject.Tags,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                                             referenceObject.ExistingRecordEncounteredStrategy,
+                                             referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
@@ -107,7 +109,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.ObjectToPut,
                                              null,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                                             referenceObject.ExistingRecordEncounteredStrategy,
+                                             referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
@@ -126,7 +129,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.ObjectToPut,
                                              new Dictionary<string, string>(),
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                                             referenceObject.ExistingRecordEncounteredStrategy,
+                                             referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
@@ -151,7 +155,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.ObjectToPut,
                                              dictionaryWithNullValue,
-                                             referenceObject.ExistingRecordEncounteredStrategy);
+                                             referenceObject.ExistingRecordEncounteredStrategy,
+                                             referenceObject.TypeVersionMatchStrategy);
 
                         return result;
                     },
@@ -174,7 +179,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.ObjectToPut,
                                                       referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
+                                                      referenceObject.ExistingRecordEncounteredStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -196,7 +202,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.ObjectToPut,
                                                       referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
+                                                      referenceObject.ExistingRecordEncounteredStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.ObjectToPut,
                         };
 
@@ -218,7 +225,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.ObjectToPut,
                                                       referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
+                                                      referenceObject.ExistingRecordEncounteredStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
 
@@ -240,13 +248,37 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.ObjectToPut,
                                                       referenceObject.Tags,
-                                                      referenceObject.ExistingRecordEncounteredStrategy),
+                                                      referenceObject.ExistingRecordEncounteredStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.ExistingRecordEncounteredStrategy,
                         };
 
                         return result;
                     },
                     PropertyName = "ExistingRecordEncounteredStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
+                {
+                    Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
+                                                      referenceObject.Id,
+                                                      referenceObject.ObjectToPut,
+                                                      referenceObject.Tags,
+                                                      referenceObject.ExistingRecordEncounteredStrategy,
+                                                      referenceObject.TypeVersionMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TypeVersionMatchStrategy",
                 });
 
         private static readonly DeepCloneWithTestScenarios<PutWithIdAndReturnInternalRecordIdOp<Version, Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>()
@@ -329,6 +361,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
+                {
+                    Name = "DeepCloneWithTypeVersionMatchStrategy should deep clone object and replace TypeVersionMatchStrategy with the provided typeVersionMatchStrategy",
+                    WithPropertyName = "TypeVersionMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>();
+
+                        var referenceObject = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly PutWithIdAndReturnInternalRecordIdOp<Version, Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>();
@@ -345,7 +397,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PutWithIdAndReturnInternalRecordIdOp<Version, Version>[]
                     {
@@ -353,22 +406,32 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.ObjectToPut.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectToPut)).ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy),
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.ExistingRecordEncounteredStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy)).ExistingRecordEncounteredStrategy),
+                                A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.ExistingRecordEncounteredStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy)).ExistingRecordEncounteredStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                        new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.ObjectToPut,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
+                                A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -732,7 +795,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "ObjectToPut", "Tags", "ExistingRecordEncounteredStrategy" };
+                var propertyNames = new string[] { "Id", "ObjectToPut", "Tags", "ExistingRecordEncounteredStrategy", "TypeVersionMatchStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -464,7 +464,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<StreamRecordMetadata>(),
                                  A.Dummy<DescribedSerialization>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new UniqueLongIssuedEvent(
@@ -495,26 +496,30 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutAndReturnInternalRecordIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutWithIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>()));
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

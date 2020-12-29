@@ -27,16 +27,19 @@ namespace Naos.Database.Domain
         /// <param name="objectToPut">The object to put into a stream.</param>
         /// <param name="tags">Optional tags to put with the record.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public PutWithIdAndReturnInternalRecordIdOp(
             TId id,
             TObject objectToPut,
             IReadOnlyDictionary<string, string> tags = null,
-            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             this.Id = id;
             this.ObjectToPut = objectToPut;
             this.Tags = tags;
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
+            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
 
         /// <summary>
@@ -59,5 +62,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The existing record encountered strategy.</value>
         public ExistingRecordEncounteredStrategy ExistingRecordEncounteredStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the type version match strategy.
+        /// </summary>
+        /// <value>The type version match strategy.</value>
+        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="stringSerializedId">The identifier serialized as a string using the same serializer as the object.</param>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>

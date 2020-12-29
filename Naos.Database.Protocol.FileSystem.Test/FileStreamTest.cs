@@ -12,6 +12,7 @@ namespace Naos.Protocol.FileSystem.Test
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using FakeItEasy;
     using Naos.Database.Domain;
     using Naos.Database.Protocol.FileSystem;
     using Naos.Database.Serialization.Json;
@@ -473,6 +474,67 @@ namespace Naos.Protocol.FileSystem.Test
 
             var recordAgain = stream.Execute(new TryHandleRecordOp(concern));
             recordAgain.MustForTest().BeNull();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
+        public static void ExistingRecordEncounteredStrategyTest()
+        {
+            var streamName = "FS_ExistingRecordEncounteredStrategyTest";
+
+            var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var dummyOne = A.Dummy<MyObject>();
+            var dummyTwo = A.Dummy<MyObject>();
+
+            stream.PutWithId(1L, dummyOne);
+
+            var exceptionById = Record.Exception(() => stream.PutWithId(1L, "otherType", null, ExistingRecordEncounteredStrategy.ThrowIfFoundById));
+            exceptionById.MustForTest().NotBeNull();
+            exceptionById.MustForTest().BeOfType<InvalidOperationException>();
+            exceptionById?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundById));
+            stream.PutWithId(1L, "otherType"); // should not throw
+
+            var exceptionByIdAndType = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType));
+            exceptionByIdAndType.MustForTest().NotBeNull();
+            exceptionByIdAndType.MustForTest().BeOfType<InvalidOperationException>();
+            exceptionByIdAndType?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType));
+            stream.PutWithId(1L, dummyTwo); // should not throw
+
+            var exceptionByIdAndTypeAndContent = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent));
+            exceptionByIdAndTypeAndContent.MustForTest().NotBeNull();
+            exceptionByIdAndTypeAndContent.MustForTest().BeOfType<InvalidOperationException>();
+            exceptionByIdAndTypeAndContent?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent));
+            stream.PutWithId(1L, dummyTwo); // should not throw
+
+            stream.PutWithId(2L, "hello");
+            stream.PutWithId(2L, dummyTwo, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById);
+            stream.PutWithId(2L, "other", existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType);
+            stream.PutWithId(2L, "hello", existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent);
+            var indexTwoRecords = stream.GetAllRecordsById(2L);
+            indexTwoRecords.MustForTest().HaveCount(1);
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }

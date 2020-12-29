@@ -11,6 +11,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
     using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
+    using FakeItEasy;
     using Naos.Database.Domain;
     using Naos.Database.Serialization.Json;
     using Naos.Protocol.Domain;
@@ -370,6 +371,102 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var existsFourth = stream.DoesAnyExistById(1L, typeof(Guid).ToRepresentation());
             existsFourth.MustForTest().BeTrue();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
+        public static void NullIdentifierAndValueTest()
+        {
+            var streamName = "MS_NullIdentifierAndValueTest";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory());
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            stream.PutWithId((string)null, (MyObject)null);
+            var result = stream.GetLatestObjectById<string, MyObject>(null);
+            result.MustForTest().BeNull();
+
+            var concern = "NullTesting";
+            var record = stream.Execute(new TryHandleRecordOp(concern));
+            record.MustForTest().NotBeNull();
+            record.Payload.SerializedPayload.MustForTest().BeEqualTo("null");
+
+            stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.InternalRecordId, concern));
+
+            var recordAgain = stream.Execute(new TryHandleRecordOp(concern));
+            recordAgain.MustForTest().BeNull();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
+        public static void ExistingRecordEncounteredStrategyTest()
+        {
+            var streamName = "MS_ExistingRecordEncounteredStrategyTest";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory());
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var dummyOne = A.Dummy<MyObject>();
+            var dummyTwo = A.Dummy<MyObject>();
+
+            stream.PutWithId(1L, dummyOne);
+
+            var exceptionById = Record.Exception(() => stream.PutWithId(1L, "otherType", null, ExistingRecordEncounteredStrategy.ThrowIfFoundById));
+            exceptionById.MustForTest().NotBeNull();
+            exceptionById.MustForTest().BeOfType<InvalidOperationException>();
+            exceptionById?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundById));
+            stream.PutWithId(1L, "otherType"); // should not throw
+
+            var exceptionByIdAndType = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType));
+            exceptionByIdAndType.MustForTest().NotBeNull();
+            exceptionByIdAndType.MustForTest().BeOfType<InvalidOperationException>();
+            exceptionByIdAndType?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType));
+            stream.PutWithId(1L, dummyTwo); // should not throw
+
+            var exceptionByIdAndTypeAndContent = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent));
+            exceptionByIdAndTypeAndContent.MustForTest().NotBeNull();
+            exceptionByIdAndTypeAndContent.MustForTest().BeOfType<InvalidOperationException>();
+            exceptionByIdAndTypeAndContent?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent));
+            stream.PutWithId(1L, dummyTwo); // should not throw
+
+            stream.PutWithId(2L, "hello");
+            stream.PutWithId(2L, dummyTwo, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById);
+            stream.PutWithId(2L, "other", existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType);
+            stream.PutWithId(2L, "hello", existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent);
+            var indexTwoRecords = stream.GetAllRecordsById(2L);
+            indexTwoRecords.MustForTest().HaveCount(1);
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }

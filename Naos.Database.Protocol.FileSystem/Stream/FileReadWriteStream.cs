@@ -32,6 +32,8 @@ namespace Naos.Database.Protocol.FileSystem
     public partial class FileReadWriteStream :
         StandardReadWriteStreamBase
     {
+        private const string NullTokenForFile = "<<<<NULL VALUE>>>>";
+        private const string NullTokenForPath = "NullValue";
         private const string RecordHandlingTrackingDirectoryName = "_HandlingTracking";
         private const string RecordIdentifierTrackingFileName = "_InternalRecordIdentifierTracking.nfo";
         private const string RecordHandlingEntryIdentifierTrackingFileName = "_InternalRecordHandlingEntryIdentifierTracking.nfo";
@@ -266,7 +268,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -320,7 +322,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -374,7 +376,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -445,7 +447,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -577,7 +579,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var files = operation.IdsToMatch.SelectMany(
                                           _ => Directory.GetFiles(
                                               concernDirectory,
-                                              "*___ExtId-" + _.StringSerializedId.EncodeForFilePath() + "___*." + MetadataFileExtension,
+                                              "*___ExtId-" + (_.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath) + "___*." + MetadataFileExtension,
                                               SearchOption.TopDirectoryOnly).Select(__ => new Tuple<StringSerializedIdentifier, string>(_, __)))
                                      .ToList();
 
@@ -891,7 +893,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId.EncodeForFilePath()}*.{MetadataFileExtension}"),
+                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath}*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -959,7 +961,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var fileExtension = operation.Payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                     operation.Payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
-                var filePathIdentifier = operation.Metadata.StringSerializedId.EncodeForFilePath();
+                var filePathIdentifier = operation.Metadata.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath;
                 var fileBaseName = Invariant($"{newId.PadWithLeadingZeros()}___{timestampString}___{filePathIdentifier}");
                 var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
                 var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
@@ -976,7 +978,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
                 else
                 {
-                    File.WriteAllText(payloadFilePath, operation.Payload.SerializedPayload);
+                    File.WriteAllText(payloadFilePath, operation.Payload.SerializedPayload ?? NullTokenForFile);
                 }
 
                 return newId;
@@ -1505,6 +1507,11 @@ namespace Naos.Database.Protocol.FileSystem
                     }
 
                     stringPayload = File.ReadAllText(stringFilePath);
+                    if (stringPayload == NullTokenForFile)
+                    {
+                        stringPayload = null;
+                    }
+
                     serializationFormat = SerializationFormat.String;
                 }
 
@@ -1835,7 +1842,7 @@ namespace Naos.Database.Protocol.FileSystem
             var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "--");
             var fileExtension = payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
                 payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
-            var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId?.EncodeForFilePath() ?? nameof(NullStreamIdentifier)}___Status-{metadata.Status}");
+            var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId?.EncodeForFilePath() ?? NullTokenForPath}___Status-{metadata.Status}");
             var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
             var payloadFileName = Invariant($"{fileBaseName}.{fileExtension}");
             var metadataFilePath = Path.Combine(concernDirectory, metadataFileName);

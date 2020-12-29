@@ -951,7 +951,7 @@ namespace Naos.Database.Protocol.FileSystem
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
                             ? metadataPathsThatCouldMatch?.Select(_ => new { Path = _, Text = File.ReadAllText(_) })
-                                                         .Select(_ => new { Path = _.Path, Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text) })
+                                                         .Select(_ => new { MetadataPath = _.Path, DataPath = Path.ChangeExtension(_.Path, this.DefaultSerializerRepresentation.SerializationKind.ToString().ToLowerInvariant()), Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text) })
                                                          .Where(
                                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                                   operation.Metadata.StringSerializedId,
@@ -976,20 +976,18 @@ namespace Naos.Database.Protocol.FileSystem
                         case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {metadataThatCouldMatch.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' yet found {metadataThatCouldMatch.Count}."));
                             }
 
                             break;
                         case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent:
                             var matchesThrow =
-                                metadataThatCouldMatch?.Where(_ => File.ReadAllText(_.Path) == (operation.Payload.SerializedPayload ?? NullToken)).ToList()
+                                metadataThatCouldMatch?.Where(_ => File.ReadAllText(_.DataPath) == (operation.Payload.SerializedPayload ?? NullToken)).ToList()
                              ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataThatCouldMatch)} should not be null."));
 
                             if (matchesThrow.Any())
                             {
-                                throw new InvalidOperationException(
-                                    Invariant(
-                                        $"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesThrow.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload.SerializedPayload}' yet found {matchesThrow.Count}."));
                             }
 
                             break;
@@ -1009,7 +1007,7 @@ namespace Naos.Database.Protocol.FileSystem
                             break;
                         case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
                             var matchesDoNotWrite =
-                                metadataThatCouldMatch?.Where(_ => File.ReadAllText(_.Path) == (operation.Payload.SerializedPayload ?? NullToken)).ToList()
+                                metadataThatCouldMatch?.Where(_ => File.ReadAllText(_.DataPath) == (operation.Payload.SerializedPayload ?? NullToken)).ToList()
                              ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataThatCouldMatch)} should not be null."));
 
                             if (matchesDoNotWrite.Any())

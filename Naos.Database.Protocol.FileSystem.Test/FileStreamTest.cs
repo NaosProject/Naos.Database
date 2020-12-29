@@ -433,6 +433,51 @@ namespace Naos.Protocol.FileSystem.Test
         }
 
         [Fact]
+        public static void NullIdentifierAndValueTest()
+        {
+            var streamName = "FS_NullIdentifierAndValueTest";
+
+            var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            stream.PutWithId((string)null, (MyObject)null);
+            var result = stream.GetLatestObjectById<string, MyObject>(null);
+            result.MustForTest().BeNull();
+
+            var concern = "NullTesting";
+            var record = stream.Execute(new TryHandleRecordOp(concern));
+            record.MustForTest().NotBeNull();
+            record.Payload.SerializedPayload.MustForTest().BeEqualTo("null");
+
+            stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.InternalRecordId, concern));
+
+            var recordAgain = stream.Execute(new TryHandleRecordOp(concern));
+            recordAgain.MustForTest().BeNull();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
         public static void GetAllRecordsAndMetadataByIdTest()
         {
             var streamName = "FS_GetAllRecordsAndMetadataByIdTest";

@@ -732,7 +732,7 @@ namespace Naos.Database.Domain
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
                                                   operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
-                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
+                                                  null,
                                                   operation.TypeVersionMatchStrategy))
                                          .ToList() : new List<StreamRecord>();
 
@@ -764,7 +764,7 @@ namespace Naos.Database.Domain
                     case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
                         if (matchesIdAndObject.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesIdAndObject.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' yet found {matchesIdAndObject.Count}."));
                         }
 
                         break;
@@ -774,7 +774,7 @@ namespace Naos.Database.Domain
 
                         if (matchesThrow.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesThrow.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload.SerializedPayload}' yet found {matchesThrow.Count}."));
                         }
 
                         break;

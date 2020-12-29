@@ -725,6 +725,85 @@ namespace Naos.Database.Domain
                     this.locatorToRecordPartitionMap.Add(memoryDatabaseLocator, recordPartition);
                 }
 
+                var matchesId =
+                    operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
+                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
+                        ? recordPartition.Where(
+                                              _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                  operation.Metadata.StringSerializedId,
+                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
+                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
+                                                  operation.TypeVersionMatchStrategy))
+                                         .ToList() : new List<StreamRecord>();
+
+                var matchesIdAndObject =
+                    operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
+                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
+                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
+                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
+                        ? recordPartition.Where(
+                                              _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                  operation.Metadata.StringSerializedId,
+                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
+                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
+                                                  operation.TypeVersionMatchStrategy))
+                                         .ToList() : new List<StreamRecord>();
+
+                switch (operation.ExistingRecordEncounteredStrategy)
+                {
+                    case ExistingRecordEncounteredStrategy.None:
+                        /* no-op */
+                        break;
+                    case ExistingRecordEncounteredStrategy.ThrowIfFoundById:
+                        if (matchesId.Any())
+                        {
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesId.Count}."));
+                        }
+
+                        break;
+                    case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
+                        if (matchesIdAndObject.Any())
+                        {
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesIdAndObject.Count}."));
+                        }
+
+                        break;
+                    case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent:
+                        var matchesThrow =
+                            matchesIdAndObject.Where(_ => _.Payload.SerializedPayload == operation.Payload.SerializedPayload).ToList();
+
+                        if (matchesThrow.Any())
+                        {
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesThrow.Count}."));
+                        }
+
+                        break;
+                    case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
+                        if (matchesId.Any())
+                        {
+                            return -1;
+                        }
+
+                        break;
+                    case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
+                        if (matchesIdAndObject.Any())
+                        {
+                            return -1;
+                        }
+
+                        break;
+                    case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
+                        var matchesDoNotWrite =
+                            matchesIdAndObject.Where(_ => _.Payload.SerializedPayload == operation.Payload.SerializedPayload).ToList();
+
+                        if (matchesDoNotWrite.Any())
+                        {
+                            return -1;
+                        }
+
+                        break;
+                }
+
                 var id = Interlocked.Increment(ref this.uniqueLongForInMemoryRecords);
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
                 recordPartition.Add(itemToAdd);

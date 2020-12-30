@@ -88,8 +88,8 @@ namespace Naos.Database.Domain
         public async Task ExecuteAsync(
             PutWithIdOp<TId, TObject> operation)
         {
-            var task = Task.Run(() => this.Execute(operation));
-            await task;
+            this.Execute(operation);
+            await Task.FromResult(true); // just for await
         }
 
         /// <inheritdoc />

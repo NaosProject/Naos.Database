@@ -267,7 +267,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}*.{MetadataFileExtension}"),
+                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -321,7 +321,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}*.{MetadataFileExtension}"),
+                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -375,7 +375,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}*.{MetadataFileExtension}"),
+                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -446,7 +446,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}*.{MetadataFileExtension}"),
+                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -892,7 +892,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var metadataPathsThatCouldMatch = Directory.GetFiles(
                     rootPath,
-                    Invariant($"*{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}*.{MetadataFileExtension}"),
+                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
@@ -943,7 +943,7 @@ namespace Naos.Database.Protocol.FileSystem
                     var metadataPathsThatCouldMatch = operation.ExistingRecordEncounteredStrategy != ExistingRecordEncounteredStrategy.None
                         ? Directory.GetFiles(
                             rootPath,
-                            Invariant($"*{operation.Metadata.StringSerializedId?.EncodeForFilePath() ?? NullToken}*.{MetadataFileExtension}"),
+                            Invariant($"*___{operation.Metadata.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
                             SearchOption.TopDirectoryOnly)
                         : null;
 

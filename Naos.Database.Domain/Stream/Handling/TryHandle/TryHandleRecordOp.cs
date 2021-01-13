@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Handles a record.
     /// </summary>
-    public partial class TryHandleRecordOp : ReturningOperationBase<StreamRecord>, ISpecifyResourceLocator, IHaveTags
+    public partial class TryHandleRecordOp : ReturningOperationBase<StreamRecord>, ISpecifyResourceLocator, IHaveDetails, IHaveTags
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordOp"/> class.
@@ -26,6 +26,7 @@ namespace Naos.Database.Domain
         /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
+        /// <param name="details">The optional details to write with produced events.</param>
         public TryHandleRecordOp(
             string concern,
             TypeRepresentation identifierType = null,
@@ -33,7 +34,8 @@ namespace Naos.Database.Domain
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyDictionary<string, string> tags = null,
+            string details = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
 
@@ -44,6 +46,7 @@ namespace Naos.Database.Domain
             this.OrderRecordsStrategy = orderRecordsStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
+            this.Details = details;
         }
 
         /// <summary>
@@ -81,5 +84,8 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, string> Tags { get; private set; }
+
+        /// <inheritdoc />
+        public string Details { get; private set; }
     }
 }

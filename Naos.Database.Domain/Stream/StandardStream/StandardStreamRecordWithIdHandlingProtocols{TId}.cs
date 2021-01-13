@@ -51,7 +51,8 @@ namespace Naos.Database.Domain
                 operation.TypeVersionMatchStrategy,
                 operation.OrderRecordsStrategy,
                 operation.SpecifiedResourceLocator,
-                operation.Tags);
+                operation.Tags,
+                operation.Details);
             var record = this.stream.Execute(delegatedOperation);
             if (record == null || record.Payload == null || record.Payload.SerializedPayload == null)
             {

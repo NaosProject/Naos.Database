@@ -29,6 +29,51 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static CancelBlockedRecordHandlingOpTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CancelBlockedRecordHandlingOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CancelBlockedRecordHandlingOp>();
+
+                                                   var result = new CancelBlockedRecordHandlingOp(
+                                                       null,
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CancelBlockedRecordHandlingOp>
+                        {
+                            Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CancelBlockedRecordHandlingOp>();
+
+                                                   var result = new CancelBlockedRecordHandlingOp(
+                                                       Invariant($"  {Environment.NewLine}  "),
+                                                       referenceObject.Tags);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "details",
+                                                                   "white space",
+                                                               },
+                        });
         }
     }
 }

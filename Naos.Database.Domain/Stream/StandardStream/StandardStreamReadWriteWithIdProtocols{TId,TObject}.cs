@@ -63,7 +63,9 @@ namespace Naos.Database.Domain
                 locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
-            var result = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var result = record == null
+                ? default(TObject)
+                : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
             return result;
         }
 
@@ -155,6 +157,10 @@ namespace Naos.Database.Domain
                 locator);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
+            if (record == null)
+            {
+                return null;
+            }
 
             var metadata = new StreamRecordMetadata<TId>(
                 operation.Id,

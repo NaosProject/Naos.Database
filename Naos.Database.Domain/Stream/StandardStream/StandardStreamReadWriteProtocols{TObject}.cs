@@ -87,7 +87,10 @@ namespace Naos.Database.Domain
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 
-            var result = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var result = record == null
+                ? default(TObject)
+                : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+
             return result;
         }
 
@@ -111,6 +114,10 @@ namespace Naos.Database.Domain
                 operation.ExistingRecordNotEncounteredStrategy);
 
             var record = this.delegatedProtocols.Execute(delegatedOperation);
+            if (record == null)
+            {
+                return null;
+            }
 
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);

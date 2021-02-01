@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Result of <see cref="PutRecordOp"/>.
     /// </summary>
-    public class PutRecordResult : IModelViaCodeGen
+    public partial class PutRecordResult : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutRecordResult"/> class.

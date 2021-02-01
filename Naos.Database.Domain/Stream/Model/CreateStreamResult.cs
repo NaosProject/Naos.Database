@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Result of <see cref="CreateStreamOp"/>.
     /// </summary>
-    public class CreateStreamResult : IModelViaCodeGen
+    public partial class CreateStreamResult : IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateStreamResult"/> class.

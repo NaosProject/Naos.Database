@@ -307,6 +307,10 @@
     <Compile Include="CreateStreamOpTest.designer.cs">
       <DependentUpon>CreateStreamOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="CreateStreamResultTest.cs" />
+    <Compile Include="CreateStreamResultTest.designer.cs">
+      <DependentUpon>CreateStreamResultTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseDummyFactoryTest.designer.cs">
       <DependentUpon>DatabaseDummyFactoryTest.cs</DependentUpon>
     </Compile>
@@ -410,6 +414,10 @@
     <Compile Include="PutRecordOpTest.cs" />
     <Compile Include="PutRecordOpTest.designer.cs">
       <DependentUpon>PutRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PutRecordResultTest.cs" />
+    <Compile Include="PutRecordResultTest.designer.cs">
+      <DependentUpon>PutRecordResultTest.cs</DependentUpon>
     </Compile>
     <Compile Include="RequestedHandleRecordExecutionEventTest.cs" />
     <Compile Include="RequestedHandleRecordExecutionEventTest.designer.cs">

@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
     public partial class NullReadWriteStream : IReadWriteStream,
                                                IStreamManagementProtocolFactory,
                                                IStreamRecordHandlingProtocolFactory,
-                                               ISyncAndAsyncReturningProtocol<PutRecordOp, long>,
+                                               ISyncAndAsyncReturningProtocol<PutRecordOp, PutRecordResult>,
                                                IModelViaCodeGen
     {
         /// <summary>
@@ -117,14 +117,14 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public long Execute(
+        public PutRecordResult Execute(
             PutRecordOp operation)
         {
             throw new NotImplementedException(ExceptionMessage);
         }
 
         /// <inheritdoc />
-        public Task<long> ExecuteAsync(
+        public Task<PutRecordResult> ExecuteAsync(
             PutRecordOp operation)
         {
             throw new NotImplementedException(ExceptionMessage);

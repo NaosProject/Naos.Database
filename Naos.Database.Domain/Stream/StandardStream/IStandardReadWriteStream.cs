@@ -32,7 +32,7 @@ namespace Naos.Database.Domain
           IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
           IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
           IReturningProtocol<TryHandleRecordOp, StreamRecord>,
-          IReturningProtocol<PutRecordOp, long>,
+          IReturningProtocol<PutRecordOp, PutRecordResult>,
           IVoidProtocol<BlockRecordHandlingOp>,
           IVoidProtocol<CancelBlockedRecordHandlingOp>,
           IVoidProtocol<CancelHandleRecordExecutionRequestOp>,

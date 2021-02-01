@@ -95,7 +95,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public long Execute(
+        public long? Execute(
             PutWithIdAndReturnInternalRecordIdOp<TId, TObject> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -127,11 +127,11 @@ namespace Naos.Database.Domain
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
             var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.TypeVersionMatchStrategy));
 
-            return result;
+            return result.InternalRecordIdOfPutRecord;
         }
 
         /// <inheritdoc />
-        public async Task<long> ExecuteAsync(
+        public async Task<long?> ExecuteAsync(
             PutWithIdAndReturnInternalRecordIdOp<TId, TObject> operation)
         {
             var syncResult = this.Execute(operation);

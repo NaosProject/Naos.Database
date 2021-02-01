@@ -58,7 +58,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public long Execute(
+        public long? Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
             var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.TypeVersionMatchStrategy);
@@ -67,7 +67,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public async Task<long> ExecuteAsync(
+        public async Task<long?> ExecuteAsync(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
             var syncResult = this.Execute(operation);

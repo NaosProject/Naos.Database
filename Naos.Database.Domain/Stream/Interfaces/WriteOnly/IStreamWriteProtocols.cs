@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// </summary>
     public interface IStreamWriteProtocols :
         ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long>,
-        ISyncAndAsyncReturningProtocol<PutRecordOp, long>
+        ISyncAndAsyncReturningProtocol<PutRecordOp, PutRecordResult>
     {
     }
 }

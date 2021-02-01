@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
         "CA1711:IdentifiersShouldNotHaveIncorrectSuffix",
         Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public interface IStreamManagementProtocols
-        : ISyncAndAsyncVoidProtocol<CreateStreamOp>,
+        : ISyncAndAsyncReturningProtocol<CreateStreamOp, CreateStreamResult>,
           ISyncAndAsyncVoidProtocol<DeleteStreamOp>,
           ISyncAndAsyncVoidProtocol<PruneBeforeInternalRecordDateOp>,
           ISyncAndAsyncVoidProtocol<PruneBeforeInternalRecordIdOp>

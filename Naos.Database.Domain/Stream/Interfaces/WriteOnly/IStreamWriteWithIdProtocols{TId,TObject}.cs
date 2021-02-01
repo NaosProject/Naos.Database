@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">Type of the identifier.</typeparam>
     /// <typeparam name="TObject">Type of the object.</typeparam>
     public interface IStreamWriteWithIdProtocols<TId, TObject> :
-        ISyncAndAsyncReturningProtocol<PutWithIdAndReturnInternalRecordIdOp<TId, TObject>, long>,
+        ISyncAndAsyncReturningProtocol<PutWithIdAndReturnInternalRecordIdOp<TId, TObject>, long?>,
         ISyncAndAsyncVoidProtocol<PutWithIdOp<TId, TObject>>
     {
     }

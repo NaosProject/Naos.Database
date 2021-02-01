@@ -130,7 +130,7 @@ namespace Naos.Database.Domain
             TryHandleRecordOp operation);
 
         /// <inheritdoc />
-        public abstract long Execute(
+        public abstract PutRecordResult Execute(
             PutRecordOp operation);
 
         /// <inheritdoc />
@@ -166,7 +166,7 @@ namespace Naos.Database.Domain
             RetryFailedHandleRecordExecutionOp operation);
 
         /// <inheritdoc />
-        public abstract void Execute(
+        public abstract CreateStreamResult Execute(
             CreateStreamOp operation);
 
         /// <inheritdoc />
@@ -182,11 +182,11 @@ namespace Naos.Database.Domain
             PruneBeforeInternalRecordIdOp operation);
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(
+        public async Task<CreateStreamResult> ExecuteAsync(
             CreateStreamOp operation)
         {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
+            var syncResult = this.Execute(operation);
+            return await Task.FromResult(syncResult);
         }
 
         /// <inheritdoc />

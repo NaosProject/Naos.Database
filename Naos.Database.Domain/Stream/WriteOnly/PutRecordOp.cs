@@ -6,7 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
@@ -14,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event to record the execution of <see cref="GetNextUniqueLongOp"/>.
     /// </summary>
-    public partial class PutRecordOp : ReturningOperationBase<long>, ISpecifyResourceLocator
+    public partial class PutRecordOp : ReturningOperationBase<PutRecordResult>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutRecordOp"/> class.

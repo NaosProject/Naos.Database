@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TObject">Type of the object.</typeparam>
     public interface IStreamWriteProtocols<TObject> :
-        ISyncAndAsyncReturningProtocol<PutAndReturnInternalRecordIdOp<TObject>, long>,
+        ISyncAndAsyncReturningProtocol<PutAndReturnInternalRecordIdOp<TObject>, long?>,
         ISyncAndAsyncVoidProtocol<PutOp<TObject>>
     {
     }

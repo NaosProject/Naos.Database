@@ -87,7 +87,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public long Execute(
+        public PutRecordResult Execute(
             PutRecordOp operation)
         {
             var result = this.stream.Execute(operation);
@@ -95,7 +95,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public async Task<long> ExecuteAsync(
+        public async Task<PutRecordResult> ExecuteAsync(
             PutRecordOp operation)
         {
             var syncResult = this.Execute(operation);

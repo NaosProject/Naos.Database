@@ -300,6 +300,8 @@
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\MemoryReadWriteStream.cs" />
+    <Compile Include="Stream\Model\CreateStreamResult.cs" />
+    <Compile Include="Stream\Model\PutRecordResult.cs" />
     <Compile Include="Stream\Model\OrderRecordsStrategy.cs" />
     <Compile Include="Stream\Model\ExistingRecordNotEncounteredStrategy.cs" />
     <Compile Include="Stream\Model\StreamRecord.designer.cs">

@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Create a stream's persistence.
     /// </summary>
-    public partial class CreateStreamOp : VoidOperationBase
+    public partial class CreateStreamOp : ReturningOperationBase<CreateStreamResult>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateStreamOp"/> class.

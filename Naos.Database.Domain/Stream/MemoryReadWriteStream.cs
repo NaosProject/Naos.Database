@@ -67,10 +67,13 @@ namespace Naos.Database.Domain
         public string Id { get; private set; }
 
         /// <inheritdoc />
-        public override void Execute(
+        public override CreateStreamResult Execute(
             CreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
+            var alreadyExisted = this.created;
+            var wasCreated = true;
+
             lock (this.streamLock)
             {
                 if (operation == null)
@@ -95,6 +98,7 @@ namespace Naos.Database.Domain
                             this.locatorToRecordPartitionMap.Clear();
                             break;
                         case ExistingStreamEncounteredStrategy.Skip:
+                            wasCreated = false;
                             break;
                         default:
                             throw new NotSupportedException(
@@ -105,6 +109,9 @@ namespace Naos.Database.Domain
 
                 this.created = true;
             }
+
+            var result = new CreateStreamResult(alreadyExisted, wasCreated);
+            return result;
         }
 
         /// <inheritdoc />
@@ -710,7 +717,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
-        public override long Execute(
+        public override PutRecordResult Execute(
             PutRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -782,14 +789,14 @@ namespace Naos.Database.Domain
                     case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
                         if (matchesId.Any())
                         {
-                            return -1;
+                            return new PutRecordResult(null, matchesId.First().InternalRecordId);
                         }
 
                         break;
                     case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
                         if (matchesIdAndObject.Any())
                         {
-                            return -1;
+                            return new PutRecordResult(null, matchesIdAndObject.First().InternalRecordId);
                         }
 
                         break;
@@ -799,7 +806,7 @@ namespace Naos.Database.Domain
 
                         if (matchesDoNotWrite.Any())
                         {
-                            return -1;
+                            return new PutRecordResult(null, matchesDoNotWrite.First().InternalRecordId);
                         }
 
                         break;
@@ -808,7 +815,7 @@ namespace Naos.Database.Domain
                 var id = Interlocked.Increment(ref this.uniqueLongForInMemoryRecords);
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
                 recordPartition.Add(itemToAdd);
-                return id;
+                return new PutRecordResult(id, null);
             }
         }
 

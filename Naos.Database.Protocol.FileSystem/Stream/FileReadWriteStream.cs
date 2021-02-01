@@ -89,7 +89,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override void Execute(
+        public override CreateStreamResult Execute(
             CreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -97,6 +97,8 @@ namespace Naos.Database.Protocol.FileSystem
             var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
                                         ?? throw new ArgumentException(FormattableString.Invariant($"Invalid implementation of {nameof(IStreamRepresentation)}, expected '{nameof(FileStreamRepresentation)}' but was '{operation.StreamRepresentation.GetType().ToStringReadable()}'."));
 
+            var alreadyExists = false;
+            var wasCreated = true;
             lock (this.fileLock)
             {
                 foreach (var fileSystemDatabaseLocator in fileStreamRepresentation.FileSystemDatabaseLocators)
@@ -105,6 +107,8 @@ namespace Naos.Database.Protocol.FileSystem
                     var exists = Directory.Exists(directoryPath);
                     if (exists)
                     {
+                        // ReSharper disable once ConditionIsAlwaysTrueOrFalse - this is not true as it's iterating the potential locators...
+                        alreadyExists = alreadyExists || exists;
                         switch (operation.ExistingStreamEncounteredStrategy)
                         {
                             case ExistingStreamEncounteredStrategy.Overwrite:
@@ -112,7 +116,7 @@ namespace Naos.Database.Protocol.FileSystem
                                 CreateDirectoryAndConfirm(directoryPath);
                                 break;
                             case ExistingStreamEncounteredStrategy.Skip:
-                                /* no-op */
+                                wasCreated = false;
                                 break;
                             case ExistingStreamEncounteredStrategy.Throw:
                                 throw new InvalidOperationException(
@@ -130,6 +134,9 @@ namespace Naos.Database.Protocol.FileSystem
                     }
                 }
             }
+
+            var result = new CreateStreamResult(alreadyExists, wasCreated);
+            return result;
         }
 
         /// <inheritdoc />
@@ -924,7 +931,7 @@ namespace Naos.Database.Protocol.FileSystem
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
-        public override long Execute(
+        public override PutRecordResult Execute(
             PutRecordOp operation)
         {
             lock (this.fileLock)
@@ -996,14 +1003,16 @@ namespace Naos.Database.Protocol.FileSystem
                         case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
                             if (metadataPathsThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                return -1;
+                                var matchingId = GetInternalRecordIdFromRecordFilePath(metadataPathsThatCouldMatch.First());
+                                return new PutRecordResult(null, matchingId);
                             }
 
                             break;
                         case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                return -1;
+                                var matchingId = GetInternalRecordIdFromRecordFilePath(metadataPathsThatCouldMatch.First());
+                                return new PutRecordResult(null, matchingId);
                             }
 
                             break;
@@ -1014,7 +1023,8 @@ namespace Naos.Database.Protocol.FileSystem
 
                             if (matchesDoNotWrite.Any())
                             {
-                                return -1;
+                                var matchingId = GetInternalRecordIdFromRecordFilePath(matchesDoNotWrite.First().MetadataPath);
+                                return new PutRecordResult(null, matchingId);
                             }
 
                             break;
@@ -1063,7 +1073,8 @@ namespace Naos.Database.Protocol.FileSystem
                     File.WriteAllText(payloadFilePath, operation.Payload.SerializedPayload ?? NullToken);
                 }
 
-                return newId;
+                var result = new PutRecordResult(newId, null);
+                return result;
             }
         }
 

@@ -20,5 +20,10 @@ namespace Naos.Database.Domain
         /// Orders the records by the internal record identifier from highest to lowest.
         /// </summary>
         ByInternalRecordIdDescending,
+
+        /// <summary>
+        /// Orders the records randomly each time.
+        /// </summary>
+        Random,
     }
 }

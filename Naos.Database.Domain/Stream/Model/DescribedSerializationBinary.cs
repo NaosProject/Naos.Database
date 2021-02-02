@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
 
@@ -23,7 +24,7 @@ namespace Naos.Database.Domain
         public DescribedSerializationBinary(
             TypeRepresentation payloadTypeRepresentation,
             SerializerRepresentation serializerRepresentation,
-            byte[] serializedPayload)
+            IReadOnlyList<byte> serializedPayload)
             : base(payloadTypeRepresentation, serializerRepresentation)
         {
             this.SerializedPayload = serializedPayload;
@@ -33,7 +34,7 @@ namespace Naos.Database.Domain
         /// Gets the serialized payload.
         /// </summary>
         /// <value>The serialized payload.</value>
-        public byte[] SerializedPayload { get; private set; }
+        public IReadOnlyList<byte> SerializedPayload { get; private set; }
 
         /// <inheritdoc />
         public override SerializationFormat SerializationFormat => SerializationFormat.Binary;

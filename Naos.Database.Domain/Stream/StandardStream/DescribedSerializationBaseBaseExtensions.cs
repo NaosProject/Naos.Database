@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
+    using System.Linq;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
@@ -238,7 +238,7 @@ namespace Naos.Database.Domain
                 case SerializationFormat.Binary:
                     var describedSerializationBinary = (DescribedSerializationBinary)describedSerializationBase;
                     var serializedBytes = describedSerializationBinary.SerializedPayload;
-                    result = serializedBytes == null ? null : deserializer.Deserialize(serializedBytes, targetType);
+                    result = serializedBytes == null ? null : deserializer.Deserialize(serializedBytes.ToArray(), targetType);
                     break;
                 case SerializationFormat.String:
                     var describedSerializationString = (DescribedSerializationString)describedSerializationBase;

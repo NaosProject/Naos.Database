@@ -1133,7 +1133,7 @@ namespace Naos.Database.Protocol.FileSystem
                 {
                     var serializedBytes = ((DescribedSerializationBinary)operation.Payload).SerializedPayload;
 
-                    File.WriteAllBytes(payloadFilePath, serializedBytes);
+                    File.WriteAllBytes(payloadFilePath, serializedBytes.ToArray());
                 }
                 else
                 {

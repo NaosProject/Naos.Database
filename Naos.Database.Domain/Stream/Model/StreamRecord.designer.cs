@@ -16,7 +16,6 @@ namespace Naos.Database.Domain
     using global::System.Linq;
 
     using global::OBeautifulCode.Equality.Recipes;
-    using global::OBeautifulCode.Serialization;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -180,7 +179,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecord DeepCloneWithPayload(DescribedSerialization payload)
+        public StreamRecord DeepCloneWithPayload(DescribedSerializationBase payload)
         {
             var result = new StreamRecord(
                                  this.InternalRecordId,

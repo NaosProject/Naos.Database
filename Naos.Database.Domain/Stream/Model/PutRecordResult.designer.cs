@@ -69,7 +69,8 @@ namespace Naos.Database.Domain
             }
 
             var result = this.InternalRecordIdOfPutRecord.IsEqualTo(other.InternalRecordIdOfPutRecord)
-                      && this.InternalRecordIdOfExistingRecord.IsEqualTo(other.InternalRecordIdOfExistingRecord);
+                      && this.ExistingRecordIds.IsEqualTo(other.ExistingRecordIds)
+                      && this.PrunedRecordIds.IsEqualTo(other.PrunedRecordIds);
 
             return result;
         }
@@ -80,7 +81,8 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.InternalRecordIdOfPutRecord)
-            .Hash(this.InternalRecordIdOfExistingRecord)
+            .Hash(this.ExistingRecordIds)
+            .Hash(this.PrunedRecordIds)
             .Value;
 
         /// <inheritdoc />
@@ -91,65 +93,8 @@ namespace Naos.Database.Domain
         {
             var result = new PutRecordResult(
                                  this.InternalRecordIdOfPutRecord,
-                                 this.InternalRecordIdOfExistingRecord);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="InternalRecordIdOfPutRecord" />.
-        /// </summary>
-        /// <param name="internalRecordIdOfPutRecord">The new <see cref="InternalRecordIdOfPutRecord" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordResult" /> using the specified <paramref name="internalRecordIdOfPutRecord" /> for <see cref="InternalRecordIdOfPutRecord" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordResult DeepCloneWithInternalRecordIdOfPutRecord(long? internalRecordIdOfPutRecord)
-        {
-            var result = new PutRecordResult(
-                                 internalRecordIdOfPutRecord,
-                                 this.InternalRecordIdOfExistingRecord);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="InternalRecordIdOfExistingRecord" />.
-        /// </summary>
-        /// <param name="internalRecordIdOfExistingRecord">The new <see cref="InternalRecordIdOfExistingRecord" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordResult" /> using the specified <paramref name="internalRecordIdOfExistingRecord" /> for <see cref="InternalRecordIdOfExistingRecord" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordResult DeepCloneWithInternalRecordIdOfExistingRecord(long? internalRecordIdOfExistingRecord)
-        {
-            var result = new PutRecordResult(
-                                 this.InternalRecordIdOfPutRecord,
-                                 internalRecordIdOfExistingRecord);
+                                 this.ExistingRecordIds?.Select(i => i).ToList(),
+                                 this.PrunedRecordIds?.Select(i => i).ToList());
 
             return result;
         }
@@ -158,7 +103,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PutRecordResult: InternalRecordIdOfPutRecord = {this.InternalRecordIdOfPutRecord?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordIdOfExistingRecord = {this.InternalRecordIdOfExistingRecord?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PutRecordResult: InternalRecordIdOfPutRecord = {this.InternalRecordIdOfPutRecord?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ExistingRecordIds = {this.ExistingRecordIds?.ToString() ?? "<null>"}, PrunedRecordIds = {this.PrunedRecordIds?.ToString() ?? "<null>"}.");
 
             return result;
         }

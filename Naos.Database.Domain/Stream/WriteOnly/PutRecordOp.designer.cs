@@ -18,7 +18,6 @@ namespace Naos.Database.Domain
     using global::Naos.Protocol.Domain;
 
     using global::OBeautifulCode.Equality.Recipes;
-    using global::OBeautifulCode.Serialization;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -75,6 +74,7 @@ namespace Naos.Database.Domain
                       && this.Payload.IsEqualTo(other.Payload)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator)
                       && this.ExistingRecordEncounteredStrategy.IsEqualTo(other.ExistingRecordEncounteredStrategy)
+                      && this.RecordRetentionCount.IsEqualTo(other.RecordRetentionCount)
                       && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy);
 
             return result;
@@ -89,171 +89,12 @@ namespace Naos.Database.Domain
             .Hash(this.Payload)
             .Hash(this.SpecifiedResourceLocator)
             .Hash(this.ExistingRecordEncounteredStrategy)
+            .Hash(this.RecordRetentionCount)
             .Hash(this.TypeVersionMatchStrategy)
             .Value;
 
         /// <inheritdoc />
         public new PutRecordOp DeepClone() => (PutRecordOp)this.DeepCloneInternal();
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="Metadata" />.
-        /// </summary>
-        /// <param name="metadata">The new <see cref="Metadata" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordOp" /> using the specified <paramref name="metadata" /> for <see cref="Metadata" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordOp DeepCloneWithMetadata(StreamRecordMetadata metadata)
-        {
-            var result = new PutRecordOp(
-                                 metadata,
-                                 this.Payload?.DeepClone(),
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
-                                 this.ExistingRecordEncounteredStrategy,
-                                 this.TypeVersionMatchStrategy);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="Payload" />.
-        /// </summary>
-        /// <param name="payload">The new <see cref="Payload" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordOp" /> using the specified <paramref name="payload" /> for <see cref="Payload" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordOp DeepCloneWithPayload(DescribedSerialization payload)
-        {
-            var result = new PutRecordOp(
-                                 this.Metadata?.DeepClone(),
-                                 payload,
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
-                                 this.ExistingRecordEncounteredStrategy,
-                                 this.TypeVersionMatchStrategy);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
-        /// </summary>
-        /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
-        {
-            var result = new PutRecordOp(
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone(),
-                                 specifiedResourceLocator,
-                                 this.ExistingRecordEncounteredStrategy,
-                                 this.TypeVersionMatchStrategy);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="ExistingRecordEncounteredStrategy" />.
-        /// </summary>
-        /// <param name="existingRecordEncounteredStrategy">The new <see cref="ExistingRecordEncounteredStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordOp" /> using the specified <paramref name="existingRecordEncounteredStrategy" /> for <see cref="ExistingRecordEncounteredStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordOp DeepCloneWithExistingRecordEncounteredStrategy(ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy)
-        {
-            var result = new PutRecordOp(
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone(),
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
-                                 existingRecordEncounteredStrategy,
-                                 this.TypeVersionMatchStrategy);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="TypeVersionMatchStrategy" />.
-        /// </summary>
-        /// <param name="typeVersionMatchStrategy">The new <see cref="TypeVersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PutRecordOp" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PutRecordOp DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
-        {
-            var result = new PutRecordOp(
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone(),
-                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
-                                 this.ExistingRecordEncounteredStrategy,
-                                 typeVersionMatchStrategy);
-
-            return result;
-        }
 
         /// <inheritdoc />
         protected override OperationBase DeepCloneInternal()
@@ -263,6 +104,7 @@ namespace Naos.Database.Domain
                                  this.Payload?.DeepClone(),
                                  (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator),
                                  this.ExistingRecordEncounteredStrategy,
+                                 this.RecordRetentionCount,
                                  this.TypeVersionMatchStrategy);
 
             return result;
@@ -320,7 +162,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {this.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

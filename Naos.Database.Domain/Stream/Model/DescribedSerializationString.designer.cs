@@ -16,21 +16,23 @@ namespace Naos.Database.Domain
     using global::System.Linq;
 
     using global::OBeautifulCode.Equality.Recipes;
+    using global::OBeautifulCode.Representation.System;
+    using global::OBeautifulCode.Serialization;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class StreamRecordWithId<TId> : IModel<StreamRecordWithId<TId>>
+    public partial class DescribedSerializationString : IModel<DescribedSerializationString>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="StreamRecordWithId{TId}"/> are equal.
+        /// Determines whether two objects of type <see cref="DescribedSerializationString"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(StreamRecordWithId<TId> left, StreamRecordWithId<TId> right)
+        public static bool operator ==(DescribedSerializationString left, DescribedSerializationString right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -48,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="StreamRecordWithId{TId}"/> are not equal.
+        /// Determines whether two objects of type <see cref="DescribedSerializationString"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(StreamRecordWithId<TId> left, StreamRecordWithId<TId> right) => !(left == right);
+        public static bool operator !=(DescribedSerializationString left, DescribedSerializationString right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(StreamRecordWithId<TId> other)
+        public bool Equals(DescribedSerializationString other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -68,42 +70,27 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.InternalRecordId.IsEqualTo(other.InternalRecordId)
-                      && this.Metadata.IsEqualTo(other.Metadata)
-                      && this.Payload.IsEqualTo(other.Payload);
+            var result = this.PayloadTypeRepresentation.IsEqualTo(other.PayloadTypeRepresentation)
+                      && this.SerializerRepresentation.IsEqualTo(other.SerializerRepresentation)
+                      && this.SerializedPayload.IsEqualTo(other.SerializedPayload, StringComparer.Ordinal);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as StreamRecordWithId<TId>);
+        public override bool Equals(object obj) => this == (obj as DescribedSerializationString);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.InternalRecordId)
-            .Hash(this.Metadata)
-            .Hash(this.Payload)
+            .Hash(this.PayloadTypeRepresentation)
+            .Hash(this.SerializerRepresentation)
+            .Hash(this.SerializedPayload)
             .Value;
 
         /// <inheritdoc />
-        public object Clone() => this.DeepClone();
+        public new DescribedSerializationString DeepClone() => (DescribedSerializationString)this.DeepCloneInternal();
 
         /// <inheritdoc />
-        public StreamRecordWithId<TId> DeepClone()
-        {
-            var result = new StreamRecordWithId<TId>(
-                                 this.InternalRecordId,
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="InternalRecordId" />.
-        /// </summary>
-        /// <param name="internalRecordId">The new <see cref="InternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRecordWithId{TId}" /> using the specified <paramref name="internalRecordId" /> for <see cref="InternalRecordId" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -119,21 +106,17 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordWithId<TId> DeepCloneWithInternalRecordId(long internalRecordId)
+        public override DescribedSerializationBase DeepCloneWithPayloadTypeRepresentation(TypeRepresentation payloadTypeRepresentation)
         {
-            var result = new StreamRecordWithId<TId>(
-                                 internalRecordId,
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone());
+            var result = new DescribedSerializationString(
+                                 payloadTypeRepresentation,
+                                 this.SerializerRepresentation?.DeepClone(),
+                                 this.SerializedPayload?.DeepClone());
 
             return result;
         }
 
-        /// <summary>
-        /// Deep clones this object with a new <see cref="Metadata" />.
-        /// </summary>
-        /// <param name="metadata">The new <see cref="Metadata" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRecordWithId{TId}" /> using the specified <paramref name="metadata" /> for <see cref="Metadata" /> and a deep clone of every other property.</returns>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -149,21 +132,21 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordWithId<TId> DeepCloneWithMetadata(StreamRecordMetadata<TId> metadata)
+        public override DescribedSerializationBase DeepCloneWithSerializerRepresentation(SerializerRepresentation serializerRepresentation)
         {
-            var result = new StreamRecordWithId<TId>(
-                                 this.InternalRecordId,
-                                 metadata,
-                                 this.Payload?.DeepClone());
+            var result = new DescribedSerializationString(
+                                 this.PayloadTypeRepresentation?.DeepClone(),
+                                 serializerRepresentation,
+                                 this.SerializedPayload?.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Payload" />.
+        /// Deep clones this object with a new <see cref="SerializedPayload" />.
         /// </summary>
-        /// <param name="payload">The new <see cref="Payload" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRecordWithId{TId}" /> using the specified <paramref name="payload" /> for <see cref="Payload" /> and a deep clone of every other property.</returns>
+        /// <param name="serializedPayload">The new <see cref="SerializedPayload" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="DescribedSerializationString" /> using the specified <paramref name="serializedPayload" /> for <see cref="SerializedPayload" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002: DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
@@ -179,62 +162,32 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordWithId<TId> DeepCloneWithPayload(DescribedSerializationBase payload)
+        public DescribedSerializationString DeepCloneWithSerializedPayload(string serializedPayload)
         {
-            var result = new StreamRecordWithId<TId>(
-                                 this.InternalRecordId,
-                                 this.Metadata?.DeepClone(),
-                                 payload);
+            var result = new DescribedSerializationString(
+                                 this.PayloadTypeRepresentation?.DeepClone(),
+                                 this.SerializerRepresentation?.DeepClone(),
+                                 serializedPayload);
 
             return result;
         }
 
-        private static TId DeepCloneGeneric(TId value)
+        /// <inheritdoc />
+        protected override DescribedSerializationBase DeepCloneInternal()
         {
-            object result;
+            var result = new DescribedSerializationString(
+                                 this.PayloadTypeRepresentation?.DeepClone(),
+                                 this.SerializerRepresentation?.DeepClone(),
+                                 this.SerializedPayload?.DeepClone());
 
-            var type = typeof(TId);
-
-            if (type.IsValueType)
-            {
-                result = value;
-            }
-            else
-            {
-                if (ReferenceEquals(value, null))
-                {
-                    result = default;
-                }
-                else if (value is IDeepCloneable<TId> deepCloneableValue)
-                {
-                    result = deepCloneableValue.DeepClone();
-                }
-                else if (value is string valueAsString)
-                {
-                    result = valueAsString.DeepClone();
-                }
-                else if (value is global::System.Version valueAsVersion)
-                {
-                    result = valueAsVersion.DeepClone();
-                }
-                else if (value is global::System.Uri valueAsUri)
-                {
-                    result = valueAsUri.DeepClone();
-                }
-                else
-                {
-                    throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
-                }
-            }
-
-            return (TId)result;
+            return result;
         }
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.DescribedSerializationString: PayloadTypeRepresentation = {this.PayloadTypeRepresentation?.ToString() ?? "<null>"}, SerializerRepresentation = {this.SerializerRepresentation?.ToString() ?? "<null>"}, SerializedPayload = {this.SerializedPayload?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

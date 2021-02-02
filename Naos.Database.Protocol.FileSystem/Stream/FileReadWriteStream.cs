@@ -960,7 +960,7 @@ namespace Naos.Database.Protocol.FileSystem
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
                             ? metadataPathsThatCouldMatch?.Select(_ => new { Path = _, Text = File.ReadAllText(_) })
-                                                         .Select(_ => new { MetadataPath = _.Path, DataPath = Path.ChangeExtension(_.Path, this.DefaultSerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)), Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text) })
+                                                         .Select(_ => new { MetadataPath = _.Path, BinaryDataPath = Path.ChangeExtension(_.Path, BinaryFileExtension), StringDataPath = Path.ChangeExtension(_.Path, this.DefaultSerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)), Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text) })
                                                          .Where(
                                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                                   operation.Metadata.StringSerializedId,
@@ -991,40 +991,107 @@ namespace Naos.Database.Protocol.FileSystem
                             break;
                         case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent:
                             var matchesThrow =
-                                metadataThatCouldMatch?.Where(_ => File.ReadAllText(_.DataPath) == (operation.Payload.SerializedPayload ?? NullToken)).ToList()
+                                metadataThatCouldMatch?
+                                   .Where(_ =>
+                                          {
+                                              var binaryFileExists = File.Exists(_.BinaryDataPath);
+                                              var stringFileExists = File.Exists(_.StringDataPath);
+                                              if (binaryFileExists && stringFileExists)
+                                              {
+                                                  throw new NotSupportedException(Invariant($"Found a file for the same metadata but in both string and binary formats, this is not supported: '{_.BinaryDataPath}' and '{_.StringDataPath}'."));
+                                              }
+
+                                              switch (operation.Payload.SerializationFormat)
+                                              {
+                                                  case SerializationFormat.String:
+                                                      if (binaryFileExists)
+                                                      {
+                                                          throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a string payload is being put, this is not supported: '{_.BinaryDataPath}'."));
+                                                      }
+
+                                                      var stringPayload = ((DescribedSerializationString)operation.Payload).SerializedPayload;
+                                                      var fileStringPayload = File.ReadAllText(_.StringDataPath);
+                                                      return fileStringPayload.Equals(stringPayload ?? NullToken);
+                                                  case SerializationFormat.Binary:
+                                                      if (binaryFileExists)
+                                                      {
+                                                          throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a Binary payload is being put, this is not supported: '{_.BinaryDataPath}'."));
+                                                      }
+
+                                                      var binaryPayload = ((DescribedSerializationBinary)operation.Payload).SerializedPayload;
+                                                      var fileBinaryPayload = File.ReadAllBytes(_.BinaryDataPath);
+                                                      return fileBinaryPayload.Equals(binaryPayload);
+                                                  default:
+                                                      throw new NotSupportedException(Invariant($"{nameof(SerializationFormat)} {operation.Payload.SerializationFormat} is not supported."));
+                                              }
+                                          })
+                                   .ToList()
                              ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataThatCouldMatch)} should not be null."));
 
                             if (matchesThrow.Any())
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload.SerializedPayload}' yet found {matchesThrow.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
                             }
 
                             break;
                         case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
                             if (metadataPathsThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                var matchingId = GetInternalRecordIdFromRecordFilePath(metadataPathsThatCouldMatch.First());
-                                return new PutRecordResult(null, matchingId);
+                                var matchingIds = metadataPathsThatCouldMatch.Select(GetInternalRecordIdFromRecordFilePath).ToList();
+                                return new PutRecordResult(null, matchingIds);
                             }
 
                             break;
                         case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                var matchingId = GetInternalRecordIdFromRecordFilePath(metadataPathsThatCouldMatch.First());
-                                return new PutRecordResult(null, matchingId);
+                                var matchingIds = metadataPathsThatCouldMatch.Select(GetInternalRecordIdFromRecordFilePath).ToList();
+                                return new PutRecordResult(null, matchingIds);
                             }
 
                             break;
                         case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
                             var matchesDoNotWrite =
-                                metadataThatCouldMatch?.Where(_ => File.ReadAllText(_.DataPath) == (operation.Payload.SerializedPayload ?? NullToken)).ToList()
+                                metadataThatCouldMatch?
+                                   .Where(_ =>
+                                   {
+                                       var binaryFileExists = File.Exists(_.BinaryDataPath);
+                                       var stringFileExists = File.Exists(_.StringDataPath);
+                                       if (binaryFileExists && stringFileExists)
+                                       {
+                                           throw new NotSupportedException(Invariant($"Found a file for the same metadata but in both string and binary formats, this is not supported: '{_.BinaryDataPath}' and '{_.StringDataPath}'."));
+                                       }
+
+                                       switch (operation.Payload.SerializationFormat)
+                                       {
+                                           case SerializationFormat.String:
+                                               if (binaryFileExists)
+                                               {
+                                                   throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a string payload is being put, this is not supported: '{_.BinaryDataPath}'."));
+                                               }
+
+                                               var stringPayload = ((DescribedSerializationString)operation.Payload).SerializedPayload;
+                                               var fileStringPayload = File.ReadAllText(_.StringDataPath);
+                                               return fileStringPayload.Equals(stringPayload ?? NullToken);
+                                           case SerializationFormat.Binary:
+                                               if (binaryFileExists)
+                                               {
+                                                   throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a Binary payload is being put, this is not supported: '{_.BinaryDataPath}'."));
+                                               }
+
+                                               var binaryPayload = ((DescribedSerializationBinary)operation.Payload).SerializedPayload;
+                                               var fileBinaryPayload = File.ReadAllBytes(_.BinaryDataPath);
+                                               return fileBinaryPayload.Equals(binaryPayload);
+                                           default:
+                                               throw new NotSupportedException(Invariant($"{nameof(SerializationFormat)} {operation.Payload.SerializationFormat} is not supported."));
+                                       }
+                                   })
+                                   .ToList()
                              ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataThatCouldMatch)} should not be null."));
 
                             if (matchesDoNotWrite.Any())
                             {
-                                var matchingId = GetInternalRecordIdFromRecordFilePath(matchesDoNotWrite.First().MetadataPath);
-                                return new PutRecordResult(null, matchingId);
+                                return new PutRecordResult(null, matchesDoNotWrite.Select(_ => GetInternalRecordIdFromRecordFilePath(_.MetadataPath)).ToList());
                             }
 
                             break;
@@ -1064,13 +1131,15 @@ namespace Naos.Database.Protocol.FileSystem
                 File.WriteAllText(metadataFilePath, stringSerializedMetadata);
                 if (fileExtension == BinaryFileExtension)
                 {
-                    var serializedBytes = Convert.FromBase64String(operation.Payload.SerializedPayload);
+                    var serializedBytes = ((DescribedSerializationBinary)operation.Payload).SerializedPayload;
 
                     File.WriteAllBytes(payloadFilePath, serializedBytes);
                 }
                 else
                 {
-                    File.WriteAllText(payloadFilePath, operation.Payload.SerializedPayload ?? NullToken);
+                    var serializedString = ((DescribedSerializationString)operation.Payload).SerializedPayload;
+
+                    File.WriteAllText(payloadFilePath, serializedString ?? NullToken);
                 }
 
                 var result = new PutRecordResult(newId, null);
@@ -1580,13 +1649,15 @@ namespace Naos.Database.Protocol.FileSystem
                 var filePathBase =
                     metadataFilePath.Substring(0, metadataFilePath.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
                 var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
-                string stringPayload;
-                SerializationFormat serializationFormat;
+                DescribedSerializationBase payload;
                 if (File.Exists(binaryFilePath))
                 {
                     var bytes = File.ReadAllBytes(binaryFilePath);
-                    stringPayload = Convert.ToBase64String(bytes);
-                    serializationFormat = SerializationFormat.Binary;
+
+                    payload = new DescribedSerializationBinary(
+                        metadata.TypeRepresentationOfObject.WithVersion,
+                        metadata.SerializerRepresentation,
+                        bytes);
                 }
                 else
                 {
@@ -1599,17 +1670,15 @@ namespace Naos.Database.Protocol.FileSystem
                                 $"Expected payload file '{stringFilePath}' to exist to accompany metadata file '{metadataFilePath}' but was not found."));
                     }
 
-                    stringPayload = File.ReadAllText(stringFilePath);
+                    var stringPayload = File.ReadAllText(stringFilePath);
 
-                    serializationFormat = SerializationFormat.String;
+                    payload = new DescribedSerializationString(
+                        metadata.TypeRepresentationOfObject.WithVersion,
+                        metadata.SerializerRepresentation,
+                        stringPayload);
                 }
 
                 var internalRecordId = GetInternalRecordIdFromRecordFilePath(metadataFilePath);
-                var payload = new DescribedSerialization(
-                    metadata.TypeRepresentationOfObject.WithVersion,
-                    stringPayload,
-                    metadata.SerializerRepresentation,
-                    serializationFormat);
 
                 var result = new StreamRecord(internalRecordId, metadata, payload);
                 return result;

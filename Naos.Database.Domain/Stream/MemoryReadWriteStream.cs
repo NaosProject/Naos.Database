@@ -778,35 +778,35 @@ namespace Naos.Database.Domain
                         break;
                     case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent:
                         var matchesThrow =
-                            matchesIdAndObject.Where(_ => _.Payload.SerializedPayload == operation.Payload.SerializedPayload).ToList();
+                            matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
 
                         if (matchesThrow.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload.SerializedPayload}' yet found {matchesThrow.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
                         }
 
                         break;
                     case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
                         if (matchesId.Any())
                         {
-                            return new PutRecordResult(null, matchesId.First().InternalRecordId);
+                            return new PutRecordResult(null, matchesId.Select(_ => _.InternalRecordId).ToList());
                         }
 
                         break;
                     case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
                         if (matchesIdAndObject.Any())
                         {
-                            return new PutRecordResult(null, matchesIdAndObject.First().InternalRecordId);
+                            return new PutRecordResult(null, matchesIdAndObject.Select(_ => _.InternalRecordId).ToList());
                         }
 
                         break;
                     case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
                         var matchesDoNotWrite =
-                            matchesIdAndObject.Where(_ => _.Payload.SerializedPayload == operation.Payload.SerializedPayload).ToList();
+                            matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
 
                         if (matchesDoNotWrite.Any())
                         {
-                            return new PutRecordResult(null, matchesDoNotWrite.First().InternalRecordId);
+                            return new PutRecordResult(null, matchesDoNotWrite.Select(_ => _.InternalRecordId).ToList());
                         }
 
                         break;

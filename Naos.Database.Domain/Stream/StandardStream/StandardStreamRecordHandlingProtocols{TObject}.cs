@@ -49,7 +49,7 @@ namespace Naos.Database.Domain
                 operation.Tags,
                 operation.Details);
             var record = this.stream.Execute(delegatedOperation);
-            if (record == null || record.Payload == null || record.Payload.SerializedPayload == null)
+            if (record?.Payload == null)
             {
                 return null;
             }

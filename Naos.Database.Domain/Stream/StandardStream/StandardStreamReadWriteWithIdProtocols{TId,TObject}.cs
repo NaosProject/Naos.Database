@@ -12,7 +12,6 @@ namespace Naos.Database.Domain
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -82,7 +81,7 @@ namespace Naos.Database.Domain
         public void Execute(
             PutWithIdOp<TId, TObject> operation)
         {
-            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.TypeVersionMatchStrategy);
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.TypeVersionMatchStrategy);
             this.Execute(delegatedOperation);
         }
 
@@ -106,7 +105,7 @@ namespace Naos.Database.Domain
             var identifierTypeRep = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
             var objectTypeRep = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
 
-            var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
+            var describedSerialization = operation.ObjectToPut.ToDescribedSerializationBaseUsingSpecificFactory(
                 this.stream.DefaultSerializerRepresentation,
                 this.stream.SerializerFactory,
                 this.stream.DefaultSerializationFormat);
@@ -125,7 +124,7 @@ namespace Naos.Database.Domain
                 objectTimestamp);
 
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.TypeVersionMatchStrategy));
+            var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.TypeVersionMatchStrategy));
 
             return result.InternalRecordIdOfPutRecord;
         }

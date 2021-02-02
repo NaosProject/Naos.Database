@@ -7,29 +7,34 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Result of <see cref="PutRecordOp"/>.
     /// </summary>
-    public partial class PutRecordResult : IModelViaCodeGen
+    public partial class PutRecordResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutRecordResult"/> class.
         /// </summary>
         /// <param name="internalRecordIdOfPutRecord">The internal record identifier of the new record.</param>
-        /// <param name="internalRecordIdOfExistingRecord">The internal record identifier of any existing record.</param>
+        /// <param name="existingRecordIds">The internal record identifier of any existing records per matching criteria.</param>
+        /// <param name="prunedRecordIds">The internal record identifier of any records that were removed.</param>
         public PutRecordResult(
             long? internalRecordIdOfPutRecord,
-            long? internalRecordIdOfExistingRecord)
+            IReadOnlyCollection<long> existingRecordIds = null,
+            IReadOnlyCollection<long> prunedRecordIds = null)
         {
-            if (internalRecordIdOfPutRecord == null && internalRecordIdOfExistingRecord == null)
+            if (internalRecordIdOfPutRecord == null && !(existingRecordIds?.Any() ?? false))
             {
-                throw new ArgumentNullException(FormattableString.Invariant($"Cannot have both {nameof(internalRecordIdOfPutRecord)} AND {nameof(internalRecordIdOfExistingRecord)} both be null; the expectation is that the record was written or there was an existing record."));
+                throw new ArgumentNullException(FormattableString.Invariant($"Cannot have a null {nameof(internalRecordIdOfPutRecord)} AND and an empty {nameof(existingRecordIds)}; the expectation is that the record was written OR there was an existing record."));
             }
 
             this.InternalRecordIdOfPutRecord = internalRecordIdOfPutRecord;
-            this.InternalRecordIdOfExistingRecord = internalRecordIdOfExistingRecord;
+            this.ExistingRecordIds = existingRecordIds;
+            this.PrunedRecordIds = prunedRecordIds;
         }
 
         /// <summary>
@@ -39,9 +44,15 @@ namespace Naos.Database.Domain
         public long? InternalRecordIdOfPutRecord { get; private set; }
 
         /// <summary>
-        /// Gets the internal record identifier of existing record.
+        /// Gets the existing record identifiers.
         /// </summary>
-        /// <value>The internal record identifier of existing record.</value>
-        public long? InternalRecordIdOfExistingRecord { get; private set; }
+        /// <value>The existing record identifiers.</value>
+        public IReadOnlyCollection<long> ExistingRecordIds { get; private set; }
+
+        /// <summary>
+        /// Gets the pruned record identifiers.
+        /// </summary>
+        /// <value>The pruned record identifiers.</value>
+        public IReadOnlyCollection<long> PrunedRecordIds { get; private set; }
     }
 }

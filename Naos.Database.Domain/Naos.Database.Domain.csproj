@@ -144,9 +144,6 @@
       <DependentUpon>FailedHandleRecordExecutionEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RequestedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.designer.cs">
       <DependentUpon>RetryFailedHandleRecordExecutionEvent.cs</DependentUpon>
     </Compile>
@@ -239,21 +236,9 @@
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
-      <DependentUpon>HandleRecordOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.designer.cs">
-      <DependentUpon>HandleRecordOp{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordSyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdAsyncSpecificProtocolBase{TId,TObject}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>HandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.designer.cs">
-      <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.designer.cs">
@@ -300,18 +285,18 @@
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\MemoryReadWriteStream.cs" />
+    <Compile Include="Stream\Model\DescribedSerializationBase.cs" />
     <Compile Include="Stream\Model\CreateStreamResult.cs" />
     <Compile Include="Stream\Model\CreateStreamResult.designer.cs">
       <DependentUpon>CreateStreamResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Model\DescribedSerializationBinary.cs" />
+    <Compile Include="Stream\Model\DescribedSerializationString.cs" />
     <Compile Include="Stream\Model\PutRecordResult.cs" />
     <Compile Include="Stream\Model\OrderRecordsStrategy.cs" />
     <Compile Include="Stream\Model\ExistingRecordNotEncounteredStrategy.cs" />
     <Compile Include="Stream\Model\PutRecordResult.designer.cs">
       <DependentUpon>PutRecordResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\StreamRecord.designer.cs">
-      <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\StreamRecordExtensions.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadata.designer.cs">
@@ -322,15 +307,6 @@
       <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.cs" />
-    <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.designer.cs">
-      <DependentUpon>StreamRecordWithId{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\StreamRecordWithId{TId}.designer.cs">
-      <DependentUpon>StreamRecordWithId{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
-      <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Model\TagMatchStrategy.cs" />
     <Compile Include="Stream\Model\TagMatchStrategy.designer.cs">
       <DependentUpon>TagMatchStrategy.cs</DependentUpon>
@@ -388,6 +364,7 @@
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\StandardStream\DescribedSerializationBaseBaseExtensions.cs" />
     <Compile Include="Stream\StandardStream\IStandardReadWriteStream.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />
@@ -398,6 +375,12 @@
     <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId}.cs" />
     <Compile Include="Stream\StandardStream\StandardReadWriteStreamBase.cs" />
+    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.designer.cs">
+      <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\WriteOnly\PutOp{TObject}.designer.cs">
+      <DependentUpon>PutOp{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\WriteOnly\PutRecordOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
@@ -433,25 +416,13 @@
     <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.designer.cs">
       <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\WriteOnly\PutRecordOp.designer.cs">
-      <DependentUpon>PutRecordOp.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
+    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.cs" />
     <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.designer.cs">
-      <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.cs" />
     <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutWithIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\WriteOnly\PutOp{TObject}.cs" />
-    <Compile Include="Stream\WriteOnly\PutOp{TObject}.designer.cs">
-      <DependentUpon>PutOp{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="ReplaceOption.cs" />
@@ -531,6 +502,9 @@
     <Compile Include="Stream\Model\StreamRecordMetadata.cs" />
     <Compile Include="Stream\Model\TypeRepresentationWithAndWithoutVersion.designer.cs">
       <DependentUpon>TypeRepresentationWithAndWithoutVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>PutWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Result of <see cref="CreateStreamOp"/>.
     /// </summary>
-    public partial class CreateStreamResult : IModelViaCodeGen
+    public partial class CreateStreamResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateStreamResult"/> class.
@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         {
             if (!alreadyExisted && !wasCreated)
             {
-                throw new ArgumentNullException(FormattableString.Invariant($"Cannot have both {nameof(alreadyExisted)} AND {nameof(wasCreated)} both be false; the expectation is that the stream was created or there was an existing one."));
+                throw new ArgumentNullException(FormattableString.Invariant($"Cannot have both '{nameof(alreadyExisted)}' AND '{nameof(wasCreated)}' be false; the expectation is that the stream was created or there was an existing one."));
             }
 
             this.AlreadyExisted = alreadyExisted;

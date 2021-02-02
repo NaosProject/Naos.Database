@@ -45,5 +45,15 @@ namespace Naos.Database.Domain
         /// Throw if found by identifier and type and content
         /// </summary>
         ThrowIfFoundByIdAndTypeAndContent,
+
+        /// <summary>
+        /// Prune if found by identifier
+        /// </summary>
+        PruneIfFoundById,
+
+        /// <summary>
+        /// Prune if found by identifier and type
+        /// </summary>
+        PruneIfFoundByIdAndType,
     }
 }

@@ -468,7 +468,7 @@ namespace Naos.Protocol.FileSystem.Test
             var concern = "NullTesting";
             var record = stream.Execute(new TryHandleRecordOp(concern));
             record.MustForTest().NotBeNull();
-            record.Payload.SerializedPayload.MustForTest().BeEqualTo("null");
+            ((DescribedSerializationString)record.Payload).SerializedPayload.MustForTest().BeEqualTo("null");
 
             stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.InternalRecordId, concern));
 
@@ -595,7 +595,7 @@ namespace Naos.Protocol.FileSystem.Test
                 idx < count;
                 idx++)
             {
-                allRecords[idx].Payload.SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
+                ((DescribedSerializationString)allRecords[idx].Payload).SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadata[idx].MustForTest().BeEqualTo(allRecords[idx].Metadata);
             }
 
@@ -608,7 +608,7 @@ namespace Naos.Protocol.FileSystem.Test
                 idx < count;
                 idx++)
             {
-                allRecordsReverse[idx].Payload.SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
+                ((DescribedSerializationString)allRecordsReverse[idx].Payload).SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadataReverse[idx].MustForTest().BeEqualTo(allRecordsReverse[idx].Metadata);
             }
 

@@ -128,6 +128,19 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="Model\BinaryDescribedSerialization.cs" />
+    <Compile Include="Model\BinaryDescribedSerialization.designer.cs">
+      <DependentUpon>BinaryDescribedSerialization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DescribedSerializationBase.cs" />
+    <Compile Include="Model\DescribedSerializationBase.designer.cs">
+      <DependentUpon>DescribedSerializationBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DomainExtensions.cs" />
+    <Compile Include="Model\StringDescribedSerialization.cs" />
+    <Compile Include="Model\StringDescribedSerialization.designer.cs">
+      <DependentUpon>StringDescribedSerialization.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="ResourceLocation\ISpecifyResourceLocator.cs" />
     <Compile Include="ResourceLocation\ResourceLocatorExtensions.cs" />
@@ -204,6 +217,9 @@
     </Compile>
     <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusExtensions.cs" />
+    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
@@ -219,9 +235,6 @@
       <DependentUpon>GetHandlingStatusOfRecordsByIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordSetByTagOp.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.designer.cs">
@@ -300,21 +313,9 @@
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\MemoryReadWriteStream.cs" />
-    <Compile Include="Stream\Model\DescribedSerializationBase.cs" />
     <Compile Include="Stream\Model\CreateStreamResult.cs" />
     <Compile Include="Stream\Model\CreateStreamResult.designer.cs">
       <DependentUpon>CreateStreamResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\DescribedSerializationBase.designer.cs">
-      <DependentUpon>DescribedSerializationBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\DescribedSerializationBinary.cs" />
-    <Compile Include="Stream\Model\DescribedSerializationBinary.designer.cs">
-      <DependentUpon>DescribedSerializationBinary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\DescribedSerializationString.cs" />
-    <Compile Include="Stream\Model\DescribedSerializationString.designer.cs">
-      <DependentUpon>DescribedSerializationString.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\PutRecordResult.cs" />
     <Compile Include="Stream\Model\OrderRecordsStrategy.cs" />
@@ -400,7 +401,6 @@
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\StandardStream\DescribedSerializationBaseBaseExtensions.cs" />
     <Compile Include="Stream\StandardStream\IStandardReadWriteStream.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />

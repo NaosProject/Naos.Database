@@ -226,6 +226,44 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var scenario = ThreadSafeRandom.Next(1, 4);
+                    switch (scenario)
+                    {
+                        case 1:
+                            return new CreateStreamResult(false, true);
+                        case 2:
+                            return new CreateStreamResult(true, false);
+                        case 3:
+                            return new CreateStreamResult(true, true);
+                        default:
+                            throw new NotSupportedException(
+                                FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(CreateStreamResult)}."));
+                    }
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var scenario = ThreadSafeRandom.Next(1, 5);
+                    switch (scenario)
+                    {
+                        case 1:
+                            return new PutRecordResult(A.Dummy<long>(), null);
+                        case 2:
+                            return new PutRecordResult(null, Some.ReadOnlyDummies<long>());
+                        case 3:
+                            return new PutRecordResult(null, Some.ReadOnlyDummies<long>(), Some.ReadOnlyDummies<long>());
+                        case 4:
+                            return new PutRecordResult(A.Dummy<long>(), Some.ReadOnlyDummies<long>(), Some.ReadOnlyDummies<long>());
+                        default:
+                            throw new NotSupportedException(
+                                FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(PutRecordResult)}."));
+                    }
+                });
         }
     }
 

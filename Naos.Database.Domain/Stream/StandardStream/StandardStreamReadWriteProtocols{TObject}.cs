@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Threading.Tasks;
+    using Naos.Database.Domain.DescribedSerialization;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;

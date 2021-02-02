@@ -12,11 +12,13 @@ namespace Naos.Database.Domain
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
+    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
+    using DomainExtensions = OBeautifulCode.Serialization.DomainExtensions;
 
     /// <summary>
     /// In memory implementation of <see cref="IReadWriteStream"/>.
@@ -583,7 +585,8 @@ namespace Naos.Database.Domain
                                     requestedTimestamp,
                                     recordToHandle);
 
-                                var requestedPayload = requestedEvent.ToDescribedSerializationUsingSpecificFactory(
+                                var requestedPayload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                                    requestedEvent,
                                     this.DefaultSerializerRepresentation,
                                     this.SerializerFactory,
                                     this.DefaultSerializationFormat);
@@ -607,7 +610,8 @@ namespace Naos.Database.Domain
                             var runningTimestamp = DateTime.UtcNow;
 
                             var runningEvent = new RunningHandleRecordExecutionEvent(recordToHandle.InternalRecordId, runningTimestamp);
-                            var runningPayload = runningEvent.ToDescribedSerializationUsingSpecificFactory(
+                            var runningPayload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                                runningEvent,
                                 this.DefaultSerializerRepresentation,
                                 this.SerializerFactory,
                                 this.DefaultSerializationFormat);
@@ -934,7 +938,8 @@ namespace Naos.Database.Domain
                 var blockEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
                 var payload =
-                    blockEvent.ToDescribedSerializationUsingSpecificFactory(
+                    Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                        blockEvent,
                         this.DefaultSerializerRepresentation,
                         this.SerializerFactory,
                         this.DefaultSerializationFormat);
@@ -975,7 +980,8 @@ namespace Naos.Database.Domain
                 var blockEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
                 var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
                 var payload =
-                    blockEvent.ToDescribedSerializationUsingSpecificFactory(
+                    Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                        blockEvent,
                         this.DefaultSerializerRepresentation,
                         this.SerializerFactory,
                         this.DefaultSerializationFormat);
@@ -1016,7 +1022,8 @@ namespace Naos.Database.Domain
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new CanceledRequestedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
-                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                var payload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,
                     this.DefaultSerializationFormat);
@@ -1063,7 +1070,8 @@ namespace Naos.Database.Domain
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new CanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
-                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                var payload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,
                     this.DefaultSerializationFormat);
@@ -1110,7 +1118,8 @@ namespace Naos.Database.Domain
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new CompletedHandleRecordExecutionEvent(operation.Id, timestamp);
-                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                var payload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,
                     this.DefaultSerializationFormat);
@@ -1157,7 +1166,8 @@ namespace Naos.Database.Domain
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new FailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
-                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                var payload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,
                     this.DefaultSerializationFormat);
@@ -1204,7 +1214,8 @@ namespace Naos.Database.Domain
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new SelfCanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
-                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                var payload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,
                     this.DefaultSerializationFormat);
@@ -1251,7 +1262,8 @@ namespace Naos.Database.Domain
 
                 var timestamp = DateTime.UtcNow;
                 var newEvent = new RetryFailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
-                var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
+                var payload = Naos.Database.Domain.DescribedSerialization.DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
                     this.DefaultSerializerRepresentation,
                     this.SerializerFactory,
                     this.DefaultSerializationFormat);
@@ -1278,7 +1290,7 @@ namespace Naos.Database.Domain
             long requestedEntryId,
             string concern,
             StreamRecordHandlingEntryMetadata requestedMetadata,
-            DescribedSerialization requestedPayload)
+            DescribedSerializationBase requestedPayload)
         {
             lock (this.handlingLock)
             {

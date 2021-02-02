@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
+    using Naos.Database.Domain.DescribedSerialization;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
@@ -27,7 +28,7 @@ namespace Naos.Database.Domain
         public StreamRecordHandlingEntry(
             long internalHandlingEntryId,
             StreamRecordHandlingEntryMetadata metadata,
-            DescribedSerialization payload)
+            DescribedSerializationBase payload)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
@@ -53,6 +54,6 @@ namespace Naos.Database.Domain
         /// Gets the payload.
         /// </summary>
         /// <value>The payload.</value>
-        public DescribedSerialization Payload { get; private set; }
+        public DescribedSerializationBase Payload { get; private set; }
     }
 }

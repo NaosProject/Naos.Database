@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
@@ -105,7 +106,7 @@ namespace Naos.Database.Domain
             var identifierTypeRep = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
             var objectTypeRep = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
 
-            var describedSerialization = operation.ObjectToPut.ToDescribedSerializationBaseUsingSpecificFactory(
+            var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
                 this.stream.DefaultSerializerRepresentation,
                 this.stream.SerializerFactory,
                 this.stream.DefaultSerializationFormat);

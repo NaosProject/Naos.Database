@@ -258,6 +258,10 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include="BinaryDescribedSerializationTest.cs" />
+    <Compile Include="BinaryDescribedSerializationTest.designer.cs">
+      <DependentUpon>BinaryDescribedSerializationTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="BlockedRecordHandlingEventTest.cs" />
     <Compile Include="BlockedRecordHandlingEventTest.designer.cs">
       <DependentUpon>BlockedRecordHandlingEventTest.cs</DependentUpon>
@@ -321,6 +325,10 @@
     <Compile Include="DeleteStreamOpTest.cs" />
     <Compile Include="DeleteStreamOpTest.designer.cs">
       <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DescribedSerializationBaseTest.cs" />
+    <Compile Include="DescribedSerializationBaseTest.designer.cs">
+      <DependentUpon>DescribedSerializationBaseTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DoesAnyExistByIdOpTest.cs" />
     <Compile Include="DoesAnyExistByIdOpTest.designer.cs">
@@ -593,6 +601,10 @@
     <Compile Include="Stream\Model\UniqueLongIssuedEventTest.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEventTest.designer.cs">
       <DependentUpon>UniqueLongIssuedEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StringDescribedSerializationTest.cs" />
+    <Compile Include="StringDescribedSerializationTest.designer.cs">
+      <DependentUpon>StringDescribedSerializationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="StringSerializedIdentifierTest.cs" />
     <Compile Include="StringSerializedIdentifierTest.designer.cs">

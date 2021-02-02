@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain.DescribedSerialization
 {
     using System;
-
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
@@ -65,6 +65,7 @@ namespace Naos.Database.Domain.DescribedSerialization
         /// <returns>
         /// The format that the object was serialized into.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Is temporary.")]
         public abstract SerializationFormat GetSerializationFormat();
 
         /// <summary>
@@ -77,6 +78,7 @@ namespace Naos.Database.Domain.DescribedSerialization
         /// <returns>
         /// The serialized payload encoded as a string.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Is temporary.")]
         public abstract string GetSerializedPayloadAsEncodedString();
 
         /// <summary>

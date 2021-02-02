@@ -726,6 +726,7 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                var existingRecordIds = new List<long>();
                 var exists = this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var recordPartition);
                 if (!exists)
                 {
@@ -736,6 +737,7 @@ namespace Naos.Database.Domain
                 var matchesId =
                     operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
                  || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
+                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
                         ? recordPartition.Where(
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
@@ -749,6 +751,7 @@ namespace Naos.Database.Domain
                  || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
                  || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
                  || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
+                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
                         ? recordPartition.Where(
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
@@ -757,6 +760,7 @@ namespace Naos.Database.Domain
                                                   operation.TypeVersionMatchStrategy))
                                          .ToList() : new List<StreamRecord>();
 
+                var recordIdsToPrune = new List<long>();
                 switch (operation.ExistingRecordEncounteredStrategy)
                 {
                     case ExistingRecordEncounteredStrategy.None:
@@ -810,12 +814,42 @@ namespace Naos.Database.Domain
                         }
 
                         break;
+                    case ExistingRecordEncounteredStrategy.PruneIfFoundById:
+                        if (operation.RecordRetentionCount != null && matchesId.Count > operation.RecordRetentionCount - 1)
+                        {
+                            existingRecordIds.AddRange(
+                                matchesId
+                                   .Select(_ => _.InternalRecordId)
+                                   .ToList());
+
+                            var recordsToDeleteById =
+                                matchesId.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                            recordIdsToPrune.AddRange(recordsToDeleteById.Select(_ => _.InternalRecordId));
+                        }
+
+                        break;
+                    case ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType:
+                        if (operation.RecordRetentionCount != null && matchesIdAndObject.Count > operation.RecordRetentionCount - 1)
+                        {
+                            existingRecordIds.AddRange(
+                                matchesIdAndObject
+                                   .Select(_ => _.InternalRecordId)
+                                   .ToList());
+
+                            var recordsToDeleteById =
+                                matchesIdAndObject.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                            recordIdsToPrune.AddRange(recordsToDeleteById.Select(_ => _.InternalRecordId));
+                        }
+
+                        break;
                 }
 
                 var id = Interlocked.Increment(ref this.uniqueLongForInMemoryRecords);
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
                 recordPartition.Add(itemToAdd);
-                return new PutRecordResult(id, null);
+                recordPartition.RemoveAll(_ => recordIdsToPrune.Contains(_.InternalRecordId));
+
+                return new PutRecordResult(id, existingRecordIds, recordIdsToPrune);
             }
         }
 

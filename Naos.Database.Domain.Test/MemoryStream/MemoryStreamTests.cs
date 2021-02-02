@@ -336,6 +336,54 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void PruneOnInsertTest()
+        {
+            var streamName = "MS_PruneOnInsertTest";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory());
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var key = Guid.NewGuid().ToString().ToUpperInvariant();
+            var allRecords = stream.Execute(new GetAllRecordsByIdOp(key));
+            allRecords.MustForTest().BeEmptyEnumerable();
+
+            var itemCount = 10;
+            for (var idx = 0;
+                idx < itemCount;
+                idx++)
+            {
+                stream.PutWithId(key, A.Dummy<string>());
+            }
+
+            var serializedKey = "\"" + key + "\"";
+            allRecords = stream.Execute(new GetAllRecordsByIdOp(serializedKey));
+            allRecords.MustForTest().HaveCount(itemCount);
+
+            var retentionCount = 5;
+            stream.PutWithId(key, A.Dummy<string>(), recordRetentionCount: retentionCount, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.PruneIfFoundById);
+
+            allRecords = stream.Execute(new GetAllRecordsByIdOp(serializedKey));
+            allRecords.MustForTest().HaveCount(retentionCount);
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
         public static void DoesNotExistTest()
         {
             var streamName = "MS_DoesNotExistTest";
@@ -405,7 +453,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var concern = "NullTesting";
             var record = stream.Execute(new TryHandleRecordOp(concern));
             record.MustForTest().NotBeNull();
-            record.Payload.SerializedPayload.MustForTest().BeEqualTo("null");
+            ((DescribedSerializationString)record.Payload).SerializedPayload.MustForTest().BeEqualTo("null");
 
             stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.InternalRecordId, concern));
 
@@ -562,7 +610,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 idx < count;
                 idx++)
             {
-                allRecords[idx].Payload.SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
+                ((DescribedSerializationString)allRecords[idx].Payload).SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadata[idx].MustForTest().BeEqualTo(allRecords[idx].Metadata);
             }
 
@@ -575,7 +623,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 idx < count;
                 idx++)
             {
-                allRecordsReverse[idx].Payload.SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
+                ((DescribedSerializationString)allRecordsReverse[idx].Payload).SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadataReverse[idx].MustForTest().BeEqualTo(allRecordsReverse[idx].Metadata);
             }
 

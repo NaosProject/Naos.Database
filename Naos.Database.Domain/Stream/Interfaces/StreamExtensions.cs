@@ -60,15 +60,19 @@ namespace Naos.Database.Domain
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public static void Put<TObject>(
             this IWriteOnlyStream stream,
             TObject objectToPut,
             IReadOnlyDictionary<string, string> tags = null,
-            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
+            int? recordRetentionCount = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy);
+            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
             var protocol = stream.GetStreamWritingProtocols<TObject>();
             protocol.Execute(operation);
         }
@@ -81,16 +85,20 @@ namespace Naos.Database.Domain
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         /// <returns>Task for async.</returns>
         public static async Task PutAsync<TObject>(
             this IWriteOnlyStream stream,
             TObject objectToPut,
             IReadOnlyDictionary<string, string> tags = null,
-            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
+            int? recordRetentionCount = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy);
+            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
             var protocol = stream.GetStreamWritingProtocols<TObject>();
             await protocol.ExecuteAsync(operation);
         }
@@ -105,16 +113,20 @@ namespace Naos.Database.Domain
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public static void PutWithId<TId, TObject>(
             this IWriteOnlyStream stream,
             TId id,
             TObject objectToPut,
             IReadOnlyDictionary<string, string> tags = null,
-            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
+            int? recordRetentionCount = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy);
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             protocol.Execute(operation);
         }
@@ -129,17 +141,21 @@ namespace Naos.Database.Domain
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
+        /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
+        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         /// <returns>Task for async.</returns>
         public static async Task PutWithIdAsync<TId, TObject>(
             this IWriteOnlyStream stream,
             TId id,
             TObject objectToPut,
             IReadOnlyDictionary<string, string> tags = null,
-            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None)
+            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
+            int? recordRetentionCount = null,
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy);
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             await protocol.ExecuteAsync(operation);
         }

@@ -928,6 +928,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
@@ -944,6 +945,8 @@ namespace Naos.Database.Protocol.FileSystem
 
                 long newId;
 
+                var recordFilePathsToPrune = new List<string>();
+                var existingRecordIds = new List<long>();
                 lock (this.nextInternalRecordIdentifierLock)
                 {
                     // no need to waste the cycles if it the logic is disabled
@@ -957,8 +960,12 @@ namespace Naos.Database.Protocol.FileSystem
                     var metadataThatCouldMatch =
                         operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
+                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
+                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
+                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
                             ? metadataPathsThatCouldMatch?.Select(_ => new { Path = _, Text = File.ReadAllText(_) })
                                                          .Select(_ => new { MetadataPath = _.Path, BinaryDataPath = Path.ChangeExtension(_.Path, BinaryFileExtension), StringDataPath = Path.ChangeExtension(_.Path, this.DefaultSerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)), Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text) })
                                                          .Where(
@@ -976,7 +983,7 @@ namespace Naos.Database.Protocol.FileSystem
                             /* no-op */
                             break;
                         case ExistingRecordEncounteredStrategy.ThrowIfFoundById:
-                            if (metadataPathsThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
+                            if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
                                 throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {metadataPathsThatCouldMatch.Length}."));
                             }
@@ -1095,6 +1102,48 @@ namespace Naos.Database.Protocol.FileSystem
                             }
 
                             break;
+                        case ExistingRecordEncounteredStrategy.PruneIfFoundById:
+                            if (metadataThatCouldMatch != null && operation.RecordRetentionCount != null && metadataPathsThatCouldMatch.Length >= operation.RecordRetentionCount - 1)
+                            {
+                                existingRecordIds.AddRange(
+                                    metadataThatCouldMatch
+                                       .Select(_ => GetInternalRecordIdFromRecordFilePath(_.MetadataPath))
+                                       .ToList());
+                                var recordsToDeleteById =
+                                    metadataThatCouldMatch.OrderByDescending(_ => _.MetadataPath).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                                recordFilePathsToPrune.AddRange(
+                                    recordsToDeleteById.SelectMany(
+                                        _ => new[]
+                                             {
+                                                 _.MetadataPath,
+                                                 _.BinaryDataPath,
+                                                 _.StringDataPath,
+                                             }));
+                            }
+
+                            break;
+                        case ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType:
+                            if (metadataThatCouldMatch != null && operation.RecordRetentionCount != null && metadataPathsThatCouldMatch.Length >= operation.RecordRetentionCount - 1)
+                            {
+                                existingRecordIds.AddRange(
+                                    metadataThatCouldMatch
+                                       .Select(_ => GetInternalRecordIdFromRecordFilePath(_.MetadataPath))
+                                       .ToList());
+                                var recordsToDeleteById =
+                                    metadataThatCouldMatch.OrderByDescending(_ => _.MetadataPath).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                                recordFilePathsToPrune.AddRange(
+                                    recordsToDeleteById.SelectMany(
+                                        _ => new[]
+                                             {
+                                                 _.MetadataPath,
+                                                 _.BinaryDataPath,
+                                                 _.StringDataPath,
+                                             }));
+                            }
+
+                            break;
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(ExistingRecordEncounteredStrategy)} {operation.ExistingRecordEncounteredStrategy} is not supported."));
                     }
 
                     // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
@@ -1142,7 +1191,10 @@ namespace Naos.Database.Protocol.FileSystem
                     File.WriteAllText(payloadFilePath, serializedString ?? NullToken);
                 }
 
-                var result = new PutRecordResult(newId, null);
+                recordFilePathsToPrune.ForEach(File.Delete);
+                var prunedRecordIds = recordFilePathsToPrune.Select(GetInternalRecordIdFromRecordFilePath).Distinct().ToList();
+
+                var result = new PutRecordResult(newId, existingRecordIds, prunedRecordIds);
                 return result;
             }
         }

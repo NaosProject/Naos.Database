@@ -154,6 +154,59 @@ namespace Naos.Protocol.FileSystem.Test
         }
 
         [Fact]
+        public static void PruneOnInsertTest()
+        {
+            var streamName = "FS_PruneOnInsertTest";
+
+            var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var key = Guid.NewGuid().ToString().ToUpperInvariant();
+            var allRecords = stream.Execute(new GetAllRecordsByIdOp(key));
+            allRecords.MustForTest().BeEmptyEnumerable();
+
+            var itemCount = 10;
+            for (var idx = 0;
+                idx < itemCount;
+                idx++)
+            {
+                stream.PutWithId(key, A.Dummy<string>());
+            }
+
+            var serializedKey = "\"" + key + "\"";
+            allRecords = stream.Execute(new GetAllRecordsByIdOp(serializedKey));
+            allRecords.MustForTest().HaveCount(itemCount);
+
+            var retentionCount = 5;
+            stream.PutWithId(key, A.Dummy<string>(), recordRetentionCount: retentionCount, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.PruneIfFoundById);
+
+            allRecords = stream.Execute(new GetAllRecordsByIdOp(serializedKey));
+            allRecords.MustForTest().HaveCount(retentionCount);
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
         public void Create_Put_Handle_Delete___Given_valid_data___Should_roundtrip_to_file_system()
         {
             var streamName = "FS_HandlingTest";

@@ -4,7 +4,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain.DescribedSerialization.Test
+namespace Naos.Database.Domain.Test
 {
     using global::System;
     using global::System.CodeDom.Compiler;

@@ -4,7 +4,7 @@
 // </auto-generated>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Naos.Database.Domain.Test
+namespace Naos.Database.Domain.DescribedSerialization.Test
 {
     using global::System;
     using global::System.CodeDom.Compiler;
@@ -17,8 +17,6 @@ namespace Naos.Database.Domain.Test
     using global::System.Reflection;
 
     using global::FakeItEasy;
-    
-    using global::Naos.Database.Domain.DescribedSerialization;
 
     using global::OBeautifulCode.Assertion.Recipes;
     using global::OBeautifulCode.AutoFakeItEasy;

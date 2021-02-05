@@ -191,14 +191,14 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordOp>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
+                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
+                        A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutRecordOp>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
-                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<PutOp<Version>>(),
                     },
                 });
 

@@ -157,6 +157,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyDictionary<string, string>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecordHandlingEntry(
+                                 A.Dummy<long>(),
+                                 A.Dummy<StreamRecordHandlingEntryMetadata>(),
+                                 A.Dummy<DescribedSerializationBase>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StringSerializedIdentifier(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>()));
@@ -207,12 +213,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<bool>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordHandlingEntry(
-                                 A.Dummy<long>(),
-                                 A.Dummy<StreamRecordHandlingEntryMetadata>(),
-                                 A.Dummy<DescribedSerializationBase>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandleRecordOp(
                                  A.Dummy<StreamRecord>()));
 
@@ -237,7 +237,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<string>()));
+                                 A.Dummy<string>(),
+                                 A.Dummy<long?>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TryHandleRecordOp<Version>(
@@ -312,6 +313,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<long>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecord(
+                                 A.Dummy<long>(),
+                                 A.Dummy<StreamRecordMetadata>(),
+                                 A.Dummy<DescribedSerializationBase>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordMetadata(
                                  A.Dummy<string>(),
                                  A.Dummy<SerializerRepresentation>(),
@@ -336,6 +343,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata<Version>>(),
                                  A.Dummy<Version>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamRecordWithId<Version>(
+                                 A.Dummy<long>(),
+                                 A.Dummy<StreamRecordMetadata<Version>>(),
+                                 A.Dummy<DescribedSerializationBase>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord<Version>(
@@ -466,6 +479,22 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutAndReturnInternalRecordIdOp<Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<int?>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PutOp<Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
+                                 A.Dummy<int?>(),
+                                 A.Dummy<TypeVersionMatchStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutRecordOp(
                                  A.Dummy<StreamRecordMetadata>(),
                                  A.Dummy<DescribedSerializationBase>(),
@@ -508,24 +537,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeVersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PutAndReturnInternalRecordIdOp<Version>(
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
-                                 A.Dummy<int?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutWithIdOp<Version, Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
-                                 A.Dummy<ExistingRecordEncounteredStrategy>(),
-                                 A.Dummy<int?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PutOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
@@ -570,18 +583,6 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullStreamRepresentation());
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordWithId<Version>(
-                                 A.Dummy<long>(),
-                                 A.Dummy<StreamRecordMetadata<Version>>(),
-                                 A.Dummy<DescribedSerializationBase>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecord(
-                                 A.Dummy<long>(),
-                                 A.Dummy<StreamRecordMetadata>(),
-                                 A.Dummy<DescribedSerializationBase>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FileStreamRepresentation(

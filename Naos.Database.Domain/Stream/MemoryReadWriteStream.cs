@@ -565,10 +565,25 @@ namespace Naos.Database.Domain
                         switch (operation.OrderRecordsStrategy)
                         {
                             case OrderRecordsStrategy.ByInternalRecordIdAscending:
-                                recordToHandle = matchingRecords.OrderBy(_ => _.InternalRecordId).FirstOrDefault();
+                                recordToHandle = matchingRecords
+                                                .OrderBy(_ => _.InternalRecordId)
+                                                .FirstOrDefault(
+                                                     _ => operation.MinimumInternalRecordId == null
+                                                       || _.InternalRecordId                >= operation.MinimumInternalRecordId);
                                 break;
                             case OrderRecordsStrategy.ByInternalRecordIdDescending:
-                                recordToHandle = matchingRecords.OrderByDescending(_ => _.InternalRecordId).FirstOrDefault();
+                                recordToHandle = matchingRecords
+                                                .OrderByDescending(_ => _.InternalRecordId)
+                                                .FirstOrDefault(
+                                                     _ => operation.MinimumInternalRecordId == null
+                                                       || _.InternalRecordId                >= operation.MinimumInternalRecordId);
+                                break;
+                            case OrderRecordsStrategy.Random:
+                                recordToHandle = matchingRecords
+                                                .OrderByDescending(_ => Guid.NewGuid())
+                                                .FirstOrDefault(
+                                                     _ => operation.MinimumInternalRecordId == null
+                                                       || _.InternalRecordId                >= operation.MinimumInternalRecordId);
                                 break;
                             default:
                                 throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));

@@ -724,22 +724,41 @@ namespace Naos.Database.Protocol.FileSystem
                         switch (operation.OrderRecordsStrategy)
                         {
                             case OrderRecordsStrategy.ByInternalRecordIdAscending:
-                                var ascItem = predicate.OrderBy(_ => _.Id).FirstOrDefault(
-                                          _ => _.Metadata.FuzzyMatchTypes(
-                                              operation.IdentifierType,
-                                              operation.ObjectType,
-                                              operation.TypeVersionMatchStrategy));
+                                var ascItem = predicate.OrderBy(_ => _.Id)
+                                                       .FirstOrDefault(
+                                                            _ => _.Metadata.FuzzyMatchTypes(
+                                                                     operation.IdentifierType,
+                                                                     operation.ObjectType,
+                                                                     operation.TypeVersionMatchStrategy)
+                                                              && (operation.MinimumInternalRecordId == null
+                                                               || _.Id                              >= operation.MinimumInternalRecordId));
                                 metadataFilePath = ascItem?.Path;
                                 recordMetadata = ascItem?.Metadata;
                                 break;
                             case OrderRecordsStrategy.ByInternalRecordIdDescending:
-                                var descItem = predicate.OrderByDescending(_ => _.Id).FirstOrDefault(
-                                          _ => _.Metadata.FuzzyMatchTypes(
-                                              operation.IdentifierType,
-                                              operation.ObjectType,
-                                              operation.TypeVersionMatchStrategy));
+                                var descItem = predicate.OrderByDescending(_ => _.Id)
+                                                       .FirstOrDefault(
+                                                            _ => _.Metadata.FuzzyMatchTypes(
+                                                                     operation.IdentifierType,
+                                                                     operation.ObjectType,
+                                                                     operation.TypeVersionMatchStrategy)
+                                                              && (operation.MinimumInternalRecordId == null
+                                                               || _.Id                              >= operation.MinimumInternalRecordId));
                                 metadataFilePath = descItem?.Path;
                                 recordMetadata = descItem?.Metadata;
+                                break;
+
+                            case OrderRecordsStrategy.Random:
+                                var randItem = predicate.OrderBy(_ => Guid.NewGuid())
+                                                       .FirstOrDefault(
+                                                            _ => _.Metadata.FuzzyMatchTypes(
+                                                                     operation.IdentifierType,
+                                                                     operation.ObjectType,
+                                                                     operation.TypeVersionMatchStrategy)
+                                                              && (operation.MinimumInternalRecordId == null
+                                                               || _.Id                              >= operation.MinimumInternalRecordId));
+                                metadataFilePath = randItem?.Path;
+                                recordMetadata = randItem?.Metadata;
                                 break;
                             default:
                                 throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));

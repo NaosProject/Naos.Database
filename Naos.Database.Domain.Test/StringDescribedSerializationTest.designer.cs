@@ -18,6 +18,8 @@ namespace Naos.Database.Domain.Test
 
     using global::FakeItEasy;
 
+    using global::Naos.Database.Domain.DescribedSerialization;
+
     using global::OBeautifulCode.Assertion.Recipes;
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.CodeGen.ModelObject.Recipes;

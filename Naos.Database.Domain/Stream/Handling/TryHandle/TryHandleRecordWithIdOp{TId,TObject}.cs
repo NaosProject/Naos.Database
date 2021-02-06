@@ -26,13 +26,15 @@ namespace Naos.Database.Domain
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
         /// <param name="details">The optional details to write with produced events.</param>
+        /// <param name="minimumInternalRecordId">The optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).</param>
         public TryHandleRecordWithIdOp(
             string concern,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null,
-            string details = null)
+            string details = null,
+            long? minimumInternalRecordId = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
 
@@ -42,6 +44,7 @@ namespace Naos.Database.Domain
             this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
             this.Details = details;
+            this.MinimumInternalRecordId = minimumInternalRecordId;
         }
 
         /// <summary>
@@ -70,5 +73,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public string Details { get; private set; }
+
+        /// <summary>
+        /// Gets the optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).
+        /// </summary>
+        /// <value>The minimum internal record identifier.</value>
+        public long? MinimumInternalRecordId { get; private set; }
     }
 }

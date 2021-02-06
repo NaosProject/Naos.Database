@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
     /// Put the object to a <see cref="IWriteOnlyStream"/>.
     /// </summary>
     /// <typeparam name="TObject">Type of data being written.</typeparam>
-    public partial class PutOp<TObject> : VoidOperationBase, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class PutOp<TObject> : VoidOperationBase, IHaveTags, ISpecifyResourceLocator, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutOp{TObject}"/> class.
@@ -26,12 +26,14 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public PutOp(
             TObject objectToPut,
             IReadOnlyDictionary<string, string> tags = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            IResourceLocator specifiedResourceLocator = null)
         {
             if (existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
              || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType)
@@ -48,6 +50,7 @@ namespace Naos.Database.Domain
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
             this.RecordRetentionCount = recordRetentionCount;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
@@ -76,5 +79,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The type version match strategy.</value>
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

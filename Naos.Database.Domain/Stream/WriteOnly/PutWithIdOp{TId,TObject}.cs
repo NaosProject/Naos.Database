@@ -17,7 +17,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Type of the identifier.</typeparam>
     /// <typeparam name="TObject">Type of data being written.</typeparam>
-    public partial class PutWithIdOp<TId, TObject> : VoidOperationBase, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class PutWithIdOp<TId, TObject> : VoidOperationBase, IIdentifiableBy<TId>, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutWithIdOp{TId,TObject}"/> class.

@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
@@ -14,7 +15,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">The type of the ID of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class GetLatestRecordByIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>
+    public partial class GetLatestRecordByIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>, IIdentifiableBy<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestRecordByIdOp{TId, TObject}"/> class.

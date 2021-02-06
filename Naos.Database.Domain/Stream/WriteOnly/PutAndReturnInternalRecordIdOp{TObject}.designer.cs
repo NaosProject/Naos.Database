@@ -74,7 +74,8 @@ namespace Naos.Database.Domain
                       && this.Tags.IsEqualTo(other.Tags)
                       && this.ExistingRecordEncounteredStrategy.IsEqualTo(other.ExistingRecordEncounteredStrategy)
                       && this.RecordRetentionCount.IsEqualTo(other.RecordRetentionCount)
-                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy);
+                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy)
+                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
         }
@@ -89,6 +90,7 @@ namespace Naos.Database.Domain
             .Hash(this.ExistingRecordEncounteredStrategy)
             .Hash(this.RecordRetentionCount)
             .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.SpecifiedResourceLocator)
             .Value;
 
         /// <inheritdoc />
@@ -102,7 +104,8 @@ namespace Naos.Database.Domain
                                  this.Tags?.ToDictionary(k => k.Key?.DeepClone(), v => v.Value?.DeepClone()),
                                  this.ExistingRecordEncounteredStrategy,
                                  this.RecordRetentionCount,
-                                 this.TypeVersionMatchStrategy);
+                                 this.TypeVersionMatchStrategy,
+                                 (IResourceLocator)DeepCloneInterface(this.SpecifiedResourceLocator));
 
             return result;
         }
@@ -148,11 +151,59 @@ namespace Naos.Database.Domain
             return (TObject)result;
         }
 
+        private static object DeepCloneInterface(object value)
+        {
+            object result;
+
+            if (ReferenceEquals(value, null))
+            {
+                result = null;
+            }
+            else
+            {
+                var type = value.GetType();
+
+                if (type.IsValueType)
+                {
+                    result = value;
+                }
+                else if (value is string valueAsString)
+                {
+                    result = valueAsString.DeepClone();
+                }
+                else if (value is global::System.Version valueAsVersion)
+                {
+                    result = valueAsVersion.DeepClone();
+                }
+                else if (value is global::System.Uri valueAsUri)
+                {
+                    result = valueAsUri.DeepClone();
+                }
+                else
+                {
+                    var deepCloneableInterface = typeof(IDeepCloneable<>).MakeGenericType(type);
+
+                    if (deepCloneableInterface.IsAssignableFrom(type))
+                    {
+                        var deepCloneMethod = deepCloneableInterface.GetMethod(nameof(IDeepCloneable<object>.DeepClone));
+
+                        result = deepCloneMethod.Invoke(value, null);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException(Invariant($"I do not know how to deep clone an object of type '{type.ToStringReadable()}'"));
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: ObjectToPut = {this.ObjectToPut?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {this.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: ObjectToPut = {this.ObjectToPut?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {this.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

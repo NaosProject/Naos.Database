@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// Abstract base of an operation.
     /// </summary>
     /// <typeparam name="TObject">Type of data being written.</typeparam>
-    public partial class GetLatestObjectOp<TObject> : ReturningOperationBase<TObject>
+    public partial class GetLatestObjectOp<TObject> : ReturningOperationBase<TObject>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestObjectOp{TObject}"/> class.
@@ -22,14 +22,17 @@ namespace Naos.Database.Domain
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
+        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public GetLatestObjectOp(
             TypeRepresentation identifierType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
-            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
+            ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
+            IResourceLocator specifiedResourceLocator = null)
         {
             this.IdentifierType = identifierType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
@@ -49,5 +52,8 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The existing record not encountered strategy.</value>
         public ExistingRecordNotEncounteredStrategy ExistingRecordNotEncounteredStrategy { get; private set; }
+
+        /// <inheritdoc />
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

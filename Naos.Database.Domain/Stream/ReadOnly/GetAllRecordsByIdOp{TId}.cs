@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
     /// Gets all records with provided identifier.
     /// </summary>
     /// <typeparam name="TId">Type of the identifier.</typeparam>
-    public partial class GetAllRecordsByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordWithId<TId>>>, IIdentifiableBy<TId>, ISpecifyResourceLocator
+    public partial class GetAllRecordsByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordWithId<TId>>>, IIdentifiableBy<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetAllRecordsByIdOp{TId}"/> class.
@@ -28,22 +28,19 @@ namespace Naos.Database.Domain
         /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <param name="orderRecordsStrategy">The optional strategy of how to order records; DEFAULT is ascending by internal record identifier (order of insertion).</param>
-        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public GetAllRecordsByIdOp(
             TId id,
             TypeRepresentation objectType = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
-            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
-            IResourceLocator specifiedResourceLocator = null)
+            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
         {
             this.Id = id;
             this.ObjectType = objectType;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
             this.OrderRecordsStrategy = orderRecordsStrategy;
-            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>
@@ -69,9 +66,6 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The order records strategy.</value>
         public OrderRecordsStrategy OrderRecordsStrategy { get; private set; }
-
-        /// <inheritdoc />
-        public IResourceLocator SpecifiedResourceLocator { get; private set; }
 
         /// <inheritdoc />
         public TId Id { get; private set; }

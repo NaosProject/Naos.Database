@@ -8,13 +8,14 @@ namespace Naos.Database.Domain
 {
     using Naos.Protocol.Domain;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
     /// Gets the latest record with provided identifier.
     /// </summary>
     /// <typeparam name="TId">The type of the ID of the object.</typeparam>
-    public partial class GetLatestRecordByIdOp<TId> : ReturningOperationBase<StreamRecordWithId<TId>>
+    public partial class GetLatestRecordByIdOp<TId> : ReturningOperationBase<StreamRecordWithId<TId>>, IIdentifiableBy<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestRecordByIdOp{TId}"/> class.

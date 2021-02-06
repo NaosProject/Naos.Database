@@ -52,6 +52,7 @@ namespace Naos.Database.Domain
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
             this.RecordRetentionCount = recordRetentionCount;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <summary>

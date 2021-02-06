@@ -44,16 +44,9 @@ namespace Naos.Database.Domain
         public StreamRecordWithId<TId> Execute(
             TryHandleRecordWithIdOp<TId> operation)
         {
-            var delegatedOperation = new TryHandleRecordOp(
-                operation.Concern,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
-                operation.OrderRecordsStrategy,
-                operation.SpecifiedResourceLocator,
-                operation.Tags,
-                operation.Details);
+            var delegatedOperation = operation.Standardize();
             var record = this.stream.Execute(delegatedOperation);
+
             if (record?.Payload == null)
             {
                 return null;

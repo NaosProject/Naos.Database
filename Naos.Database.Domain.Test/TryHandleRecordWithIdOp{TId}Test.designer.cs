@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<TryHandleRecordWithIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsStrategy = {systemUnderTest.OrderRecordsStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsStrategy = {systemUnderTest.OrderRecordsStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -72,7 +72,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags,
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -94,7 +95,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags,
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -116,7 +118,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags,
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -138,7 +141,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              null,
                                              referenceObject.Tags,
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -160,7 +164,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              null,
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -182,7 +187,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              new Dictionary<string, string>(),
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -210,7 +216,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              dictionaryWithNullValue,
-                                             referenceObject.Details);
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -232,7 +239,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags,
-                                             null);
+                                             null,
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -254,7 +262,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
                                              referenceObject.Tags,
-                                             Invariant($"  {Environment.NewLine}  "));
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.MinimumInternalRecordId);
 
                         return result;
                     },
@@ -280,7 +289,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
 
@@ -305,7 +315,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.ObjectType,
                         };
 
@@ -330,7 +341,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
                         };
 
@@ -355,7 +367,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.OrderRecordsStrategy,
                         };
 
@@ -380,7 +393,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
 
@@ -405,7 +419,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
 
@@ -430,13 +445,40 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.OrderRecordsStrategy,
                                                       referenceObject.SpecifiedResourceLocator,
                                                       referenceObject.Tags,
-                                                      referenceObject.Details),
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
 
                         return result;
                     },
                     PropertyName = "Details",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "MinimumInternalRecordId should return same 'minimumInternalRecordId' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
+                                                      referenceObject.Concern,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.OrderRecordsStrategy,
+                                                      referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.Tags,
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId),
+                            ExpectedPropertyValue = referenceObject.MinimumInternalRecordId,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "MinimumInternalRecordId",
                 });
 
         private static readonly DeepCloneWithTestScenarios<TryHandleRecordWithIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<TryHandleRecordWithIdOp<Version>>()
@@ -579,6 +621,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "DeepCloneWithMinimumInternalRecordId should deep clone object and replace MinimumInternalRecordId with the provided minimumInternalRecordId",
+                    WithPropertyName = "MinimumInternalRecordId",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.MinimumInternalRecordId.IsEqualTo(_.MinimumInternalRecordId));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.MinimumInternalRecordId,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly TryHandleRecordWithIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<TryHandleRecordWithIdOp<Version>>();
@@ -598,7 +660,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new TryHandleRecordWithIdOp<Version>[]
                     {
@@ -609,7 +672,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
@@ -617,7 +681,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
@@ -625,7 +690,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
@@ -633,7 +699,8 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.OrderRecordsStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy)).OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
@@ -641,7 +708,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
@@ -649,7 +717,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details),
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
                         new TryHandleRecordWithIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
@@ -657,7 +726,17 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
+                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId),
+                        new TryHandleRecordWithIdOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.MinimumInternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId)).MinimumInternalRecordId),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -690,24 +769,24 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<DoesAnyExistByIdOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsByIdOp>(),
-                        A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
+                        A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordOp>(),
-                        A.Dummy<GetLatestRecordOp<Version>>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutRecordOp>(),
+                        A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
+                        A.Dummy<GetLatestRecordByIdOp<Version>>(),
+                        A.Dummy<GetLatestRecordOp<Version>>(),
                         A.Dummy<CreateStreamOp>(),
                         A.Dummy<DeleteStreamOp>(),
                         A.Dummy<GetNextUniqueLongOp>(),
+                        A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
@@ -1021,7 +1100,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "ObjectType", "TypeVersionMatchStrategy", "OrderRecordsStrategy", "SpecifiedResourceLocator", "Tags", "Details" };
+                var propertyNames = new string[] { "Concern", "ObjectType", "TypeVersionMatchStrategy", "OrderRecordsStrategy", "SpecifiedResourceLocator", "Tags", "Details", "MinimumInternalRecordId" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

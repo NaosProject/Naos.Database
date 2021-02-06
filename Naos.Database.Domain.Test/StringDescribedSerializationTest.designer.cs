@@ -17,7 +17,6 @@ namespace Naos.Database.Domain.Test
     using global::System.Reflection;
 
     using global::FakeItEasy;
-
     using global::Naos.Database.Domain.DescribedSerialization;
 
     using global::OBeautifulCode.Assertion.Recipes;

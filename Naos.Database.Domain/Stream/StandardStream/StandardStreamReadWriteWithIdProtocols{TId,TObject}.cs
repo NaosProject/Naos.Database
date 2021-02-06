@@ -50,19 +50,13 @@ namespace Naos.Database.Domain
             GetLatestObjectByIdOp<TId, TObject> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
+
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = new GetLatestRecordByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy,
-                locator);
-
+            var delegatedOperation = operation.Standardize(serializer, locator);
             var record = this.delegatedProtocols.Execute(delegatedOperation);
+
             var result = record == null
                 ? default(TObject)
                 : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
@@ -145,18 +139,11 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = new GetLatestRecordByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy,
-                locator);
-
+            var delegatedOperation = operation.Standardize(serializer, locator);
             var record = this.delegatedProtocols.Execute(delegatedOperation);
+
             if (record == null)
             {
                 return null;

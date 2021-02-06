@@ -80,12 +80,7 @@ namespace Naos.Database.Domain
         public TObject Execute(
             GetLatestObjectOp<TObject> operation)
         {
-            var delegatedOperation = new GetLatestRecordOp(
-                operation.IdentifierType,
-                typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy);
-
+            var delegatedOperation = operation.Standardize();
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 
             var result = record == null
@@ -108,13 +103,9 @@ namespace Naos.Database.Domain
         public StreamRecord<TObject> Execute(
             GetLatestRecordOp<TObject> operation)
         {
-            var delegatedOperation = new GetLatestRecordOp(
-                operation.IdentifierType,
-                typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy);
-
+            var delegatedOperation = operation.Standardize();
             var record = this.delegatedProtocols.Execute(delegatedOperation);
+
             if (record == null)
             {
                 return null;

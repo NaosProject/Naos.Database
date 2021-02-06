@@ -49,17 +49,11 @@ namespace Naos.Database.Domain
             GetLatestRecordByIdOp<TId> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var delegatedOperation = new GetLatestRecordByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy,
-                locator);
 
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var delegatedOperation = operation.Standardize(serializer, locator);
             var record = this.delegatedProtocols.Execute(delegatedOperation);
 
             if (record == null)
@@ -122,18 +116,11 @@ namespace Naos.Database.Domain
             GetAllRecordsByIdOp<TId> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var delegatedOperation = new GetAllRecordsByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy,
-                operation.OrderRecordsStrategy,
-                locator);
 
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var delegatedOperation = operation.Standardize(serializer, locator);
             var records = this.delegatedProtocols.Execute(delegatedOperation);
 
             var result = records?.Select(
@@ -170,17 +157,11 @@ namespace Naos.Database.Domain
             GetLatestRecordMetadataByIdOp<TId> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var delegatedOperation = new GetLatestRecordMetadataByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy,
-                locator);
 
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var delegatedOperation = operation.Standardize(serializer, locator);
             var metadata = this.delegatedProtocols.Execute(delegatedOperation);
 
             if (metadata == null)
@@ -214,18 +195,11 @@ namespace Naos.Database.Domain
             GetAllRecordsMetadataByIdOp<TId> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var delegatedOperation = new GetAllRecordsMetadataByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
-                operation.ExistingRecordNotEncounteredStrategy,
-                operation.OrderRecordsStrategy,
-                locator);
 
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var delegatedOperation = operation.Standardize(serializer, locator);
             var records = this.delegatedProtocols.Execute(delegatedOperation);
 
             var result = records?.Select(

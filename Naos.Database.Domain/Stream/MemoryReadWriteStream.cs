@@ -591,6 +591,12 @@ namespace Naos.Database.Domain
 
                         if (recordToHandle != null)
                         {
+                            var handlingTags = operation.InheritRecordTags
+                                ? (operation.Tags ?? new Dictionary<string, string>())
+                                 .Concat(recordToHandle.Metadata.Tags ?? new Dictionary<string, string>())
+                                 .ToDictionary(k => k.Key, v => v.Value)
+                                : operation.Tags;
+
                             if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))
                             {
                                 // first time needs a requested record
@@ -614,7 +620,7 @@ namespace Naos.Database.Domain
                                     requestedPayload.SerializerRepresentation,
                                     recordToHandle.Metadata.TypeRepresentationOfId,
                                     requestedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                                    operation.Tags,
+                                    handlingTags,
                                     requestedTimestamp,
                                     requestedEvent.TimestampUtc);
 
@@ -639,7 +645,7 @@ namespace Naos.Database.Domain
                                 runningPayload.SerializerRepresentation,
                                 recordToHandle.Metadata.TypeRepresentationOfId,
                                 runningPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                                operation.Tags,
+                                handlingTags,
                                 runningTimestamp,
                                 runningEvent.TimestampUtc);
 

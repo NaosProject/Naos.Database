@@ -767,6 +767,13 @@ namespace Naos.Database.Protocol.FileSystem
                         if (!string.IsNullOrWhiteSpace(metadataFilePath) && recordMetadata != null)
                         {
                             var recordToHandle = this.GetStreamRecordFromMetadataFile(metadataFilePath, recordMetadata);
+
+                            var handlingTags = operation.InheritRecordTags
+                                ? (operation.Tags ?? new Dictionary<string, string>())
+                                 .Concat(recordToHandle.Metadata.Tags ?? new Dictionary<string, string>())
+                                 .ToDictionary(k => k.Key, v => v.Value)
+                                : operation.Tags;
+
                             if (!tupleOfIdsToHandleAndIdsToIgnore.Item1.Contains(recordToHandle.InternalRecordId))
                             {
                                 // first time needs a requested record
@@ -790,7 +797,7 @@ namespace Naos.Database.Protocol.FileSystem
                                     requestedPayload.SerializerRepresentation,
                                     recordToHandle.Metadata.TypeRepresentationOfId,
                                     requestedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                                    operation.Tags,
+                                    handlingTags,
                                     requestedTimestamp,
                                     requestedEvent.TimestampUtc);
 
@@ -815,7 +822,7 @@ namespace Naos.Database.Protocol.FileSystem
                                 runningPayload.SerializerRepresentation,
                                 recordToHandle.Metadata.TypeRepresentationOfId,
                                 runningPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                                operation.Tags,
+                                handlingTags,
                                 runningTimestamp,
                                 runningEvent.TimestampUtc);
 

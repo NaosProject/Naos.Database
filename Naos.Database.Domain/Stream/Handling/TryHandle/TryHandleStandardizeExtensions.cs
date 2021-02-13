@@ -30,7 +30,8 @@ namespace Naos.Database.Domain
                 operation.SpecifiedResourceLocator,
                 operation.Tags,
                 operation.Details,
-                operation.MinimumInternalRecordId);
+                operation.MinimumInternalRecordId,
+                operation.InheritRecordTags);
 
             return result;
         }
@@ -54,7 +55,8 @@ namespace Naos.Database.Domain
                 operation.SpecifiedResourceLocator,
                 operation.Tags,
                 operation.Details,
-                operation.MinimumInternalRecordId);
+                operation.MinimumInternalRecordId,
+                operation.InheritRecordTags);
 
             return result;
         }
@@ -77,7 +79,8 @@ namespace Naos.Database.Domain
                 operation.SpecifiedResourceLocator,
                 operation.Tags,
                 operation.Details,
-                operation.MinimumInternalRecordId);
+                operation.MinimumInternalRecordId,
+                operation.InheritRecordTags);
 
             return result;
         }

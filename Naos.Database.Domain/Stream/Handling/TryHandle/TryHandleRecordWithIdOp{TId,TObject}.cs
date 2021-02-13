@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
     /// <typeparam name="TObject">Type of the object in the record.</typeparam>
-    public partial class TryHandleRecordWithIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>, ISpecifyResourceLocator, IHaveTags, IHaveDetails
+    public partial class TryHandleRecordWithIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>, ITryHandleRecordOpBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId, TObject}"/> class.
@@ -27,6 +27,7 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags to write with produced events.</param>
         /// <param name="details">The optional details to write with produced events.</param>
         /// <param name="minimumInternalRecordId">The optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).</param>
+        /// <param name="inheritRecordTags">The optional value indicating whether handling entries should include any tags on the record being handled; DEFAULT is 'false'.</param>
         public TryHandleRecordWithIdOp(
             string concern,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
@@ -34,7 +35,8 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyDictionary<string, string> tags = null,
             string details = null,
-            long? minimumInternalRecordId = null)
+            long? minimumInternalRecordId = null,
+            bool inheritRecordTags = false)
         {
             concern.ThrowIfInvalidOrReservedConcern();
 
@@ -45,24 +47,16 @@ namespace Naos.Database.Domain
             this.Tags = tags;
             this.Details = details;
             this.MinimumInternalRecordId = minimumInternalRecordId;
+            this.InheritRecordTags = inheritRecordTags;
         }
 
-        /// <summary>
-        /// Gets the concern.
-        /// </summary>
-        /// <value>The concern.</value>
+        /// <inheritdoc />
         public string Concern { get; private set; }
 
-        /// <summary>
-        /// Gets the type version match strategy.
-        /// </summary>
-        /// <value>The type version match strategy.</value>
+        /// <inheritdoc />
         public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
 
-        /// <summary>
-        /// Gets the order records strategy.
-        /// </summary>
-        /// <value>The order records strategy.</value>
+        /// <inheritdoc />
         public OrderRecordsStrategy OrderRecordsStrategy { get; private set; }
 
         /// <inheritdoc />
@@ -74,10 +68,10 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public string Details { get; private set; }
 
-        /// <summary>
-        /// Gets the optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).
-        /// </summary>
-        /// <value>The minimum internal record identifier.</value>
+        /// <inheritdoc />
         public long? MinimumInternalRecordId { get; private set; }
+
+        /// <inheritdoc />
+        public bool InheritRecordTags { get; private set; }
     }
 }

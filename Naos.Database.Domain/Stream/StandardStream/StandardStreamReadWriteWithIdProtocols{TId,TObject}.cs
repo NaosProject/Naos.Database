@@ -114,7 +114,7 @@ namespace Naos.Database.Domain
                 this.stream.DefaultSerializerRepresentation,
                 identifierTypeRep.ToWithAndWithoutVersion(),
                 objectTypeRep.ToWithAndWithoutVersion(),
-                operation.Tags ?? new Dictionary<string, string>(),
+                operation.Tags,
                 DateTime.UtcNow,
                 objectTimestamp);
 

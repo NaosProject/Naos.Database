@@ -385,6 +385,43 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void TagsCanBeNullTest()
+        {
+            var streamName = "MS_TagsCanBeNullTest";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory());
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var id = A.Dummy<string>();
+            var putOpOne = new PutAndReturnInternalRecordIdOp<string>(A.Dummy<string>());
+            var internalRecordIdOne = stream.GetStreamWritingProtocols<string>().Execute(putOpOne);
+            var latestOne = stream.Execute(new GetLatestRecordOp());
+            latestOne.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdOne);
+            latestOne.Metadata.Tags.MustForTest().BeNull();
+
+            var putOpTwo = new PutWithIdAndReturnInternalRecordIdOp<string, string>(id, A.Dummy<string>());
+            var internalRecordIdTwo = stream.GetStreamWritingWithIdProtocols<string, string>().Execute(putOpTwo);
+            var latestTwo = stream.Execute(new GetLatestRecordByIdOp("\"" + id + "\""));
+            latestTwo.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdTwo);
+            latestTwo.Metadata.Tags.MustForTest().BeNull();
+        }
+
+        [Fact]
         public static void DoesNotExistTest()
         {
             var streamName = "MS_DoesNotExistTest";

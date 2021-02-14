@@ -668,6 +668,47 @@ namespace Naos.Protocol.FileSystem.Test
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
+
+        [Fact]
+        public static void TagsCanBeNullTest()
+        {
+            var streamName = "FS_TagsCanBeNullTest";
+            var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var id = A.Dummy<string>();
+            var putOpOne = new PutAndReturnInternalRecordIdOp<string>(A.Dummy<string>());
+            var internalRecordIdOne = stream.GetStreamWritingProtocols<string>().Execute(putOpOne);
+            var latestOne = stream.Execute(new GetLatestRecordOp());
+            latestOne.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdOne);
+            latestOne.Metadata.Tags.MustForTest().BeNull();
+
+            var putOpTwo = new PutWithIdAndReturnInternalRecordIdOp<string, string>(id, A.Dummy<string>());
+            var internalRecordIdTwo = stream.GetStreamWritingWithIdProtocols<string, string>().Execute(putOpTwo);
+            var latestTwo = stream.Execute(new GetLatestRecordByIdOp("\"" + id + "\""));
+            latestTwo.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdTwo);
+            latestTwo.Metadata.Tags.MustForTest().BeNull();
+        }
     }
 
     public class MyObject : IIdentifiableBy<string>, IHaveTags

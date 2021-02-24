@@ -13,6 +13,7 @@ namespace Naos.Protocol.FileSystem.Test
     using System.IO;
     using System.Linq;
     using FakeItEasy;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Database.Protocol.FileSystem;
     using Naos.Database.Serialization.Json;
@@ -206,6 +207,7 @@ namespace Naos.Protocol.FileSystem.Test
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification =  NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         [Fact]
         public void Create_Put_Handle_Delete___Given_valid_data___Should_roundtrip_to_file_system()
         {

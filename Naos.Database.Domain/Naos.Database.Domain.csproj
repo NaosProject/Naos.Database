@@ -128,19 +128,6 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
-    <Compile Include="Model\BinaryDescribedSerialization.cs" />
-    <Compile Include="Model\BinaryDescribedSerialization.designer.cs">
-      <DependentUpon>BinaryDescribedSerialization.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DescribedSerializationBase.cs" />
-    <Compile Include="Model\DescribedSerializationBase.designer.cs">
-      <DependentUpon>DescribedSerializationBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DomainExtensions.cs" />
-    <Compile Include="Model\StringDescribedSerialization.cs" />
-    <Compile Include="Model\StringDescribedSerialization.designer.cs">
-      <DependentUpon>StringDescribedSerialization.cs</DependentUpon>
-    </Compile>
     <Compile Include="ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="ResourceLocation\ISpecifyResourceLocator.cs" />
     <Compile Include="ResourceLocation\ResourceLocatorExtensions.cs" />
@@ -564,6 +551,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Naos.Build.Analyzers.1.55.48\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.48\build\Naos.Build.Analyzers.targets')" />

@@ -21,8 +21,8 @@ namespace OBeautifulCode.Process.Recipes
     /// Contains helper/convenience methods related to managing processes.
     /// </summary>
 #if !OBeautifulCodeProcessSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Process.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Process.Recipes", "See package version number")]
     internal
 #else
     public

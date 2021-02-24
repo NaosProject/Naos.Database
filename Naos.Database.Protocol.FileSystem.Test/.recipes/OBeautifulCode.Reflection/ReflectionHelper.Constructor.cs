@@ -142,6 +142,10 @@ namespace OBeautifulCode.Reflection.Recipes
         /// <summary>
         /// Finds constructors having parameters that correspond to a set of properties, matching on name (case-insensitive) and type.
         /// </summary>
+        /// <remarks>
+        /// For type matching, we check that a constructor parameter type can be assigned it's corresponding property's type
+        /// and vice-versa.  If either direction succeeds, we consider it a match.
+        /// </remarks>
         /// <param name="classType">The class type.</param>
         /// <param name="properties">The properties.</param>
         /// <param name="matchStrategy">Determines which constructors will be deemed as matching.</param>
@@ -214,8 +218,8 @@ namespace OBeautifulCode.Reflection.Recipes
 
                             var propertyType = propertyNameToPropertyTypeMap[parameter.Name];
 
-                            // property matches parameter by type?
-                            if (propertyType != parameter.ParameterType)
+                            // parameter type is assignable to property type OR vice-versa?
+                            if ((!propertyType.IsAssignableFrom(parameter.ParameterType)) && (!parameter.ParameterType.IsAssignableFrom(propertyType)))
                             {
                                 return false;
                             }

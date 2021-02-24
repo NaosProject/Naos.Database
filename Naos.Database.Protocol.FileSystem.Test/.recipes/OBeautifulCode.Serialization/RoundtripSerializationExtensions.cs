@@ -27,8 +27,7 @@ namespace OBeautifulCode.Serialization.Recipes
     /// Verifies that the object to serialize is equal to the resulting deserialized object.
     /// </summary>
     /// <typeparam name="T">The type being tested.</typeparam>
-    /// <param name="serializedPayload">The results of serialization.</param>
-    /// <param name="serializationFormat">The serialization format used.</param>
+    /// <param name="describedSerialization">The described serialization.</param>
     /// <param name="deserializedObject">The deserialized object.</param>
 #if !OBeautifulCodeSerializationSolution
     [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Serialization.Recipes", "See package version number")]
@@ -37,8 +36,7 @@ namespace OBeautifulCode.Serialization.Recipes
     public
 #endif
     delegate void RoundtripSerializationVerification<in T>(
-        string serializedPayload,
-        SerializationFormat serializationFormat,
+        DescribedSerializationBase describedSerialization,
         T deserializedObject);
 
     /// <summary>
@@ -117,7 +115,7 @@ namespace OBeautifulCode.Serialization.Recipes
         {
             RoundtripSerializeWithCallbackVerification(
                 expected,
-                (yieldedDescribedSerialization, serializationFormat, deserializedObject) => deserializedObject.AsTest().Must().BeEqualTo(expected),
+                (yieldedDescribedSerialization, deserializedObject) => deserializedObject.AsTest().Must().BeEqualTo(expected),
                 bsonSerializationConfigurationType,
                 jsonSerializationConfigurationType,
                 propertyBagSerializationConfigurationType,
@@ -189,11 +187,11 @@ namespace OBeautifulCode.Serialization.Recipes
                 throw new InvalidOperationException("No serializers are being tested.");
             }
 
-            Func<SerializerRepresentation, SerializationFormat, object, DescribedSerialization> serializeFunc = Serialize;
+            Func<SerializerRepresentation, SerializationFormat, object, DescribedSerializationBase> serializeFunc = Serialize;
 
-            Func<DescribedSerialization, T> deserializeFunc = Deserialize<T>;
+            Func<DescribedSerializationBase, T> deserializeFunc = Deserialize<T>;
 
-            Func<SerializerRepresentation, SerializationFormat, T, Tuple<string, T>> serializeAndDeserializeFunc = SerializeAndDeserialize<T>;
+            Func<SerializerRepresentation, SerializationFormat, T, Tuple<DescribedSerializationBase, T>> serializeAndDeserializeFunc = SerializeAndDeserialize<T>;
 
             foreach (var serializerRepresentation in serializerRepresentations)
             {
@@ -203,14 +201,14 @@ namespace OBeautifulCode.Serialization.Recipes
                     {
                         var serializeAndDeserializeResult = serializeAndDeserializeFunc(serializerRepresentation, format, expected);
 
-                        RunVerification(serializerRepresentation, format, verificationCallback, AppDomainScenarios.RoundtripInCurrentAppDomain, serializeAndDeserializeResult.Item1, serializeAndDeserializeResult.Item2);
+                        RunVerification(serializeAndDeserializeResult.Item1, verificationCallback, AppDomainScenarios.RoundtripInCurrentAppDomain, serializeAndDeserializeResult.Item2);
                     }
 
                     if (appDomainScenarios.HasFlag(AppDomainScenarios.RoundtripInNewAppDomain))
                     {
                         var serializeAndDeserializeResult = serializeAndDeserializeFunc.ExecuteInNewAppDomain(serializerRepresentation, format, expected);
 
-                        RunVerification(serializerRepresentation, format, verificationCallback, AppDomainScenarios.RoundtripInNewAppDomain, serializeAndDeserializeResult.Item1, serializeAndDeserializeResult.Item2);
+                        RunVerification(serializeAndDeserializeResult.Item1, verificationCallback, AppDomainScenarios.RoundtripInNewAppDomain, serializeAndDeserializeResult.Item2);
                     }
 
                     if (appDomainScenarios.HasFlag(AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain))
@@ -219,7 +217,7 @@ namespace OBeautifulCode.Serialization.Recipes
 
                         var deserializedObject = deserializeFunc.ExecuteInNewAppDomain(describedSerialization);
 
-                        RunVerification(serializerRepresentation, format, verificationCallback, AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain, describedSerialization.SerializedPayload, deserializedObject);
+                        RunVerification(describedSerialization, verificationCallback, AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain, deserializedObject);
                     }
 
                     if (appDomainScenarios.HasFlag(AppDomainScenarios.SerializeInNewAppDomainAndDeserializeInNewAppDomain))
@@ -228,33 +226,31 @@ namespace OBeautifulCode.Serialization.Recipes
 
                         var deserializedObject = deserializeFunc.ExecuteInNewAppDomain(describedSerialization);
 
-                        RunVerification(serializerRepresentation, format, verificationCallback, AppDomainScenarios.SerializeInNewAppDomainAndDeserializeInNewAppDomain, describedSerialization.SerializedPayload, deserializedObject);
+                        RunVerification(describedSerialization, verificationCallback, AppDomainScenarios.SerializeInNewAppDomainAndDeserializeInNewAppDomain, deserializedObject);
                     }
                 }
             }
         }
 
         private static void RunVerification<T>(
-            SerializerRepresentation serializerRepresentation,
-            SerializationFormat serializationFormat,
+            DescribedSerializationBase describedSerialization,
             RoundtripSerializationVerification<T> verificationCallback,
             AppDomainScenarios appDomainScenario,
-            string serializedPayload,
             T deserializedObject)
         {
             new { verificationCallback }.AsArg().Must().NotBeNull();
 
             try
             {
-                verificationCallback(serializedPayload, serializationFormat, deserializedObject);
+                verificationCallback(describedSerialization, deserializedObject);
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(Invariant($"Failed to roundtrip specified object to/from {serializerRepresentation.SerializationKind} {serializationFormat} using {serializerRepresentation.SerializationConfigType.ResolveFromLoadedTypes().ToStringReadable()} with the App Domain Scenario '{appDomainScenario}'.  Serialized payload is: {serializedPayload}.  Deserialized object is: {deserializedObject}."), ex);
+                throw new InvalidOperationException(Invariant($"Failed to roundtrip specified object to/from {describedSerialization.SerializerRepresentation.SerializationKind} {describedSerialization.GetSerializationFormat()} using {describedSerialization.SerializerRepresentation.SerializationConfigType.ResolveFromLoadedTypes().ToStringReadable()} with the App Domain Scenario '{appDomainScenario}'.  Serialized payload is: {describedSerialization.GetSerializedPayloadAsEncodedString()}.  Deserialized object is: {deserializedObject}."), ex);
             }
         }
 
-        private static DescribedSerialization Serialize(
+        private static DescribedSerializationBase Serialize(
             SerializerRepresentation serializerRepresentation,
             SerializationFormat serializationFormat,
             object objectToSerialize)
@@ -265,14 +261,14 @@ namespace OBeautifulCode.Serialization.Recipes
         }
 
         private static T Deserialize<T>(
-            DescribedSerialization describedSerialization)
+            DescribedSerializationBase describedSerialization)
         {
             var result = describedSerialization.DeserializePayload<T>();
 
             return result;
         }
 
-        private static Tuple<string, T> SerializeAndDeserialize<T>(
+        private static Tuple<DescribedSerializationBase, T> SerializeAndDeserialize<T>(
             SerializerRepresentation serializerRepresentation,
             SerializationFormat serializationFormat,
             T objectToSerialize)
@@ -283,9 +279,9 @@ namespace OBeautifulCode.Serialization.Recipes
 
             var deserializedObject = (T)describedSerialization.DeserializePayloadUsingSpecificSerializer(serializer);
 
-            // note that we cannot return a ValueTuple (DescribedSerialization DescribedSerialization, T actual)
+            // note that we cannot return a ValueTuple (DescribedSerializationBase describedSerialization, T actual)
             // here because ValueTuple is not [Serializable]
-            var result = new Tuple<string, T>(describedSerialization.SerializedPayload, deserializedObject);
+            var result = new Tuple<DescribedSerializationBase, T>(describedSerialization, deserializedObject);
 
             return result;
         }

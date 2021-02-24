@@ -80,6 +80,11 @@ namespace OBeautifulCode.CodeAnalysis.Recipes
         public const string CA1027_MarkEnumsWithFlags_EnumValuesArePurposefullyNonContiguous = "This is not a flags enum.  Enum values are purposefully non-contiguous.";
 
         /// <summary>
+        /// This Exception is only used internally and the constructor(s) ensure that when the Exception is caught, it contains the required information.
+        /// </summary>
+        public const string CA1032_ImplementStandardExceptionConstructors_ExceptionUsedInternallyAndConstructorsEnsureRequiredInfoAvailableWhenCaught = "This Exception is only used internally and the constructor(s) ensure that when the Exception is caught, it contains the required information.";
+
+        /// <summary>
         /// A visible nested type is required in unit tests.
         /// </summary>
         public const string CA1034_NestedTypesShouldNotBeVisible_VisibleNestedTypeRequiredForTesting = "A visible nested type is required in unit tests.";
@@ -98,6 +103,16 @@ namespace OBeautifulCode.CodeAnalysis.Recipes
         /// The type is used for test code that requires the instance field to be visible.
         /// </summary>
         public const string CA1051_DoNotDeclareVisibleInstanceFields_TypeUsedInTestingThatRequiresInstanceFieldToBeVisible = "The type is used for test code that requires the instance field to be visible.";
+
+        /// <summary>
+        /// In this case we prefer to represent the URL as a string.
+        /// </summary>
+        public const string CA1054_UriParametersShouldNotBeStrings_PreferToRepresentUrlAsString = "In this case we prefer to represent the URL as a string.";
+
+        /// <summary>
+        /// In this case we prefer to represent the URL as a string.
+        /// </summary>
+        public const string CA1056_UriPropertiesShouldNotBeStrings_PreferToRepresentUrlAsString = "In this case we prefer to represent the URL as a string.";
 
         /// <summary>
         /// It's ok to throw NotSupportedException for an unreachable code path.
@@ -273,5 +288,10 @@ namespace OBeautifulCode.CodeAnalysis.Recipes
         /// The type is used in unit tests with no intention to serialize.
         /// </summary>
         public const string CA2237_MarkISerializableTypesWithSerializable_UsedForTestingWithNoIntentionToSerialize = "The type is used in unit tests with no intention to serialize.";
+
+        /// <summary>
+        /// The Exception is only used internally; it will never be serialized.
+        /// </summary>
+        public const string CA2237_MarkISerializableTypesWithSerializable_ExceptionOnlyUsedInternallyAndWillNeverBeSerialized = "The Exception is only used internally; it will never be serialized.";
     }
 }

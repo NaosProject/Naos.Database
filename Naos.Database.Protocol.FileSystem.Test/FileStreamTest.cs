@@ -14,7 +14,6 @@ namespace Naos.Protocol.FileSystem.Test
     using System.Linq;
     using FakeItEasy;
     using Naos.Database.Domain;
-    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Database.Protocol.FileSystem;
     using Naos.Database.Serialization.Json;
     using Naos.Protocol.Domain;

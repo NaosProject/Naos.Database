@@ -13,7 +13,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
     using System.Linq;
     using FakeItEasy;
     using Naos.Database.Domain;
-    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Database.Serialization.Json;
     using Naos.Protocol.Domain;
     using Naos.Protocol.Serialization.Json;

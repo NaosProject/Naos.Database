@@ -26,6 +26,9 @@
       <!-- A character encoding: American Standard Code for Information Interchange -->
       <Word>ascii</Word>
 
+      <!-- Abbreviated form of Authentication or Authorization -->
+      <Word>auth</Word>
+
       <!-- A feature in Excel that automatically sizes rows and columns based on the contained content -->
       <Word>autofit</Word>
 
@@ -43,6 +46,9 @@
 
       <!-- The ability be be compiled. -->
       <Word>compilable</Word>
+
+      <!-- Plural of config.  Multiple configurations. -->
+      <Word>configs</Word>
 
       <!-- Acronym for Certificate Signing Request -->
       <Word>CSR</Word>

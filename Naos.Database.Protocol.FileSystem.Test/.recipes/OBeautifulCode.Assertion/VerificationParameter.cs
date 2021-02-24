@@ -15,8 +15,8 @@ namespace OBeautifulCode.Assertion.Recipes
     /// A parameter of the verification (e.g. the comparison value when verifying that a subject is greater than some comparison value)"/>.
     /// </summary>
 #if !OBeautifulCodeAssertionSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

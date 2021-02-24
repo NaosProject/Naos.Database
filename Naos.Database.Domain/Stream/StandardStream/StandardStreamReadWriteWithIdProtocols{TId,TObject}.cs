@@ -7,12 +7,11 @@
 namespace Naos.Database.Domain
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
     /// <summary>

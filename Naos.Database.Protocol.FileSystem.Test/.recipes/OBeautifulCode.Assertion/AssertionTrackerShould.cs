@@ -15,7 +15,7 @@ namespace OBeautifulCode.Assertion.Recipes
     /// Specifies what should or should not be true about an <see cref="AssertionTracker"/>.
     /// </summary>
 #if !OBeautifulCodeAssertionSolution
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

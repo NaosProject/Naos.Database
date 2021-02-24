@@ -13,7 +13,7 @@ namespace OBeautifulCode.Assertion.Recipes
     /// Specifies on whether a range is inclusive or exclusive of the endpoints.
     /// </summary>
 #if !OBeautifulCodeAssertionSolution
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

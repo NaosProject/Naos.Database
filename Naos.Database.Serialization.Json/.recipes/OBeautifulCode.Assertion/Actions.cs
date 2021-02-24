@@ -19,7 +19,7 @@ namespace OBeautifulCode.Assertion.Recipes
     /// </summary>
     [Flags]
 #if !OBeautifulCodeAssertionSolution
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

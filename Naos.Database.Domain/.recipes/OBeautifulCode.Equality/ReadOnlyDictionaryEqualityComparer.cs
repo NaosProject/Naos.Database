@@ -17,8 +17,8 @@ namespace OBeautifulCode.Equality.Recipes
     /// <typeparam name="TKey">The type of dictionary keys.</typeparam>
     /// <typeparam name="TValue">The type of dictionary values.</typeparam>
 #if !OBeautifulCodeEqualitySolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Equality.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Equality.Recipes", "See package version number")]
     internal
 #else
     public

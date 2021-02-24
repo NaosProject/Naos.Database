@@ -17,8 +17,8 @@ namespace OBeautifulCode.Compression.Recipes
     /// Get the correct <see cref="ICompressAndDecompress" /> implementation based on the kind.
     /// </summary>
 #if !OBeautifulCodeCompressionSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Compression.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Compression.Recipes", "See package version number")]
     internal
 #else
     public

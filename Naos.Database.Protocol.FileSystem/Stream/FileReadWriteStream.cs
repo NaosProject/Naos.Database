@@ -14,7 +14,6 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
-    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Enum.Recipes;
@@ -2085,11 +2084,11 @@ namespace Naos.Database.Protocol.FileSystem
             string concern,
             long entryId,
             StreamRecordHandlingEntryMetadata metadata,
-            DescribedSerialization payload)
+            DescribedSerializationBase payload)
         {
             var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
             var timestampString = this.dateTimeStringSerializer.SerializeToString(metadata.TimestampUtc).Replace(":", "--");
-            var fileExtension = payload.SerializationFormat == SerializationFormat.Binary ? BinaryFileExtension :
+            var fileExtension = payload.GetSerializationFormat() == SerializationFormat.Binary ? BinaryFileExtension :
                 payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
             var fileBaseName = Invariant($"{entryId.PadWithLeadingZeros()}___{timestampString}___Id-{metadata.InternalRecordId.PadWithLeadingZeros()}___ExtId-{metadata.StringSerializedId?.EncodeForFilePath() ?? NullToken}___Status-{metadata.Status}");
             var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
@@ -2101,13 +2100,15 @@ namespace Naos.Database.Protocol.FileSystem
             File.WriteAllText(metadataFilePath, stringSerializedMetadata);
             if (fileExtension == BinaryFileExtension)
             {
-                var serializedBytes = Convert.FromBase64String(payload.SerializedPayload);
+                var serializedBytes = payload.GetSerializedPayloadAsEncodedBytes();
 
                 File.WriteAllBytes(payloadFilePath, serializedBytes);
             }
             else
             {
-                File.WriteAllText(payloadFilePath, payload.SerializedPayload);
+                var serializedString = payload.GetSerializedPayloadAsEncodedString();
+
+                File.WriteAllText(payloadFilePath, serializedString);
             }
         }
     }

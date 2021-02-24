@@ -10,6 +10,7 @@
 namespace OBeautifulCode.Reflection.Recipes
 {
     using global::System;
+    using global::System.Reflection;
 
     /// <summary>
     /// Scopes the search for members based on their relationship to a specified type.
@@ -38,12 +39,31 @@ namespace OBeautifulCode.Reflection.Recipes
         /// Private members of base types are not inherited and would not be
         /// returned when using this flag; <see cref="DeclaredInAncestorTypes"/>.
         /// </summary>
+        /// <remarks>
+        /// Inherited members' <see cref="MemberInfo.ReflectedType"/> will be the specified type,
+        /// NOT the <see cref="MemberInfo.DeclaringType"/>.  There is a subtle but consequential
+        /// difference between the members returned when this flag is set versus those returned
+        /// when <see cref="DeclaredInAncestorTypes"/> is set
+        /// (if both are set, then only <see cref="DeclaredInAncestorTypes"/> is used).
+        /// Because the <see cref="MemberInfo.ReflectedType"/> type is different, the members
+        /// may have different property values.  For example, if a base class contains a public
+        /// property with a private setter, the <see cref="PropertyInfo.SetMethod"/> will be
+        /// null using <see cref="InheritedByType"/>, and not null when using <see cref="DeclaredInAncestorTypes"/>.
+        /// The property will NOT be considered <see cref="MemberMutability.Writable"/> when
+        /// <see cref="PropertyInfo.SetMethod"/> is null.
+        /// </remarks>
         InheritedByType = 2,
 
         /// <summary>
         /// Include members declared in all ancestor types.
         /// This would include private members of base types.
         /// </summary>
+        /// <remarks>
+        /// This flag supersedes <see cref="InheritedByType"/>.
+        /// Unlike <see cref="InheritedByType"/>, members declared in ancestor types will
+        /// have a <see cref="MemberInfo.ReflectedType"/> that equals <see cref="MemberInfo.DeclaringType"/>
+        /// See remarks for <see cref="InheritedByType"/> about why/when this matters.
+        /// </remarks>
         DeclaredInAncestorTypes = 4,
 
         /// <summary>

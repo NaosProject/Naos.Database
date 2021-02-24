@@ -15,7 +15,7 @@ namespace OBeautifulCode.Assertion.Recipes
     /// Specifies the kind of assertion.
     /// </summary>
 #if !OBeautifulCodeAssertionSolution
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

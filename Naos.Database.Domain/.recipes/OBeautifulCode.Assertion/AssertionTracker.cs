@@ -15,8 +15,8 @@ namespace OBeautifulCode.Assertion.Recipes
     /// Tracks information related to the subject and lifecycle of an assertion.
     /// </summary>
 #if !OBeautifulCodeAssertionSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

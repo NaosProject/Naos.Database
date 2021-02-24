@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Database.Domain.DescribedSerialization;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;

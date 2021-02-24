@@ -21,6 +21,8 @@ namespace OBeautifulCode.Assertion.Recipes
 
     using OBeautifulCode.Equality.Recipes;
 
+    using static global::System.FormattableString;
+
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "A generalized assertion library is going to require lots of types.")]
 #if !OBeautifulCodeAssertionSolution
     internal
@@ -29,6 +31,8 @@ namespace OBeautifulCode.Assertion.Recipes
 #endif
     static partial class Verifications
     {
+        private const int BuildReadOnlyCollectionVerificationParameterToStringMaxItems = 10;
+
         private static readonly MethodInfo GetDefaultValueOpenGenericMethodInfo = ((Func<object>)GetDefaultValue<object>).Method.GetGenericMethodDefinition();
 
         private static readonly ConcurrentDictionary<Type, MethodInfo> GetDefaultValueTypeToMethodInfoMap = new ConcurrentDictionary<Type, MethodInfo>();
@@ -192,6 +196,24 @@ namespace OBeautifulCode.Assertion.Recipes
             this string emailAddress)
         {
             var result = !string.IsNullOrWhiteSpace(emailAddress) && (ValidateEmailAddressRegex.Match(emailAddress).Length > 0);
+
+            return result;
+        }
+
+        private static string BuildReadOnlyCollectionVerificationParameterToString<T>(
+            this IReadOnlyCollection<T> verificationParameter,
+            int maxItems)
+        {
+            var verificationParameterToStrings = verificationParameter.Take(maxItems).Select(_ => ToStringInErrorMessage(_)).ToArray();
+
+            var result = Invariant($"[{string.Join(", ", verificationParameterToStrings)}");
+
+            if (verificationParameter.Count() > maxItems)
+            {
+                result = result + ", ...";
+            }
+
+            result = result + "]";
 
             return result;
         }

@@ -13,7 +13,7 @@ namespace OBeautifulCode.Assertion.Recipes
     /// Determines how to apply the optional, user-specified rationale for a verification.
     /// </summary>
 #if !OBeautifulCodeAssertionSolution
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Assertion.Recipes", "See package version number")]
     internal
 #else
     public

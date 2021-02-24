@@ -6,8 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-    using System.Collections.Generic;
-    using Naos.Database.Domain.DescribedSerialization;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;

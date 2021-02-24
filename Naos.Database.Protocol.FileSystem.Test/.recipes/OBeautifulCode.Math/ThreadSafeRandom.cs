@@ -23,8 +23,8 @@ namespace OBeautifulCode.Math.Recipes
     /// System.Random is not thread-safe, hence the need for this class.
     /// </remarks>
 #if !OBeautifulCodeMathSolution
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Math.Recipes", "See package version number")]
+    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Math.Recipes", "See package version number")]
     internal
 #else
     public

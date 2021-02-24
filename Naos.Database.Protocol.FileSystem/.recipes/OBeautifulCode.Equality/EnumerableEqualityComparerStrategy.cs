@@ -15,7 +15,7 @@ namespace OBeautifulCode.Equality.Recipes
     /// Determines the strategy to use when comparing two <see cref="IEnumerable{T}"/> for equality.
     /// </summary>
 #if !OBeautifulCodeEqualitySolution
-    [System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Equality.Recipes", "See package version number")]
+    [global::System.CodeDom.Compiler.GeneratedCode("OBeautifulCode.Equality.Recipes", "See package version number")]
     internal
 #else
     public

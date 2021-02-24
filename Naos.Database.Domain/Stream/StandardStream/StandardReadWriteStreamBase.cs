@@ -126,7 +126,7 @@ namespace Naos.Database.Domain
             GetHandlingStatusOfRecordSetByTagOp operation);
 
         /// <inheritdoc />
-        public abstract StreamRecord Execute(
+        public abstract TryHandleRecordResult Execute(
             TryHandleRecordOp operation);
 
         /// <inheritdoc />

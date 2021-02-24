@@ -31,7 +31,7 @@ namespace Naos.Database.Domain
           IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
           IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
           IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-          IReturningProtocol<TryHandleRecordOp, StreamRecord>,
+          IReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,
           IReturningProtocol<PutRecordOp, PutRecordResult>,
           IVoidProtocol<BlockRecordHandlingOp>,
           IVoidProtocol<CancelBlockedRecordHandlingOp>,

@@ -669,7 +669,7 @@ namespace Naos.Database.Protocol.FileSystem
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-        public override StreamRecord Execute(
+        public override TryHandleRecordResult Execute(
             TryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -687,7 +687,7 @@ namespace Naos.Database.Protocol.FileSystem
                     var blocked = this.IsMostRecentBlocked(locator);
                     if (blocked)
                     {
-                        return null;
+                        return new TryHandleRecordResult(null, true);
                     }
 
                     lock (this.fileLock)
@@ -829,12 +829,13 @@ namespace Naos.Database.Protocol.FileSystem
                             var runningEntryId = this.GetNextRecordHandlingEntryId(locator);
                             this.PutRecordHandlingEntry(locator, operation.Concern, runningEntryId, runningMetadata, runningPayload);
 
-                            return recordToHandle;
+                            var result = new TryHandleRecordResult(recordToHandle);
+                            return result;
                         }
                     }
                 }
 
-                return null;
+                return new TryHandleRecordResult(null);
             }
         }
 

@@ -42,7 +42,8 @@ namespace Naos.Database.Domain
             TryHandleRecordWithIdOp<TId, TObject> operation)
         {
             var delegatedOperation = operation.Standardize();
-            var record = this.stream.Execute(delegatedOperation);
+            var tryHandleResult = this.stream.Execute(delegatedOperation);
+            var record = tryHandleResult.RecordToHandle;
 
             if (record?.Payload == null)
             {

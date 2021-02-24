@@ -9,12 +9,11 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Type;
 
     /// <summary>
     /// Handles a record.
     /// </summary>
-    public partial class TryHandleRecordOp : ReturningOperationBase<StreamRecord>, ITryHandleRecordOpBase
+    public partial class TryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, ITryHandleRecordOpBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordOp"/> class.

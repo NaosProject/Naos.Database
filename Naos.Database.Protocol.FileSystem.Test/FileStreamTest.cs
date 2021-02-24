@@ -258,7 +258,7 @@ namespace Naos.Protocol.FileSystem.Test
 
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
-                var firstInternalRecordId = first.InternalRecordId;
+                var firstInternalRecordId = first.RecordToHandle.InternalRecordId;
                 stream.Execute(
                     new CancelRunningHandleRecordExecutionOp(
                         firstInternalRecordId,
@@ -315,12 +315,12 @@ namespace Naos.Protocol.FileSystem.Test
                 var secondConcern = "FailedRetriedScenario";
                 var second = stream.Execute(new TryHandleRecordOp(secondConcern));
                 second.MustForTest().NotBeNull();
-                var secondInternalRecordId = second.InternalRecordId;
+                var secondInternalRecordId = second.RecordToHandle.InternalRecordId;
                 var getSecondStatusByIdOp = new GetHandlingStatusOfRecordsByIdOp(
                     secondConcern,
                     new[]
                     {
-                        new StringSerializedIdentifier(second.Metadata.StringSerializedId, second.Metadata.TypeRepresentationOfId.WithVersion),
+                        new StringSerializedIdentifier(second.RecordToHandle.Metadata.StringSerializedId, second.RecordToHandle.Metadata.TypeRepresentationOfId.WithVersion),
                     });
 
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
@@ -522,9 +522,9 @@ namespace Naos.Protocol.FileSystem.Test
             var concern = "NullTesting";
             var record = stream.Execute(new TryHandleRecordOp(concern));
             record.MustForTest().NotBeNull();
-            ((StringDescribedSerialization)record.Payload).SerializedPayload.MustForTest().BeEqualTo("null");
+            ((StringDescribedSerialization)record.RecordToHandle.Payload).SerializedPayload.MustForTest().BeEqualTo("null");
 
-            stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.InternalRecordId, concern));
+            stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.RecordToHandle.InternalRecordId, concern));
 
             var recordAgain = stream.Execute(new TryHandleRecordOp(concern));
             recordAgain.MustForTest().BeNull();

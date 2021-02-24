@@ -498,7 +498,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-        public override StreamRecord Execute(
+        public override TryHandleRecordResult Execute(
             TryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -524,7 +524,7 @@ namespace Naos.Database.Domain
                     var mostRecentEntry = handlingEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
                     if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.Blocked)
                     {
-                        return null;
+                        return new TryHandleRecordResult(null, true);
                     }
 
                     var entries =
@@ -652,12 +652,13 @@ namespace Naos.Database.Domain
                             var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
                             this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, runningEntryId, operation.Concern, runningMetadata, runningPayload);
 
-                            return recordToHandle;
+                            var result = new TryHandleRecordResult(recordToHandle);
+                            return result;
                         }
                     }
                 }
 
-                return null;
+                return new TryHandleRecordResult(null);
             }
         }
 

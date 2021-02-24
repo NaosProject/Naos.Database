@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// Protocols to handle records from streams.
     /// </summary>
     public interface IStreamRecordHandlingProtocols
-        : ISyncAndAsyncReturningProtocol<TryHandleRecordOp, StreamRecord>,
+        : ISyncAndAsyncReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,
           ISyncAndAsyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
           ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
           ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,

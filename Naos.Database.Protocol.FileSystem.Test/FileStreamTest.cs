@@ -489,6 +489,82 @@ namespace Naos.Protocol.FileSystem.Test
         }
 
         [Fact]
+        public static void PutAndGetLatestRecordByInternalRecordIdTest()
+        {
+            var streamName = "FS_PutAndGetLatestRecordByInternalRecordIdTest";
+
+            var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+            var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(fileSystemLocator);
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(
+                SerializationKind.Json,
+                configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var stream = new FileReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                resourceLocatorProtocol);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+
+            var internalRecordId = 1L;
+            var objectId = Guid.NewGuid();
+            var objectPayload = A.Dummy<string>();
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+            string serializedStringId = serializer.SerializeToString(objectId);
+
+            var identifierTypeRep = objectId.GetType().ToRepresentation();
+            var objectTypeRep = objectPayload.GetType().ToRepresentation();
+
+            var payload = objectPayload.ToDescribedSerializationUsingSpecificFactory(
+                stream.DefaultSerializerRepresentation,
+                stream.SerializerFactory,
+                stream.DefaultSerializationFormat);
+
+            var metadata = new StreamRecordMetadata(
+                serializedStringId,
+                stream.DefaultSerializerRepresentation,
+                identifierTypeRep.ToWithAndWithoutVersion(),
+                objectTypeRep.ToWithAndWithoutVersion(),
+                null,
+                DateTime.UtcNow,
+                null);
+
+            var putRecordOp = new PutRecordOp(
+                metadata,
+                payload,
+                null,
+                ExistingRecordEncounteredStrategy.None,
+                null,
+                internalRecordId);
+
+            var existsFirst = stream.GetLatestRecordMetadataById(objectId);
+            existsFirst.MustForTest().BeNull();
+
+            stream.Execute(putRecordOp);
+            var exception = Record.Exception(() => stream.Execute(putRecordOp));
+            exception.MustForTest().NotBeNull().And().BeOfType<InvalidOperationException>();
+            exception.Message.MustForTest().BeEqualTo("Operation specified an InternalRecordId of 1 but that InternalRecordId is already present in the stream.");
+
+            var foundRecord = stream.Execute(new GetLatestRecordOp(internalRecordId));
+            foundRecord.MustForTest().NotBeNull();
+            foundRecord.Metadata.MustForTest().BeEqualTo(metadata);
+            foundRecord.Payload.MustForTest().BeEqualTo(payload);
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
         public static void NullIdentifierAndValueTest()
         {
             var streamName = "FS_NullIdentifierAndValueTest";

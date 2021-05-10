@@ -24,6 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
+        /// <param name="internalRecordId">Optional internal record identifier to specify.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public PutRecordOp(
             StreamRecordMetadata metadata,
@@ -31,6 +32,7 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
+            long? internalRecordId = null,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
@@ -51,6 +53,7 @@ namespace Naos.Database.Domain
             this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
             this.RecordRetentionCount = recordRetentionCount;
+            this.InternalRecordId = internalRecordId;
             this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
         }
 
@@ -80,6 +83,12 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The record retention count if <see cref="ExistingRecordEncounteredStrategy"/> set to pruning.</value>
         public int? RecordRetentionCount { get; private set; }
+
+        /// <summary>
+        /// Gets the internal record identifier.
+        /// </summary>
+        /// <value>The internal record identifier.</value>
+        public long? InternalRecordId { get; private set; }
 
         /// <summary>
         /// Gets the type version match strategy.

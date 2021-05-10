@@ -882,14 +882,32 @@ namespace Naos.Database.Protocol.FileSystem
                     Invariant($"*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
-                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-                if (!orderedDescendingByInternalRecordId.Any())
-                {
-                    return ProcessDefaultReturn();
-                }
+                StreamRecord result = null;
 
-                var latest = orderedDescendingByInternalRecordId.First();
-                var result = this.GetStreamRecordFromMetadataFile(latest);
+                if (operation.InternalRecordId != null)
+                {
+                    var matchingIdFile = metadataPathsThatCouldMatch.FirstOrDefault(_ => _ == null ? throw new InvalidOperationException("This should not have happened, a null path was returned for Directory . Get Files for " + rootPath) : Path.GetFileName(_).StartsWith(Invariant($"{((long)operation.InternalRecordId).PadWithLeadingZeros()}"), StringComparison.Ordinal));
+                    if (matchingIdFile == null)
+                    {
+                        // could not find a matching file but a direct ID match was expected.
+                        ProcessDefaultReturn();
+                    }
+                    else
+                    {
+                        result = this.GetStreamRecordFromMetadataFile(matchingIdFile);
+                    }
+                }
+                else
+                {
+                    var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                    if (!orderedDescendingByInternalRecordId.Any())
+                    {
+                        return ProcessDefaultReturn();
+                    }
+
+                    var latest = orderedDescendingByInternalRecordId.First();
+                    result = this.GetStreamRecordFromMetadataFile(latest);
+                }
 
                 if (result != null)
                 {
@@ -1176,24 +1194,43 @@ namespace Naos.Database.Protocol.FileSystem
                             throw new NotSupportedException(Invariant($"{nameof(ExistingRecordEncounteredStrategy)} {operation.ExistingRecordEncounteredStrategy} is not supported."));
                     }
 
-                    // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
-                    using (var fileStream = new FileStream(
-                        recordIdentifierTrackingFilePath,
-                        FileMode.OpenOrCreate,
-                        FileAccess.ReadWrite,
-                        FileShare.None))
+                    if (operation.InternalRecordId == null)
                     {
-                        var reader = new StreamReader(fileStream);
-                        var currentInternalRecordIdentifierString = reader.ReadToEnd();
-                        currentInternalRecordIdentifierString = string.IsNullOrWhiteSpace(currentInternalRecordIdentifierString) ? 0.ToString(CultureInfo.InvariantCulture) : currentInternalRecordIdentifierString;
-                        var currentId = long.Parse(currentInternalRecordIdentifierString, CultureInfo.InvariantCulture);
-                        newId = currentId + 1;
-                        fileStream.Position = 0;
-                        var writer = new StreamWriter(fileStream);
-                        writer.Write(newId.ToString(CultureInfo.InvariantCulture));
+                        // open the file in locking mode to restrict a single thread changing the internal record identifier index at a time.
+                        using (var fileStream = new FileStream(
+                            recordIdentifierTrackingFilePath,
+                            FileMode.OpenOrCreate,
+                            FileAccess.ReadWrite,
+                            FileShare.None))
+                        {
+                            var reader = new StreamReader(fileStream);
+                            var currentInternalRecordIdentifierString = reader.ReadToEnd();
+                            currentInternalRecordIdentifierString = string.IsNullOrWhiteSpace(currentInternalRecordIdentifierString)
+                                ? 0.ToString(CultureInfo.InvariantCulture)
+                                : currentInternalRecordIdentifierString;
+                            var currentId = long.Parse(currentInternalRecordIdentifierString, CultureInfo.InvariantCulture);
+                            newId = currentId + 1;
+                            fileStream.Position = 0;
+                            var writer = new StreamWriter(fileStream);
+                            writer.Write(newId.ToString(CultureInfo.InvariantCulture));
 
-                        // necessary to flush buffer.
-                        writer.Close();
+                            // necessary to flush buffer.
+                            writer.Close();
+                        }
+                    }
+                    else
+                    {
+                        var operationInternalRecordId = (long)operation.InternalRecordId;
+                        if (Directory.GetFiles(
+                                          rootPath,
+                                          Invariant($"{operationInternalRecordId.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
+                                          SearchOption.TopDirectoryOnly)
+                                     .Any())
+                        {
+                            throw new InvalidOperationException(Invariant($"Operation specified an {nameof(PutRecordOp.InternalRecordId)} of {operation.InternalRecordId} but that {nameof(PutRecordOp.InternalRecordId)} is already present in the stream."));
+                        }
+
+                        newId = operationInternalRecordId;
                     }
                 }
 

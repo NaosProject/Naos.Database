@@ -672,12 +672,14 @@ namespace Naos.Database.Domain
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
 
                 var result =
-                    partition?.OrderByDescending(_ => _.InternalRecordId)
-                           .FirstOrDefault(
-                                _ => _.Metadata.FuzzyMatchTypes(
-                                    operation.IdentifierType,
-                                    operation.ObjectType,
-                                    operation.TypeVersionMatchStrategy));
+                    operation.InternalRecordId == null
+                        ? partition?.OrderByDescending(_ => _.InternalRecordId)
+                                    .FirstOrDefault(
+                                         _ => _.Metadata.FuzzyMatchTypes(
+                                             operation.IdentifierType,
+                                             operation.ObjectType,
+                                             operation.TypeVersionMatchStrategy))
+                        : partition?.FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
 
                 if (result != null)
                 {
@@ -740,6 +742,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public override PutRecordResult Execute(
             PutRecordOp operation)
         {
@@ -867,7 +870,23 @@ namespace Naos.Database.Domain
                         break;
                 }
 
-                var id = Interlocked.Increment(ref this.uniqueLongForInMemoryRecords);
+                long id;
+                if (operation.InternalRecordId != null)
+                {
+                    if (recordPartition.Any(_ => _.InternalRecordId == operation.InternalRecordId))
+                    {
+                        throw new InvalidOperationException(Invariant($"Operation specified an {nameof(PutRecordOp.InternalRecordId)} of {operation.InternalRecordId} but that {nameof(PutRecordOp.InternalRecordId)} is already present in the stream."));
+                    }
+                    else
+                    {
+                        id = (long)operation.InternalRecordId;
+                    }
+                }
+                else
+                {
+                    id = Interlocked.Increment(ref this.uniqueLongForInMemoryRecords);
+                }
+
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
                 recordPartition.Add(itemToAdd);
                 recordPartition.RemoveAll(_ => recordIdsToPrune.Contains(_.InternalRecordId));

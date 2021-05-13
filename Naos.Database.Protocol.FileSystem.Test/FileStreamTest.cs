@@ -556,7 +556,7 @@ namespace Naos.Protocol.FileSystem.Test
             exception.MustForTest().NotBeNull().And().BeOfType<InvalidOperationException>();
             exception.Message.MustForTest().BeEqualTo("Operation specified an InternalRecordId of 1 but that InternalRecordId is already present in the stream.");
 
-            var foundRecord = stream.Execute(new GetLatestRecordOp(internalRecordId));
+            var foundRecord = stream.Execute(new GetRecordByInternalRecordIdOp(internalRecordId));
             foundRecord.MustForTest().NotBeNull();
             foundRecord.Metadata.MustForTest().BeEqualTo(metadata);
             foundRecord.Payload.MustForTest().BeEqualTo(payload);

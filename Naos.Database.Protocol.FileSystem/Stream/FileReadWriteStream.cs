@@ -855,6 +855,59 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override StreamRecord Execute(
+            GetRecordByInternalRecordIdOp operation)
+        {
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+            lock (this.fileLock)
+            {
+                StreamRecord ProcessDefaultReturn()
+                {
+                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    {
+                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                            return null;
+                        case ExistingRecordNotEncounteredStrategy.Throw:
+                            throw new InvalidOperationException(
+                                Invariant(
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                        default:
+                            throw new NotSupportedException(
+                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                    }
+                }
+
+                var metadataPathsThatCouldMatch = Directory.GetFiles(
+                    rootPath,
+                    Invariant($"*.{MetadataFileExtension}"),
+                    SearchOption.TopDirectoryOnly);
+
+                StreamRecord result = null;
+
+                var matchingIdFile = metadataPathsThatCouldMatch.FirstOrDefault(_ => _ == null ? throw new InvalidOperationException("This should not have happened, a null path was returned for Directory . Get Files for " + rootPath) : Path.GetFileName(_).StartsWith(Invariant($"{((long)operation.InternalRecordId).PadWithLeadingZeros()}"), StringComparison.Ordinal));
+                if (matchingIdFile == null)
+                {
+                    // could not find a matching file but a direct ID match was expected.
+                    ProcessDefaultReturn();
+                }
+                else
+                {
+                    result = this.GetStreamRecordFromMetadataFile(matchingIdFile);
+                }
+
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return ProcessDefaultReturn();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override StreamRecord Execute(
             GetLatestRecordOp operation)
         {
             var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -884,30 +937,14 @@ namespace Naos.Database.Protocol.FileSystem
 
                 StreamRecord result = null;
 
-                if (operation.InternalRecordId != null)
+                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
+                if (!orderedDescendingByInternalRecordId.Any())
                 {
-                    var matchingIdFile = metadataPathsThatCouldMatch.FirstOrDefault(_ => _ == null ? throw new InvalidOperationException("This should not have happened, a null path was returned for Directory . Get Files for " + rootPath) : Path.GetFileName(_).StartsWith(Invariant($"{((long)operation.InternalRecordId).PadWithLeadingZeros()}"), StringComparison.Ordinal));
-                    if (matchingIdFile == null)
-                    {
-                        // could not find a matching file but a direct ID match was expected.
-                        ProcessDefaultReturn();
-                    }
-                    else
-                    {
-                        result = this.GetStreamRecordFromMetadataFile(matchingIdFile);
-                    }
+                    return ProcessDefaultReturn();
                 }
-                else
-                {
-                    var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-                    if (!orderedDescendingByInternalRecordId.Any())
-                    {
-                        return ProcessDefaultReturn();
-                    }
 
-                    var latest = orderedDescendingByInternalRecordId.First();
-                    result = this.GetStreamRecordFromMetadataFile(latest);
-                }
+                var latest = orderedDescendingByInternalRecordId.First();
+                result = this.GetStreamRecordFromMetadataFile(latest);
 
                 if (result != null)
                 {

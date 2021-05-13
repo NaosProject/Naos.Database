@@ -427,6 +427,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var resourceLocatorProtocol = new SingleResourceLocatorProtocol(new MemoryDatabaseLocator(streamName));
 
+            //throw new NotImplementedException("need to also test that the type requested is returned and also honor the stringserialized id?  could just create a different op...???");
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
                     TypesToRegisterJsonSerializationConfiguration<MyObject>,
@@ -486,7 +487,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             exception.MustForTest().NotBeNull().And().BeOfType<InvalidOperationException>();
             exception.Message.MustForTest().BeEqualTo("Operation specified an InternalRecordId of 1 but that InternalRecordId is already present in the stream.");
 
-            var foundRecord = stream.Execute(new GetLatestRecordOp(internalRecordId));
+            var foundRecord = stream.Execute(new GetRecordByInternalRecordIdOp(internalRecordId));
             foundRecord.MustForTest().NotBeNull();
             foundRecord.Metadata.MustForTest().BeEqualTo(metadata);
             foundRecord.Payload.MustForTest().BeEqualTo(payload);

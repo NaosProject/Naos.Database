@@ -661,6 +661,39 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override StreamRecord Execute(
+            GetRecordByInternalRecordIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.streamLock)
+            {
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+
+                var result = partition?.FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
+
+                if (result != null)
+                {
+                    return result;
+                }
+
+                switch (operation.ExistingRecordNotEncounteredStrategy)
+                {
+                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        return null;
+                    case ExistingRecordNotEncounteredStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override StreamRecord Execute(
             GetLatestRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -672,14 +705,12 @@ namespace Naos.Database.Domain
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
 
                 var result =
-                    operation.InternalRecordId == null
-                        ? partition?.OrderByDescending(_ => _.InternalRecordId)
-                                    .FirstOrDefault(
-                                         _ => _.Metadata.FuzzyMatchTypes(
-                                             operation.IdentifierType,
-                                             operation.ObjectType,
-                                             operation.TypeVersionMatchStrategy))
-                        : partition?.FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
+                    partition?.OrderByDescending(_ => _.InternalRecordId)
+                              .FirstOrDefault(
+                                   _ => _.Metadata.FuzzyMatchTypes(
+                                       operation.IdentifierType,
+                                       operation.ObjectType,
+                                       operation.TypeVersionMatchStrategy));
 
                 if (result != null)
                 {

@@ -403,6 +403,10 @@
     <Compile Include="GetLatestRecordOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetRecordByInternalRecordIdOpTest.cs" />
+    <Compile Include="GetRecordByInternalRecordIdOpTest.designer.cs">
+      <DependentUpon>GetRecordByInternalRecordIdOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="HandlingStatusCompositionStrategyTest.cs" />
     <Compile Include="HandlingStatusCompositionStrategyTest.designer.cs">
       <DependentUpon>HandlingStatusCompositionStrategyTest.cs</DependentUpon>

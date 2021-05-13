@@ -24,7 +24,6 @@ namespace Naos.Database.Domain
             this GetLatestRecordOp<TObject> operation)
         {
             var result = new GetLatestRecordOp(
-                null,
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,
@@ -43,7 +42,6 @@ namespace Naos.Database.Domain
             this GetLatestObjectOp<TObject> operation)
         {
             var result = new GetLatestRecordOp(
-                null,
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
                 operation.TypeVersionMatchStrategy,

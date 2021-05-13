@@ -393,8 +393,12 @@
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
       <DependentUpon>GetLatestRecordOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetRecordByInternalRecordIdOp.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Stream\ReadOnly\GetRecordByInternalRecordIdOp.designer.cs">
+      <DependentUpon>GetRecordByInternalRecordIdOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetRecordStandardizeExtensions.cs" />
     <Compile Include="Stream\StandardStream\IStandardReadWriteStream.cs" />

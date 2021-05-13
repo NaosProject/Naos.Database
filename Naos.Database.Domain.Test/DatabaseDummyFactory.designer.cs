@@ -475,6 +475,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetRecordByInternalRecordIdOp(
+                                 A.Dummy<long>(),
+                                 A.Dummy<ExistingRecordNotEncounteredStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),
@@ -517,7 +523,6 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordOp(
-                                 A.Dummy<long?>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeVersionMatchStrategy>(),

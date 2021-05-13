@@ -349,6 +349,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestRecordMetadataByIdOp>(),
                         A.Dummy<GetLatestRecordByIdOp>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
+                        A.Dummy<GetRecordByInternalRecordIdOp>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutRecordOp>(),

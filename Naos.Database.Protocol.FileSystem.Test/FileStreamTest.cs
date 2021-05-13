@@ -596,15 +596,15 @@ namespace Naos.Protocol.FileSystem.Test
             var result = stream.GetLatestObjectById<string, MyObject>(null);
             result.MustForTest().BeNull();
 
-            var concern = "NullTesting";
+            var concern = "NullIdentifierAndValueTest";
             var record = stream.Execute(new TryHandleRecordOp(concern));
-            record.MustForTest().NotBeNull();
-            ((StringDescribedSerialization)record.RecordToHandle.Payload).SerializedPayload.MustForTest().BeEqualTo("null");
+            record?.RecordToHandle.MustForTest().NotBeNull();
+            ((StringDescribedSerialization)record?.RecordToHandle.Payload)?.SerializedPayload.MustForTest().BeEqualTo("null");
 
             stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.RecordToHandle.InternalRecordId, concern));
 
             var recordAgain = stream.Execute(new TryHandleRecordOp(concern));
-            recordAgain.MustForTest().BeNull();
+            recordAgain.RecordToHandle.MustForTest().BeNull();
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }

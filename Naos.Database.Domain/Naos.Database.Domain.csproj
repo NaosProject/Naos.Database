@@ -258,6 +258,7 @@
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\ITryHandleRecordOpBase.cs" />
+    <Compile Include="Stream\Model\StreamAccessMode.cs" />
     <Compile Include="Stream\Model\TryHandleRecordResult.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleStandardizeExtensions.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.cs" />

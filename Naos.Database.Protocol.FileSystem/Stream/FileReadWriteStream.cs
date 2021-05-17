@@ -1043,24 +1043,68 @@ namespace Naos.Database.Protocol.FileSystem
                         : null;
 
                     var metadataThatCouldMatch =
-                        operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
-                     || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-                            ? metadataPathsThatCouldMatch?.Select(_ => new { Path = _, Text = File.ReadAllText(_) })
-                                                         .Select(_ => new { MetadataPath = _.Path, BinaryDataPath = Path.ChangeExtension(_.Path, BinaryFileExtension), StringDataPath = Path.ChangeExtension(_.Path, this.DefaultSerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)), Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text) })
-                                                         .Where(
-                                                              _ => _.Metadata.FuzzyMatchTypesAndId(
-                                                                  operation.Metadata.StringSerializedId,
-                                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
-                                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
-                                                                  operation.TypeVersionMatchStrategy))
-                                                         .ToList()
-                            : null;
+                        (operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
+                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
+                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById)
+                            ? metadataPathsThatCouldMatch?.Select(
+                                                               _ => new
+                                                                    {
+                                                                        Path = _,
+                                                                        Text = File.ReadAllText(_),
+                                                                    })
+                                                          .Select(
+                                                               _ => new
+                                                                    {
+                                                                        MetadataPath = _.Path,
+                                                                        BinaryDataPath = Path.ChangeExtension(_.Path, BinaryFileExtension),
+                                                                        StringDataPath = Path.ChangeExtension(
+                                                                            _.Path,
+                                                                            this.DefaultSerializerRepresentation.SerializationKind.ToString()
+                                                                                .ToLowerFirstCharacter(CultureInfo.InvariantCulture)),
+                                                                        Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text),
+                                                                    })
+                                                          .Where(
+                                                               _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                                   operation.Metadata.StringSerializedId,
+                                                                   operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                                                       operation.TypeVersionMatchStrategy),
+                                                                   null,
+                                                                   operation.TypeVersionMatchStrategy))
+                                                          .ToList()
+                            : (operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
+                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
+                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
+                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
+                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                                ? metadataPathsThatCouldMatch?.Select(
+                                                                   _ => new
+                                                                        {
+                                                                            Path = _,
+                                                                            Text = File.ReadAllText(_),
+                                                                        })
+                                                              .Select(
+                                                                   _ => new
+                                                                        {
+                                                                            MetadataPath = _.Path,
+                                                                            BinaryDataPath = Path.ChangeExtension(_.Path, BinaryFileExtension),
+                                                                            StringDataPath = Path.ChangeExtension(
+                                                                                _.Path,
+                                                                                this.DefaultSerializerRepresentation.SerializationKind.ToString()
+                                                                                    .ToLowerFirstCharacter(CultureInfo.InvariantCulture)),
+                                                                            Metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(_.Text),
+                                                                        })
+                                                              .Where(
+                                                                   _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                                       operation.Metadata.StringSerializedId,
+                                                                       operation.Metadata.TypeRepresentationOfId
+                                                                                .GetTypeRepresentationByStrategy(
+                                                                                     operation.TypeVersionMatchStrategy),
+                                                                       operation.Metadata.TypeRepresentationOfObject
+                                                                                .GetTypeRepresentationByStrategy(
+                                                                                     operation.TypeVersionMatchStrategy),
+                                                                       operation.TypeVersionMatchStrategy))
+                                                              .ToList()
+                                : null);
 
                     switch (operation.ExistingRecordEncounteredStrategy)
                     {

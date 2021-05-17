@@ -134,7 +134,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
                 stopwatch.Start();
-                var firstIdObject = stream.GetStreamReadingWithIdProtocols<string, MyObject>().Execute(new GetLatestObjectByIdOp<string, MyObject>(firstObject.Id));
+                var firstIdObject = stream.GetStreamReadingWithIdProtocols<string, MyObject>()
+                                          .Execute(new GetLatestObjectByIdOp<string, MyObject>(firstObject.Id));
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Get: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Key={firstIdObject.Id}, Field={firstIdObject.Field}"));
                 firstIdObject.Id.MustForTest().BeEqualTo(firstObject.Id);

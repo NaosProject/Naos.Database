@@ -194,7 +194,7 @@ namespace Naos.Database.Domain
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <returns>The object.</returns>
-        public static async Task<TObject> GetLatestObjectByIdOpAsync<TId, TObject>(
+        public static async Task<TObject> GetLatestObjectByIdAsync<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
@@ -240,7 +240,7 @@ namespace Naos.Database.Domain
         /// <param name="objectType">The optional type of the object.</param>
         /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <returns>The object.</returns>
-        public static async Task<bool> DoesAnyExistByIdOpAsync<TId>(
+        public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,

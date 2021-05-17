@@ -271,15 +271,14 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.Execute(new BlockRecordHandlingOp("Stop processing, fixing resource issue."));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
                 first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
-                first.MustForTest().BeNull();
+                first.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
 
                 stream.Execute(new CancelBlockedRecordHandlingOp("Resume processing, fixed resource issue."));
-                first.MustForTest().BeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.CanceledRunning);
 
                 first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
-                first.MustForTest().NotBeNull();
+                first.RecordToHandle.MustForTest().NotBeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.Execute(
@@ -290,7 +289,7 @@ namespace Naos.Protocol.FileSystem.Test
                         tags: firstTags));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.SelfCanceledRunning);
                 first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
-                first.MustForTest().NotBeNull();
+                first.RecordToHandle.MustForTest().NotBeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.Execute(
@@ -301,7 +300,7 @@ namespace Naos.Protocol.FileSystem.Test
                         tags: firstTags));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
                 first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
-                first.MustForTest().BeNull();
+                first.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
 
                 var firstHistory = stream.Execute(new GetHandlingHistoryOfRecordOp(firstInternalRecordId, firstConcern));
@@ -333,7 +332,7 @@ namespace Naos.Protocol.FileSystem.Test
                         "NullReferenceException: Bot v1.0.1 doesn't work."));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
                 second = stream.Execute(new TryHandleRecordOp(secondConcern));
-                second.MustForTest().BeNull();
+                second.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
 
                 stream.Execute(
@@ -343,15 +342,14 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.Execute(new BlockRecordHandlingOp("Stop processing, need to confirm deployment."));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
                 second = stream.Execute(new TryHandleRecordOp(secondConcern));
-                second.MustForTest().BeNull();
+                second.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
 
                 stream.Execute(new CancelBlockedRecordHandlingOp("Resume processing, confirmed deployment."));
-                second.MustForTest().BeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.RetryFailed);
 
                 second = stream.Execute(new TryHandleRecordOp(secondConcern));
-                second.MustForTest().NotBeNull();
+                second.RecordToHandle.MustForTest().NotBeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.Execute(
@@ -365,7 +363,7 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Canceled);
                 second = stream.Execute(new TryHandleRecordOp(secondConcern));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Canceled);
-                second.MustForTest().BeNull();
+                second.RecordToHandle.MustForTest().BeNull();
 
                 var secondHistory = stream.Execute(new GetHandlingHistoryOfRecordOp(secondInternalRecordId, secondConcern));
                 secondHistory.MustForTest().HaveCount(7);

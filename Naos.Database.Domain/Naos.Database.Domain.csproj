@@ -372,6 +372,9 @@
     <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetDistinctStringSerializedIdsOp.designer.cs">
+      <DependentUpon>GetDistinctStringSerializedIdsOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>

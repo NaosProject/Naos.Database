@@ -39,6 +39,252 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public void GetDistinctStringSerializedIdsRecordOp___Various_usages___Should_function()
+        {
+            var streamName = "MemoryStreamName";
+
+            var configurationTypeRepresentation =
+                typeof(DependencyOnlyJsonSerializationConfiguration<
+                    TypesToRegisterJsonSerializationConfiguration<MyObject>,
+                    DatabaseJsonSerializationConfiguration>).ToRepresentation();
+            SerializerRepresentation defaultSerializerRepresentation = new SerializerRepresentation(SerializationKind.Json, configurationTypeRepresentation);
+
+            var defaultSerializationFormat = SerializationFormat.String;
+            var resourceLocatorForUniqueIdentifier = new MemoryDatabaseLocator("UniqueIdentifiers");
+            var resourceLocatorZero = new MemoryDatabaseLocator("Zero");
+            var resourceLocatorOne = new MemoryDatabaseLocator("One");
+            var resourceLocatorTwo = new MemoryDatabaseLocator("Two");
+            var resourceLocatorThree = new MemoryDatabaseLocator("Three");
+
+            IResourceLocator ResourceLocatorByIdProtocol(GetResourceLocatorByIdOp<string> operation)
+            {
+                if (operation.Id == null)
+                {
+                    return resourceLocatorZero;
+                }
+                else if (operation.Id.Contains("One"))
+                {
+                    return resourceLocatorOne;
+                }
+                else if (operation.Id.Contains("Two"))
+                {
+                    return resourceLocatorTwo;
+                }
+                else if (operation.Id.Contains("Three"))
+                {
+                    return resourceLocatorThree;
+                }
+                else
+                {
+                    return resourceLocatorZero;
+                }
+            }
+
+            var allLocators = new[]
+                              {
+                                  resourceLocatorZero,
+                                  resourceLocatorOne,
+                                  resourceLocatorTwo,
+                                  resourceLocatorThree,
+                              }.ToList();
+
+            var locatorProtocols = new PassThroughResourceLocatorProtocols<string>(
+                allLocators,
+                resourceLocatorForUniqueIdentifier,
+                ResourceLocatorByIdProtocol);
+
+            var stream = new MemoryReadWriteStream(
+                streamName,
+                defaultSerializerRepresentation,
+                defaultSerializationFormat,
+                new JsonSerializerFactory(),
+                locatorProtocols);
+
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            var zeroObject = new MyObject(null, "Null Id");
+            var firstObject = new MyObject("RecordOne", "One Id");
+            var secondObject = new MyObject("RecordTwo", "Two Id");
+            var thirdObjectId = "Three Id";
+            var thirdObject = "RecordThree";
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+            var zeroObjectStringSerializedId = serializer.SerializeToString(zeroObject.Id);
+            var firstObjectStringSerializedId = serializer.SerializeToString(firstObject.Id);
+            var secondObjectStringSerializedId = serializer.SerializeToString(secondObject.Id);
+            var thirdObjectStringSerializedId = serializer.SerializeToString(thirdObjectId);
+
+            for (int idx = 0;
+                idx < 10;
+                idx++)
+            {
+                var timestampUtc = DateTime.UtcNow;
+                stream.Execute(
+                    new PutRecordOp(
+                        new StreamRecordMetadata(
+                            zeroObjectStringSerializedId,
+                            stream.DefaultSerializerRepresentation,
+                            typeof(decimal?).ToRepresentation().ToWithAndWithoutVersion(),
+                            zeroObject.GetType().ToRepresentation().ToWithAndWithoutVersion(),
+                            new Dictionary<string, string>
+                            {
+                                { "tag", "zero" },
+                            },
+                            timestampUtc,
+                            null),
+                        zeroObject.ToDescribedSerializationUsingSpecificSerializer(serializer, SerializationFormat.String),
+                        resourceLocatorZero));
+                stream.PutWithId(
+                    firstObject.Id,
+                    firstObject,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "one" },
+                    });
+                stream.PutWithId(
+                    secondObject.Id,
+                    secondObject,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "two" },
+                    });
+                stream.PutWithId(
+                    thirdObjectId,
+                    thirdObject,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "third" },
+                    });
+                var firstIdObject = stream.GetLatestObjectById<string, MyObject>(firstObject.Id);
+                this.testOutputHelper.WriteLine(Invariant($"Key={firstIdObject.Id}, Field={firstIdObject.Field}"));
+                firstIdObject.Id.MustForTest().BeEqualTo(firstObject.Id);
+            }
+
+            var anyDistinct = stream.Execute(
+                new GetDistinctStringSerializedIdsOp());
+            anyDistinct.ToList().MustForTest()
+                       .BeEqualTo(
+                            new List<string>
+                            {
+                                zeroObjectStringSerializedId,
+                                firstObjectStringSerializedId,
+                                secondObjectStringSerializedId,
+                                thirdObjectStringSerializedId,
+                            });
+
+            var objectObjectDistinct = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    null,
+                    typeof(MyObject).ToRepresentation()));
+            objectObjectDistinct.ToList().MustForTest()
+                       .BeEqualTo(
+                            new List<string>
+                            {
+                                zeroObjectStringSerializedId,
+                                firstObjectStringSerializedId,
+                                secondObjectStringSerializedId,
+                            });
+
+            var stringIdDistinct = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    typeof(string).ToRepresentation()));
+            stringIdDistinct.ToList().MustForTest()
+                            .BeEqualTo(
+                                 new List<string>
+                                 {
+                                     firstObjectStringSerializedId,
+                                     secondObjectStringSerializedId,
+                                     thirdObjectStringSerializedId,
+                                 });
+
+            var stringIdObjectObjectDistinct = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    typeof(string).ToRepresentation(),
+                    typeof(MyObject).ToRepresentation()));
+            stringIdObjectObjectDistinct.ToList().MustForTest()
+                            .BeEqualTo(
+                                 new List<string>
+                                 {
+                                     firstObjectStringSerializedId,
+                                     secondObjectStringSerializedId,
+                                 });
+
+            var tagDistinct = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    null,
+                    null,
+                    TypeVersionMatchStrategy.Any,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "one" },
+                    }));
+
+            tagDistinct.ToList().MustForTest()
+                            .BeEqualTo(
+                                 new List<string>
+                                 {
+                                     firstObjectStringSerializedId,
+                                 });
+
+            var tagDistinctWrongIdType = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    typeof(decimal?).ToRepresentation(),
+                    null,
+                    TypeVersionMatchStrategy.Any,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "one" },
+                    }));
+
+            tagDistinctWrongIdType.ToList()
+                              .MustForTest()
+                              .BeEmptyEnumerable();
+
+            var tagDistinctWrongObjectType = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    null,
+                    typeof(short).ToRepresentation(),
+                    TypeVersionMatchStrategy.Any,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "one" },
+                    }));
+
+            tagDistinctWrongObjectType.ToList()
+                              .MustForTest()
+                              .BeEmptyEnumerable();
+
+            var tagDistinctWrongTagValue = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    null,
+                    null,
+                    TypeVersionMatchStrategy.Any,
+                    new Dictionary<string, string>
+                    {
+                        { "tag", "monkey" },
+                    }));
+
+            tagDistinctWrongTagValue.ToList()
+                                    .MustForTest()
+                                    .BeEmptyEnumerable();
+
+            var tagDistinctWrongTagName = stream.Execute(
+                new GetDistinctStringSerializedIdsOp(
+                    null,
+                    null,
+                    TypeVersionMatchStrategy.Any,
+                    new Dictionary<string, string>
+                    {
+                        { "monkey", "one" },
+                    }));
+
+            tagDistinctWrongTagName.ToList()
+                                    .MustForTest()
+                                    .BeEmptyEnumerable();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+        }
+
+        [Fact]
         public void Create_Put_Get_Delete___Given_valid_data___Should_roundtrip_to_through_memory()
         {
             var streamName = "MemoryStreamName";
@@ -114,22 +360,22 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 var stopwatch = new Stopwatch();
                 stopwatch.Reset();
                 stopwatch.Start();
-                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(zeroObject.Id, zeroObject));
+                stream.PutWithId(zeroObject.Id, zeroObject);
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
                 stopwatch.Start();
-                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(firstObject.Id, firstObject));
+                stream.PutWithId(firstObject.Id, firstObject);
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
                 stopwatch.Start();
-                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(secondObject.Id, secondObject));
+                stream.PutWithId(secondObject.Id, secondObject);
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
                 stopwatch.Start();
-                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(thirdObject.Id, thirdObject));
+                stream.PutWithId(thirdObject.Id, thirdObject);
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();

@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
 
@@ -17,6 +18,7 @@ namespace Naos.Database.Domain
         :
             IStream,
             IStreamReadProtocolFactory,
+            IReturningProtocol<GetDistinctStringSerializedIdsOp, IReadOnlyCollection<string>>,
             IReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
             IReturningProtocol<GetLatestRecordOp, StreamRecord>,
             IReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,

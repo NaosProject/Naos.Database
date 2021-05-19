@@ -499,6 +499,57 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
+        public override IReadOnlyCollection<string> Execute(
+            GetDistinctStringSerializedIdsOp operation)
+        {
+            var result = new HashSet<string>();
+            lock (this.fileLock)
+            {
+                var locators = new List<FileSystemDatabaseLocator>();
+                if (operation.SpecifiedResourceLocator != null)
+                {
+                    locators.Add(operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>());
+                }
+                else
+                {
+                    var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+                    foreach (var locator in allLocators)
+                    {
+                        locators.Add(locator.ConfirmAndConvert<FileSystemDatabaseLocator>());
+                    }
+                }
+
+                foreach (var fileSystemLocator in locators)
+                {
+                    var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
+
+                    var metadataPaths = Directory.GetFiles(
+                        rootPath,
+                        Invariant($"*.{MetadataFileExtension}"),
+                        SearchOption.TopDirectoryOnly);
+
+                    foreach (var metadataFilePath in metadataPaths)
+                    {
+                        var fileText = File.ReadAllText(metadataFilePath);
+                        var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
+
+                        if (metadata.FuzzyMatchTypes(
+                                operation.IdentifierType,
+                                operation.ObjectType,
+                                operation.TypeVersionMatchStrategy)
+                         && ((!operation.TagsToMatch?.Any() ?? true)
+                          || metadata.Tags.FuzzyMatchAccordingToStrategy(operation.TagsToMatch, operation.TagMatchStrategy)))
+                        {
+                            result.Add(metadata.StringSerializedId);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = NaosSuppressBecause.CA2202_DoNotDisposeObjectsMultipleTimes_AnalyzerIsIncorrectlyFlaggingObjectAsBeingDisposedMultipleTimes)]
         public override long Execute(

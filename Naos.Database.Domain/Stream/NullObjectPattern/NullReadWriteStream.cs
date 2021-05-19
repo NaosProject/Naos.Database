@@ -133,6 +133,10 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public IReadOnlyCollection<string> Execute(GetDistinctStringSerializedIdsOp operation)
+        {
+            throw new NotImplementedException(ExceptionMessage);
+        }
 
         /// <inheritdoc />
         public StreamRecord Execute(GetRecordByInternalRecordIdOp operation)

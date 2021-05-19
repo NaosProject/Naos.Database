@@ -413,6 +413,54 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public override IReadOnlyCollection<string> Execute(
+            GetDistinctStringSerializedIdsOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var result = new HashSet<string>();
+            lock (this.streamLock)
+            {
+                var locators = new List<MemoryDatabaseLocator>();
+                if (operation.SpecifiedResourceLocator != null)
+                {
+                    locators.Add(operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>());
+                }
+                else
+                {
+                    var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+                    foreach (var locator in allLocators)
+                    {
+                        locators.Add(locator.ConfirmAndConvert<MemoryDatabaseLocator>());
+                    }
+                }
+
+                foreach (var memoryDatabaseLocator in locators)
+                {
+                    this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+
+                    if (partition != null)
+                    {
+                        foreach (var streamRecord in partition)
+                        {
+                            if (streamRecord.Metadata.FuzzyMatchTypes(
+                                    operation.IdentifierType,
+                                    operation.ObjectType,
+                                    operation.TypeVersionMatchStrategy)
+                             && ((!operation.TagsToMatch?.Any() ?? true)
+                              || streamRecord.Metadata.Tags.FuzzyMatchAccordingToStrategy(operation.TagsToMatch, operation.TagMatchStrategy)))
+                            {
+                                result.Add(streamRecord.Metadata.StringSerializedId);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc />
         public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOfRecordOp operation)
         {

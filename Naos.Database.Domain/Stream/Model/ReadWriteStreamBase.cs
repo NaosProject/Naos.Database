@@ -67,6 +67,10 @@ namespace Naos.Database.Domain
         public abstract IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>();
 
         /// <inheritdoc />
+        public abstract IReadOnlyCollection<string> Execute(
+            GetDistinctStringSerializedIdsOp operation);
+
+        /// <inheritdoc />
         public abstract StreamRecord Execute(
             GetRecordByInternalRecordIdOp operation);
 

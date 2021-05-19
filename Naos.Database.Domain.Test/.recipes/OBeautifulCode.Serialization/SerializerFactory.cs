@@ -35,7 +35,7 @@ namespace OBeautifulCode.Serialization.Recipes
         private static readonly SerializerFactory InternalInstance = new SerializerFactory();
 
         private static readonly ConcurrentDictionary<SerializerRepresentation, ConcurrentDictionary<AssemblyMatchStrategy, ISerializer>>
-            SerializerCache = new ConcurrentDictionary<SerializerRepresentation, ConcurrentDictionary<AssemblyMatchStrategy, ISerializer>>();
+            CachedSerializerRepresentationToSerializerMap = new ConcurrentDictionary<SerializerRepresentation, ConcurrentDictionary<AssemblyMatchStrategy, ISerializer>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyBagSerializerFactory"/> class.
@@ -64,7 +64,7 @@ namespace OBeautifulCode.Serialization.Recipes
 
             ISerializer result;
 
-            if (SerializerCache.TryGetValue(serializerRepresentation, out ConcurrentDictionary<AssemblyMatchStrategy, ISerializer> assemblyMatchStrategyToSerializerMap))
+            if (CachedSerializerRepresentationToSerializerMap.TryGetValue(serializerRepresentation, out ConcurrentDictionary<AssemblyMatchStrategy, ISerializer> assemblyMatchStrategyToSerializerMap))
             {
                 if (assemblyMatchStrategyToSerializerMap.TryGetValue(assemblyMatchStrategy, out result))
                 {
@@ -94,9 +94,9 @@ namespace OBeautifulCode.Serialization.Recipes
 
             result = this.WrapInCompressingSerializerIfAppropriate(serializer, serializerRepresentation.CompressionKind);
 
-            SerializerCache.TryAdd(serializerRepresentation, new ConcurrentDictionary<AssemblyMatchStrategy, ISerializer>());
+            CachedSerializerRepresentationToSerializerMap.TryAdd(serializerRepresentation, new ConcurrentDictionary<AssemblyMatchStrategy, ISerializer>());
 
-            SerializerCache[serializerRepresentation].TryAdd(assemblyMatchStrategy, result);
+            CachedSerializerRepresentationToSerializerMap[serializerRepresentation].TryAdd(assemblyMatchStrategy, result);
 
             return result;
         }

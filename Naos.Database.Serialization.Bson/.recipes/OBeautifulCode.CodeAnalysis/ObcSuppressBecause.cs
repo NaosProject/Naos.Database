@@ -200,6 +200,11 @@ namespace OBeautifulCode.CodeAnalysis.Recipes
         public const string CA1726_UsePreferredTerms_NameOfTypeOfIdentifierUsesTheTermFlags = "The name of the Type of the identifier uses the term 'Flags' and so it's appropriate to use that term in the the name of the identifier.";
 
         /// <summary>
+        /// In some cases, the debugger raises an error because it cannot set a conditional breakpoint.  A local is introduced to simplify the evaluation of the breakpoint's condition.  It's only purpose is to allow a conditional breakpoint in proximity of the breakpoint that cannot be set.
+        /// </summary>
+        public const string CA1804_RemoveUnusedLocals_UsedAsWorkaroundForConditionalBreakpointThatCannotBeSet = "In some cases, the debugger raises an error because it cannot set a conditional breakpoint.  A local is introduced to simplify the evaluation of the breakpoint's condition.  It's only purpose is to allow a conditional breakpoint in proximity of the breakpoint that cannot be set.";
+
+        /// <summary>
         /// The static field(s) are declared in a code generated partial test class that should not be alterated.
         /// </summary>
         public const string CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass = "The static field(s) are declared in a code generated partial test class that should not be alterated.";

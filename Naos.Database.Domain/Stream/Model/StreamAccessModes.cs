@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StreamAccessMode.cs" company="Naos Project">
+// <copyright file="StreamAccessModes.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// Access modes used for streams.
     /// </summary>
     [Flags]
-    public enum StreamAccessMode
+    public enum StreamAccessModes
     {
         /// <summary>
         /// There is no mode specified ("null object" option).

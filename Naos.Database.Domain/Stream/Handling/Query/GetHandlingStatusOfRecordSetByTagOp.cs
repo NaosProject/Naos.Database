@@ -19,9 +19,9 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="GetHandlingStatusOfRecordSetByTagOp"/> class.
         /// </summary>
         /// <param name="concern">The handling concern.</param>
-        /// <param name="handlingStatusCompositionStrategy">The optional strategy for composing statuses.</param>
-        /// <param name="tagMatchStrategy">The optional strategy for comparing tags.</param>
         /// <param name="tagsToMatch">The internal record ids to treat as a composite status.</param>
+        /// <param name="handlingStatusCompositionStrategy">The optional strategy for composing statuses.</param>
+        /// <param name="tagMatchStrategy">The optional strategy for comparing tags; DEFAULT is <see cref="TagMatchStrategy"/>.</param>
         public GetHandlingStatusOfRecordSetByTagOp(
             string concern,
             IReadOnlyDictionary<string, string> tagsToMatch,

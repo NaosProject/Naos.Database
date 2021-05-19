@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
@@ -64,5 +65,33 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>();
+
+        /// <inheritdoc />
+        public abstract StreamRecord Execute(
+            GetRecordByInternalRecordIdOp operation);
+
+        /// <inheritdoc />
+        public abstract StreamRecord Execute(
+            GetLatestRecordOp operation);
+
+        /// <inheritdoc />
+        public abstract StreamRecordMetadata Execute(
+            GetLatestRecordMetadataByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract IReadOnlyList<StreamRecord> Execute(
+            GetAllRecordsByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract bool Execute(
+            DoesAnyExistByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract StreamRecord Execute(
+            GetLatestRecordByIdOp operation);
     }
 }

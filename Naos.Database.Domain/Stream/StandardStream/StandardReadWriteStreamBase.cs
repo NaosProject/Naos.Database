@@ -106,15 +106,15 @@ namespace Naos.Database.Domain
             GetNextUniqueLongOp operation);
 
         /// <inheritdoc />
-        public abstract StreamRecord Execute(
+        public abstract override StreamRecord Execute(
             GetRecordByInternalRecordIdOp operation);
 
         /// <inheritdoc />
-        public abstract StreamRecord Execute(
+        public abstract override StreamRecord Execute(
             GetLatestRecordOp operation);
 
         /// <inheritdoc />
-        public abstract StreamRecord Execute(
+        public abstract override StreamRecord Execute(
             GetLatestRecordByIdOp operation);
 
         /// <inheritdoc />
@@ -218,19 +218,19 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public abstract bool Execute(
+        public abstract override bool Execute(
             DoesAnyExistByIdOp operation);
 
         /// <inheritdoc />
-        public abstract StreamRecordMetadata Execute(
+        public abstract override StreamRecordMetadata Execute(
             GetLatestRecordMetadataByIdOp operation);
 
         /// <inheritdoc />
-        public abstract IReadOnlyList<StreamRecord> Execute(
+        public abstract override IReadOnlyList<StreamRecord> Execute(
             GetAllRecordsByIdOp operation);
 
         /// <inheritdoc />
-        public abstract IReadOnlyList<StreamRecordMetadata> Execute(
+        public abstract override IReadOnlyList<StreamRecordMetadata> Execute(
             GetAllRecordsMetadataByIdOp operation);
     }
 }

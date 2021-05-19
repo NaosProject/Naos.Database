@@ -16,7 +16,14 @@ namespace Naos.Database.Domain
     public interface IReadOnlyStream
         :
             IStream,
-            IStreamReadProtocolFactory
+            IStreamReadProtocolFactory,
+            IReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
+            IReturningProtocol<GetLatestRecordOp, StreamRecord>,
+            IReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
+            IReturningProtocol<GetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
+            IReturningProtocol<GetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
+            IReturningProtocol<DoesAnyExistByIdOp, bool>,
+            IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
     {
     }
 }

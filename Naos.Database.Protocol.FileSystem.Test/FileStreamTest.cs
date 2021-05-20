@@ -1030,6 +1030,8 @@ namespace Naos.Protocol.FileSystem.Test
             var latestTwo = stream.Execute(new GetLatestRecordByIdOp("\"" + id + "\""));
             latestTwo.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdTwo);
             latestTwo.Metadata.Tags.MustForTest().BeNull();
+
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
         }
     }
 

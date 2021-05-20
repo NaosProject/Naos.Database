@@ -230,6 +230,87 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
+                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
+                    return new PutAndReturnInternalRecordIdOp<Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        existingRecordEncounteredStrategy,
+                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
+                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<int>()
+                            : null,
+                        A.Dummy<TypeVersionMatchStrategy>(),
+                        A.Dummy<IResourceLocator>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
+                    return new PutOp<Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        existingRecordEncounteredStrategy,
+                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
+                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<int>()
+                            : null,
+                        A.Dummy<TypeVersionMatchStrategy>(),
+                        A.Dummy<IResourceLocator>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
+                    return new PutWithIdOp<Version, Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        existingRecordEncounteredStrategy,
+                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
+                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<int>()
+                            : null,
+                        A.Dummy<TypeVersionMatchStrategy>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
+                    return new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        existingRecordEncounteredStrategy,
+                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
+                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<int>()
+                            : null,
+                        A.Dummy<TypeVersionMatchStrategy>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
+                    return new PutRecordOp(
+                        A.Dummy<StreamRecordMetadata>(),
+                        A.Dummy<DescribedSerializationBase>(),
+                        A.Dummy<IResourceLocator>(),
+                        existingRecordEncounteredStrategy,
+                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
+                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<int>()
+                            : null,
+                        A.Dummy<long?>(),
+                        A.Dummy<TypeVersionMatchStrategy>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
                     var scenario = ThreadSafeRandom.Next(1, 4);
                     switch (scenario)
                     {

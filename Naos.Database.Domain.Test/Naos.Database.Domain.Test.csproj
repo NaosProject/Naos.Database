@@ -548,9 +548,9 @@
     <Compile Include="Stream\NullObjectPattern\NullDatabaseLocatorTest.designer.cs">
       <DependentUpon>NullDatabaseLocatorTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\NullObjectPattern\NullReadWriteStreamTest.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullReadWriteStreamTest.designer.cs">
-      <DependentUpon>NullReadWriteStreamTest.cs</DependentUpon>
+    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStreamTest.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStreamTest.designer.cs">
+      <DependentUpon>NullStandardReadWriteStreamTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifierTest.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifierTest.designer.cs">

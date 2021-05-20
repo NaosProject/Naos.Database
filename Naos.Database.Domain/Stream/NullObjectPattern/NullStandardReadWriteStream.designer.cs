@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class NullReadWriteStream : IModel<NullReadWriteStream>
+    public partial class NullStandardReadWriteStream : IModel<NullStandardReadWriteStream>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="NullReadWriteStream"/> are equal.
+        /// Determines whether two objects of type <see cref="NullStandardReadWriteStream"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(NullReadWriteStream left, NullReadWriteStream right)
+        public static bool operator ==(NullStandardReadWriteStream left, NullStandardReadWriteStream right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="NullReadWriteStream"/> are not equal.
+        /// Determines whether two objects of type <see cref="NullStandardReadWriteStream"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(NullReadWriteStream left, NullReadWriteStream right) => !(left == right);
+        public static bool operator !=(NullStandardReadWriteStream left, NullStandardReadWriteStream right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(NullReadWriteStream other)
+        public bool Equals(NullStandardReadWriteStream other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -75,7 +75,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as NullReadWriteStream);
+        public override bool Equals(object obj) => this == (obj as NullStandardReadWriteStream);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -86,9 +86,9 @@ namespace Naos.Database.Domain
         public object Clone() => this.DeepClone();
 
         /// <inheritdoc />
-        public NullReadWriteStream DeepClone()
+        public NullStandardReadWriteStream DeepClone()
         {
-            var result = new NullReadWriteStream();
+            var result = new NullStandardReadWriteStream();
 
             return result;
         }

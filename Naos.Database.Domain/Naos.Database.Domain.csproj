@@ -501,15 +501,15 @@
     <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
     <Compile Include="Stream\Interfaces\WriteOnly\IWriteOnlyStream.cs" />
     <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocols.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullReadWriteStream.designer.cs">
-      <DependentUpon>NullReadWriteStream.cs</DependentUpon>
+    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStream.designer.cs">
+      <DependentUpon>NullStandardReadWriteStream.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\NullObjectPattern\NullResourceLocatorProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifier.designer.cs">
       <DependentUpon>NullStreamIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullReadWriteStream.cs" />
+    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStream.cs" />
     <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.designer.cs">
       <DependentUpon>NullStreamRepresentation.cs</DependentUpon>

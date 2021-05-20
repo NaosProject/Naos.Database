@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NullReadWriteStream.cs" company="Naos Project">
+// <copyright file="NullStandardReadWriteStream.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -20,17 +20,16 @@ namespace Naos.Database.Domain
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class NullReadWriteStream : IStandardReadWriteStream,
-                                               IModelViaCodeGen
+    public partial class NullStandardReadWriteStream : IStandardReadWriteStream // IModelViaCodeGen - not done each time because the Serialization tests have been removed.
     {
         /// <summary>
         /// Exception message indicating specific failure.
         /// </summary>
         public static readonly string ExceptionMessage = Invariant(
-            $"This is the null object class '{nameof(NullReadWriteStream)}'.  None of these methods are expected to be functional and this error was likely bad configuration.");
+            $"This is the null object class '{nameof(NullStandardReadWriteStream)}'.  None of these methods are expected to be functional and this error was likely bad configuration.");
 
         /// <inheritdoc />
-        public string Name => nameof(NullReadWriteStream);
+        public string Name => nameof(NullStandardReadWriteStream);
 
         /// <inheritdoc />
         public IStreamRepresentation StreamRepresentation => new NullStreamRepresentation();

@@ -25,8 +25,6 @@ namespace Naos.Database.Domain.Test
     using global::OBeautifulCode.Math.Recipes;
     using global::OBeautifulCode.Reflection.Recipes;
     using global::OBeautifulCode.Representation.System;
-    using global::OBeautifulCode.Serialization;
-    using global::OBeautifulCode.Serialization.Recipes;
     using global::OBeautifulCode.Type;
 
     using global::Xunit;
@@ -35,16 +33,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class NullReadWriteStreamTest
     {
-        private static readonly StringRepresentationTestScenarios<NullReadWriteStream> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<NullReadWriteStream>()
+        private static readonly StringRepresentationTestScenarios<NullStandardReadWriteStream> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<NullStandardReadWriteStream>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<NullReadWriteStream>
+                new StringRepresentationTestScenario<NullStandardReadWriteStream>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<NullReadWriteStream>();
+                        var systemUnderTest = A.Dummy<NullStandardReadWriteStream>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<NullReadWriteStream>
+                        var result = new SystemUnderTestExpectedStringRepresentation<NullStandardReadWriteStream>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.NullReadWriteStream: <no properties>."),
@@ -54,19 +52,19 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly NullReadWriteStream ReferenceObjectForEquatableTestScenarios = A.Dummy<NullReadWriteStream>();
+        private static readonly NullStandardReadWriteStream ReferenceObjectForEquatableTestScenarios = A.Dummy<NullStandardReadWriteStream>();
 
-        private static readonly EquatableTestScenarios<NullReadWriteStream> EquatableTestScenarios = new EquatableTestScenarios<NullReadWriteStream>()
+        private static readonly EquatableTestScenarios<NullStandardReadWriteStream> EquatableTestScenarios = new EquatableTestScenarios<NullStandardReadWriteStream>()
             .AddScenario(() =>
-                new EquatableTestScenario<NullReadWriteStream>
+                new EquatableTestScenario<NullStandardReadWriteStream>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new NullReadWriteStream[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new NullStandardReadWriteStream[]
                     {
-                        new NullReadWriteStream(),
+                        new NullStandardReadWriteStream(),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new NullReadWriteStream[]
+                    ObjectsThatAreNotEqualToReferenceObject = new NullStandardReadWriteStream[]
                     {
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -100,9 +98,9 @@ namespace Naos.Database.Domain.Test
             public static void NullReadWriteStream___Should_implement_IModel_of_NullReadWriteStream___When_reflecting()
             {
                 // Arrange
-                var type = typeof(NullReadWriteStream);
+                var type = typeof(NullStandardReadWriteStream);
 
-                var expectedModelMethods = typeof(IModel<NullReadWriteStream>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<NullStandardReadWriteStream>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -112,7 +110,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<NullReadWriteStream>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<NullStandardReadWriteStream>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -133,7 +131,7 @@ namespace Naos.Database.Domain.Test
             public static void NullReadWriteStream___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(NullReadWriteStream);
+                var type = typeof(NullStandardReadWriteStream);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -197,10 +195,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<NullReadWriteStream>();
+                var systemUnderTest = A.Dummy<NullStandardReadWriteStream>();
 
                 // Act
-                var actual = (NullReadWriteStream)systemUnderTest.Clone();
+                var actual = (NullStandardReadWriteStream)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -224,7 +222,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<NullReadWriteStream>();
+                var systemUnderTest = A.Dummy<NullStandardReadWriteStream>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -232,127 +230,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-            }
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
-        [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
-        public static class Serialization
-        {
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
-            {
-                // Arrange
-                var expected = A.Dummy<NullReadWriteStream>();
-
-                var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
-
-                var serializationFormats = new[] { SerializationFormat.String };
-
-                var appDomainScenarios = AppDomainScenarios.RoundtripInCurrentAppDomain | AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain;
-
-                // Act, Assert
-                expected.RoundtripSerializeViaBsonWithBeEqualToAssertion(serializationConfigurationType, serializationFormats, appDomainScenarios);
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
-            {
-                // Arrange
-                var expected = A.Dummy<NullReadWriteStream>();
-
-                var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
-
-                var serializationFormats = new[] { SerializationFormat.Binary };
-
-                var appDomainScenarios = AppDomainScenarios.RoundtripInCurrentAppDomain | AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain;
-
-                // Act, Assert
-                expected.RoundtripSerializeViaBsonWithBeEqualToAssertion(serializationConfigurationType, serializationFormats, appDomainScenarios);
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
-            {
-                // Arrange
-                var expected = A.Dummy<NullReadWriteStream>();
-
-                var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
-
-                var serializationFormats = new[] { SerializationFormat.String };
-
-                var appDomainScenarios = AppDomainScenarios.RoundtripInCurrentAppDomain | AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain;
-
-                // Act, Assert
-                expected.RoundtripSerializeViaJsonWithBeEqualToAssertion(serializationConfigurationType, serializationFormats, appDomainScenarios);
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
-            {
-                // Arrange
-                var expected = A.Dummy<NullReadWriteStream>();
-
-                var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
-
-                var serializationFormats = new[] { SerializationFormat.Binary };
-
-                var appDomainScenarios = AppDomainScenarios.RoundtripInCurrentAppDomain | AppDomainScenarios.SerializeInCurrentAppDomainAndDeserializeInNewAppDomain;
-
-                // Act, Assert
-                expected.RoundtripSerializeViaJsonWithBeEqualToAssertion(serializationConfigurationType, serializationFormats, appDomainScenarios);
             }
         }
 
@@ -377,8 +254,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                NullReadWriteStream systemUnderTest1 = null;
-                NullReadWriteStream systemUnderTest2 = null;
+                NullStandardReadWriteStream systemUnderTest1 = null;
+                NullStandardReadWriteStream systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -408,7 +285,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    NullReadWriteStream systemUnderTest = null;
+                    NullStandardReadWriteStream systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -557,8 +434,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                NullReadWriteStream systemUnderTest1 = null;
-                NullReadWriteStream systemUnderTest2 = null;
+                NullStandardReadWriteStream systemUnderTest1 = null;
+                NullStandardReadWriteStream systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -588,7 +465,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    NullReadWriteStream systemUnderTest = null;
+                    NullStandardReadWriteStream systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -741,7 +618,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    NullReadWriteStream systemUnderTest = null;
+                    NullStandardReadWriteStream systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

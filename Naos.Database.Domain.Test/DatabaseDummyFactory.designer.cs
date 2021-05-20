@@ -605,7 +605,7 @@ namespace Naos.Database.Domain.Test
                 () => new NullDatabaseLocator());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new NullReadWriteStream());
+                () => new NullStandardReadWriteStream());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullStreamIdentifier());

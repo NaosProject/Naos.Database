@@ -16,6 +16,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
+    using OBeautifulCode.Equality.Recipes;
     using OBeautifulCode.Math.Recipes;
 
     using Xunit;
@@ -30,9 +31,60 @@ namespace Naos.Database.Domain.Test
         static CreateStreamResultTest()
         {
             ConstructorArgumentValidationTestScenarios.RemoveAllScenarios()
-                                                      .AddScenario(
-                                                           ConstructorArgumentValidationTestScenario<CreateStreamResult>
-                                                              .ForceGeneratedTestsToPassAndWriteMyOwnScenario);
+                                                      .AddScenario(() =>
+                                                                       new ConstructorArgumentValidationTestScenario<CreateStreamResult>
+                                                                       {
+                                                                           Name = "constructor should throw ArgumentException when parameter 'alreadyExisted' and 'wasCreated' are false scenario",
+                                                                           ConstructionFunc = () =>
+                                                                                              {
+                                                                                                  var result = new CreateStreamResult(
+                                                                                                      false,
+                                                                                                      false);
+
+                                                                                                  return result;
+                                                                                              },
+                                                                           ExpectedExceptionType = typeof(ArgumentException),
+                                                                           ExpectedExceptionMessageContains = new[] { "the expectation is that the stream was created or there was an existing one", },
+                                                                       });
+
+            EquatableTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                    {
+
+                        var a = new CreateStreamResult(false, true);
+                        var b = new CreateStreamResult(true, false);
+                        var c = new CreateStreamResult(true, true);
+                        var testOptions = new[]
+                                          {
+                                              a,
+                                              b,
+                                              c,
+                                          };
+
+                        return new EquatableTestScenario<CreateStreamResult>
+                               {
+                                   Name = "Default Code Generated Scenario",
+                                   ReferenceObject = ReferenceObjectForEquatableTestScenarios,
+                                   ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CreateStreamResult[]
+                                                                                         {
+                                                                                             new CreateStreamResult(
+                                                                                                 ReferenceObjectForEquatableTestScenarios
+                                                                                                    .AlreadyExisted,
+                                                                                                 ReferenceObjectForEquatableTestScenarios.WasCreated),
+                                                                                         },
+                                   ObjectsThatAreNotEqualToReferenceObject = testOptions.Where(_ => _ != ReferenceObjectForEquatableTestScenarios).ToList(),
+                                   ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
+                                                                                     {
+                                                                                         A.Dummy<object>(),
+                                                                                         A.Dummy<string>(),
+                                                                                         A.Dummy<int>(),
+                                                                                         A.Dummy<int?>(),
+                                                                                         A.Dummy<Guid>(),
+                                                                                     },
+                               };
+                    });
         }
     }
 }

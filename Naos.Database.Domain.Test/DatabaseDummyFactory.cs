@@ -10,21 +10,23 @@ namespace Naos.Database.Domain.Test
     using System.Collections.Generic;
     using System.Linq;
     using FakeItEasy;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Protocol.Domain;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// A Dummy Factory for types in <see cref="Naos.Database.Domain" />.
-    /// Implements the <see cref="Naos.Database.Domain.Test.DefaultDatabaseDummyFactory" />.
+    /// A Dummy Factory for types in <see cref="Domain" />.
+    /// Implements the <see cref="DefaultDatabaseDummyFactory" />.
     /// </summary>
-    /// <seealso cref="Naos.Database.Domain.Test.DefaultDatabaseDummyFactory" />
+    /// <seealso cref="DefaultDatabaseDummyFactory" />
 #if !NaosDatabaseSolution
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [System.CodeDom.Compiler.GeneratedCode("Naos.Database.Domain.Test", "See package version number")]
     internal
 #else
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
     public
 #endif
     class DatabaseDummyFactory : DefaultDatabaseDummyFactory
@@ -32,6 +34,7 @@ namespace Naos.Database.Domain.Test
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseDummyFactory" /> class.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public DatabaseDummyFactory()
         {
             /* Add any overriding or custom registrations here. */

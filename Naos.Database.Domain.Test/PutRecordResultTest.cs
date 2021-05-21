@@ -29,6 +29,46 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static PutRecordResultTest()
         {
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PutRecordResult>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'existingRecordIds' is null AND the 'internalRecordId' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var result = new PutRecordResult(
+                                                       null,
+                                                       null);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "the expectation is that the record was written OR there was an existing record",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<PutRecordResult>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'existingRecordIds' is empty collection AND the 'internalRecordId' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var result = new PutRecordResult(
+                                                       null,
+                                                       new List<long>());
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "the expectation is that the record was written OR there was an existing record",
+                                                               },
+                        });
         }
     }
 }

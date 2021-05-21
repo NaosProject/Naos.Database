@@ -93,7 +93,7 @@ namespace Naos.Database.Domain
         public PutRecordResult DeepClone()
         {
             var result = new PutRecordResult(
-                                 this.InternalRecordIdOfPutRecord.DeepClone(),
+                                 this.InternalRecordIdOfPutRecord?.DeepClone(),
                                  this.ExistingRecordIds?.DeepClone(),
                                  this.PrunedRecordIds?.DeepClone());
 

@@ -29,6 +29,10 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static TryHandleRecordResultTest()
         {
+            ConstructorArgumentValidationTestScenarios.RemoveAllScenarios()
+                                                      .AddScenario(
+                                                           ConstructorArgumentValidationTestScenario<TryHandleRecordResult>
+                                                              .ForceGeneratedTestsToPassAndWriteMyOwnScenario);
         }
     }
 }

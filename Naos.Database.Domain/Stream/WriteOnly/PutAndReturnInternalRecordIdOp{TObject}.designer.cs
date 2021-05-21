@@ -105,7 +105,7 @@ namespace Naos.Database.Domain
                                  this.ObjectToPut == null ? default : this.ObjectToPut.DeepClone(),
                                  this.Tags?.DeepClone(),
                                  this.ExistingRecordEncounteredStrategy.DeepClone(),
-                                 this.RecordRetentionCount.DeepClone(),
+                                 this.RecordRetentionCount?.DeepClone(),
                                  this.TypeVersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 

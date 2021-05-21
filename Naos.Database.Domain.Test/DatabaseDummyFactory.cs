@@ -8,6 +8,7 @@ namespace Naos.Database.Domain.Test
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using FakeItEasy;
     using Naos.Protocol.Domain;
     using OBeautifulCode.AutoFakeItEasy;
@@ -335,11 +336,11 @@ namespace Naos.Database.Domain.Test
                         case 1:
                             return new PutRecordResult(A.Dummy<long>(), null);
                         case 2:
-                            return new PutRecordResult(null, Some.ReadOnlyDummies<long>());
+                            return new PutRecordResult(null, Some.ReadOnlyDummies<long>().ToList());
                         case 3:
-                            return new PutRecordResult(null, Some.ReadOnlyDummies<long>(), Some.ReadOnlyDummies<long>());
+                            return new PutRecordResult(null, Some.ReadOnlyDummies<long>().ToList(), Some.ReadOnlyDummies<long>().ToList());
                         case 4:
-                            return new PutRecordResult(A.Dummy<long>(), Some.ReadOnlyDummies<long>(), Some.ReadOnlyDummies<long>());
+                            return new PutRecordResult(A.Dummy<long>(), Some.ReadOnlyDummies<long>().ToList(), Some.ReadOnlyDummies<long>().ToList());
                         default:
                             throw new NotSupportedException(
                                 FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(PutRecordResult)}."));

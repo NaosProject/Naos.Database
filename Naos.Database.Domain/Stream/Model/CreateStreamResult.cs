@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         {
             if (!alreadyExisted && !wasCreated)
             {
-                throw new ArgumentNullException(FormattableString.Invariant($"Cannot have both '{nameof(alreadyExisted)}' AND '{nameof(wasCreated)}' be false; the expectation is that the stream was created or there was an existing one."));
+                throw new ArgumentException(FormattableString.Invariant($"Cannot have both '{nameof(alreadyExisted)}' AND '{nameof(wasCreated)}' be false; the expectation is that the stream was created or there was an existing one."));
             }
 
             this.AlreadyExisted = alreadyExisted;

@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId, TObject}"/> class.
         /// </summary>
         /// <param name="concern">The concern.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
         /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
@@ -30,10 +30,10 @@ namespace Naos.Database.Domain
         /// <param name="inheritRecordTags">The optional value indicating whether handling entries should include any tags on the record being handled; DEFAULT is 'false'.</param>
         public TryHandleRecordWithIdOp(
             string concern,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null,
-            IReadOnlyDictionary<string, string> tags = null,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             string details = null,
             long? minimumInternalRecordId = null,
             bool inheritRecordTags = false)
@@ -41,7 +41,7 @@ namespace Naos.Database.Domain
             concern.ThrowIfInvalidOrReservedConcern();
 
             this.Concern = concern;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
             this.OrderRecordsStrategy = orderRecordsStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
@@ -54,7 +54,7 @@ namespace Naos.Database.Domain
         public string Concern { get; private set; }
 
         /// <inheritdoc />
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <inheritdoc />
         public OrderRecordsStrategy OrderRecordsStrategy { get; private set; }
@@ -63,7 +63,7 @@ namespace Naos.Database.Domain
         public IResourceLocator SpecifiedResourceLocator { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <inheritdoc />
         public string Details { get; private set; }

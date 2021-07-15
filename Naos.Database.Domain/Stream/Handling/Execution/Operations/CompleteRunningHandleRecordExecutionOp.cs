@@ -7,14 +7,14 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Operation to mark a running operation as completed.
     /// </summary>
-    public partial class CompleteRunningHandleRecordExecutionOp : VoidOperationBase, IIdentifiableBy<long>, IHaveTags, IHaveDetails, IHaveHandleRecordConcern, ISpecifyResourceLocator
+    public partial class CompleteRunningHandleRecordExecutionOp : VoidOperationBase, IHaveId<long>, IHaveTags, IHaveDetails, IHaveHandleRecordConcern, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CompleteRunningHandleRecordExecutionOp"/> class.
@@ -29,7 +29,7 @@ namespace Naos.Database.Domain
             string concern,
             string details = null,
             IResourceLocator specifiedResourceLocator = null,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyCollection<NamedValue<string>> tags = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
 
@@ -53,6 +53,6 @@ namespace Naos.Database.Domain
         public IResourceLocator SpecifiedResourceLocator { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 

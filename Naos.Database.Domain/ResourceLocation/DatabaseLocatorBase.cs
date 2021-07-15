@@ -6,7 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
     using OBeautifulCode.Type;
 
     /// <summary>

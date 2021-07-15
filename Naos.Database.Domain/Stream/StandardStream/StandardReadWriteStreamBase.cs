@@ -10,7 +10,7 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using static System.FormattableString;

@@ -7,9 +7,10 @@
 namespace Naos.Database.Domain
 {
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
@@ -23,14 +24,14 @@ namespace Naos.Database.Domain
         /// <param name="stringSerializedId">The string serialized identifier.</param>
         /// <param name="identifierType">The type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public DoesAnyExistByIdOp(
             string stringSerializedId,
             TypeRepresentation identifierType,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IResourceLocator specifiedResourceLocator = null)
         {
             identifierType.MustForArg(nameof(identifierType)).NotBeNull();
@@ -38,7 +39,7 @@ namespace Naos.Database.Domain
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
@@ -64,7 +65,7 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

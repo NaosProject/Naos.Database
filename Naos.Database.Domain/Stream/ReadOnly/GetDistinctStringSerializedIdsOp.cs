@@ -7,8 +7,9 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
@@ -21,21 +22,21 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="tagsToMatch">The optional tags to match; default is no filter.</param>
         /// <param name="tagMatchStrategy">The optional strategy for comparing tags; DEFAULT is <see cref="TagMatchStrategy"/>.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         public GetDistinctStringSerializedIdsOp(
             TypeRepresentation identifierType = null,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
-            IReadOnlyDictionary<string, string> tagsToMatch = null,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = null,
             IResourceLocator specifiedResourceLocator = null)
         {
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
             this.TagsToMatch = tagsToMatch;
             this.TagMatchStrategy = tagMatchStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
@@ -57,7 +58,7 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <summary>
         /// Gets the tag match strategy.
@@ -69,7 +70,7 @@ namespace Naos.Database.Domain
         /// Gets the tags to match.
         /// </summary>
         /// <value>The tags to match.</value>
-        public IReadOnlyDictionary<string, string> TagsToMatch { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

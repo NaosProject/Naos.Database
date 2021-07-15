@@ -207,7 +207,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordMetadata<TId> DeepCloneWithTags(IReadOnlyDictionary<string, string> tags)
+        public StreamRecordMetadata<TId> DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
         {
             var result = new StreamRecordMetadata<TId>(
                                  this.Id == null ? default : this.Id.DeepClone(),

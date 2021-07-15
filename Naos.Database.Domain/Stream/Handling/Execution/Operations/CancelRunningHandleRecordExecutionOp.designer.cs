@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
@@ -253,7 +253,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CancelRunningHandleRecordExecutionOp DeepCloneWithTags(IReadOnlyDictionary<string, string> tags)
+        public CancelRunningHandleRecordExecutionOp DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
         {
             var result = new CancelRunningHandleRecordExecutionOp(
                                  this.Id.DeepClone(),

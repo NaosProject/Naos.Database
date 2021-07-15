@@ -6,7 +6,7 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -14,21 +14,21 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">The type of the ID of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class GetLatestObjectByIdOp<TId, TObject> : ReturningOperationBase<TObject>, IIdentifiableBy<TId>
+    public partial class GetLatestObjectByIdOp<TId, TObject> : ReturningOperationBase<TObject>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestObjectByIdOp{TId, TObject}"/> class.
         /// </summary>
         /// <param name="id">The ID.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         public GetLatestObjectByIdOp(
             TId id,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             this.Id = id;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
         }
 
@@ -39,7 +39,7 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <summary>
         /// Gets the existing record not encountered strategy.

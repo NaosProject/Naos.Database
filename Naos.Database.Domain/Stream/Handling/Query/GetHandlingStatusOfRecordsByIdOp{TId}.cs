@@ -7,8 +7,9 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Gets the composite status of the set of records by specified tag matching on locators found by identifiers.
@@ -22,12 +23,12 @@ namespace Naos.Database.Domain
         /// <param name="concern">The handling concern.</param>
         /// <param name="idsToMatch">The object identifiers to treat as a composite status.</param>
         /// <param name="handlingStatusCompositionStrategy">The optional strategy for composing statuses.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
         public GetHandlingStatusOfRecordsByIdOp(
             string concern,
             IReadOnlyCollection<TId> idsToMatch,
             HandlingStatusCompositionStrategy handlingStatusCompositionStrategy = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
 
@@ -36,7 +37,7 @@ namespace Naos.Database.Domain
             this.Concern = concern;
             this.IdsToMatch = idsToMatch;
             this.HandlingStatusCompositionStrategy = handlingStatusCompositionStrategy;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
         }
 
         /// <summary>
@@ -61,6 +62,6 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
     }
 }

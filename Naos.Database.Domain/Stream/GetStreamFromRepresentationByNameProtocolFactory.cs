@@ -9,7 +9,8 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
+
 
     /// <summary>
     /// Stream factory to get an <see cref="IReadWriteStream"/> or <see cref="IReadOnlyStream"/> from a <see cref="StreamRepresentation"/>.
@@ -35,7 +36,7 @@ namespace Naos.Database.Domain
         /// <typeparam name="TStreamRepresentation">The type of the <see cref="IStreamRepresentation"/>.</typeparam>
         /// <typeparam name="TStream">The type of the <see cref="IStream"/>.</typeparam>
         /// <returns>Protocol to get an <see cref="IStream"/> from a <see cref="IStreamRepresentation"/>.</returns>
-        public IReturningProtocol<GetStreamFromRepresentationOp<TStreamRepresentation, TStream>, TStream> GetStreamFromRepresentationProtocol<TStreamRepresentation, TStream>()
+        public ISyncReturningProtocol<GetStreamFromRepresentationOp<TStreamRepresentation, TStream>, TStream> GetStreamFromRepresentationProtocol<TStreamRepresentation, TStream>()
             where TStreamRepresentation : IStreamRepresentation
             where TStream : IStream
         {

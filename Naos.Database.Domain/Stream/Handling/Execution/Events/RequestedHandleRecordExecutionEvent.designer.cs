@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
@@ -95,7 +95,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        protected override EventBaseBase DeepCloneInternal()
+        protected override EventBase DeepCloneInternal()
         {
             var result = new RequestedHandleRecordExecutionEvent(
                                  this.Id.DeepClone(),

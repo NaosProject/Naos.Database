@@ -75,8 +75,8 @@ namespace Naos.Database.Domain
         /// <param name="strategy">The strategy.</param>
         /// <returns><c>true</c> if matching according to strategy, <c>false</c> otherwise.</returns>
         public static bool FuzzyMatchAccordingToStrategy(
-            this IReadOnlyDictionary<string, string> findSet,
-            IReadOnlyDictionary<string, string> target,
+            this IReadOnlyCollection<NamedValue<string>> findSet,
+            IReadOnlyCollection<NamedValue<string>> target,
             TagMatchStrategy strategy)
         {
             if (strategy == null)
@@ -94,12 +94,16 @@ namespace Naos.Database.Domain
                 return false;
             }
 
+            var findSetKeys = findSet.Select(_ => _.Name).Distinct().ToList();
+            var targetKeys = target.Select(_ => _.Name).Distinct().ToList();
             if (strategy.ScopeOfFindSet == TagMatchScope.Any && strategy.ScopeOfTarget == TagMatchScope.Any)
             {
-                var keyOverlap = findSet.Keys.Intersect(target.Keys);
+                var keyOverlap = findSetKeys.Intersect(targetKeys);
                 foreach (var keyToCheckAny in keyOverlap)
                 {
-                    if (findSet[keyToCheckAny].Equals(target[keyToCheckAny]))
+                    if (target.Any(_ => _.Name == keyToCheckAny
+                                     && findSet.Any(__ => __.Name == keyToCheckAny && __.Value == _.Value)))
+                    //if (findSet[keyToCheckAny].Equals(target[keyToCheckAny]))
                     {
                         // only need one target key to match.
                         return true;
@@ -110,15 +114,17 @@ namespace Naos.Database.Domain
             }
             else if (strategy.ScopeOfFindSet == TagMatchScope.Any && strategy.ScopeOfTarget == TagMatchScope.All)
             {
-                if (target.Keys.Except(findSet.Keys).Any())
+                if (targetKeys.Except(findSetKeys).Any())
                 {
                     // cannot have any target keys not appearing in find set.
                     return false;
                 }
 
-                foreach (var targetKey in target.Keys)
+                foreach (var targetKey in targetKeys)
                 {
-                    if (!findSet[targetKey].Equals(target[targetKey]))
+                    if (!target.Any(_ => _.Name == targetKey
+                                     && findSet.Any(__ => __.Name == targetKey && __.Value == _.Value)))
+                    //if (!findSet[targetKey].Equals(target[targetKey]))
                     {
                         return false;
                     }
@@ -128,15 +134,17 @@ namespace Naos.Database.Domain
             }
             else if (strategy.ScopeOfFindSet == TagMatchScope.All && strategy.ScopeOfTarget == TagMatchScope.Any)
             {
-                if (findSet.Keys.Except(target.Keys).Any())
+                if (findSetKeys.Except(targetKeys).Any())
                 {
                     // cannot have any in the find set not appearing in the target.
                     return false;
                 }
 
-                foreach (var findSetKey in findSet.Keys)
+                foreach (var findSetKey in findSetKeys)
                 {
-                    if (!findSet[findSetKey].Equals(target[findSetKey]))
+                    if (!target.Any(_ => _.Name == findSetKey
+                                     && findSet.Any(__ => __.Name == findSetKey && __.Value == _.Value)))
+                    //if (!findSet[findSetKey].Equals(target[findSetKey]))
                     {
                         return false;
                     }
@@ -146,7 +154,7 @@ namespace Naos.Database.Domain
             }
             else if (strategy.ScopeOfFindSet == TagMatchScope.All && strategy.ScopeOfTarget == TagMatchScope.All)
             {
-                var result = findSet.IsReadOnlyDictionaryEqualTo(target);
+                var result = findSet.IsUnorderedEqualTo(target);
                 return result;
             }
 

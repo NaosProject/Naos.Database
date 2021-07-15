@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags to write to produced events.</param>
         public CancelBlockedRecordHandlingOp(
             string details,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyCollection<NamedValue<string>> tags = null)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
             this.Details = details;
@@ -35,6 +35,6 @@ namespace Naos.Database.Domain
         public string Details { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
     }
 }

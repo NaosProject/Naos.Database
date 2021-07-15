@@ -12,9 +12,10 @@ namespace Naos.Database.Domain
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
     using DomainExtensions = OBeautifulCode.Serialization.DomainExtensions;
@@ -246,7 +247,7 @@ namespace Naos.Database.Domain
                                                      operation.StringSerializedId,
                                                      operation.IdentifierType,
                                                      operation.ObjectType,
-                                                     operation.TypeVersionMatchStrategy));
+                                                     operation.VersionMatchStrategy));
 
                 return result != null;
             }
@@ -271,7 +272,7 @@ namespace Naos.Database.Domain
                                        operation.StringSerializedId,
                                        operation.IdentifierType,
                                        operation.ObjectType,
-                                       operation.TypeVersionMatchStrategy))?.Metadata;
+                                       operation.VersionMatchStrategy))?.Metadata;
 
                 if (result != null)
                 {
@@ -332,7 +333,7 @@ namespace Naos.Database.Domain
                                 operation.StringSerializedId,
                                 operation.IdentifierType,
                                 operation.ObjectType,
-                                operation.TypeVersionMatchStrategy))
+                                operation.VersionMatchStrategy))
                        .ToList();
 
                 if (result.Any())
@@ -392,7 +393,7 @@ namespace Naos.Database.Domain
                                 operation.StringSerializedId,
                                 operation.IdentifierType,
                                 operation.ObjectType,
-                                operation.TypeVersionMatchStrategy))
+                                operation.VersionMatchStrategy))
                        .ToList();
 
                 if (result.Any())
@@ -446,7 +447,7 @@ namespace Naos.Database.Domain
                             if (streamRecord.Metadata.FuzzyMatchTypes(
                                     operation.IdentifierType,
                                     operation.ObjectType,
-                                    operation.TypeVersionMatchStrategy)
+                                    operation.VersionMatchStrategy)
                              && ((!operation.TagsToMatch?.Any() ?? true)
                               || streamRecord.Metadata.Tags.FuzzyMatchAccordingToStrategy(operation.TagsToMatch, operation.TagMatchStrategy)))
                             {
@@ -497,8 +498,8 @@ namespace Naos.Database.Domain
                                                __ => __.StringSerializedId.Equals(_.Metadata.StringSerializedId)
                                                   && __.IdentifierType.EqualsAccordingToStrategy(
                                                          _.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                                                             operation.TypeVersionMatchStrategy),
-                                                         operation.TypeVersionMatchStrategy)))
+                                                             operation.VersionMatchStrategy),
+                                                         operation.VersionMatchStrategy)))
                                       .GroupBy(_ => _.Metadata.InternalRecordId)
                                       .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
                                       .ToList();
@@ -605,7 +606,7 @@ namespace Naos.Database.Domain
                                                   _ => _.FuzzyMatch(
                                                       operation.IdentifierType,
                                                       operation.ObjectType,
-                                                      operation.TypeVersionMatchStrategy))
+                                                      operation.VersionMatchStrategy))
                                              .ToList();
 
                         StreamRecord recordToHandle;
@@ -639,9 +640,10 @@ namespace Naos.Database.Domain
                         if (recordToHandle != null)
                         {
                             var handlingTags = operation.InheritRecordTags
-                                ? (operation.Tags ?? new Dictionary<string, string>())
-                                 .Concat(recordToHandle.Metadata.Tags ?? new Dictionary<string, string>())
-                                 .ToDictionary(k => k.Key, v => v.Value)
+                                ? (operation.Tags ?? new List<NamedValue<string>>())
+                                 .Concat(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
+                                 .Distinct()
+                                 .ToList()
                                 : operation.Tags;
 
                             if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))
@@ -758,7 +760,7 @@ namespace Naos.Database.Domain
                                    _ => _.Metadata.FuzzyMatchTypes(
                                        operation.IdentifierType,
                                        operation.ObjectType,
-                                       operation.TypeVersionMatchStrategy));
+                                       operation.VersionMatchStrategy));
 
                 if (result != null)
                 {
@@ -798,7 +800,7 @@ namespace Naos.Database.Domain
                                  operation.StringSerializedId,
                                  operation.IdentifierType,
                                  operation.ObjectType,
-                                 operation.TypeVersionMatchStrategy));
+                                 operation.VersionMatchStrategy));
 
                 if (result != null)
                 {
@@ -846,9 +848,9 @@ namespace Naos.Database.Domain
                         ? recordPartition.Where(
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
-                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
+                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
                                                   null,
-                                                  operation.TypeVersionMatchStrategy))
+                                                  operation.VersionMatchStrategy))
                                          .ToList() : new List<StreamRecord>();
 
                 var matchesIdAndObject =
@@ -860,9 +862,9 @@ namespace Naos.Database.Domain
                         ? recordPartition.Where(
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
-                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
-                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy),
-                                                  operation.TypeVersionMatchStrategy))
+                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
+                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
+                                                  operation.VersionMatchStrategy))
                                          .ToList() : new List<StreamRecord>();
 
                 var recordIdsToPrune = new List<long>();
@@ -881,7 +883,7 @@ namespace Naos.Database.Domain
                     case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
                         if (matchesIdAndObject.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' yet found {matchesIdAndObject.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' yet found {matchesIdAndObject.Count}."));
                         }
 
                         break;
@@ -891,7 +893,7 @@ namespace Naos.Database.Domain
 
                         if (matchesThrow.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
                         }
 
                         break;

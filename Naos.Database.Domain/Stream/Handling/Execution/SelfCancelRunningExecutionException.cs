@@ -9,8 +9,9 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Exception to be thrown during execution that allows the protocol to communicate the difference between a failure and a self cancellation.
@@ -27,7 +28,7 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags for the event produced.</param>
         public SelfCancelRunningExecutionException(
             string details,
-            IReadOnlyDictionary<string, string> tags = null)
+            IReadOnlyCollection<NamedValue<string>> tags = null)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 
@@ -39,7 +40,7 @@ namespace Naos.Database.Domain
         /// Gets the tags.
         /// </summary>
         /// <value>The tags.</value>
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <inheritdoc />
         public string Details { get; private set; }

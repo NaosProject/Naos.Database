@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Threading.Tasks;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
@@ -75,7 +75,7 @@ namespace Naos.Database.Domain
         public void Execute(
             PutWithIdOp<TId, TObject> operation)
         {
-            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.TypeVersionMatchStrategy);
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
             this.Execute(delegatedOperation);
         }
 
@@ -118,7 +118,7 @@ namespace Naos.Database.Domain
                 objectTimestamp);
 
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, null, operation.TypeVersionMatchStrategy));
+            var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, null, operation.VersionMatchStrategy));
 
             return result.InternalRecordIdOfPutRecord;
         }

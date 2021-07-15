@@ -6,7 +6,7 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
 
@@ -26,7 +26,7 @@ namespace Naos.Database.Domain
             var result = new GetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 operation.SpecifiedResourceLocator);
             return result;
@@ -44,7 +44,7 @@ namespace Naos.Database.Domain
             var result = new GetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 operation.SpecifiedResourceLocator);
 
@@ -70,7 +70,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
@@ -96,7 +96,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
@@ -122,7 +122,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 operation.OrderRecordsStrategy,
                 locator);
@@ -149,7 +149,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 operation.OrderRecordsStrategy,
                 locator);
@@ -177,7 +177,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
@@ -204,7 +204,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 typeof(TObject).ToRepresentation(),
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 

@@ -9,9 +9,10 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Set of protocols to work with known identifier and/or object type.
@@ -95,7 +96,7 @@ namespace Naos.Database.Domain
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
-                operation.TypeVersionMatchStrategy,
+                operation.VersionMatchStrategy,
                 locator);
 
             var result = this.delegatedProtocols.Execute(delegatedOperation);

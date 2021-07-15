@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -17,7 +17,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Type of the identifier.</typeparam>
     /// <typeparam name="TObject">Type of data being written.</typeparam>
-    public partial class PutWithIdOp<TId, TObject> : VoidOperationBase, IIdentifiableBy<TId>, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class PutWithIdOp<TId, TObject> : VoidOperationBase, IHaveId<TId>, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutWithIdOp{TId,TObject}"/> class.
@@ -27,14 +27,14 @@ namespace Naos.Database.Domain
         /// <param name="tags">Optional tags to put with the record.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public PutWithIdOp(
             TId id,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             if (existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
              || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType)
@@ -51,7 +51,7 @@ namespace Naos.Database.Domain
             this.Tags = tags;
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
             this.RecordRetentionCount = recordRetentionCount;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Naos.Database.Domain
         public TObject ObjectToPut { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <summary>
         /// Gets the existing record encountered strategy.
@@ -85,6 +85,6 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
     }
 }

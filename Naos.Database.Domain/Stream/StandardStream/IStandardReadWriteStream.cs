@@ -8,8 +8,9 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Standard streams reduced to core calls to participate in the StandardStream specific protocols.
@@ -21,20 +22,20 @@ namespace Naos.Database.Domain
           IStreamManagementProtocolFactory,
           IStreamRecordHandlingProtocolFactory,
           IStreamManagementProtocols,
-          IReturningProtocol<GetNextUniqueLongOp, long>,
-          IReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
-          IReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
-          IReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-          IReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,
-          IReturningProtocol<PutRecordOp, PutRecordResult>,
-          IVoidProtocol<BlockRecordHandlingOp>,
-          IVoidProtocol<CancelBlockedRecordHandlingOp>,
-          IVoidProtocol<CancelHandleRecordExecutionRequestOp>,
-          IVoidProtocol<CancelRunningHandleRecordExecutionOp>,
-          IVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
-          IVoidProtocol<FailRunningHandleRecordExecutionOp>,
-          IVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
-          IVoidProtocol<RetryFailedHandleRecordExecutionOp>
+          ISyncReturningProtocol<GetNextUniqueLongOp, long>,
+          ISyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
+          ISyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
+          ISyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
+          ISyncReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,
+          ISyncReturningProtocol<PutRecordOp, PutRecordResult>,
+          ISyncVoidProtocol<BlockRecordHandlingOp>,
+          ISyncVoidProtocol<CancelBlockedRecordHandlingOp>,
+          ISyncVoidProtocol<CancelHandleRecordExecutionRequestOp>,
+          ISyncVoidProtocol<CancelRunningHandleRecordExecutionOp>,
+          ISyncVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
+          ISyncVoidProtocol<FailRunningHandleRecordExecutionOp>,
+          ISyncVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
+          ISyncVoidProtocol<RetryFailedHandleRecordExecutionOp>
     {
         /// <summary>
         /// Gets the serializer factory.

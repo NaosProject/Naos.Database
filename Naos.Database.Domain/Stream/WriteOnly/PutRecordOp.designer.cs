@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
@@ -78,7 +78,7 @@ namespace Naos.Database.Domain
                       && this.ExistingRecordEncounteredStrategy.IsEqualTo(other.ExistingRecordEncounteredStrategy)
                       && this.RecordRetentionCount.IsEqualTo(other.RecordRetentionCount)
                       && this.InternalRecordId.IsEqualTo(other.InternalRecordId)
-                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy);
+                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy);
 
             return result;
         }
@@ -94,7 +94,7 @@ namespace Naos.Database.Domain
             .Hash(this.ExistingRecordEncounteredStrategy)
             .Hash(this.RecordRetentionCount)
             .Hash(this.InternalRecordId)
-            .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.VersionMatchStrategy)
             .Value;
 
         /// <inheritdoc />
@@ -111,7 +111,7 @@ namespace Naos.Database.Domain
                                  this.ExistingRecordEncounteredStrategy.DeepClone(),
                                  this.RecordRetentionCount?.DeepClone(),
                                  this.InternalRecordId?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone());
+                                 this.VersionMatchStrategy.DeepClone());
 
             return result;
         }
@@ -120,7 +120,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {this.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PutRecordOp: Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {this.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {this.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

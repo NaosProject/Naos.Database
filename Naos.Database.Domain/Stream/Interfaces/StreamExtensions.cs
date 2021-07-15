@@ -9,9 +9,10 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Extension methods on <see cref="IReadOnlyStream"/>, <see cref="IWriteOnlyStream"/>, <see cref="IStream"/>.
@@ -61,18 +62,18 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public static void Put<TObject>(
             this IWriteOnlyStream stream,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
+            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, versionMatchStrategy);
             var protocol = stream.GetStreamWritingProtocols<TObject>();
             protocol.Execute(operation);
         }
@@ -86,19 +87,19 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         /// <returns>Task for async.</returns>
         public static async Task PutAsync<TObject>(
             this IWriteOnlyStream stream,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
+            var operation = new PutOp<TObject>(objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, versionMatchStrategy);
             var protocol = stream.GetStreamWritingProtocols<TObject>();
             await protocol.ExecuteAsync(operation);
         }
@@ -114,19 +115,19 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public static void PutWithId<TId, TObject>(
             this IWriteOnlyStream stream,
             TId id,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, versionMatchStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             protocol.Execute(operation);
         }
@@ -142,20 +143,20 @@ namespace Naos.Database.Domain
         /// <param name="tags">The optional tags.</param>
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         /// <returns>Task for async.</returns>
         public static async Task PutWithIdAsync<TId, TObject>(
             this IWriteOnlyStream stream,
             TId id,
             TObject objectToPut,
-            IReadOnlyDictionary<string, string> tags = null,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, typeVersionMatchStrategy);
+            var operation = new PutWithIdOp<TId, TObject>(id, objectToPut, tags, existingRecordEncounteredStrategy, recordRetentionCount, versionMatchStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             await protocol.ExecuteAsync(operation);
         }
@@ -167,18 +168,18 @@ namespace Naos.Database.Domain
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <returns>The object.</returns>
         public static TObject GetLatestObjectById<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy);
+            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, versionMatchStrategy, existingRecordNotEncounteredStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -191,18 +192,18 @@ namespace Naos.Database.Domain
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <returns>The object.</returns>
         public static async Task<TObject> GetLatestObjectByIdAsync<TId, TObject>(
             this IReadOnlyStream stream,
             TId identifier,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy);
+            var operation = new GetLatestObjectByIdOp<TId, TObject>(identifier, versionMatchStrategy, existingRecordNotEncounteredStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -215,17 +216,17 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">The optional type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <returns>The object.</returns>
         public static bool DoesAnyExistById<TId>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(identifier, objectType, versionMatchStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -238,17 +239,17 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">The optional type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is 'Any'.</param>
         /// <returns>The object.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(identifier, objectType, versionMatchStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -261,19 +262,19 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
         /// <returns>Matching stream record metadata.</returns>
         public static StreamRecordMetadata<TId> GetLatestRecordMetadataById<TId>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestRecordMetadataByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy);
+            var operation = new GetLatestRecordMetadataByIdOp<TId>(identifier, objectType, versionMatchStrategy, existingRecordNotEncounteredStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -286,7 +287,7 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
         /// <param name="orderRecordsStrategy">The order records strategy.</param>
         /// <returns>Matching stream record .</returns>
@@ -294,13 +295,13 @@ namespace Naos.Database.Domain
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetAllRecordsByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var operation = new GetAllRecordsByIdOp<TId>(identifier, objectType, versionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -313,7 +314,7 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
         /// <param name="orderRecordsStrategy">The order records strategy.</param>
         /// <returns>Matching stream record .</returns>
@@ -321,13 +322,13 @@ namespace Naos.Database.Domain
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetAllRecordsByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var operation = new GetAllRecordsByIdOp<TId>(identifier, objectType, versionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -340,7 +341,7 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
         /// <param name="orderRecordsStrategy">The order records strategy.</param>
         /// <returns>Matching stream record metadata.</returns>
@@ -348,13 +349,13 @@ namespace Naos.Database.Domain
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetAllRecordsMetadataByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var operation = new GetAllRecordsMetadataByIdOp<TId>(identifier, objectType, versionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -367,7 +368,7 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
         /// <param name="orderRecordsStrategy">The order records strategy.</param>
         /// <returns>Matching stream record metadata.</returns>
@@ -375,13 +376,13 @@ namespace Naos.Database.Domain
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetAllRecordsMetadataByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
+            var operation = new GetAllRecordsMetadataByIdOp<TId>(identifier, objectType, versionMatchStrategy, existingRecordNotEncounteredStrategy, orderRecordsStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -394,19 +395,19 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifier">The identifier.</param>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The existing record not encountered strategy.</param>
         /// <returns>Matching stream record metadata.</returns>
         public static async Task<StreamRecordMetadata<TId>> GetLatestRecordMetadataByIdAsync<TId>(
             this IReadOnlyStream stream,
             TId identifier,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestRecordMetadataByIdOp<TId>(identifier, objectType, typeVersionMatchStrategy, existingRecordNotEncounteredStrategy);
+            var operation = new GetLatestRecordMetadataByIdOp<TId>(identifier, objectType, versionMatchStrategy, existingRecordNotEncounteredStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;

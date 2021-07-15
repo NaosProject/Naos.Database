@@ -8,14 +8,14 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Event container to signal a block to a <see cref="IReadWriteStream"/> indicating the stream should not be processed beyond this event without an associated <see cref="CanceledBlockedRecordHandlingEvent"/>.
     /// </summary>
-    public partial class BlockedRecordHandlingEvent : EventBaseBase, IHaveDetails
+    public partial class BlockedRecordHandlingEvent : EventBase, IHaveDetails
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BlockedRecordHandlingEvent"/> class.

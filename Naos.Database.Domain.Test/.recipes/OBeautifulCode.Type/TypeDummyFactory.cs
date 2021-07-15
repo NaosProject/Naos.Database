@@ -52,7 +52,9 @@ namespace OBeautifulCode.Type.Test
 
         public TypeDummyFactory()
         {
-            AutoFixtureBackedDummyFactory.AddDummyCreator(() =>
+            // UtcDateTimeRangeInclusive
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
             {
                 var startDateTime = A.Dummy<DateTime>();
 
@@ -63,6 +65,7 @@ namespace OBeautifulCode.Type.Test
                 return result;
             });
 
+            // Type
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
@@ -94,6 +97,41 @@ namespace OBeautifulCode.Type.Test
 
                     return result;
                 });
+
+            // IOperation
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = (IOperation)A.Dummy<OperationBase>();
+
+                    return result;
+                });
+
+            // NullEvent
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullEvent(
+                    A.Dummy<DateTime>().ToUniversalTime()));
+
+            // NullEvent<Version>
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullEvent<Version>(
+                    A.Dummy<Version>(),
+                    A.Dummy<DateTime>().ToUniversalTime()));
+
+            // ExecuteOpRequestedEvent<GetProtocolOp>
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExecuteOpRequestedEvent<GetProtocolOp>(
+                    A.Dummy<GetProtocolOp>(),
+                    A.Dummy<DateTime>().ToUniversalTime(),
+                    A.Dummy<string>()));
+
+            // ExecuteOpRequestedEvent<Version, GetProtocolOp>
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExecuteOpRequestedEvent<Version, GetProtocolOp>(
+                    A.Dummy<Version>(),
+                    A.Dummy<GetProtocolOp>(),
+                    A.Dummy<DateTime>().ToUniversalTime(),
+                    A.Dummy<string>()));
         }
 
         private Type GetRandomClosedTypeInAppDomain()

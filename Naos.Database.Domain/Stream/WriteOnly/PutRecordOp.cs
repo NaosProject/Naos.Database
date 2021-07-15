@@ -6,7 +6,7 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
         /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
         /// <param name="internalRecordId">Optional internal record identifier to specify.</param>
-        /// <param name="typeVersionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
         public PutRecordOp(
             StreamRecordMetadata metadata,
             DescribedSerializationBase payload,
@@ -33,7 +33,7 @@ namespace Naos.Database.Domain
             ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
             int? recordRetentionCount = null,
             long? internalRecordId = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
@@ -54,7 +54,7 @@ namespace Naos.Database.Domain
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
             this.RecordRetentionCount = recordRetentionCount;
             this.InternalRecordId = internalRecordId;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
         }
 
         /// <summary>
@@ -94,6 +94,6 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
     }
 }

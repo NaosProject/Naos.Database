@@ -8,14 +8,14 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
     /// </summary>
-    public partial class PruneOperationRequestedEvent : EventBaseBase
+    public partial class PruneOperationRequestedEvent : EventBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneOperationRequestedEvent"/> class.

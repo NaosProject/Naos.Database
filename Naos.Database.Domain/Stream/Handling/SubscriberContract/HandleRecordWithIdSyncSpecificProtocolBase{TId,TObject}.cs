@@ -6,7 +6,8 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
+
 
     /// <summary>
     /// Base class which will implement <see cref="ISyncAndAsyncVoidProtocol{TOperation}"/> for <see cref="HandleRecordWithIdOp{TId, TObject}"/> for <typeparamref name="TObject"/>.

@@ -6,7 +6,8 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
+
 
     /// <summary>
     /// Interface to protocol the basic stream data operations without a known identifier.

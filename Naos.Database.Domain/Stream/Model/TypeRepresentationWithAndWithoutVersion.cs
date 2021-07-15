@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
@@ -66,50 +66,50 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Gets the correct <see cref="TypeRepresentation"/> by the provided <see cref="TypeVersionMatchStrategy"/>.
+        /// Gets the correct <see cref="TypeRepresentation"/> by the provided <see cref="VersionMatchStrategy"/>.
         /// </summary>
         /// <param name="typeRepresentationWithAndWithoutVersion">The type representation with and without version.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <returns>Appropriate <see cref="TypeRepresentation"/> according to strategy.</returns>
         public static TypeRepresentation GetTypeRepresentationByStrategy(
             this TypeRepresentationWithAndWithoutVersion typeRepresentationWithAndWithoutVersion,
-            TypeVersionMatchStrategy typeVersionMatchStrategy)
+            VersionMatchStrategy versionMatchStrategy)
         {
-            switch (typeVersionMatchStrategy)
+            switch (versionMatchStrategy)
             {
-                case TypeVersionMatchStrategy.Any:
+                case VersionMatchStrategy.Any:
                     return typeRepresentationWithAndWithoutVersion.WithoutVersion;
-                case TypeVersionMatchStrategy.Specific:
+                case VersionMatchStrategy.SpecifiedVersion:
                     return typeRepresentationWithAndWithoutVersion.WithVersion;
                 default:
-                    throw new NotSupportedException(Invariant($"The {nameof(TypeVersionMatchStrategy)} '{typeVersionMatchStrategy}' is not supported (only '{nameof(TypeVersionMatchStrategy.Any)}' and '{nameof(TypeVersionMatchStrategy.Specific)}')."));
+                    throw new NotSupportedException(Invariant($"The {nameof(versionMatchStrategy)} '{versionMatchStrategy}' is not supported (only '{nameof(VersionMatchStrategy.Any)}' and '{nameof(VersionMatchStrategy.SpecifiedVersion)}')."));
             }
         }
 
         /// <summary>
         /// Compares a <see cref="TypeRepresentation"/> to an external <see cref="TypeRepresentation"/>
-        /// using the provided <see cref="TypeVersionMatchStrategy"/> to determine whether or not to include the version.
+        /// using the provided <see cref="VersionMatchStrategy"/> to determine whether or not to include the version.
         /// </summary>
         /// <param name="first">The <see cref="TypeRepresentation"/> to compare.</param>
         /// <param name="second">The <see cref="TypeRepresentation"/> to compare against.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <returns><c>true</c> if equal according to strategy, <c>false</c> otherwise.</returns>
         public static bool EqualsAccordingToStrategy(
             this TypeRepresentation first,
             TypeRepresentation second,
-            TypeVersionMatchStrategy typeVersionMatchStrategy)
+            VersionMatchStrategy versionMatchStrategy)
         {
             bool result;
-            switch (typeVersionMatchStrategy)
+            switch (versionMatchStrategy)
             {
-                case TypeVersionMatchStrategy.Any:
+                case VersionMatchStrategy.Any:
                     result = VersionlessComparer.Equals(first, second);
                     break;
-                case TypeVersionMatchStrategy.Specific:
+                case VersionMatchStrategy.SpecifiedVersion:
                     result = second.Equals(first);
                     break;
                 default:
-                    throw new NotSupportedException(Invariant($"{nameof(TypeVersionMatchStrategy)} {typeVersionMatchStrategy} is not supported."));
+                    throw new NotSupportedException(Invariant($"{nameof(versionMatchStrategy)} {versionMatchStrategy} is not supported."));
             }
 
             return result;

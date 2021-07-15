@@ -7,7 +7,8 @@
 namespace Naos.Database.Domain
 {
     using System;
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
+
 
     /// <summary>
     /// Event to record the execution of <see cref="GetNextUniqueLongOp"/>.

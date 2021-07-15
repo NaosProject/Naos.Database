@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -26,7 +26,7 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        TypeVersionMatchStrategy TypeVersionMatchStrategy { get; }
+        VersionMatchStrategy VersionMatchStrategy { get; }
 
         /// <summary>
         /// Gets the order records strategy.

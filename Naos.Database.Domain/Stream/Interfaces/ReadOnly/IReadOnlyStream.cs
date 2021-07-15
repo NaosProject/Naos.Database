@@ -8,7 +8,8 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
+
 
     /// <summary>
     /// Stream interface, a stream is a list of objects ordered by timestamp, only read operations are supported.
@@ -18,14 +19,14 @@ namespace Naos.Database.Domain
         :
             IStream,
             IStreamReadProtocolFactory,
-            IReturningProtocol<GetDistinctStringSerializedIdsOp, IReadOnlyCollection<string>>,
-            IReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
-            IReturningProtocol<GetLatestRecordOp, StreamRecord>,
-            IReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
-            IReturningProtocol<GetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
-            IReturningProtocol<GetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
-            IReturningProtocol<DoesAnyExistByIdOp, bool>,
-            IReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
+            ISyncReturningProtocol<GetDistinctStringSerializedIdsOp, IReadOnlyCollection<string>>,
+            ISyncReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
+            ISyncReturningProtocol<GetLatestRecordOp, StreamRecord>,
+            ISyncReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
+            ISyncReturningProtocol<GetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
+            ISyncReturningProtocol<GetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
+            ISyncReturningProtocol<DoesAnyExistByIdOp, bool>,
+            ISyncReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
     {
     }
 }

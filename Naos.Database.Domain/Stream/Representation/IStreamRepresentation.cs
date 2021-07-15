@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
 
     /// <summary>
     /// Stream description to allow the <see cref="GetStreamFromRepresentationByNameProtocolFactory"/> to produce the correct stream.

@@ -7,7 +7,8 @@
 namespace Naos.Database.Domain
 {
     using System;
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
+
 
     /// <summary>
     /// Event indicating that a <see cref="HandleRecordOp"/> is executing.

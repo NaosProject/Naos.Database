@@ -7,8 +7,9 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// Gets the composite status of the set of records by specified tag matching on all locators.
@@ -24,13 +25,13 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">The optional strategy for comparing tags; DEFAULT is <see cref="TagMatchStrategy"/>.</param>
         public GetHandlingStatusOfRecordSetByTagOp(
             string concern,
-            IReadOnlyDictionary<string, string> tagsToMatch,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch,
             HandlingStatusCompositionStrategy handlingStatusCompositionStrategy = null,
             TagMatchStrategy tagMatchStrategy = null)
         {
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
 
-            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotBeNull().And().NotBeEmptyDictionary();
+            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotBeNullNorEmptyEnumerable();
 
             this.Concern = concern;
             this.TagsToMatch = tagsToMatch;
@@ -48,7 +49,7 @@ namespace Naos.Database.Domain
         /// Gets the tags to match.
         /// </summary>
         /// <value>The tags to match.</value>
-        public IReadOnlyDictionary<string, string> TagsToMatch { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
         /// <summary>
         /// Gets the handling status composition strategy.

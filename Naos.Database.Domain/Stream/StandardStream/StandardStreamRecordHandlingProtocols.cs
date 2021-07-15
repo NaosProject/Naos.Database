@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>

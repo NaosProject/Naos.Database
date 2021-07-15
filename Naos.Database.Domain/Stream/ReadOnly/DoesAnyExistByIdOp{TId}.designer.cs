@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
@@ -74,7 +74,7 @@ namespace Naos.Database.Domain
 
             var result = this.Id.IsEqualTo(other.Id)
                       && this.ObjectType.IsEqualTo(other.ObjectType)
-                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy)
+                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -87,7 +87,7 @@ namespace Naos.Database.Domain
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.Id)
             .Hash(this.ObjectType)
-            .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.VersionMatchStrategy)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -121,7 +121,7 @@ namespace Naos.Database.Domain
             var result = new DoesAnyExistByIdOp<TId>(
                                  id,
                                  this.ObjectType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -154,17 +154,17 @@ namespace Naos.Database.Domain
             var result = new DoesAnyExistByIdOp<TId>(
                                  this.Id == null ? default : this.Id.DeepClone(),
                                  objectType,
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="TypeVersionMatchStrategy" />.
+        /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
         /// </summary>
-        /// <param name="typeVersionMatchStrategy">The new <see cref="TypeVersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
+        /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -182,12 +182,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public DoesAnyExistByIdOp<TId> DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
+        public DoesAnyExistByIdOp<TId> DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
         {
             var result = new DoesAnyExistByIdOp<TId>(
                                  this.Id == null ? default : this.Id.DeepClone(),
                                  this.ObjectType?.DeepClone(),
-                                 typeVersionMatchStrategy,
+                                 versionMatchStrategy,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -220,7 +220,7 @@ namespace Naos.Database.Domain
             var result = new DoesAnyExistByIdOp<TId>(
                                  this.Id == null ? default : this.Id.DeepClone(),
                                  this.ObjectType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -233,7 +233,7 @@ namespace Naos.Database.Domain
             var result = new DoesAnyExistByIdOp<TId>(
                                  this.Id == null ? default : this.Id.DeepClone(),
                                  this.ObjectType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -243,7 +243,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

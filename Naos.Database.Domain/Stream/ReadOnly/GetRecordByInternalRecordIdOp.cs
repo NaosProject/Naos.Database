@@ -6,7 +6,7 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>

@@ -34,7 +34,7 @@ namespace Naos.Database.Domain
             SerializerRepresentation serializerRepresentation,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfId,
             TypeRepresentationWithAndWithoutVersion typeRepresentationOfObject,
-            IReadOnlyDictionary<string, string> tags,
+            IReadOnlyCollection<NamedValue<string>> tags,
             DateTime timestampUtc,
             DateTime? objectTimestampUtc)
         {
@@ -75,7 +75,7 @@ namespace Naos.Database.Domain
         public SerializerRepresentation SerializerRepresentation { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags { get; private set; }
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <summary>
         /// Gets the type representation of identifier.

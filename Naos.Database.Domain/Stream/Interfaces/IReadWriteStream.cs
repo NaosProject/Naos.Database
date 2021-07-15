@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
 
     /// <summary>
     /// Stream interface, a stream is a list of objects ordered by timestamp.

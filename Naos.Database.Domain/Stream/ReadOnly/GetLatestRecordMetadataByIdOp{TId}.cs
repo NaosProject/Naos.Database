@@ -6,7 +6,7 @@
 
 namespace Naos.Database.Domain
 {
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -15,24 +15,24 @@ namespace Naos.Database.Domain
     /// Gets the latest record metadata with provided identifier.
     /// </summary>
     /// <typeparam name="TId">The type of the ID of the object.</typeparam>
-    public partial class GetLatestRecordMetadataByIdOp<TId> : ReturningOperationBase<StreamRecordMetadata<TId>>, IIdentifiableBy<TId>
+    public partial class GetLatestRecordMetadataByIdOp<TId> : ReturningOperationBase<StreamRecordMetadata<TId>>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestRecordMetadataByIdOp{TId}"/> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         public GetLatestRecordMetadataByIdOp(
             TId id,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
             this.Id = id;
             this.ObjectType = objectType;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
         }
 
@@ -52,7 +52,7 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <summary>
         /// Gets the existing record not encountered strategy.

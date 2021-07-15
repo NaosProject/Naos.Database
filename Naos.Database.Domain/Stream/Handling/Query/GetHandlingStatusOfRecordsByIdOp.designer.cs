@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
@@ -74,7 +74,7 @@ namespace Naos.Database.Domain
             var result = this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
                       && this.IdsToMatch.IsEqualTo(other.IdsToMatch)
                       && this.HandlingStatusCompositionStrategy.IsEqualTo(other.HandlingStatusCompositionStrategy)
-                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy)
+                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -88,7 +88,7 @@ namespace Naos.Database.Domain
             .Hash(this.Concern)
             .Hash(this.IdsToMatch)
             .Hash(this.HandlingStatusCompositionStrategy)
-            .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.VersionMatchStrategy)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -123,7 +123,7 @@ namespace Naos.Database.Domain
                                  concern,
                                  this.IdsToMatch?.DeepClone(),
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -157,7 +157,7 @@ namespace Naos.Database.Domain
                                  this.Concern?.DeepClone(),
                                  idsToMatch,
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -191,17 +191,17 @@ namespace Naos.Database.Domain
                                  this.Concern?.DeepClone(),
                                  this.IdsToMatch?.DeepClone(),
                                  handlingStatusCompositionStrategy,
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="TypeVersionMatchStrategy" />.
+        /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
         /// </summary>
-        /// <param name="typeVersionMatchStrategy">The new <see cref="TypeVersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetHandlingStatusOfRecordsByIdOp" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
+        /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="GetHandlingStatusOfRecordsByIdOp" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -219,13 +219,13 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetHandlingStatusOfRecordsByIdOp DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
+        public GetHandlingStatusOfRecordsByIdOp DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
         {
             var result = new GetHandlingStatusOfRecordsByIdOp(
                                  this.Concern?.DeepClone(),
                                  this.IdsToMatch?.DeepClone(),
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
-                                 typeVersionMatchStrategy,
+                                 versionMatchStrategy,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -259,7 +259,7 @@ namespace Naos.Database.Domain
                                  this.Concern?.DeepClone(),
                                  this.IdsToMatch?.DeepClone(),
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -273,7 +273,7 @@ namespace Naos.Database.Domain
                                  this.Concern?.DeepClone(),
                                  this.IdsToMatch?.DeepClone(),
                                  this.HandlingStatusCompositionStrategy?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -283,7 +283,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {this.IdsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {this.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {this.IdsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {this.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

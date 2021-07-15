@@ -7,8 +7,9 @@
 namespace Naos.Database.Domain
 {
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
+
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
@@ -22,7 +23,7 @@ namespace Naos.Database.Domain
         /// <param name="stringSerializedId">The identifier serialized as a string using the same serializer as the object.</param>
         /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="typeVersionMatchStrategy">The type version match strategy.</param>
+        /// <param name="versionMatchStrategy">The type version match strategy.</param>
         /// <param name="existingRecordNotEncounteredStrategy">The optional strategy on how to deal with no matching record; DEFAULT is the default of the requested type or null.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
@@ -30,14 +31,14 @@ namespace Naos.Database.Domain
             string stringSerializedId,
             TypeRepresentation identifierType = null,
             TypeRepresentation objectType = null,
-            TypeVersionMatchStrategy typeVersionMatchStrategy = TypeVersionMatchStrategy.Any,
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             IResourceLocator specifiedResourceLocator = null)
         {
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
-            this.TypeVersionMatchStrategy = typeVersionMatchStrategy;
+            this.VersionMatchStrategy = versionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
@@ -64,7 +65,7 @@ namespace Naos.Database.Domain
         /// Gets the type version match strategy.
         /// </summary>
         /// <value>The type version match strategy.</value>
-        public TypeVersionMatchStrategy TypeVersionMatchStrategy { get; private set; }
+        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <summary>
         /// Gets the existing record not encountered strategy.

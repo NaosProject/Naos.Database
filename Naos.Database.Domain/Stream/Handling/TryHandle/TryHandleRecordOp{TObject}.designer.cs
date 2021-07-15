@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
@@ -74,7 +74,7 @@ namespace Naos.Database.Domain
 
             var result = this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
                       && this.IdentifierType.IsEqualTo(other.IdentifierType)
-                      && this.TypeVersionMatchStrategy.IsEqualTo(other.TypeVersionMatchStrategy)
+                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
                       && this.OrderRecordsStrategy.IsEqualTo(other.OrderRecordsStrategy)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator)
                       && this.Tags.IsEqualTo(other.Tags)
@@ -92,7 +92,7 @@ namespace Naos.Database.Domain
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.Concern)
             .Hash(this.IdentifierType)
-            .Hash(this.TypeVersionMatchStrategy)
+            .Hash(this.VersionMatchStrategy)
             .Hash(this.OrderRecordsStrategy)
             .Hash(this.SpecifiedResourceLocator)
             .Hash(this.Tags)
@@ -131,7 +131,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  concern,
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -169,7 +169,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  identifierType,
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -181,10 +181,10 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="TypeVersionMatchStrategy" />.
+        /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
         /// </summary>
-        /// <param name="typeVersionMatchStrategy">The new <see cref="TypeVersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="TryHandleRecordOp{TObject}" /> using the specified <paramref name="typeVersionMatchStrategy" /> for <see cref="TypeVersionMatchStrategy" /> and a deep clone of every other property.</returns>
+        /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="TryHandleRecordOp{TObject}" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -202,12 +202,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public TryHandleRecordOp<TObject> DeepCloneWithTypeVersionMatchStrategy(TypeVersionMatchStrategy typeVersionMatchStrategy)
+        public TryHandleRecordOp<TObject> DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
         {
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 typeVersionMatchStrategy,
+                                 versionMatchStrategy,
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -245,7 +245,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  orderRecordsStrategy,
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -283,7 +283,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  specifiedResourceLocator,
                                  this.Tags?.DeepClone(),
@@ -316,12 +316,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public TryHandleRecordOp<TObject> DeepCloneWithTags(IReadOnlyDictionary<string, string> tags)
+        public TryHandleRecordOp<TObject> DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
         {
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  tags,
@@ -359,7 +359,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -397,7 +397,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -435,7 +435,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -453,7 +453,7 @@ namespace Naos.Database.Domain
             var result = new TryHandleRecordOp<TObject>(
                                  this.Concern?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
-                                 this.TypeVersionMatchStrategy.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
                                  this.OrderRecordsStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone(),
                                  this.Tags?.DeepClone(),
@@ -468,7 +468,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {this.TypeVersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsStrategy = {this.OrderRecordsStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsStrategy = {this.OrderRecordsStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

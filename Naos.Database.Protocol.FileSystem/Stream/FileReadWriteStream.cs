@@ -292,7 +292,7 @@ namespace Naos.Database.Protocol.FileSystem
                         operation.StringSerializedId,
                         operation.IdentifierType,
                         operation.ObjectType,
-                        operation.TypeVersionMatchStrategy))
+                        operation.VersionMatchStrategy))
                     {
                         return true;
                     }
@@ -346,7 +346,7 @@ namespace Naos.Database.Protocol.FileSystem
                         operation.StringSerializedId,
                         operation.IdentifierType,
                         operation.ObjectType,
-                        operation.TypeVersionMatchStrategy))
+                        operation.VersionMatchStrategy))
                     {
                         return metadata;
                     }
@@ -401,7 +401,7 @@ namespace Naos.Database.Protocol.FileSystem
                         operation.StringSerializedId,
                         operation.IdentifierType,
                         operation.ObjectType,
-                        operation.TypeVersionMatchStrategy))
+                        operation.VersionMatchStrategy))
                     {
                         var record = this.GetStreamRecordFromMetadataFile(metadataFilePathToTest);
                         result.Add(record);
@@ -472,7 +472,7 @@ namespace Naos.Database.Protocol.FileSystem
                         operation.StringSerializedId,
                         operation.IdentifierType,
                         operation.ObjectType,
-                        operation.TypeVersionMatchStrategy))
+                        operation.VersionMatchStrategy))
                     {
                         var internalRecordId = GetRootIdFromFilePath(metadataFilePathToTest);
                         result.Add(new Tuple<long, StreamRecordMetadata>(internalRecordId, metadata));
@@ -536,7 +536,7 @@ namespace Naos.Database.Protocol.FileSystem
                         if (metadata.FuzzyMatchTypes(
                                 operation.IdentifierType,
                                 operation.ObjectType,
-                                operation.TypeVersionMatchStrategy)
+                                operation.VersionMatchStrategy)
                          && ((!operation.TagsToMatch?.Any() ?? true)
                           || metadata.Tags.FuzzyMatchAccordingToStrategy(operation.TagsToMatch, operation.TagMatchStrategy)))
                         {
@@ -648,8 +648,8 @@ namespace Naos.Database.Protocol.FileSystem
                     var text = File.ReadAllText(filePath);
                     var metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(text);
 
-                    if (metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)
-                            .EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.TypeVersionMatchStrategy))
+                    if (metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)
+                            .EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.VersionMatchStrategy))
                     {
                         if (!recordIdToStatusAndEntryIdMap.ContainsKey(metadata.InternalRecordId))
                         {
@@ -779,7 +779,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                             _ => _.Metadata.FuzzyMatchTypes(
                                                                      operation.IdentifierType,
                                                                      operation.ObjectType,
-                                                                     operation.TypeVersionMatchStrategy)
+                                                                     operation.VersionMatchStrategy)
                                                               && (operation.MinimumInternalRecordId == null
                                                                || _.Id                              >= operation.MinimumInternalRecordId));
                                 metadataFilePath = ascItem?.Path;
@@ -791,7 +791,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                             _ => _.Metadata.FuzzyMatchTypes(
                                                                      operation.IdentifierType,
                                                                      operation.ObjectType,
-                                                                     operation.TypeVersionMatchStrategy)
+                                                                     operation.VersionMatchStrategy)
                                                               && (operation.MinimumInternalRecordId == null
                                                                || _.Id                              >= operation.MinimumInternalRecordId));
                                 metadataFilePath = descItem?.Path;
@@ -804,7 +804,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                             _ => _.Metadata.FuzzyMatchTypes(
                                                                      operation.IdentifierType,
                                                                      operation.ObjectType,
-                                                                     operation.TypeVersionMatchStrategy)
+                                                                     operation.VersionMatchStrategy)
                                                               && (operation.MinimumInternalRecordId == null
                                                                || _.Id                              >= operation.MinimumInternalRecordId));
                                 metadataFilePath = randItem?.Path;
@@ -1052,7 +1052,7 @@ namespace Naos.Database.Protocol.FileSystem
                         operation.StringSerializedId,
                         operation.IdentifierType,
                         operation.ObjectType,
-                        operation.TypeVersionMatchStrategy))
+                        operation.VersionMatchStrategy))
                     {
                         var result = this.GetStreamRecordFromMetadataFile(metadataFilePathToTest, metadata);
                         return result;
@@ -1118,9 +1118,9 @@ namespace Naos.Database.Protocol.FileSystem
                                                                _ => _.Metadata.FuzzyMatchTypesAndId(
                                                                    operation.Metadata.StringSerializedId,
                                                                    operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                                                                       operation.TypeVersionMatchStrategy),
+                                                                       operation.VersionMatchStrategy),
                                                                    null,
-                                                                   operation.TypeVersionMatchStrategy))
+                                                                   operation.VersionMatchStrategy))
                                                           .ToList()
                             : (operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
                             || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
@@ -1149,11 +1149,11 @@ namespace Naos.Database.Protocol.FileSystem
                                                                        operation.Metadata.StringSerializedId,
                                                                        operation.Metadata.TypeRepresentationOfId
                                                                                 .GetTypeRepresentationByStrategy(
-                                                                                     operation.TypeVersionMatchStrategy),
+                                                                                     operation.VersionMatchStrategy),
                                                                        operation.Metadata.TypeRepresentationOfObject
                                                                                 .GetTypeRepresentationByStrategy(
-                                                                                     operation.TypeVersionMatchStrategy),
-                                                                       operation.TypeVersionMatchStrategy))
+                                                                                     operation.VersionMatchStrategy),
+                                                                       operation.VersionMatchStrategy))
                                                               .ToList()
                                 : null);
 
@@ -1172,7 +1172,7 @@ namespace Naos.Database.Protocol.FileSystem
                         case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' yet found {metadataThatCouldMatch.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' yet found {metadataThatCouldMatch.Count}."));
                             }
 
                             break;
@@ -1217,7 +1217,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                             if (matchesThrow.Any())
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.TypeVersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
                             }
 
                             break;

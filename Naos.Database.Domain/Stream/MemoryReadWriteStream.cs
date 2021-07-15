@@ -641,8 +641,7 @@ namespace Naos.Database.Domain
                         {
                             var handlingTags = operation.InheritRecordTags
                                 ? (operation.Tags ?? new List<NamedValue<string>>())
-                                 .Concat(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
-                                 .Distinct()
+                                 .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
                                  .ToList()
                                 : operation.Tags;
 

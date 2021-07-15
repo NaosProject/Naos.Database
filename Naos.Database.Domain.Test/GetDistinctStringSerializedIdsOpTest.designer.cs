@@ -132,7 +132,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
-                                             new Dictionary<string, string>(),
+                                             new List<NamedValue<string>>(),
                                              referenceObject.TagMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -149,17 +149,12 @@ namespace Naos.Database.Domain.Test
                     {
                         var referenceObject = A.Dummy<GetDistinctStringSerializedIdsOp>();
 
-                        var dictionaryWithNullValue = referenceObject.TagsToMatch.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
 
                         var result = new GetDistinctStringSerializedIdsOp(
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
-                                             dictionaryWithNullValue,
+                                             null,
                                              referenceObject.TagMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 

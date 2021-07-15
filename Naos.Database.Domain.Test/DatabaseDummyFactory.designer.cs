@@ -22,6 +22,7 @@ namespace Naos.Database.Domain.Test
     using global::OBeautifulCode.Math.Recipes;
     using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Serialization;
+    using global::OBeautifulCode.Type;
 
     /// <summary>
     /// The default (code generated) Dummy Factory.
@@ -90,7 +91,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new BlockRecordHandlingOp(
                                  A.Dummy<string>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new BlockedRecordHandlingEvent(
@@ -100,7 +101,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CancelBlockedRecordHandlingOp(
                                  A.Dummy<string>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CanceledBlockedRecordHandlingEvent(
@@ -113,7 +114,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CancelRunningHandleRecordExecutionOp(
@@ -121,7 +122,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CompleteRunningHandleRecordExecutionOp(
@@ -129,7 +130,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RetryFailedHandleRecordExecutionOp(
@@ -137,7 +138,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailRunningHandleRecordExecutionOp(
@@ -145,7 +146,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new SelfCancelRunningHandleRecordExecutionOp(
@@ -153,7 +154,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>()));
+                                 A.Dummy<List<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntry(
@@ -190,7 +191,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingStatusOfRecordSetByTagOp(
                                  A.Dummy<string>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<HandlingStatusCompositionStrategy>(),
                                  A.Dummy<TagMatchStrategy>()));
 
@@ -203,7 +204,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<SerializerRepresentation>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<DateTime?>()));
 
@@ -240,7 +241,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<string>(),
                                  A.Dummy<long?>(),
                                  A.Dummy<bool>()));
@@ -252,7 +253,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<string>(),
                                  A.Dummy<long?>(),
                                  A.Dummy<bool>()));
@@ -263,7 +264,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<string>(),
                                  A.Dummy<long?>(),
                                  A.Dummy<bool>()));
@@ -275,7 +276,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<string>(),
                                  A.Dummy<long?>(),
                                  A.Dummy<bool>()));
@@ -335,7 +336,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<SerializerRepresentation>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<DateTime?>()));
 
@@ -345,7 +346,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<SerializerRepresentation>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<DateTime?>()));
 
@@ -428,7 +429,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
@@ -507,7 +508,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutAndReturnInternalRecordIdOp<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
                                  A.Dummy<VersionMatchStrategy>(),
@@ -516,7 +517,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutOp<Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
                                  A.Dummy<VersionMatchStrategy>(),
@@ -560,7 +561,7 @@ namespace Naos.Database.Domain.Test
                 () => new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
                                  A.Dummy<VersionMatchStrategy>()));
@@ -569,7 +570,7 @@ namespace Naos.Database.Domain.Test
                 () => new PutWithIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<Version>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<List<NamedValue<string>>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
                                  A.Dummy<VersionMatchStrategy>()));

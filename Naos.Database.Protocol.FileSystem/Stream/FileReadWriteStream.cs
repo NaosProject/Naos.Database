@@ -18,6 +18,7 @@ namespace Naos.Database.Protocol.FileSystem
     using OBeautifulCode.Enum.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.String.Recipes;
+    using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
     using DomainExtensions = OBeautifulCode.Serialization.DomainExtensions;
@@ -818,9 +819,9 @@ namespace Naos.Database.Protocol.FileSystem
                             var recordToHandle = this.GetStreamRecordFromMetadataFile(metadataFilePath, recordMetadata);
 
                             var handlingTags = operation.InheritRecordTags
-                                ? (operation.Tags ?? new Dictionary<string, string>())
-                                 .Concat(recordToHandle.Metadata.Tags ?? new Dictionary<string, string>())
-                                 .ToDictionary(k => k.Key, v => v.Value)
+                                ? (operation.Tags ?? new List<NamedValue<string>>())
+                                 .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
+                                 .ToList()
                                 : operation.Tags;
 
                             if (!tupleOfIdsToHandleAndIdsToIgnore.Item1.Contains(recordToHandle.InternalRecordId))

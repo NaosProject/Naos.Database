@@ -271,7 +271,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.SerializerRepresentation,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
-                                             new Dictionary<string, string>(),
+                                             new List<NamedValue<string>>(),
                                              referenceObject.TimestampUtc,
                                              referenceObject.ObjectTimestampUtc);
 
@@ -288,12 +288,6 @@ namespace Naos.Database.Domain.Test
                     {
                         var referenceObject = A.Dummy<StreamRecordHandlingEntryMetadata>();
 
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
                         var result = new StreamRecordHandlingEntryMetadata(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
@@ -302,7 +296,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.SerializerRepresentation,
                                              referenceObject.TypeRepresentationOfId,
                                              referenceObject.TypeRepresentationOfObject,
-                                             dictionaryWithNullValue,
+                                             null,
                                              referenceObject.TimestampUtc,
                                              referenceObject.ObjectTimestampUtc);
 

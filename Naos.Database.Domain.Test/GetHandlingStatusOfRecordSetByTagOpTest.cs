@@ -17,7 +17,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Type;
     using Xunit;
 
     using static System.FormattableString;
@@ -112,7 +112,7 @@ namespace Naos.Database.Domain.Test
 
                                                    var result = new GetHandlingStatusOfRecordSetByTagOp(
                                                        referenceObject.Concern,
-                                                       new Dictionary<string, string>(),
+                                                       new List<NamedValue<string>>(),
                                                        referenceObject.HandlingStatusCompositionStrategy,
                                                        referenceObject.TagMatchStrategy);
 

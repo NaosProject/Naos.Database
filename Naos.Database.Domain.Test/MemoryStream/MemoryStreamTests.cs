@@ -123,9 +123,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             stream.DefaultSerializerRepresentation,
                             typeof(decimal?).ToRepresentation().ToWithAndWithoutVersion(),
                             zeroObject.GetType().ToRepresentation().ToWithAndWithoutVersion(),
-                            new Dictionary<string, string>
+                            new List<NamedValue<string>>
                             {
-                                { "tag", "zero" },
+                                new NamedValue<string>("tag", "zero"),
                             },
                             timestampUtc,
                             null),
@@ -134,23 +134,23 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 stream.PutWithId(
                     firstObject.Id,
                     firstObject,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "one" },
+                        new NamedValue<string>("tag", "one"),
                     });
                 stream.PutWithId(
                     secondObject.Id,
                     secondObject,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "two" },
+                        new NamedValue<string>("tag", "two"),
                     });
                 stream.PutWithId(
                     thirdObjectId,
                     thirdObject,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "third" },
+                        new NamedValue<string>("tag", "third"),
                     });
                 var firstIdObject = stream.GetLatestObjectById<string, MyObject>(firstObject.Id);
                 this.testOutputHelper.WriteLine(Invariant($"Key={firstIdObject.Id}, Field={firstIdObject.Field}"));
@@ -211,9 +211,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                     null,
                     null,
                     VersionMatchStrategy.Any,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "one" },
+                        new NamedValue<string>("tag", "one"),
                     }));
 
             tagDistinct.ToList().MustForTest()
@@ -228,9 +228,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                     typeof(decimal?).ToRepresentation(),
                     null,
                     VersionMatchStrategy.Any,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "one" },
+                        new NamedValue<string>("tag", "one"),
                     }));
 
             tagDistinctWrongIdType.ToList()
@@ -242,9 +242,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                     null,
                     typeof(short).ToRepresentation(),
                     VersionMatchStrategy.Any,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "one" },
+                        new NamedValue<string>("tag", "one"),
                     }));
 
             tagDistinctWrongObjectType.ToList()
@@ -256,9 +256,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                     null,
                     null,
                     VersionMatchStrategy.Any,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "tag", "monkey" },
+                        new NamedValue<string>("tag", "monkey"),
                     }));
 
             tagDistinctWrongTagValue.ToList()
@@ -270,9 +270,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                     null,
                     null,
                     VersionMatchStrategy.Any,
-                    new Dictionary<string, string>
+                    new List<NamedValue<string>>
                     {
-                        { "monkey", "one" },
+                        new NamedValue<string>("monkey", "one"),
                     }));
 
             tagDistinctWrongTagName.ToList()
@@ -427,9 +427,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 var firstValue = "Testing again.";
                 var firstObject = new MyObject(key, firstValue);
                 var firstConcern = "CanceledPickedBackUpScenario";
-                var firstTags = new Dictionary<string, string>()
+                var firstTags = new List<NamedValue<string>>
                                 {
-                                    { "Run", Guid.NewGuid().ToString().ToUpper(CultureInfo.InvariantCulture) },
+                                    new NamedValue<string>("Run", Guid.NewGuid().ToString().ToUpper(CultureInfo.InvariantCulture)),
                                 };
 
                 stream.PutWithId(firstObject.Id, firstObject, firstObject.Tags);

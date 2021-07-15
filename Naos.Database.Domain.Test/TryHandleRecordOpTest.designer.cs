@@ -222,7 +222,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
-                                             new Dictionary<string, string>(),
+                                             new List<NamedValue<string>>(),
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags);
@@ -240,12 +240,6 @@ namespace Naos.Database.Domain.Test
                     {
                         var referenceObject = A.Dummy<TryHandleRecordOp>();
 
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
                         var result = new TryHandleRecordOp(
                                              referenceObject.Concern,
                                              referenceObject.IdentifierType,
@@ -253,7 +247,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.OrderRecordsStrategy,
                                              referenceObject.SpecifiedResourceLocator,
-                                             dictionaryWithNullValue,
+                                             null,
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags);

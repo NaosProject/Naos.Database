@@ -109,7 +109,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new PutAndReturnInternalRecordIdOp<Version>(
                                              referenceObject.ObjectToPut,
-                                             new Dictionary<string, string>(),
+                                             new List<NamedValue<string>>(),
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
                                              referenceObject.VersionMatchStrategy,
@@ -128,15 +128,10 @@ namespace Naos.Database.Domain.Test
                     {
                         var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
 
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
 
                         var result = new PutAndReturnInternalRecordIdOp<Version>(
                                              referenceObject.ObjectToPut,
-                                             dictionaryWithNullValue,
+                                             null,
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
                                              referenceObject.VersionMatchStrategy,

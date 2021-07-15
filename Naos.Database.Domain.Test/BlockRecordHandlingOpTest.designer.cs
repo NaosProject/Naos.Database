@@ -118,7 +118,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new BlockRecordHandlingOp(
                                              referenceObject.Details,
-                                             new Dictionary<string, string>());
+                                             new List<NamedValue<string>>());
 
                         return result;
                     },
@@ -133,15 +133,9 @@ namespace Naos.Database.Domain.Test
                     {
                         var referenceObject = A.Dummy<BlockRecordHandlingOp>();
 
-                        var dictionaryWithNullValue = referenceObject.Tags.ToDictionary(_ => _.Name, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
                         var result = new BlockRecordHandlingOp(
                                              referenceObject.Details,
-                                             dictionaryWithNullValue);
+                                             null);
 
                         return result;
                     },

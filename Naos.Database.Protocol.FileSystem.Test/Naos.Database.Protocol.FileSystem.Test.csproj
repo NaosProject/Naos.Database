@@ -77,12 +77,6 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.75.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.75\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.98.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.98\lib\net462\Naos.Protocol.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.98.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.98\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.26\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
     </Reference>
@@ -107,8 +101,8 @@
     <Reference Include="OBeautifulCode.Serialization.PropertyBag, Version=1.0.109.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Serialization.PropertyBag.1.0.109\lib\net462\OBeautifulCode.Serialization.PropertyBag.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Type, Version=1.0.80.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Type.1.0.80\lib\net462\OBeautifulCode.Type.dll</HintPath>
+    <Reference Include="OBeautifulCode.Type, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Type.1.0.87\lib\net462\OBeautifulCode.Type.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -146,8 +140,6 @@
     <Compile Include=".recipes\Naos.Diagnostics\PerformanceCounterLibrary.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\PerformanceCounterSample.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\ProcessHelpers.cs" />
-    <Compile Include=".recipes\Naos.Protocol\ProtocolDummyFactory.cs" />
-    <Compile Include=".recipes\Naos.Protocol\ProtocolDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\Actions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\ApplyBecause.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\AssertionKind.cs" />

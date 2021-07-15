@@ -243,7 +243,7 @@ namespace Naos.Database.Domain.Test
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
                             ? (int?)A.Dummy<int>()
                             : null,
-                        A.Dummy<TypeVersionMatchStrategy>(),
+                        A.Dummy<VersionMatchStrategy>(),
                         A.Dummy<IResourceLocator>());
                 });
 
@@ -259,7 +259,7 @@ namespace Naos.Database.Domain.Test
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
                             ? (int?)A.Dummy<int>()
                             : null,
-                        A.Dummy<TypeVersionMatchStrategy>(),
+                        A.Dummy<VersionMatchStrategy>(),
                         A.Dummy<IResourceLocator>());
                 });
 
@@ -276,7 +276,7 @@ namespace Naos.Database.Domain.Test
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
                             ? (int?)A.Dummy<int>()
                             : null,
-                        A.Dummy<TypeVersionMatchStrategy>());
+                        A.Dummy<VersionMatchStrategy>());
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -292,7 +292,7 @@ namespace Naos.Database.Domain.Test
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
                             ? (int?)A.Dummy<int>()
                             : null,
-                        A.Dummy<TypeVersionMatchStrategy>());
+                        A.Dummy<VersionMatchStrategy>());
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -309,7 +309,7 @@ namespace Naos.Database.Domain.Test
                             ? (int?)A.Dummy<int>()
                             : null,
                         A.Dummy<long?>(),
-                        A.Dummy<TypeVersionMatchStrategy>());
+                        A.Dummy<VersionMatchStrategy>());
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

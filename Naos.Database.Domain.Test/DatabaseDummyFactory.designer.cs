@@ -177,7 +177,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<StringSerializedIdentifier>>(),
                                  A.Dummy<HandlingStatusCompositionStrategy>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -185,7 +185,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<Version>>(),
                                  A.Dummy<HandlingStatusCompositionStrategy>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingStatusOfRecordSetByTagOp(
@@ -237,7 +237,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
@@ -249,7 +249,7 @@ namespace Naos.Database.Domain.Test
                 () => new TryHandleRecordOp<Version>(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
@@ -260,7 +260,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TryHandleRecordWithIdOp<Version, Version>(
                                  A.Dummy<string>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
@@ -272,7 +272,7 @@ namespace Naos.Database.Domain.Test
                 () => new TryHandleRecordWithIdOp<Version>(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
@@ -377,14 +377,14 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new DoesAnyExistByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -392,7 +392,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>()));
@@ -401,7 +401,7 @@ namespace Naos.Database.Domain.Test
                 () => new GetAllRecordsByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>()));
 
@@ -410,7 +410,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>(),
                                  A.Dummy<IResourceLocator>()));
@@ -419,7 +419,7 @@ namespace Naos.Database.Domain.Test
                 () => new GetAllRecordsMetadataByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<OrderRecordsStrategy>()));
 
@@ -427,7 +427,7 @@ namespace Naos.Database.Domain.Test
                 () => new GetDistinctStringSerializedIdsOp(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
@@ -435,27 +435,27 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestObjectByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestObjectOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -463,7 +463,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
@@ -472,7 +472,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
@@ -480,14 +480,14 @@ namespace Naos.Database.Domain.Test
                 () => new GetLatestRecordMetadataByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordOp(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
@@ -500,7 +500,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<ExistingRecordNotEncounteredStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
@@ -510,7 +510,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -519,7 +519,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -530,7 +530,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
                                  A.Dummy<long?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new UniqueLongIssuedEvent(
@@ -563,7 +563,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PutWithIdOp<Version, Version>(
@@ -572,7 +572,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyDictionary<string, string>>(),
                                  A.Dummy<ExistingRecordEncounteredStrategy>(),
                                  A.Dummy<int?>(),
-                                 A.Dummy<TypeVersionMatchStrategy>()));
+                                 A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

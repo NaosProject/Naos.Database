@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {systemUnderTest.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetHandlingStatusOfRecordsByIdOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {systemUnderTest.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -69,7 +69,7 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.IdsToMatch,
                                              referenceObject.HandlingStatusCompositionStrategy,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -89,7 +89,7 @@ namespace Naos.Database.Domain.Test
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.IdsToMatch,
                                              referenceObject.HandlingStatusCompositionStrategy,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -109,7 +109,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              null,
                                              referenceObject.HandlingStatusCompositionStrategy,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -129,7 +129,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              new List<StringSerializedIdentifier>(),
                                              referenceObject.HandlingStatusCompositionStrategy,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -149,7 +149,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              new StringSerializedIdentifier[0].Concat(referenceObject.IdsToMatch).Concat(new StringSerializedIdentifier[] { null }).Concat(referenceObject.IdsToMatch).ToList(),
                                              referenceObject.HandlingStatusCompositionStrategy,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -169,7 +169,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.IdsToMatch,
                                              null,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -189,7 +189,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.IdsToMatch,
                                              referenceObject.HandlingStatusCompositionStrategy,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              null);
 
                         return result;
@@ -213,7 +213,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.HandlingStatusCompositionStrategy,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
@@ -236,7 +236,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.HandlingStatusCompositionStrategy,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.IdsToMatch,
                         };
@@ -259,7 +259,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.HandlingStatusCompositionStrategy,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.HandlingStatusCompositionStrategy,
                         };
@@ -271,7 +271,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
+                    Name = "VersionMatchStrategy should return same 'VersionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
@@ -282,14 +282,14 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.HandlingStatusCompositionStrategy,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
+                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "TypeVersionMatchStrategy",
+                    PropertyName = "VersionMatchStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetHandlingStatusOfRecordsByIdOp>
@@ -305,7 +305,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.HandlingStatusCompositionStrategy,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -379,18 +379,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<GetHandlingStatusOfRecordsByIdOp>
                 {
-                    Name = "DeepCloneWithTypeVersionMatchStrategy should deep clone object and replace TypeVersionMatchStrategy with the provided typeVersionMatchStrategy",
-                    WithPropertyName = "TypeVersionMatchStrategy",
+                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided VersionMatchStrategy",
+                    WithPropertyName = "VersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<GetHandlingStatusOfRecordsByIdOp>();
 
-                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
+                        var referenceObject = A.Dummy<GetHandlingStatusOfRecordsByIdOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
 
                         var result = new SystemUnderTestDeepCloneWithValue<GetHandlingStatusOfRecordsByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
+                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
@@ -431,7 +431,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetHandlingStatusOfRecordsByIdOp[]
@@ -440,31 +440,31 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetHandlingStatusOfRecordsByIdOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.IdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdsToMatch)).IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetHandlingStatusOfRecordsByIdOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.HandlingStatusCompositionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy)).HandlingStatusCompositionStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetHandlingStatusOfRecordsByIdOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
-                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
+                                A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new GetHandlingStatusOfRecordsByIdOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 A.Dummy<GetHandlingStatusOfRecordsByIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -831,7 +831,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "IdsToMatch", "HandlingStatusCompositionStrategy", "TypeVersionMatchStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Concern", "IdsToMatch", "HandlingStatusCompositionStrategy", "VersionMatchStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -43,7 +43,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new TryHandleRecordOp<Version>(
                                                        Concerns.RecordHandlingConcern,
                                                        referenceObject.IdentifierType,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.OrderRecordsStrategy,
                                                        referenceObject.SpecifiedResourceLocator,
                                                        referenceObject.Tags);
@@ -69,7 +69,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new TryHandleRecordOp<Version>(
                                                        null,
                                                        referenceObject.IdentifierType,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.OrderRecordsStrategy,
                                                        referenceObject.SpecifiedResourceLocator,
                                                        referenceObject.Tags);
@@ -94,7 +94,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new TryHandleRecordOp<Version>(
                                                        Invariant($"  {Environment.NewLine}  "),
                                                        referenceObject.IdentifierType,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.OrderRecordsStrategy,
                                                        referenceObject.SpecifiedResourceLocator,
                                                        referenceObject.Tags);

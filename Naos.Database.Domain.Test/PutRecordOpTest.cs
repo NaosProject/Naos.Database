@@ -100,7 +100,7 @@ namespace Naos.Database.Domain.Test
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy);
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy);
 
                         var unequalPayload = new PutRecordOp(
                             ReferenceObjectForEquatableTestScenarios.Metadata,
@@ -117,7 +117,7 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalLocator = new PutRecordOp(
                             ReferenceObjectForEquatableTestScenarios.Metadata,
@@ -133,7 +133,7 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalExistingStrategy = new PutRecordOp(
                             ReferenceObjectForEquatableTestScenarios.Metadata,
@@ -148,7 +148,7 @@ namespace Naos.Database.Domain.Test
                                 : (int?)null,
                             ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalRetentionCount = new PutRecordOp(
                             ReferenceObjectForEquatableTestScenarios.Metadata,
@@ -163,7 +163,7 @@ namespace Naos.Database.Domain.Test
                                 : (int?)null,
                             ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalInternalRecordId = new PutRecordOp(
                             ReferenceObjectForEquatableTestScenarios.Metadata,
@@ -180,7 +180,7 @@ namespace Naos.Database.Domain.Test
                                          .InternalRecordId))
                              .InternalRecordId,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalTypeMatchStrategy = new PutRecordOp(
                             ReferenceObjectForEquatableTestScenarios.Metadata,
@@ -193,10 +193,10 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                             A.Dummy<PutRecordOp>()
                              .Whose(
-                                  _ => !_.TypeVersionMatchStrategy.IsEqualTo(
+                                  _ => !_.VersionMatchStrategy.IsEqualTo(
                                       ReferenceObjectForEquatableTestScenarios
-                                         .TypeVersionMatchStrategy))
-                             .TypeVersionMatchStrategy);
+                                         .VersionMatchStrategy))
+                             .VersionMatchStrategy);
 
                         return new EquatableTestScenario<PutRecordOp>
                                {
@@ -216,7 +216,7 @@ namespace Naos.Database.Domain.Test
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .InternalRecordId,
                                                                                                  ReferenceObjectForEquatableTestScenarios
-                                                                                                    .TypeVersionMatchStrategy),
+                                                                                                    .VersionMatchStrategy),
                                                                                          },
                                    ObjectsThatAreNotEqualToReferenceObject = new PutRecordOp[]
                                                                              {

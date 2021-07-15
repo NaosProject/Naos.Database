@@ -55,7 +55,7 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy);
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy);
 
                         var unequalObject = new PutWithIdOp<Version, Version>(
                             ReferenceObjectForEquatableTestScenarios.Id,
@@ -70,7 +70,7 @@ namespace Naos.Database.Domain.Test
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalTags = new PutWithIdOp<Version, Version>(
                             ReferenceObjectForEquatableTestScenarios.Id,
@@ -84,7 +84,7 @@ namespace Naos.Database.Domain.Test
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalExistingStrategy = new PutWithIdOp<Version, Version>(
                             ReferenceObjectForEquatableTestScenarios.Id,
@@ -97,7 +97,7 @@ namespace Naos.Database.Domain.Test
                                 ? A.Dummy<int>().Whose(_ => _ != ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)
                                 : (int?)null,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalRetentionCount = new PutWithIdOp<Version, Version>(
                             ReferenceObjectForEquatableTestScenarios.Id,
@@ -110,7 +110,7 @@ namespace Naos.Database.Domain.Test
                                 ? A.Dummy<int>().Whose(_ => _ != ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)
                                 : (int?)null,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy);
+                               .VersionMatchStrategy);
 
                         var unequalTypeStrategy = new PutWithIdOp<Version, Version>(
                             ReferenceObjectForEquatableTestScenarios.Id,
@@ -121,10 +121,10 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             A.Dummy<PutWithIdOp<Version, Version>>()
                              .Whose(
-                                  _ => !_.TypeVersionMatchStrategy.IsEqualTo(
+                                  _ => !_.VersionMatchStrategy.IsEqualTo(
                                       ReferenceObjectForEquatableTestScenarios
-                                         .TypeVersionMatchStrategy))
-                             .TypeVersionMatchStrategy);
+                                         .VersionMatchStrategy))
+                             .VersionMatchStrategy);
 
                         return new EquatableTestScenario<PutWithIdOp<Version, Version>>
                                {
@@ -141,7 +141,7 @@ namespace Naos.Database.Domain.Test
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .RecordRetentionCount,
                                                                                                  ReferenceObjectForEquatableTestScenarios
-                                                                                                    .TypeVersionMatchStrategy),
+                                                                                                    .VersionMatchStrategy),
                                                                                          },
                                    ObjectsThatAreNotEqualToReferenceObject = new PutWithIdOp<Version, Version>[]
                                                                              {

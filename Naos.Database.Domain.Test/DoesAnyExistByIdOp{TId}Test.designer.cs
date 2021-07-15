@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<DoesAnyExistByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.DoesAnyExistByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.DoesAnyExistByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,7 +68,7 @@ namespace Naos.Database.Domain.Test
                         var result = new DoesAnyExistByIdOp<Version>(
                                              null,
                                              referenceObject.ObjectType,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -87,7 +87,7 @@ namespace Naos.Database.Domain.Test
                         var result = new DoesAnyExistByIdOp<Version>(
                                              referenceObject.Id,
                                              null,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -106,7 +106,7 @@ namespace Naos.Database.Domain.Test
                         var result = new DoesAnyExistByIdOp<Version>(
                                              referenceObject.Id,
                                              referenceObject.ObjectType,
-                                             referenceObject.TypeVersionMatchStrategy,
+                                             referenceObject.VersionMatchStrategy,
                                              null);
 
                         return result;
@@ -129,7 +129,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
@@ -151,7 +151,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.ObjectType,
                         };
@@ -163,7 +163,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<DoesAnyExistByIdOp<Version>>
                 {
-                    Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
+                    Name = "VersionMatchStrategy should return same 'VersionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
@@ -173,14 +173,14 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
+                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "TypeVersionMatchStrategy",
+                    PropertyName = "VersionMatchStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<DoesAnyExistByIdOp<Version>>
@@ -195,7 +195,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -249,18 +249,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<DoesAnyExistByIdOp<Version>>
                 {
-                    Name = "DeepCloneWithTypeVersionMatchStrategy should deep clone object and replace TypeVersionMatchStrategy with the provided typeVersionMatchStrategy",
-                    WithPropertyName = "TypeVersionMatchStrategy",
+                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided VersionMatchStrategy",
+                    WithPropertyName = "VersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
 
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>().ThatIs(_ => !systemUnderTest.TypeVersionMatchStrategy.IsEqualTo(_.TypeVersionMatchStrategy));
+                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
 
                         var result = new SystemUnderTestDeepCloneWithValue<DoesAnyExistByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TypeVersionMatchStrategy,
+                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
@@ -300,7 +300,7 @@ namespace Naos.Database.Domain.Test
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new DoesAnyExistByIdOp<Version>[]
@@ -308,22 +308,22 @@ namespace Naos.Database.Domain.Test
                         new DoesAnyExistByIdOp<Version>(
                                 A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy,
+                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -690,7 +690,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "ObjectType", "TypeVersionMatchStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Id", "ObjectType", "VersionMatchStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

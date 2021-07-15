@@ -55,7 +55,7 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator);
 
                         var unequalTags = new PutOp<Version>(
@@ -69,7 +69,7 @@ namespace Naos.Database.Domain.Test
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy,
+                               .VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios
                                .SpecifiedResourceLocator);
 
@@ -83,7 +83,7 @@ namespace Naos.Database.Domain.Test
                                 ? A.Dummy<int>().Whose(_ => _ != ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)
                                 : (int?)null,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy,
+                               .VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios
                                .SpecifiedResourceLocator);
 
@@ -97,7 +97,7 @@ namespace Naos.Database.Domain.Test
                                 ? A.Dummy<int>().Whose(_ => _ != ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)
                                 : (int?)null,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy,
+                               .VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios
                                .SpecifiedResourceLocator);
 
@@ -109,10 +109,10 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             A.Dummy<PutOp<Version>>()
                              .Whose(
-                                  _ => !_.TypeVersionMatchStrategy.IsEqualTo(
+                                  _ => !_.VersionMatchStrategy.IsEqualTo(
                                       ReferenceObjectForEquatableTestScenarios
-                                         .TypeVersionMatchStrategy))
-                             .TypeVersionMatchStrategy,
+                                         .VersionMatchStrategy))
+                             .VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios
                                .SpecifiedResourceLocator);
 
@@ -123,7 +123,7 @@ namespace Naos.Database.Domain.Test
                                .ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             ReferenceObjectForEquatableTestScenarios
-                               .TypeVersionMatchStrategy,
+                               .VersionMatchStrategy,
                             A.Dummy<PutOp<Version>>()
                              .Whose(
                                   _ => !_.SpecifiedResourceLocator.IsEqualTo(
@@ -145,7 +145,7 @@ namespace Naos.Database.Domain.Test
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .RecordRetentionCount,
                                                                                                  ReferenceObjectForEquatableTestScenarios
-                                                                                                    .TypeVersionMatchStrategy,
+                                                                                                    .VersionMatchStrategy,
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .SpecifiedResourceLocator),
                                                                                          },

@@ -54,7 +54,7 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.Tags,
                             ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator);
 
                         var unequalTags = new PutAndReturnInternalRecordIdOp<Version>(
@@ -66,7 +66,7 @@ namespace Naos.Database.Domain.Test
                              .Tags,
                             ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator);
 
                         var unequalExistingRecordStrategy = new PutAndReturnInternalRecordIdOp<Version>(
@@ -78,7 +78,7 @@ namespace Naos.Database.Domain.Test
                             referenceObjectIsPruning
                                 ? A.Dummy<int>().Whose(_ => _ != ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)
                                 : (int?)null,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator);
 
                         var unequalRetentionCount = new PutAndReturnInternalRecordIdOp<Version>(
@@ -90,7 +90,7 @@ namespace Naos.Database.Domain.Test
                             referenceObjectIsPruning
                                 ? A.Dummy<int>().Whose(_ => _ != ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)
                                 : (int?)null,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator);
 
                         var unequalTypeMatchStrategy = new PutAndReturnInternalRecordIdOp<Version>(
@@ -100,10 +100,10 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                             A.Dummy<PutAndReturnInternalRecordIdOp<Version>>()
                              .Whose(
-                                  _ => !_.TypeVersionMatchStrategy.IsEqualTo(
+                                  _ => !_.VersionMatchStrategy.IsEqualTo(
                                       ReferenceObjectForEquatableTestScenarios
-                                         .TypeVersionMatchStrategy))
-                             .TypeVersionMatchStrategy,
+                                         .VersionMatchStrategy))
+                             .VersionMatchStrategy,
                             ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator);
 
                         var unequalLocator = new PutAndReturnInternalRecordIdOp<Version>(
@@ -111,7 +111,7 @@ namespace Naos.Database.Domain.Test
                             ReferenceObjectForEquatableTestScenarios.Tags,
                             ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                             ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                            ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy,
+                            ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                             A.Dummy<PutAndReturnInternalRecordIdOp<Version>>()
                              .Whose(
                                   _ => !_.SpecifiedResourceLocator.IsEqualTo(
@@ -133,7 +133,7 @@ namespace Naos.Database.Domain.Test
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .RecordRetentionCount,
                                                                                                  ReferenceObjectForEquatableTestScenarios
-                                                                                                    .TypeVersionMatchStrategy,
+                                                                                                    .VersionMatchStrategy,
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .SpecifiedResourceLocator),
                                                                                          },

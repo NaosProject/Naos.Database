@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutWithIdAndReturnInternalRecordIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectToPut = {systemUnderTest.ObjectToPut?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {systemUnderTest.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {systemUnderTest.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TypeVersionMatchStrategy = {systemUnderTest.TypeVersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PutWithIdAndReturnInternalRecordIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectToPut = {systemUnderTest.ObjectToPut?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, ExistingRecordEncounteredStrategy = {systemUnderTest.ExistingRecordEncounteredStrategy.ToString() ?? "<null>"}, RecordRetentionCount = {systemUnderTest.RecordRetentionCount?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -71,7 +71,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Tags,
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy);
 
                         return result;
                     },
@@ -92,7 +92,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Tags,
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy);
 
                         return result;
                     },
@@ -113,7 +113,7 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy);
 
                         return result;
                     },
@@ -134,7 +134,7 @@ namespace Naos.Database.Domain.Test
                                              new Dictionary<string, string>(),
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy);
 
                         return result;
                     },
@@ -161,7 +161,7 @@ namespace Naos.Database.Domain.Test
                                              dictionaryWithNullValue,
                                              referenceObject.ExistingRecordEncounteredStrategy,
                                              referenceObject.RecordRetentionCount,
-                                             referenceObject.TypeVersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy);
 
                         return result;
                     },
@@ -186,7 +186,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Tags,
                                                       referenceObject.ExistingRecordEncounteredStrategy,
                                                       referenceObject.RecordRetentionCount,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -210,7 +210,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Tags,
                                                       referenceObject.ExistingRecordEncounteredStrategy,
                                                       referenceObject.RecordRetentionCount,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.ObjectToPut,
                         };
 
@@ -234,7 +234,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Tags,
                                                       referenceObject.ExistingRecordEncounteredStrategy,
                                                       referenceObject.RecordRetentionCount,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.Tags,
                         };
 
@@ -258,7 +258,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Tags,
                                                       referenceObject.ExistingRecordEncounteredStrategy,
                                                       referenceObject.RecordRetentionCount,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.ExistingRecordEncounteredStrategy,
                         };
 
@@ -282,7 +282,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Tags,
                                                       referenceObject.ExistingRecordEncounteredStrategy,
                                                       referenceObject.RecordRetentionCount,
-                                                      referenceObject.TypeVersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.RecordRetentionCount,
                         };
 
@@ -293,7 +293,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
                 {
-                    Name = "TypeVersionMatchStrategy should return same 'typeVersionMatchStrategy' parameter passed to constructor when getting",
+                    Name = "VersionMatchStrategy should return same 'VersionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>();
@@ -306,13 +306,13 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Tags,
                                                       referenceObject.ExistingRecordEncounteredStrategy,
                                                       referenceObject.RecordRetentionCount,
-                                                      referenceObject.TypeVersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.TypeVersionMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "TypeVersionMatchStrategy",
+                    PropertyName = "VersionMatchStrategy",
                 });
 
         private static readonly PutWithIdAndReturnInternalRecordIdOp<Version, Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>();
@@ -331,7 +331,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PutWithIdAndReturnInternalRecordIdOp<Version, Version>[]
                     {
@@ -341,42 +341,42 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.ObjectToPut.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectToPut)).ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.ExistingRecordEncounteredStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy)).ExistingRecordEncounteredStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                                 A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.RecordRetentionCount.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordRetentionCount)).RecordRetentionCount,
-                                ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                         new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordEncounteredStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
-                                A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.TypeVersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeVersionMatchStrategy)).TypeVersionMatchStrategy),
+                                A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {

@@ -77,15 +77,6 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.75.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.75\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.98.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.98\lib\net462\Naos.Protocol.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Bson, Version=1.0.98.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Bson.1.0.98\lib\net462\Naos.Protocol.Serialization.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="Naos.Protocol.Serialization.Json, Version=1.0.98.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Serialization.Json.1.0.98\lib\net462\Naos.Protocol.Serialization.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.26\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
     </Reference>
@@ -110,8 +101,8 @@
     <Reference Include="OBeautifulCode.Serialization.PropertyBag, Version=1.0.109.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Serialization.PropertyBag.1.0.109\lib\net462\OBeautifulCode.Serialization.PropertyBag.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Type, Version=1.0.80.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Type.1.0.80\lib\net462\OBeautifulCode.Type.dll</HintPath>
+    <Reference Include="OBeautifulCode.Type, Version=1.0.87.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Type.1.0.87\lib\net462\OBeautifulCode.Type.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
@@ -149,8 +140,6 @@
     <Compile Include=".recipes\Naos.Diagnostics\PerformanceCounterLibrary.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\PerformanceCounterSample.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\ProcessHelpers.cs" />
-    <Compile Include=".recipes\Naos.Protocol\ProtocolDummyFactory.cs" />
-    <Compile Include=".recipes\Naos.Protocol\ProtocolDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\Actions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\ApplyBecause.cs" />
     <Compile Include=".recipes\OBeautifulCode.Assertion\AssertionKind.cs" />
@@ -356,6 +345,10 @@
     <Compile Include="GetAllRecordsMetadataByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetAllResourceLocatorsOpTest.cs" />
+    <Compile Include="GetAllResourceLocatorsOpTest.designer.cs">
+      <DependentUpon>GetAllResourceLocatorsOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetDistinctStringSerializedIdsOpTest.cs" />
     <Compile Include="GetDistinctStringSerializedIdsOpTest.designer.cs">
       <DependentUpon>GetDistinctStringSerializedIdsOpTest.cs</DependentUpon>
@@ -416,11 +409,27 @@
     <Compile Include="GetRecordByInternalRecordIdOpTest.designer.cs">
       <DependentUpon>GetRecordByInternalRecordIdOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetResourceLocatorByIdOp{TId}Test.cs" />
+    <Compile Include="GetResourceLocatorByIdOp{TId}Test.designer.cs">
+      <DependentUpon>GetResourceLocatorByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetResourceLocatorForUniqueIdentifierOpTest.cs" />
+    <Compile Include="GetResourceLocatorForUniqueIdentifierOpTest.designer.cs">
+      <DependentUpon>GetResourceLocatorForUniqueIdentifierOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="HandlingStatusCompositionStrategyTest.cs" />
     <Compile Include="HandlingStatusCompositionStrategyTest.designer.cs">
       <DependentUpon>HandlingStatusCompositionStrategyTest.cs</DependentUpon>
     </Compile>
     <Compile Include="MemoryStream\MemoryStreamTests.cs" />
+    <Compile Include="NamedResourceLocatorTest.cs" />
+    <Compile Include="NamedResourceLocatorTest.designer.cs">
+      <DependentUpon>NamedResourceLocatorTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NullResourceLocatorTest.cs" />
+    <Compile Include="NullResourceLocatorTest.designer.cs">
+      <DependentUpon>NullResourceLocatorTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="PutRecordOpTest.cs" />
@@ -434,6 +443,10 @@
     <Compile Include="RequestedHandleRecordExecutionEventTest.cs" />
     <Compile Include="RequestedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>RequestedHandleRecordExecutionEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceLocatorBaseTest.cs" />
+    <Compile Include="ResourceLocatorBaseTest.designer.cs">
+      <DependentUpon>ResourceLocatorBaseTest.cs</DependentUpon>
     </Compile>
     <Compile Include="RetryFailedHandleRecordExecutionEventTest.cs" />
     <Compile Include="RetryFailedHandleRecordExecutionEventTest.designer.cs">
@@ -463,6 +476,7 @@
     <Compile Include="StreamRecordHandlingEntryTest.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\TagMatchExtensionsTests.cs" />
     <Compile Include="Stream\Handling\HandleRecordOpTest.cs" />
     <Compile Include="Stream\Handling\HandleRecordOpTest.designer.cs">
       <DependentUpon>HandleRecordOpTest.cs</DependentUpon>

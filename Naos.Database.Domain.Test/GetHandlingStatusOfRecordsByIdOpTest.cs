@@ -44,7 +44,7 @@ namespace Naos.Database.Domain.Test
                                                        null,
                                                        referenceObject.IdsToMatch,
                                                        referenceObject.HandlingStatusCompositionStrategy,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
@@ -68,7 +68,7 @@ namespace Naos.Database.Domain.Test
                                                        Invariant($"  {Environment.NewLine}  "),
                                                        referenceObject.IdsToMatch,
                                                        referenceObject.HandlingStatusCompositionStrategy,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
@@ -93,7 +93,7 @@ namespace Naos.Database.Domain.Test
                                                        referenceObject.Concern,
                                                        null,
                                                        referenceObject.HandlingStatusCompositionStrategy,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
@@ -117,7 +117,7 @@ namespace Naos.Database.Domain.Test
                                                        referenceObject.Concern,
                                                        new List<StringSerializedIdentifier>(),
                                                        referenceObject.HandlingStatusCompositionStrategy,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
@@ -149,7 +149,7 @@ namespace Naos.Database.Domain.Test
                                                                                         .Concat(referenceObject.IdsToMatch)
                                                                                         .ToList(),
                                                        referenceObject.HandlingStatusCompositionStrategy,
-                                                       referenceObject.TypeVersionMatchStrategy,
+                                                       referenceObject.VersionMatchStrategy,
                                                        referenceObject.SpecifiedResourceLocator);
 
                                                    return result;

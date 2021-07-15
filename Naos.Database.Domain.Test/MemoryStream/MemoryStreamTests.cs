@@ -212,7 +212,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 new GetDistinctStringSerializedIdsOp(
                     null,
                     null,
-                    TypeVersionMatchStrategy.Any,
+                    VersionMatchStrategy.Any,
                     new Dictionary<string, string>
                     {
                         { "tag", "one" },
@@ -229,7 +229,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 new GetDistinctStringSerializedIdsOp(
                     typeof(decimal?).ToRepresentation(),
                     null,
-                    TypeVersionMatchStrategy.Any,
+                    VersionMatchStrategy.Any,
                     new Dictionary<string, string>
                     {
                         { "tag", "one" },
@@ -243,7 +243,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 new GetDistinctStringSerializedIdsOp(
                     null,
                     typeof(short).ToRepresentation(),
-                    TypeVersionMatchStrategy.Any,
+                    VersionMatchStrategy.Any,
                     new Dictionary<string, string>
                     {
                         { "tag", "one" },
@@ -257,7 +257,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 new GetDistinctStringSerializedIdsOp(
                     null,
                     null,
-                    TypeVersionMatchStrategy.Any,
+                    VersionMatchStrategy.Any,
                     new Dictionary<string, string>
                     {
                         { "tag", "monkey" },
@@ -271,7 +271,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 new GetDistinctStringSerializedIdsOp(
                     null,
                     null,
-                    TypeVersionMatchStrategy.Any,
+                    VersionMatchStrategy.Any,
                     new Dictionary<string, string>
                     {
                         { "monkey", "one" },
@@ -986,7 +986,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
     }
 
-    public class MyObject : IIdentifiableBy<string>, IHaveTags
+    public class MyObject : IHaveId<string>, IHaveTags
     {
         public MyObject(
             string id,
@@ -1001,6 +1001,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
         public string Field { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, string> Tags => new Dictionary<string, string>();
+        public IReadOnlyCollection<NamedValue<string>> Tags => new List<NamedValue<string>>();
     }
 }

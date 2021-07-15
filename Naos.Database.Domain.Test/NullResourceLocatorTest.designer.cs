@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<NullResourceLocator>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Protocol.Domain.NullResourceLocator: <no properties>."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.NullResourceLocator: <no properties>."),
                         };
 
                         return result;

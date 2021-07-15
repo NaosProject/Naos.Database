@@ -129,7 +129,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Protocol.Domain.ThrowIfResourceUnavailableOp: ResourceLocator = {this.ResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.ThrowIfResourceUnavailableOp: ResourceLocator = {this.ResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

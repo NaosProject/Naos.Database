@@ -14,7 +14,6 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
-    using Naos.Protocol.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Enum.Recipes;
     using OBeautifulCode.Serialization;

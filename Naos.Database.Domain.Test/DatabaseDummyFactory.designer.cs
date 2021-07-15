@@ -16,7 +16,7 @@ namespace Naos.Database.Domain.Test
     using global::FakeItEasy;
 
     using global::Naos.Database.Domain;
-    using global::Naos.Protocol.Domain;
+
 
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.Math.Recipes;

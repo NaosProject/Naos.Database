@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetResourceLocatorForUniqueIdentifierOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Protocol.Domain.GetResourceLocatorForUniqueIdentifierOp: <no properties>."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetResourceLocatorForUniqueIdentifierOp: <no properties>."),
                         };
 
                         return result;

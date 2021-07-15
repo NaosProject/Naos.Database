@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetResourceLocatorByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Protocol.Domain.GetResourceLocatorByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetResourceLocatorByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}."),
                         };
 
                         return result;

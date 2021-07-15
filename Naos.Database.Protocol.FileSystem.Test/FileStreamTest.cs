@@ -17,8 +17,6 @@ namespace Naos.Protocol.FileSystem.Test
     using Naos.Database.Domain;
     using Naos.Database.Protocol.FileSystem;
     using Naos.Database.Serialization.Json;
-    using Naos.Protocol.Domain;
-    using Naos.Protocol.Serialization.Json;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;

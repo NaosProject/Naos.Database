@@ -98,7 +98,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Protocol.Domain.GetResourceLocatorForUniqueIdentifierOp: <no properties>.");
+            var result = Invariant($"Naos.Database.Domain.GetResourceLocatorForUniqueIdentifierOp: <no properties>.");
 
             return result;
         }

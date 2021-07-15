@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetAllResourceLocatorsOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Protocol.Domain.GetAllResourceLocatorsOp: <no properties>."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetAllResourceLocatorsOp: <no properties>."),
                         };
 
                         return result;

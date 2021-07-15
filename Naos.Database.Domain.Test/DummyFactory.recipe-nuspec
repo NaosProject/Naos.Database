@@ -8,7 +8,6 @@
       <dependency id="Naos.Database.Domain" version="$version$" />
       <dependency id="OBeautifulCode.AutoFakeItEasy" version="1.0.132" />
       <dependency id="Naos.CodeAnalysis.Recipes.SuppressBecause" version="1.0.128" />
-      <dependency id="Naos.Protocol.Recipes.DummyFactory" version="1.0.96" />
     </dependencies>
   </metadata>
   <files>

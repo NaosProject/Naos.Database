@@ -129,7 +129,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Protocol.Domain.NamedResourceLocator: Name = {this.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.NamedResourceLocator: Name = {this.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

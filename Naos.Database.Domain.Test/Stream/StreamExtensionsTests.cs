@@ -13,8 +13,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
     using System.Linq;
     using Naos.Database.Domain;
     using Naos.Database.Serialization.Json;
-    using Naos.Protocol.Domain;
-    using Naos.Protocol.Serialization.Json;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Reflection.Recipes;
     using OBeautifulCode.Representation.System;

@@ -14,7 +14,6 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
-    using Naos.Protocol.Domain;
     using Naos.Recipes.RunWithRetry;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Collection.Recipes;

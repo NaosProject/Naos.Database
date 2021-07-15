@@ -11,10 +11,10 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
     using FakeItEasy;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Protocol.Domain;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// A Dummy Factory for types in <see cref="Domain" />.
@@ -179,7 +179,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<SerializerRepresentation>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
@@ -211,7 +211,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<SerializerRepresentation>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
@@ -221,7 +221,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<SerializerRepresentation>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<IReadOnlyDictionary<string, string>>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
@@ -237,7 +237,7 @@ namespace Naos.Database.Domain.Test
                     var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
                     return new PutAndReturnInternalRecordIdOp<Version>(
                         A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                         existingRecordEncounteredStrategy,
                         existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
@@ -253,7 +253,7 @@ namespace Naos.Database.Domain.Test
                     var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
                     return new PutOp<Version>(
                         A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                         existingRecordEncounteredStrategy,
                         existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
@@ -270,7 +270,7 @@ namespace Naos.Database.Domain.Test
                     return new PutWithIdOp<Version, Version>(
                         A.Dummy<Version>(),
                         A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                         existingRecordEncounteredStrategy,
                         existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
@@ -286,7 +286,7 @@ namespace Naos.Database.Domain.Test
                     return new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
                         A.Dummy<Version>(),
                         A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyDictionary<string, string>>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                         existingRecordEncounteredStrategy,
                         existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
                      || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType

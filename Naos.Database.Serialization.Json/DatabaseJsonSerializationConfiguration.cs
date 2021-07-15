@@ -9,7 +9,6 @@ namespace Naos.Database.Serialization.Json
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Naos.Protocol.Serialization.Json;
     using OBeautifulCode.Serialization.Json;
     using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
@@ -22,13 +21,6 @@ namespace Naos.Database.Serialization.Json
             new[]
             {
                 Naos.Database.Domain.ProjectInfo.Namespace,
-            };
-
-        /// <inheritdoc />
-        protected override IReadOnlyCollection<JsonSerializationConfigurationType> DependentJsonSerializationConfigurationTypes =>
-            new[]
-            {
-                typeof(ProtocolJsonSerializationConfiguration).ToJsonSerializationConfigurationType(),
             };
 
         /// <inheritdoc />

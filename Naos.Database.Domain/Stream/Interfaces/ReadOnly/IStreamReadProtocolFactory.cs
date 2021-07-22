@@ -6,9 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-    using System.Collections.Generic;
-
-
     /// <summary>
     /// Interface to get the protocols for the basic stream read operations.
     /// </summary>

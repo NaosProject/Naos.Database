@@ -8,7 +8,6 @@ namespace Naos.Database.Domain
 {
     using Naos.CodeAnalysis.Recipes;
 
-
     /// <summary>
     /// Interface to protocol the basic stream data operations with a known identifier.
     /// </summary>

@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System;
     using Naos.CodeAnalysis.Recipes;
 
-
     /// <summary>
     /// Management interface if an <see cref="IStream"/> supports.
     /// </summary>

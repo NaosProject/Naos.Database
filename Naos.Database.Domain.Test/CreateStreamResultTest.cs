@@ -52,7 +52,6 @@ namespace Naos.Database.Domain.Test
                .AddScenario(
                     () =>
                     {
-
                         var a = new CreateStreamResult(false, true);
                         var b = new CreateStreamResult(true, false);
                         var c = new CreateStreamResult(true, true);

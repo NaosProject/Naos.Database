@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System;
     using OBeautifulCode.Type;
 
-
     /// <summary>
     /// Event to record the execution of <see cref="GetNextUniqueLongOp"/>.
     /// </summary>

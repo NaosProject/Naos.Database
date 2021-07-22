@@ -11,7 +11,6 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Type;
 
-
     /// <summary>
     /// Stream factory to get an <see cref="IReadWriteStream"/> or <see cref="IReadOnlyStream"/> from a <see cref="StreamRepresentation"/>.
     /// </summary>

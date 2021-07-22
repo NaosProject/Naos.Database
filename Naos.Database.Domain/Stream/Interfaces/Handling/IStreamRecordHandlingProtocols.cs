@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using OBeautifulCode.Type;
 
-
     /// <summary>
     /// Protocols to handle records from streams.
     /// </summary>

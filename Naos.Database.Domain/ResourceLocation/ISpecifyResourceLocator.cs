@@ -6,8 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-
-
     /// <summary>
     /// Interface to expose a specified <see cref="IResourceLocator"/> for the operation.
     /// </summary>

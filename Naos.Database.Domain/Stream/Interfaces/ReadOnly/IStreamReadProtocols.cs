@@ -10,7 +10,6 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Type;
 
-
     /// <summary>
     /// Interface to protocol the basic stream data operations without a known identifier.
     /// </summary>

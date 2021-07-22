@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// Set of protocols to handle <see cref="IEvent"/>'s in a stream.
+    /// Set of protocols to handle a record in a stream.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>

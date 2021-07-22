@@ -8,7 +8,9 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Equality.Recipes;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -74,6 +76,7 @@ namespace Naos.Database.Domain
         /// <param name="target">The second.</param>
         /// <param name="strategy">The strategy.</param>
         /// <returns><c>true</c> if matching according to strategy, <c>false</c> otherwise.</returns>
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         public static bool FuzzyMatchAccordingToStrategy(
             this IReadOnlyCollection<NamedValue<string>> findSet,
             IReadOnlyCollection<NamedValue<string>> target,
@@ -101,9 +104,9 @@ namespace Naos.Database.Domain
                 var keyOverlap = findSetKeys.Intersect(targetKeys);
                 foreach (var keyToCheckAny in keyOverlap)
                 {
+                    // if (findSet[keyToCheckAny].Equals(target[keyToCheckAny])) -- old code
                     if (target.Any(_ => _.Name == keyToCheckAny
                                      && findSet.Any(__ => __.Name == keyToCheckAny && __.Value == _.Value)))
-                    //if (findSet[keyToCheckAny].Equals(target[keyToCheckAny]))
                     {
                         // only need one target key to match.
                         return true;
@@ -122,9 +125,9 @@ namespace Naos.Database.Domain
 
                 foreach (var targetKey in targetKeys)
                 {
+                    // if (!findSet[targetKey].Equals(target[targetKey])) -- old code
                     if (!target.Any(_ => _.Name == targetKey
-                                     && findSet.Any(__ => __.Name == targetKey && __.Value == _.Value)))
-                    //if (!findSet[targetKey].Equals(target[targetKey]))
+                                      && findSet.Any(__ => __.Name == targetKey && __.Value == _.Value)))
                     {
                         return false;
                     }
@@ -142,9 +145,9 @@ namespace Naos.Database.Domain
 
                 foreach (var findSetKey in findSetKeys)
                 {
+                    // if (!findSet[findSetKey].Equals(target[findSetKey])) -- old code
                     if (!target.Any(_ => _.Name == findSetKey
-                                     && findSet.Any(__ => __.Name == findSetKey && __.Value == _.Value)))
-                    //if (!findSet[findSetKey].Equals(target[findSetKey]))
+                                      && findSet.Any(__ => __.Name == findSetKey && __.Value == _.Value)))
                     {
                         return false;
                     }

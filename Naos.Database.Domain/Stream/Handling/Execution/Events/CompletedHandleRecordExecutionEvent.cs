@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System;
     using OBeautifulCode.Type;
 
-
     /// <summary>
     /// Event indicating that the <see cref="HandleRecordOp"/> was executed without exception.
     /// </summary>

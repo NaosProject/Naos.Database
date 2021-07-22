@@ -34,6 +34,8 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = null,
             IResourceLocator specifiedResourceLocator = null)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
             this.VersionMatchStrategy = versionMatchStrategy;

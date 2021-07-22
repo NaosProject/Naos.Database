@@ -36,6 +36,8 @@ namespace Naos.Database.Domain
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.Id = id;
             this.ObjectType = objectType;
             this.VersionMatchStrategy = versionMatchStrategy;

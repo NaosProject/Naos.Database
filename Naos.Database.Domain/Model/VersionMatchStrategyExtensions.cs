@@ -10,14 +10,21 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Type;
 
+    /// <summary>
+    /// Extensions on a <see cref="VersionMatchStrategy"/>.
+    /// </summary>
     public static class VersionMatchStrategyExtensions
     {
+        /// <summary>
+        /// Throws <see cref="NotSupportedException"/> for values that are not supported by <see cref="IStream"/>'s.
+        /// </summary>
+        /// <param name="versionMatchStrategy">The version match strategy to verify.</param>
         public static void ThrowOnUnsupportedVersionMatchStrategyForType(
             this VersionMatchStrategy versionMatchStrategy)
         {
             if (versionMatchStrategy != VersionMatchStrategy.Any || versionMatchStrategy != VersionMatchStrategy.SpecifiedVersion)
             {
-                throw new ArgumentException(FormattableString.Invariant($"{nameof(VersionMatchStrategy)} {versionMatchStrategy} is not supported."));
+                throw new NotSupportedException(FormattableString.Invariant($"{nameof(VersionMatchStrategy)} {versionMatchStrategy} is not supported."));
             }
         }
     }

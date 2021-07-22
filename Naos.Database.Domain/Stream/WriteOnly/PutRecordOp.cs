@@ -6,7 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
@@ -47,6 +46,8 @@ namespace Naos.Database.Domain
             {
                 recordRetentionCount.MustForArg(nameof(recordRetentionCount)).BeNull("Cannot have a retention count if not pruning.");
             }
+
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.Metadata = metadata;
             this.Payload = payload;

@@ -41,6 +41,7 @@ namespace Naos.Database.Domain
             bool inheritRecordTags = false)
         {
             concern.ThrowIfInvalidOrReservedConcern();
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.Concern = concern;
             this.ObjectType = objectType;

@@ -35,6 +35,7 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null)
         {
             identifierType.MustForArg(nameof(identifierType)).NotBeNull();
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;

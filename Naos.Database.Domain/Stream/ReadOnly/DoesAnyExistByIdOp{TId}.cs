@@ -6,7 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -30,6 +29,8 @@ namespace Naos.Database.Domain
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IResourceLocator specifiedResourceLocator = null)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.Id = id;
             this.ObjectType = objectType;
             this.VersionMatchStrategy = versionMatchStrategy;

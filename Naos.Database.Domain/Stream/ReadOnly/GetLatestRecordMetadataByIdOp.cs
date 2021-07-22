@@ -36,6 +36,8 @@ namespace Naos.Database.Domain
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault,
             IResourceLocator specifiedResourceLocator = null)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;

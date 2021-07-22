@@ -33,6 +33,7 @@ namespace Naos.Database.Domain
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
 
             idsToMatch.MustForArg(nameof(idsToMatch)).NotBeNullNorEmptyEnumerableNorContainAnyNulls();
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.Concern = concern;
             this.IdsToMatch = idsToMatch;

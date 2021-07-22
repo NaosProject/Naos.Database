@@ -39,6 +39,8 @@ namespace Naos.Database.Domain
             OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;

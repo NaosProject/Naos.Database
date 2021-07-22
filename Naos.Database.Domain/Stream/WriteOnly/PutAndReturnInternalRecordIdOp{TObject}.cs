@@ -47,6 +47,8 @@ namespace Naos.Database.Domain
                 recordRetentionCount.MustForArg(nameof(recordRetentionCount)).BeNull("Cannot have a retention count if not pruning.");
             }
 
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.ObjectToPut = objectToPut;
             this.Tags = tags;
             this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;

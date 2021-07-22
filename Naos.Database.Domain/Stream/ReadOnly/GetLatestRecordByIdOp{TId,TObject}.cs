@@ -6,7 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-
     using OBeautifulCode.Type;
     using static System.FormattableString;
 
@@ -28,6 +27,8 @@ namespace Naos.Database.Domain
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             ExistingRecordNotEncounteredStrategy existingRecordNotEncounteredStrategy = ExistingRecordNotEncounteredStrategy.ReturnDefault)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+
             this.Id = id;
             this.VersionMatchStrategy = versionMatchStrategy;
             this.ExistingRecordNotEncounteredStrategy = existingRecordNotEncounteredStrategy;

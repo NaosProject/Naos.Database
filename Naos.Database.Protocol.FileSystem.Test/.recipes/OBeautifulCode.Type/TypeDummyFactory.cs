@@ -52,6 +52,8 @@ namespace OBeautifulCode.Type.Test
 
         public TypeDummyFactory()
         {
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(MissingProtocolStrategy.Unknown);
+
             // UtcDateTimeRangeInclusive
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

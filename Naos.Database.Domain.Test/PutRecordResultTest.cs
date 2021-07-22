@@ -70,6 +70,77 @@ namespace Naos.Database.Domain.Test
                                                                    "the expectation is that the record was written OR there was an existing record",
                                                                },
                         });
+
+            EquatableTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                    {
+                        //TODO:if we have null id then we MUST have existing...
+                        var unequalRecordIdValue = A.Dummy<PutRecordResult>()
+                                                    .Whose(
+                                                         _ => !_.InternalRecordIdOfPutRecord.IsEqualTo(
+                                                             ReferenceObjectForEquatableTestScenarios
+                                                                .InternalRecordIdOfPutRecord))
+                                                    .InternalRecordIdOfPutRecord;
+
+                        var unequalRecordId = new PutRecordResult(
+                            unequalRecordIdValue,
+                            ReferenceObjectForEquatableTestScenarios.ExistingRecordIds,
+                            ReferenceObjectForEquatableTestScenarios.PrunedRecordIds);
+
+                        var unequalExistingRecords = new PutRecordResult(
+                            ReferenceObjectForEquatableTestScenarios
+                               .InternalRecordIdOfPutRecord,
+                            A.Dummy<PutRecordResult>()
+                             .Whose(
+                                  _ => !_.ExistingRecordIds.IsEqualTo(
+                                      ReferenceObjectForEquatableTestScenarios
+                                         .ExistingRecordIds))
+                             .ExistingRecordIds,
+                            ReferenceObjectForEquatableTestScenarios.PrunedRecordIds);
+
+                        var unequalPrunedIds = new PutRecordResult(
+                            ReferenceObjectForEquatableTestScenarios
+                               .InternalRecordIdOfPutRecord,
+                            ReferenceObjectForEquatableTestScenarios.ExistingRecordIds,
+                            A.Dummy<PutRecordResult>()
+                             .Whose(
+                                  _ => !_.PrunedRecordIds.IsEqualTo(
+                                      ReferenceObjectForEquatableTestScenarios
+                                         .PrunedRecordIds))
+                             .PrunedRecordIds);
+
+                        return new EquatableTestScenario<PutRecordResult>
+                               {
+                                   Name = "Default Code Generated Scenario",
+                                   ReferenceObject = ReferenceObjectForEquatableTestScenarios,
+                                   ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PutRecordResult[]
+                                                                                         {
+                                                                                             new PutRecordResult(
+                                                                                                 ReferenceObjectForEquatableTestScenarios
+                                                                                                    .InternalRecordIdOfPutRecord,
+                                                                                                 ReferenceObjectForEquatableTestScenarios
+                                                                                                    .ExistingRecordIds,
+                                                                                                 ReferenceObjectForEquatableTestScenarios
+                                                                                                    .PrunedRecordIds),
+                                                                                         },
+                                   ObjectsThatAreNotEqualToReferenceObject = new PutRecordResult[]
+                                                                             {
+                                                                                 unequalRecordId,
+                                                                                 unequalExistingRecords,
+                                                                                 unequalPrunedIds,
+                                                                             },
+                                   ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
+                                                                                     {
+                                                                                         A.Dummy<object>(),
+                                                                                         A.Dummy<string>(),
+                                                                                         A.Dummy<int>(),
+                                                                                         A.Dummy<int?>(),
+                                                                                         A.Dummy<Guid>(),
+                                                                                     },
+                               };
+                    });
         }
     }
 }

@@ -411,6 +411,8 @@
     <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\ReadOnly\GetLatestObjectByTagOp{TObject}.cs" />
+    <Compile Include="Stream\ReadOnly\GetLatestRecordByTagOp.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>

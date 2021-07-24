@@ -170,5 +170,56 @@ namespace Naos.Database.Domain
             var result = await Task.FromResult(syncResult);
             return result;
         }
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<string> Execute(
+            GetDistinctStringSerializedIdsOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyCollection<string>> ExecuteAsync(
+            GetDistinctStringSerializedIdsOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetRecordByInternalRecordIdOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecord> ExecuteAsync(
+            GetRecordByInternalRecordIdOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public StreamRecord Execute(
+            GetLatestRecordByTagOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<StreamRecord> ExecuteAsync(
+            GetLatestRecordByTagOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

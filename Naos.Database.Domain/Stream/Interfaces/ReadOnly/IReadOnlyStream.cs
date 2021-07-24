@@ -16,16 +16,17 @@ namespace Naos.Database.Domain
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public interface IReadOnlyStream
         :
-            IStream,
-            IStreamReadProtocolFactory,
-            ISyncReturningProtocol<GetDistinctStringSerializedIdsOp, IReadOnlyCollection<string>>,
-            ISyncReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
-            ISyncReturningProtocol<GetLatestRecordOp, StreamRecord>,
-            ISyncReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
-            ISyncReturningProtocol<GetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
-            ISyncReturningProtocol<GetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
-            ISyncReturningProtocol<DoesAnyExistByIdOp, bool>,
-            ISyncReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
+          IStream,
+          IStreamReadProtocolFactory,
+          ISyncReturningProtocol<GetDistinctStringSerializedIdsOp, IReadOnlyCollection<string>>,
+          ISyncReturningProtocol<DoesAnyExistByIdOp, bool>,
+          ISyncReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
+          ISyncReturningProtocol<GetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
+          ISyncReturningProtocol<GetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
+          ISyncReturningProtocol<GetLatestRecordByTagOp, StreamRecord>,
+          ISyncReturningProtocol<GetLatestRecordOp, StreamRecord>,
+          ISyncReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
+          ISyncReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
     {
     }
 }

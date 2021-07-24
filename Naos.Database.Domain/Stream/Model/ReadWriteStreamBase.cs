@@ -97,5 +97,9 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public abstract StreamRecord Execute(
             GetLatestRecordByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract StreamRecord Execute(
+            GetLatestRecordByTagOp operation);
     }
 }

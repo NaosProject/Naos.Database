@@ -162,6 +162,12 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public StreamRecord Execute(GetLatestRecordByTagOp operation)
+        {
+            throw new NotImplementedException(ExceptionMessage);
+        }
+
+        /// <inheritdoc />
         public IReadOnlyList<StreamRecordMetadata> Execute(GetAllRecordsMetadataByIdOp operation)
         {
             throw new NotImplementedException(ExceptionMessage);

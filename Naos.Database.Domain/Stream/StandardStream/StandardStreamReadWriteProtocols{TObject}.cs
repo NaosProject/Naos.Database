@@ -122,5 +122,28 @@ namespace Naos.Database.Domain
             var result = await Task.FromResult(syncResult);
             return result;
         }
+
+        /// <inheritdoc />
+        public TObject Execute(
+            GetLatestObjectByTagOp<TObject> operation)
+        {
+            var delegatedOperation = operation.Standardize();
+            var record = this.delegatedProtocols.Execute(delegatedOperation);
+
+            var result = record == null
+                ? default(TObject)
+                : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<TObject> ExecuteAsync(
+            GetLatestObjectByTagOp<TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

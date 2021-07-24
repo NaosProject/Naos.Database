@@ -821,6 +821,13 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public override StreamRecord Execute(
+            GetLatestRecordByTagOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public override PutRecordResult Execute(

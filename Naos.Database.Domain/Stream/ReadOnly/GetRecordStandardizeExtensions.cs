@@ -13,7 +13,8 @@ namespace Naos.Database.Domain
     /// For converting the various flavors down to <see cref="GetLatestRecordOp"/>.
     /// </summary>
     public static class GetRecordStandardizeExtensions
-    {        /// <summary>
+    {
+        /// <summary>
         /// Converts to common base format <see cref="GetLatestRecordOp"/>.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -99,6 +100,24 @@ namespace Naos.Database.Domain
                 operation.ExistingRecordNotEncounteredStrategy,
                 locator);
 
+            return result;
+        }
+
+        /// <summary>
+        /// Converts to common base format <see cref="GetLatestRecordOp"/>.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="operation">The operation.</param>
+        /// <returns>GetLatestRecordOp.</returns>
+        public static GetLatestRecordByTagOp Standardize<TObject>(
+            this GetLatestObjectByTagOp<TObject> operation)
+        {
+            var result = new GetLatestRecordByTagOp(
+                operation.Tag,
+                typeof(TObject).ToRepresentation(),
+                operation.VersionMatchStrategy,
+                operation.ExistingRecordNotEncounteredStrategy,
+                operation.SpecifiedResourceLocator);
             return result;
         }
 

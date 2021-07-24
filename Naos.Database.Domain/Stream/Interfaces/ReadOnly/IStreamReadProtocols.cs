@@ -15,12 +15,16 @@ namespace Naos.Database.Domain
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = NaosSuppressBecause.CA1040_AvoidEmptyInterfaces_NeedToIdentifyGroupOfTypesAndPreferInterfaceOverAttribute)]
     public interface IStreamReadProtocols
-        : ISyncAndAsyncReturningProtocol<GetLatestRecordOp, StreamRecord>,
-          ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp, StreamRecord>,
+        :
+          ISyncAndAsyncReturningProtocol<GetDistinctStringSerializedIdsOp, IReadOnlyCollection<string>>,
+          ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp, bool>,
+          ISyncAndAsyncReturningProtocol<GetRecordByInternalRecordIdOp, StreamRecord>,
           ISyncAndAsyncReturningProtocol<GetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
-          ISyncAndAsyncReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
           ISyncAndAsyncReturningProtocol<GetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
-          ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp, bool>
+          ISyncAndAsyncReturningProtocol<GetLatestRecordByTagOp, StreamRecord>,
+          ISyncAndAsyncReturningProtocol<GetLatestRecordOp, StreamRecord>,
+          ISyncAndAsyncReturningProtocol<GetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
+          ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp, StreamRecord>
     {
     }
 }

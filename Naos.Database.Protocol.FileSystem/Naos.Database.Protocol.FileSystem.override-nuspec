@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package>
   <metadata>
-    <description>DESCRIPTION_HERE</description>
-    <tags>TAG1_HERE TAG2_HERE Database</tags>
+    <description>File System implementation of Naos Standard Stream.  Streams are stored in root directory by name with two files for each entry (one for metadata and one for serialized object).</description>
+    <tags>FileSystem Stream Database</tags>
   </metadata>
 </package>

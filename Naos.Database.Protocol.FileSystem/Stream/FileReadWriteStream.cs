@@ -66,7 +66,7 @@ namespace Naos.Database.Protocol.FileSystem
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
             IResourceLocatorProtocols resourceLocatorProtocols)
-        : base(name, resourceLocatorProtocols, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat)
+        : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols)
         {
             name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
 

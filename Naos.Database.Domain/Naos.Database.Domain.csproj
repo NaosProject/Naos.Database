@@ -442,7 +442,7 @@
       <DependentUpon>GetRecordByInternalRecordIdOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetRecordStandardizeExtensions.cs" />
-    <Compile Include="Stream\StandardStream\IStandardReadWriteStream.cs" />
+    <Compile Include="Stream\Interfaces\IStandardReadWriteStream.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />

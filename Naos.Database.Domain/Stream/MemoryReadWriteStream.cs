@@ -54,7 +54,7 @@ namespace Naos.Database.Domain
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
             IResourceLocatorProtocols resourceLocatorProtocols = null)
-        : base(name, resourceLocatorProtocols ?? new SingleResourceLocatorProtocol(new MemoryDatabaseLocator("Default")), serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat)
+        : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols ?? new SingleResourceLocatorProtocol(new MemoryDatabaseLocator("Default")))
         {
             this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
         }

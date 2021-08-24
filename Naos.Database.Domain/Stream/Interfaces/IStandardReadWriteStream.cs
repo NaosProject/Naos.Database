@@ -37,22 +37,5 @@ namespace Naos.Database.Domain
           ISyncVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
           ISyncVoidProtocol<RetryFailedHandleRecordExecutionOp>
     {
-        /// <summary>
-        /// Gets the serializer factory.
-        /// </summary>
-        /// <value>The serializer factory.</value>
-        ISerializerFactory SerializerFactory { get; }
-
-        /// <summary>
-        /// Gets the default serializer representation.
-        /// </summary>
-        /// <value>The default serializer representation.</value>
-        SerializerRepresentation DefaultSerializerRepresentation { get; }
-
-        /// <summary>
-        /// Gets the default serialization format.
-        /// </summary>
-        /// <value>The default serialization format.</value>
-        SerializationFormat DefaultSerializationFormat { get; }
     }
 }

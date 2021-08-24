@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using Naos.CodeAnalysis.Recipes;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Stream interface, a stream is a list of objects ordered by timestamp.
@@ -32,5 +33,23 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <value>The resource locator protocol.</value>
         IResourceLocatorProtocols ResourceLocatorProtocols { get; }
+
+        /// <summary>
+        /// Gets the serializer factory.
+        /// </summary>
+        /// <value>The serializer factory.</value>
+        ISerializerFactory SerializerFactory { get; }
+
+        /// <summary>
+        /// Gets the default serializer representation.
+        /// </summary>
+        /// <value>The default serializer representation.</value>
+        SerializerRepresentation DefaultSerializerRepresentation { get; }
+
+        /// <summary>
+        /// Gets the default serialization format.
+        /// </summary>
+        /// <value>The default serialization format.</value>
+        SerializationFormat DefaultSerializationFormat { get; }
     }
 }

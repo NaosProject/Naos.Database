@@ -6,10 +6,12 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
 
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Stream interface, a stream is a list of objects ordered by timestamp.
@@ -21,20 +23,45 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="ReadWriteStreamBase"/> class.
         /// </summary>
         /// <param name="name">The name of the stream.</param>
+        /// <param name="serializerFactory">The serializer factory to get serializers of existing records or to put new ones.</param>
+        /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
+        /// <param name="defaultSerializationFormat">The default serialization format.</param>
         /// <param name="resourceLocatorProtocols">Protocol to get appropriate resource locator(s).</param>
         protected ReadWriteStreamBase(
             string name,
+            ISerializerFactory serializerFactory,
+            SerializerRepresentation defaultSerializerRepresentation,
+            SerializationFormat defaultSerializationFormat,
             IResourceLocatorProtocols resourceLocatorProtocols)
         {
             name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
             resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
+            serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
+            defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
+
+            if (defaultSerializationFormat == SerializationFormat.Invalid)
+            {
+                throw new ArgumentException(FormattableString.Invariant($"Cannot specify a {nameof(SerializationFormat)} of {SerializationFormat.Invalid}."));
+            }
 
             this.Name = name;
+            this.SerializerFactory = serializerFactory;
+            this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
+            this.DefaultSerializationFormat = defaultSerializationFormat;
             this.ResourceLocatorProtocols = resourceLocatorProtocols;
         }
 
         /// <inheritdoc />
         public string Name { get; private set; }
+
+        /// <inheritdoc />
+        public ISerializerFactory SerializerFactory { get; private set; }
+
+        /// <inheritdoc />
+        public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
+
+        /// <inheritdoc />
+        public SerializationFormat DefaultSerializationFormat { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocatorProtocols ResourceLocatorProtocols { get; private set; }

@@ -28,39 +28,19 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StandardReadWriteStreamBase"/> class.
         /// </summary>
         /// <param name="name">The name of the stream.</param>
-        /// <param name="resourceLocatorProtocols">Protocol to get appropriate resource locator(s).</param>
         /// <param name="serializerFactory">The serializer factory to get serializers of existing records or to put new ones.</param>
         /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
         /// <param name="defaultSerializationFormat">The default serialization format.</param>
+        /// <param name="resourceLocatorProtocols">Protocol to get appropriate resource locator(s).</param>
         protected StandardReadWriteStreamBase(
             string name,
-            IResourceLocatorProtocols resourceLocatorProtocols,
             ISerializerFactory serializerFactory,
             SerializerRepresentation defaultSerializerRepresentation,
-            SerializationFormat defaultSerializationFormat)
-            : base(name, resourceLocatorProtocols)
+            SerializationFormat defaultSerializationFormat,
+            IResourceLocatorProtocols resourceLocatorProtocols)
+            : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols)
         {
-            serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
-            defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
-
-            if (defaultSerializationFormat == SerializationFormat.Invalid)
-            {
-                throw new ArgumentException(Invariant($"Cannot specify a {nameof(SerializationFormat)} of {SerializationFormat.Invalid}."));
-            }
-
-            this.SerializerFactory = serializerFactory;
-            this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
-            this.DefaultSerializationFormat = defaultSerializationFormat;
         }
-
-        /// <inheritdoc />
-        public ISerializerFactory SerializerFactory { get; private set; }
-
-        /// <inheritdoc />
-        public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
-
-        /// <inheritdoc />
-        public SerializationFormat DefaultSerializationFormat { get; private set; }
 
         /// <inheritdoc />
         public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new StandardStreamReadWriteWithIdProtocols<TId>(this);

@@ -377,6 +377,10 @@
     <Compile Include="GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetLatestObjectByTagOp{TObject}Test.cs" />
+    <Compile Include="GetLatestObjectByTagOp{TObject}Test.designer.cs">
+      <DependentUpon>GetLatestObjectByTagOp{TObject}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="GetLatestObjectOp{TObject}Test.cs" />
     <Compile Include="GetLatestObjectOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}Test.cs</DependentUpon>
@@ -392,6 +396,10 @@
     <Compile Include="GetLatestRecordByIdOp{TId}Test.cs" />
     <Compile Include="GetLatestRecordByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetLatestRecordByTagOpTest.cs" />
+    <Compile Include="GetLatestRecordByTagOpTest.designer.cs">
+      <DependentUpon>GetLatestRecordByTagOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="GetLatestRecordMetadataByIdOpTest.cs" />
     <Compile Include="GetLatestRecordMetadataByIdOpTest.designer.cs">
@@ -424,6 +432,10 @@
     <Compile Include="HandlingStatusCompositionStrategyTest.cs" />
     <Compile Include="HandlingStatusCompositionStrategyTest.designer.cs">
       <DependentUpon>HandlingStatusCompositionStrategyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IdDeprecatedEvent{TId}Test.cs" />
+    <Compile Include="IdDeprecatedEvent{TId}Test.designer.cs">
+      <DependentUpon>IdDeprecatedEvent{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="MemoryStream\MemoryStreamTests.cs" />
     <Compile Include="NamedResourceLocatorTest.cs" />
@@ -629,6 +641,10 @@
     <Compile Include="TagMatchStrategyTest.cs" />
     <Compile Include="TagMatchStrategyTest.designer.cs">
       <DependentUpon>TagMatchStrategyTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThrowIfResourceUnavailableOpTest.cs" />
+    <Compile Include="ThrowIfResourceUnavailableOpTest.designer.cs">
+      <DependentUpon>ThrowIfResourceUnavailableOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="TryHandleRecordOpTest.cs" />
     <Compile Include="TryHandleRecordOpTest.designer.cs">

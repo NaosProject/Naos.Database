@@ -77,9 +77,6 @@
     <Reference Include="Naos.Logging.Persistence, Version=1.0.76.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Persistence.1.0.76\lib\net462\Naos.Logging.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Protocol.Domain, Version=1.0.102.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Protocol.Domain.1.0.102\lib\net462\Naos.Protocol.Domain.dll</HintPath>
-    </Reference>
     <Reference Include="Naos.Telemetry.Domain, Version=1.0.27.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Telemetry.Domain.1.0.27\lib\net462\Naos.Telemetry.Domain.dll</HintPath>
     </Reference>

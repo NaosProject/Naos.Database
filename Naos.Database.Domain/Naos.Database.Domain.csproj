@@ -131,6 +131,7 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="Events\IdDeprecatedEvent{TId}.cs" />
     <Compile Include="Model\VersionMatchStrategyExtensions.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />

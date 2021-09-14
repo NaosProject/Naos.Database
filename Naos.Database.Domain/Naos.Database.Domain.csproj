@@ -136,9 +136,6 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
     <Compile Include="Events\IdDeprecatedEvent{TId}.cs" />
-    <Compile Include="Events\IdDeprecatedEvent{TId}.designer.cs">
-      <DependentUpon>IdDeprecatedEvent{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\VersionMatchStrategyExtensions.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
@@ -416,9 +413,6 @@
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestObjectByTagOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectByTagOp{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
     </Compile>
@@ -429,9 +423,6 @@
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByTagOp.designer.cs">
-      <DependentUpon>GetLatestRecordByTagOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp.cs" />
     <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">

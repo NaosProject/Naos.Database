@@ -75,12 +75,14 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
 
                 if (withValue == null)
                 {
-                    var deepCloneWithMethodParameterTypeIsValueType = deepCloneWithMethodParameterType.IsValueType;
-                    new { deepCloneWithMethodParameterTypeIsValueType }.AsTest().Must().BeFalse(id);
+                    var deepCloneWithMethodParameterTypeIsValueType = deepCloneWithMethodParameterType.IsTypeAssignableToNull();
+
+                    new { deepCloneWithMethodParameterTypeIsValueType }.AsTest().Must().BeTrue(id);
                 }
                 else
                 {
                     var withValueTypeIsAssignableToDeepCloneWithMethodParameterType = withValue.GetType().IsAssignableTo(deepCloneWithMethodParameterType);
+
                     new { withValueTypeIsAssignableToDeepCloneWithMethodParameterType }.AsTest().Must().BeTrue(id);
                 }
 

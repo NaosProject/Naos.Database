@@ -109,6 +109,24 @@ namespace OBeautifulCode.Type.Test
                     return result;
                 });
 
+            // IReturningOperation<Version>
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = (IReturningOperation<Version>)A.Dummy<ReturningOperationBase<Version>>();
+
+                    return result;
+                });
+
+            // IVoidOperation
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = (IVoidOperation)A.Dummy<VoidOperationBase>();
+
+                    return result;
+                });
+
             // NullEvent
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullEvent(

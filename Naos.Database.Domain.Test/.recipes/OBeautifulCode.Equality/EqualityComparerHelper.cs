@@ -12,6 +12,7 @@ namespace OBeautifulCode.Equality.Recipes
     using global::System;
     using global::System.Collections.Concurrent;
     using global::System.Collections.Generic;
+    using global::System.Drawing;
 
     using OBeautifulCode.Type.Recipes;
 
@@ -28,6 +29,18 @@ namespace OBeautifulCode.Equality.Recipes
     static class EqualityComparerHelper
     {
         private static readonly ConcurrentDictionary<Type, object> CachedTypeToEqualityComparerMap = new ConcurrentDictionary<Type, object>();
+
+        private static readonly ObjectEqualityComparer ObjectEqualityComparer = new ObjectEqualityComparer();
+
+        private static readonly ByteArrayEqualityComparer ByteArrayEqualityComparer = new ByteArrayEqualityComparer();
+
+        private static readonly DateTimeEqualityComparer DateTimeEqualityComparer = new DateTimeEqualityComparer();
+
+        private static readonly NullableDateTimeEqualityComparer NullableDateTimeEqualityComparer = new NullableDateTimeEqualityComparer();
+        
+        private static readonly ColorEqualityComparer ColorEqualityComparer = new ColorEqualityComparer();
+
+        private static readonly NullableColorEqualityComparer NullableColorEqualityComparer = new NullableColorEqualityComparer();
 
         /// <summary>
         /// Gets the equality comparer to use for the specified type.
@@ -56,7 +69,7 @@ namespace OBeautifulCode.Equality.Recipes
 
             if (type == typeof(object))
             {
-                result = (IEqualityComparer<T>)new ObjectEqualityComparer();
+                result = (IEqualityComparer<T>)ObjectEqualityComparer;
             }
             else if (type.IsClosedSystemDictionaryType())
             {
@@ -73,7 +86,7 @@ namespace OBeautifulCode.Equality.Recipes
             {
                 if (type == typeof(byte[]))
                 {
-                    result = (IEqualityComparer<T>)new ByteArrayEqualityComparer();
+                    result = (IEqualityComparer<T>)ByteArrayEqualityComparer;
                 }
                 else
                 {
@@ -101,11 +114,19 @@ namespace OBeautifulCode.Equality.Recipes
             }
             else if (type == typeof(DateTime))
             {
-                result = (IEqualityComparer<T>)new DateTimeEqualityComparer();
+                result = (IEqualityComparer<T>)DateTimeEqualityComparer;
             }
             else if (type == typeof(DateTime?))
             {
-                result = (IEqualityComparer<T>)new NullableDateTimeEqualityComparer();
+                result = (IEqualityComparer<T>)NullableDateTimeEqualityComparer;
+            }
+            else if (type == typeof(Color))
+            {
+                result = (IEqualityComparer<T>)ColorEqualityComparer;
+            }
+            else if (type == typeof(Color?))
+            {
+                result = (IEqualityComparer<T>)NullableColorEqualityComparer;
             }
             else
             {

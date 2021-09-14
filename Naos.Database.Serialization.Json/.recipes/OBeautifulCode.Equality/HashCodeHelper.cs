@@ -11,6 +11,7 @@ namespace OBeautifulCode.Equality.Recipes
 {
     using global::System;
     using global::System.Collections.Generic;
+    using global::System.Drawing;
     using global::System.Linq;
     using global::System.Reflection;
 
@@ -167,6 +168,19 @@ namespace OBeautifulCode.Equality.Recipes
                     }
 
                     result = new HashCodeHelper(hashCode);
+                }
+                else if ((declaredType == typeof(Color)) || (declaredType == typeof(Color?)))
+                {
+                    if (item == null)
+                    {
+                        result = this.Hash((object)null);
+                    }
+                    else
+                    {
+                        var color = (Color)(object)item;
+
+                        result = this.Hash(color.A).Hash(color.R).Hash(color.G).Hash(color.B);
+                    }
                 }
                 else
                 {

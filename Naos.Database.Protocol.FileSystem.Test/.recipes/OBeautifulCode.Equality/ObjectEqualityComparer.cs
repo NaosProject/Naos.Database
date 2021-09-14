@@ -9,11 +9,10 @@
 
 namespace OBeautifulCode.Equality.Recipes
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Reflection;
-
+    using global::System;
+    using global::System.Collections.Concurrent;
     using global::System.Collections.Generic;
+    using global::System.Reflection;
 
     /// <summary>
     /// Compares two objects equality.

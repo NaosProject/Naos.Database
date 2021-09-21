@@ -22,7 +22,7 @@ namespace Naos.Database.Domain
         public static void ThrowOnUnsupportedVersionMatchStrategyForType(
             this VersionMatchStrategy versionMatchStrategy)
         {
-            if (versionMatchStrategy != VersionMatchStrategy.Any || versionMatchStrategy != VersionMatchStrategy.SpecifiedVersion)
+            if (versionMatchStrategy != VersionMatchStrategy.Any && versionMatchStrategy != VersionMatchStrategy.SpecifiedVersion)
             {
                 throw new NotSupportedException(FormattableString.Invariant($"{nameof(VersionMatchStrategy)} {versionMatchStrategy} is not supported."));
             }

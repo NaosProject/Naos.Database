@@ -175,6 +175,7 @@
       <DependentUpon>ThrowIfResourceUnavailableOp.cs</DependentUpon>
     </Compile>
     <Compile Include="ResourceLocation\ResourceLocatorExtensions.cs" />
+    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp.cs" />
     <Compile Include="Stream\Handling\Execution\Events\CanceledRequestedHandleRecordExecutionEvent.designer.cs">
       <DependentUpon>CanceledRequestedHandleRecordExecutionEvent.cs</DependentUpon>
     </Compile>

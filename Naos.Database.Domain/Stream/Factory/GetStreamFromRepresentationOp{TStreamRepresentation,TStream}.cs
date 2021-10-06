@@ -8,7 +8,7 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.Equality.Recipes;
     using OBeautifulCode.Type;
@@ -32,6 +32,8 @@ namespace Naos.Database.Domain
         public GetStreamFromRepresentationOp(
             TStreamRepresentation typedStreamRepresentation)
         {
+            typedStreamRepresentation.MustForArg(nameof(typedStreamRepresentation)).NotBeNull();
+
             this.TypedStreamRepresentation = typedStreamRepresentation;
         }
 

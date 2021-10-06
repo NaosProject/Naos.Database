@@ -9,13 +9,14 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Stream factory to get an <see cref="IReadWriteStream"/> or <see cref="IReadOnlyStream"/> from a <see cref="StreamRepresentation"/>.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class GetStreamFromRepresentationByNameProtocolFactory
+    public class GetStreamFromRepresentationByNameProtocolFactory : ISyncAndAsyncReturningProtocol<GetStreamFromRepresentationOp, IStream>
     {
         private readonly IReadOnlyDictionary<string, Func<IReadWriteStream>> streamNameToStreamMap;
 
@@ -26,7 +27,25 @@ namespace Naos.Database.Domain
         public GetStreamFromRepresentationByNameProtocolFactory(
             IReadOnlyDictionary<string, Func<IReadWriteStream>> streamNameToStreamMap)
         {
+            streamNameToStreamMap.MustForArg(nameof(streamNameToStreamMap)).NotBeNull();
+
             this.streamNameToStreamMap = streamNameToStreamMap ?? throw new ArgumentNullException(nameof(streamNameToStreamMap));
+        }
+
+        /// <inheritdoc />
+        public IStream Execute(GetStreamFromRepresentationOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var exists = this.streamNameToStreamMap.TryGetValue(operation.StreamRepresentation.Name, out var result);
+            if (exists)
+            {
+                return result();
+            }
+            else
+            {
+                return default;
+            }
         }
 
         /// <summary>
@@ -42,6 +61,8 @@ namespace Naos.Database.Domain
             return new LambdaReturningProtocol<GetStreamFromRepresentationOp<TStreamRepresentation, TStream>, TStream>(synchronousLambda:
                 operation =>
                 {
+                    operation.MustForArg(nameof(operation)).NotBeNull();
+
                     var exists = this.streamNameToStreamMap.TryGetValue(operation.StreamRepresentation.Name, out var result);
                     if (exists)
                     {

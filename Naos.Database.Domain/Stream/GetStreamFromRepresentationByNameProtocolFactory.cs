@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
     /// Stream factory to get an <see cref="IReadWriteStream"/> or <see cref="IReadOnlyStream"/> from a <see cref="StreamRepresentation"/>.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class GetStreamFromRepresentationByNameProtocolFactory : ISyncAndAsyncReturningProtocol<GetStreamFromRepresentationOp, IStream>
+    public class GetStreamFromRepresentationByNameProtocolFactory : SyncSpecificReturningProtocolBase<GetStreamFromRepresentationOp, IStream>
     {
         private readonly IReadOnlyDictionary<string, Func<IReadWriteStream>> streamNameToStreamMap;
 
@@ -33,7 +33,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IStream Execute(GetStreamFromRepresentationOp operation)
+        public override IStream Execute(GetStreamFromRepresentationOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 

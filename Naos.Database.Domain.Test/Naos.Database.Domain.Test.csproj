@@ -211,6 +211,8 @@
     <Compile Include=".recipes\OBeautifulCode.Equality\ObjectEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ReadOnlyDictionaryEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ReferenceEqualityComparer{T}.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Execution\TaskExtensions.cs" />
+    <Compile Include=".recipes\OBeautifulCode.Execution\TaskWaitingStrategy.cs" />
     <Compile Include=".recipes\OBeautifulCode.Math\ThreadSafeRandom.cs" />
     <Compile Include=".recipes\OBeautifulCode.Process\ProcessHelper.cs" />
     <Compile Include=".recipes\OBeautifulCode.Reflection\AccessModifier.cs" />
@@ -577,10 +579,6 @@
     <Compile Include="Stream\NullObjectPattern\NullDatabaseLocatorTest.cs" />
     <Compile Include="Stream\NullObjectPattern\NullDatabaseLocatorTest.designer.cs">
       <DependentUpon>NullDatabaseLocatorTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStreamTest.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStreamTest.designer.cs">
-      <DependentUpon>NullStandardReadWriteStreamTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifierTest.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifierTest.designer.cs">

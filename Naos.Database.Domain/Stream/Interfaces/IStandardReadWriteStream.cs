@@ -24,6 +24,7 @@ namespace Naos.Database.Domain
           IStreamManagementProtocols,
           ISyncReturningProtocol<GetNextUniqueLongOp, long>,
           ISyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
+          ISyncReturningProtocol<GetHandlingStatusOfRecordByInternalRecordIdOp, HandlingStatus>,
           ISyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
           ISyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
           ISyncReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,

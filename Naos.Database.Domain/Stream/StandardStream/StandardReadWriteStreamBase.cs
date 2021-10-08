@@ -103,6 +103,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract HandlingStatus Execute(
+            GetHandlingStatusOfRecordByInternalRecordIdOp operation);
+
+        /// <inheritdoc />
+        public abstract HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation);
 
         /// <inheritdoc />

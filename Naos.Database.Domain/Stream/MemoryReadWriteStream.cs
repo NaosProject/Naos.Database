@@ -479,6 +479,13 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override HandlingStatus Execute(
+            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public override HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();

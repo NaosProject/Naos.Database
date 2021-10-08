@@ -220,5 +220,22 @@ namespace Naos.Database.Domain
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
         }
+
+        /// <inheritdoc />
+        public HandlingStatus Execute(
+            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
+        {
+            var result = this.stream.Execute(operation);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<HandlingStatus> ExecuteAsync(
+            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

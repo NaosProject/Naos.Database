@@ -255,6 +255,7 @@
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordByInternalRecordIdOp.cs" />
     <Compile Include="Stream\Handling\Query\GetHandlingHistoryOfRecordOp.designer.cs">
       <DependentUpon>GetHandlingHistoryOfRecordOp.cs</DependentUpon>
     </Compile>

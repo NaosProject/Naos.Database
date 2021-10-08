@@ -622,6 +622,13 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override HandlingStatus Execute(
+            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public override HandlingStatus Execute(
             GetHandlingStatusOfRecordsByIdOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();

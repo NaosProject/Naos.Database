@@ -74,7 +74,7 @@ namespace OBeautifulCode.CodeGen.ModelObject.Recipes
                     {
                         compareActualToExpectedUsing = CompareActualToExpectedUsing.ReferenceEquality;
                     }
-                    else if (compareActualToExpectedUsing.GetType().IsValueType)
+                    else if (expectedPropertyValue.GetType().IsValueType)
                     {
                         compareActualToExpectedUsing = CompareActualToExpectedUsing.ValueEquality;
                     }

@@ -28,7 +28,6 @@ namespace Naos.Database.Domain
         IStreamWriteWithIdProtocols<TId, TObject>
     {
         private readonly IStandardReadWriteStream stream;
-        private readonly StandardStreamReadWriteProtocols delegatedProtocols;
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocol;
 
         /// <summary>
@@ -40,7 +39,6 @@ namespace Naos.Database.Domain
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;
-            this.delegatedProtocols = new StandardStreamReadWriteProtocols(stream);
             this.locatorProtocol = this.stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
@@ -53,8 +51,8 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = operation.Standardize(serializer, locator);
-            var record = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize(serializer, locator);
+            var record = this.stream.Execute(standardizedOperation);
 
             var result = record == null
                 ? default(TObject)
@@ -140,8 +138,8 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = operation.Standardize(serializer, locator);
-            var record = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize(serializer, locator);
+            var record = this.stream.Execute(standardizedOperation);
 
             if (record == null)
             {

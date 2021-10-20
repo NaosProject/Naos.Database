@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Set of protocols:
@@ -22,7 +23,6 @@ namespace Naos.Database.Domain
         IStreamWriteProtocols<TObject>
     {
         private readonly IStandardReadWriteStream stream;
-        private readonly StandardStreamReadWriteProtocols delegatedProtocols;
         private readonly StandardStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedWithIdProtocols;
 
         /// <summary>
@@ -35,7 +35,6 @@ namespace Naos.Database.Domain
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
-            this.delegatedProtocols = new StandardStreamReadWriteProtocols(stream);
             this.delegatedWithIdProtocols = new StandardStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject>(stream);
         }
 
@@ -77,8 +76,8 @@ namespace Naos.Database.Domain
         public TObject Execute(
             GetLatestObjectOp<TObject> operation)
         {
-            var delegatedOperation = operation.Standardize();
-            var record = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize();
+            var record = this.stream.Execute(standardizedOperation);
 
             var result = record == null
                 ? default(TObject)
@@ -100,8 +99,8 @@ namespace Naos.Database.Domain
         public StreamRecord<TObject> Execute(
             GetLatestRecordOp<TObject> operation)
         {
-            var delegatedOperation = operation.Standardize();
-            var record = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize();
+            var record = this.stream.Execute(standardizedOperation);
 
             if (record == null)
             {
@@ -126,8 +125,8 @@ namespace Naos.Database.Domain
         public TObject Execute(
             GetLatestObjectByTagOp<TObject> operation)
         {
-            var delegatedOperation = operation.Standardize();
-            var record = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize();
+            var record = this.stream.Execute(standardizedOperation);
 
             var result = record == null
                 ? default(TObject)

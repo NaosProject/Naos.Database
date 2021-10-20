@@ -36,7 +36,8 @@ namespace Naos.Database.Domain
         public long Execute(
             GetNextUniqueLongOp operation)
         {
-            return this.stream.Execute(operation.Standardize());
+            var standardizedOperation = operation.Standardize();
+            return this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />

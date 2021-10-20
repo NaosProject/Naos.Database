@@ -63,13 +63,21 @@ PutWithIdAsync - Task
                                          };
 */
 
-            var extType = typeof(StreamExtensions);
-            var methods = extType.GetMethodsFiltered(
+            var extTypeRead = typeof(ReadOnlyStreamExtensions);
+            var extTypeWrite = typeof(WriteOnlyStreamExtensions);
+            var methodsRead = extTypeRead.GetMethodsFiltered(
                 MemberRelationships.DeclaredInType,
                 MemberOwners.Static,
                 MemberAccessModifiers.Public,
                 MemberAttributes.NotCompilerGenerated,
                 OrderMembersBy.MemberName);
+            var methodsWrite = extTypeWrite.GetMethodsFiltered(
+                MemberRelationships.DeclaredInType,
+                MemberOwners.Static,
+                MemberAccessModifiers.Public,
+                MemberAttributes.NotCompilerGenerated,
+                OrderMembersBy.MemberName);
+            var methods = methodsRead.Union(methodsWrite).ToList();
 
             foreach (var methodInfo in methods)
             {

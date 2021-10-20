@@ -28,7 +28,6 @@ namespace Naos.Database.Domain
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "temp")]
         private readonly IStandardReadWriteStream stream;
-        private readonly StandardStreamReadWriteProtocols delegatedProtocols;
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace Naos.Database.Domain
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
-            this.delegatedProtocols = new StandardStreamReadWriteProtocols(stream);
             this.locatorProtocols = stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
 
@@ -54,8 +52,8 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = operation.Standardize(serializer, locator);
-            var record = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize(serializer, locator);
+            var record = this.stream.Execute(standardizedOperation);
 
             if (record == null)
             {
@@ -99,7 +97,7 @@ namespace Naos.Database.Domain
                 operation.VersionMatchStrategy,
                 locator);
 
-            var result = this.delegatedProtocols.Execute(delegatedOperation);
+            var result = this.stream.Execute(delegatedOperation);
             return result;
         }
 
@@ -121,8 +119,8 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = operation.Standardize(serializer, locator);
-            var records = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize(serializer, locator);
+            var records = this.stream.Execute(standardizedOperation);
 
             var result = records?.Select(
                                       _ =>
@@ -162,8 +160,8 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = operation.Standardize(serializer, locator);
-            var metadata = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize(serializer, locator);
+            var metadata = this.stream.Execute(standardizedOperation);
 
             if (metadata == null)
             {
@@ -200,8 +198,8 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var delegatedOperation = operation.Standardize(serializer, locator);
-            var records = this.delegatedProtocols.Execute(delegatedOperation);
+            var standardizedOperation = operation.Standardize(serializer, locator);
+            var records = this.stream.Execute(standardizedOperation);
 
             var result = records?.Select(
                                       _ =>

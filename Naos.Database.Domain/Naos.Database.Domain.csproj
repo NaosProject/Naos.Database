@@ -136,82 +136,43 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
     <Compile Include="Events\IdDeprecatedEvent{TId}.cs" />
-    <Compile Include="Events\IdDeprecatedEvent{TId}.designer.cs">
-      <DependentUpon>IdDeprecatedEvent{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\VersionMatchStrategyExtensions.cs" />
+    <Compile Include="Logic\WriteRecordStandardizeExtensions.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestRecordOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestRecordMetadataByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectByTagOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectByIdOp{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsMetadataByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.DoesNotExistByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.cs" />
+    <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.GetNextUniqueLongOp.cs" />
+    <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.cs" />
+    <Compile Include="Logic\VersionMatchStrategyExtensions.cs" />
+    <Compile Include="Operations\Stream\Standard\Write\StandardGetNextUniqueLongOp.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
-    <Compile Include="ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
-    <Compile Include="ResourceLocation\ISpecifyResourceLocator.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Base\IResourceLocator.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Base\IResourceLocatorProtocols.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Base\ResourceLocatorBase.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Base\ResourceLocatorBase.designer.cs">
-      <DependentUpon>ResourceLocatorBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\GetAllResourceLocatorsOp.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\GetAllResourceLocatorsOp.designer.cs">
-      <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\GetResourceLocatorByIdOp{TId}.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\GetResourceLocatorByIdOp{TId}.designer.cs">
-      <DependentUpon>GetResourceLocatorByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\GetResourceLocatorForUniqueIdentifierOp.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\GetResourceLocatorForUniqueIdentifierOp.designer.cs">
-      <DependentUpon>GetResourceLocatorForUniqueIdentifierOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\NamedResourceLocator.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\NamedResourceLocator.designer.cs">
-      <DependentUpon>NamedResourceLocator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\NullResourceLocator.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\NullResourceLocator.designer.cs">
-      <DependentUpon>NullResourceLocator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\SingleResourceLocatorProtocol.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\ThrowIfResourceUnavailableOp.cs" />
-    <Compile Include="ResourceLocation\ProtocolOriginating\Impl\ThrowIfResourceUnavailableOp.designer.cs">
-      <DependentUpon>ThrowIfResourceUnavailableOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\ResourceLocatorExtensions.cs" />
+    <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
+    <Compile Include="Models\Interfaces\ResourceLocation\ISpecifyResourceLocator.cs" />
+    <Compile Include="Models\Interfaces\ResourceLocation\IResourceLocator.cs" />
+    <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.cs" />
+    <Compile Include="Operations\ResourceLocation\GetAllResourceLocatorsOp.cs" />
+    <Compile Include="Operations\ResourceLocation\GetResourceLocatorByIdOp{TId}.cs" />
+    <Compile Include="Operations\ResourceLocation\GetResourceLocatorForUniqueIdentifierOp.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\NamedResourceLocator.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\NullResourceLocator.cs" />
+    <Compile Include="Protocols\Classes\ResourceLocation\SingleResourceLocatorProtocols.cs" />
+    <Compile Include="Operations\ResourceLocation\ThrowIfResourceUnavailableOp.cs" />
+    <Compile Include="Logic\ResourceLocatorExtensions.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\RecordingHandling\IStandardStreamRecordHandlingProtocols.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStandardStreamWriteProtocols.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStandardStreamReadProtocols.cs" />
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\CanceledRequestedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>CanceledRequestedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\CanceledRunningHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>CanceledRunningHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\CompletedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>CompletedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\FailedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>FailedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RequestedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RetryFailedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\RunningHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RunningHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\SelfCanceledRunningHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>SelfCanceledRunningHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\BlockRecordHandlingOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\BlockedRecordHandlingEvent.designer.cs">
-      <DependentUpon>BlockedRecordHandlingEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Operations\BlockRecordHandlingOp.designer.cs">
-      <DependentUpon>BlockRecordHandlingOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CancelBlockedRecordHandlingOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\CanceledBlockedRecordHandlingEvent.designer.cs">
-      <DependentUpon>CanceledBlockedRecordHandlingEvent.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Events\CanceledRequestedHandleRecordExecutionEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\CanceledRunningHandleRecordExecutionEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\CompletedHandleRecordExecutionEvent.cs" />
@@ -219,246 +180,72 @@
     <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\RunningHandleRecordExecutionEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\SelfCanceledRunningHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Operations\CancelBlockedRecordHandlingOp.designer.cs">
-      <DependentUpon>CancelBlockedRecordHandlingOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CancelHandleRecordExecutionRequestOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Operations\CancelHandleRecordExecutionRequestOp.designer.cs">
-      <DependentUpon>CancelHandleRecordExecutionRequestOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CancelRunningHandleRecordExecutionOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Operations\CancelRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>CancelRunningHandleRecordExecutionOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\CompleteRunningHandleRecordExecutionOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Operations\CompleteRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>CompleteRunningHandleRecordExecutionOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\RetryFailedHandleRecordExecutionOp.cs" />
     <Compile Include="Stream\Handling\Execution\Operations\FailRunningHandleRecordExecutionOp.cs" />
     <Compile Include="Stream\Handling\Execution\Concerns.cs" />
-    <Compile Include="Stream\Handling\Execution\Operations\FailRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>FailRunningHandleRecordExecutionOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Operations\RetryFailedHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>RetryFailedHandleRecordExecutionOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\Operations\SelfCancelRunningHandleRecordExecutionOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Operations\SelfCancelRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>SelfCancelRunningHandleRecordExecutionOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusExtensions.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
-      <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordByInternalRecordIdOp.cs" />
-    <Compile Include="Stream\Handling\Query\GetHandlingHistoryOfRecordOp.designer.cs">
-      <DependentUpon>GetHandlingHistoryOfRecordOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordsByIdOp.cs" />
-    <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordsByIdOp.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordsByIdOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordsByIdOp{TId}.cs" />
-    <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordsByIdOp{TId}.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordsByIdOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordSetByTagOp.cs" />
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.cs" />
-    <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.designer.cs">
-      <DependentUpon>HandlingStatusCompositionStrategy.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.cs" />
     <Compile Include="Stream\Handling\Query\GetHandlingHistoryOfRecordOp.cs" />
     <Compile Include="Stream\Handling\Model\HandlingStatus.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
-    <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordSetByTagOp.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
-      <DependentUpon>HandleRecordOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.designer.cs">
-      <DependentUpon>HandleRecordOp{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordSyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdAsyncSpecificProtocolBase{TId,TObject}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>HandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.designer.cs">
-      <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\ITryHandleRecordOpBase.cs" />
     <Compile Include="Stream\Model\StreamAccessModes.cs" />
     <Compile Include="Stream\Model\TryHandleRecordResult.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleStandardizeExtensions.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp.designer.cs">
-      <DependentUpon>TryHandleRecordOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.designer.cs">
-      <DependentUpon>TryHandleRecordOp{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.cs" />
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.designer.cs">
-      <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Interfaces\Management\IPruneOperation.cs" />
-    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadWithIdProtocols{TId}.cs" />
-    <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocols.cs" />
-    <Compile Include="Stream\Interfaces\Handling\IStreamRecordWithIdHandlingProtocols{TId}.cs" />
-    <Compile Include="Stream\Interfaces\Handling\IStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteWithIdProtocols{TId}.cs" />
-    <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
-      <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.designer.cs">
-      <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.designer.cs">
-      <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Management\PruneOperationExecutedEvent.designer.cs">
-      <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Operations\Interfaces\IPruneOperation.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadWithIdProtocols{TId}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\RecordingHandling\IStreamRecordHandlingProtocols.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\RecordingHandling\IStreamRecordWithIdHandlingProtocols{TId}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\RecordingHandling\IStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteWithIdProtocols{TId}.cs" />
     <Compile Include="Stream\Management\PruneOperationRequestedEvent.cs" />
-    <Compile Include="Stream\Management\PruneOperationRequestedEvent.designer.cs">
-      <DependentUpon>PruneOperationRequestedEvent.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Management\PruneSummary.cs" />
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.cs" />
-    <Compile Include="Stream\Management\PruneSummary.designer.cs">
-      <DependentUpon>PruneSummary.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\MemoryReadWriteStream.cs" />
     <Compile Include="Stream\Model\CreateStreamResult.cs" />
-    <Compile Include="Stream\Model\CreateStreamResult.designer.cs">
-      <DependentUpon>CreateStreamResult.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Model\PutRecordResult.cs" />
-    <Compile Include="Stream\Model\OrderRecordsStrategy.cs" />
-    <Compile Include="Stream\Model\ExistingRecordNotEncounteredStrategy.cs" />
-    <Compile Include="Stream\Model\PutRecordResult.designer.cs">
-      <DependentUpon>PutRecordResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\StreamRecord.designer.cs">
-      <DependentUpon>StreamRecord.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Stream\Model\OrderRecordsBy.cs" />
+    <Compile Include="Stream\Model\RecordNotFoundStrategy.cs" />
     <Compile Include="Stream\Model\StreamRecordExtensions.cs" />
-    <Compile Include="Stream\Model\StreamRecordMetadata.designer.cs">
-      <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Model\StreamRecordMetadataExtensions.cs" />
-    <Compile Include="Stream\Model\StreamRecordMetadata{TId}.designer.cs">
-      <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.cs" />
-    <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.designer.cs">
-      <DependentUpon>StreamRecordWithId{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\StreamRecordWithId{TId}.designer.cs">
-      <DependentUpon>StreamRecordWithId{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
-      <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Model\TagMatchStrategy.cs" />
-    <Compile Include="Stream\Model\TagMatchStrategy.designer.cs">
-      <DependentUpon>TagMatchStrategy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Model\TryHandleRecordResult.designer.cs">
-      <DependentUpon>TryHandleRecordResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp.designer.cs">
-      <DependentUpon>DoesAnyExistByIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp{TId}.cs" />
-    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\DoesAnyExistByIdOp{TId}.designer.cs">
-      <DependentUpon>DoesAnyExistByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp.designer.cs">
-      <DependentUpon>GetAllRecordsByIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp{TId}.designer.cs">
-      <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp.designer.cs">
-      <DependentUpon>GetAllRecordsMetadataByIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp{TId}.cs" />
-    <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp{TId}.cs" />
-    <Compile Include="Stream\ReadOnly\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
-      <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetDistinctStringSerializedIdsOp.designer.cs">
-      <DependentUpon>GetDistinctStringSerializedIdsOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetAllRecordsByIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestObjectByTagOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectByTagOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestObjectByTagOp{TObject}.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByTagOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.designer.cs">
-      <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByTagOp.designer.cs">
-      <DependentUpon>GetLatestRecordByTagOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.designer.cs">
-      <DependentUpon>GetLatestRecordByIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp.designer.cs">
-      <DependentUpon>GetLatestRecordMetadataByIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp{TId}.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
-      <DependentUpon>GetLatestRecordMetadataByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetDistinctStringSerializedIdsOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordOp.designer.cs">
-      <DependentUpon>GetLatestRecordOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetRecordByInternalRecordIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetRecordByInternalRecordIdOp.designer.cs">
-      <DependentUpon>GetRecordByInternalRecordIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetRecordStandardizeExtensions.cs" />
-    <Compile Include="Stream\Interfaces\IStandardReadWriteStream.cs" />
+    <Compile Include="Operations\Stream\External\Read\DoesAnyExistByIdOp{TId}.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardDoesAnyExistByIdOp.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOp.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetAllRecordsByIdOp{TId}.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetAllRecordsByIdOp.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestObjectByTagOp{TObject}.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordByTagOp.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOp.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOp.cs" />
+    <Compile Include="Logic\ReadRecordStandardizeExtensions.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Classification\IStandardReadWriteStream.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
@@ -468,141 +255,74 @@
     <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId}.cs" />
     <Compile Include="Stream\StandardStream\StandardReadWriteStreamBase.cs" />
-    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.designer.cs">
-      <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutOp{TObject}.designer.cs">
-      <DependentUpon>PutOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutRecordOp.cs" />
-    <Compile Include="Stream\Model\UniqueLongIssuedEvent.designer.cs">
-      <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordByIdOp{TId}.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordOp{TObject}.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestRecordOp.cs" />
+    <Compile Include="Operations\Stream\Standard\Write\StandardPutRecordOp.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordByIdOp.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestRecordByIdOp{TId}.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
+    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\BlockedRecordHandlingEvent.cs" />
     <Compile Include="Stream\Handling\Execution\Events\CanceledBlockedRecordHandlingEvent.cs" />
-    <Compile Include="Legacy\IConnectionDefinition.cs" />
+    <Compile Include="Models\Interfaces\Legacy\IConnectionDefinition.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
-    <Compile Include="Stream\Management\CreateStreamOp.designer.cs">
-      <DependentUpon>CreateStreamOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Management\DeleteStreamOp.designer.cs">
-      <DependentUpon>DeleteStreamOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.cs" />
+    <Compile Include="Operations\Stream\External\Write\GetNextUniqueLongOp.cs" />
     <Compile Include="Stream\Management\DeleteStreamOp.cs" />
     <Compile Include="Stream\Management\CreateStreamOp.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestObjectByIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\ReadOnly\GetLatestObjectOp{TObject}.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Stream\External\Read\GetLatestObjectOp{TObject}.cs" />
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
-      <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\GetNextUniqueLongOp.designer.cs">
-      <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutRecordOp.designer.cs">
-      <DependentUpon>PutRecordOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\WriteOnly\PutAndReturnInternalRecordIdOp{TObject}.cs" />
-    <Compile Include="Stream\WriteOnly\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\WriteOnly\PutOp{TObject}.cs" />
+    <Compile Include="Operations\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}.cs" />
+    <Compile Include="Operations\Stream\External\Write\PutWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Stream\External\Write\PutOp{TObject}.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplaceOption.cs" />
-    <Compile Include="ResourceLocation\DatabaseLocatorBase.designer.cs">
-      <DependentUpon>DatabaseLocatorBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\FileSystemDatabaseLocator.designer.cs">
-      <DependentUpon>FileSystemDatabaseLocator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\MemoryDatabaseLocator.cs" />
-    <Compile Include="ResourceLocation\FileSystemDatabaseLocator.cs" />
-    <Compile Include="ResourceLocation\MemoryDatabaseLocator.designer.cs">
-      <DependentUpon>MemoryDatabaseLocator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceLocation\NullDatabaseLocator.cs" />
-    <Compile Include="ResourceLocation\DatabaseLocatorBase.cs" />
-    <Compile Include="ResourceLocation\NullDatabaseLocator.designer.cs">
-      <DependentUpon>NullDatabaseLocator.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Classes\ResourceLocation\Database\MemoryDatabaseLocator.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\Database\FileSystemDatabaseLocator.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\Database\NullDatabaseLocator.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBase.cs" />
     <Compile Include="Stream\Model\ExistingRecordEncounteredStrategy.cs" />
     <Compile Include="Stream\Model\ExistingStreamNotEncounteredStrategy.cs" />
     <Compile Include="Stream\Model\ExistingStreamEncounteredStrategy.cs" />
-    <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\Management\IStreamManagementProtocols.cs" />
-    <Compile Include="Stream\Interfaces\Management\IStreamManagementProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\Handling\IStreamRecordHandlingProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\StreamExtensions.cs" />
-    <Compile Include="Stream\Interfaces\IReadWriteStream.cs" />
-    <Compile Include="Stream\Interfaces\WriteOnly\IWriteOnlyStream.cs" />
-    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocols.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullResourceLocatorProtocols.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullStreamIdentifier.designer.cs">
-      <DependentUpon>NullStreamIdentifier.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamRecordHandlingProtocolFactory.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Management\IStreamManagementProtocols.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamManagementProtocolFactory.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\RecordingHandling\IStreamRecordHandlingProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Classification\IReadWriteStream.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Classification\IWriteOnlyStream.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadProtocols.cs" />
+    <Compile Include="Protocols\Classes\ResourceLocation\NullResourceLocatorProtocols.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStream.cs" />
-    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocols.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.designer.cs">
-      <DependentUpon>NullStreamRepresentation.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadata{TId}.cs" />
     <Compile Include="Stream\Model\StreamRecordWithId{TId}.cs" />
     <Compile Include="Stream\Model\StreamRecord{TObject}.cs" />
     <Compile Include="Stream\Model\StreamRecord.cs" />
-    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocolFactory.cs" />
-    <Compile Include="Stream\Interfaces\ReadOnly\IStreamReadWithIdProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteProtocols{TObject}.cs" />
-    <Compile Include="Stream\Interfaces\WriteOnly\IStreamWriteWithIdProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\Interfaces\ReadOnly\IReadOnlyStream.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamReadProtocolFactory.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamWriteProtocolFactory.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Classification\IReadOnlyStream.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifier.cs" />
-    <Compile Include="Stream\Interfaces\IStream.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Classification\IStream.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentation.cs" />
-    <Compile Include="Stream\Representation\FileStreamRepresentation.designer.cs">
-      <DependentUpon>FileStreamRepresentation.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Representation\IStreamRepresentation.cs" />
     <Compile Include="Stream\Representation\MemoryStreamRepresentation.cs" />
-    <Compile Include="Stream\Representation\MemoryStreamRepresentation.designer.cs">
-      <DependentUpon>MemoryStreamRepresentation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentation.designer.cs">
-      <DependentUpon>StreamRepresentation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentationBase.designer.cs">
-      <DependentUpon>StreamRepresentationBase.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Model\TypeRepresentationWithAndWithoutVersion.cs" />
     <Compile Include="Stream\Model\ReadWriteStreamBase.cs" />
     <Compile Include="Stream\GetStreamFromRepresentationByNameProtocolFactory.cs" />
     <Compile Include="Stream\Representation\StreamRepresentation.cs" />
     <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadata.cs" />
-    <Compile Include="Stream\Model\TypeRepresentationWithAndWithoutVersion.designer.cs">
-      <DependentUpon>TypeRepresentationWithAndWithoutVersion.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\WriteOnly\PutWithIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>PutWithIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include=".analyzers\release.ruleset" />
     <None Include="packages.config" />

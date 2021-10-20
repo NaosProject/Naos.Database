@@ -6,14 +6,10 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
-
-    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
-    using static System.FormattableString;
 
     /// <summary>
     /// Stream interface, a stream is a list of objects ordered by timestamp.
@@ -83,19 +79,19 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract long Execute(
-            GetNextUniqueLongOp operation);
+            StandardGetNextUniqueLongOp operation);
 
         /// <inheritdoc />
         public abstract override StreamRecord Execute(
-            GetRecordByInternalRecordIdOp operation);
+            StandardGetRecordByInternalRecordIdOp operation);
 
         /// <inheritdoc />
         public abstract override StreamRecord Execute(
-            GetLatestRecordOp operation);
+            StandardGetLatestRecordOp operation);
 
         /// <inheritdoc />
         public abstract override StreamRecord Execute(
-            GetLatestRecordByIdOp operation);
+            StandardGetLatestRecordByIdOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyList<StreamRecordHandlingEntry> Execute(
@@ -119,7 +115,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract PutRecordResult Execute(
-            PutRecordOp operation);
+            StandardPutRecordOp operation);
 
         /// <inheritdoc />
         public abstract void Execute(
@@ -203,18 +199,18 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract override bool Execute(
-            DoesAnyExistByIdOp operation);
+            StandardDoesAnyExistByIdOp operation);
 
         /// <inheritdoc />
         public abstract override StreamRecordMetadata Execute(
-            GetLatestRecordMetadataByIdOp operation);
+            StandardGetLatestRecordMetadataByIdOp operation);
 
         /// <inheritdoc />
         public abstract override IReadOnlyList<StreamRecord> Execute(
-            GetAllRecordsByIdOp operation);
+            StandardGetAllRecordsByIdOp operation);
 
         /// <inheritdoc />
         public abstract override IReadOnlyList<StreamRecordMetadata> Execute(
-            GetAllRecordsMetadataByIdOp operation);
+            StandardGetAllRecordsMetadataByIdOp operation);
     }
 }

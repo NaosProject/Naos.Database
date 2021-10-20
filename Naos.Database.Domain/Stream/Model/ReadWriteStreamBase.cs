@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using Naos.CodeAnalysis.Recipes;
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
 
@@ -95,38 +94,38 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract IReadOnlyCollection<string> Execute(
-            GetDistinctStringSerializedIdsOp operation);
+            StandardGetDistinctStringSerializedIdsOp operation);
 
         /// <inheritdoc />
         public abstract StreamRecord Execute(
-            GetRecordByInternalRecordIdOp operation);
+            StandardGetRecordByInternalRecordIdOp operation);
 
         /// <inheritdoc />
         public abstract StreamRecord Execute(
-            GetLatestRecordOp operation);
+            StandardGetLatestRecordOp operation);
 
         /// <inheritdoc />
         public abstract StreamRecordMetadata Execute(
-            GetLatestRecordMetadataByIdOp operation);
+            StandardGetLatestRecordMetadataByIdOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyList<StreamRecord> Execute(
-            GetAllRecordsByIdOp operation);
+            StandardGetAllRecordsByIdOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyList<StreamRecordMetadata> Execute(
-            GetAllRecordsMetadataByIdOp operation);
+            StandardGetAllRecordsMetadataByIdOp operation);
 
         /// <inheritdoc />
         public abstract bool Execute(
-            DoesAnyExistByIdOp operation);
+            StandardDoesAnyExistByIdOp operation);
 
         /// <inheritdoc />
         public abstract StreamRecord Execute(
-            GetLatestRecordByIdOp operation);
+            StandardGetLatestRecordByIdOp operation);
 
         /// <inheritdoc />
         public abstract StreamRecord Execute(
-            GetLatestRecordByTagOp operation);
+            StandardGetLatestRecordByTagOp operation);
     }
 }

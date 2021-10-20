@@ -32,7 +32,7 @@ namespace Naos.Database.Domain
         /// Gets the order records strategy.
         /// </summary>
         /// <value>The order records strategy.</value>
-        OrderRecordsStrategy OrderRecordsStrategy { get; }
+        OrderRecordsBy OrderRecordsBy { get; }
 
         /// <summary>
         /// Gets the optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).

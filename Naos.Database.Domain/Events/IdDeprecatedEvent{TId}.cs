@@ -7,7 +7,6 @@
 namespace Naos.Database.Domain
 {
     using System;
-    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>

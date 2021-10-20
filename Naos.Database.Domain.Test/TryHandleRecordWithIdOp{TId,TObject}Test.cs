@@ -43,7 +43,7 @@ namespace Naos.Database.Domain.Test
                                 var result = new TryHandleRecordWithIdOp<Version, Version>(
                                     Concerns.RecordHandlingConcern,
                                     referenceObject.VersionMatchStrategy,
-                                    referenceObject.OrderRecordsStrategy,
+                                    referenceObject.OrderRecordsBy,
                                     referenceObject.SpecifiedResourceLocator,
                                     referenceObject.Tags);
 
@@ -68,7 +68,7 @@ namespace Naos.Database.Domain.Test
                                 var result = new TryHandleRecordWithIdOp<Version, Version>(
                                     null,
                                     referenceObject.VersionMatchStrategy,
-                                    referenceObject.OrderRecordsStrategy,
+                                    referenceObject.OrderRecordsBy,
                                     referenceObject.SpecifiedResourceLocator,
                                     referenceObject.Tags);
 
@@ -92,7 +92,7 @@ namespace Naos.Database.Domain.Test
                                 var result = new TryHandleRecordWithIdOp<Version, Version>(
                                     Invariant($"  {Environment.NewLine}  "),
                                     referenceObject.VersionMatchStrategy,
-                                    referenceObject.OrderRecordsStrategy,
+                                    referenceObject.OrderRecordsBy,
                                     referenceObject.SpecifiedResourceLocator,
                                     referenceObject.Tags);
 

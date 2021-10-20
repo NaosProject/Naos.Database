@@ -8,7 +8,6 @@ namespace Naos.Database.Domain
 {
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Set of protocols:

@@ -23,7 +23,7 @@ namespace Naos.Database.Domain
         /// <param name="concern">The concern.</param>
         /// <param name="objectType">The optional type of the object; default is no filter.</param>
         /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
-        /// <param name="orderRecordsStrategy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
+        /// <param name="orderRecordsBy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
         /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
         /// <param name="details">The optional details to write with produced events.</param>
@@ -33,7 +33,7 @@ namespace Naos.Database.Domain
             string concern,
             TypeRepresentation objectType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            OrderRecordsStrategy orderRecordsStrategy = OrderRecordsStrategy.ByInternalRecordIdAscending,
+            OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
             IResourceLocator specifiedResourceLocator = null,
             IReadOnlyCollection<NamedValue<string>> tags = null,
             string details = null,
@@ -46,7 +46,7 @@ namespace Naos.Database.Domain
             this.Concern = concern;
             this.ObjectType = objectType;
             this.VersionMatchStrategy = versionMatchStrategy;
-            this.OrderRecordsStrategy = orderRecordsStrategy;
+            this.OrderRecordsBy = orderRecordsBy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
             this.Details = details;
@@ -67,7 +67,7 @@ namespace Naos.Database.Domain
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <inheritdoc />
-        public OrderRecordsStrategy OrderRecordsStrategy { get; private set; }
+        public OrderRecordsBy OrderRecordsBy { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

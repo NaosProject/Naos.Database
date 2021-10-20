@@ -54,7 +54,7 @@ namespace Naos.Database.Domain
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
             IResourceLocatorProtocols resourceLocatorProtocols = null)
-        : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols ?? new SingleResourceLocatorProtocol(new MemoryDatabaseLocator("Default")))
+        : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols ?? new SingleResourceLocatorProtocols(new MemoryDatabaseLocator("Default")))
         {
             this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
         }
@@ -163,7 +163,7 @@ namespace Naos.Database.Domain
         /// <param name="operation">The operation.</param>
         /// <returns>System.Int64.</returns>
         public override long Execute(
-            GetNextUniqueLongOp operation)
+            StandardGetNextUniqueLongOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
             var result = Interlocked.Increment(ref this.uniqueLongForExternalProtocol);
@@ -231,7 +231,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override bool Execute(
-            DoesAnyExistByIdOp operation)
+            StandardDoesAnyExistByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -255,7 +255,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override StreamRecordMetadata Execute(
-            GetLatestRecordMetadataByIdOp operation)
+            StandardGetLatestRecordMetadataByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -279,23 +279,23 @@ namespace Naos.Database.Domain
                     return result;
                 }
 
-                switch (operation.ExistingRecordNotEncounteredStrategy)
+                switch (operation.RecordNotFoundStrategy)
                 {
-                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                    case RecordNotFoundStrategy.ReturnDefault:
                         return null;
-                    case ExistingRecordNotEncounteredStrategy.Throw:
+                    case RecordNotFoundStrategy.Throw:
                         throw new InvalidOperationException(
                             Invariant(
-                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                     default:
-                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                 }
             }
         }
 
         /// <inheritdoc />
         public override IReadOnlyList<StreamRecord> Execute(
-            GetAllRecordsByIdOp operation)
+            StandardGetAllRecordsByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -305,17 +305,17 @@ namespace Naos.Database.Domain
             {
                 IReadOnlyList<StreamRecord> ProcessDefaultReturn()
                 {
-                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    switch (operation.RecordNotFoundStrategy)
                     {
-                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        case RecordNotFoundStrategy.ReturnDefault:
                             return new StreamRecord[0];
-                        case ExistingRecordNotEncounteredStrategy.Throw:
+                        case RecordNotFoundStrategy.Throw:
                             throw new InvalidOperationException(
                                 Invariant(
-                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                         default:
                             throw new NotSupportedException(
-                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                                Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                     }
                 }
 
@@ -338,14 +338,14 @@ namespace Naos.Database.Domain
 
                 if (result.Any())
                 {
-                    switch (operation.OrderRecordsStrategy)
+                    switch (operation.OrderRecordsBy)
                     {
-                        case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                        case OrderRecordsBy.InternalRecordIdAscending:
                             return result.OrderBy(_ => _.InternalRecordId).ToList();
-                        case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                        case OrderRecordsBy.InternalRecordIdDescending:
                             return result.OrderByDescending(_ => _.InternalRecordId).ToList();
                         default:
-                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
                     }
                 }
 
@@ -355,7 +355,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override IReadOnlyList<StreamRecordMetadata> Execute(
-            GetAllRecordsMetadataByIdOp operation)
+            StandardGetAllRecordsMetadataByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -365,17 +365,17 @@ namespace Naos.Database.Domain
             {
                 IReadOnlyList<StreamRecordMetadata> ProcessDefaultReturn()
                 {
-                    switch (operation.ExistingRecordNotEncounteredStrategy)
+                    switch (operation.RecordNotFoundStrategy)
                     {
-                        case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                        case RecordNotFoundStrategy.ReturnDefault:
                             return new StreamRecordMetadata[0];
-                        case ExistingRecordNotEncounteredStrategy.Throw:
+                        case RecordNotFoundStrategy.Throw:
                             throw new InvalidOperationException(
                                 Invariant(
-                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                         default:
                             throw new NotSupportedException(
-                                Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                                Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                     }
                 }
 
@@ -398,14 +398,14 @@ namespace Naos.Database.Domain
 
                 if (result.Any())
                 {
-                    switch (operation.OrderRecordsStrategy)
+                    switch (operation.OrderRecordsBy)
                     {
-                        case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                        case OrderRecordsBy.InternalRecordIdAscending:
                             return result.OrderBy(_ => _.InternalRecordId).Select(_ => _.Metadata).ToList();
-                        case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                        case OrderRecordsBy.InternalRecordIdDescending:
                             return result.OrderByDescending(_ => _.InternalRecordId).Select(_ => _.Metadata).ToList();
                         default:
-                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
                     }
                 }
 
@@ -415,7 +415,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override IReadOnlyCollection<string> Execute(
-            GetDistinctStringSerializedIdsOp operation)
+            StandardGetDistinctStringSerializedIdsOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -617,23 +617,23 @@ namespace Naos.Database.Domain
                                              .ToList();
 
                         StreamRecord recordToHandle;
-                        switch (operation.OrderRecordsStrategy)
+                        switch (operation.OrderRecordsBy)
                         {
-                            case OrderRecordsStrategy.ByInternalRecordIdAscending:
+                            case OrderRecordsBy.InternalRecordIdAscending:
                                 recordToHandle = matchingRecords
                                                 .OrderBy(_ => _.InternalRecordId)
                                                 .FirstOrDefault(
                                                      _ => operation.MinimumInternalRecordId == null
                                                        || _.InternalRecordId                >= operation.MinimumInternalRecordId);
                                 break;
-                            case OrderRecordsStrategy.ByInternalRecordIdDescending:
+                            case OrderRecordsBy.InternalRecordIdDescending:
                                 recordToHandle = matchingRecords
                                                 .OrderByDescending(_ => _.InternalRecordId)
                                                 .FirstOrDefault(
                                                      _ => operation.MinimumInternalRecordId == null
                                                        || _.InternalRecordId                >= operation.MinimumInternalRecordId);
                                 break;
-                            case OrderRecordsStrategy.Random:
+                            case OrderRecordsBy.Random:
                                 recordToHandle = matchingRecords
                                                 .OrderByDescending(_ => Guid.NewGuid())
                                                 .FirstOrDefault(
@@ -641,7 +641,7 @@ namespace Naos.Database.Domain
                                                        || _.InternalRecordId                >= operation.MinimumInternalRecordId);
                                 break;
                             default:
-                                throw new NotSupportedException(Invariant($"{nameof(OrderRecordsStrategy)} {operation.OrderRecordsStrategy} is not supported."));
+                                throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
                         }
 
                         if (recordToHandle != null)
@@ -717,7 +717,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            GetRecordByInternalRecordIdOp operation)
+            StandardGetRecordByInternalRecordIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -734,23 +734,23 @@ namespace Naos.Database.Domain
                     return result;
                 }
 
-                switch (operation.ExistingRecordNotEncounteredStrategy)
+                switch (operation.RecordNotFoundStrategy)
                 {
-                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                    case RecordNotFoundStrategy.ReturnDefault:
                         return null;
-                    case ExistingRecordNotEncounteredStrategy.Throw:
+                    case RecordNotFoundStrategy.Throw:
                         throw new InvalidOperationException(
                             Invariant(
-                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                     default:
-                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                 }
             }
         }
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            GetLatestRecordOp operation)
+            StandardGetLatestRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -773,23 +773,23 @@ namespace Naos.Database.Domain
                     return result;
                 }
 
-                switch (operation.ExistingRecordNotEncounteredStrategy)
+                switch (operation.RecordNotFoundStrategy)
                 {
-                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                    case RecordNotFoundStrategy.ReturnDefault:
                         return null;
-                    case ExistingRecordNotEncounteredStrategy.Throw:
+                    case RecordNotFoundStrategy.Throw:
                         throw new InvalidOperationException(
                             Invariant(
-                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                     default:
-                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                 }
             }
         }
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            GetLatestRecordByIdOp operation)
+            StandardGetLatestRecordByIdOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -813,23 +813,23 @@ namespace Naos.Database.Domain
                     return result;
                 }
 
-                switch (operation.ExistingRecordNotEncounteredStrategy)
+                switch (operation.RecordNotFoundStrategy)
                 {
-                    case ExistingRecordNotEncounteredStrategy.ReturnDefault:
+                    case RecordNotFoundStrategy.ReturnDefault:
                         return null;
-                    case ExistingRecordNotEncounteredStrategy.Throw:
+                    case RecordNotFoundStrategy.Throw:
                         throw new InvalidOperationException(
                             Invariant(
-                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.ExistingRecordNotEncounteredStrategy)} is '{operation.ExistingRecordNotEncounteredStrategy}'."));
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                     default:
-                        throw new NotSupportedException(Invariant($"{nameof(ExistingRecordNotEncounteredStrategy)} {operation.ExistingRecordNotEncounteredStrategy} is not supported."));
+                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                 }
             }
         }
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            GetLatestRecordByTagOp operation)
+            StandardGetLatestRecordByTagOp operation)
         {
             throw new NotImplementedException();
         }
@@ -838,7 +838,7 @@ namespace Naos.Database.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public override PutRecordResult Execute(
-            PutRecordOp operation)
+            StandardPutRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -969,7 +969,7 @@ namespace Naos.Database.Domain
                 {
                     if (recordPartition.Any(_ => _.InternalRecordId == operation.InternalRecordId))
                     {
-                        throw new InvalidOperationException(Invariant($"Operation specified an {nameof(PutRecordOp.InternalRecordId)} of {operation.InternalRecordId} but that {nameof(PutRecordOp.InternalRecordId)} is already present in the stream."));
+                        throw new InvalidOperationException(Invariant($"Operation specified an {nameof(StandardPutRecordOp.InternalRecordId)} of {operation.InternalRecordId} but that {nameof(StandardPutRecordOp.InternalRecordId)} is already present in the stream."));
                     }
                     else
                     {

@@ -37,7 +37,18 @@ namespace Naos.Database.Domain.Test
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public DatabaseDummyFactory()
         {
-            /* Add any overriding or custom registrations here. */
+            // ------------------------------- ENUMS --------------------------------------
+            AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
+
+            // ------------------------------- EVENTS -------------------------------------
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = new IdDeprecatedEvent<Version>(A.Dummy<Version>(), A.Dummy<UtcDateTime>(), A.Dummy<string>());
+
+                    return result;
+                });
+
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
@@ -299,7 +310,7 @@ namespace Naos.Database.Domain.Test
                 () =>
                 {
                     var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
-                    return new PutRecordOp(
+                    return new StandardPutRecordOp(
                         A.Dummy<StreamRecordMetadata>(),
                         A.Dummy<DescribedSerializationBase>(),
                         A.Dummy<IResourceLocator>(),

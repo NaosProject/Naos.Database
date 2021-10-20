@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Result of <see cref="PutRecordOp"/>.
+    /// Result of <see cref="StandardPutRecordOp"/>.
     /// </summary>
     public partial class PutRecordResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
     {

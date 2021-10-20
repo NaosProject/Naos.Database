@@ -92,7 +92,7 @@ namespace Naos.Database.Domain
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var serializedObjectId = serializer.SerializeToString(operation.Id);
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var delegatedOperation = new DoesAnyExistByIdOp(
+            var delegatedOperation = new StandardDoesAnyExistByIdOp(
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,

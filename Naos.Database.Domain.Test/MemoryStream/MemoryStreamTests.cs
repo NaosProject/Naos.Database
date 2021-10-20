@@ -117,7 +117,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             {
                 var timestampUtc = DateTime.UtcNow;
                 stream.Execute(
-                    new PutRecordOp(
+                    new StandardPutRecordOp(
                         new StreamRecordMetadata(
                             zeroObjectStringSerializedId,
                             stream.DefaultSerializerRepresentation,
@@ -158,7 +158,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             }
 
             var anyDistinct = stream.Execute(
-                new GetDistinctStringSerializedIdsOp());
+                new StandardGetDistinctStringSerializedIdsOp());
             anyDistinct.ToList().MustForTest()
                        .BeEqualTo(
                             new List<string>
@@ -170,7 +170,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             });
 
             var objectObjectDistinct = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     typeof(MyObject).ToRepresentation()));
             objectObjectDistinct.ToList().MustForTest()
@@ -183,7 +183,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             });
 
             var stringIdDistinct = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     typeof(string).ToRepresentation()));
             stringIdDistinct.ToList().MustForTest()
                             .BeEqualTo(
@@ -195,7 +195,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                  });
 
             var stringIdObjectObjectDistinct = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     typeof(string).ToRepresentation(),
                     typeof(MyObject).ToRepresentation()));
             stringIdObjectObjectDistinct.ToList().MustForTest()
@@ -207,7 +207,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                  });
 
             var tagDistinct = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     null,
                     VersionMatchStrategy.Any,
@@ -224,7 +224,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                  });
 
             var tagDistinctWrongIdType = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     typeof(decimal?).ToRepresentation(),
                     null,
                     VersionMatchStrategy.Any,
@@ -238,7 +238,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                               .BeEmptyEnumerable();
 
             var tagDistinctWrongObjectType = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     typeof(short).ToRepresentation(),
                     VersionMatchStrategy.Any,
@@ -252,7 +252,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                               .BeEmptyEnumerable();
 
             var tagDistinctWrongTagValue = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     null,
                     VersionMatchStrategy.Any,
@@ -266,7 +266,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                     .BeEmptyEnumerable();
 
             var tagDistinctWrongTagName = stream.Execute(
-                new GetDistinctStringSerializedIdsOp(
+                new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     null,
                     VersionMatchStrategy.Any,
@@ -601,7 +601,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
 
             var key = Guid.NewGuid().ToString().ToUpperInvariant();
-            var allRecords = stream.Execute(new GetAllRecordsByIdOp(key));
+            var allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(key));
             allRecords.MustForTest().BeEmptyEnumerable();
 
             var itemCount = 10;
@@ -613,13 +613,13 @@ namespace Naos.Database.Domain.Test.MemoryStream
             }
 
             var serializedKey = "\"" + key + "\"";
-            allRecords = stream.Execute(new GetAllRecordsByIdOp(serializedKey));
+            allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(serializedKey));
             allRecords.MustForTest().HaveCount(itemCount);
 
             var retentionCount = 5;
             stream.PutWithId(key, A.Dummy<string>(), recordRetentionCount: retentionCount, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.PruneIfFoundById);
 
-            allRecords = stream.Execute(new GetAllRecordsByIdOp(serializedKey));
+            allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(serializedKey));
             allRecords.MustForTest().HaveCount(retentionCount);
 
             stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
@@ -651,13 +651,13 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var id = A.Dummy<string>();
             var putOpOne = new PutAndReturnInternalRecordIdOp<string>(A.Dummy<string>());
             var internalRecordIdOne = stream.GetStreamWritingProtocols<string>().Execute(putOpOne);
-            var latestOne = stream.Execute(new GetLatestRecordOp());
+            var latestOne = stream.Execute(new StandardGetLatestRecordOp());
             latestOne.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdOne);
             latestOne.Metadata.Tags.MustForTest().BeNull();
 
             var putOpTwo = new PutWithIdAndReturnInternalRecordIdOp<string, string>(id, A.Dummy<string>());
             var internalRecordIdTwo = stream.GetStreamWritingWithIdProtocols<string, string>().Execute(putOpTwo);
-            var latestTwo = stream.Execute(new GetLatestRecordByIdOp("\"" + id + "\""));
+            var latestTwo = stream.Execute(new StandardGetLatestRecordByIdOp("\"" + id + "\""));
             latestTwo.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdTwo);
             latestTwo.Metadata.Tags.MustForTest().BeNull();
         }
@@ -667,7 +667,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         {
             var streamName = "MS_PutAndGetLatestRecordByInternalRecordIdTest";
 
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocol(new MemoryDatabaseLocator(streamName));
+            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(new MemoryDatabaseLocator(streamName));
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -712,7 +712,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 DateTime.UtcNow,
                 null);
 
-            var putRecordOp = new PutRecordOp(
+            var putRecordOp = new StandardPutRecordOp(
                 metadata,
                 payload,
                 null,
@@ -728,7 +728,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             exception.MustForTest().NotBeNull().And().BeOfType<InvalidOperationException>();
             exception.Message.MustForTest().BeEqualTo("Operation specified an InternalRecordId of 1 but that InternalRecordId is already present in the stream.");
 
-            var foundRecord = stream.Execute(new GetRecordByInternalRecordIdOp(internalRecordId));
+            var foundRecord = stream.Execute(new StandardGetRecordByInternalRecordIdOp(internalRecordId));
             foundRecord.MustForTest().NotBeNull();
             foundRecord.Metadata.MustForTest().BeEqualTo(metadata);
             foundRecord.Payload.MustForTest().BeEqualTo(payload);
@@ -967,9 +967,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 allRecordsMetadata[idx].MustForTest().BeEqualTo(allRecords[idx].Metadata);
             }
 
-            var allRecordsReverse = stream.GetAllRecordsById(1L, orderRecordsStrategy: OrderRecordsStrategy.ByInternalRecordIdDescending);
+            var allRecordsReverse = stream.GetAllRecordsById(1L, orderRecordsBy: OrderRecordsBy.InternalRecordIdDescending);
             allRecordsReverse.MustForTest().NotBeEmptyEnumerable();
-            var allRecordsMetadataReverse = stream.GetAllRecordsMetadataById(1L, orderRecordsStrategy: OrderRecordsStrategy.ByInternalRecordIdDescending);
+            var allRecordsMetadataReverse = stream.GetAllRecordsMetadataById(1L, orderRecordsBy: OrderRecordsBy.InternalRecordIdDescending);
             allRecordsMetadataReverse.MustForTest().NotBeEmptyEnumerable();
 
             for (int idx = 0;

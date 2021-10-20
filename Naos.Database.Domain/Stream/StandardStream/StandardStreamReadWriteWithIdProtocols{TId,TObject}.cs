@@ -118,7 +118,7 @@ namespace Naos.Database.Domain
                 objectTimestamp);
 
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var result = this.stream.Execute(new PutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, null, operation.VersionMatchStrategy));
+            var result = this.stream.Execute(new StandardPutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, null, operation.VersionMatchStrategy));
 
             return result.InternalRecordIdOfPutRecord;
         }

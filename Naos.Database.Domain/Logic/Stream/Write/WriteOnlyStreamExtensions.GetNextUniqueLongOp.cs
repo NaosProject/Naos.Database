@@ -17,7 +17,7 @@ namespace Naos.Database.Domain
         /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        /// <returns>Result of <see cref="GetNextUniqueLongOp"/> execution.</returns>
+        /// <returns>The next unique long.</returns>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public static long GetNextUniqueLong(
             this IWriteOnlyStream stream)
@@ -34,7 +34,7 @@ namespace Naos.Database.Domain
         /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
         /// </summary>
         /// <param name="stream">The stream.</param>
-        /// <returns>Result of <see cref="GetNextUniqueLongOp"/> execution.</returns>
+        /// <returns>The next unique long.</returns>
         public static async Task<long> GetNextUniqueLongAsync(
             this IWriteOnlyStream stream)
         {

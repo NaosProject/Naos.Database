@@ -49,7 +49,87 @@ namespace Naos.Database.Domain.Test
                     return result;
                 });
 
+            // ------------------------------- OPERATIONS -------------------------------------
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordStrategy = A.Dummy<ExistingRecordStrategy>();
+                    return new PutAndReturnInternalRecordIdOp<Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                        existingRecordStrategy,
+                        existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+                        || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<ZeroOrPositiveInteger>()
+                            : null,
+                        A.Dummy<VersionMatchStrategy>());
+                });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordStrategy = A.Dummy<ExistingRecordStrategy>();
+                    return new PutOp<Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                        existingRecordStrategy,
+                        existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+                     || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<ZeroOrPositiveInteger>()
+                            : null,
+                        A.Dummy<VersionMatchStrategy>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordStrategy = A.Dummy<ExistingRecordStrategy>();
+                    return new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                        existingRecordStrategy,
+                        existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+                        || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<ZeroOrPositiveInteger>()
+                            : null,
+                        A.Dummy<VersionMatchStrategy>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordStrategy = A.Dummy<ExistingRecordStrategy>();
+                    return new PutWithIdOp<Version, Version>(
+                        A.Dummy<Version>(),
+                        A.Dummy<Version>(),
+                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                        existingRecordStrategy,
+                        existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+                     || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<ZeroOrPositiveInteger>()
+                            : null,
+                        A.Dummy<VersionMatchStrategy>());
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var existingRecordStrategy = A.Dummy<ExistingRecordStrategy>();
+                    return new StandardPutRecordOp(
+                        A.Dummy<StreamRecordMetadata>(),
+                        A.Dummy<DescribedSerializationBase>(),
+                        existingRecordStrategy,
+                        existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+                        || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
+                            ? (int?)A.Dummy<ZeroOrPositiveInteger>()
+                            : null,
+                        A.Dummy<VersionMatchStrategy>(),
+                        A.Dummy<long?>(),
+                        A.Dummy<IResourceLocator>());
+                });
+
+            // ------------------------------- TO CLEANUP -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
@@ -242,86 +322,11 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<string>()));
 
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
-                    return new PutAndReturnInternalRecordIdOp<Version>(
-                        A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                        existingRecordEncounteredStrategy,
-                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
-                            ? (int?)A.Dummy<int>()
-                            : null,
-                        A.Dummy<VersionMatchStrategy>(),
-                        A.Dummy<IResourceLocator>());
-                });
 
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
-                    return new PutOp<Version>(
-                        A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                        existingRecordEncounteredStrategy,
-                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
-                            ? (int?)A.Dummy<int>()
-                            : null,
-                        A.Dummy<VersionMatchStrategy>(),
-                        A.Dummy<IResourceLocator>());
-                });
 
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
-                    return new PutWithIdOp<Version, Version>(
-                        A.Dummy<Version>(),
-                        A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                        existingRecordEncounteredStrategy,
-                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
-                            ? (int?)A.Dummy<int>()
-                            : null,
-                        A.Dummy<VersionMatchStrategy>());
-                });
 
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
-                    return new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
-                        A.Dummy<Version>(),
-                        A.Dummy<Version>(),
-                        A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                        existingRecordEncounteredStrategy,
-                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
-                            ? (int?)A.Dummy<int>()
-                            : null,
-                        A.Dummy<VersionMatchStrategy>());
-                });
 
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var existingRecordEncounteredStrategy = A.Dummy<ExistingRecordEncounteredStrategy>();
-                    return new StandardPutRecordOp(
-                        A.Dummy<StreamRecordMetadata>(),
-                        A.Dummy<DescribedSerializationBase>(),
-                        A.Dummy<IResourceLocator>(),
-                        existingRecordEncounteredStrategy,
-                        existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-                     || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
-                            ? (int?)A.Dummy<int>()
-                            : null,
-                        A.Dummy<long?>(),
-                        A.Dummy<VersionMatchStrategy>());
-                });
+
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

@@ -110,23 +110,23 @@ namespace Naos.Database.Protocol.FileSystem
                     {
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalse - this is not true as it's iterating the potential locators...
                         alreadyExists = alreadyExists || exists;
-                        switch (operation.ExistingStreamEncounteredStrategy)
+                        switch (operation.ExistingStreamStrategy)
                         {
-                            case ExistingStreamEncounteredStrategy.Overwrite:
+                            case ExistingStreamStrategy.Overwrite:
                                 DeleteDirectoryAndConfirm(directoryPath, true);
                                 CreateDirectoryAndConfirm(directoryPath);
                                 break;
-                            case ExistingStreamEncounteredStrategy.Skip:
+                            case ExistingStreamStrategy.Skip:
                                 wasCreated = false;
                                 break;
-                            case ExistingStreamEncounteredStrategy.Throw:
+                            case ExistingStreamStrategy.Throw:
                                 throw new InvalidOperationException(
                                     FormattableString.Invariant(
-                                        $"Path '{directoryPath}' already exists and {nameof(operation.ExistingStreamEncounteredStrategy)} on the operation is {operation.ExistingStreamEncounteredStrategy}."));
+                                        $"Path '{directoryPath}' already exists and {nameof(operation.ExistingStreamStrategy)} on the operation is {operation.ExistingStreamStrategy}."));
                             default:
                                 throw new NotSupportedException(
                                     FormattableString.Invariant(
-                                        $"{nameof(operation.ExistingStreamEncounteredStrategy)} value '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
+                                        $"{nameof(operation.ExistingStreamStrategy)} value '{operation.ExistingStreamStrategy}' is not supported."));
                         }
                     }
                     else
@@ -156,13 +156,13 @@ namespace Naos.Database.Protocol.FileSystem
                     var exists = Directory.Exists(directoryPath);
                     if (!exists)
                     {
-                        switch (operation.ExistingStreamNotEncounteredStrategy)
+                        switch (operation.StreamNotFoundStrategy)
                         {
-                            case ExistingStreamNotEncounteredStrategy.Throw:
+                            case StreamNotFoundStrategy.Throw:
                                 throw new InvalidOperationException(
                                     Invariant(
-                                        $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
-                            case ExistingStreamNotEncounteredStrategy.Skip:
+                                        $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.StreamNotFoundStrategy)} is '{operation.StreamNotFoundStrategy}'."));
+                            case StreamNotFoundStrategy.Skip:
                                 break;
                         }
                     }
@@ -727,7 +727,7 @@ namespace Naos.Database.Protocol.FileSystem
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public override TryHandleRecordResult Execute(
-            TryHandleRecordOp operation)
+            StandardTryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
             var allLocators = operation.SpecifiedResourceLocator != null
@@ -1100,7 +1100,7 @@ namespace Naos.Database.Protocol.FileSystem
                 lock (this.nextInternalRecordIdentifierLock)
                 {
                     // no need to waste the cycles if it the logic is disabled
-                    var metadataPathsThatCouldMatch = operation.ExistingRecordEncounteredStrategy != ExistingRecordEncounteredStrategy.None
+                    var metadataPathsThatCouldMatch = operation.ExistingRecordStrategy != ExistingRecordStrategy.None
                         ? Directory.GetFiles(
                             rootPath,
                             Invariant($"*___{operation.Metadata.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
@@ -1108,9 +1108,9 @@ namespace Naos.Database.Protocol.FileSystem
                         : null;
 
                     var metadataThatCouldMatch =
-                        (operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
-                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
-                      || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById)
+                        (operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundById
+                      || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundById
+                      || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById)
                             ? metadataPathsThatCouldMatch?.Select(
                                                                _ => new
                                                                     {
@@ -1136,11 +1136,11 @@ namespace Naos.Database.Protocol.FileSystem
                                                                    null,
                                                                    operation.VersionMatchStrategy))
                                                           .ToList()
-                            : (operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
-                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
-                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
-                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
-                            || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                            : (operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
+                            || operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType
+                            || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent
+                            || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndType
+                            || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
                                 ? metadataPathsThatCouldMatch?.Select(
                                                                    _ => new
                                                                         {
@@ -1171,26 +1171,26 @@ namespace Naos.Database.Protocol.FileSystem
                                                               .ToList()
                                 : null);
 
-                    switch (operation.ExistingRecordEncounteredStrategy)
+                    switch (operation.ExistingRecordStrategy)
                     {
-                        case ExistingRecordEncounteredStrategy.None:
+                        case ExistingRecordStrategy.None:
                             /* no-op */
                             break;
-                        case ExistingRecordEncounteredStrategy.ThrowIfFoundById:
+                        case ExistingRecordStrategy.ThrowIfFoundById:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {metadataPathsThatCouldMatch.Length}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordStrategy)} was {operation.ExistingRecordStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {metadataPathsThatCouldMatch.Length}."));
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
+                        case ExistingRecordStrategy.ThrowIfFoundByIdAndType:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' yet found {metadataThatCouldMatch.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordStrategy)} was {operation.ExistingRecordStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' yet found {metadataThatCouldMatch.Count}."));
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent:
+                        case ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent:
                             var matchesThrow =
                                 metadataThatCouldMatch?
                                    .Where(_ =>
@@ -1231,11 +1231,11 @@ namespace Naos.Database.Protocol.FileSystem
 
                             if (matchesThrow.Any())
                             {
-                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
+                                throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordStrategy)} was {operation.ExistingRecordStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
+                        case ExistingRecordStrategy.DoNotWriteIfFoundById:
                             if (metadataPathsThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
                                 var matchingIds = metadataPathsThatCouldMatch.Select(GetInternalRecordIdFromRecordFilePath).ToList();
@@ -1243,7 +1243,7 @@ namespace Naos.Database.Protocol.FileSystem
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
+                        case ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType:
                             if (metadataThatCouldMatch?.Any() ?? throw new InvalidOperationException(Invariant($"This should be unreachable as {nameof(metadataPathsThatCouldMatch)} should not be null.")))
                             {
                                 var matchingIds = metadataPathsThatCouldMatch.Select(GetInternalRecordIdFromRecordFilePath).ToList();
@@ -1251,7 +1251,7 @@ namespace Naos.Database.Protocol.FileSystem
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
+                        case ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
                             var matchesDoNotWrite =
                                 metadataThatCouldMatch?
                                    .Where(_ =>
@@ -1296,7 +1296,7 @@ namespace Naos.Database.Protocol.FileSystem
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.PruneIfFoundById:
+                        case ExistingRecordStrategy.PruneIfFoundById:
                             if (metadataThatCouldMatch != null && operation.RecordRetentionCount != null && metadataPathsThatCouldMatch.Length >= operation.RecordRetentionCount - 1)
                             {
                                 existingRecordIds.AddRange(
@@ -1316,7 +1316,7 @@ namespace Naos.Database.Protocol.FileSystem
                             }
 
                             break;
-                        case ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType:
+                        case ExistingRecordStrategy.PruneIfFoundByIdAndType:
                             if (metadataThatCouldMatch != null && operation.RecordRetentionCount != null && metadataPathsThatCouldMatch.Length >= operation.RecordRetentionCount - 1)
                             {
                                 existingRecordIds.AddRange(
@@ -1337,7 +1337,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                             break;
                         default:
-                            throw new NotSupportedException(Invariant($"{nameof(ExistingRecordEncounteredStrategy)} {operation.ExistingRecordEncounteredStrategy} is not supported."));
+                            throw new NotSupportedException(Invariant($"{nameof(ExistingRecordStrategy)} {operation.ExistingRecordStrategy} is not supported."));
                     }
 
                     if (operation.InternalRecordId == null)

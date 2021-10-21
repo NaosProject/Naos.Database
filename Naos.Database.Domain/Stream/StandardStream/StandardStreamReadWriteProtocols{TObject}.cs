@@ -42,7 +42,7 @@ namespace Naos.Database.Domain
         public void Execute(
             PutOp<TObject> operation)
         {
-            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(operation.ObjectToPut, operation.Tags, operation.ExistingRecordStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
             this.Execute(delegatedOperation);
         }
 
@@ -58,7 +58,7 @@ namespace Naos.Database.Domain
         public long? Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags, operation.ExistingRecordStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
             var result = this.delegatedWithIdProtocols.Execute(delegatedOperation);
             return result;
         }

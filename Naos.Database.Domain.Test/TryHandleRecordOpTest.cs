@@ -33,14 +33,14 @@ namespace Naos.Database.Domain.Test
                .RemoveAllScenarios()
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<TryHandleRecordOp>
+                        new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
                         {
                             Name = "constructor should throw ArgumentException when parameter 'concern' is reserved scenario",
                             ConstructionFunc = () =>
                             {
-                                var referenceObject = A.Dummy<TryHandleRecordOp>();
+                                var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
 
-                                var result = new TryHandleRecordOp(
+                                var result = new StandardTryHandleRecordOp(
                                     Concerns.RecordHandlingConcern,
                                     referenceObject.IdentifierType,
                                     referenceObject.ObjectType,
@@ -60,14 +60,14 @@ namespace Naos.Database.Domain.Test
                         })
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<TryHandleRecordOp>
+                        new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
                         {
                             Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
                             ConstructionFunc = () =>
                             {
-                                var referenceObject = A.Dummy<TryHandleRecordOp>();
+                                var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
 
-                                var result = new TryHandleRecordOp(
+                                var result = new StandardTryHandleRecordOp(
                                     null,
                                     referenceObject.IdentifierType,
                                     referenceObject.ObjectType,
@@ -86,14 +86,14 @@ namespace Naos.Database.Domain.Test
                         })
                .AddScenario(
                     () =>
-                        new ConstructorArgumentValidationTestScenario<TryHandleRecordOp>
+                        new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
                         {
                             Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
                             ConstructionFunc = () =>
                             {
-                                var referenceObject = A.Dummy<TryHandleRecordOp>();
+                                var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
 
-                                var result = new TryHandleRecordOp(
+                                var result = new StandardTryHandleRecordOp(
                                     Invariant($"  {Environment.NewLine}  "),
                                     referenceObject.IdentifierType,
                                     referenceObject.ObjectType,

@@ -111,7 +111,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract TryHandleRecordResult Execute(
-            TryHandleRecordOp operation);
+            StandardTryHandleRecordOp operation);
 
         /// <inheritdoc />
         public abstract PutRecordResult Execute(

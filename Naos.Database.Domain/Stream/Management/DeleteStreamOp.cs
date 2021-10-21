@@ -19,14 +19,14 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="DeleteStreamOp"/> class.
         /// </summary>
         /// <param name="streamRepresentation">The stream.</param>
-        /// <param name="existingStreamNotEncounteredStrategy">Existing stream encountered strategy.</param>
+        /// <param name="streamNotFoundStrategy">Existing stream encountered strategy.</param>
         /// <exception cref="ArgumentNullException">stream.</exception>
         public DeleteStreamOp(
             IStreamRepresentation streamRepresentation,
-            ExistingStreamNotEncounteredStrategy existingStreamNotEncounteredStrategy)
+            StreamNotFoundStrategy streamNotFoundStrategy)
         {
             this.StreamRepresentation = streamRepresentation ?? throw new ArgumentNullException(nameof(streamRepresentation));
-            this.ExistingStreamNotEncounteredStrategy = existingStreamNotEncounteredStrategy;
+            this.StreamNotFoundStrategy = streamNotFoundStrategy;
         }
 
         /// <summary>
@@ -39,6 +39,6 @@ namespace Naos.Database.Domain
         /// Gets the existing stream not encountered strategy.
         /// </summary>
         /// <value>The existing stream not encountered strategy.</value>
-        public ExistingStreamNotEncounteredStrategy ExistingStreamNotEncounteredStrategy { get; private set; }
+        public StreamNotFoundStrategy StreamNotFoundStrategy { get; private set; }
     }
 }

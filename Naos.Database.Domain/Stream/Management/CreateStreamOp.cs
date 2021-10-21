@@ -19,14 +19,14 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="CreateStreamOp"/> class.
         /// </summary>
         /// <param name="streamRepresentation">The stream.</param>
-        /// <param name="existingStreamEncounteredStrategy">Existing stream encountered strategy.</param>
+        /// <param name="existingStreamStrategy">Existing stream encountered strategy.</param>
         /// <exception cref="ArgumentNullException">stream.</exception>
         public CreateStreamOp(
             IStreamRepresentation streamRepresentation,
-            ExistingStreamEncounteredStrategy existingStreamEncounteredStrategy)
+            ExistingStreamStrategy existingStreamStrategy)
         {
             this.StreamRepresentation = streamRepresentation ?? throw new ArgumentNullException(nameof(streamRepresentation));
-            this.ExistingStreamEncounteredStrategy = existingStreamEncounteredStrategy;
+            this.ExistingStreamStrategy = existingStreamStrategy;
         }
 
         /// <summary>
@@ -39,6 +39,6 @@ namespace Naos.Database.Domain
         /// Gets the existing stream encountered strategy.
         /// </summary>
         /// <value>The existing stream encountered strategy.</value>
-        public ExistingStreamEncounteredStrategy ExistingStreamEncounteredStrategy { get; private set; }
+        public ExistingStreamStrategy ExistingStreamStrategy { get; private set; }
     }
 }

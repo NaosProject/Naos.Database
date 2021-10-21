@@ -73,7 +73,7 @@ namespace Naos.Database.Domain
         public void Execute(
             PutWithIdOp<TId, TObject> operation)
         {
-            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(operation.Id, operation.ObjectToPut, operation.Tags, operation.ExistingRecordStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
             this.Execute(delegatedOperation);
         }
 
@@ -116,7 +116,7 @@ namespace Naos.Database.Domain
                 objectTimestamp);
 
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var result = this.stream.Execute(new StandardPutRecordOp(metadata, describedSerialization, locator, operation.ExistingRecordEncounteredStrategy, operation.RecordRetentionCount, null, operation.VersionMatchStrategy));
+            var result = this.stream.Execute(new StandardPutRecordOp(metadata, describedSerialization, operation.ExistingRecordStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy, null, locator));
 
             return result.InternalRecordIdOfPutRecord;
         }

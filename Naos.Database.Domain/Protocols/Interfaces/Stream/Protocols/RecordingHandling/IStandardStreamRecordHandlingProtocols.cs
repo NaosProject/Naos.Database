@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IStandardStreamHandleProtocols.cs" company="Naos Project">
+// <copyright file="IStandardStreamRecordHandlingProtocols.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
             ISyncReturningProtocol<GetHandlingStatusOfRecordByInternalRecordIdOp, HandlingStatus>,
             ISyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
             ISyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
-            ISyncReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,
+            ISyncReturningProtocol<StandardTryHandleRecordOp, TryHandleRecordResult>,
             ISyncVoidProtocol<BlockRecordHandlingOp>,
             ISyncVoidProtocol<CancelBlockedRecordHandlingOp>,
             ISyncVoidProtocol<CancelHandleRecordExecutionRequestOp>,

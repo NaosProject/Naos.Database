@@ -29,7 +29,7 @@ namespace Naos.Database.Domain
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
         {
-            tag.MustForArg().NotBeNull();
+            tag.MustForArg(nameof(tag)).NotBeNull();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.Tag = tag;

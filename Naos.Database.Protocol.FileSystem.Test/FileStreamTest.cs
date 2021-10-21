@@ -102,7 +102,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 locatorProtocols);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Skip));
             var zeroObject = new MyObject(null, "Null Id");
             var firstObject = new MyObject("RecordOne", "One Id");
             var secondObject = new MyObject("RecordTwo", "Two Id");
@@ -134,7 +134,7 @@ namespace Naos.Protocol.FileSystem.Test
                             timestampUtc,
                             null),
                         zeroObject.ToDescribedSerializationUsingSpecificSerializer(serializer, SerializationFormat.String),
-                        resourceLocatorZero));
+                        specifiedResourceLocator: resourceLocatorZero));
                 stream.PutWithId(
                     firstObject.Id,
                     firstObject,
@@ -283,7 +283,7 @@ namespace Naos.Protocol.FileSystem.Test
                                     .MustForTest()
                                     .BeEmptyEnumerable();
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -349,7 +349,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 locatorProtocols);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Skip));
             var zeroObject = new MyObject(null, "Null Id");
             var firstObject = new MyObject("RecordOne", "One Id");
             var secondObject = new MyObject("RecordTwo", "Two Id");
@@ -396,7 +396,7 @@ namespace Naos.Protocol.FileSystem.Test
             allLocators.ForEach(_ => stream.Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.", _)));
             allLocators.ForEach(_ => stream.Execute(new PruneBeforeInternalRecordIdOp(15, "Pruning by id.", _)));
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -425,7 +425,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var key = Guid.NewGuid().ToString().ToUpperInvariant();
             var allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(key));
@@ -444,12 +444,12 @@ namespace Naos.Protocol.FileSystem.Test
             allRecords.MustForTest().HaveCount(itemCount);
 
             var retentionCount = 5;
-            stream.PutWithId(key, A.Dummy<string>(), recordRetentionCount: retentionCount, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.PruneIfFoundById);
+            stream.PutWithId(key, A.Dummy<string>(), recordRetentionCount: retentionCount, existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundById);
 
             allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(serializedKey));
             allRecords.MustForTest().HaveCount(retentionCount);
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification =  NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
@@ -479,7 +479,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.GetStreamManagementProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Skip));
+            stream.GetStreamManagementProtocols().Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Skip));
             var start = DateTime.UtcNow;
             for (int idx = 0;
                 idx < 10;
@@ -496,7 +496,7 @@ namespace Naos.Protocol.FileSystem.Test
                                 };
 
                 stream.PutWithId(firstObject.Id, firstObject, firstObject.Tags);
-                var first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
+                var first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.MustForTest().NotBeNull();
                 var getFirstStatusByIdOp = new GetHandlingStatusOfRecordSetByTagOp(
                     firstConcern,
@@ -515,14 +515,14 @@ namespace Naos.Protocol.FileSystem.Test
 
                 stream.Execute(new BlockRecordHandlingOp("Stop processing, fixing resource issue."));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
-                first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
 
                 stream.Execute(new CancelBlockedRecordHandlingOp("Resume processing, fixed resource issue."));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.CanceledRunning);
 
-                first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().NotBeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
@@ -533,7 +533,7 @@ namespace Naos.Protocol.FileSystem.Test
                         "Processing not finished, check later.",
                         tags: firstTags));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.SelfCanceledRunning);
-                first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().NotBeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
@@ -544,7 +544,7 @@ namespace Naos.Protocol.FileSystem.Test
                         "Processing not finished, check later.",
                         tags: firstTags));
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
-                first = stream.Execute(new TryHandleRecordOp(firstConcern, tags: firstTags));
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
 
@@ -558,7 +558,7 @@ namespace Naos.Protocol.FileSystem.Test
                 }
 
                 var secondConcern = "FailedRetriedScenario";
-                var second = stream.Execute(new TryHandleRecordOp(secondConcern));
+                var second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.MustForTest().NotBeNull();
                 var secondInternalRecordId = second.RecordToHandle.InternalRecordId;
                 var getSecondStatusByIdOp = new GetHandlingStatusOfRecordsByIdOp(
@@ -576,7 +576,7 @@ namespace Naos.Protocol.FileSystem.Test
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1 doesn't work."));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
-                second = stream.Execute(new TryHandleRecordOp(secondConcern));
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
 
@@ -586,14 +586,14 @@ namespace Naos.Protocol.FileSystem.Test
 
                 stream.Execute(new BlockRecordHandlingOp("Stop processing, need to confirm deployment."));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
-                second = stream.Execute(new TryHandleRecordOp(secondConcern));
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().BeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Blocked);
 
                 stream.Execute(new CancelBlockedRecordHandlingOp("Resume processing, confirmed deployment."));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.RetryFailed);
 
-                second = stream.Execute(new TryHandleRecordOp(secondConcern));
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().NotBeNull();
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
@@ -606,7 +606,7 @@ namespace Naos.Protocol.FileSystem.Test
 
                 stream.Execute(new CancelHandleRecordExecutionRequestOp(firstInternalRecordId, secondConcern, "Giving up."));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Canceled);
-                second = stream.Execute(new TryHandleRecordOp(secondConcern));
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 stream.Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Canceled);
                 second.RecordToHandle.MustForTest().BeNull();
 
@@ -638,7 +638,7 @@ namespace Naos.Protocol.FileSystem.Test
             allLocators.ForEach(_ => stream.Execute(new PruneBeforeInternalRecordIdOp(7, "Pruning by id.", _)));
 
             stream.GetStreamManagementProtocols()
-                  .Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+                  .Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -667,7 +667,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var existsFirst = stream.DoesAnyExistById(1L);
             existsFirst.MustForTest().NotBeTrue();
@@ -683,7 +683,7 @@ namespace Naos.Protocol.FileSystem.Test
             var existsFourth = stream.DoesAnyExistById(1L, typeof(Guid).ToRepresentation());
             existsFourth.MustForTest().BeTrue();
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -712,7 +712,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var existsFirst = stream.GetLatestRecordMetadataById(1L);
             existsFirst.MustForTest().BeNull();
@@ -728,7 +728,7 @@ namespace Naos.Protocol.FileSystem.Test
             var existsFourth = stream.GetLatestRecordMetadataById(1L, typeof(Guid).ToRepresentation());
             existsFourth.MustForTest().NotBeNull();
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -757,7 +757,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var internalRecordId = 1L;
             var objectId = Guid.NewGuid();
@@ -786,10 +786,8 @@ namespace Naos.Protocol.FileSystem.Test
             var putRecordOp = new StandardPutRecordOp(
                 metadata,
                 payload,
-                null,
-                ExistingRecordEncounteredStrategy.None,
-                null,
-                internalRecordId);
+                ExistingRecordStrategy.None,
+                internalRecordId: internalRecordId);
 
             var existsFirst = stream.GetLatestRecordMetadataById(objectId);
             existsFirst.MustForTest().BeNull();
@@ -804,7 +802,7 @@ namespace Naos.Protocol.FileSystem.Test
             foundRecord.Metadata.MustForTest().BeEqualTo(metadata);
             foundRecord.Payload.MustForTest().BeEqualTo(payload);
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -833,29 +831,29 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             stream.PutWithId((string)null, (MyObject)null);
             var result = stream.GetLatestObjectById<string, MyObject>(null);
             result.MustForTest().BeNull();
 
             var concern = "NullIdentifierAndValueTest";
-            var record = stream.Execute(new TryHandleRecordOp(concern));
+            var record = stream.Execute(new StandardTryHandleRecordOp(concern));
             record?.RecordToHandle.MustForTest().NotBeNull();
             ((StringDescribedSerialization)record?.RecordToHandle.Payload)?.SerializedPayload.MustForTest().BeEqualTo("null");
 
             stream.Execute(new CompleteRunningHandleRecordExecutionOp(record.RecordToHandle.InternalRecordId, concern));
 
-            var recordAgain = stream.Execute(new TryHandleRecordOp(concern));
+            var recordAgain = stream.Execute(new StandardTryHandleRecordOp(concern));
             recordAgain.RecordToHandle.MustForTest().BeNull();
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
-        public static void ExistingRecordEncounteredStrategyTest()
+        public static void ExistingRecordStrategyTest()
         {
-            var streamName = "FS_ExistingRecordEncounteredStrategyTest";
+            var streamName = "FS_ExistingRecordStrategyTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
@@ -878,39 +876,39 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var dummyOne = A.Dummy<MyObject>();
             var dummyTwo = A.Dummy<MyObject>();
 
             stream.PutWithId(1L, dummyOne);
 
-            var exceptionById = Record.Exception(() => stream.PutWithId(1L, "otherType", null, ExistingRecordEncounteredStrategy.ThrowIfFoundById));
+            var exceptionById = Record.Exception(() => stream.PutWithId(1L, "otherType", null, ExistingRecordStrategy.ThrowIfFoundById));
             exceptionById.MustForTest().NotBeNull();
             exceptionById.MustForTest().BeOfType<InvalidOperationException>();
-            exceptionById?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundById));
+            exceptionById?.ToString().MustForTest().ContainString(nameof(ExistingRecordStrategy.ThrowIfFoundById));
             stream.PutWithId(1L, "otherType"); // should not throw
 
-            var exceptionByIdAndType = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType));
+            var exceptionByIdAndType = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordStrategy.ThrowIfFoundByIdAndType));
             exceptionByIdAndType.MustForTest().NotBeNull();
             exceptionByIdAndType.MustForTest().BeOfType<InvalidOperationException>();
-            exceptionByIdAndType?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType));
+            exceptionByIdAndType?.ToString().MustForTest().ContainString(nameof(ExistingRecordStrategy.ThrowIfFoundByIdAndType));
             stream.PutWithId(1L, dummyTwo); // should not throw
 
-            var exceptionByIdAndTypeAndContent = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent));
+            var exceptionByIdAndTypeAndContent = Record.Exception(() => stream.PutWithId(1L, dummyTwo, null, ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent));
             exceptionByIdAndTypeAndContent.MustForTest().NotBeNull();
             exceptionByIdAndTypeAndContent.MustForTest().BeOfType<InvalidOperationException>();
-            exceptionByIdAndTypeAndContent?.ToString().MustForTest().ContainString(nameof(ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent));
+            exceptionByIdAndTypeAndContent?.ToString().MustForTest().ContainString(nameof(ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent));
             stream.PutWithId(1L, dummyTwo); // should not throw
 
             stream.PutWithId(2L, "hello");
-            stream.PutWithId(2L, dummyTwo, existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById);
-            stream.PutWithId(2L, "other", existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType);
-            stream.PutWithId(2L, "hello", existingRecordEncounteredStrategy: ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent);
+            stream.PutWithId(2L, dummyTwo, existingRecordStrategy: ExistingRecordStrategy.DoNotWriteIfFoundById);
+            stream.PutWithId(2L, "other", existingRecordStrategy: ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType);
+            stream.PutWithId(2L, "hello", existingRecordStrategy: ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent);
             var indexTwoRecords = stream.GetAllRecordsById(2L);
             indexTwoRecords.MustForTest().HaveCount(1);
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -939,7 +937,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var count = 5;
 
@@ -986,7 +984,7 @@ namespace Naos.Protocol.FileSystem.Test
                 allRecordsMetadataReverse[idx].MustForTest().BeEqualTo(allRecordsReverse[idx].Metadata);
             }
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
 
         [Fact]
@@ -1014,7 +1012,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new JsonSerializerFactory(),
                 resourceLocatorProtocol);
 
-            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamEncounteredStrategy.Throw));
+            stream.Execute(new CreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             var id = A.Dummy<string>();
             var putOpOne = new PutAndReturnInternalRecordIdOp<string>(A.Dummy<string>());
@@ -1029,7 +1027,7 @@ namespace Naos.Protocol.FileSystem.Test
             latestTwo.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdTwo);
             latestTwo.Metadata.Tags.MustForTest().BeNull();
 
-            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, ExistingStreamNotEncounteredStrategy.Throw));
+            stream.Execute(new DeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
     }
 

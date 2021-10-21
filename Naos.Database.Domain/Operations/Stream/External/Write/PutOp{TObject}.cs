@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Put the object to a <see cref="IWriteOnlyStream"/>.
+    /// Put an object into a stream.
     /// </summary>
     /// <typeparam name="TObject">Type of data being written.</typeparam>
     public partial class PutOp<TObject> : VoidOperationBase, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
@@ -21,20 +21,20 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>
-        /// <param name="existingRecordEncounteredStrategy">Optional strategy for an existing record.</param>
-        /// <param name="recordRetentionCount">Optional number of existing records to retain if <paramref name="existingRecordEncounteredStrategy"/> is set to prune.</param>
-        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is any version.</param>
+        /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
+        /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type when looking for existing records.  DEFAULT is no filter (any version is a match).</param>
         public PutOp(
             TObject objectToPut,
             IReadOnlyCollection<NamedValue<string>> tags = null,
-            ExistingRecordEncounteredStrategy existingRecordEncounteredStrategy = ExistingRecordEncounteredStrategy.None,
+            ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
-            if (existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
-             || existingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType)
+            if (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+             || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
             {
-                recordRetentionCount.MustForArg(nameof(recordRetentionCount)).NotBeNull("Must have a retention count if pruning.");
+                recordRetentionCount.MustForArg(nameof(recordRetentionCount)).NotBeNull("Must have a retention count if pruning.").And().BeGreaterThanOrEqualTo((int?)0);
             }
             else
             {
@@ -45,7 +45,7 @@ namespace Naos.Database.Domain
 
             this.ObjectToPut = objectToPut;
             this.Tags = tags;
-            this.ExistingRecordEncounteredStrategy = existingRecordEncounteredStrategy;
+            this.ExistingRecordStrategy = existingRecordStrategy;
             this.RecordRetentionCount = recordRetentionCount;
             this.VersionMatchStrategy = versionMatchStrategy;
         }
@@ -59,17 +59,17 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <summary>
-        /// Gets the existing record encountered strategy.
+        /// Gets the strategy to use when an existing record is encountered while writing.
         /// </summary>
-        public ExistingRecordEncounteredStrategy ExistingRecordEncounteredStrategy { get; private set; }
+        public ExistingRecordStrategy ExistingRecordStrategy { get; private set; }
 
         /// <summary>
-        /// Gets the record retention count if <see cref="ExistingRecordEncounteredStrategy"/> set to pruning.
+        /// Gets the number of existing records to retain if <see cref="ExistingRecordStrategy"/> is set to prune.
         /// </summary>
         public int? RecordRetentionCount { get; private set; }
 
         /// <summary>
-        /// Gets the type version match strategy.
+        /// Gets the strategy to use to filter on the version of the object type when looking for existing records.
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
     }

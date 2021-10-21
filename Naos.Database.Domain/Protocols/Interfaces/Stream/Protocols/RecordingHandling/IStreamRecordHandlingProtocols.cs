@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// Interface to protocol the stream record handling operations without a typed identifier and without a typed record payload.
     /// </summary>
     public interface IStreamRecordHandlingProtocols
-        : ISyncAndAsyncReturningProtocol<TryHandleRecordOp, TryHandleRecordResult>,
+        : ISyncAndAsyncReturningProtocol<StandardTryHandleRecordOp, TryHandleRecordResult>,
           ISyncAndAsyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
           ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordByInternalRecordIdOp, HandlingStatus>,
           ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,

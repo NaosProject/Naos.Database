@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" company="Naos Project">
+// <copyright file="GetStreamFromRepresentationOp.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

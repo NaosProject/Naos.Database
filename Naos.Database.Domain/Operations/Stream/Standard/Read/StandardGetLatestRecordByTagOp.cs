@@ -37,7 +37,7 @@ namespace Naos.Database.Domain
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IResourceLocator specifiedResourceLocator = null)
         {
-            tag.MustForArg().NotBeNull();
+            tag.MustForArg(nameof(tag)).NotBeNull();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.Tag = tag;

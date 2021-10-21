@@ -37,7 +37,6 @@ namespace Naos.Database.Domain
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IResourceLocator specifiedResourceLocator = null)
         {
-            identifierType.MustForArg(nameof(identifierType)).NotBeNull();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
 
             this.StringSerializedId = stringSerializedId;

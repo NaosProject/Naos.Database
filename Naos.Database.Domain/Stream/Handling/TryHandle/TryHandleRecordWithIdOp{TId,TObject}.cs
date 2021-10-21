@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
     /// <typeparam name="TObject">Type of the object in the record.</typeparam>
-    public partial class TryHandleRecordWithIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>, ITryHandleRecordOpBase
+    public partial class TryHandleRecordWithIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>, ITryHandleRecordOp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordWithIdOp{TId, TObject}"/> class.

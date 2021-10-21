@@ -30,7 +30,6 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null)
         {
             this.SpecifiedResourceLocator = specifiedResourceLocator;
-
             this.Details = details;
         }
 

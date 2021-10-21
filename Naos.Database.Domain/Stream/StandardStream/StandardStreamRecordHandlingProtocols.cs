@@ -35,7 +35,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public TryHandleRecordResult Execute(
-            TryHandleRecordOp operation)
+            StandardTryHandleRecordOp operation)
         {
             var result = this.stream.Execute(operation);
             return result;
@@ -43,7 +43,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<TryHandleRecordResult> ExecuteAsync(
-            TryHandleRecordOp operation)
+            StandardTryHandleRecordOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

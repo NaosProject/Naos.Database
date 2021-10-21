@@ -90,22 +90,22 @@ namespace Naos.Database.Domain
 
                 if (this.created)
                 {
-                    switch (operation.ExistingStreamEncounteredStrategy)
+                    switch (operation.ExistingStreamStrategy)
                     {
-                        case ExistingStreamEncounteredStrategy.Throw:
+                        case ExistingStreamStrategy.Throw:
                             throw new InvalidOperationException(
                                 Invariant(
-                                    $"Expected stream {operation.StreamRepresentation} to not exist, it does and the operation {nameof(operation.ExistingStreamEncounteredStrategy)} is set to '{operation.ExistingStreamEncounteredStrategy}'."));
-                        case ExistingStreamEncounteredStrategy.Overwrite:
+                                    $"Expected stream {operation.StreamRepresentation} to not exist, it does and the operation {nameof(operation.ExistingStreamStrategy)} is set to '{operation.ExistingStreamStrategy}'."));
+                        case ExistingStreamStrategy.Overwrite:
                             this.locatorToRecordPartitionMap.Clear();
                             break;
-                        case ExistingStreamEncounteredStrategy.Skip:
+                        case ExistingStreamStrategy.Skip:
                             wasCreated = false;
                             break;
                         default:
                             throw new NotSupportedException(
                                 Invariant(
-                                    $"{nameof(ExistingStreamEncounteredStrategy)} '{operation.ExistingStreamEncounteredStrategy}' is not supported."));
+                                    $"{nameof(ExistingStreamStrategy)} '{operation.ExistingStreamStrategy}' is not supported."));
                     }
                 }
 
@@ -135,16 +135,16 @@ namespace Naos.Database.Domain
 
                 if (!this.created)
                 {
-                    switch (operation.ExistingStreamNotEncounteredStrategy)
+                    switch (operation.StreamNotFoundStrategy)
                     {
-                        case ExistingStreamNotEncounteredStrategy.Throw:
+                        case StreamNotFoundStrategy.Throw:
                             throw new InvalidOperationException(
                                 Invariant(
-                                    $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.ExistingStreamNotEncounteredStrategy)} is '{operation.ExistingStreamNotEncounteredStrategy}'."));
-                        case ExistingStreamNotEncounteredStrategy.Skip:
+                                    $"Expected stream {operation.StreamRepresentation} to exist, it does not and the operation {nameof(operation.StreamNotFoundStrategy)} is '{operation.StreamNotFoundStrategy}'."));
+                        case StreamNotFoundStrategy.Skip:
                             break;
                         default:
-                            throw new NotSupportedException(Invariant($"{nameof(ExistingStreamNotEncounteredStrategy)} {operation.ExistingStreamNotEncounteredStrategy} is not supported."));
+                            throw new NotSupportedException(Invariant($"{nameof(StreamNotFoundStrategy)} {operation.StreamNotFoundStrategy} is not supported."));
                     }
                 }
                 else
@@ -554,7 +554,7 @@ namespace Naos.Database.Domain
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public override TryHandleRecordResult Execute(
-            TryHandleRecordOp operation)
+            StandardTryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
             var allLocators = operation.SpecifiedResourceLocator != null
@@ -855,9 +855,9 @@ namespace Naos.Database.Domain
                 }
 
                 var matchesId =
-                    operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById
-                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundById
-                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundById
+                    operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundById
+                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundById
+                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
                         ? recordPartition.Where(
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
@@ -867,11 +867,11 @@ namespace Naos.Database.Domain
                                          .ToList() : new List<StreamRecord>();
 
                 var matchesIdAndObject =
-                    operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
-                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType
-                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent
-                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType
-                 || operation.ExistingRecordEncounteredStrategy == ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType
+                    operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
+                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType
+                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent
+                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndType
+                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
                         ? recordPartition.Where(
                                               _ => _.Metadata.FuzzyMatchTypesAndId(
                                                   operation.Metadata.StringSerializedId,
@@ -881,50 +881,50 @@ namespace Naos.Database.Domain
                                          .ToList() : new List<StreamRecord>();
 
                 var recordIdsToPrune = new List<long>();
-                switch (operation.ExistingRecordEncounteredStrategy)
+                switch (operation.ExistingRecordStrategy)
                 {
-                    case ExistingRecordEncounteredStrategy.None:
+                    case ExistingRecordStrategy.None:
                         /* no-op */
                         break;
-                    case ExistingRecordEncounteredStrategy.ThrowIfFoundById:
+                    case ExistingRecordStrategy.ThrowIfFoundById:
                         if (matchesId.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesId.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordStrategy)} was {operation.ExistingRecordStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' yet found {matchesId.Count}."));
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndType:
+                    case ExistingRecordStrategy.ThrowIfFoundByIdAndType:
                         if (matchesIdAndObject.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' yet found {matchesIdAndObject.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordStrategy)} was {operation.ExistingRecordStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' yet found {matchesIdAndObject.Count}."));
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.ThrowIfFoundByIdAndTypeAndContent:
+                    case ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent:
                         var matchesThrow =
                             matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
 
                         if (matchesThrow.Any())
                         {
-                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordEncounteredStrategy)} was {operation.ExistingRecordEncounteredStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
+                            throw new InvalidOperationException(Invariant($"Operation {nameof(ExistingRecordStrategy)} was {operation.ExistingRecordStrategy}; expected to not find a record by identifier '{operation.Metadata.StringSerializedId}' and object type '{operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)}' and contents '{operation.Payload}' yet found {matchesThrow.Count}."));
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundById:
+                    case ExistingRecordStrategy.DoNotWriteIfFoundById:
                         if (matchesId.Any())
                         {
                             return new PutRecordResult(null, matchesId.Select(_ => _.InternalRecordId).ToList());
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndType:
+                    case ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType:
                         if (matchesIdAndObject.Any())
                         {
                             return new PutRecordResult(null, matchesIdAndObject.Select(_ => _.InternalRecordId).ToList());
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
+                    case ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
                         var matchesDoNotWrite =
                             matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
 
@@ -934,7 +934,7 @@ namespace Naos.Database.Domain
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.PruneIfFoundById:
+                    case ExistingRecordStrategy.PruneIfFoundById:
                         if (operation.RecordRetentionCount != null && matchesId.Count > operation.RecordRetentionCount - 1)
                         {
                             existingRecordIds.AddRange(
@@ -948,7 +948,7 @@ namespace Naos.Database.Domain
                         }
 
                         break;
-                    case ExistingRecordEncounteredStrategy.PruneIfFoundByIdAndType:
+                    case ExistingRecordStrategy.PruneIfFoundByIdAndType:
                         if (operation.RecordRetentionCount != null && matchesIdAndObject.Count > operation.RecordRetentionCount - 1)
                         {
                             existingRecordIds.AddRange(

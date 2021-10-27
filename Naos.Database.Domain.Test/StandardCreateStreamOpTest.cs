@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CreateStreamOpTest.cs" company="Naos Project">
+// <copyright file="StandardCreateStreamOpTest.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -16,11 +16,11 @@ namespace Naos.Database.Domain.Test
 
     using Xunit;
 
-    public static partial class CreateStreamOpTest
+    public static partial class StandardCreateStreamOpTest
     {
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
-        static CreateStreamOpTest()
+        static StandardCreateStreamOpTest()
         {
         }
     }

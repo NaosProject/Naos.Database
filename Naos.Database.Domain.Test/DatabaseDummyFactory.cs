@@ -335,14 +335,14 @@ namespace Naos.Database.Domain.Test
                     switch (scenario)
                     {
                         case 1:
-                            return new CreateStreamResult(false, true);
+                            return new StandardCreateStreamResult(false, true);
                         case 2:
-                            return new CreateStreamResult(true, false);
+                            return new StandardCreateStreamResult(true, false);
                         case 3:
-                            return new CreateStreamResult(true, true);
+                            return new StandardCreateStreamResult(true, true);
                         default:
                             throw new NotSupportedException(
-                                FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(CreateStreamResult)}."));
+                                FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(StandardCreateStreamResult)}."));
                     }
                 });
 

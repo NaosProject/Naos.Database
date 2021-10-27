@@ -35,16 +35,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class DeleteStreamOpTest
     {
-        private static readonly StringRepresentationTestScenarios<DeleteStreamOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<DeleteStreamOp>()
+        private static readonly StringRepresentationTestScenarios<StandardDeleteStreamOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardDeleteStreamOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<DeleteStreamOp>
+                new StringRepresentationTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DeleteStreamOp>();
+                        var systemUnderTest = A.Dummy<StandardDeleteStreamOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<DeleteStreamOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardDeleteStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.DeleteStreamOp: StreamRepresentation = {systemUnderTest.StreamRepresentation?.ToString() ?? "<null>"}, StreamNotFoundStrategy = {systemUnderTest.StreamNotFoundStrategy.ToString() ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<DeleteStreamOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<DeleteStreamOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardDeleteStreamOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardDeleteStreamOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<DeleteStreamOp>
+                new ConstructorArgumentValidationTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'streamRepresentation' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DeleteStreamOp>();
+                        var referenceObject = A.Dummy<StandardDeleteStreamOp>();
 
-                        var result = new DeleteStreamOp(
+                        var result = new StandardDeleteStreamOp(
                                              null,
                                              referenceObject.StreamNotFoundStrategy);
 
@@ -73,18 +73,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "streamRepresentation", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<DeleteStreamOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<DeleteStreamOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardDeleteStreamOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardDeleteStreamOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<DeleteStreamOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "StreamRepresentation should return same 'streamRepresentation' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DeleteStreamOp>();
+                        var referenceObject = A.Dummy<StandardDeleteStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<DeleteStreamOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardDeleteStreamOp>
                         {
-                            SystemUnderTest = new DeleteStreamOp(
+                            SystemUnderTest = new StandardDeleteStreamOp(
                                                       referenceObject.StreamRepresentation,
                                                       referenceObject.StreamNotFoundStrategy),
                             ExpectedPropertyValue = referenceObject.StreamRepresentation,
@@ -95,16 +95,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "StreamRepresentation",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<DeleteStreamOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "StreamNotFoundStrategy should return same 'streamNotFoundStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DeleteStreamOp>();
+                        var referenceObject = A.Dummy<StandardDeleteStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<DeleteStreamOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardDeleteStreamOp>
                         {
-                            SystemUnderTest = new DeleteStreamOp(
+                            SystemUnderTest = new StandardDeleteStreamOp(
                                                       referenceObject.StreamRepresentation,
                                                       referenceObject.StreamNotFoundStrategy),
                             ExpectedPropertyValue = referenceObject.StreamNotFoundStrategy,
@@ -115,19 +115,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "StreamNotFoundStrategy",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<DeleteStreamOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<DeleteStreamOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardDeleteStreamOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardDeleteStreamOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<DeleteStreamOp>
+                new DeepCloneWithTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "DeepCloneWithStreamRepresentation should deep clone object and replace StreamRepresentation with the provided streamRepresentation",
                     WithPropertyName = "StreamRepresentation",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DeleteStreamOp>();
+                        var systemUnderTest = A.Dummy<StandardDeleteStreamOp>();
 
-                        var referenceObject = A.Dummy<DeleteStreamOp>().ThatIs(_ => !systemUnderTest.StreamRepresentation.IsEqualTo(_.StreamRepresentation));
+                        var referenceObject = A.Dummy<StandardDeleteStreamOp>().ThatIs(_ => !systemUnderTest.StreamRepresentation.IsEqualTo(_.StreamRepresentation));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<DeleteStreamOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardDeleteStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.StreamRepresentation,
@@ -137,17 +137,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<DeleteStreamOp>
+                new DeepCloneWithTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "DeepCloneWithStreamNotFoundStrategy should deep clone object and replace StreamNotFoundStrategy with the provided streamNotFoundStrategy",
                     WithPropertyName = "StreamNotFoundStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DeleteStreamOp>();
+                        var systemUnderTest = A.Dummy<StandardDeleteStreamOp>();
 
-                        var referenceObject = A.Dummy<DeleteStreamOp>().ThatIs(_ => !systemUnderTest.StreamNotFoundStrategy.IsEqualTo(_.StreamNotFoundStrategy));
+                        var referenceObject = A.Dummy<StandardDeleteStreamOp>().ThatIs(_ => !systemUnderTest.StreamNotFoundStrategy.IsEqualTo(_.StreamNotFoundStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<DeleteStreamOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardDeleteStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.StreamNotFoundStrategy,
@@ -157,28 +157,28 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly DeleteStreamOp ReferenceObjectForEquatableTestScenarios = A.Dummy<DeleteStreamOp>();
+        private static readonly StandardDeleteStreamOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardDeleteStreamOp>();
 
-        private static readonly EquatableTestScenarios<DeleteStreamOp> EquatableTestScenarios = new EquatableTestScenarios<DeleteStreamOp>()
+        private static readonly EquatableTestScenarios<StandardDeleteStreamOp> EquatableTestScenarios = new EquatableTestScenarios<StandardDeleteStreamOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<DeleteStreamOp>
+                new EquatableTestScenario<StandardDeleteStreamOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new DeleteStreamOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardDeleteStreamOp[]
                     {
-                        new DeleteStreamOp(
+                        new StandardDeleteStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.StreamRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.StreamNotFoundStrategy),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new DeleteStreamOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardDeleteStreamOp[]
                     {
-                        new DeleteStreamOp(
-                                A.Dummy<DeleteStreamOp>().Whose(_ => !_.StreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRepresentation)).StreamRepresentation,
+                        new StandardDeleteStreamOp(
+                                A.Dummy<StandardDeleteStreamOp>().Whose(_ => !_.StreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRepresentation)).StreamRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.StreamNotFoundStrategy),
-                        new DeleteStreamOp(
+                        new StandardDeleteStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.StreamRepresentation,
-                                A.Dummy<DeleteStreamOp>().Whose(_ => !_.StreamNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamNotFoundStrategy)).StreamNotFoundStrategy),
+                                A.Dummy<StandardDeleteStreamOp>().Whose(_ => !_.StreamNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamNotFoundStrategy)).StreamNotFoundStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -192,7 +192,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CancelHandleRecordExecutionRequestOp>(),
                         A.Dummy<CancelRunningHandleRecordExecutionOp>(),
                         A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<CreateStreamOp>(),
+                        A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
                         A.Dummy<FailRunningHandleRecordExecutionOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
@@ -267,9 +267,9 @@ namespace Naos.Database.Domain.Test
             public static void DeleteStreamOp___Should_implement_IModel_of_DeleteStreamOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(DeleteStreamOp);
+                var type = typeof(StandardDeleteStreamOp);
 
-                var expectedModelMethods = typeof(IModel<DeleteStreamOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardDeleteStreamOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -279,7 +279,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<DeleteStreamOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardDeleteStreamOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -300,7 +300,7 @@ namespace Naos.Database.Domain.Test
             public static void DeleteStreamOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(DeleteStreamOp);
+                var type = typeof(StandardDeleteStreamOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -480,10 +480,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<DeleteStreamOp>();
+                var systemUnderTest = A.Dummy<StandardDeleteStreamOp>();
 
                 // Act
-                var actual = (DeleteStreamOp)systemUnderTest.Clone();
+                var actual = (StandardDeleteStreamOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -507,7 +507,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<DeleteStreamOp>();
+                var systemUnderTest = A.Dummy<StandardDeleteStreamOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -558,12 +558,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (DeleteStreamOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardDeleteStreamOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(DeleteStreamOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardDeleteStreamOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -625,7 +625,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DeleteStreamOp>();
+                var expected = A.Dummy<StandardDeleteStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -654,7 +654,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DeleteStreamOp>();
+                var expected = A.Dummy<StandardDeleteStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -683,7 +683,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DeleteStreamOp>();
+                var expected = A.Dummy<StandardDeleteStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -712,7 +712,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DeleteStreamOp>();
+                var expected = A.Dummy<StandardDeleteStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -746,8 +746,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                DeleteStreamOp systemUnderTest1 = null;
-                DeleteStreamOp systemUnderTest2 = null;
+                StandardDeleteStreamOp systemUnderTest1 = null;
+                StandardDeleteStreamOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -777,7 +777,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    DeleteStreamOp systemUnderTest = null;
+                    StandardDeleteStreamOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -926,8 +926,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                DeleteStreamOp systemUnderTest1 = null;
-                DeleteStreamOp systemUnderTest2 = null;
+                StandardDeleteStreamOp systemUnderTest1 = null;
+                StandardDeleteStreamOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -957,7 +957,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    DeleteStreamOp systemUnderTest = null;
+                    StandardDeleteStreamOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1396,7 +1396,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    DeleteStreamOp systemUnderTest = null;
+                    StandardDeleteStreamOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

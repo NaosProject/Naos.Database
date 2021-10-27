@@ -35,16 +35,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class CreateStreamOpTest
     {
-        private static readonly StringRepresentationTestScenarios<CreateStreamOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<CreateStreamOp>()
+        private static readonly StringRepresentationTestScenarios<StandardCreateStreamOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardCreateStreamOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<CreateStreamOp>
+                new StringRepresentationTestScenario<StandardCreateStreamOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CreateStreamOp>();
+                        var systemUnderTest = A.Dummy<StandardCreateStreamOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<CreateStreamOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardCreateStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CreateStreamOp: StreamRepresentation = {systemUnderTest.StreamRepresentation?.ToString() ?? "<null>"}, ExistingStreamStrategy = {systemUnderTest.ExistingStreamStrategy.ToString() ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<CreateStreamOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<CreateStreamOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardCreateStreamOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardCreateStreamOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CreateStreamOp>
+                new ConstructorArgumentValidationTestScenario<StandardCreateStreamOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'streamRepresentation' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CreateStreamOp>();
+                        var referenceObject = A.Dummy<StandardCreateStreamOp>();
 
-                        var result = new CreateStreamOp(
+                        var result = new StandardCreateStreamOp(
                                              null,
                                              referenceObject.ExistingStreamStrategy);
 
@@ -73,18 +73,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "streamRepresentation", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<CreateStreamOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CreateStreamOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardCreateStreamOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardCreateStreamOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CreateStreamOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardCreateStreamOp>
                 {
                     Name = "StreamRepresentation should return same 'streamRepresentation' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CreateStreamOp>();
+                        var referenceObject = A.Dummy<StandardCreateStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CreateStreamOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardCreateStreamOp>
                         {
-                            SystemUnderTest = new CreateStreamOp(
+                            SystemUnderTest = new StandardCreateStreamOp(
                                                       referenceObject.StreamRepresentation,
                                                       referenceObject.ExistingStreamStrategy),
                             ExpectedPropertyValue = referenceObject.StreamRepresentation,
@@ -95,16 +95,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "StreamRepresentation",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CreateStreamOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardCreateStreamOp>
                 {
                     Name = "ExistingStreamStrategy should return same 'existingStreamStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CreateStreamOp>();
+                        var referenceObject = A.Dummy<StandardCreateStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CreateStreamOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardCreateStreamOp>
                         {
-                            SystemUnderTest = new CreateStreamOp(
+                            SystemUnderTest = new StandardCreateStreamOp(
                                                       referenceObject.StreamRepresentation,
                                                       referenceObject.ExistingStreamStrategy),
                             ExpectedPropertyValue = referenceObject.ExistingStreamStrategy,
@@ -115,19 +115,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "ExistingStreamStrategy",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<CreateStreamOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CreateStreamOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardCreateStreamOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardCreateStreamOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CreateStreamOp>
+                new DeepCloneWithTestScenario<StandardCreateStreamOp>
                 {
                     Name = "DeepCloneWithStreamRepresentation should deep clone object and replace StreamRepresentation with the provided streamRepresentation",
                     WithPropertyName = "StreamRepresentation",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CreateStreamOp>();
+                        var systemUnderTest = A.Dummy<StandardCreateStreamOp>();
 
-                        var referenceObject = A.Dummy<CreateStreamOp>().ThatIs(_ => !systemUnderTest.StreamRepresentation.IsEqualTo(_.StreamRepresentation));
+                        var referenceObject = A.Dummy<StandardCreateStreamOp>().ThatIs(_ => !systemUnderTest.StreamRepresentation.IsEqualTo(_.StreamRepresentation));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CreateStreamOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardCreateStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.StreamRepresentation,
@@ -137,17 +137,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CreateStreamOp>
+                new DeepCloneWithTestScenario<StandardCreateStreamOp>
                 {
                     Name = "DeepCloneWithExistingStreamStrategy should deep clone object and replace ExistingStreamStrategy with the provided existingStreamStrategy",
                     WithPropertyName = "ExistingStreamStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CreateStreamOp>();
+                        var systemUnderTest = A.Dummy<StandardCreateStreamOp>();
 
-                        var referenceObject = A.Dummy<CreateStreamOp>().ThatIs(_ => !systemUnderTest.ExistingStreamStrategy.IsEqualTo(_.ExistingStreamStrategy));
+                        var referenceObject = A.Dummy<StandardCreateStreamOp>().ThatIs(_ => !systemUnderTest.ExistingStreamStrategy.IsEqualTo(_.ExistingStreamStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CreateStreamOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardCreateStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.ExistingStreamStrategy,
@@ -157,28 +157,28 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly CreateStreamOp ReferenceObjectForEquatableTestScenarios = A.Dummy<CreateStreamOp>();
+        private static readonly StandardCreateStreamOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardCreateStreamOp>();
 
-        private static readonly EquatableTestScenarios<CreateStreamOp> EquatableTestScenarios = new EquatableTestScenarios<CreateStreamOp>()
+        private static readonly EquatableTestScenarios<StandardCreateStreamOp> EquatableTestScenarios = new EquatableTestScenarios<StandardCreateStreamOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<CreateStreamOp>
+                new EquatableTestScenario<StandardCreateStreamOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CreateStreamOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardCreateStreamOp[]
                     {
-                        new CreateStreamOp(
+                        new StandardCreateStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.StreamRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.ExistingStreamStrategy),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new CreateStreamOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardCreateStreamOp[]
                     {
-                        new CreateStreamOp(
-                                A.Dummy<CreateStreamOp>().Whose(_ => !_.StreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRepresentation)).StreamRepresentation,
+                        new StandardCreateStreamOp(
+                                A.Dummy<StandardCreateStreamOp>().Whose(_ => !_.StreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRepresentation)).StreamRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.ExistingStreamStrategy),
-                        new CreateStreamOp(
+                        new StandardCreateStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.StreamRepresentation,
-                                A.Dummy<CreateStreamOp>().Whose(_ => !_.ExistingStreamStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingStreamStrategy)).ExistingStreamStrategy),
+                                A.Dummy<StandardCreateStreamOp>().Whose(_ => !_.ExistingStreamStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingStreamStrategy)).ExistingStreamStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -192,7 +192,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CancelHandleRecordExecutionRequestOp>(),
                         A.Dummy<CancelRunningHandleRecordExecutionOp>(),
                         A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<DeleteStreamOp>(),
+                        A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
                         A.Dummy<FailRunningHandleRecordExecutionOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
@@ -267,9 +267,9 @@ namespace Naos.Database.Domain.Test
             public static void CreateStreamOp___Should_implement_IModel_of_CreateStreamOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(CreateStreamOp);
+                var type = typeof(StandardCreateStreamOp);
 
-                var expectedModelMethods = typeof(IModel<CreateStreamOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardCreateStreamOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -279,7 +279,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<CreateStreamOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardCreateStreamOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -300,7 +300,7 @@ namespace Naos.Database.Domain.Test
             public static void CreateStreamOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(CreateStreamOp);
+                var type = typeof(StandardCreateStreamOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -480,10 +480,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CreateStreamOp>();
+                var systemUnderTest = A.Dummy<StandardCreateStreamOp>();
 
                 // Act
-                var actual = (CreateStreamOp)systemUnderTest.Clone();
+                var actual = (StandardCreateStreamOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -507,7 +507,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CreateStreamOp>();
+                var systemUnderTest = A.Dummy<StandardCreateStreamOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -558,12 +558,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (CreateStreamOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardCreateStreamOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(CreateStreamOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardCreateStreamOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -625,7 +625,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CreateStreamOp>();
+                var expected = A.Dummy<StandardCreateStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -654,7 +654,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CreateStreamOp>();
+                var expected = A.Dummy<StandardCreateStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -683,7 +683,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CreateStreamOp>();
+                var expected = A.Dummy<StandardCreateStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -712,7 +712,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CreateStreamOp>();
+                var expected = A.Dummy<StandardCreateStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -746,8 +746,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CreateStreamOp systemUnderTest1 = null;
-                CreateStreamOp systemUnderTest2 = null;
+                StandardCreateStreamOp systemUnderTest1 = null;
+                StandardCreateStreamOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -777,7 +777,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CreateStreamOp systemUnderTest = null;
+                    StandardCreateStreamOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -926,8 +926,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CreateStreamOp systemUnderTest1 = null;
-                CreateStreamOp systemUnderTest2 = null;
+                StandardCreateStreamOp systemUnderTest1 = null;
+                StandardCreateStreamOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -957,7 +957,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CreateStreamOp systemUnderTest = null;
+                    StandardCreateStreamOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1253,10 +1253,10 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<CreateStreamResult> systemUnderTest = null;
+                    ReturningOperationBase<StandardCreateStreamResult> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<CreateStreamResult>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StandardCreateStreamResult>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1284,7 +1284,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<CreateStreamResult>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<StandardCreateStreamResult>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1312,7 +1312,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<CreateStreamResult>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StandardCreateStreamResult>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1340,7 +1340,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<CreateStreamResult>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StandardCreateStreamResult>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1368,7 +1368,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<CreateStreamResult>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<StandardCreateStreamResult>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1396,7 +1396,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CreateStreamOp systemUnderTest = null;
+                    StandardCreateStreamOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

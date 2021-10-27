@@ -106,12 +106,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CreateStreamOp(
+                () => new StandardCreateStreamOp(
                                  A.Dummy<IStreamRepresentation>(),
                                  A.Dummy<ExistingStreamStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CreateStreamResult(
+                () => new StandardCreateStreamResult(
                                  A.Dummy<bool>(),
                                  A.Dummy<bool>()));
 
@@ -135,7 +135,7 @@ namespace Naos.Database.Domain.Test
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new DeleteStreamOp(
+                () => new StandardDeleteStreamOp(
                                  A.Dummy<IStreamRepresentation>(),
                                  A.Dummy<StreamNotFoundStrategy>()));
 

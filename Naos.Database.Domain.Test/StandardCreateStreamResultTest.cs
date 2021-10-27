@@ -24,20 +24,20 @@ namespace Naos.Database.Domain.Test
     using static System.FormattableString;
 
     [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
-    public static partial class CreateStreamResultTest
+    public static partial class StandardCreateStreamResultTest
     {
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
-        static CreateStreamResultTest()
+        static StandardCreateStreamResultTest()
         {
             ConstructorArgumentValidationTestScenarios.RemoveAllScenarios()
                                                       .AddScenario(() =>
-                                                                       new ConstructorArgumentValidationTestScenario<CreateStreamResult>
+                                                                       new ConstructorArgumentValidationTestScenario<StandardCreateStreamResult>
                                                                        {
                                                                            Name = "constructor should throw ArgumentException when parameter 'alreadyExisted' and 'wasCreated' are false scenario",
                                                                            ConstructionFunc = () =>
                                                                                               {
-                                                                                                  var result = new CreateStreamResult(
+                                                                                                  var result = new StandardCreateStreamResult(
                                                                                                       false,
                                                                                                       false);
 
@@ -52,9 +52,9 @@ namespace Naos.Database.Domain.Test
                .AddScenario(
                     () =>
                     {
-                        var a = new CreateStreamResult(false, true);
-                        var b = new CreateStreamResult(true, false);
-                        var c = new CreateStreamResult(true, true);
+                        var a = new StandardCreateStreamResult(false, true);
+                        var b = new StandardCreateStreamResult(true, false);
+                        var c = new StandardCreateStreamResult(true, true);
                         var testOptions = new[]
                                           {
                                               a,
@@ -62,13 +62,13 @@ namespace Naos.Database.Domain.Test
                                               c,
                                           };
 
-                        return new EquatableTestScenario<CreateStreamResult>
+                        return new EquatableTestScenario<StandardCreateStreamResult>
                                {
                                    Name = "Default Code Generated Scenario",
                                    ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                                   ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CreateStreamResult[]
+                                   ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardCreateStreamResult[]
                                                                                          {
-                                                                                             new CreateStreamResult(
+                                                                                             new StandardCreateStreamResult(
                                                                                                  ReferenceObjectForEquatableTestScenarios
                                                                                                     .AlreadyExisted,
                                                                                                  ReferenceObjectForEquatableTestScenarios.WasCreated),

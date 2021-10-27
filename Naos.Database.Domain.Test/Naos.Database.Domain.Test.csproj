@@ -300,13 +300,13 @@
       <DependentUpon>CompleteRunningHandleRecordExecutionOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
-    <Compile Include="CreateStreamOpTest.cs" />
-    <Compile Include="CreateStreamOpTest.designer.cs">
-      <DependentUpon>CreateStreamOpTest.cs</DependentUpon>
+    <Compile Include="StandardCreateStreamOpTest.cs" />
+    <Compile Include="StandardCreateStreamOpTest.designer.cs">
+      <DependentUpon>StandardCreateStreamOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreateStreamResultTest.cs" />
-    <Compile Include="CreateStreamResultTest.designer.cs">
-      <DependentUpon>CreateStreamResultTest.cs</DependentUpon>
+    <Compile Include="StandardCreateStreamResultTest.cs" />
+    <Compile Include="StandardCreateStreamResultTest.designer.cs">
+      <DependentUpon>StandardCreateStreamResultTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseDummyFactory.designer.cs">
       <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
@@ -655,10 +655,6 @@
     <Compile Include="Operations\ResourceLocation\ThrowIfResourceUnavailableOpTest.cs" />
     <Compile Include="TagMatchStrategyTest.designer.cs">
       <DependentUpon>TagMatchStrategyTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TryHandleRecordOpTest.cs" />
-    <Compile Include="TryHandleRecordOpTest.designer.cs">
-      <DependentUpon>TryHandleRecordOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="TryHandleRecordOp{TObject}Test.cs" />
     <Compile Include="TryHandleRecordOp{TObject}Test.designer.cs">

@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event to record the execution of <see cref="GetNextUniqueLongOp"/>.
+    /// Standard operation for consolidating 'puts' to a stream.
     /// </summary>
     /// <remarks>
     /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardReadWriteStream"/>.

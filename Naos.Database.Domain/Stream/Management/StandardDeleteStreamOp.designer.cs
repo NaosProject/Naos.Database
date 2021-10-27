@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class DeleteStreamOp : IModel<DeleteStreamOp>
+    public partial class StandardDeleteStreamOp : IModel<StandardDeleteStreamOp>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="DeleteStreamOp"/> are equal.
+        /// Determines whether two objects of type <see cref="StandardDeleteStreamOp"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(DeleteStreamOp left, DeleteStreamOp right)
+        public static bool operator ==(StandardDeleteStreamOp left, StandardDeleteStreamOp right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="DeleteStreamOp"/> are not equal.
+        /// Determines whether two objects of type <see cref="StandardDeleteStreamOp"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(DeleteStreamOp left, DeleteStreamOp right) => !(left == right);
+        public static bool operator !=(StandardDeleteStreamOp left, StandardDeleteStreamOp right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(DeleteStreamOp other)
+        public bool Equals(StandardDeleteStreamOp other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -76,7 +76,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as DeleteStreamOp);
+        public override bool Equals(object obj) => this == (obj as StandardDeleteStreamOp);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -85,13 +85,13 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new DeleteStreamOp DeepClone() => (DeleteStreamOp)this.DeepCloneInternal();
+        public new StandardDeleteStreamOp DeepClone() => (StandardDeleteStreamOp)this.DeepCloneInternal();
 
         /// <summary>
         /// Deep clones this object with a new <see cref="StreamRepresentation" />.
         /// </summary>
         /// <param name="streamRepresentation">The new <see cref="StreamRepresentation" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="DeleteStreamOp" /> using the specified <paramref name="streamRepresentation" /> for <see cref="StreamRepresentation" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardDeleteStreamOp" /> using the specified <paramref name="streamRepresentation" /> for <see cref="StreamRepresentation" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -109,9 +109,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public DeleteStreamOp DeepCloneWithStreamRepresentation(IStreamRepresentation streamRepresentation)
+        public StandardDeleteStreamOp DeepCloneWithStreamRepresentation(IStreamRepresentation streamRepresentation)
         {
-            var result = new DeleteStreamOp(
+            var result = new StandardDeleteStreamOp(
                                  streamRepresentation,
                                  this.StreamNotFoundStrategy.DeepClone());
 
@@ -122,7 +122,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="StreamNotFoundStrategy" />.
         /// </summary>
         /// <param name="streamNotFoundStrategy">The new <see cref="StreamNotFoundStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="DeleteStreamOp" /> using the specified <paramref name="streamNotFoundStrategy" /> for <see cref="StreamNotFoundStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardDeleteStreamOp" /> using the specified <paramref name="streamNotFoundStrategy" /> for <see cref="StreamNotFoundStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -140,9 +140,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public DeleteStreamOp DeepCloneWithStreamNotFoundStrategy(StreamNotFoundStrategy streamNotFoundStrategy)
+        public StandardDeleteStreamOp DeepCloneWithStreamNotFoundStrategy(StreamNotFoundStrategy streamNotFoundStrategy)
         {
-            var result = new DeleteStreamOp(
+            var result = new StandardDeleteStreamOp(
                                  this.StreamRepresentation?.DeepClone(),
                                  streamNotFoundStrategy);
 
@@ -153,7 +153,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new DeleteStreamOp(
+            var result = new StandardDeleteStreamOp(
                                  this.StreamRepresentation?.DeepClone(),
                                  this.StreamNotFoundStrategy.DeepClone());
 

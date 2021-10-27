@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
           IReadWriteStream,
           IStreamManagementProtocolFactory,
           IStreamRecordHandlingProtocolFactory,
-          IStreamManagementProtocols,
+          IStandardStreamManagementProtocols,
           IStandardStreamRecordHandlingProtocols,
           IStandardStreamReadProtocols,
           IStandardStreamWriteProtocols

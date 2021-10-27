@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CreateStreamResult.cs" company="Naos Project">
+// <copyright file="StandardCreateStreamResult.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -10,16 +10,16 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Result of <see cref="CreateStreamOp"/>.
+    /// Result of <see cref="StandardCreateStreamOp"/>.
     /// </summary>
-    public partial class CreateStreamResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class StandardCreateStreamResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateStreamResult"/> class.
+        /// Initializes a new instance of the <see cref="StandardCreateStreamResult"/> class.
         /// </summary>
         /// <param name="alreadyExisted">if set to <c>true</c> [already existed].</param>
         /// <param name="wasCreated">if set to <c>true</c> [was created].</param>
-        public CreateStreamResult(
+        public StandardCreateStreamResult(
             bool alreadyExisted,
             bool wasCreated)
         {

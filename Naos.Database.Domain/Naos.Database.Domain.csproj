@@ -285,6 +285,7 @@
     <Compile Include="Protocols\Classes\ResourceLocation\SingleResourceLocatorProtocols.cs" />
     <Compile Include="Operations\ResourceLocation\ThrowIfResourceUnavailableOp.cs" />
     <Compile Include="Logic\ResourceLocatorExtensions.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Management\IStandardStreamManagementProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\RecordingHandling\IStandardStreamRecordHandlingProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStandardStreamWriteProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStandardStreamReadProtocols.cs" />
@@ -405,6 +406,10 @@
     <Compile Include="Stream\Handling\Query\GetHandlingStatusOfRecordSetByTagOp.designer.cs">
       <DependentUpon>GetHandlingStatusOfRecordSetByTagOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\Handling\Standard\StandardGetRecordHandlingStatusOp.cs" />
+    <Compile Include="Stream\Handling\Standard\StandardGetHandlingHistoryOfRecordOp.cs" />
+    <Compile Include="Stream\Handling\Standard\StandardUpdateStreamHandlingOp.cs" />
+    <Compile Include="Stream\Handling\Standard\StandardUpdateRecordHandlingOp.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
@@ -424,9 +429,6 @@
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\ITryHandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\TryHandle\StandardTryHandleRecordOp.designer.cs">
-      <DependentUpon>StandardTryHandleRecordOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.designer.cs">
       <DependentUpon>TryHandleRecordOp{TObject}.cs</DependentUpon>
     </Compile>
@@ -439,11 +441,12 @@
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
       <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\CreateStreamOp.designer.cs">
-      <DependentUpon>CreateStreamOp.cs</DependentUpon>
+    <Compile Include="Stream\Management\StandardPruneStreamOp.cs" />
+    <Compile Include="Stream\Management\StandardPruneStreamOp.designer.cs">
+      <DependentUpon>StandardPruneStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\DeleteStreamOp.designer.cs">
-      <DependentUpon>DeleteStreamOp.cs</DependentUpon>
+    <Compile Include="Stream\Management\StandardDeleteStreamOp.designer.cs">
+      <DependentUpon>StandardDeleteStreamOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.designer.cs">
       <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
@@ -460,8 +463,8 @@
     <Compile Include="Stream\Management\PruneSummary.designer.cs">
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\CreateStreamResult.designer.cs">
-      <DependentUpon>CreateStreamResult.cs</DependentUpon>
+    <Compile Include="Stream\Model\StandardCreateStreamResult.designer.cs">
+      <DependentUpon>StandardCreateStreamResult.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\PutRecordResult.designer.cs">
       <DependentUpon>PutRecordResult.cs</DependentUpon>
@@ -490,7 +493,7 @@
     </Compile>
     <Compile Include="Stream\Model\TryHandleRecordResult.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleStandardizeExtensions.cs" />
-    <Compile Include="Stream\Handling\TryHandle\StandardTryHandleRecordOp.cs" />
+    <Compile Include="Stream\Handling\Standard\StandardTryHandleRecordOp.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.cs" />
@@ -505,7 +508,7 @@
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.cs" />
     <Compile Include="Stream\MemoryReadWriteStream.cs" />
-    <Compile Include="Stream\Model\CreateStreamResult.cs" />
+    <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
     <Compile Include="Stream\Model\PutRecordResult.cs" />
     <Compile Include="Stream\Model\OrderRecordsBy.cs" />
     <Compile Include="Stream\Model\RecordNotFoundStrategy.cs" />
@@ -578,8 +581,8 @@
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
     <Compile Include="Operations\Stream\External\Write\GetNextUniqueLongOp.cs" />
-    <Compile Include="Stream\Management\DeleteStreamOp.cs" />
-    <Compile Include="Stream\Management\CreateStreamOp.cs" />
+    <Compile Include="Stream\Management\StandardDeleteStreamOp.cs" />
+    <Compile Include="Stream\Management\StandardCreateStreamOp.cs" />
     <Compile Include="Operations\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Stream\External\Read\GetLatestObjectOp{TObject}.cs" />
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />

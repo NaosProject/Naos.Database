@@ -14,19 +14,11 @@ namespace Naos.Database.Domain
     /// </summary>
     public interface IStandardStreamRecordHandlingProtocols
         :
-            ISyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
-            ISyncReturningProtocol<GetHandlingStatusOfRecordByInternalRecordIdOp, HandlingStatus>,
-            ISyncReturningProtocol<GetHandlingStatusOfRecordsByIdOp, HandlingStatus>,
-            ISyncReturningProtocol<GetHandlingStatusOfRecordSetByTagOp, HandlingStatus>,
             ISyncReturningProtocol<StandardTryHandleRecordOp, TryHandleRecordResult>,
-            ISyncVoidProtocol<BlockRecordHandlingOp>,
-            ISyncVoidProtocol<CancelBlockedRecordHandlingOp>,
-            ISyncVoidProtocol<CancelHandleRecordExecutionRequestOp>,
-            ISyncVoidProtocol<CancelRunningHandleRecordExecutionOp>,
-            ISyncVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
-            ISyncVoidProtocol<FailRunningHandleRecordExecutionOp>,
-            ISyncVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>,
-            ISyncVoidProtocol<RetryFailedHandleRecordExecutionOp>
+            ISyncReturningProtocol<StandardGetRecordHandlingStatusOp, HandlingStatus>,
+            ISyncReturningProtocol<StandardGetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
+            ISyncVoidProtocol<StandardUpdateStreamHandlingOp>,
+            ISyncVoidProtocol<StandardUpdateRecordHandlingOp>
     {
     }
 }

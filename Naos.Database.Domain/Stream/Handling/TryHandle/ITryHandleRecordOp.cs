@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to manage common aspects of the Try Handle operation family which cannot have a base class because they are all based on different operation types.
     /// </summary>
-    public interface ITryHandleRecordOp : ISpecifyResourceLocator, IHaveDetails, IHaveTags
+    public interface ITryHandleRecordOp : IHaveDetails, IHaveTags
     {
         /// <summary>
         /// Gets the concern.

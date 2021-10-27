@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class CreateStreamOp : IModel<CreateStreamOp>
+    public partial class StandardCreateStreamOp : IModel<StandardCreateStreamOp>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="CreateStreamOp"/> are equal.
+        /// Determines whether two objects of type <see cref="StandardCreateStreamOp"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(CreateStreamOp left, CreateStreamOp right)
+        public static bool operator ==(StandardCreateStreamOp left, StandardCreateStreamOp right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="CreateStreamOp"/> are not equal.
+        /// Determines whether two objects of type <see cref="StandardCreateStreamOp"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(CreateStreamOp left, CreateStreamOp right) => !(left == right);
+        public static bool operator !=(StandardCreateStreamOp left, StandardCreateStreamOp right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(CreateStreamOp other)
+        public bool Equals(StandardCreateStreamOp other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -76,7 +76,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as CreateStreamOp);
+        public override bool Equals(object obj) => this == (obj as StandardCreateStreamOp);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -85,13 +85,13 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new CreateStreamOp DeepClone() => (CreateStreamOp)this.DeepCloneInternal();
+        public new StandardCreateStreamOp DeepClone() => (StandardCreateStreamOp)this.DeepCloneInternal();
 
         /// <summary>
         /// Deep clones this object with a new <see cref="StreamRepresentation" />.
         /// </summary>
         /// <param name="streamRepresentation">The new <see cref="StreamRepresentation" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CreateStreamOp" /> using the specified <paramref name="streamRepresentation" /> for <see cref="StreamRepresentation" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardCreateStreamOp" /> using the specified <paramref name="streamRepresentation" /> for <see cref="StreamRepresentation" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -109,9 +109,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CreateStreamOp DeepCloneWithStreamRepresentation(IStreamRepresentation streamRepresentation)
+        public StandardCreateStreamOp DeepCloneWithStreamRepresentation(IStreamRepresentation streamRepresentation)
         {
-            var result = new CreateStreamOp(
+            var result = new StandardCreateStreamOp(
                                  streamRepresentation,
                                  this.ExistingStreamStrategy.DeepClone());
 
@@ -122,7 +122,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="ExistingStreamStrategy" />.
         /// </summary>
         /// <param name="existingStreamStrategy">The new <see cref="ExistingStreamStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CreateStreamOp" /> using the specified <paramref name="existingStreamStrategy" /> for <see cref="ExistingStreamStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardCreateStreamOp" /> using the specified <paramref name="existingStreamStrategy" /> for <see cref="ExistingStreamStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -140,9 +140,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CreateStreamOp DeepCloneWithExistingStreamStrategy(ExistingStreamStrategy existingStreamStrategy)
+        public StandardCreateStreamOp DeepCloneWithExistingStreamStrategy(ExistingStreamStrategy existingStreamStrategy)
         {
-            var result = new CreateStreamOp(
+            var result = new StandardCreateStreamOp(
                                  this.StreamRepresentation?.DeepClone(),
                                  existingStreamStrategy);
 
@@ -153,7 +153,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new CreateStreamOp(
+            var result = new StandardCreateStreamOp(
                                  this.StreamRepresentation?.DeepClone(),
                                  this.ExistingStreamStrategy.DeepClone());
 

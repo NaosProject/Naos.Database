@@ -557,6 +557,7 @@
     <Compile Include="Stream\Representation\StreamRepresentationBase.designer.cs">
       <DependentUpon>StreamRepresentationBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\StandardStream\StandardStreamManagementProtocols.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
@@ -627,7 +628,6 @@
     <Compile Include="Stream\Representation\IStreamRepresentation.cs" />
     <Compile Include="Stream\Representation\MemoryStreamRepresentation.cs" />
     <Compile Include="Stream\Model\TypeRepresentationWithAndWithoutVersion.cs" />
-    <Compile Include="Stream\Model\ReadWriteStreamBase.cs" />
     <Compile Include="Stream\GetStreamFromRepresentationByNameProtocolFactory.cs" />
     <Compile Include="Stream\Representation\StreamRepresentation.cs" />
     <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />

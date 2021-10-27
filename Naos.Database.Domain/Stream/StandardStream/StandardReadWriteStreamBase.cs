@@ -6,9 +6,10 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
 
     /// <summary>
@@ -16,9 +17,7 @@ namespace Naos.Database.Domain
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public abstract class StandardReadWriteStreamBase :
-        ReadWriteStreamBase,
-        IStandardReadWriteStream
+    public abstract class StandardReadWriteStreamBase : IStandardReadWriteStream
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardReadWriteStreamBase"/> class.
@@ -34,36 +33,65 @@ namespace Naos.Database.Domain
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
             IResourceLocatorProtocols resourceLocatorProtocols)
-            : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols)
         {
+            name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
+            serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
+            defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
+            resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
+
+            if (defaultSerializationFormat == SerializationFormat.Invalid)
+            {
+                throw new ArgumentException(FormattableString.Invariant($"Cannot specify a {nameof(SerializationFormat)} of {SerializationFormat.Invalid}."));
+            }
+
+            this.Name = name;
+            this.SerializerFactory = serializerFactory;
+            this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
+            this.DefaultSerializationFormat = defaultSerializationFormat;
+            this.ResourceLocatorProtocols = resourceLocatorProtocols;
         }
 
         /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new StandardStreamReadWriteWithIdProtocols<TId>(this);
+        public string Name { get; private set; }
 
         /// <inheritdoc />
-        public override IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>() => new StandardStreamReadWriteWithIdProtocols<TId, TObject>(this);
+        public ISerializerFactory SerializerFactory { get; private set; }
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols GetStreamWritingProtocols() => new StandardStreamReadWriteProtocols(this);
+        public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
 
         /// <inheritdoc />
-        public override IStreamReadProtocols GetStreamReadingProtocols() => new StandardStreamReadWriteProtocols(this);
+        public SerializationFormat DefaultSerializationFormat { get; private set; }
 
         /// <inheritdoc />
-        public override IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new StandardStreamReadWriteProtocols<TObject>(this);
+        public IResourceLocatorProtocols ResourceLocatorProtocols { get; private set; }
 
         /// <inheritdoc />
-        public override IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>() => new StandardStreamReadWriteWithIdProtocols<TId>(this);
+        public IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new StandardStreamReadWriteWithIdProtocols<TId>(this);
 
         /// <inheritdoc />
-        public override IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>() => new StandardStreamReadWriteWithIdProtocols<TId, TObject>(this);
+        public IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>() => new StandardStreamReadWriteWithIdProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
-        public override IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>() => new StandardStreamReadWriteProtocols<TObject>(this);
+        public IStreamWriteProtocols GetStreamWritingProtocols() => new StandardStreamReadWriteProtocols(this);
 
         /// <inheritdoc />
-        public IStreamManagementProtocols GetStreamManagementProtocols() => this;
+        public IStreamReadProtocols GetStreamReadingProtocols() => new StandardStreamReadWriteProtocols(this);
+
+        /// <inheritdoc />
+        public IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>() => new StandardStreamReadWriteProtocols<TObject>(this);
+
+        /// <inheritdoc />
+        public IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>() => new StandardStreamReadWriteWithIdProtocols<TId>(this);
+
+        /// <inheritdoc />
+        public IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>() => new StandardStreamReadWriteWithIdProtocols<TId, TObject>(this);
+
+        /// <inheritdoc />
+        public IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>() => new StandardStreamReadWriteProtocols<TObject>(this);
+
+        /// <inheritdoc />
+        public IStreamManagementProtocols GetStreamManagementProtocols() => new StandardStreamManagementProtocols(this);
 
         /// <inheritdoc />
         public IStreamRecordHandlingProtocols GetStreamRecordHandlingProtocols() => new StandardStreamRecordHandlingProtocols(this);
@@ -78,36 +106,23 @@ namespace Naos.Database.Domain
         public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new StandardStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
+        public abstract IStreamRepresentation StreamRepresentation { get; }
+
+        /// <inheritdoc />
         public abstract long Execute(
             StandardGetNextUniqueLongOp operation);
 
         /// <inheritdoc />
-        public abstract override StreamRecord Execute(
+        public abstract StreamRecord Execute(
             StandardGetRecordByInternalRecordIdOp operation);
 
         /// <inheritdoc />
-        public abstract override StreamRecord Execute(
+        public abstract StreamRecord Execute(
             StandardGetLatestRecordOp operation);
 
         /// <inheritdoc />
-        public abstract override StreamRecord Execute(
+        public abstract StreamRecord Execute(
             StandardGetLatestRecordByIdOp operation);
-
-        /// <inheritdoc />
-        public abstract IReadOnlyList<StreamRecordHandlingEntry> Execute(
-            GetHandlingHistoryOfRecordOp operation);
-
-        /// <inheritdoc />
-        public abstract HandlingStatus Execute(
-            GetHandlingStatusOfRecordByInternalRecordIdOp operation);
-
-        /// <inheritdoc />
-        public abstract HandlingStatus Execute(
-            GetHandlingStatusOfRecordsByIdOp operation);
-
-        /// <inheritdoc />
-        public abstract HandlingStatus Execute(
-            GetHandlingStatusOfRecordSetByTagOp operation);
 
         /// <inheritdoc />
         public abstract TryHandleRecordResult Execute(
@@ -118,99 +133,55 @@ namespace Naos.Database.Domain
             StandardPutRecordOp operation);
 
         /// <inheritdoc />
-        public abstract void Execute(
-            BlockRecordHandlingOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            CancelBlockedRecordHandlingOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            CancelHandleRecordExecutionRequestOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            CancelRunningHandleRecordExecutionOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            CompleteRunningHandleRecordExecutionOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            FailRunningHandleRecordExecutionOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            SelfCancelRunningHandleRecordExecutionOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            RetryFailedHandleRecordExecutionOp operation);
-
-        /// <inheritdoc />
-        public abstract CreateStreamResult Execute(
-            CreateStreamOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            DeleteStreamOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            PruneBeforeInternalRecordDateOp operation);
-
-        /// <inheritdoc />
-        public abstract void Execute(
-            PruneBeforeInternalRecordIdOp operation);
-
-        /// <inheritdoc />
-        public async Task<CreateStreamResult> ExecuteAsync(
-            CreateStreamOp operation)
-        {
-            var syncResult = this.Execute(operation);
-            return await Task.FromResult(syncResult);
-        }
-
-        /// <inheritdoc />
-        public async Task ExecuteAsync(
-            DeleteStreamOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PruneBeforeInternalRecordDateOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public async Task ExecuteAsync(
-            PruneBeforeInternalRecordIdOp operation)
-        {
-            this.Execute(operation);
-            await Task.FromResult(true); // just for await...
-        }
-
-        /// <inheritdoc />
-        public abstract override bool Execute(
+        public abstract bool Execute(
             StandardDoesAnyExistByIdOp operation);
 
         /// <inheritdoc />
-        public abstract override StreamRecordMetadata Execute(
+        public abstract StreamRecordMetadata Execute(
             StandardGetLatestRecordMetadataByIdOp operation);
 
         /// <inheritdoc />
-        public abstract override IReadOnlyList<StreamRecord> Execute(
+        public abstract IReadOnlyList<StreamRecord> Execute(
             StandardGetAllRecordsByIdOp operation);
 
         /// <inheritdoc />
-        public abstract override IReadOnlyList<StreamRecordMetadata> Execute(
+        public abstract IReadOnlyList<StreamRecordMetadata> Execute(
             StandardGetAllRecordsMetadataByIdOp operation);
+
+        /// <inheritdoc />
+        public abstract void Execute(
+            StandardUpdateStreamHandlingOp operation);
+
+        /// <inheritdoc />
+        public abstract HandlingStatus Execute(
+            StandardGetRecordHandlingStatusOp operation);
+
+        /// <inheritdoc />
+        public abstract IReadOnlyList<StreamRecordHandlingEntry> Execute(
+            StandardGetHandlingHistoryOfRecordOp operation);
+
+        /// <inheritdoc />
+        public abstract void Execute(
+            StandardUpdateRecordHandlingOp operation);
+
+        /// <inheritdoc />
+        public abstract IReadOnlyCollection<string> Execute(
+            StandardGetDistinctStringSerializedIdsOp operation);
+
+        /// <inheritdoc />
+        public abstract StreamRecord Execute(
+            StandardGetLatestRecordByTagOp operation);
+
+        /// <inheritdoc />
+        public abstract StandardCreateStreamResult Execute(
+            StandardCreateStreamOp operation);
+
+        /// <inheritdoc />
+        public abstract void Execute(
+            StandardDeleteStreamOp operation);
+
+        /// <inheritdoc />
+        public abstract void Execute(
+            StandardPruneStreamOp operation);
     }
 }

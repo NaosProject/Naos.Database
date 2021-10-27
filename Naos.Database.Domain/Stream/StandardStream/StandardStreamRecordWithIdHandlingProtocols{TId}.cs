@@ -103,7 +103,8 @@ namespace Naos.Database.Domain
                                                                 _.Key))
                                                        .ToList();
 
-            var results = delegatedOperations.Select(_ => this.stream.Execute(_)).ToList();
+            var results =
+                delegatedOperations.Select(_ => this.stream.GetStreamRecordHandlingProtocols().Execute(_)).ToList();
             var result = results.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
             return result;
         }

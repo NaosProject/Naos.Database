@@ -463,6 +463,9 @@
     <Compile Include="Stream\Management\PruneSummary.designer.cs">
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.Handling.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.Write.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.Read.cs" />
     <Compile Include="Stream\Model\StandardCreateStreamResult.designer.cs">
       <DependentUpon>StandardCreateStreamResult.cs</DependentUpon>
     </Compile>
@@ -507,7 +510,7 @@
     <Compile Include="Stream\Management\PruneSummary.cs" />
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.cs" />
-    <Compile Include="Stream\MemoryReadWriteStream.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.cs" />
     <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
     <Compile Include="Stream\Model\PutRecordResult.cs" />
     <Compile Include="Stream\Model\OrderRecordsBy.cs" />

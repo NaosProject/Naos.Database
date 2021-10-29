@@ -25,9 +25,8 @@ namespace Naos.Database.Protocol.FileSystem
 
     /// <summary>
     /// File system implementation of <see cref="IReadWriteStream"/>, it is thread resilient but not necessarily thread safe.
-    /// Implements the <see cref="ReadWriteStreamBase" />.
+    /// Implements the <see cref="StandardReadWriteStreamBase" />.
     /// </summary>
-    /// <seealso cref="ReadWriteStreamBase" />
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class FileReadWriteStream :
@@ -90,8 +89,8 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override CreateStreamResult Execute(
-            CreateStreamOp operation)
+        public override StandardCreateStreamResult Execute(
+            StandardCreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -136,13 +135,13 @@ namespace Naos.Database.Protocol.FileSystem
                 }
             }
 
-            var result = new CreateStreamResult(alreadyExists, wasCreated);
+            var result = new StandardCreateStreamResult(alreadyExists, wasCreated);
             return result;
         }
 
         /// <inheritdoc />
         public override void Execute(
-            DeleteStreamOp operation)
+            StandardDeleteStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
             var fileStreamRepresentation = (operation.StreamRepresentation as FileStreamRepresentation)
@@ -176,52 +175,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override void Execute(
-            PruneBeforeInternalRecordDateOp operation)
-        {
-            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(locator);
-
-            lock (this.fileLock)
-            {
-                var filesToPotentiallyRemove
-                    = Directory.GetFiles(
-                        rootPath,
-                        Invariant($"*___*"),
-                        SearchOption.TopDirectoryOnly);
-                foreach (var fileToConsiderRemoving in filesToPotentiallyRemove)
-                {
-                    var internalRecordDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
-                    if (internalRecordDate < operation.InternalRecordDate)
-                    {
-                        File.Delete(fileToConsiderRemoving);
-                    }
-                }
-
-                var concerns = Directory.GetDirectories(rootPath);
-                foreach (var concern in concerns)
-                {
-                    var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
-                    var handlingFilesToConsiderRemoving
-                        = Directory.GetFiles(
-                            concernDirectory,
-                            Invariant($"*___*"),
-                            SearchOption.TopDirectoryOnly);
-
-                    foreach (var fileToConsiderRemoving in handlingFilesToConsiderRemoving)
-                    {
-                        var internalEntryDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
-                        if (internalEntryDate < operation.InternalRecordDate)
-                        {
-                            File.Delete(fileToConsiderRemoving);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public override void Execute(
-            PruneBeforeInternalRecordIdOp operation)
+            StandardPruneStreamOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             var rootPath = this.GetRootPathFromLocator(locator);
@@ -236,7 +190,8 @@ namespace Naos.Database.Protocol.FileSystem
                 foreach (var fileToConsiderRemoving in filesToPotentiallyRemove)
                 {
                     var internalRecordId = GetInternalRecordIdFromRecordFilePath(fileToConsiderRemoving);
-                    if (internalRecordId < operation.InternalRecordId)
+                    var internalRecordDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
+                    if (operation.ShouldInclude(internalRecordId, internalRecordDate))
                     {
                         File.Delete(fileToConsiderRemoving);
                     }
@@ -255,7 +210,8 @@ namespace Naos.Database.Protocol.FileSystem
                     foreach (var fileToConsiderRemoving in handlingFilesToConsiderRemoving)
                     {
                         var internalRecordId = GetInternalRecordIdFromEntryFilePath(fileToConsiderRemoving);
-                        if (internalRecordId < operation.InternalRecordId)
+                        var internalEntryDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
+                        if (operation.ShouldInclude(internalRecordId, internalEntryDate))
                         {
                             File.Delete(fileToConsiderRemoving);
                         }
@@ -598,7 +554,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
-            GetHandlingHistoryOfRecordOp operation)
+            StandardGetHandlingHistoryOfRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.handlingLock)
@@ -622,105 +578,11 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override HandlingStatus Execute(
-            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public override HandlingStatus Execute(
-            GetHandlingStatusOfRecordsByIdOp operation)
-        {
-            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            if (this.IsMostRecentBlocked(locator))
-            {
-                return HandlingStatus.Blocked;
-            }
-
-            var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
-            lock (this.handlingLock)
-            {
-                var files = operation.IdsToMatch.SelectMany(
-                                          _ => Directory.GetFiles(
-                                              concernDirectory,
-                                              "*___ExtId-" + (_.StringSerializedId?.EncodeForFilePath() ?? NullToken) + "___*." + MetadataFileExtension,
-                                              SearchOption.TopDirectoryOnly).Select(__ => new Tuple<StringSerializedIdentifier, string>(_, __)))
-                                     .ToList();
-
-                var recordIdToStatusAndEntryIdMap = new Dictionary<long, List<Tuple<HandlingStatus, long>>>();
-                foreach (var file in files)
-                {
-                    var filePath = file.Item2;
-                    var text = File.ReadAllText(filePath);
-                    var metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(text);
-
-                    if (metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy)
-                            .EqualsAccordingToStrategy(file.Item1.IdentifierType, operation.VersionMatchStrategy))
-                    {
-                        if (!recordIdToStatusAndEntryIdMap.ContainsKey(metadata.InternalRecordId))
-                        {
-                            recordIdToStatusAndEntryIdMap.Add(metadata.InternalRecordId, new List<Tuple<HandlingStatus, long>>());
-                        }
-
-                        var entryId = GetRootIdFromFilePath(filePath);
-                        recordIdToStatusAndEntryIdMap[metadata.InternalRecordId].Add(new Tuple<HandlingStatus, long>(metadata.Status, entryId));
-                    }
-                }
-
-                var statuses = recordIdToStatusAndEntryIdMap.Select(_ => _.Value.OrderByDescending(__ => __.Item2).First().Item1).ToList();
-                var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
-                return result;
-            }
-        }
-
-        /// <inheritdoc />
-        public override HandlingStatus Execute(
-            GetHandlingStatusOfRecordSetByTagOp operation)
+            StandardGetRecordHandlingStatusOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-            lock (this.handlingLock)
-            {
-                var statuses = new List<HandlingStatus>();
-                foreach (var locator in allLocators)
-                {
-                    if (this.IsMostRecentBlocked(locator))
-                    {
-                        return HandlingStatus.Blocked;
-                    }
-
-                    var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
-                    var files = Directory.GetFiles(
-                                              concernDirectory,
-                                              "*." + MetadataFileExtension,
-                                              SearchOption.TopDirectoryOnly)
-                                         .ToList();
-
-                    var recordIdToStatusAndEntryIdMap = new Dictionary<long, List<Tuple<HandlingStatus, long>>>();
-                    foreach (var file in files)
-                    {
-                        var text = File.ReadAllText(file);
-                        var metadata = this.internalSerializer.Deserialize<StreamRecordHandlingEntryMetadata>(text);
-                        if (operation.TagsToMatch.FuzzyMatchAccordingToStrategy(metadata.Tags, operation.TagMatchStrategy))
-                        {
-                            if (!recordIdToStatusAndEntryIdMap.ContainsKey(metadata.InternalRecordId))
-                            {
-                                recordIdToStatusAndEntryIdMap.Add(metadata.InternalRecordId, new List<Tuple<HandlingStatus, long>>());
-                            }
-
-                            var entryId = GetRootIdFromFilePath(file);
-                            recordIdToStatusAndEntryIdMap[metadata.InternalRecordId].Add(new Tuple<HandlingStatus, long>(metadata.Status, entryId));
-                        }
-                    }
-
-                    var locatorStatuses = recordIdToStatusAndEntryIdMap.Select(_ => _.Value.OrderByDescending(__ => __.Item2).First().Item1).ToList();
-                    statuses.AddRange(locatorStatuses);
-                }
-
-                var result = statuses.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
-                return result;
-            }
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -1414,158 +1276,86 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override void Execute(
-            BlockRecordHandlingOp operation)
+            StandardUpdateStreamHandlingOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-            lock (this.handlingLock)
-            {
-                foreach (var locator in allLocators)
-                {
-                    var blocked = this.IsMostRecentBlocked(locator);
-
-                    if (blocked)
-                    {
-                        throw new InvalidOperationException(Invariant($"Cannot block when a block already is in place without a cancel."));
-                    }
-
-                    var utcNow = DateTime.UtcNow;
-                    var blockEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
-                    var payload =
-                        DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
-                            blockEvent,
-                            this.DefaultSerializerRepresentation,
-                            this.SerializerFactory,
-                            this.DefaultSerializationFormat);
-
-                    var metadata = new StreamRecordHandlingEntryMetadata(
-                        Concerns.GlobalBlockingRecordId,
-                        Concerns.RecordHandlingConcern,
-                        HandlingStatus.Blocked,
-                        null,
-                        this.DefaultSerializerRepresentation,
-                        NullStreamIdentifier.TypeRepresentation,
-                        payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                        null,
-                        utcNow,
-                        blockEvent.TimestampUtc);
-
-                    var entryId = this.GetNextRecordHandlingEntryId(locator);
-                    this.PutRecordHandlingEntry(locator, Concerns.RecordHandlingConcern, entryId, metadata, payload);
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public override void Execute(
-            CancelBlockedRecordHandlingOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-            lock (this.handlingLock)
-            {
-                foreach (var locator in allLocators)
-                {
-                    var blocked = this.IsMostRecentBlocked(locator);
-
-                    if (!blocked)
-                    {
-                        throw new InvalidOperationException(Invariant($"Cannot cancel a block that does not exist."));
-                    }
-
-                    var utcNow = DateTime.UtcNow;
-                    var cancelBlockedEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
-                    var payload =
-                        DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
-                            cancelBlockedEvent,
-                            this.DefaultSerializerRepresentation,
-                            this.SerializerFactory,
-                            this.DefaultSerializationFormat);
-
-                    var metadata = new StreamRecordHandlingEntryMetadata(
-                        Concerns.GlobalBlockingRecordId,
-                        Concerns.RecordHandlingConcern,
-                        HandlingStatus.Requested,
-                        null,
-                        this.DefaultSerializerRepresentation,
-                        NullStreamIdentifier.TypeRepresentation,
-                        payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                        null,
-                        utcNow,
-                        cancelBlockedEvent.TimestampUtc);
-
-                    var entryId = this.GetNextRecordHandlingEntryId(locator);
-                    this.PutRecordHandlingEntry(locator, Concerns.RecordHandlingConcern, entryId, metadata, payload);
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public override void Execute(
-            CancelHandleRecordExecutionRequestOp operation)
-        {
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.handlingLock)
             {
-                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
+                var newStatus = operation.NewStatus;
+                var expectedStatus = operation.AcceptableCurrentStatuses.Single();
+                var internalRecordId = Concerns.GlobalBlockingRecordId;
+                var concern = Concerns.RecordHandlingConcern;
+                var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
 
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{internalRecordId.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
-                if (mostRecentFilePath == null)
+                var mostRecent = mostRecentFilePath == null ? null : this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
+
+                var currentStatus = mostRecent?.Metadata.Status ?? HandlingStatus.Requested;
+                if (currentStatus != expectedStatus)
                 {
-                    throw new InvalidOperationException(
-                        Invariant(
-                            $"Cannot cancel a requested {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
+                    throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecent?.Metadata.Status.ToString() ?? "<null entry>"}."));
                 }
 
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
+                var utcNow = DateTime.UtcNow;
 
-                if (mostRecent.Metadata.Status != HandlingStatus.Running && mostRecent.Metadata.Status != HandlingStatus.Failed)
+                IEvent statusEvent;
+                switch (newStatus)
                 {
-                    throw new InvalidOperationException(Invariant($"Cannot cancel an execution {nameof(HandleRecordOp)} unless it is {nameof(HandlingStatus.Requested)} or {nameof(HandlingStatus.Failed)}, the most recent status is {mostRecent.Metadata.Status}."));
+                    case HandlingStatus.Blocked:
+                        statusEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
+                        break;
+                    case HandlingStatus.Requested:
+                        statusEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
+                        break;
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(HandlingStatus)} {newStatus} is not supported."));
                 }
 
-                var timestamp = DateTime.UtcNow;
-                var newEvent = new CanceledRequestedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
-                var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
-                    newEvent,
-                    this.DefaultSerializerRepresentation,
-                    this.SerializerFactory,
-                    this.DefaultSerializationFormat);
+                var payload =
+                    DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                        statusEvent,
+                        this.DefaultSerializerRepresentation,
+                        this.SerializerFactory,
+                        this.DefaultSerializationFormat);
 
                 var metadata = new StreamRecordHandlingEntryMetadata(
-                    operation.Id,
-                    operation.Concern,
-                    HandlingStatus.Canceled,
-                    mostRecent.Metadata.StringSerializedId,
-                    payload.SerializerRepresentation,
-                    mostRecent.Metadata.TypeRepresentationOfId,
+                    internalRecordId,
+                    concern,
+                    HandlingStatus.Requested,
+                    null,
+                    this.DefaultSerializerRepresentation,
+                    NullStreamIdentifier.TypeRepresentation,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                    operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    null,
+                    utcNow,
+                    statusEvent.TimestampUtc);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
-                this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
+                this.PutRecordHandlingEntry(locator, concern, entryId, metadata, payload);
             }
         }
 
         /// <inheritdoc />
         public override void Execute(
-            CancelRunningHandleRecordExecutionOp operation)
+            StandardUpdateRecordHandlingOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
+
+            operation.InternalRecordId.MustForOp(nameof(operation.InternalRecordId)).NotBeNull();
 
             lock (this.handlingLock)
             {
                 var files = Directory.GetFiles(
                     concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
+                    Invariant($"*___Id-{operation.InternalRecordId.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
                     SearchOption.TopDirectoryOnly);
 
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
@@ -1578,13 +1368,54 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
-                if (mostRecent.Metadata.Status != HandlingStatus.Running)
+                var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.None;
+                if (!operation.AcceptableCurrentStatuses.Contains(currentHandlingStatus))
                 {
-                    throw new InvalidOperationException(Invariant($"Cannot cancel a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                    var acceptableStatusesCsvString = string.Join(",", operation.AcceptableCurrentStatuses);
+                    throw new InvalidOperationException(
+                        Invariant($"Expected status to be one of [{acceptableStatusesCsvString}] but found '{currentHandlingStatus}'."));
+                }
+
+                switch (operation.NewStatus)
+                {
+                    case HandlingStatus.Canceled:
+                        this.CancelHandleRecordExecutionRequest(operation, locator, mostRecent);
+                        break;
+                    case HandlingStatus.CanceledRunning:
+                        this.CancelRunningHandleRecordExecution(operation, locator, mostRecent);
+                        break;
+                    case HandlingStatus.Completed:
+                        this.CompleteRunningHandleRecordExecution(operation, locator, mostRecent);
+                        break;
+                    case HandlingStatus.Failed:
+                        this.FailRunningHandleRecordExecution(operation, locator, mostRecent);
+                        break;
+                    case HandlingStatus.SelfCanceledRunning:
+                        this.SelfCancelRunningHandleRecordExecution(operation, locator, mostRecent);
+                        break;
+                    case HandlingStatus.RetryFailed:
+                        this.RetryFailedHandleRecordExecution(operation, locator, mostRecent);
+                        break;
+                    default:
+                        throw new NotSupportedException(Invariant($"Unsupported {nameof(HandlingStatus)} '{operation.NewStatus}' to update handling of {nameof(operation.InternalRecordId)}: {operation.InternalRecordId}."));
+                }
+            }
+        }
+
+        private void CancelHandleRecordExecutionRequest(
+            StandardUpdateRecordHandlingOp operation,
+            FileSystemDatabaseLocator fileSystemDatabaseLocator,
+            StreamRecordHandlingEntry mostRecent)
+        {
+            lock (this.handlingLock)
+            {
+                if (mostRecent.Metadata.Status != HandlingStatus.Running && mostRecent.Metadata.Status != HandlingStatus.Failed)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot cancel an execution {nameof(HandleRecordOp)} unless it is {nameof(HandlingStatus.Requested)} or {nameof(HandlingStatus.Failed)}, the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
-                var newEvent = new CanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var newEvent = new CanceledRequestedHandleRecordExecutionEvent(operation.InternalRecordId, operation.Details, timestamp);
                 var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
                     newEvent,
                     this.DefaultSerializerRepresentation,
@@ -1592,7 +1423,44 @@ namespace Naos.Database.Protocol.FileSystem
                     this.DefaultSerializationFormat);
 
                 var metadata = new StreamRecordHandlingEntryMetadata(
-                    operation.Id,
+                    operation.InternalRecordId,
+                    operation.Concern,
+                    HandlingStatus.Canceled,
+                    mostRecent.Metadata.StringSerializedId,
+                    payload.SerializerRepresentation,
+                    mostRecent.Metadata.TypeRepresentationOfId,
+                    payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                    operation.Tags,
+                    timestamp,
+                    newEvent.TimestampUtc);
+
+                var entryId = this.GetNextRecordHandlingEntryId(fileSystemDatabaseLocator);
+                this.PutRecordHandlingEntry(fileSystemDatabaseLocator, operation.Concern, entryId, metadata, payload);
+            }
+        }
+
+        private void CancelRunningHandleRecordExecution(
+            StandardUpdateRecordHandlingOp operation,
+            FileSystemDatabaseLocator locator,
+            StreamRecordHandlingEntry mostRecent)
+        {
+            lock (this.handlingLock)
+            {
+                if (mostRecent.Metadata.Status != HandlingStatus.Running)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot cancel a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
+                }
+
+                var timestamp = DateTime.UtcNow;
+                var newEvent = new CanceledRunningHandleRecordExecutionEvent(operation.InternalRecordId, operation.Details, timestamp);
+                var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
+                    newEvent,
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+                var metadata = new StreamRecordHandlingEntryMetadata(
+                    operation.InternalRecordId,
                     operation.Concern,
                     HandlingStatus.CanceledRunning,
                     mostRecent.Metadata.StringSerializedId,
@@ -1608,37 +1476,20 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
-        /// <inheritdoc />
-        public override void Execute(
-            CompleteRunningHandleRecordExecutionOp operation)
+        private void CompleteRunningHandleRecordExecution(
+            StandardUpdateRecordHandlingOp operation,
+            FileSystemDatabaseLocator locator,
+            StreamRecordHandlingEntry mostRecent)
         {
-            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-
             lock (this.handlingLock)
             {
-                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
-                var files = Directory.GetFiles(
-                    concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
-                if (mostRecentFilePath == null)
-                {
-                    throw new InvalidOperationException(
-                        Invariant(
-                            $"Cannot complete a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
-                }
-
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
-
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
                     throw new InvalidOperationException(Invariant($"Cannot complete a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
-                var newEvent = new CompletedHandleRecordExecutionEvent(operation.Id, timestamp);
+                var newEvent = new CompletedHandleRecordExecutionEvent(operation.InternalRecordId, timestamp);
                 var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
                     newEvent,
                     this.DefaultSerializerRepresentation,
@@ -1646,7 +1497,7 @@ namespace Naos.Database.Protocol.FileSystem
                     this.DefaultSerializationFormat);
 
                 var metadata = new StreamRecordHandlingEntryMetadata(
-                    operation.Id,
+                    operation.InternalRecordId,
                     operation.Concern,
                     HandlingStatus.Completed,
                     mostRecent.Metadata.StringSerializedId,
@@ -1662,37 +1513,20 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
-        /// <inheritdoc />
-        public override void Execute(
-            FailRunningHandleRecordExecutionOp operation)
+        private void FailRunningHandleRecordExecution(
+            StandardUpdateRecordHandlingOp operation,
+            FileSystemDatabaseLocator locator,
+            StreamRecordHandlingEntry mostRecent)
         {
-            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-
             lock (this.handlingLock)
             {
-                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
-                var files = Directory.GetFiles(
-                    concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
-                if (mostRecentFilePath == null)
-                {
-                    throw new InvalidOperationException(
-                        Invariant(
-                            $"Cannot fail a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
-                }
-
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
-
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
                     throw new InvalidOperationException(Invariant($"Cannot fail a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
-                var newEvent = new FailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var newEvent = new FailedHandleRecordExecutionEvent(operation.InternalRecordId, operation.Details, timestamp);
                 var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
                     newEvent,
                     this.DefaultSerializerRepresentation,
@@ -1700,7 +1534,7 @@ namespace Naos.Database.Protocol.FileSystem
                     this.DefaultSerializationFormat);
 
                 var metadata = new StreamRecordHandlingEntryMetadata(
-                    operation.Id,
+                    operation.InternalRecordId,
                     operation.Concern,
                     HandlingStatus.Failed,
                     mostRecent.Metadata.StringSerializedId,
@@ -1716,37 +1550,20 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
-        /// <inheritdoc />
-        public override void Execute(
-            SelfCancelRunningHandleRecordExecutionOp operation)
+        private void SelfCancelRunningHandleRecordExecution(
+            StandardUpdateRecordHandlingOp operation,
+            FileSystemDatabaseLocator locator,
+            StreamRecordHandlingEntry mostRecent)
         {
-            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-
             lock (this.handlingLock)
             {
-                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
-                var files = Directory.GetFiles(
-                    concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
-                if (mostRecentFilePath == null)
-                {
-                    throw new InvalidOperationException(
-                        Invariant(
-                            $"Cannot self cancel a running {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
-                }
-
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
-
                 if (mostRecent.Metadata.Status != HandlingStatus.Running)
                 {
                     throw new InvalidOperationException(Invariant($"Cannot self cancel a running {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
-                var newEvent = new SelfCanceledRunningHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var newEvent = new SelfCanceledRunningHandleRecordExecutionEvent(operation.InternalRecordId, operation.Details, timestamp);
                 var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
                     newEvent,
                     this.DefaultSerializerRepresentation,
@@ -1754,7 +1571,7 @@ namespace Naos.Database.Protocol.FileSystem
                     this.DefaultSerializationFormat);
 
                 var metadata = new StreamRecordHandlingEntryMetadata(
-                    operation.Id,
+                    operation.InternalRecordId,
                     operation.Concern,
                     HandlingStatus.SelfCanceledRunning,
                     mostRecent.Metadata.StringSerializedId,
@@ -1770,37 +1587,20 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
-        /// <inheritdoc />
-        public override void Execute(
-            RetryFailedHandleRecordExecutionOp operation)
+        private void RetryFailedHandleRecordExecution(
+            StandardUpdateRecordHandlingOp operation,
+            FileSystemDatabaseLocator locator,
+            StreamRecordHandlingEntry mostRecent)
         {
-            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-
             lock (this.handlingLock)
             {
-                var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
-                var files = Directory.GetFiles(
-                    concernDirectory,
-                    Invariant($"*___Id-{operation.Id.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
-                if (mostRecentFilePath == null)
-                {
-                    throw new InvalidOperationException(
-                        Invariant(
-                            $"Cannot retry a failed {nameof(HandleRecordOp)} execution as there is nothing in progress for concern {operation.Concern}."));
-                }
-
-                var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
-
                 if (mostRecent.Metadata.Status != HandlingStatus.Failed)
                 {
                     throw new InvalidOperationException(Invariant($"Cannot retry non-failed execution of {nameof(HandleRecordOp)} because the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
-                var newEvent = new RetryFailedHandleRecordExecutionEvent(operation.Id, operation.Details, timestamp);
+                var newEvent = new RetryFailedHandleRecordExecutionEvent(operation.InternalRecordId, operation.Details, timestamp);
                 var payload = DomainExtensions.ToDescribedSerializationUsingSpecificFactory(
                     newEvent,
                     this.DefaultSerializerRepresentation,
@@ -1808,7 +1608,7 @@ namespace Naos.Database.Protocol.FileSystem
                     this.DefaultSerializationFormat);
 
                 var metadata = new StreamRecordHandlingEntryMetadata(
-                    operation.Id,
+                    operation.InternalRecordId,
                     operation.Concern,
                     HandlingStatus.RetryFailed,
                     mostRecent.Metadata.StringSerializedId,

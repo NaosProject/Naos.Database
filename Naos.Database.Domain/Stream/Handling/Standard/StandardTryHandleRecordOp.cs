@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Handles a record.
     /// </summary>
-    public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, ITryHandleRecordOp
+    public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, ITryHandleRecordOp, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardTryHandleRecordOp"/> class.

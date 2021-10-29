@@ -23,7 +23,6 @@ namespace Naos.Database.Domain
         /// <param name="concern">The concern.</param>
         /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
         /// <param name="orderRecordsBy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
-        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
         /// <param name="tags">The optional tags to write with produced events.</param>
         /// <param name="details">The optional details to write with produced events.</param>
         /// <param name="minimumInternalRecordId">The optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).</param>
@@ -32,7 +31,6 @@ namespace Naos.Database.Domain
             string concern,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IResourceLocator specifiedResourceLocator = null,
             IReadOnlyCollection<NamedValue<string>> tags = null,
             string details = null,
             long? minimumInternalRecordId = null,
@@ -44,7 +42,6 @@ namespace Naos.Database.Domain
             this.Concern = concern;
             this.VersionMatchStrategy = versionMatchStrategy;
             this.OrderRecordsBy = orderRecordsBy;
-            this.SpecifiedResourceLocator = specifiedResourceLocator;
             this.Tags = tags;
             this.Details = details;
             this.MinimumInternalRecordId = minimumInternalRecordId;
@@ -59,9 +56,6 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public OrderRecordsBy OrderRecordsBy { get; private set; }
-
-        /// <inheritdoc />
-        public IResourceLocator SpecifiedResourceLocator { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }

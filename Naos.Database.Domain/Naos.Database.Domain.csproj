@@ -140,6 +140,7 @@
       <DependentUpon>IdDeprecatedEvent{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\Standardize\RecordStandardizeExtensions.cs" />
+    <Compile Include="Logic\StandardPruneStreamOpExtensions.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutOp{TObject}.cs" />
@@ -429,15 +430,6 @@
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\TryHandle\ITryHandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordOp{TObject}.designer.cs">
-      <DependentUpon>TryHandleRecordOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.designer.cs">
-      <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.designer.cs">
-      <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
       <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
     </Compile>

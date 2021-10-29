@@ -322,12 +322,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<string>()));
 
-
-
-
-
-
-
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {

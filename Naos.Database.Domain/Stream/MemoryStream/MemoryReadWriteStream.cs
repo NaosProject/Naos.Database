@@ -212,35 +212,17 @@ namespace Naos.Database.Domain
 
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
-            bool IncludePredicate(
-                long internalRecordId,
-                DateTime internalRecordTimestampUtc)
-            {
-                var matchResult = false;
-                if (operation.InternalRecordId != null)
-                {
-                    matchResult = internalRecordId >= operation.InternalRecordId;
-                }
-
-                if (operation.InternalRecordDate != null)
-                {
-                    matchResult = internalRecordTimestampUtc >= operation.InternalRecordDate;
-                }
-
-                return matchResult;
-            }
-
             bool RecordPredicate(
-                StreamRecord record) => IncludePredicate(record.InternalRecordId, record.Metadata.TimestampUtc);
+                StreamRecord record) => operation.ShouldInclude(record.InternalRecordId, record.Metadata.TimestampUtc);
 
             bool HandlingPredicate(
-                StreamRecordHandlingEntry handlingEntry) => IncludePredicate(
+                StreamRecordHandlingEntry handlingEntry) => operation.ShouldInclude(
                 handlingEntry.Metadata.InternalRecordId,
                 handlingEntry.Metadata.TimestampUtc);
 
             lock (this.streamLock)
             {
-                var newList = this.locatorToRecordPartitionMap[locator].Where((Func<StreamRecord, bool>)RecordPredicate);
+                var newList = this.locatorToRecordPartitionMap[locator].Where(RecordPredicate);
                 this.locatorToRecordPartitionMap[locator].Clear();
                 this.locatorToRecordPartitionMap[locator].AddRange(newList);
 
@@ -250,8 +232,9 @@ namespace Naos.Database.Domain
                     {
                         foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
                         {
-                            var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern]
-                                                      .Where((Func<StreamRecordHandlingEntry, bool>)HandlingPredicate);
+                            var newHandlingList =
+                                this.locatorToHandlingEntriesByConcernMap[locator][concern]
+                                    .Where(HandlingPredicate);
                             this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
                             this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
                         }

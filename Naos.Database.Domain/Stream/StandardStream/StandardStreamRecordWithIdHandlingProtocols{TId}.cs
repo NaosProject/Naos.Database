@@ -93,16 +93,24 @@ namespace Naos.Database.Domain
                 items.Add(new Tuple<IResourceLocator, StringSerializedIdentifier>(locator, identified));
             }
 
+            var handlingStatues = new List<HandlingStatus>();
             var groupedByLocators = items.GroupBy(_ => _.Item1).ToList();
-            var delegatedOperations = groupedByLocators.Select(
-                    _ => new GetCompositeHandlingStatusOfRecordsByIdOp(
-                        operation.Concern,
-                        _.Select(__ => __.Item2).ToList(),
-                        operation.HandlingStatusCompositionStrategy,
-                        operation.VersionMatchStrategy))
-                .ToList();
+            foreach (var locatorAndId in groupedByLocators)
+            {
+                var idsToMatch = locatorAndId.Select(_ => _.Item2).ToList();
+                var standardizedOperation = new StandardGetRecordHandlingStatusOp(
+                    operation.Concern,
+                    null,
+                    idsToMatch,
+                    operation.VersionMatchStrategy,
+                    null,
+                    null,
+                    null,
+                    locatorAndId.Key);
 
-            var handlingStatues = delegatedOperations.Select(_ => this.stream.GetStreamRecordHandlingProtocols().Execute(_)).ToList();
+                var localHandlingStatuses = this.stream.Execute(standardizedOperation);
+                handlingStatues.AddRange(localHandlingStatuses);
+            }
 
             var result = handlingStatues.ToCompositeHandlingStatus();
 

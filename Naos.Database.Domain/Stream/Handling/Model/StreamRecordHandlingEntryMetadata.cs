@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Metadata of a stream handling entry.
     /// </summary>
-    public partial class StreamRecordHandlingEntryMetadata : IHaveTags, IModelViaCodeGen, IHaveTimestampUtc
+    public partial class StreamRecordHandlingEntryMetadata : IHaveTags, IModelViaCodeGen, IHaveTimestampUtc, IHaveInternalRecordId, IHaveHandleRecordConcern
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecordHandlingEntryMetadata"/> class.
@@ -72,16 +72,10 @@ namespace Naos.Database.Domain
             this.ObjectTimestampUtc = objectTimestampUtc;
         }
 
-        /// <summary>
-        /// Gets the internal record identifier.
-        /// </summary>
-        /// <value>The internal record identifier.</value>
+        /// <inheritdoc />
         public long InternalRecordId { get; private set; }
 
-        /// <summary>
-        /// Gets the concern.
-        /// </summary>
-        /// <value>The concern.</value>
+        /// <inheritdoc />
         public string Concern { get; private set; }
 
         /// <summary>

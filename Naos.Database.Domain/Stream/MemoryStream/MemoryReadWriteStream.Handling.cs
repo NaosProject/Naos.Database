@@ -51,7 +51,7 @@ namespace Naos.Database.Domain
 
                     var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
                     var mostRecentEntry = handlingEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-                    if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.Blocked)
+                    if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.DisabledForStream)
                     {
                         return new TryHandleRecordResult(null, true);
                     }
@@ -65,7 +65,7 @@ namespace Naos.Database.Domain
                     foreach (var groupedById in entries.GroupBy(_ => _.Metadata.InternalRecordId))
                     {
                         var mostRecent = groupedById.OrderByDescending(_ => _.InternalHandlingEntryId).First();
-                        if (mostRecent.Metadata.Status.IsHandlingNeeded())
+                        if (mostRecent.Metadata.Status.IsAvailable())
                         {
                             existingInternalRecordIdsToConsider.Add(groupedById.Key);
                         }
@@ -143,7 +143,7 @@ namespace Naos.Database.Domain
                                 var requestedMetadata = new StreamRecordHandlingEntryMetadata(
                                     recordToHandle.InternalRecordId,
                                     operation.Concern,
-                                    HandlingStatus.Requested,
+                                    HandlingStatus.AvailableByDefault,
                                     recordToHandle.Metadata.StringSerializedId,
                                     requestedPayload.SerializerRepresentation,
                                     recordToHandle.Metadata.TypeRepresentationOfId,
@@ -190,7 +190,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override HandlingStatus Execute(
+        public override IReadOnlyCollection<HandlingStatus> Execute(
             StandardGetRecordHandlingStatusOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -198,9 +198,9 @@ namespace Naos.Database.Domain
             lock (this.handlingLock)
             {
                 var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingConcern);
-                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.Blocked)
+                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.DisabledForStream)
                 {
-                    return HandlingStatus.Blocked;
+                    return new[] { HandlingStatus.DisabledForStream };
                 }
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
@@ -236,14 +236,12 @@ namespace Naos.Database.Domain
                     return matchResult;
                 }
 
-                var statuses =
+                var result =
                     entries.Where(HandlingEntryMatchingPredicate)
                            .GroupBy(_ => _.Metadata.InternalRecordId)
                            .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
                            .ToList();
 
-                var result = statuses.ReduceToCompositeHandlingStatus(
-                    operation.HandlingStatusCompositionStrategy ?? new HandlingStatusCompositionStrategy());
                 return result;
             }
         }
@@ -275,7 +273,7 @@ namespace Naos.Database.Domain
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.InternalRecordId);
 
-                var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.None;
+                var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
                 if (!operation.AcceptableCurrentStatuses.Contains(currentHandlingStatus))
                 {
                     var acceptableStatusesCsvString = string.Join(",", operation.AcceptableCurrentStatuses);
@@ -285,10 +283,10 @@ namespace Naos.Database.Domain
 
                 switch (operation.NewStatus)
                 {
-                    case HandlingStatus.Canceled:
+                    case HandlingStatus.DisabledForRecord:
                         this.CancelHandleRecordExecutionRequest(operation, mostRecent);
                         break;
-                    case HandlingStatus.CanceledRunning:
+                    case HandlingStatus.AvailableAfterExternalCancellation:
                         this.CancelRunningHandleRecordExecution(operation, mostRecent);
                         break;
                     case HandlingStatus.Completed:
@@ -297,10 +295,10 @@ namespace Naos.Database.Domain
                     case HandlingStatus.Failed:
                         this.FailRunningHandleRecordExecution(operation, mostRecent);
                         break;
-                    case HandlingStatus.SelfCanceledRunning:
+                    case HandlingStatus.AvailableAfterSelfCancellation:
                         this.SelfCancelRunningHandleRecordExecution(operation, mostRecent);
                         break;
-                    case HandlingStatus.RetryFailed:
+                    case HandlingStatus.AvailableAfterFailure:
                         this.RetryFailedHandleRecordExecution(operation, mostRecent);
                         break;
                     default:
@@ -325,7 +323,7 @@ namespace Naos.Database.Domain
             var metadata = new StreamRecordHandlingEntryMetadata(
                 operation.InternalRecordId,
                 operation.Concern,
-                HandlingStatus.RetryFailed,
+                HandlingStatus.AvailableAfterFailure,
                 mostRecent.Metadata.StringSerializedId,
                 payload.SerializerRepresentation,
                 mostRecent.Metadata.TypeRepresentationOfId,
@@ -354,7 +352,7 @@ namespace Naos.Database.Domain
             var metadata = new StreamRecordHandlingEntryMetadata(
                 operation.InternalRecordId,
                 operation.Concern,
-                HandlingStatus.SelfCanceledRunning,
+                HandlingStatus.AvailableAfterSelfCancellation,
                 mostRecent.Metadata.StringSerializedId,
                 payload.SerializerRepresentation,
                 mostRecent.Metadata.TypeRepresentationOfId,
@@ -441,7 +439,7 @@ namespace Naos.Database.Domain
             var metadata = new StreamRecordHandlingEntryMetadata(
                 operation.InternalRecordId,
                 operation.Concern,
-                HandlingStatus.CanceledRunning,
+                HandlingStatus.AvailableAfterExternalCancellation,
                 mostRecent.Metadata.StringSerializedId,
                 payload.SerializerRepresentation,
                 mostRecent.Metadata.TypeRepresentationOfId,
@@ -470,7 +468,7 @@ namespace Naos.Database.Domain
             var metadata = new StreamRecordHandlingEntryMetadata(
                 operation.InternalRecordId,
                 operation.Concern,
-                HandlingStatus.Canceled,
+                HandlingStatus.DisabledForRecord,
                 mostRecent.Metadata.StringSerializedId,
                 payload.SerializerRepresentation,
                 mostRecent.Metadata.TypeRepresentationOfId,

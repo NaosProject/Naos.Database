@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
         IStreamWriteWithIdProtocols<TId>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "temp")]
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamReadWriteWithIdProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 

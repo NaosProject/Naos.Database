@@ -47,16 +47,4 @@ namespace Naos.Database.Domain
             }
         }
     }
-
-    /// <summary>
-    /// Interface to expose record handling concern.
-    /// </summary>
-    public interface IHaveHandleRecordConcern
-    {
-        /// <summary>
-        /// Gets the record handling concern.
-        /// </summary>
-        /// <value>The record handling concern.</value>
-        string Concern { get; }
-    }
 }

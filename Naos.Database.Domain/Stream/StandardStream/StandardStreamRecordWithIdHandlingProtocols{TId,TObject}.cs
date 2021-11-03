@@ -22,14 +22,14 @@ namespace Naos.Database.Domain
         IStreamRecordWithIdHandlingProtocols<TId, TObject>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamRecordWithIdHandlingProtocols{TId, TObject}"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamRecordWithIdHandlingProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;

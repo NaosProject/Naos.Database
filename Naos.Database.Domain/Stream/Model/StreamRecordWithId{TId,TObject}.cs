@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">Identifier type.</typeparam>
     /// <typeparam name="TObject">Payload type.</typeparam>
-    public partial class StreamRecordWithId<TId, TObject> : IModelViaCodeGen
+    public partial class StreamRecordWithId<TId, TObject> : IModelViaCodeGen, IHaveInternalRecordId
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecordWithId{TId, TObject}"/> class.
@@ -35,10 +35,7 @@ namespace Naos.Database.Domain
             this.Payload = payload;
         }
 
-        /// <summary>
-        /// Gets the identifier.
-        /// </summary>
-        /// <value>The identifier.</value>
+        /// <inheritdoc />
         public long InternalRecordId { get; private set; }
 
         /// <summary>

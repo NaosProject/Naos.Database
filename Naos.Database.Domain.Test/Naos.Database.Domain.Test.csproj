@@ -259,54 +259,20 @@
     <Compile Include="BlockedRecordHandlingEventTest.designer.cs">
       <DependentUpon>BlockedRecordHandlingEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="BlockRecordHandlingOpTest.cs" />
-    <Compile Include="BlockRecordHandlingOpTest.designer.cs">
-      <DependentUpon>BlockRecordHandlingOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CancelBlockedRecordHandlingOpTest.cs" />
-    <Compile Include="CancelBlockedRecordHandlingOpTest.designer.cs">
-      <DependentUpon>CancelBlockedRecordHandlingOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CanceledBlockedRecordHandlingEventTest.cs" />
     <Compile Include="CanceledBlockedRecordHandlingEventTest.designer.cs">
       <DependentUpon>CanceledBlockedRecordHandlingEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CanceledPruneRequestedEventTest.cs" />
     <Compile Include="CanceledPruneRequestedEventTest.designer.cs">
       <DependentUpon>CanceledPruneRequestedEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CanceledRequestedHandleRecordExecutionEventTest.cs" />
     <Compile Include="CanceledRequestedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>CanceledRequestedHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CanceledRunningHandleRecordExecutionEventTest.cs" />
     <Compile Include="CanceledRunningHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>CanceledRunningHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="CancelHandleRecordExecutionRequestOpTest.cs" />
-    <Compile Include="CancelHandleRecordExecutionRequestOpTest.designer.cs">
-      <DependentUpon>CancelHandleRecordExecutionRequestOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CancelRunningHandleRecordExecutionOpTest.cs" />
-    <Compile Include="CancelRunningHandleRecordExecutionOpTest.designer.cs">
-      <DependentUpon>CancelRunningHandleRecordExecutionOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CompletedHandleRecordExecutionEventTest.cs" />
     <Compile Include="CompletedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>CompletedHandleRecordExecutionEventTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CompleteRunningHandleRecordExecutionOpTest.cs" />
-    <Compile Include="CompleteRunningHandleRecordExecutionOpTest.designer.cs">
-      <DependentUpon>CompleteRunningHandleRecordExecutionOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConsoleAbstraction.cs" />
-    <Compile Include="StandardCreateStreamOpTest.cs" />
-    <Compile Include="StandardCreateStreamOpTest.designer.cs">
-      <DependentUpon>StandardCreateStreamOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StandardCreateStreamResultTest.cs" />
-    <Compile Include="StandardCreateStreamResultTest.designer.cs">
-      <DependentUpon>StandardCreateStreamResultTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseDummyFactory.designer.cs">
       <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
@@ -314,8 +280,17 @@
     <Compile Include="DatabaseDummyFactoryTest.designer.cs">
       <DependentUpon>DatabaseDummyFactoryTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="DeleteStreamOpTest.designer.cs">
-      <DependentUpon>DeleteStreamOpTest.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForRecordOpTest.designer.cs">
+      <DependentUpon>DisableRecordHandlingForRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForStreamOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForStreamOpTest.designer.cs">
+      <DependentUpon>DisableRecordHandlingForStreamOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\EnableRecordHandlingForStreamOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\EnableRecordHandlingForStreamOpTest.designer.cs">
+      <DependentUpon>EnableRecordHandlingForStreamOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\IdDeprecatedEvent{TId}Test.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TId}Test.cs</DependentUpon>
@@ -323,23 +298,17 @@
     <Compile Include="FailedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>FailedHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="FailRunningHandleRecordExecutionOpTest.designer.cs">
-      <DependentUpon>FailRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOpTest.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusOfRecordsByIdOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetHandlingHistoryOfRecordOpTest.designer.cs">
-      <DependentUpon>GetHandlingHistoryOfRecordOpTest.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOp{TId}Test.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusOfRecordsByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetHandlingStatusOfRecordByInternalRecordIdOpTest.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordByInternalRecordIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GetHandlingStatusOfRecordsByIdOpTest.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordsByIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GetHandlingStatusOfRecordsByIdOp{TId}Test.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordsByIdOp{TId}Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GetHandlingStatusOfRecordSetByTagOpTest.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordSetByTagOpTest.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByTagOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByTagOpTest.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusOfRecordsByTagOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="GetStreamFromRepresentationOpTest.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOpTest.cs</DependentUpon>
@@ -368,93 +337,149 @@
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBaseTest.designer.cs">
       <DependentUpon>ResourceLocatorBaseTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\ResourceLocation\GetAllResourceLocatorsOpTest.cs" />
-    <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBaseTest.cs" />
-    <Compile Include="DeleteStreamOpTest.cs" />
-    <Compile Include="Operations\ResourceLocation\GetAllResourceLocatorsOpTest.designer.cs">
+    <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOpTest.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetResourceLocatorByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.designer.cs">
+    <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.designer.cs">
       <DependentUpon>GetResourceLocatorForUniqueIdentifierOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\ResourceLocation\ThrowIfResourceUnavailableOpTest.designer.cs">
+    <Compile Include="Operations\Classes\ResourceLocation\ThrowIfResourceUnavailableOpTest.designer.cs">
       <DependentUpon>ThrowIfResourceUnavailableOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\DoesAnyExistByIdOp{TId}Test.cs" />
-    <Compile Include="FailedHandleRecordExecutionEventTest.cs" />
-    <Compile Include="FailRunningHandleRecordExecutionOpTest.cs" />
-    <Compile Include="Operations\Stream\External\Read\DoesAnyExistByIdOp{TId}Test.designer.cs">
+    <Compile Include="CanceledBlockedRecordHandlingEventTest.cs" />
+    <Compile Include="CanceledPruneRequestedEventTest.cs" />
+    <Compile Include="CanceledRequestedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="CanceledRunningHandleRecordExecutionEventTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\CancelRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="CompletedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\CancelRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>CancelRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\CompleteRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\CompleteRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>CompleteRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\FailRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>FailRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingHistoryOfRecordOpTest.designer.cs">
+      <DependentUpon>GetHandlingHistoryOfRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingStatusOfRecordByInternalRecordIdOpTest.designer.cs">
+      <DependentUpon>GetHandlingStatusOfRecordByInternalRecordIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\RetryFailedHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>RetryFailedHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\SelfCancelRunningHandleRecordExecutionOpTest.designer.cs">
+      <DependentUpon>SelfCancelRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordOp{TObject}Test.designer.cs">
+      <DependentUpon>TryHandleRecordOp{TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId}Test.designer.cs">
+      <DependentUpon>TryHandleRecordWithIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}Test.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetAllRecordsByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetAllRecordsByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetAllRecordsByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="GetHandlingHistoryOfRecordOpTest.cs" />
-    <Compile Include="GetHandlingStatusOfRecordByInternalRecordIdOpTest.cs" />
-    <Compile Include="GetHandlingStatusOfRecordsByIdOpTest.cs" />
-    <Compile Include="GetHandlingStatusOfRecordsByIdOp{TId}Test.cs" />
-    <Compile Include="GetHandlingStatusOfRecordSetByTagOpTest.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetLatestObjectByTagOp{TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestObjectByTagOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByTagOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetLatestObjectOp{TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestObjectOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestRecordMetadataByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordOp{TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Read\GetLatestRecordOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.cs" />
-    <Compile Include="GetStreamFromRepresentationOpTest.cs" />
-    <Compile Include="HandlingStatusCompositionStrategyTest.cs" />
-    <Compile Include="Events\IdDeprecatedEvent{TId}Test.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryStreamTests.cs" />
-    <Compile Include="Models\Classes\ResourceLocation\NamedResourceLocatorTest.cs" />
-    <Compile Include="Models\Classes\ResourceLocation\NullResourceLocatorTest.cs" />
-    <Compile Include="Operations\Stream\External\Write\GetNextUniqueLongOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOpTest.designer.cs">
       <DependentUpon>GetNextUniqueLongOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}Test.designer.cs">
       <DependentUpon>PutAndReturnInternalRecordIdOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Write\PutOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Write\PutOp{TObject}Test.designer.cs">
       <DependentUpon>PutOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\External\Write\PutWithIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>PutWithIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\ProjectInfo.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOfRecordOpTest.designer.cs">
+      <DependentUpon>StandardGetHandlingHistoryOfRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetRecordHandlingStatusOpTest.designer.cs">
+      <DependentUpon>StandardGetRecordHandlingStatusOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardTryHandleRecordOpTest.designer.cs">
+      <DependentUpon>StandardTryHandleRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateRecordHandlingOpTest.designer.cs">
+      <DependentUpon>StandardUpdateRecordHandlingOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateStreamHandlingOpTest.designer.cs">
+      <DependentUpon>StandardUpdateStreamHandlingOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.designer.cs">
+      <DependentUpon>StandardDoesAnyExistByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsByIdOpTest.designer.cs">
+      <DependentUpon>StandardGetAllRecordsByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOpTest.designer.cs">
+      <DependentUpon>StandardGetAllRecordsMetadataByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.designer.cs">
+      <DependentUpon>StandardGetDistinctStringSerializedIdsOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.designer.cs">
+      <DependentUpon>StandardGetLatestRecordByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagOpTest.designer.cs">
+      <DependentUpon>StandardGetLatestRecordByTagOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOpTest.designer.cs">
+      <DependentUpon>StandardGetLatestRecordMetadataByIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOpTest.designer.cs">
+      <DependentUpon>StandardGetLatestRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOpTest.designer.cs">
+      <DependentUpon>StandardGetRecordByInternalRecordIdOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.designer.cs">
+      <DependentUpon>StandardGetNextUniqueLongOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOpTest.designer.cs">
+      <DependentUpon>StandardPutRecordOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="PruneBeforeInternalRecordDateOpTest.designer.cs">
       <DependentUpon>PruneBeforeInternalRecordDateOpTest.cs</DependentUpon>
     </Compile>
@@ -470,84 +495,67 @@
     <Compile Include="PruneSummaryTest.designer.cs">
       <DependentUpon>PruneSummaryTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PutRecordResultTest.cs" />
     <Compile Include="PutRecordResultTest.designer.cs">
       <DependentUpon>PutRecordResultTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="RequestedHandleRecordExecutionEventTest.cs" />
-    <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBaseTest.cs" />
     <Compile Include="RequestedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>RequestedHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="RetryFailedHandleRecordExecutionEventTest.cs" />
     <Compile Include="RetryFailedHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>RetryFailedHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="RetryFailedHandleRecordExecutionOpTest.cs" />
-    <Compile Include="RetryFailedHandleRecordExecutionOpTest.designer.cs">
-      <DependentUpon>RetryFailedHandleRecordExecutionOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RunningHandleRecordExecutionEventTest.cs" />
     <Compile Include="RunningHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>RunningHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="SelfCanceledRunningHandleRecordExecutionEventTest.cs" />
     <Compile Include="SelfCanceledRunningHandleRecordExecutionEventTest.designer.cs">
       <DependentUpon>SelfCanceledRunningHandleRecordExecutionEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="SelfCancelRunningHandleRecordExecutionOpTest.cs" />
-    <Compile Include="SelfCancelRunningHandleRecordExecutionOpTest.designer.cs">
-      <DependentUpon>SelfCancelRunningHandleRecordExecutionOpTest.cs</DependentUpon>
+    <Compile Include="StandardCreateStreamOpTest.cs" />
+    <Compile Include="StandardCreateStreamOpTest.designer.cs">
+      <DependentUpon>StandardCreateStreamOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.designer.cs">
-      <DependentUpon>StandardDoesAnyExistByIdOpTest.cs</DependentUpon>
+    <Compile Include="StandardCreateStreamResultTest.cs" />
+    <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOpTest.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBaseTest.cs" />
+    <Compile Include="DeleteStreamOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}Test.cs" />
+    <Compile Include="FailedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\FailRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingHistoryOfRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingStatusOfRecordByInternalRecordIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.cs" />
+    <Compile Include="GetStreamFromRepresentationOpTest.cs" />
+    <Compile Include="HandlingStatusCompositionStrategyTest.cs" />
+    <Compile Include="Events\IdDeprecatedEvent{TId}Test.cs" />
+    <Compile Include="StandardCreateStreamResultTest.designer.cs">
+      <DependentUpon>StandardCreateStreamResultTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetAllRecordsByIdOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetAllRecordsByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetAllRecordsByIdOpTest.cs</DependentUpon>
+    <Compile Include="StandardDeleteStreamOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOfRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetRecordHandlingStatusOpTest.cs" />
+    <Compile Include="StandardDeleteStreamOpTest.designer.cs">
+      <DependentUpon>StandardDeleteStreamOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetAllRecordsMetadataByIdOpTest.cs</DependentUpon>
+    <Compile Include="StandardPruneStreamOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardTryHandleRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateRecordHandlingOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateStreamHandlingOpTest.cs" />
+    <Compile Include="StandardPruneStreamOpTest.designer.cs">
+      <DependentUpon>StandardPruneStreamOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.designer.cs">
-      <DependentUpon>StandardGetDistinctStringSerializedIdsOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordByTagOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordByTagOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByTagOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordMetadataByIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetLatestRecordOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.designer.cs">
-      <DependentUpon>StandardGetNextUniqueLongOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOpTest.designer.cs">
-      <DependentUpon>StandardGetRecordByInternalRecordIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Stream\Standard\Write\StandardPutRecordOpTest.cs" />
-    <Compile Include="Operations\Stream\Standard\Write\StandardPutRecordOpTest.designer.cs">
-      <DependentUpon>StandardPutRecordOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="StreamRecordHandlingEntryMetadataTest.cs" />
     <Compile Include="StreamRecordHandlingEntryMetadataTest.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryMetadataTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="StreamRecordHandlingEntryTest.cs" />
     <Compile Include="StreamRecordHandlingEntryTest.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryTest.cs</DependentUpon>
     </Compile>
@@ -575,6 +583,32 @@
     <Compile Include="Stream\Handling\HandleRecordWithIdOp{TId}Test.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\MemoryStream\MemoryStreamTests.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\NamedResourceLocatorTest.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\NullResourceLocatorTest.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\ProjectInfo.cs" />
+    <Compile Include="PutRecordResultTest.cs" />
+    <Compile Include="RequestedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBaseTest.cs" />
+    <Compile Include="RetryFailedHandleRecordExecutionEventTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\RetryFailedHandleRecordExecutionOpTest.cs" />
+    <Compile Include="RunningHandleRecordExecutionEventTest.cs" />
+    <Compile Include="SelfCanceledRunningHandleRecordExecutionEventTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\SelfCancelRunningHandleRecordExecutionOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOpTest.cs" />
+    <Compile Include="StreamRecordHandlingEntryMetadataTest.cs" />
+    <Compile Include="StreamRecordHandlingEntryTest.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadataTest.designer.cs">
       <DependentUpon>StreamRecordMetadataTest.cs</DependentUpon>
     </Compile>
@@ -619,14 +653,14 @@
     <Compile Include="PruneOperationRequestedEventTest.cs" />
     <Compile Include="PruneSummaryTest.cs" />
     <Compile Include="Stream\StreamExtensionsTests.cs" />
-    <Compile Include="Operations\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Write\PutWithIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}Test.cs" />
     <Compile Include="StreamRecordMetadata{TId}Test.cs" />
     <Compile Include="StreamRecordWithId{TId,TObject}Test.cs" />
     <Compile Include="StreamRecordWithId{TId}Test.cs" />
     <Compile Include="Stream\Representation\FileStreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\FileSystemDatabaseLocatorTest.cs" />
-    <Compile Include="Operations\Stream\External\Write\GetNextUniqueLongOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOpTest.cs" />
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\MemoryDatabaseLocatorTest.cs" />
     <Compile Include="Stream\Representation\MemoryStreamRepresentationTest.cs" />
@@ -634,8 +668,8 @@
     <Compile Include="Stream\NullObjectPattern\NullStreamIdentifierTest.cs" />
     <Compile Include="Stream\Representation\NullStreamRepresentationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Operations\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}Test.cs" />
-    <Compile Include="Operations\Stream\External\Write\PutOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Write\PutOp{TObject}Test.cs" />
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DatabaseDummyFactory.cs" />
@@ -652,26 +686,17 @@
       <DependentUpon>StringSerializedIdentifierTest.cs</DependentUpon>
     </Compile>
     <Compile Include="TagMatchStrategyTest.cs" />
-    <Compile Include="Operations\ResourceLocation\ThrowIfResourceUnavailableOpTest.cs" />
+    <Compile Include="Operations\Classes\ResourceLocation\ThrowIfResourceUnavailableOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordOp{TObject}Test.cs" />
     <Compile Include="TagMatchStrategyTest.designer.cs">
       <DependentUpon>TagMatchStrategyTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="TryHandleRecordOp{TObject}Test.cs" />
-    <Compile Include="TryHandleRecordOp{TObject}Test.designer.cs">
-      <DependentUpon>TryHandleRecordOp{TObject}Test.cs</DependentUpon>
-    </Compile>
     <Compile Include="TryHandleRecordResultTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId}Test.cs" />
+    <AdditionalFiles Include=".analyzers\stylecop.json" />
     <Compile Include="TryHandleRecordResultTest.designer.cs">
       <DependentUpon>TryHandleRecordResultTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TryHandleRecordWithIdOp{TId,TObject}Test.cs" />
-    <Compile Include="TryHandleRecordWithIdOp{TId,TObject}Test.designer.cs">
-      <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TryHandleRecordWithIdOp{TId}Test.cs" />
-    <AdditionalFiles Include=".analyzers\stylecop.json" />
-    <Compile Include="TryHandleRecordWithIdOp{TId}Test.designer.cs">
-      <DependentUpon>TryHandleRecordWithIdOp{TId}Test.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

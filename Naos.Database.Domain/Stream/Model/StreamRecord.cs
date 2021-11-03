@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// The record in a <see cref="IReadWriteStream"/>; metadata and the actual object.
     /// </summary>
-    public partial class StreamRecord : IModelViaCodeGen
+    public partial class StreamRecord : IModelViaCodeGen, IHaveInternalRecordId
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecord"/> class.
@@ -34,10 +34,7 @@ namespace Naos.Database.Domain
             this.Payload = payload;
         }
 
-        /// <summary>
-        /// Gets the identifier.
-        /// </summary>
-        /// <value>The identifier.</value>
+        /// <inheritdoc />
         public long InternalRecordId { get; private set; }
 
         /// <summary>

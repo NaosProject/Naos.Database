@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// Delete a stream's persistence.
     /// </summary>
     /// <remarks>
-    /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardReadWriteStream"/>.
+    /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardStream"/>.
     /// While technically there are no limitations on who may execute this operation on such a stream,
     /// these are "bare metal" operations and can be misused without a deeper understanding of what will happen.
     /// Most typically, you will use the operations that are exposed via these extension methods

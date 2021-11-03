@@ -15,14 +15,14 @@ namespace Naos.Database.Domain
     /// </summary>
     public class StandardStreamManagementProtocols : IStreamManagementProtocols
     {
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamManagementProtocols"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamManagementProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 

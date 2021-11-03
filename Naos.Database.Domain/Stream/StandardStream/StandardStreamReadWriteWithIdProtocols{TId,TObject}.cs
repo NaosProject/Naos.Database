@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
         IStreamReadWithIdProtocols<TId, TObject>,
         IStreamWriteWithIdProtocols<TId, TObject>
     {
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocol;
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamReadWriteWithIdProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;

@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using OBeautifulCode.Assertion.Recipes;
@@ -20,14 +21,14 @@ namespace Naos.Database.Domain
         IStreamRecordHandlingProtocols
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamRecordHandlingProtocols"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamRecordHandlingProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;
@@ -39,8 +40,7 @@ namespace Naos.Database.Domain
         {
             var standardizedOperation = new StandardGetHandlingHistoryOfRecordOp(
                 operation.InternalRecordId,
-                operation.Concern,
-                operation.SpecifiedResourceLocator);
+                operation.Concern);
 
             var result = this.stream.Execute(standardizedOperation);
             return result;
@@ -56,8 +56,8 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
-            GetHandlingStatusOfRecordsByIdOp operation)
+        public CompositeHandlingStatus Execute(
+            GetCompositeHandlingStatusOfRecordsByIdOp operation)
         {
             var standardizedOperation = new StandardGetRecordHandlingStatusOp(
                 operation.Concern,
@@ -67,13 +67,16 @@ namespace Naos.Database.Domain
                 null,
                 null);
 
-            var result = this.stream.Execute(standardizedOperation);
+            var handlingStatuses = this.stream.Execute(standardizedOperation);
+
+            var result = handlingStatuses.ToCompositeHandlingStatus();
+
             return result;
         }
 
         /// <inheritdoc />
-        public async Task<HandlingStatus> ExecuteAsync(
-            GetHandlingStatusOfRecordsByIdOp operation)
+        public async Task<CompositeHandlingStatus> ExecuteAsync(
+            GetCompositeHandlingStatusOfRecordsByIdOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
@@ -81,8 +84,8 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
-            GetHandlingStatusOfRecordSetByTagOp operation)
+        public CompositeHandlingStatus Execute(
+            GetCompositeHandlingStatusOfRecordsByTagOp operation)
         {
             var standardizedOperation = new StandardGetRecordHandlingStatusOp(
                 operation.Concern,
@@ -93,13 +96,16 @@ namespace Naos.Database.Domain
                 operation.TagMatchStrategy,
                 null);
 
-            var result = this.stream.Execute(standardizedOperation);
+            var handlingStatuses = this.stream.Execute(standardizedOperation);
+
+            var result = handlingStatuses.ToCompositeHandlingStatus();
+
             return result;
         }
 
         /// <inheritdoc />
-        public async Task<HandlingStatus> ExecuteAsync(
-            GetHandlingStatusOfRecordSetByTagOp operation)
+        public async Task<CompositeHandlingStatus> ExecuteAsync(
+            GetCompositeHandlingStatusOfRecordsByTagOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
@@ -118,7 +124,10 @@ namespace Naos.Database.Domain
                 null,
                 null);
 
-            var result = this.stream.Execute(standardizedOperation);
+            var handlingStatuses = this.stream.Execute(standardizedOperation);
+
+            var result = handlingStatuses.Single();
+
             return result;
         }
 
@@ -133,13 +142,13 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            BlockRecordHandlingOp operation)
+            DisableRecordHandlingForStreamOp operation)
         {
             var standardizedOperation = new StandardUpdateStreamHandlingOp(
-                HandlingStatus.Blocked,
+                HandlingStatus.DisabledForStream,
                 new[]
                 {
-                    HandlingStatus.Requested,
+                    HandlingStatus.AvailableByDefault,
                 },
                 operation.Details);
 
@@ -148,7 +157,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            BlockRecordHandlingOp operation)
+            DisableRecordHandlingForStreamOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -156,13 +165,13 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            CancelBlockedRecordHandlingOp operation)
+            EnableRecordHandlingForStreamOp operation)
         {
             var standardizedOperation = new StandardUpdateStreamHandlingOp(
-                HandlingStatus.Requested,
+                HandlingStatus.AvailableByDefault,
                 new[]
                 {
-                    HandlingStatus.Blocked,
+                    HandlingStatus.DisabledForStream,
                 },
                 operation.Details);
 
@@ -171,7 +180,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            CancelBlockedRecordHandlingOp operation)
+            EnableRecordHandlingForStreamOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -179,15 +188,15 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            CancelHandleRecordExecutionRequestOp operation)
+            DisableRecordHandlingForRecordOp operation)
         {
             var standardizedOperation = new StandardUpdateRecordHandlingOp(
-                operation.Id,
-                operation.Concern,
-                HandlingStatus.Canceled,
+                operation.InternalRecordId,
+                null,
+                HandlingStatus.DisabledForRecord,
                 new[]
                 {
-                    HandlingStatus.Requested,
+                    HandlingStatus.AvailableByDefault,
                     HandlingStatus.Running,
                     HandlingStatus.Failed,
                 },
@@ -199,7 +208,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            CancelHandleRecordExecutionRequestOp operation)
+            DisableRecordHandlingForRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -212,7 +221,7 @@ namespace Naos.Database.Domain
             var standardizedOperation = new StandardUpdateRecordHandlingOp(
                 operation.Id,
                 operation.Concern,
-                HandlingStatus.CanceledRunning,
+                HandlingStatus.AvailableAfterExternalCancellation,
                 new[]
                 {
                     HandlingStatus.Running,
@@ -290,7 +299,7 @@ namespace Naos.Database.Domain
             var standardizedOperation = new StandardUpdateRecordHandlingOp(
                 operation.Id,
                 operation.Concern,
-                HandlingStatus.SelfCanceledRunning,
+                HandlingStatus.AvailableAfterSelfCancellation,
                 new[]
                 {
                     HandlingStatus.Running,
@@ -316,7 +325,7 @@ namespace Naos.Database.Domain
             var standardizedOperation = new StandardUpdateRecordHandlingOp(
                 operation.Id,
                 operation.Concern,
-                HandlingStatus.RetryFailed,
+                HandlingStatus.AvailableAfterFailure,
                 new[]
                 {
                     HandlingStatus.Failed,

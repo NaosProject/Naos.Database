@@ -22,7 +22,7 @@ namespace Naos.Database.Domain
         IStreamReadProtocols<TObject>,
         IStreamWriteProtocols<TObject>
     {
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
         private readonly StandardStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedWithIdProtocols;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamReadWriteProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 

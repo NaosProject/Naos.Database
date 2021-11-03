@@ -27,11 +27,11 @@ namespace Naos.Database.Domain
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
                 operation.OrderRecordsBy,
-                null,
                 operation.Tags,
                 operation.Details,
                 operation.MinimumInternalRecordId,
-                operation.InheritRecordTags);
+                operation.InheritRecordTags,
+                null);
 
             return result;
         }
@@ -52,11 +52,11 @@ namespace Naos.Database.Domain
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
                 operation.OrderRecordsBy,
-                null,
                 operation.Tags,
                 operation.Details,
                 operation.MinimumInternalRecordId,
-                operation.InheritRecordTags);
+                operation.InheritRecordTags,
+                null);
 
             return result;
         }
@@ -76,11 +76,11 @@ namespace Naos.Database.Domain
                 operation.ObjectType,
                 operation.VersionMatchStrategy,
                 operation.OrderRecordsBy,
-                null,
                 operation.Tags,
                 operation.Details,
                 operation.MinimumInternalRecordId,
-                operation.InheritRecordTags);
+                operation.InheritRecordTags,
+                null);
 
             return result;
         }

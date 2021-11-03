@@ -21,14 +21,14 @@ namespace Naos.Database.Domain
         IStreamRecordHandlingProtocols<TObject>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamRecordHandlingProtocols{TEvent}"/> class.
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamRecordHandlingProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;

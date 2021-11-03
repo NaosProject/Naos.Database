@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         IStreamRecordWithIdHandlingProtocols<TId>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
-        private readonly IStandardReadWriteStream stream;
+        private readonly IStandardStream stream;
 
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
 
@@ -34,7 +34,7 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="stream">The stream.</param>
         public StandardStreamRecordWithIdHandlingProtocols(
-            IStandardReadWriteStream stream)
+            IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
             this.stream = stream;
@@ -79,8 +79,8 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public HandlingStatus Execute(
-            GetHandlingStatusOfRecordsByIdOp<TId> operation)
+        public CompositeHandlingStatus Execute(
+            GetCompositeHandlingStatusOfRecordsByIdOp<TId> operation)
         {
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var identifierType = typeof(TId).ToRepresentation();
@@ -95,23 +95,23 @@ namespace Naos.Database.Domain
 
             var groupedByLocators = items.GroupBy(_ => _.Item1).ToList();
             var delegatedOperations = groupedByLocators.Select(
-                                                            _ => new GetHandlingStatusOfRecordsByIdOp(
-                                                                operation.Concern,
-                                                                _.Select(__ => __.Item2).ToList(),
-                                                                operation.HandlingStatusCompositionStrategy,
-                                                                operation.VersionMatchStrategy,
-                                                                _.Key))
-                                                       .ToList();
+                    _ => new GetCompositeHandlingStatusOfRecordsByIdOp(
+                        operation.Concern,
+                        _.Select(__ => __.Item2).ToList(),
+                        operation.HandlingStatusCompositionStrategy,
+                        operation.VersionMatchStrategy))
+                .ToList();
 
-            var results =
-                delegatedOperations.Select(_ => this.stream.GetStreamRecordHandlingProtocols().Execute(_)).ToList();
-            var result = results.ReduceToCompositeHandlingStatus(operation.HandlingStatusCompositionStrategy);
+            var handlingStatues = delegatedOperations.Select(_ => this.stream.GetStreamRecordHandlingProtocols().Execute(_)).ToList();
+
+            var result = handlingStatues.ToCompositeHandlingStatus();
+
             return result;
         }
 
         /// <inheritdoc />
-        public async Task<HandlingStatus> ExecuteAsync(
-            GetHandlingStatusOfRecordsByIdOp<TId> operation)
+        public async Task<CompositeHandlingStatus> ExecuteAsync(
+            GetCompositeHandlingStatusOfRecordsByIdOp<TId> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

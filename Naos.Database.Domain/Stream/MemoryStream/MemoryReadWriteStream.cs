@@ -26,7 +26,7 @@ namespace Naos.Database.Domain
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class MemoryReadWriteStream :
-        StandardReadWriteStreamBase
+        StandardStreamBase
     {
         private readonly object streamLock = new object();
         private readonly object handlingLock = new object();
@@ -78,7 +78,7 @@ namespace Naos.Database.Domain
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
             var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-            var currentStatus = mostRecentEntry?.Metadata.Status ?? HandlingStatus.Requested;
+            var currentStatus = mostRecentEntry?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
             if (currentStatus != expectedStatus)
             {
                 throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecentEntry?.Metadata.Status.ToString() ?? "<null entry>"}."));
@@ -88,10 +88,10 @@ namespace Naos.Database.Domain
             IEvent statusEvent;
             switch (newStatus)
             {
-                case HandlingStatus.Blocked:
+                case HandlingStatus.DisabledForStream:
                     statusEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
                     break;
-                case HandlingStatus.Requested:
+                case HandlingStatus.AvailableByDefault:
                     statusEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
                     break;
                 default:

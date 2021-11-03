@@ -25,12 +25,12 @@ namespace Naos.Database.Protocol.FileSystem
 
     /// <summary>
     /// File system implementation of <see cref="IReadWriteStream"/>, it is thread resilient but not necessarily thread safe.
-    /// Implements the <see cref="StandardReadWriteStreamBase" />.
+    /// Implements the <see cref="StandardStreamBase" />.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class FileReadWriteStream :
-        StandardReadWriteStreamBase
+        StandardStreamBase
     {
         private const string NullToken = "null";
         private const string RecordHandlingTrackingDirectoryName = "_HandlingTracking";
@@ -577,7 +577,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override HandlingStatus Execute(
+        public override IReadOnlyCollection<HandlingStatus> Execute(
             StandardGetRecordHandlingStatusOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -711,7 +711,7 @@ namespace Naos.Database.Protocol.FileSystem
                                 var requestedMetadata = new StreamRecordHandlingEntryMetadata(
                                     recordToHandle.InternalRecordId,
                                     operation.Concern,
-                                    HandlingStatus.Requested,
+                                    HandlingStatus.AvailableByDefault,
                                     recordToHandle.Metadata.StringSerializedId,
                                     requestedPayload.SerializerRepresentation,
                                     recordToHandle.Metadata.TypeRepresentationOfId,
@@ -1296,7 +1296,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
                 var mostRecent = mostRecentFilePath == null ? null : this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
-                var currentStatus = mostRecent?.Metadata.Status ?? HandlingStatus.Requested;
+                var currentStatus = mostRecent?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
                 if (currentStatus != expectedStatus)
                 {
                     throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecent?.Metadata.Status.ToString() ?? "<null entry>"}."));
@@ -1307,10 +1307,10 @@ namespace Naos.Database.Protocol.FileSystem
                 IEvent statusEvent;
                 switch (newStatus)
                 {
-                    case HandlingStatus.Blocked:
+                    case HandlingStatus.DisabledForStream:
                         statusEvent = new BlockedRecordHandlingEvent(operation.Details, utcNow);
                         break;
-                    case HandlingStatus.Requested:
+                    case HandlingStatus.AvailableByDefault:
                         statusEvent = new CanceledBlockedRecordHandlingEvent(operation.Details, utcNow);
                         break;
                     default:
@@ -1327,7 +1327,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     internalRecordId,
                     concern,
-                    HandlingStatus.Requested,
+                    HandlingStatus.AvailableByDefault,
                     null,
                     this.DefaultSerializerRepresentation,
                     NullStreamIdentifier.TypeRepresentation,
@@ -1368,7 +1368,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
 
-                var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.None;
+                var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
                 if (!operation.AcceptableCurrentStatuses.Contains(currentHandlingStatus))
                 {
                     var acceptableStatusesCsvString = string.Join(",", operation.AcceptableCurrentStatuses);
@@ -1378,10 +1378,10 @@ namespace Naos.Database.Protocol.FileSystem
 
                 switch (operation.NewStatus)
                 {
-                    case HandlingStatus.Canceled:
+                    case HandlingStatus.DisabledForRecord:
                         this.CancelHandleRecordExecutionRequest(operation, locator, mostRecent);
                         break;
-                    case HandlingStatus.CanceledRunning:
+                    case HandlingStatus.AvailableAfterExternalCancellation:
                         this.CancelRunningHandleRecordExecution(operation, locator, mostRecent);
                         break;
                     case HandlingStatus.Completed:
@@ -1390,10 +1390,10 @@ namespace Naos.Database.Protocol.FileSystem
                     case HandlingStatus.Failed:
                         this.FailRunningHandleRecordExecution(operation, locator, mostRecent);
                         break;
-                    case HandlingStatus.SelfCanceledRunning:
+                    case HandlingStatus.AvailableAfterSelfCancellation:
                         this.SelfCancelRunningHandleRecordExecution(operation, locator, mostRecent);
                         break;
-                    case HandlingStatus.RetryFailed:
+                    case HandlingStatus.AvailableAfterFailure:
                         this.RetryFailedHandleRecordExecution(operation, locator, mostRecent);
                         break;
                     default:
@@ -1411,7 +1411,7 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 if (mostRecent.Metadata.Status != HandlingStatus.Running && mostRecent.Metadata.Status != HandlingStatus.Failed)
                 {
-                    throw new InvalidOperationException(Invariant($"Cannot cancel an execution {nameof(HandleRecordOp)} unless it is {nameof(HandlingStatus.Requested)} or {nameof(HandlingStatus.Failed)}, the most recent status is {mostRecent.Metadata.Status}."));
+                    throw new InvalidOperationException(Invariant($"Cannot cancel an execution {nameof(HandleRecordOp)} unless it is {nameof(HandlingStatus.AvailableByDefault)} or {nameof(HandlingStatus.Failed)}, the most recent status is {mostRecent.Metadata.Status}."));
                 }
 
                 var timestamp = DateTime.UtcNow;
@@ -1425,7 +1425,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     operation.InternalRecordId,
                     operation.Concern,
-                    HandlingStatus.Canceled,
+                    HandlingStatus.DisabledForRecord,
                     mostRecent.Metadata.StringSerializedId,
                     payload.SerializerRepresentation,
                     mostRecent.Metadata.TypeRepresentationOfId,
@@ -1462,7 +1462,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     operation.InternalRecordId,
                     operation.Concern,
-                    HandlingStatus.CanceledRunning,
+                    HandlingStatus.AvailableAfterExternalCancellation,
                     mostRecent.Metadata.StringSerializedId,
                     payload.SerializerRepresentation,
                     mostRecent.Metadata.TypeRepresentationOfId,
@@ -1573,7 +1573,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     operation.InternalRecordId,
                     operation.Concern,
-                    HandlingStatus.SelfCanceledRunning,
+                    HandlingStatus.AvailableAfterSelfCancellation,
                     mostRecent.Metadata.StringSerializedId,
                     payload.SerializerRepresentation,
                     mostRecent.Metadata.TypeRepresentationOfId,
@@ -1610,7 +1610,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     operation.InternalRecordId,
                     operation.Concern,
-                    HandlingStatus.RetryFailed,
+                    HandlingStatus.AvailableAfterFailure,
                     mostRecent.Metadata.StringSerializedId,
                     payload.SerializerRepresentation,
                     mostRecent.Metadata.TypeRepresentationOfId,
@@ -1982,7 +1982,7 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 var currentEntry = groupedById.OrderByDescending(_ => _).First();
                 var currentStatus = GetStatusFromEntryFilePath(currentEntry);
-                if (currentStatus.IsHandlingNeeded())
+                if (currentStatus.IsAvailable())
                 {
                     existingInternalRecordIdsToConsider.Add(groupedById.Key);
                 }
@@ -2014,7 +2014,7 @@ namespace Naos.Database.Protocol.FileSystem
 
             var mostRecentFile = files.OrderByDescending(_ => _).First();
             var status = GetStatusFromEntryFilePath(mostRecentFile);
-            var result = status == HandlingStatus.Blocked;
+            var result = status == HandlingStatus.DisabledForStream;
             return result;
         }
 

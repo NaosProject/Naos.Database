@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Deletes all records in a stream whose internal record identifier is less than the specified threshold.
     /// </summary>
-    public partial class PruneBeforeInternalRecordIdOp : VoidOperationBase, IPruneOperation
+    public partial class PruneBeforeInternalRecordIdOp : VoidOperationBase, IPruneOperation, IHaveInternalRecordId
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneBeforeInternalRecordIdOp"/> class.
@@ -34,10 +34,7 @@ namespace Naos.Database.Domain
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
-        /// <summary>
-        /// Gets the internal record identifier to use, all records older will be pruned.
-        /// </summary>
-        /// <value>The internal record identifier to use, all records older will be pruned..</value>
+        /// <inheritdoc />
         public long InternalRecordId { get; private set; }
 
         /// <summary>

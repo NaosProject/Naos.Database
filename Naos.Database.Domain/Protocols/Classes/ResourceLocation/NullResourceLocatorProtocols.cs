@@ -8,6 +8,7 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -19,6 +20,8 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<IResourceLocator> Execute(
             GetAllResourceLocatorsOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new[]
             {
                 new NullResourceLocator(),
@@ -31,6 +34,8 @@ namespace Naos.Database.Domain
         public async Task<IReadOnlyCollection<IResourceLocator>> ExecuteAsync(
             GetAllResourceLocatorsOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = await Task.FromResult(
                 new[]
                 {
@@ -44,6 +49,8 @@ namespace Naos.Database.Domain
         public IResourceLocator Execute(
             GetResourceLocatorForUniqueIdentifierOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new NullResourceLocator();
 
             return result;
@@ -53,6 +60,8 @@ namespace Naos.Database.Domain
         public async Task<IResourceLocator> ExecuteAsync(
             GetResourceLocatorForUniqueIdentifierOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = await Task.FromResult(new NullResourceLocator());
 
             return result;

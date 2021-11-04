@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -32,6 +33,8 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<IResourceLocator> Execute(
             GetAllResourceLocatorsOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new[]
             {
                 this.resourceLocator,
@@ -61,6 +64,8 @@ namespace Naos.Database.Domain
         public IResourceLocator Execute(
             GetResourceLocatorForUniqueIdentifierOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = this.resourceLocator;
 
             return result;

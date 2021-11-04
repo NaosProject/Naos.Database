@@ -12,23 +12,23 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Handles a record.
+    /// Try to handle a record.
     /// </summary>
     public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, ITryHandleRecordOp, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardTryHandleRecordOp"/> class.
         /// </summary>
-        /// <param name="concern">The concern.</param>
-        /// <param name="identifierType">The optional type of the identifier; default is no filter.</param>
-        /// <param name="objectType">The optional type of the object; default is no filter.</param>
-        /// <param name="versionMatchStrategy">The optional type version match strategy; DEFAULT is Any.</param>
-        /// <param name="orderRecordsBy">The optional ordering for the records; DEFAULT is ascending by internal record identifier.</param>
-        /// <param name="tags">OPTIONAL tags to write to the resulting event(s).  DEFAULT is no tags.</param>
-        /// <param name="details">The optional details to write with produced events.</param>
-        /// <param name="minimumInternalRecordId">The optional minimum record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be desired behavior on things that self-cancel and are long running).</param>
-        /// <param name="inheritRecordTags">The optional value indicating whether handling entries should include any tags on the record being handled; DEFAULT is 'false'.</param>
-        /// <param name="specifiedResourceLocator">The optional locator to use; DEFAULT will assume single locator on stream or throw.</param>
+        /// <param name="concern">The record handling concern.</param>
+        /// <param name="identifierType">OPTIONAL type of the object identifier to filter on.  DEFAULT is no filter.</param>
+        /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
+        /// <param name="tags">OPTIONAL tags to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no tags.</param>
+        /// <param name="details">OPTIONAL details to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no details.</param>
+        /// <param name="minimumInternalRecordId">OPTIONAL minimum internal record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be a desired behavior on protocols that self-cancel and are long running). DEFAULT is no minimum internal identifier.</param>
+        /// <param name="inheritRecordTags">OPTIONAL value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.  DEFAULT is to not inherit tags.</param>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardTryHandleRecordOp(
             string concern,
             TypeRepresentation identifierType = null,
@@ -60,15 +60,13 @@ namespace Naos.Database.Domain
         public string Concern { get; private set; }
 
         /// <summary>
-        /// Gets the type of the identifier.
+        /// Gets the type of the identifier to filter on or null when not matching on object identifier type.
         /// </summary>
-        /// <value>The type of the identifier.</value>
         public TypeRepresentation IdentifierType { get; private set; }
 
         /// <summary>
-        /// Gets the type of the object.
+        /// Gets the type of the object to filter on or null when not matching on object type.
         /// </summary>
-        /// <value>The type of the object.</value>
         public TypeRepresentation ObjectType { get; private set; }
 
         /// <inheritdoc />

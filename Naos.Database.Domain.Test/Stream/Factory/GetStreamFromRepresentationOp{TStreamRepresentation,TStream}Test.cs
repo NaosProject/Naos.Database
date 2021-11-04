@@ -29,7 +29,7 @@ namespace Naos.Database.Domain.Test
             ConstructorArgumentValidationTestScenarios.RemoveAllScenarios()
                                                       .AddScenario(
                                                            ConstructorArgumentValidationTestScenario<
-                                                                   GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                                                                   GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                                                               .ForceGeneratedTestsToPassAndWriteMyOwnScenario);
         }
     }

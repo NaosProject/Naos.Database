@@ -27,7 +27,7 @@ namespace Naos.Protocol.FileSystem.Test
     using static System.FormattableString;
 
     /// <summary>
-    /// Tests for <see cref="FileReadWriteStream"/>.
+    /// Tests for <see cref="FileStandardStream"/>.
     /// </summary>
     public partial class FileStreamTest
     {
@@ -95,7 +95,7 @@ namespace Naos.Protocol.FileSystem.Test
                 resourceLocatorForUniqueIdentifier,
                 ResourceLocatorByIdProtocol);
 
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -342,7 +342,7 @@ namespace Naos.Protocol.FileSystem.Test
                 resourceLocatorForUniqueIdentifier,
                 ResourceLocatorByIdProtocol);
 
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -418,7 +418,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -472,7 +472,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -498,7 +498,7 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.PutWithId(firstObject.Id, firstObject, firstObject.Tags);
                 var first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.MustForTest().NotBeNull();
-                var getFirstStatusByIdOp = new GetCompositeHandlingStatusOfRecordsByTagOp(
+                var getFirstStatusByIdOp = new GetCompositeHandlingStatusByTagsOp(
                     firstConcern,
                     firstTags);
 
@@ -506,20 +506,20 @@ namespace Naos.Protocol.FileSystem.Test
 
                 var firstInternalRecordId = first.RecordToHandle.InternalRecordId;
                 stream.GetStreamRecordHandlingProtocols().Execute(
-                    new CancelRunningHandleRecordExecutionOp(
+                    new CancelRunningHandleRecordOp(
                         firstInternalRecordId,
                         firstConcern,
                         "Resources unavailable; node out of disk space.",
                         tags: firstTags));
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(new DisableRecordHandlingForStreamOp("Stop processing, fixing resource issue."));
+                stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForStreamOp("Stop processing, fixing resource issue."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
                 first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().BeNull();
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(new EnableRecordHandlingForStreamOp("Resume processing, fixed resource issue."));
+                stream.GetStreamRecordHandlingProtocols().Execute(new EnableHandlingForStreamOp("Resume processing, fixed resource issue."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
 
                 first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
@@ -527,7 +527,7 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
-                    new SelfCancelRunningHandleRecordExecutionOp(
+                    new SelfCancelRunningHandleRecordOp(
                         firstInternalRecordId,
                         firstConcern,
                         "Processing not finished, check later.",
@@ -538,7 +538,7 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
-                    new CompleteRunningHandleRecordExecutionOp(
+                    new CompleteRunningHandleRecordOp(
                         firstInternalRecordId,
                         firstConcern,
                         "Processing not finished, check later.",
@@ -548,7 +548,7 @@ namespace Naos.Protocol.FileSystem.Test
                 first.RecordToHandle.MustForTest().BeNull();
                 stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
 
-                var firstHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOfRecordOp(firstInternalRecordId, firstConcern));
+                var firstHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(firstInternalRecordId, firstConcern));
                 firstHistory.MustForTest().HaveCount(7);
                 foreach (var history in firstHistory)
                 {
@@ -561,7 +561,7 @@ namespace Naos.Protocol.FileSystem.Test
                 var second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.MustForTest().NotBeNull();
                 var secondInternalRecordId = second.RecordToHandle.InternalRecordId;
-                var getSecondStatusByIdOp = new GetCompositeHandlingStatusOfRecordsByIdOp(
+                var getSecondStatusByIdOp = new GetCompositeHandlingStatusByIdsOp(
                     secondConcern,
                     new[]
                     {
@@ -571,7 +571,7 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
-                    new FailRunningHandleRecordExecutionOp(
+                    new FailRunningHandleRecordOp(
                         secondInternalRecordId,
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1 doesn't work."));
@@ -581,16 +581,16 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
-                    new RetryFailedHandleRecordExecutionOp(secondInternalRecordId, secondConcern, "Redeployed Bot v1.0.1-hotfix, re-run."));
+                    new ResetFailedHandleRecordOp(secondInternalRecordId, secondConcern, "Redeployed Bot v1.0.1-hotfix, re-run."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(new DisableRecordHandlingForStreamOp("Stop processing, need to confirm deployment."));
+                stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForStreamOp("Stop processing, need to confirm deployment."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().BeNull();
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(new EnableRecordHandlingForStreamOp("Resume processing, confirmed deployment."));
+                stream.GetStreamRecordHandlingProtocols().Execute(new EnableHandlingForStreamOp("Resume processing, confirmed deployment."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
 
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
@@ -598,19 +598,19 @@ namespace Naos.Protocol.FileSystem.Test
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
-                    new FailRunningHandleRecordExecutionOp(
+                    new FailRunningHandleRecordOp(
                         secondInternalRecordId,
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1-hotfix doesn't work."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(new DisableRecordHandlingForRecordOp(firstInternalRecordId, "Giving up."));
+                stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForRecordOp(firstInternalRecordId, "Giving up."));
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
                 second.RecordToHandle.MustForTest().BeNull();
 
-                var secondHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOfRecordOp(secondInternalRecordId, secondConcern));
+                var secondHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(secondInternalRecordId, secondConcern));
                 secondHistory.MustForTest().HaveCount(7);
 
                 foreach (var history in secondHistory)
@@ -620,7 +620,7 @@ namespace Naos.Protocol.FileSystem.Test
                             $"{history.Metadata.Concern}: {history.InternalHandlingEntryId}:{history.Metadata.InternalRecordId} - {history.Metadata.Status} - {history.Payload.DeserializePayloadUsingSpecificFactory<IHaveDetails>(stream.SerializerFactory).Details ?? "<no details specified>"}"));
                 }
 
-                var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOfRecordOp(0, Concerns.RecordHandlingConcern));
+                var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(0, Concerns.RecordHandlingConcern));
 
                 foreach (var history in blockingHistory)
                 {
@@ -659,7 +659,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -704,7 +704,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -749,7 +749,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -823,7 +823,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -841,7 +841,7 @@ namespace Naos.Protocol.FileSystem.Test
             record?.RecordToHandle.MustForTest().NotBeNull();
             ((StringDescribedSerialization)record?.RecordToHandle.Payload)?.SerializedPayload.MustForTest().BeEqualTo("null");
 
-            stream.GetStreamRecordHandlingProtocols().Execute(new CompleteRunningHandleRecordExecutionOp(record.RecordToHandle.InternalRecordId, concern));
+            stream.GetStreamRecordHandlingProtocols().Execute(new CompleteRunningHandleRecordOp(record.RecordToHandle.InternalRecordId, concern));
 
             var recordAgain = stream.Execute(new StandardTryHandleRecordOp(concern));
             recordAgain.RecordToHandle.MustForTest().BeNull();
@@ -868,7 +868,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -929,7 +929,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
@@ -1004,7 +1004,7 @@ namespace Naos.Protocol.FileSystem.Test
                 configurationTypeRepresentation);
 
             var defaultSerializationFormat = SerializationFormat.String;
-            var stream = new FileReadWriteStream(
+            var stream = new FileStandardStream(
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,

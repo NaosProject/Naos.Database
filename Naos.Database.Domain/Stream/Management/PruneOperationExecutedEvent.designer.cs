@@ -139,7 +139,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneOperationExecutedEvent DeepCloneWithPruneOperation(IPruneOperation pruneOperation)
+        public PruneOperationExecutedEvent DeepCloneWithPruneOperation(IPruneOp pruneOperation)
         {
             var result = new PruneOperationExecutedEvent(
                                  pruneOperation,

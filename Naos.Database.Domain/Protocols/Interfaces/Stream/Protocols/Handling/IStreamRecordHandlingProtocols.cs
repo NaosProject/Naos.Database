@@ -13,18 +13,18 @@ namespace Naos.Database.Domain
     /// Interface to protocol the stream record handling operations without a typed identifier and without a typed record payload.
     /// </summary>
     public interface IStreamRecordHandlingProtocols
-        : ISyncAndAsyncReturningProtocol<GetHandlingHistoryOfRecordOp, IReadOnlyList<StreamRecordHandlingEntry>>,
-          ISyncAndAsyncReturningProtocol<GetHandlingStatusOfRecordByInternalRecordIdOp, HandlingStatus>,
-          ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusOfRecordsByIdOp, CompositeHandlingStatus>,
-          ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusOfRecordsByTagOp, CompositeHandlingStatus>,
-          ISyncAndAsyncVoidProtocol<DisableRecordHandlingForStreamOp>,
-          ISyncAndAsyncVoidProtocol<EnableRecordHandlingForStreamOp>,
-          ISyncAndAsyncVoidProtocol<DisableRecordHandlingForRecordOp>,
-          ISyncAndAsyncVoidProtocol<CancelRunningHandleRecordExecutionOp>,
-          ISyncAndAsyncVoidProtocol<CompleteRunningHandleRecordExecutionOp>,
-          ISyncAndAsyncVoidProtocol<FailRunningHandleRecordExecutionOp>,
-          ISyncAndAsyncVoidProtocol<RetryFailedHandleRecordExecutionOp>,
-          ISyncAndAsyncVoidProtocol<SelfCancelRunningHandleRecordExecutionOp>
+        : ISyncAndAsyncReturningProtocol<GetHandlingHistoryOp, IReadOnlyList<StreamRecordHandlingEntry>>,
+          ISyncAndAsyncReturningProtocol<GetHandlingStatusOp, HandlingStatus>,
+          ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusByIdsOp, CompositeHandlingStatus>,
+          ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusByTagsOp, CompositeHandlingStatus>,
+          ISyncAndAsyncVoidProtocol<DisableHandlingForStreamOp>,
+          ISyncAndAsyncVoidProtocol<EnableHandlingForStreamOp>,
+          ISyncAndAsyncVoidProtocol<DisableHandlingForRecordOp>,
+          ISyncAndAsyncVoidProtocol<CancelRunningHandleRecordOp>,
+          ISyncAndAsyncVoidProtocol<CompleteRunningHandleRecordOp>,
+          ISyncAndAsyncVoidProtocol<FailRunningHandleRecordOp>,
+          ISyncAndAsyncVoidProtocol<ResetFailedHandleRecordOp>,
+          ISyncAndAsyncVoidProtocol<SelfCancelRunningHandleRecordOp>
     {
     }
 }

@@ -35,16 +35,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class StandardUpdateStreamHandlingOpTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardUpdateStreamHandlingOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardUpdateStreamHandlingOp>()
+        private static readonly StringRepresentationTestScenarios<StandardUpdateHandlingStatusForStreamOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardUpdateHandlingStatusForStreamOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardUpdateStreamHandlingOp>
+                new StringRepresentationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardUpdateHandlingStatusForStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardUpdateStreamHandlingOp: NewStatus = {systemUnderTest.NewStatus.ToString() ?? "<null>"}, AcceptableCurrentStatuses = {systemUnderTest.AcceptableCurrentStatuses?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardUpdateStreamHandlingOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardUpdateStreamHandlingOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardUpdateHandlingStatusForStreamOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardUpdateHandlingStatusForStreamOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'acceptableCurrentStatuses' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new StandardUpdateStreamHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              null,
                                              referenceObject.Details,
@@ -75,14 +75,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'acceptableCurrentStatuses' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new StandardUpdateStreamHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              new List<HandlingStatus>(),
                                              referenceObject.Details,
@@ -94,14 +94,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new StandardUpdateStreamHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              referenceObject.AcceptableCurrentStatuses,
                                              null,
@@ -113,14 +113,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new StandardUpdateStreamHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              referenceObject.AcceptableCurrentStatuses,
                                              Invariant($"  {Environment.NewLine}  "),
@@ -132,14 +132,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new StandardUpdateStreamHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              referenceObject.AcceptableCurrentStatuses,
                                              referenceObject.Details,
@@ -151,18 +151,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardUpdateStreamHandlingOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardUpdateStreamHandlingOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardUpdateHandlingStatusForStreamOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardUpdateHandlingStatusForStreamOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "NewStatus should return same 'newStatus' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForStreamOp>
                         {
-                            SystemUnderTest = new StandardUpdateStreamHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.AcceptableCurrentStatuses,
                                                       referenceObject.Details,
@@ -175,16 +175,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "NewStatus",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "AcceptableCurrentStatuses should return same 'acceptableCurrentStatuses' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForStreamOp>
                         {
-                            SystemUnderTest = new StandardUpdateStreamHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.AcceptableCurrentStatuses,
                                                       referenceObject.Details,
@@ -197,16 +197,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "AcceptableCurrentStatuses",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForStreamOp>
                         {
-                            SystemUnderTest = new StandardUpdateStreamHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.AcceptableCurrentStatuses,
                                                       referenceObject.Details,
@@ -219,16 +219,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Details",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateStreamHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForStreamOp>
                         {
-                            SystemUnderTest = new StandardUpdateStreamHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.AcceptableCurrentStatuses,
                                                       referenceObject.Details,
@@ -241,19 +241,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "SpecifiedResourceLocator",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardUpdateStreamHandlingOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardUpdateStreamHandlingOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardUpdateHandlingStatusForStreamOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardUpdateHandlingStatusForStreamOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateStreamHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "DeepCloneWithNewStatus should deep clone object and replace NewStatus with the provided newStatus",
                     WithPropertyName = "NewStatus",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>().ThatIs(_ => !systemUnderTest.NewStatus.IsEqualTo(_.NewStatus));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>().ThatIs(_ => !systemUnderTest.NewStatus.IsEqualTo(_.NewStatus));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.NewStatus,
@@ -263,17 +263,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateStreamHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "DeepCloneWithAcceptableCurrentStatuses should deep clone object and replace AcceptableCurrentStatuses with the provided acceptableCurrentStatuses",
                     WithPropertyName = "AcceptableCurrentStatuses",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>().ThatIs(_ => !systemUnderTest.AcceptableCurrentStatuses.IsEqualTo(_.AcceptableCurrentStatuses));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>().ThatIs(_ => !systemUnderTest.AcceptableCurrentStatuses.IsEqualTo(_.AcceptableCurrentStatuses));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.AcceptableCurrentStatuses,
@@ -283,17 +283,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateStreamHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
@@ -303,17 +303,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateStreamHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateStreamHandlingOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateStreamHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
@@ -323,44 +323,44 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StandardUpdateStreamHandlingOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardUpdateStreamHandlingOp>();
+        private static readonly StandardUpdateHandlingStatusForStreamOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
-        private static readonly EquatableTestScenarios<StandardUpdateStreamHandlingOp> EquatableTestScenarios = new EquatableTestScenarios<StandardUpdateStreamHandlingOp>()
+        private static readonly EquatableTestScenarios<StandardUpdateHandlingStatusForStreamOp> EquatableTestScenarios = new EquatableTestScenarios<StandardUpdateHandlingStatusForStreamOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardUpdateStreamHandlingOp>
+                new EquatableTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardUpdateStreamHandlingOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardUpdateHandlingStatusForStreamOp[]
                     {
-                        new StandardUpdateStreamHandlingOp(
+                        new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardUpdateStreamHandlingOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardUpdateHandlingStatusForStreamOp[]
                     {
-                        new StandardUpdateStreamHandlingOp(
-                                A.Dummy<StandardUpdateStreamHandlingOp>().Whose(_ => !_.NewStatus.IsEqualTo(ReferenceObjectForEquatableTestScenarios.NewStatus)).NewStatus,
+                        new StandardUpdateHandlingStatusForStreamOp(
+                                A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.NewStatus.IsEqualTo(ReferenceObjectForEquatableTestScenarios.NewStatus)).NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateStreamHandlingOp(
+                        new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
-                                A.Dummy<StandardUpdateStreamHandlingOp>().Whose(_ => !_.AcceptableCurrentStatuses.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses)).AcceptableCurrentStatuses,
+                                A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.AcceptableCurrentStatuses.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses)).AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateStreamHandlingOp(
+                        new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
-                                A.Dummy<StandardUpdateStreamHandlingOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateStreamHandlingOp(
+                        new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<StandardUpdateStreamHandlingOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -369,21 +369,21 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CancelRunningHandleRecordExecutionOp>(),
-                        A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<DisableRecordHandlingForRecordOp>(),
-                        A.Dummy<DisableRecordHandlingForStreamOp>(),
+                        A.Dummy<CancelRunningHandleRecordOp>(),
+                        A.Dummy<CompleteRunningHandleRecordOp>(),
+                        A.Dummy<DisableHandlingForRecordOp>(),
+                        A.Dummy<DisableHandlingForStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableRecordHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordExecutionOp>(),
+                        A.Dummy<EnableHandlingForStreamOp>(),
+                        A.Dummy<FailRunningHandleRecordOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
                         A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
-                        A.Dummy<GetHandlingStatusOfRecordByInternalRecordIdOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
+                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetHandlingHistoryOp>(),
+                        A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectByTagOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
@@ -395,7 +395,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetResourceLocatorByIdOp<Version>>(),
                         A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
                         A.Dummy<GetStreamFromRepresentationOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -406,26 +406,26 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<RetryFailedHandleRecordExecutionOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordExecutionOp>(),
+                        A.Dummy<ResetFailedHandleRecordOp>(),
+                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
                         A.Dummy<StandardGetAllRecordsByIdOp>(),
                         A.Dummy<StandardGetAllRecordsMetadataByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
-                        A.Dummy<StandardGetHandlingHistoryOfRecordOp>(),
+                        A.Dummy<StandardGetHandlingHistoryOp>(),
                         A.Dummy<StandardGetLatestRecordByIdOp>(),
                         A.Dummy<StandardGetLatestRecordByTagOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
                         A.Dummy<StandardGetLatestRecordOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
-                        A.Dummy<StandardGetRecordHandlingStatusOp>(),
+                        A.Dummy<StandardGetHandlingStatusOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateRecordHandlingOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),
                         A.Dummy<ThrowIfResourceUnavailableOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
@@ -454,9 +454,9 @@ namespace Naos.Database.Domain.Test
             public static void StandardUpdateStreamHandlingOp___Should_implement_IModel_of_StandardUpdateStreamHandlingOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardUpdateStreamHandlingOp);
+                var type = typeof(StandardUpdateHandlingStatusForStreamOp);
 
-                var expectedModelMethods = typeof(IModel<StandardUpdateStreamHandlingOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardUpdateHandlingStatusForStreamOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -466,7 +466,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardUpdateStreamHandlingOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardUpdateHandlingStatusForStreamOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -487,7 +487,7 @@ namespace Naos.Database.Domain.Test
             public static void StandardUpdateStreamHandlingOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardUpdateStreamHandlingOp);
+                var type = typeof(StandardUpdateHandlingStatusForStreamOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -667,10 +667,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
                 // Act
-                var actual = (StandardUpdateStreamHandlingOp)systemUnderTest.Clone();
+                var actual = (StandardUpdateHandlingStatusForStreamOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -694,7 +694,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardUpdateStreamHandlingOp>();
+                var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -757,12 +757,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardUpdateStreamHandlingOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardUpdateHandlingStatusForStreamOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardUpdateStreamHandlingOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardUpdateHandlingStatusForStreamOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -824,7 +824,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateStreamHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -853,7 +853,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateStreamHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -882,7 +882,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateStreamHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -911,7 +911,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateStreamHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -945,8 +945,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardUpdateStreamHandlingOp systemUnderTest1 = null;
-                StandardUpdateStreamHandlingOp systemUnderTest2 = null;
+                StandardUpdateHandlingStatusForStreamOp systemUnderTest1 = null;
+                StandardUpdateHandlingStatusForStreamOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -976,7 +976,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardUpdateStreamHandlingOp systemUnderTest = null;
+                    StandardUpdateHandlingStatusForStreamOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1125,8 +1125,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardUpdateStreamHandlingOp systemUnderTest1 = null;
-                StandardUpdateStreamHandlingOp systemUnderTest2 = null;
+                StandardUpdateHandlingStatusForStreamOp systemUnderTest1 = null;
+                StandardUpdateHandlingStatusForStreamOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1156,7 +1156,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardUpdateStreamHandlingOp systemUnderTest = null;
+                    StandardUpdateHandlingStatusForStreamOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1595,7 +1595,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardUpdateStreamHandlingOp systemUnderTest = null;
+                    StandardUpdateHandlingStatusForStreamOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

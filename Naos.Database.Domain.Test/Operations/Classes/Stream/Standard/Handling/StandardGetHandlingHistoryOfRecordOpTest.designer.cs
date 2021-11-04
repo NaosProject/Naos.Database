@@ -35,16 +35,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class StandardGetHandlingHistoryOfRecordOpTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardGetHandlingHistoryOfRecordOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetHandlingHistoryOfRecordOp>()
+        private static readonly StringRepresentationTestScenarios<StandardGetHandlingHistoryOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetHandlingHistoryOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new StringRepresentationTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetHandlingHistoryOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetHandlingHistoryOfRecordOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetHandlingHistoryOfRecordOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetHandlingHistoryOfRecordOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetHandlingHistoryOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetHandlingHistoryOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new StandardGetHandlingHistoryOfRecordOp(
+                        var result = new StandardGetHandlingHistoryOp(
                                              referenceObject.InternalRecordId,
                                              null,
                                              referenceObject.SpecifiedResourceLocator);
@@ -74,14 +74,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new StandardGetHandlingHistoryOfRecordOp(
+                        var result = new StandardGetHandlingHistoryOp(
                                              referenceObject.InternalRecordId,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.SpecifiedResourceLocator);
@@ -92,14 +92,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new StandardGetHandlingHistoryOfRecordOp(
+                        var result = new StandardGetHandlingHistoryOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              null);
@@ -110,18 +110,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingHistoryOfRecordOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingHistoryOfRecordOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingHistoryOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingHistoryOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "InternalRecordId should return same 'internalRecordId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingHistoryOp>
                         {
-                            SystemUnderTest = new StandardGetHandlingHistoryOfRecordOp(
+                            SystemUnderTest = new StandardGetHandlingHistoryOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.SpecifiedResourceLocator),
@@ -133,16 +133,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "InternalRecordId",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "Concern should return same 'concern' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingHistoryOp>
                         {
-                            SystemUnderTest = new StandardGetHandlingHistoryOfRecordOp(
+                            SystemUnderTest = new StandardGetHandlingHistoryOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.SpecifiedResourceLocator),
@@ -154,16 +154,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Concern",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingHistoryOp>
                         {
-                            SystemUnderTest = new StandardGetHandlingHistoryOfRecordOp(
+                            SystemUnderTest = new StandardGetHandlingHistoryOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.SpecifiedResourceLocator),
@@ -175,19 +175,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "SpecifiedResourceLocator",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardGetHandlingHistoryOfRecordOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetHandlingHistoryOfRecordOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardGetHandlingHistoryOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetHandlingHistoryOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "DeepCloneWithInternalRecordId should deep clone object and replace InternalRecordId with the provided internalRecordId",
                     WithPropertyName = "InternalRecordId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingHistoryOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.InternalRecordId,
@@ -197,17 +197,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
                     WithPropertyName = "Concern",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingHistoryOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Concern,
@@ -217,17 +217,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOp>();
 
-                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOfRecordOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingHistoryOfRecordOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingHistoryOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
@@ -237,35 +237,35 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StandardGetHandlingHistoryOfRecordOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+        private static readonly StandardGetHandlingHistoryOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetHandlingHistoryOp>();
 
-        private static readonly EquatableTestScenarios<StandardGetHandlingHistoryOfRecordOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetHandlingHistoryOfRecordOp>()
+        private static readonly EquatableTestScenarios<StandardGetHandlingHistoryOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetHandlingHistoryOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardGetHandlingHistoryOfRecordOp>
+                new EquatableTestScenario<StandardGetHandlingHistoryOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetHandlingHistoryOfRecordOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetHandlingHistoryOp[]
                     {
-                        new StandardGetHandlingHistoryOfRecordOp(
+                        new StandardGetHandlingHistoryOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetHandlingHistoryOfRecordOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetHandlingHistoryOp[]
                     {
-                        new StandardGetHandlingHistoryOfRecordOp(
-                                A.Dummy<StandardGetHandlingHistoryOfRecordOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
+                        new StandardGetHandlingHistoryOp(
+                                A.Dummy<StandardGetHandlingHistoryOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetHandlingHistoryOfRecordOp(
+                        new StandardGetHandlingHistoryOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                A.Dummy<StandardGetHandlingHistoryOfRecordOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                A.Dummy<StandardGetHandlingHistoryOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetHandlingHistoryOfRecordOp(
+                        new StandardGetHandlingHistoryOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<StandardGetHandlingHistoryOfRecordOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                A.Dummy<StandardGetHandlingHistoryOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -274,21 +274,21 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CancelRunningHandleRecordExecutionOp>(),
-                        A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<DisableRecordHandlingForRecordOp>(),
-                        A.Dummy<DisableRecordHandlingForStreamOp>(),
+                        A.Dummy<CancelRunningHandleRecordOp>(),
+                        A.Dummy<CompleteRunningHandleRecordOp>(),
+                        A.Dummy<DisableHandlingForRecordOp>(),
+                        A.Dummy<DisableHandlingForStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableRecordHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordExecutionOp>(),
+                        A.Dummy<EnableHandlingForStreamOp>(),
+                        A.Dummy<FailRunningHandleRecordOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
                         A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
-                        A.Dummy<GetHandlingStatusOfRecordByInternalRecordIdOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
+                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetHandlingHistoryOp>(),
+                        A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectByTagOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
@@ -300,7 +300,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetResourceLocatorByIdOp<Version>>(),
                         A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
                         A.Dummy<GetStreamFromRepresentationOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -311,8 +311,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<RetryFailedHandleRecordExecutionOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordExecutionOp>(),
+                        A.Dummy<ResetFailedHandleRecordOp>(),
+                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
@@ -325,12 +325,12 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardGetLatestRecordOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
-                        A.Dummy<StandardGetRecordHandlingStatusOp>(),
+                        A.Dummy<StandardGetHandlingStatusOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateRecordHandlingOp>(),
-                        A.Dummy<StandardUpdateStreamHandlingOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForStreamOp>(),
                         A.Dummy<ThrowIfResourceUnavailableOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
@@ -359,9 +359,9 @@ namespace Naos.Database.Domain.Test
             public static void StandardGetHandlingHistoryOfRecordOp___Should_implement_IModel_of_StandardGetHandlingHistoryOfRecordOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetHandlingHistoryOfRecordOp);
+                var type = typeof(StandardGetHandlingHistoryOp);
 
-                var expectedModelMethods = typeof(IModel<StandardGetHandlingHistoryOfRecordOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardGetHandlingHistoryOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -371,7 +371,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetHandlingHistoryOfRecordOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetHandlingHistoryOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -392,7 +392,7 @@ namespace Naos.Database.Domain.Test
             public static void StandardGetHandlingHistoryOfRecordOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetHandlingHistoryOfRecordOp);
+                var type = typeof(StandardGetHandlingHistoryOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -572,10 +572,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOp>();
 
                 // Act
-                var actual = (StandardGetHandlingHistoryOfRecordOp)systemUnderTest.Clone();
+                var actual = (StandardGetHandlingHistoryOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -599,7 +599,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                var systemUnderTest = A.Dummy<StandardGetHandlingHistoryOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -650,12 +650,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardGetHandlingHistoryOfRecordOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardGetHandlingHistoryOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardGetHandlingHistoryOfRecordOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardGetHandlingHistoryOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -717,7 +717,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                var expected = A.Dummy<StandardGetHandlingHistoryOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -746,7 +746,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                var expected = A.Dummy<StandardGetHandlingHistoryOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -775,7 +775,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                var expected = A.Dummy<StandardGetHandlingHistoryOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -804,7 +804,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingHistoryOfRecordOp>();
+                var expected = A.Dummy<StandardGetHandlingHistoryOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -838,8 +838,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetHandlingHistoryOfRecordOp systemUnderTest1 = null;
-                StandardGetHandlingHistoryOfRecordOp systemUnderTest2 = null;
+                StandardGetHandlingHistoryOp systemUnderTest1 = null;
+                StandardGetHandlingHistoryOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -869,7 +869,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetHandlingHistoryOfRecordOp systemUnderTest = null;
+                    StandardGetHandlingHistoryOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1018,8 +1018,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetHandlingHistoryOfRecordOp systemUnderTest1 = null;
-                StandardGetHandlingHistoryOfRecordOp systemUnderTest2 = null;
+                StandardGetHandlingHistoryOp systemUnderTest1 = null;
+                StandardGetHandlingHistoryOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1049,7 +1049,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetHandlingHistoryOfRecordOp systemUnderTest = null;
+                    StandardGetHandlingHistoryOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1488,7 +1488,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetHandlingHistoryOfRecordOp systemUnderTest = null;
+                    StandardGetHandlingHistoryOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

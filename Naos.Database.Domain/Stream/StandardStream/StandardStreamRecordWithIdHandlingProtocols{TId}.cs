@@ -80,7 +80,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public CompositeHandlingStatus Execute(
-            GetCompositeHandlingStatusOfRecordsByIdOp<TId> operation)
+            GetCompositeHandlingStatusByIdsOp<TId> operation)
         {
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
             var identifierType = typeof(TId).ToRepresentation();
@@ -98,12 +98,11 @@ namespace Naos.Database.Domain
             foreach (var locatorAndId in groupedByLocators)
             {
                 var idsToMatch = locatorAndId.Select(_ => _.Item2).ToList();
-                var standardizedOperation = new StandardGetRecordHandlingStatusOp(
+                var standardizedOperation = new StandardGetHandlingStatusOp(
                     operation.Concern,
                     null,
                     idsToMatch,
                     operation.VersionMatchStrategy,
-                    null,
                     null,
                     null,
                     locatorAndId.Key);
@@ -119,7 +118,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<CompositeHandlingStatus> ExecuteAsync(
-            GetCompositeHandlingStatusOfRecordsByIdOp<TId> operation)
+            GetCompositeHandlingStatusByIdsOp<TId> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

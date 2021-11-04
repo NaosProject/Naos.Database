@@ -36,9 +36,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
-            GetHandlingHistoryOfRecordOp operation)
+            GetHandlingHistoryOp operation)
         {
-            var standardizedOperation = new StandardGetHandlingHistoryOfRecordOp(
+            var standardizedOperation = new StandardGetHandlingHistoryOp(
                 operation.InternalRecordId,
                 operation.Concern);
 
@@ -48,7 +48,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<IReadOnlyList<StreamRecordHandlingEntry>> ExecuteAsync(
-            GetHandlingHistoryOfRecordOp operation)
+            GetHandlingHistoryOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
@@ -57,9 +57,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public CompositeHandlingStatus Execute(
-            GetCompositeHandlingStatusOfRecordsByIdOp operation)
+            GetCompositeHandlingStatusByIdsOp operation)
         {
-            var standardizedOperation = new StandardGetRecordHandlingStatusOp(
+            var standardizedOperation = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 null,
                 operation.IdsToMatch,
@@ -76,7 +76,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<CompositeHandlingStatus> ExecuteAsync(
-            GetCompositeHandlingStatusOfRecordsByIdOp operation)
+            GetCompositeHandlingStatusByIdsOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
@@ -85,9 +85,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public CompositeHandlingStatus Execute(
-            GetCompositeHandlingStatusOfRecordsByTagOp operation)
+            GetCompositeHandlingStatusByTagsOp operation)
         {
-            var standardizedOperation = new StandardGetRecordHandlingStatusOp(
+            var standardizedOperation = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 null,
                 null,
@@ -105,7 +105,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<CompositeHandlingStatus> ExecuteAsync(
-            GetCompositeHandlingStatusOfRecordsByTagOp operation)
+            GetCompositeHandlingStatusByTagsOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
@@ -114,9 +114,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public HandlingStatus Execute(
-            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
+            GetHandlingStatusOp operation)
         {
-            var standardizedOperation = new StandardGetRecordHandlingStatusOp(
+            var standardizedOperation = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 operation.InternalRecordId,
                 null,
@@ -133,7 +133,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<HandlingStatus> ExecuteAsync(
-            GetHandlingStatusOfRecordByInternalRecordIdOp operation)
+            GetHandlingStatusOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);
@@ -142,14 +142,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            DisableRecordHandlingForStreamOp operation)
+            DisableHandlingForStreamOp operation)
         {
-            var standardizedOperation = new StandardUpdateStreamHandlingOp(
+            var standardizedOperation = new StandardUpdateHandlingStatusForStreamOp(
                 HandlingStatus.DisabledForStream,
-                new[]
-                {
-                    HandlingStatus.AvailableByDefault,
-                },
                 operation.Details);
 
             this.stream.Execute(standardizedOperation);
@@ -157,7 +153,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            DisableRecordHandlingForStreamOp operation)
+            DisableHandlingForStreamOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -165,14 +161,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            EnableRecordHandlingForStreamOp operation)
+            EnableHandlingForStreamOp operation)
         {
-            var standardizedOperation = new StandardUpdateStreamHandlingOp(
+            var standardizedOperation = new StandardUpdateHandlingStatusForStreamOp(
                 HandlingStatus.AvailableByDefault,
-                new[]
-                {
-                    HandlingStatus.DisabledForStream,
-                },
                 operation.Details);
 
             this.stream.Execute(standardizedOperation);
@@ -180,7 +172,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            EnableRecordHandlingForStreamOp operation)
+            EnableHandlingForStreamOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -188,9 +180,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            DisableRecordHandlingForRecordOp operation)
+            DisableHandlingForRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateRecordHandlingOp(
+            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 null,
                 HandlingStatus.DisabledForRecord,
@@ -201,14 +193,15 @@ namespace Naos.Database.Domain
                     HandlingStatus.Failed,
                 },
                 operation.Details,
-                operation.Tags);
+                operation.Tags,
+                operation.InheritRecordTags);
 
             this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            DisableRecordHandlingForRecordOp operation)
+            DisableHandlingForRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -216,10 +209,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            CancelRunningHandleRecordExecutionOp operation)
+            CancelRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateRecordHandlingOp(
-                operation.Id,
+            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
+                operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.AvailableAfterExternalCancellation,
                 new[]
@@ -227,14 +220,15 @@ namespace Naos.Database.Domain
                     HandlingStatus.Running,
                 },
                 operation.Details,
-                operation.Tags);
+                operation.Tags,
+                operation.InheritRecordTags);
 
             this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            CancelRunningHandleRecordExecutionOp operation)
+            CancelRunningHandleRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -242,10 +236,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            CompleteRunningHandleRecordExecutionOp operation)
+            CompleteRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateRecordHandlingOp(
-                operation.Id,
+            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
+                operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.Completed,
                 new[]
@@ -253,14 +247,15 @@ namespace Naos.Database.Domain
                     HandlingStatus.Running,
                 },
                 operation.Details,
-                operation.Tags);
+                operation.Tags,
+                operation.InheritRecordTags);
 
             this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            CompleteRunningHandleRecordExecutionOp operation)
+            CompleteRunningHandleRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -268,10 +263,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            FailRunningHandleRecordExecutionOp operation)
+            FailRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateRecordHandlingOp(
-                operation.Id,
+            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
+                operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.Failed,
                 new[]
@@ -279,14 +274,15 @@ namespace Naos.Database.Domain
                     HandlingStatus.Running,
                 },
                 operation.Details,
-                operation.Tags);
+                operation.Tags,
+                operation.InheritRecordTags);
 
             this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            FailRunningHandleRecordExecutionOp operation)
+            FailRunningHandleRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -294,10 +290,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            SelfCancelRunningHandleRecordExecutionOp operation)
+            SelfCancelRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateRecordHandlingOp(
-                operation.Id,
+            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
+                operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.AvailableAfterSelfCancellation,
                 new[]
@@ -305,14 +301,15 @@ namespace Naos.Database.Domain
                     HandlingStatus.Running,
                 },
                 operation.Details,
-                operation.Tags);
+                operation.Tags,
+                operation.InheritRecordTags);
 
             this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            SelfCancelRunningHandleRecordExecutionOp operation)
+            SelfCancelRunningHandleRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.
@@ -320,10 +317,10 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
-            RetryFailedHandleRecordExecutionOp operation)
+            ResetFailedHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateRecordHandlingOp(
-                operation.Id,
+            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
+                operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.AvailableAfterFailure,
                 new[]
@@ -331,14 +328,15 @@ namespace Naos.Database.Domain
                     HandlingStatus.Failed,
                 },
                 operation.Details,
-                operation.Tags);
+                operation.Tags,
+                operation.InheritRecordTags);
 
             this.stream.Execute(standardizedOperation);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(
-            RetryFailedHandleRecordExecutionOp operation)
+            ResetFailedHandleRecordOp operation)
         {
             this.Execute(operation);
             await Task.FromResult(true); // just for await.

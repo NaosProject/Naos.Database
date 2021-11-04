@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="pruneSummary">The prune summary.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
         public PruneOperationExecutedEvent(
-            IPruneOperation pruneOperation,
+            IPruneOp pruneOperation,
             PruneSummary pruneSummary,
             DateTime timestampUtc)
             : base(timestampUtc)
@@ -40,7 +40,7 @@ namespace Naos.Database.Domain
         /// Gets the prune operation.
         /// </summary>
         /// <value>The prune operation.</value>
-        public IPruneOperation PruneOperation { get; private set; }
+        public IPruneOp PruneOperation { get; private set; }
 
         /// <summary>
         /// Gets the prune summary.

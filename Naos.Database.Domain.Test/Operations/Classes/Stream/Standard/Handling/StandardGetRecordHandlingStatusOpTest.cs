@@ -29,6 +29,96 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetRecordHandlingStatusOpTest()
         {
+            ConstructorArgumentValidationTestScenarios
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                            var result = new StandardGetHandlingStatusOp(
+                                                 null,
+                                                 referenceObject.InternalRecordId,
+                                                 referenceObject.IdsToMatch,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "concern", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                            var result = new StandardGetHandlingStatusOp(
+                                                 Invariant($"  {Environment.NewLine}  "),
+                                                 referenceObject.InternalRecordId,
+                                                 referenceObject.IdsToMatch,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'concern' is reserved",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                            var result = new StandardGetHandlingStatusOp(
+                                Concerns.RecordHandlingConcern,
+                                referenceObject.InternalRecordId,
+                                referenceObject.IdsToMatch,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameters 'internalRecordId', 'idsToMatch', and 'tagsToMatch' are all null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                            var result = new StandardGetHandlingStatusOp(
+                                referenceObject.Concern,
+                                null,
+                                null,
+                                referenceObject.VersionMatchStrategy,
+                                null,
+                                referenceObject.TagMatchStrategy,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "allMatchingParametersAreNull", },
+                    });
         }
     }
 }

@@ -35,42 +35,41 @@ namespace Naos.Database.Domain.Test
 
     public static partial class StandardGetRecordHandlingStatusOpTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardGetRecordHandlingStatusOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetRecordHandlingStatusOp>()
+        private static readonly StringRepresentationTestScenarios<StandardGetHandlingStatusOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetHandlingStatusOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardGetRecordHandlingStatusOp>
+                new StringRepresentationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetRecordHandlingStatusOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {systemUnderTest.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy?.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy?.ToString() ?? "<null>"}, HandlingStatusCompositionStrategy = {systemUnderTest.HandlingStatusCompositionStrategy?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetRecordHandlingStatusOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {systemUnderTest.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {systemUnderTest.IdsToMatch?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy?.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetRecordHandlingStatusOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetRecordHandlingStatusOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetHandlingStatusOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetHandlingStatusOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              null,
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -79,21 +78,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -102,21 +100,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'idsToMatch' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              null,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -125,21 +122,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "idsToMatch", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'idsToMatch' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              new List<StringSerializedIdentifier>(),
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -148,21 +144,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "idsToMatch", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'idsToMatch' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              new StringSerializedIdentifier[0].Concat(referenceObject.IdsToMatch).Concat(new StringSerializedIdentifier[] { null }).Concat(referenceObject.IdsToMatch).ToList(),
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -171,21 +166,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "idsToMatch", "contains at least one null element", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              null,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -194,21 +188,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              new List<NamedValue<string>>(),
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -217,21 +210,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -240,21 +232,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'tagMatchStrategy' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              null,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -263,44 +254,20 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'handlingStatusCompositionStrategy' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
-
-                        var result = new StandardGetRecordHandlingStatusOp(
-                                             referenceObject.Concern,
-                                             referenceObject.InternalRecordId,
-                                             referenceObject.IdsToMatch,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             null,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "handlingStatusCompositionStrategy", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new StandardGetRecordHandlingStatusOp(
+                        var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.InternalRecordId,
                                              referenceObject.IdsToMatch,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.HandlingStatusCompositionStrategy,
                                              null);
 
                         return result;
@@ -309,25 +276,24 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetRecordHandlingStatusOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetRecordHandlingStatusOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingStatusOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingStatusOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "Concern should return same 'concern' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
@@ -337,23 +303,22 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Concern",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "InternalRecordId should return same 'internalRecordId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.InternalRecordId,
                         };
@@ -363,23 +328,22 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "InternalRecordId",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "IdsToMatch should return same 'idsToMatch' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.IdsToMatch,
                         };
@@ -389,23 +353,22 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "IdsToMatch",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
@@ -415,23 +378,22 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "VersionMatchStrategy",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.TagsToMatch,
                         };
@@ -441,23 +403,22 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TagsToMatch",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.TagMatchStrategy,
                         };
@@ -467,49 +428,22 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TagMatchStrategy",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
-                {
-                    Name = "HandlingStatusCompositionStrategy should return same 'handlingStatusCompositionStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
-                        {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.InternalRecordId,
-                                                      referenceObject.IdsToMatch,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.HandlingStatusCompositionStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "HandlingStatusCompositionStrategy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
                         {
-                            SystemUnderTest = new StandardGetRecordHandlingStatusOp(
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.IdsToMatch,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.HandlingStatusCompositionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -519,19 +453,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "SpecifiedResourceLocator",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardGetRecordHandlingStatusOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetRecordHandlingStatusOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardGetHandlingStatusOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetHandlingStatusOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
                     WithPropertyName = "Concern",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Concern,
@@ -541,17 +475,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithInternalRecordId should deep clone object and replace InternalRecordId with the provided internalRecordId",
                     WithPropertyName = "InternalRecordId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.InternalRecordId,
@@ -561,17 +495,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithIdsToMatch should deep clone object and replace IdsToMatch with the provided idsToMatch",
                     WithPropertyName = "IdsToMatch",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.IdsToMatch.IsEqualTo(_.IdsToMatch));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.IdsToMatch.IsEqualTo(_.IdsToMatch));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.IdsToMatch,
@@ -581,17 +515,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
                     WithPropertyName = "VersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.VersionMatchStrategy,
@@ -601,17 +535,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
                     WithPropertyName = "TagsToMatch",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TagsToMatch,
@@ -621,17 +555,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
                     WithPropertyName = "TagMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TagMatchStrategy,
@@ -641,37 +575,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
-                {
-                    Name = "DeepCloneWithHandlingStatusCompositionStrategy should deep clone object and replace HandlingStatusCompositionStrategy with the provided handlingStatusCompositionStrategy",
-                    WithPropertyName = "HandlingStatusCompositionStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
-
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.HandlingStatusCompositionStrategy.IsEqualTo(_.HandlingStatusCompositionStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.HandlingStatusCompositionStrategy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordHandlingStatusOp>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordHandlingStatusOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
@@ -681,100 +595,83 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StandardGetRecordHandlingStatusOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetRecordHandlingStatusOp>();
+        private static readonly StandardGetHandlingStatusOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetHandlingStatusOp>();
 
-        private static readonly EquatableTestScenarios<StandardGetRecordHandlingStatusOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetRecordHandlingStatusOp>()
+        private static readonly EquatableTestScenarios<StandardGetHandlingStatusOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetHandlingStatusOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardGetRecordHandlingStatusOp>
+                new EquatableTestScenario<StandardGetHandlingStatusOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetRecordHandlingStatusOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetHandlingStatusOp[]
                     {
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetRecordHandlingStatusOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetHandlingStatusOp[]
                     {
-                        new StandardGetRecordHandlingStatusOp(
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                        new StandardGetHandlingStatusOp(
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.IdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdsToMatch)).IdsToMatch,
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.IdsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdsToMatch)).IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
+                        new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.IdsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.HandlingStatusCompositionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy)).HandlingStatusCompositionStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordHandlingStatusOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.IdsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.HandlingStatusCompositionStrategy,
-                                A.Dummy<StandardGetRecordHandlingStatusOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -783,21 +680,21 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CancelRunningHandleRecordExecutionOp>(),
-                        A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<DisableRecordHandlingForRecordOp>(),
-                        A.Dummy<DisableRecordHandlingForStreamOp>(),
+                        A.Dummy<CancelRunningHandleRecordOp>(),
+                        A.Dummy<CompleteRunningHandleRecordOp>(),
+                        A.Dummy<DisableHandlingForRecordOp>(),
+                        A.Dummy<DisableHandlingForStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableRecordHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordExecutionOp>(),
+                        A.Dummy<EnableHandlingForStreamOp>(),
+                        A.Dummy<FailRunningHandleRecordOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
                         A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
-                        A.Dummy<GetHandlingStatusOfRecordByInternalRecordIdOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
+                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetHandlingHistoryOp>(),
+                        A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectByTagOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
@@ -809,7 +706,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetResourceLocatorByIdOp<Version>>(),
                         A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
                         A.Dummy<GetStreamFromRepresentationOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -820,15 +717,15 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<RetryFailedHandleRecordExecutionOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordExecutionOp>(),
+                        A.Dummy<ResetFailedHandleRecordOp>(),
+                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
                         A.Dummy<StandardGetAllRecordsByIdOp>(),
                         A.Dummy<StandardGetAllRecordsMetadataByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
-                        A.Dummy<StandardGetHandlingHistoryOfRecordOp>(),
+                        A.Dummy<StandardGetHandlingHistoryOp>(),
                         A.Dummy<StandardGetLatestRecordByIdOp>(),
                         A.Dummy<StandardGetLatestRecordByTagOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
@@ -838,8 +735,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateRecordHandlingOp>(),
-                        A.Dummy<StandardUpdateStreamHandlingOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForStreamOp>(),
                         A.Dummy<ThrowIfResourceUnavailableOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
@@ -868,9 +765,9 @@ namespace Naos.Database.Domain.Test
             public static void StandardGetRecordHandlingStatusOp___Should_implement_IModel_of_StandardGetRecordHandlingStatusOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetRecordHandlingStatusOp);
+                var type = typeof(StandardGetHandlingStatusOp);
 
-                var expectedModelMethods = typeof(IModel<StandardGetRecordHandlingStatusOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardGetHandlingStatusOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -880,7 +777,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetRecordHandlingStatusOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetHandlingStatusOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -901,7 +798,7 @@ namespace Naos.Database.Domain.Test
             public static void StandardGetRecordHandlingStatusOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetRecordHandlingStatusOp);
+                var type = typeof(StandardGetHandlingStatusOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -1081,10 +978,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
                 // Act
-                var actual = (StandardGetRecordHandlingStatusOp)systemUnderTest.Clone();
+                var actual = (StandardGetHandlingStatusOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -1108,7 +1005,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -1153,18 +1050,6 @@ namespace Naos.Database.Domain.Test
                     actual.TagMatchStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagMatchStrategy);
                 }
 
-                if (systemUnderTest.HandlingStatusCompositionStrategy == null)
-                {
-                    actual.HandlingStatusCompositionStrategy.AsTest().Must().BeNull();
-                }
-                else if (!actual.HandlingStatusCompositionStrategy.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.HandlingStatusCompositionStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.HandlingStatusCompositionStrategy);
-                }
-
                 if (systemUnderTest.SpecifiedResourceLocator == null)
                 {
                     actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
@@ -1194,7 +1079,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "InternalRecordId", "IdsToMatch", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "HandlingStatusCompositionStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Concern", "InternalRecordId", "IdsToMatch", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1207,12 +1092,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardGetRecordHandlingStatusOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardGetHandlingStatusOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardGetRecordHandlingStatusOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardGetHandlingStatusOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -1274,7 +1159,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                var expected = A.Dummy<StandardGetHandlingStatusOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1303,7 +1188,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                var expected = A.Dummy<StandardGetHandlingStatusOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1332,7 +1217,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                var expected = A.Dummy<StandardGetHandlingStatusOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1361,7 +1246,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordHandlingStatusOp>();
+                var expected = A.Dummy<StandardGetHandlingStatusOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1395,8 +1280,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetRecordHandlingStatusOp systemUnderTest1 = null;
-                StandardGetRecordHandlingStatusOp systemUnderTest2 = null;
+                StandardGetHandlingStatusOp systemUnderTest1 = null;
+                StandardGetHandlingStatusOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1426,7 +1311,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetRecordHandlingStatusOp systemUnderTest = null;
+                    StandardGetHandlingStatusOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1575,8 +1460,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetRecordHandlingStatusOp systemUnderTest1 = null;
-                StandardGetRecordHandlingStatusOp systemUnderTest2 = null;
+                StandardGetHandlingStatusOp systemUnderTest1 = null;
+                StandardGetHandlingStatusOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1606,7 +1491,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetRecordHandlingStatusOp systemUnderTest = null;
+                    StandardGetHandlingStatusOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -2045,7 +1930,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetRecordHandlingStatusOp systemUnderTest = null;
+                    StandardGetHandlingStatusOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

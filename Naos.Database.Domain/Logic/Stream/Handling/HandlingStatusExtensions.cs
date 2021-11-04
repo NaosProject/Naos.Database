@@ -72,7 +72,7 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Synthesizes the handling status of one or more records.
+        /// Synthesizes the <see cref="HandlingStatus"/> of one or more records.
         /// </summary>
         /// <param name="statuses">The statuses.</param>
         /// <returns>
@@ -82,7 +82,7 @@ namespace Naos.Database.Domain
             this IReadOnlyCollection<HandlingStatus> statuses)
         {
             // This is protection against other HandlingStatus values being added without this method being updated accordingly.
-            statuses.MustForArg(nameof(statuses)).NotBeNull().And().Each().BeContainedWithin(SupportedHandlingStatuses);
+            statuses.MustForArg(nameof(statuses)).NotBeNull().And().Each().BeEqualToAnyOf(SupportedHandlingStatuses);
 
             var result = CompositeHandlingStatus.Unknown;
 

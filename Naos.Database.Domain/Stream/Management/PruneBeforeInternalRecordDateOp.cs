@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Deletes all records in a stream whose internal record date is less than the specified threshold.
     /// </summary>
-    public partial class PruneBeforeInternalRecordDateOp : VoidOperationBase, IPruneOperation
+    public partial class PruneBeforeInternalRecordDateOp : VoidOperationBase, IPruneOp
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneBeforeInternalRecordDateOp"/> class.

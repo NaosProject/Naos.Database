@@ -35,33 +35,33 @@ namespace Naos.Database.Domain.Test
 
     public static partial class GetStreamFromRepresentationOpTStreamRepresentationTStreamTest
     {
-        private static readonly StringRepresentationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>()
+        private static readonly StringRepresentationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                new StringRepresentationTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>: TypedStreamRepresentation = {systemUnderTest.TypedStreamRepresentation?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>: TypedStreamRepresentation = {systemUnderTest.TypedStreamRepresentation?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                new ConstructorArgumentValidationTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'typedStreamRepresentation' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var result = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>(
+                        var result = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>(
                                              null);
 
                         return result;
@@ -70,18 +70,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "typedStreamRepresentation", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                new ConstructorPropertyAssignmentTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                 {
                     Name = "TypedStreamRepresentation should return same 'typedStreamRepresentation' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                         {
-                            SystemUnderTest = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>(
+                            SystemUnderTest = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>(
                                                       referenceObject.TypedStreamRepresentation),
                             ExpectedPropertyValue = referenceObject.TypedStreamRepresentation,
                         };
@@ -91,19 +91,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TypedStreamRepresentation",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>()
+        private static readonly DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                new DeepCloneWithTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                 {
                     Name = "DeepCloneWithTypedStreamRepresentation should deep clone object and replace TypedStreamRepresentation with the provided typedStreamRepresentation",
                     WithPropertyName = "TypedStreamRepresentation",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
-                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>().ThatIs(_ => !systemUnderTest.TypedStreamRepresentation.IsEqualTo(_.TypedStreamRepresentation));
+                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>().ThatIs(_ => !systemUnderTest.TypedStreamRepresentation.IsEqualTo(_.TypedStreamRepresentation));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TypedStreamRepresentation,
@@ -113,23 +113,23 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+        private static readonly GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
-        private static readonly EquatableTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>> EquatableTestScenarios = new EquatableTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>()
+        private static readonly EquatableTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>> EquatableTestScenarios = new EquatableTestScenarios<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>()
             .AddScenario(() =>
-                new EquatableTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>
+                new EquatableTestScenario<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>[]
                     {
-                        new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>(
+                        new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>(
                                 ReferenceObjectForEquatableTestScenarios.TypedStreamRepresentation),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>[]
                     {
-                        new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>(
-                                A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>().Whose(_ => !_.TypedStreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypedStreamRepresentation)).TypedStreamRepresentation),
+                        new GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>(
+                                A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>().Whose(_ => !_.TypedStreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypedStreamRepresentation)).TypedStreamRepresentation),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -138,21 +138,21 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CancelRunningHandleRecordExecutionOp>(),
-                        A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<DisableRecordHandlingForRecordOp>(),
-                        A.Dummy<DisableRecordHandlingForStreamOp>(),
+                        A.Dummy<CancelRunningHandleRecordOp>(),
+                        A.Dummy<CompleteRunningHandleRecordOp>(),
+                        A.Dummy<DisableHandlingForRecordOp>(),
+                        A.Dummy<DisableHandlingForStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableRecordHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordExecutionOp>(),
+                        A.Dummy<EnableHandlingForStreamOp>(),
+                        A.Dummy<FailRunningHandleRecordOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
                         A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
-                        A.Dummy<GetHandlingStatusOfRecordByInternalRecordIdOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
+                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetHandlingHistoryOp>(),
+                        A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectByTagOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
@@ -174,27 +174,27 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<RetryFailedHandleRecordExecutionOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordExecutionOp>(),
+                        A.Dummy<ResetFailedHandleRecordOp>(),
+                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
                         A.Dummy<StandardGetAllRecordsByIdOp>(),
                         A.Dummy<StandardGetAllRecordsMetadataByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
-                        A.Dummy<StandardGetHandlingHistoryOfRecordOp>(),
+                        A.Dummy<StandardGetHandlingHistoryOp>(),
+                        A.Dummy<StandardGetHandlingStatusOp>(),
                         A.Dummy<StandardGetLatestRecordByIdOp>(),
                         A.Dummy<StandardGetLatestRecordByTagOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
                         A.Dummy<StandardGetLatestRecordOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
-                        A.Dummy<StandardGetRecordHandlingStatusOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateRecordHandlingOp>(),
-                        A.Dummy<StandardUpdateStreamHandlingOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForStreamOp>(),
                         A.Dummy<ThrowIfResourceUnavailableOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
@@ -220,12 +220,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_implement_IModel_of_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___When_reflecting()
+            public static void GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_implement_IModel_of_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>);
+                var type = typeof(GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>);
 
-                var expectedModelMethods = typeof(IModel<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -235,7 +235,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -253,10 +253,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>);
+                var type = typeof(GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -436,10 +436,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
                 // Act
-                var actual = (GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>)systemUnderTest.Clone();
+                var actual = (GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -463,7 +463,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -514,12 +514,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -581,7 +581,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -610,7 +610,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -639,7 +639,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -668,7 +668,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -702,8 +702,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest1 = null;
-                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest2 = null;
+                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest1 = null;
+                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -733,7 +733,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest = null;
+                    GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -882,8 +882,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest1 = null;
-                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest2 = null;
+                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest1 = null;
+                GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -913,7 +913,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest = null;
+                    GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1202,17 +1202,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_MemoryReadWriteStream___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase_of_MemoryStandardStream___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<MemoryReadWriteStream> systemUnderTest = null;
+                    ReturningOperationBase<MemoryStandardStream> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryReadWriteStream>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryStandardStream>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1233,14 +1233,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_MemoryReadWriteStream___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase_of_MemoryStandardStream___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryReadWriteStream>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryStandardStream>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1261,14 +1261,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_MemoryReadWriteStream___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase_of_MemoryStandardStream___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryReadWriteStream>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryStandardStream>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1289,14 +1289,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_MemoryReadWriteStream___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase_of_MemoryStandardStream___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryReadWriteStream>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryStandardStream>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1317,14 +1317,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_MemoryReadWriteStream___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase_of_MemoryStandardStream___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryReadWriteStream>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<MemoryStandardStream>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1345,14 +1345,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream> systemUnderTest = null;
+                    GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1376,7 +1376,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1404,7 +1404,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1432,7 +1432,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1460,7 +1460,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryReadWriteStream___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_FileStreamRepresentation_MemoryStandardStream___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

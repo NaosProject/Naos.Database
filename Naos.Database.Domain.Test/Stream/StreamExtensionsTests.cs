@@ -25,7 +25,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
     using static System.FormattableString;
 
     /// <summary>
-    /// Tests for <see cref="MemoryReadWriteStream"/>.
+    /// Tests for <see cref="MemoryStandardStream"/>.
     /// </summary>
     public partial class StreamExtensionsTests
     {

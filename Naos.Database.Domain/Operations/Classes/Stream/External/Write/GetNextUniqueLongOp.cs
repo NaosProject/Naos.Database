@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="GetNextUniqueLongOp"/> class.
         /// </summary>
-        /// <param name="details">The optional details.</param>
+        /// <param name="details">OPTIONAL details.  DEFAULT is no details.</param>
         public GetNextUniqueLongOp(
             string details = null)
         {

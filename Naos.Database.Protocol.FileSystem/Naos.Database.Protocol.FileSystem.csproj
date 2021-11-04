@@ -114,7 +114,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Stream\FilePathExtensions.cs" />
-    <Compile Include="Stream\FileReadWriteStream.cs" />
+    <Compile Include="Stream\FileStandardStream.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <AdditionalFiles Include=".analyzers\stylecop.json" />
     <None Include=".analyzers\release.ruleset" />

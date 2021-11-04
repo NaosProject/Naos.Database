@@ -150,19 +150,19 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract void Execute(
-            StandardUpdateStreamHandlingOp operation);
+            StandardUpdateHandlingStatusForStreamOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyCollection<HandlingStatus> Execute(
-            StandardGetRecordHandlingStatusOp operation);
+            StandardGetHandlingStatusOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyList<StreamRecordHandlingEntry> Execute(
-            StandardGetHandlingHistoryOfRecordOp operation);
+            StandardGetHandlingHistoryOp operation);
 
         /// <inheritdoc />
         public abstract void Execute(
-            StandardUpdateRecordHandlingOp operation);
+            StandardUpdateHandlingStatusForRecordOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyCollection<string> Execute(

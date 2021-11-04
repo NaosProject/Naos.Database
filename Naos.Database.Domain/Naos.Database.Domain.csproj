@@ -195,52 +195,52 @@
     <Compile Include="Operations\Classes\ResourceLocation\ThrowIfResourceUnavailableOp.designer.cs">
       <DependentUpon>ThrowIfResourceUnavailableOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForStreamOp.designer.cs">
-      <DependentUpon>DisableRecordHandlingForStreamOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\DisableHandlingForStreamOp.designer.cs">
+      <DependentUpon>DisableHandlingForStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\EnableRecordHandlingForStreamOp.designer.cs">
-      <DependentUpon>EnableRecordHandlingForStreamOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\EnableHandlingForStreamOp.designer.cs">
+      <DependentUpon>EnableHandlingForStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForRecordOp.designer.cs">
-      <DependentUpon>DisableRecordHandlingForRecordOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\DisableHandlingForRecordOp.designer.cs">
+      <DependentUpon>DisableHandlingForRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\CancelRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>CancelRunningHandleRecordExecutionOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CancelRunningHandleRecordOp.designer.cs">
+      <DependentUpon>CancelRunningHandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\CompleteRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>CompleteRunningHandleRecordExecutionOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CompleteRunningHandleRecordOp.designer.cs">
+      <DependentUpon>CompleteRunningHandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\FailRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>FailRunningHandleRecordExecutionOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\FailRunningHandleRecordOp.designer.cs">
+      <DependentUpon>FailRunningHandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingHistoryOfRecordOp.designer.cs">
-      <DependentUpon>GetHandlingHistoryOfRecordOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusByIdsOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingStatusOfRecordByInternalRecordIdOp.designer.cs">
-      <DependentUpon>GetHandlingStatusOfRecordByInternalRecordIdOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp{TId}.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusByIdsOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOp.designer.cs">
-      <DependentUpon>GetCompositeHandlingStatusOfRecordsByIdOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByTagsOp.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusByTagsOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOp{TId}.designer.cs">
-      <DependentUpon>GetCompositeHandlingStatusOfRecordsByIdOp{TId}.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingHistoryOp.designer.cs">
+      <DependentUpon>GetHandlingHistoryOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByTagOp.designer.cs">
-      <DependentUpon>GetCompositeHandlingStatusOfRecordsByTagOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingStatusOp.designer.cs">
+      <DependentUpon>GetHandlingStatusOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\RetryFailedHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>RetryFailedHandleRecordExecutionOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetFailedHandleRecordOp.designer.cs">
+      <DependentUpon>ResetFailedHandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\SelfCancelRunningHandleRecordExecutionOp.designer.cs">
-      <DependentUpon>SelfCancelRunningHandleRecordExecutionOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\SelfCancelRunningHandleRecordOp.designer.cs">
+      <DependentUpon>SelfCancelRunningHandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordOp{TObject}.designer.cs">
       <DependentUpon>TryHandleRecordOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId,TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.designer.cs">
       <DependentUpon>TryHandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.designer.cs">
       <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.designer.cs">
@@ -288,20 +288,20 @@
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}.designer.cs">
       <DependentUpon>PutWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOfRecordOp.designer.cs">
-      <DependentUpon>StandardGetHandlingHistoryOfRecordOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOp.designer.cs">
+      <DependentUpon>StandardGetHandlingHistoryOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetRecordHandlingStatusOp.designer.cs">
-      <DependentUpon>StandardGetRecordHandlingStatusOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingStatusOp.designer.cs">
+      <DependentUpon>StandardGetHandlingStatusOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardTryHandleRecordOp.designer.cs">
       <DependentUpon>StandardTryHandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateRecordHandlingOp.designer.cs">
-      <DependentUpon>StandardUpdateRecordHandlingOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForRecordOp.designer.cs">
+      <DependentUpon>StandardUpdateHandlingStatusForRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateStreamHandlingOp.designer.cs">
-      <DependentUpon>StandardUpdateStreamHandlingOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForStreamOp.designer.cs">
+      <DependentUpon>StandardUpdateHandlingStatusForStreamOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOp.designer.cs">
       <DependentUpon>StandardDoesAnyExistByIdOp.cs</DependentUpon>
@@ -364,79 +364,51 @@
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\BlockedRecordHandlingEvent.designer.cs">
-      <DependentUpon>BlockedRecordHandlingEvent.cs</DependentUpon>
+    <Compile Include="Events\Classes\Handling\HandlingEventBase.designer.cs">
+      <DependentUpon>HandlingEventBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\CanceledBlockedRecordHandlingEvent.designer.cs">
-      <DependentUpon>CanceledBlockedRecordHandlingEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\CanceledRequestedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>CanceledRequestedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\CanceledRunningHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>CanceledRunningHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\CompletedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>CompletedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\FailedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>FailedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RequestedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForStreamOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\EnableRecordHandlingForStreamOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\CanceledRequestedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\CanceledRunningHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\CompletedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\FailedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\RequestedHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\RetryFailedHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RetryFailedHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\RunningHandleRecordExecutionEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\RunningHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>RunningHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Execution\Events\SelfCanceledRunningHandleRecordExecutionEvent.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\DisableRecordHandlingForRecordOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\CancelRunningHandleRecordExecutionOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\CompleteRunningHandleRecordExecutionOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\RetryFailedHandleRecordExecutionOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\FailRunningHandleRecordExecutionOp.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingEventBase.cs" />
+    <Compile Include="Events\Classes\Handling\HandlingEventBase.cs" />
+    <Compile Include="Events\Interfaces\IHandlingEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingFailureResetEvent.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\DisableHandlingForStreamOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\EnableHandlingForStreamOp.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\HandlingForRecordDisabledEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCancelledEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCompletedEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingFailedEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingAvailableEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingRunningEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCancelledEvent.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\DisableHandlingForRecordOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CancelRunningHandleRecordOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CompleteRunningHandleRecordOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetFailedHandleRecordOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\FailRunningHandleRecordOp.cs" />
     <Compile Include="Stream\Handling\Execution\Concerns.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\SelfCancelRunningHandleRecordExecutionOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\SelfCanceledRunningHandleRecordExecutionEvent.designer.cs">
-      <DependentUpon>SelfCanceledRunningHandleRecordExecutionEvent.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\SelfCancelRunningHandleRecordOp.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveHandleRecordConcern.cs" />
     <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
-    <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.designer.cs">
-      <DependentUpon>HandlingStatusCompositionStrategy.cs</DependentUpon>
-    </Compile>
     <Compile Include="Logic\Stream\Handling\HandlingStatusExtensions.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingStatusOfRecordByInternalRecordIdOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetCompositeHandlingStatusOfRecordsByTagOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingStatusOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByTagsOp.cs" />
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.cs" />
-    <Compile Include="Stream\Handling\Model\HandlingStatusCompositionStrategy.cs" />
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\GetHandlingHistoryOfRecordOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingHistoryOp.cs" />
     <Compile Include="Models\Enums\HandlingStatus.cs" />
     <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetRecordHandlingStatusOp.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOfRecordOp.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateStreamHandlingOp.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateRecordHandlingOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingStatusOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForStreamOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForRecordOp.cs" />
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
@@ -458,7 +430,7 @@
       <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
-    <Compile Include="Stream\Handling\TryHandle\ITryHandleRecordOp.cs" />
+    <Compile Include="Operations\Interfaces\ITryHandleRecordOp.cs" />
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
       <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
     </Compile>
@@ -487,9 +459,9 @@
     <Compile Include="Stream\Management\StandardPruneStreamOp.designer.cs">
       <DependentUpon>StandardPruneStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.Handling.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.Write.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.Read.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Handling.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Write.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Read.cs" />
     <Compile Include="Stream\Model\PutRecordResult.designer.cs">
       <DependentUpon>PutRecordResult.cs</DependentUpon>
     </Compile>
@@ -519,12 +491,12 @@
       <DependentUpon>TagMatchStrategy.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\TryHandleRecordResult.cs" />
-    <Compile Include="Stream\Handling\TryHandle\TryHandleStandardizeExtensions.cs" />
+    <Compile Include="Logic\Standardize\RecordStandardizeExtensions.Handling.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardTryHandleRecordOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandleRecordWithIdOp{TId}.cs" />
-    <Compile Include="Operations\Interfaces\IPruneOperation.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.cs" />
+    <Compile Include="Operations\Interfaces\IPruneOp.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadWithIdProtocols{TId}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamRecordHandlingProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamRecordWithIdHandlingProtocols{TId}.cs" />
@@ -534,7 +506,7 @@
     <Compile Include="Stream\Management\PruneSummary.cs" />
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryReadWriteStream.cs" />
+    <Compile Include="Stream\MemoryStream\MemoryStandardStream.cs" />
     <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
     <Compile Include="Stream\Model\PutRecordResult.cs" />
     <Compile Include="Stream\Model\OrderRecordsBy.cs" />
@@ -603,8 +575,8 @@
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
     <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\BlockedRecordHandlingEvent.cs" />
-    <Compile Include="Stream\Handling\Execution\Events\CanceledBlockedRecordHandlingEvent.cs" />
+    <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.cs" />
+    <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEvent.cs" />
     <Compile Include="Models\Interfaces\Legacy\IConnectionDefinition.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
@@ -669,7 +641,9 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Stream\Handling\Execution\Events\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>

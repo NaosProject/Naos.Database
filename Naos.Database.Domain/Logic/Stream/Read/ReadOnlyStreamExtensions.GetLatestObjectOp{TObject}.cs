@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <returns>The object.</returns>
         public static TObject GetLatestObject<TObject>(
             this IReadOnlyStream stream,
-            TypeRepresentation identifierType,
+            TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
         {
@@ -47,7 +47,7 @@ namespace Naos.Database.Domain
         /// <returns>The object.</returns>
         public static async Task<TObject> GetLatestObjectAsync<TObject>(
             this IReadOnlyStream stream,
-            TypeRepresentation identifierType,
+            TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
         {

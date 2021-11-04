@@ -163,7 +163,7 @@ namespace Naos.Database.Domain.Test
 
                     var randomType = availableTypes[randomIndex];
 
-                    var result = (IPruneOperation)AD.ummy(randomType);
+                    var result = (IPruneOp)AD.ummy(randomType);
 
                     return result;
                 });
@@ -192,32 +192,32 @@ namespace Naos.Database.Domain.Test
                 () =>
                 {
                     var streamRecord = A.Dummy<StreamRecord>();
-                    return new RequestedHandleRecordExecutionEvent(
+                    return new RecordHandlingAvailableEvent(
                         streamRecord.InternalRecordId,
                         A.Dummy<DateTime>(),
                         streamRecord);
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledRequestedHandleRecordExecutionEvent(
+                () => new HandlingForRecordDisabledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledRunningHandleRecordExecutionEvent(
+                () => new RecordHandlingCancelledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CompletedHandleRecordExecutionEvent(
+                () => new RecordHandlingCompletedEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RetryFailedHandleRecordExecutionEvent(
+                () => new RecordHandlingFailureResetEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
@@ -226,7 +226,7 @@ namespace Naos.Database.Domain.Test
                 () =>
                 {
                     var record = A.Dummy<StreamRecord>();
-                    return new RequestedHandleRecordExecutionEvent(
+                    return new RecordHandlingAvailableEvent(
                         record.InternalRecordId,
                         A.Dummy<DateTime>().ToUniversalTime(),
                         record,
@@ -234,29 +234,29 @@ namespace Naos.Database.Domain.Test
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RunningHandleRecordExecutionEvent(
+                () => new RecordHandlingRunningEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<DateTime>().ToUniversalTime(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new SelfCanceledRunningHandleRecordExecutionEvent(
+                () => new RecordHandlingSelfCancelledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new BlockedRecordHandlingEvent(
+                () => new HandlingForStreamDisabledEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledBlockedRecordHandlingEvent(
+                () => new HandlingForStreamEnabledEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new FailedHandleRecordExecutionEvent(
+                () => new RecordHandlingFailedEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
@@ -287,13 +287,13 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationExecutedEvent(
-                                 A.Dummy<IPruneOperation>(),
+                                 A.Dummy<IPruneOp>(),
                                  A.Dummy<PruneSummary>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationRequestedEvent(
-                                 A.Dummy<IPruneOperation>(),
+                                 A.Dummy<IPruneOp>(),
                                  A.Dummy<DateTime>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

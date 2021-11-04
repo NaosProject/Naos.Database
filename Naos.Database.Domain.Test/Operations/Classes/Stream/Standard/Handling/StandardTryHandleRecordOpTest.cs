@@ -29,6 +29,83 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardTryHandleRecordOpTest()
         {
+            ConstructorArgumentValidationTestScenarios
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                            var result = new StandardTryHandleRecordOp(
+                                                 null,
+                                                 referenceObject.IdentifierType,
+                                                 referenceObject.ObjectType,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.OrderRecordsBy,
+                                                 referenceObject.Tags,
+                                                 referenceObject.Details,
+                                                 referenceObject.MinimumInternalRecordId,
+                                                 referenceObject.InheritRecordTags,
+                                                 referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "concern", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                            var result = new StandardTryHandleRecordOp(
+                                                 Invariant($"  {Environment.NewLine}  "),
+                                                 referenceObject.IdentifierType,
+                                                 referenceObject.ObjectType,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.OrderRecordsBy,
+                                                 referenceObject.Tags,
+                                                 referenceObject.Details,
+                                                 referenceObject.MinimumInternalRecordId,
+                                                 referenceObject.InheritRecordTags,
+                                                 referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'concern' is reserved scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                            var result = new StandardTryHandleRecordOp(
+                                Concerns.RecordHandlingConcern,
+                                referenceObject.IdentifierType,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.OrderRecordsBy,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used", },
+                    });
         }
     }
 }

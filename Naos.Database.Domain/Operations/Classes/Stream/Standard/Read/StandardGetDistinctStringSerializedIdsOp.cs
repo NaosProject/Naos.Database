@@ -30,7 +30,7 @@ namespace Naos.Database.Domain
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no tag filtering.</param>
-        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to use the defaults of <see cref="Domain.TagMatchStrategy"/>.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetDistinctStringSerializedIdsOp(
             TypeRepresentation identifierType = null,
@@ -71,7 +71,7 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use for comparing tags.
+        /// Gets the strategy to use for comparing tags or null to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <see cref="TagsToMatch"/> is specified.
         /// </summary>
         public TagMatchStrategy TagMatchStrategy { get; private set; }
 

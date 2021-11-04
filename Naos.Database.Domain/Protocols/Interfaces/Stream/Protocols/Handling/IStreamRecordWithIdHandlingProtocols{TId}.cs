@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">The type of identifier of the record.</typeparam>
     public interface IStreamRecordWithIdHandlingProtocols<TId>
         : ISyncAndAsyncReturningProtocol<TryHandleRecordWithIdOp<TId>, StreamRecordWithId<TId>>,
-          ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusOfRecordsByIdOp<TId>, CompositeHandlingStatus>
+          ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusByIdsOp<TId>, CompositeHandlingStatus>
     {
     }
 }

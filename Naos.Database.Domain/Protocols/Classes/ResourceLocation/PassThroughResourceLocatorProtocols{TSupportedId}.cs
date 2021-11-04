@@ -55,7 +55,14 @@ namespace Naos.Database.Domain
         public Func<GetResourceLocatorByIdOp<TSupportedId>, IResourceLocator> GetResourceLocatorByIdOpFunc { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<IResourceLocator> Execute(GetAllResourceLocatorsOp operation) => this.AllLocators;
+        public IReadOnlyCollection<IResourceLocator> Execute(GetAllResourceLocatorsOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var result =  this.AllLocators;
+
+            return result;
+        }
 
         /// <inheritdoc />
         public async Task<IReadOnlyCollection<IResourceLocator>> ExecuteAsync(
@@ -67,7 +74,15 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IResourceLocator Execute(GetResourceLocatorForUniqueIdentifierOp operation) => this.ResourceLocatorForUniqueIdentifier;
+        public IResourceLocator Execute(
+            GetResourceLocatorForUniqueIdentifierOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var result = this.ResourceLocatorForUniqueIdentifier;
+
+            return result;
+        }
 
         /// <inheritdoc />
         public async Task<IResourceLocator> ExecuteAsync(

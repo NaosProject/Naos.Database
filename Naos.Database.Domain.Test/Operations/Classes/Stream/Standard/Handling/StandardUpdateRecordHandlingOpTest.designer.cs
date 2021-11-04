@@ -35,16 +35,16 @@ namespace Naos.Database.Domain.Test
 
     public static partial class StandardUpdateRecordHandlingOpTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardUpdateRecordHandlingOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardUpdateRecordHandlingOp>()
+        private static readonly StringRepresentationTestScenarios<StandardUpdateHandlingStatusForRecordOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardUpdateHandlingStatusForRecordOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardUpdateRecordHandlingOp>
+                new StringRepresentationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardUpdateRecordHandlingOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, NewStatus = {systemUnderTest.NewStatus.ToString() ?? "<null>"}, AcceptableCurrentStatuses = {systemUnderTest.AcceptableCurrentStatuses?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardUpdateRecordHandlingOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardUpdateRecordHandlingOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardUpdateHandlingStatusForRecordOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardUpdateHandlingStatusForRecordOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              null,
                                              referenceObject.NewStatus,
@@ -78,14 +78,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.NewStatus,
@@ -100,14 +100,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "concern", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'acceptableCurrentStatuses' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -122,14 +122,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'acceptableCurrentStatuses' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -144,14 +144,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -166,14 +166,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -188,14 +188,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -210,14 +210,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -232,14 +232,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -254,14 +254,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new StandardUpdateRecordHandlingOp(
+                        var result = new StandardUpdateHandlingStatusForRecordOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.Concern,
                                              referenceObject.NewStatus,
@@ -276,18 +276,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardUpdateRecordHandlingOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardUpdateRecordHandlingOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardUpdateHandlingStatusForRecordOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardUpdateHandlingStatusForRecordOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "InternalRecordId should return same 'internalRecordId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -303,16 +303,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "InternalRecordId",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "Concern should return same 'concern' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -328,16 +328,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Concern",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "NewStatus should return same 'newStatus' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -353,16 +353,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "NewStatus",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "AcceptableCurrentStatuses should return same 'acceptableCurrentStatuses' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -378,16 +378,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "AcceptableCurrentStatuses",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -403,16 +403,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Details",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "Tags should return same 'tags' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -428,16 +428,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Tags",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardUpdateRecordHandlingOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForRecordOp>
                         {
-                            SystemUnderTest = new StandardUpdateRecordHandlingOp(
+                            SystemUnderTest = new StandardUpdateHandlingStatusForRecordOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.Concern,
                                                       referenceObject.NewStatus,
@@ -453,19 +453,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "SpecifiedResourceLocator",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardUpdateRecordHandlingOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardUpdateRecordHandlingOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardUpdateHandlingStatusForRecordOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardUpdateHandlingStatusForRecordOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithInternalRecordId should deep clone object and replace InternalRecordId with the provided internalRecordId",
                     WithPropertyName = "InternalRecordId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.InternalRecordId.IsEqualTo(_.InternalRecordId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.InternalRecordId,
@@ -475,17 +475,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
                     WithPropertyName = "Concern",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Concern,
@@ -495,17 +495,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithNewStatus should deep clone object and replace NewStatus with the provided newStatus",
                     WithPropertyName = "NewStatus",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.NewStatus.IsEqualTo(_.NewStatus));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.NewStatus.IsEqualTo(_.NewStatus));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.NewStatus,
@@ -515,17 +515,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithAcceptableCurrentStatuses should deep clone object and replace AcceptableCurrentStatuses with the provided acceptableCurrentStatuses",
                     WithPropertyName = "AcceptableCurrentStatuses",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.AcceptableCurrentStatuses.IsEqualTo(_.AcceptableCurrentStatuses));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.AcceptableCurrentStatuses.IsEqualTo(_.AcceptableCurrentStatuses));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.AcceptableCurrentStatuses,
@@ -535,17 +535,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
@@ -555,17 +555,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
                     WithPropertyName = "Tags",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Tags,
@@ -575,17 +575,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardUpdateRecordHandlingOp>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardUpdateRecordHandlingOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateRecordHandlingOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
@@ -595,17 +595,17 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StandardUpdateRecordHandlingOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardUpdateRecordHandlingOp>();
+        private static readonly StandardUpdateHandlingStatusForRecordOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
-        private static readonly EquatableTestScenarios<StandardUpdateRecordHandlingOp> EquatableTestScenarios = new EquatableTestScenarios<StandardUpdateRecordHandlingOp>()
+        private static readonly EquatableTestScenarios<StandardUpdateHandlingStatusForRecordOp> EquatableTestScenarios = new EquatableTestScenarios<StandardUpdateHandlingStatusForRecordOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardUpdateRecordHandlingOp>
+                new EquatableTestScenario<StandardUpdateHandlingStatusForRecordOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardUpdateRecordHandlingOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardUpdateHandlingStatusForRecordOp[]
                     {
-                        new StandardUpdateRecordHandlingOp(
+                        new StandardUpdateHandlingStatusForRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
@@ -614,64 +614,64 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardUpdateRecordHandlingOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardUpdateHandlingStatusForRecordOp[]
                     {
-                        new StandardUpdateRecordHandlingOp(
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
+                        new StandardUpdateHandlingStatusForRecordOp(
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateRecordHandlingOp(
+                        new StandardUpdateHandlingStatusForRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateRecordHandlingOp(
+                        new StandardUpdateHandlingStatusForRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.NewStatus.IsEqualTo(ReferenceObjectForEquatableTestScenarios.NewStatus)).NewStatus,
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.NewStatus.IsEqualTo(ReferenceObjectForEquatableTestScenarios.NewStatus)).NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateRecordHandlingOp(
+                        new StandardUpdateHandlingStatusForRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.AcceptableCurrentStatuses.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses)).AcceptableCurrentStatuses,
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.AcceptableCurrentStatuses.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses)).AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateRecordHandlingOp(
+                        new StandardUpdateHandlingStatusForRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateRecordHandlingOp(
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.NewStatus,
-                                ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardUpdateRecordHandlingOp(
+                        new StandardUpdateHandlingStatusForRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardUpdateHandlingStatusForRecordOp(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.NewStatus,
+                                ReferenceObjectForEquatableTestScenarios.AcceptableCurrentStatuses,
+                                ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
-                                A.Dummy<StandardUpdateRecordHandlingOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                A.Dummy<StandardUpdateHandlingStatusForRecordOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -680,21 +680,21 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<CancelRunningHandleRecordExecutionOp>(),
-                        A.Dummy<CompleteRunningHandleRecordExecutionOp>(),
-                        A.Dummy<DisableRecordHandlingForRecordOp>(),
-                        A.Dummy<DisableRecordHandlingForStreamOp>(),
+                        A.Dummy<CancelRunningHandleRecordOp>(),
+                        A.Dummy<CompleteRunningHandleRecordOp>(),
+                        A.Dummy<DisableHandlingForRecordOp>(),
+                        A.Dummy<DisableHandlingForStreamOp>(),
                         A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableRecordHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordExecutionOp>(),
+                        A.Dummy<EnableHandlingForStreamOp>(),
+                        A.Dummy<FailRunningHandleRecordOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
                         A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
                         A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByIdOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusOfRecordsByTagOp>(),
-                        A.Dummy<GetHandlingHistoryOfRecordOp>(),
-                        A.Dummy<GetHandlingStatusOfRecordByInternalRecordIdOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
+                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
+                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetHandlingHistoryOp>(),
+                        A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectByTagOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
@@ -706,7 +706,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetResourceLocatorByIdOp<Version>>(),
                         A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
                         A.Dummy<GetStreamFromRepresentationOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryReadWriteStream>>(),
+                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -717,26 +717,26 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<RetryFailedHandleRecordExecutionOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordExecutionOp>(),
+                        A.Dummy<ResetFailedHandleRecordOp>(),
+                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
                         A.Dummy<StandardGetAllRecordsByIdOp>(),
                         A.Dummy<StandardGetAllRecordsMetadataByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
-                        A.Dummy<StandardGetHandlingHistoryOfRecordOp>(),
+                        A.Dummy<StandardGetHandlingHistoryOp>(),
                         A.Dummy<StandardGetLatestRecordByIdOp>(),
                         A.Dummy<StandardGetLatestRecordByTagOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
                         A.Dummy<StandardGetLatestRecordOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
-                        A.Dummy<StandardGetRecordHandlingStatusOp>(),
+                        A.Dummy<StandardGetHandlingStatusOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateStreamHandlingOp>(),
+                        A.Dummy<StandardUpdateHandlingStatusForStreamOp>(),
                         A.Dummy<ThrowIfResourceUnavailableOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
@@ -765,9 +765,9 @@ namespace Naos.Database.Domain.Test
             public static void StandardUpdateRecordHandlingOp___Should_implement_IModel_of_StandardUpdateRecordHandlingOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardUpdateRecordHandlingOp);
+                var type = typeof(StandardUpdateHandlingStatusForRecordOp);
 
-                var expectedModelMethods = typeof(IModel<StandardUpdateRecordHandlingOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardUpdateHandlingStatusForRecordOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -777,7 +777,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardUpdateRecordHandlingOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardUpdateHandlingStatusForRecordOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -798,7 +798,7 @@ namespace Naos.Database.Domain.Test
             public static void StandardUpdateRecordHandlingOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardUpdateRecordHandlingOp);
+                var type = typeof(StandardUpdateHandlingStatusForRecordOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -978,10 +978,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
                 // Act
-                var actual = (StandardUpdateRecordHandlingOp)systemUnderTest.Clone();
+                var actual = (StandardUpdateHandlingStatusForRecordOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -1005,7 +1005,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardUpdateRecordHandlingOp>();
+                var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -1080,12 +1080,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardUpdateRecordHandlingOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardUpdateHandlingStatusForRecordOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardUpdateRecordHandlingOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardUpdateHandlingStatusForRecordOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -1147,7 +1147,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateRecordHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1176,7 +1176,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateRecordHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1205,7 +1205,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateRecordHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1234,7 +1234,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardUpdateRecordHandlingOp>();
+                var expected = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1268,8 +1268,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardUpdateRecordHandlingOp systemUnderTest1 = null;
-                StandardUpdateRecordHandlingOp systemUnderTest2 = null;
+                StandardUpdateHandlingStatusForRecordOp systemUnderTest1 = null;
+                StandardUpdateHandlingStatusForRecordOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1299,7 +1299,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardUpdateRecordHandlingOp systemUnderTest = null;
+                    StandardUpdateHandlingStatusForRecordOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1448,8 +1448,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardUpdateRecordHandlingOp systemUnderTest1 = null;
-                StandardUpdateRecordHandlingOp systemUnderTest2 = null;
+                StandardUpdateHandlingStatusForRecordOp systemUnderTest1 = null;
+                StandardUpdateHandlingStatusForRecordOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1479,7 +1479,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardUpdateRecordHandlingOp systemUnderTest = null;
+                    StandardUpdateHandlingStatusForRecordOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1918,7 +1918,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardUpdateRecordHandlingOp systemUnderTest = null;
+                    StandardUpdateHandlingStatusForRecordOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

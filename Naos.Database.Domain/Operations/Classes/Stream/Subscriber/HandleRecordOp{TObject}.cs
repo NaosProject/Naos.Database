@@ -10,7 +10,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Try to handle a record of type <typeparamref name="TObject"/> for a specified concern.
+    /// Handles a record.
     /// </summary>
     /// <typeparam name="TObject">Type of the object in the record.</typeparam>
     public partial class HandleRecordOp<TObject> : VoidOperationBase

@@ -593,16 +593,16 @@
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\HandleRecordOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOpTest.designer.cs">
       <DependentUpon>HandleRecordOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\HandleRecordOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}Test.designer.cs">
       <DependentUpon>HandleRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\HandleRecordWithIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\HandleRecordWithIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId}Test.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\MemoryStream\MemoryStandardStreamTest.cs" />
@@ -659,10 +659,10 @@
       <DependentUpon>StreamRepresentationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\TagMatchExtensionsTests.cs" />
-    <Compile Include="Stream\Handling\HandleRecordOpTest.cs" />
-    <Compile Include="Stream\Handling\HandleRecordOp{TObject}Test.cs" />
-    <Compile Include="Stream\Handling\HandleRecordWithIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Stream\Handling\HandleRecordWithIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOpTest.cs" />
     <Compile Include="Events\Classes\Management\PruneOperationExecutedEventTest.cs" />

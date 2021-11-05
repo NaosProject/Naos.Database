@@ -456,20 +456,20 @@
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp.designer.cs">
       <DependentUpon>HandleRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}.designer.cs">
       <DependentUpon>HandleRecordOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordSyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdAsyncSpecificProtocolBase{TId,TObject}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId}.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
@@ -614,8 +614,8 @@
     <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.cs" />
     <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEvent.cs" />
     <Compile Include="Models\Interfaces\Legacy\IConnectionDefinition.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardDeleteStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.cs" />
@@ -677,9 +677,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Stream\Management\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>

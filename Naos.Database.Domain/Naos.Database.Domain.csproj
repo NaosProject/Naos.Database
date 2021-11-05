@@ -455,7 +455,7 @@
     <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp.designer.cs">
       <DependentUpon>HandleRecordOp.cs</DependentUpon>
@@ -463,8 +463,8 @@
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}.designer.cs">
       <DependentUpon>HandleRecordOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordSyncSpecificProtocolBase{TObject}.cs" />
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdAsyncSpecificProtocolBase{TId,TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordSyncSpecificProtocolBase{TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordWithIdAsyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
@@ -472,7 +472,7 @@
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId}.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Operations\Interfaces\ITryHandleRecordOp.cs" />
     <Compile Include="Events\Classes\Management\PruneRequestCancelledEvent.designer.cs">
       <DependentUpon>PruneRequestCancelledEvent.cs</DependentUpon>

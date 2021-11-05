@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to protocol the stream record handling operations without a typed identifier and with a typed record payload.
     /// </summary>
-    /// <typeparam name="TObject">The type of object in the record.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IStreamRecordHandlingProtocols<TObject>
         : ISyncAndAsyncReturningProtocol<TryHandleRecordOp<TObject>, StreamRecord<TObject>>
     {

@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Set of protocols to handle a record in a stream.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
     /// <seealso cref="IStreamReadWithIdProtocols{TId,TObject}" />
     /// <seealso cref="IStreamWriteWithIdProtocols{TId,TObject}" />

@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to protocol the basic stream reading operations without a typed identifier and with a typed record payload.
     /// </summary>
-    /// <typeparam name="TObject">Type of object used.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IStreamReadProtocols<TObject>
         : ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>,
           ISyncAndAsyncReturningProtocol<GetLatestObjectByTagsOp<TObject>, TObject>,

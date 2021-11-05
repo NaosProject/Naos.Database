@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardCreateStreamOp : ReturningOperationBase<StandardCreateStreamResult>
+    public partial class StandardCreateStreamOp : ReturningOperationBase<CreateStreamResult>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardCreateStreamOp"/> class.

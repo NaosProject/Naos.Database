@@ -9,7 +9,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Result of a <see cref="StandardTryHandleRecordOp"/>.
+    /// The result of executing <see cref="StandardTryHandleRecordOp"/>.
     /// </summary>
     public partial class TryHandleRecordResult : IModelViaCodeGen
     {

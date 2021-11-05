@@ -282,8 +282,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<UtcDateTime>(),
-                                 A.Dummy<DateTime?>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneRequestCancelledEvent(
@@ -339,14 +338,14 @@ namespace Naos.Database.Domain.Test
                     switch (scenario)
                     {
                         case 1:
-                            return new StandardCreateStreamResult(false, true);
+                            return new CreateStreamResult(false, true);
                         case 2:
-                            return new StandardCreateStreamResult(true, false);
+                            return new CreateStreamResult(true, false);
                         case 3:
-                            return new StandardCreateStreamResult(true, true);
+                            return new CreateStreamResult(true, true);
                         default:
                             throw new NotSupportedException(
-                                FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(StandardCreateStreamResult)}."));
+                                FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(CreateStreamResult)}."));
                     }
                 });
 

@@ -150,8 +150,7 @@ namespace Naos.Database.Domain
                                     recordToHandle.Metadata.TypeRepresentationOfId,
                                     requestedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                                     handlingTags,
-                                    requestedTimestamp,
-                                    requestedEvent.TimestampUtc);
+                                    requestedTimestamp);
 
                                 var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
                                 this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, requestedEntryId, operation.Concern, requestedMetadata, requestedPayload);
@@ -178,8 +177,7 @@ namespace Naos.Database.Domain
                                 recordToHandle.Metadata.TypeRepresentationOfId,
                                 runningPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                                 handlingTags,
-                                runningTimestamp,
-                                runningEvent.TimestampUtc);
+                                runningTimestamp);
 
                             var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
                             this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, runningEntryId, operation.Concern, runningMetadata, runningPayload);
@@ -339,8 +337,7 @@ namespace Naos.Database.Domain
                 mostRecent.Metadata.TypeRepresentationOfId,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                timestamp,
-                newEvent.TimestampUtc);
+                timestamp);
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
@@ -374,8 +371,7 @@ namespace Naos.Database.Domain
                 mostRecent.Metadata.TypeRepresentationOfId,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                timestamp,
-                newEvent.TimestampUtc);
+                timestamp);
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
@@ -409,8 +405,7 @@ namespace Naos.Database.Domain
                 mostRecent.Metadata.TypeRepresentationOfId,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                timestamp,
-                newEvent.TimestampUtc);
+                timestamp);
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
@@ -443,8 +438,7 @@ namespace Naos.Database.Domain
                 mostRecent.Metadata.TypeRepresentationOfId,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                timestamp,
-                newEvent.TimestampUtc);
+                timestamp);
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
@@ -478,8 +472,7 @@ namespace Naos.Database.Domain
                 mostRecent.Metadata.TypeRepresentationOfId,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                timestamp,
-                newEvent.TimestampUtc);
+                timestamp);
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
@@ -513,8 +506,7 @@ namespace Naos.Database.Domain
                 mostRecent.Metadata.TypeRepresentationOfId,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                timestamp,
-                newEvent.TimestampUtc);
+                timestamp);
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);

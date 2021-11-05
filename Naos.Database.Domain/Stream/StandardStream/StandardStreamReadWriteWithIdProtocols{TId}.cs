@@ -19,7 +19,7 @@ namespace Naos.Database.Domain
     /// Implements the <see cref="IStreamReadWithIdProtocols{TId}" />
     /// Implements the <see cref="IStreamWriteProtocols{TId}" />.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <seealso cref="IStreamReadWithIdProtocols{TId}" />
     /// <seealso cref="IStreamWriteWithIdProtocols{TId}" />
     public class StandardStreamReadWriteWithIdProtocols<TId> :

@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to protocol the basic stream reading operations with a typed identifier and without a typed record payload.
     /// </summary>
-    /// <typeparam name="TId">Type of ID used.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public interface IStreamReadWithIdProtocols<TId> :
         ISyncAndAsyncReturningProtocol<GetLatestRecordByIdOp<TId>, StreamRecordWithId<TId>>,
         ISyncAndAsyncReturningProtocol<GetAllRecordsByIdOp<TId>, IReadOnlyList<StreamRecordWithId<TId>>>,

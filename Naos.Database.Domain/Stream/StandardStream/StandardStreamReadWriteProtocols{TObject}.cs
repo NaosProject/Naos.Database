@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// Implements the <see cref="IStreamReadProtocols{TObject}" />
     /// Implements the <see cref="IStreamWriteProtocols{TObject}" />.
     /// </summary>
-    /// <typeparam name="TObject">The type of the t object.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     /// <seealso cref="IStreamReadProtocols{TObject}" />
     /// <seealso cref="IStreamWriteProtocols{TObject}" />
     public class StandardStreamReadWriteProtocols<TObject> :

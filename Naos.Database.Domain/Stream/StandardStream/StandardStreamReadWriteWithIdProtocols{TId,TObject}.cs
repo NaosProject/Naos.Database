@@ -19,8 +19,8 @@ namespace Naos.Database.Domain
     /// Implements the <see cref="IStreamReadWithIdProtocols{TId,TObject}" />
     /// Implements the <see cref="IStreamWriteWithIdProtocols{TId,TObject}" />.
     /// </summary>
-    /// <typeparam name="TId">The type of the t identifier.</typeparam>
-    /// <typeparam name="TObject">The type of the t object.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     /// <seealso cref="IStreamReadWithIdProtocols{TId,TObject}" />
     /// <seealso cref="IStreamWriteWithIdProtocols{TId,TObject}" />
     public class StandardStreamReadWriteWithIdProtocols<TId, TObject> :

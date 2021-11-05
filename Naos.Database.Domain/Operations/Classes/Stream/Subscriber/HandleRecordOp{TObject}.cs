@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Handles a record.
     /// </summary>
-    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class HandleRecordOp<TObject> : VoidOperationBase
     {
         /// <summary>

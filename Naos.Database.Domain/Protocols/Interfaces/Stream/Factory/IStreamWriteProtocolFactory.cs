@@ -27,14 +27,14 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Builds the <see cref="IStreamWriteWithIdProtocols{TId}"/> protocol.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <returns>Protocols for write operations.</returns>
         IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>();
 
         /// <summary>
         /// Builds the <see cref="IStreamWriteWithIdProtocols{TId,TObject}"/> protocol.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <returns>Protocols for write operations.</returns>
         IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>();

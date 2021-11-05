@@ -16,10 +16,10 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Put an object into a stream.
         /// </summary>
-        /// <typeparam name="TId">Type of identifier.</typeparam>
-        /// <typeparam name="TObject">Type of object being written.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
@@ -46,10 +46,10 @@ namespace Naos.Database.Domain
         /// <summary>
         /// /// Put an object into a stream.
         /// </summary>
-        /// <typeparam name="TId">Type of identifier.</typeparam>
-        /// <typeparam name="TObject">Type of object being written.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>

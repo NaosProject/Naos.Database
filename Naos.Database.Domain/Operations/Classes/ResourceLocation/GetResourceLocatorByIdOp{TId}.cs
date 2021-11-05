@@ -14,22 +14,20 @@ namespace Naos.Database.Domain
     /// <remarks>
     /// This enables ID based sharding.
     /// </remarks>
-    /// <typeparam name="TId">Type of ID being used.</typeparam>
-    public partial class GetResourceLocatorByIdOp<TId> : ReturningOperationBase<IResourceLocator>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    public partial class GetResourceLocatorByIdOp<TId> : ReturningOperationBase<IResourceLocator>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetResourceLocatorByIdOp{TId}"/> class.
         /// </summary>
-        /// <param name="id">The ID.</param>
+        /// <param name="id">The identifier of the object.</param>
         public GetResourceLocatorByIdOp(
             TId id)
         {
             this.Id = id;
         }
 
-        /// <summary>
-        /// Gets the ID.
-        /// </summary>
+        /// <inheritdoc />
         public TId Id { get; private set; }
     }
 }

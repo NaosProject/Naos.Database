@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Metadata of a stream entry.
+    /// A stream record handling entry.
     /// </summary>
     public partial class StreamRecordHandlingEntry : IModelViaCodeGen
     {

@@ -19,7 +19,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the resource locator by identifier protocol.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <returns>Protocol for <see cref="GetResourceLocatorByIdProtocol{TId}"/>.</returns>
         ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> GetResourceLocatorByIdProtocol<TId>();
     }

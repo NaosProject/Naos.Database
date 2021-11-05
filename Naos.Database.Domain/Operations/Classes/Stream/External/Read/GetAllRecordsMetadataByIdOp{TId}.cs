@@ -13,13 +13,13 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets all record metadata with provided identifier.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public partial class GetAllRecordsMetadataByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordMetadata<TId>>>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetAllRecordsMetadataByIdOp{TId}"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>

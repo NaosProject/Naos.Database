@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to protocol the stream record handling operations with a typed identifier and without a typed record payload.
     /// </summary>
-    /// <typeparam name="TId">The type of identifier of the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public interface IStreamRecordWithIdHandlingProtocols<TId>
         : ISyncAndAsyncReturningProtocol<TryHandleRecordWithIdOp<TId>, StreamRecordWithId<TId>>,
           ISyncAndAsyncReturningProtocol<GetCompositeHandlingStatusByIdsOp<TId>, CompositeHandlingStatus>

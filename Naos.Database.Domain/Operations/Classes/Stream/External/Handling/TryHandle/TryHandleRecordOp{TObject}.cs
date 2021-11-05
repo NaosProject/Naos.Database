@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Try to handle a record of type <typeparamref name="TObject"/> for a specified concern.
     /// </summary>
-    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class TryHandleRecordOp<TObject> : ReturningOperationBase<StreamRecord<TObject>>, ITryHandleRecordOp
     {
         /// <summary>

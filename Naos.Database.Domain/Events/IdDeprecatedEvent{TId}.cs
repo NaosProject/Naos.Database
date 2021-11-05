@@ -12,13 +12,13 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event to indicate in a stream that an identifier is no longer expected to be used.  This can be useful in marking the event and also to filter out identifiers which have been removed.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public partial class IdDeprecatedEvent<TId> : EventBase<TId>, IHaveDetails
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IdDeprecatedEvent{TId}"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="timestampUtc">The timestamp UTC.</param>
         /// <param name="details">The details.</param>
         public IdDeprecatedEvent(

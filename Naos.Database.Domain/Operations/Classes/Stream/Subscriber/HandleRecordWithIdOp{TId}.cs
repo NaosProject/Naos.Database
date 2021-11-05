@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Handles a record.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public partial class HandleRecordWithIdOp<TId> : VoidOperationBase
     {
         /// <summary>

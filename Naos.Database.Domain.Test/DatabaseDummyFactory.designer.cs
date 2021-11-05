@@ -55,6 +55,11 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<bool>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CreateStreamResult(
+                                 A.Dummy<bool>(),
+                                 A.Dummy<bool>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
                     var availableTypes = new[]
@@ -500,11 +505,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<ExistingStreamStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardCreateStreamResult(
-                                 A.Dummy<bool>(),
-                                 A.Dummy<bool>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardDeleteStreamOp(
                                  A.Dummy<IStreamRepresentation>(),
                                  A.Dummy<StreamNotFoundStrategy>()));
@@ -683,8 +683,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<DateTime>(),
-                                 A.Dummy<DateTime?>()));
+                                 A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordMetadata(

@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// Interface to protocol the standard stream management operations.
     /// </summary>
     public interface IStandardStreamManagementProtocols
-        : ISyncReturningProtocol<StandardCreateStreamOp, StandardCreateStreamResult>,
+        : ISyncReturningProtocol<StandardCreateStreamOp, CreateStreamResult>,
           ISyncVoidProtocol<StandardDeleteStreamOp>,
           ISyncVoidProtocol<StandardPruneStreamOp>
     {

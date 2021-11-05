@@ -31,7 +31,23 @@ namespace Naos.Database.Domain.Test
         {
             ConstructorArgumentValidationTestScenarios
                .RemoveAllScenarios()
-               .AddScenario(ConstructorArgumentValidationTestScenario<StringSerializedIdentifier>.ConstructorCannotThrowScenario);
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StringSerializedIdentifier>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'identifierType' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StringSerializedIdentifier>();
+
+                            var result = new StringSerializedIdentifier(
+                                                 referenceObject.StringSerializedId,
+                                                 null);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "identifierType", },
+                    });
         }
     }
 }

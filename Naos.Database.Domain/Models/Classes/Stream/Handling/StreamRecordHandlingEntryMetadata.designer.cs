@@ -78,8 +78,7 @@ namespace Naos.Database.Domain
                       && this.Tags.IsEqualTo(other.Tags)
                       && this.TypeRepresentationOfId.IsEqualTo(other.TypeRepresentationOfId)
                       && this.TypeRepresentationOfObject.IsEqualTo(other.TypeRepresentationOfObject)
-                      && this.TimestampUtc.IsEqualTo(other.TimestampUtc)
-                      && this.ObjectTimestampUtc.IsEqualTo(other.ObjectTimestampUtc);
+                      && this.TimestampUtc.IsEqualTo(other.TimestampUtc);
 
             return result;
         }
@@ -98,7 +97,6 @@ namespace Naos.Database.Domain
             .Hash(this.TypeRepresentationOfId)
             .Hash(this.TypeRepresentationOfObject)
             .Hash(this.TimestampUtc)
-            .Hash(this.ObjectTimestampUtc)
             .Value;
 
         /// <inheritdoc />
@@ -116,8 +114,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -155,8 +152,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -194,8 +190,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -233,8 +228,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -272,8 +266,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -311,8 +304,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -350,8 +342,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  tags,
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -389,8 +380,7 @@ namespace Naos.Database.Domain
                                  typeRepresentationOfId,
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -428,8 +418,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  typeRepresentationOfObject,
                                  this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 this.ObjectTimestampUtc?.DeepClone());
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -467,47 +456,7 @@ namespace Naos.Database.Domain
                                  this.TypeRepresentationOfId?.DeepClone(),
                                  this.TypeRepresentationOfObject?.DeepClone(),
                                  this.Tags?.DeepClone(),
-                                 timestampUtc,
-                                 this.ObjectTimestampUtc?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="ObjectTimestampUtc" />.
-        /// </summary>
-        /// <param name="objectTimestampUtc">The new <see cref="ObjectTimestampUtc" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRecordHandlingEntryMetadata" /> using the specified <paramref name="objectTimestampUtc" /> for <see cref="ObjectTimestampUtc" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordHandlingEntryMetadata DeepCloneWithObjectTimestampUtc(DateTime? objectTimestampUtc)
-        {
-            var result = new StreamRecordHandlingEntryMetadata(
-                                 this.InternalRecordId.DeepClone(),
-                                 this.Concern?.DeepClone(),
-                                 this.Status.DeepClone(),
-                                 this.StringSerializedId?.DeepClone(),
-                                 this.SerializerRepresentation?.DeepClone(),
-                                 this.TypeRepresentationOfId?.DeepClone(),
-                                 this.TypeRepresentationOfObject?.DeepClone(),
-                                 this.Tags?.DeepClone(),
-                                 this.TimestampUtc.DeepClone(),
-                                 objectTimestampUtc);
+                                 timestampUtc);
 
             return result;
         }
@@ -516,7 +465,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntryMetadata: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Status = {this.Status.ToString() ?? "<null>"}, StringSerializedId = {this.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SerializerRepresentation = {this.SerializerRepresentation?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, TypeRepresentationOfId = {this.TypeRepresentationOfId?.ToString() ?? "<null>"}, TypeRepresentationOfObject = {this.TypeRepresentationOfObject?.ToString() ?? "<null>"}, TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectTimestampUtc = {this.ObjectTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntryMetadata: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Status = {this.Status.ToString() ?? "<null>"}, StringSerializedId = {this.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SerializerRepresentation = {this.SerializerRepresentation?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, TypeRepresentationOfId = {this.TypeRepresentationOfId?.ToString() ?? "<null>"}, TypeRepresentationOfObject = {this.TypeRepresentationOfObject?.ToString() ?? "<null>"}, TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

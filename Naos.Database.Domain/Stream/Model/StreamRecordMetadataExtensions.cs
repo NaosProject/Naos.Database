@@ -50,7 +50,7 @@ namespace Naos.Database.Domain
         /// Matches the metadata against the inputs (allowing for skipping on the match).
         /// </summary>
         /// <param name="streamRecordMetadata">The stream record metadata.</param>
-        /// <param name="stringSerializedId">The identifier serialized to a string using the same as the object serializer.</param>
+        /// <param name="stringSerializedId">The object's identifier serialized as a string.</param>
         /// <param name="identifierType">Type type of the identifier; null will exclude from match.</param>
         /// <param name="objectType">Type of the object; null will exclude from match.</param>
         /// <param name="versionMatchStrategy">The type version match strategy.</param>

@@ -27,14 +27,14 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the stream record with identifier handling protocols.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <returns>Stream record with identifier handling protocols.</returns>
         IStreamRecordWithIdHandlingProtocols<TId> GetStreamRecordWithIdHandlingProtocols<TId>();
 
         /// <summary>
         /// Gets the stream record with identifier handling protocols.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <returns>Stream record with identifier handling protocols.</returns>
         IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>();

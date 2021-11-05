@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class StandardCreateStreamResult : IModel<StandardCreateStreamResult>
+    public partial class CreateStreamResult : IModel<CreateStreamResult>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="StandardCreateStreamResult"/> are equal.
+        /// Determines whether two objects of type <see cref="CreateStreamResult"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(StandardCreateStreamResult left, StandardCreateStreamResult right)
+        public static bool operator ==(CreateStreamResult left, CreateStreamResult right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="StandardCreateStreamResult"/> are not equal.
+        /// Determines whether two objects of type <see cref="CreateStreamResult"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(StandardCreateStreamResult left, StandardCreateStreamResult right) => !(left == right);
+        public static bool operator !=(CreateStreamResult left, CreateStreamResult right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(StandardCreateStreamResult other)
+        public bool Equals(CreateStreamResult other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -76,7 +76,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as StandardCreateStreamResult);
+        public override bool Equals(object obj) => this == (obj as CreateStreamResult);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -88,9 +88,9 @@ namespace Naos.Database.Domain
         public object Clone() => this.DeepClone();
 
         /// <inheritdoc />
-        public StandardCreateStreamResult DeepClone()
+        public CreateStreamResult DeepClone()
         {
-            var result = new StandardCreateStreamResult(
+            var result = new CreateStreamResult(
                                  this.AlreadyExisted.DeepClone(),
                                  this.WasCreated.DeepClone());
 
@@ -101,7 +101,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardCreateStreamResult: AlreadyExisted = {this.AlreadyExisted.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, WasCreated = {this.WasCreated.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.CreateStreamResult: AlreadyExisted = {this.AlreadyExisted.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, WasCreated = {this.WasCreated.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

@@ -16,7 +16,7 @@ namespace Naos.Database.Domain
     /// NOTE: this is only unique local and sequential in the context of the stream itself and should generally not be used.
     /// There are occasions where this can make sense, i.e. auditing the local identifier that was received when queueing work.
     /// </summary>
-    /// <typeparam name="TObject">Type of object being written.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class PutAndReturnInternalRecordIdOp<TObject> : ReturningOperationBase<long?>, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>

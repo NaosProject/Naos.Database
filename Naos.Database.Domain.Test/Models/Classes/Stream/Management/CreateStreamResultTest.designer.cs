@@ -33,41 +33,41 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StandardCreateStreamResultTest
+    public static partial class CreateStreamResultTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardCreateStreamResult> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardCreateStreamResult>()
+        private static readonly StringRepresentationTestScenarios<CreateStreamResult> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<CreateStreamResult>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardCreateStreamResult>
+                new StringRepresentationTestScenario<CreateStreamResult>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardCreateStreamResult>();
+                        var systemUnderTest = A.Dummy<CreateStreamResult>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardCreateStreamResult>
+                        var result = new SystemUnderTestExpectedStringRepresentation<CreateStreamResult>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardCreateStreamResult: AlreadyExisted = {systemUnderTest.AlreadyExisted.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, WasCreated = {systemUnderTest.WasCreated.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CreateStreamResult: AlreadyExisted = {systemUnderTest.AlreadyExisted.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, WasCreated = {systemUnderTest.WasCreated.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardCreateStreamResult> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardCreateStreamResult>();
+        private static readonly ConstructorArgumentValidationTestScenarios<CreateStreamResult> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<CreateStreamResult>();
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardCreateStreamResult> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardCreateStreamResult>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<CreateStreamResult> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CreateStreamResult>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardCreateStreamResult>
+                new ConstructorPropertyAssignmentTestScenario<CreateStreamResult>
                 {
                     Name = "AlreadyExisted should return same 'alreadyExisted' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardCreateStreamResult>();
+                        var referenceObject = A.Dummy<CreateStreamResult>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardCreateStreamResult>
+                        var result = new SystemUnderTestExpectedPropertyValue<CreateStreamResult>
                         {
-                            SystemUnderTest = new StandardCreateStreamResult(
+                            SystemUnderTest = new CreateStreamResult(
                                                       referenceObject.AlreadyExisted,
                                                       referenceObject.WasCreated),
                             ExpectedPropertyValue = referenceObject.AlreadyExisted,
@@ -78,16 +78,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "AlreadyExisted",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardCreateStreamResult>
+                new ConstructorPropertyAssignmentTestScenario<CreateStreamResult>
                 {
                     Name = "WasCreated should return same 'wasCreated' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardCreateStreamResult>();
+                        var referenceObject = A.Dummy<CreateStreamResult>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardCreateStreamResult>
+                        var result = new SystemUnderTestExpectedPropertyValue<CreateStreamResult>
                         {
-                            SystemUnderTest = new StandardCreateStreamResult(
+                            SystemUnderTest = new CreateStreamResult(
                                                       referenceObject.AlreadyExisted,
                                                       referenceObject.WasCreated),
                             ExpectedPropertyValue = referenceObject.WasCreated,
@@ -98,28 +98,28 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "WasCreated",
                 });
 
-        private static readonly StandardCreateStreamResult ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardCreateStreamResult>();
+        private static readonly CreateStreamResult ReferenceObjectForEquatableTestScenarios = A.Dummy<CreateStreamResult>();
 
-        private static readonly EquatableTestScenarios<StandardCreateStreamResult> EquatableTestScenarios = new EquatableTestScenarios<StandardCreateStreamResult>()
+        private static readonly EquatableTestScenarios<CreateStreamResult> EquatableTestScenarios = new EquatableTestScenarios<CreateStreamResult>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardCreateStreamResult>
+                new EquatableTestScenario<CreateStreamResult>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardCreateStreamResult[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CreateStreamResult[]
                     {
-                        new StandardCreateStreamResult(
+                        new CreateStreamResult(
                                 ReferenceObjectForEquatableTestScenarios.AlreadyExisted,
                                 ReferenceObjectForEquatableTestScenarios.WasCreated),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardCreateStreamResult[]
+                    ObjectsThatAreNotEqualToReferenceObject = new CreateStreamResult[]
                     {
-                        new StandardCreateStreamResult(
-                                A.Dummy<StandardCreateStreamResult>().Whose(_ => !_.AlreadyExisted.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AlreadyExisted)).AlreadyExisted,
+                        new CreateStreamResult(
+                                A.Dummy<CreateStreamResult>().Whose(_ => !_.AlreadyExisted.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AlreadyExisted)).AlreadyExisted,
                                 ReferenceObjectForEquatableTestScenarios.WasCreated),
-                        new StandardCreateStreamResult(
+                        new CreateStreamResult(
                                 ReferenceObjectForEquatableTestScenarios.AlreadyExisted,
-                                A.Dummy<StandardCreateStreamResult>().Whose(_ => !_.WasCreated.IsEqualTo(ReferenceObjectForEquatableTestScenarios.WasCreated)).WasCreated),
+                                A.Dummy<CreateStreamResult>().Whose(_ => !_.WasCreated.IsEqualTo(ReferenceObjectForEquatableTestScenarios.WasCreated)).WasCreated),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -149,12 +149,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardCreateStreamResult___Should_implement_IModel_of_StandardCreateStreamResult___When_reflecting()
+            public static void CreateStreamResult___Should_implement_IModel_of_CreateStreamResult___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardCreateStreamResult);
+                var type = typeof(CreateStreamResult);
 
-                var expectedModelMethods = typeof(IModel<StandardCreateStreamResult>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<CreateStreamResult>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -164,7 +164,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardCreateStreamResult>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<CreateStreamResult>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -182,10 +182,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardCreateStreamResult___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void CreateStreamResult___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardCreateStreamResult);
+                var type = typeof(CreateStreamResult);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -365,10 +365,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardCreateStreamResult>();
+                var systemUnderTest = A.Dummy<CreateStreamResult>();
 
                 // Act
-                var actual = (StandardCreateStreamResult)systemUnderTest.Clone();
+                var actual = (CreateStreamResult)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -392,7 +392,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardCreateStreamResult>();
+                var systemUnderTest = A.Dummy<CreateStreamResult>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -424,7 +424,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardCreateStreamResult>();
+                var expected = A.Dummy<CreateStreamResult>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -453,7 +453,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardCreateStreamResult>();
+                var expected = A.Dummy<CreateStreamResult>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -482,7 +482,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardCreateStreamResult>();
+                var expected = A.Dummy<CreateStreamResult>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -511,7 +511,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardCreateStreamResult>();
+                var expected = A.Dummy<CreateStreamResult>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -545,8 +545,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardCreateStreamResult systemUnderTest1 = null;
-                StandardCreateStreamResult systemUnderTest2 = null;
+                CreateStreamResult systemUnderTest1 = null;
+                CreateStreamResult systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -576,7 +576,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardCreateStreamResult systemUnderTest = null;
+                    CreateStreamResult systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -725,8 +725,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardCreateStreamResult systemUnderTest1 = null;
-                StandardCreateStreamResult systemUnderTest2 = null;
+                CreateStreamResult systemUnderTest1 = null;
+                CreateStreamResult systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -756,7 +756,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardCreateStreamResult systemUnderTest = null;
+                    CreateStreamResult systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -902,14 +902,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardCreateStreamResult___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_CreateStreamResult___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardCreateStreamResult systemUnderTest = null;
+                    CreateStreamResult systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -933,7 +933,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardCreateStreamResult___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_CreateStreamResult___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -961,7 +961,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardCreateStreamResult___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_CreateStreamResult___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -989,7 +989,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardCreateStreamResult___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_CreateStreamResult___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1017,7 +1017,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardCreateStreamResult___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_CreateStreamResult___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

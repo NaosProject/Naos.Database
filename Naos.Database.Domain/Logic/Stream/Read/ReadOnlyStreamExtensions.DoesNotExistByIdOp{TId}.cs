@@ -16,9 +16,9 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets a value indicating whether or not any record by the provided identifier exists.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <returns>true if any record exists, otherwise false.</returns>
@@ -39,9 +39,9 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets a value indicating whether or not any record by the provided identifier exists.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <returns>true if any record exists, otherwise false.</returns>

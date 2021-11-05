@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardDoesAnyExistByIdOp"/> class.
         /// </summary>
-        /// <param name="stringSerializedId">The string serialized identifier.</param>
+        /// <param name="stringSerializedId">The object's identifier serialized as a string.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
@@ -46,7 +46,7 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Gets the string serialized identifier.
+        /// Gets the object's identifier serialized as a string.
         /// </summary>
         public string StringSerializedId { get; private set; }
 

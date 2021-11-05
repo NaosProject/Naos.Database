@@ -12,13 +12,13 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets a value indicating whether or not any record by the provided identifier exists.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public partial class DoesAnyExistByIdOp<TId> : ReturningOperationBase<bool>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DoesAnyExistByIdOp{TId}"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         public DoesAnyExistByIdOp(

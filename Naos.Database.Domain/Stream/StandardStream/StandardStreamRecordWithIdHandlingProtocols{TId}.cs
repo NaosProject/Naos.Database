@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Set of protocols to handle <see cref="IEvent"/>'s in a stream.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <seealso cref="IStreamReadWithIdProtocols{TId}" />
     /// <seealso cref="IStreamWriteWithIdProtocols{TId}" />
     public class StandardStreamRecordWithIdHandlingProtocols<TId> :

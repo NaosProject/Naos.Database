@@ -117,14 +117,13 @@ namespace Naos.Database.Domain
                 NullStreamIdentifier.TypeRepresentation,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
-                utcNow,
-                statusEvent.TimestampUtc);
+                utcNow);
 
             this.WriteHandlingEntryToMemoryMap(locator, entryId, concern, metadata, payload);
         }
 
         /// <inheritdoc />
-        public override StandardCreateStreamResult Execute(
+        public override CreateStreamResult Execute(
             StandardCreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -162,7 +161,7 @@ namespace Naos.Database.Domain
                 this.created = true;
             }
 
-            var result = new StandardCreateStreamResult(alreadyExisted, wasCreated);
+            var result = new CreateStreamResult(alreadyExisted, wasCreated);
             return result;
         }
 

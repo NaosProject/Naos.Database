@@ -31,44 +31,38 @@ namespace Naos.Database.Domain.Test
         static PutRecordResultTest()
         {
             ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(
+                .RemoveAllScenarios()
+                .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<PutRecordResult>
                         {
-                            Name = "constructor should throw ArgumentNullException when parameter 'existingRecordIds' is null AND the 'internalRecordId' is null scenario",
+                            Name = "constructor should throw ArgumentException when parameter 'existingRecordIds' is null AND the 'internalRecordId' is null scenario",
                             ConstructionFunc = () =>
-                                               {
-                                                   var result = new PutRecordResult(
-                                                       null,
-                                                       null);
+                            {
+                                var result = new PutRecordResult(
+                                    null,
+                                    null);
 
-                                                   return result;
-                                               },
-                            ExpectedExceptionType = typeof(ArgumentNullException),
-                            ExpectedExceptionMessageContains = new[]
-                                                               {
-                                                                   "the expectation is that the record was written OR there was an existing record",
-                                                               },
+                                return result;
+                            },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[] { "the expectation is that the record was written OR there was an existing record", },
                         })
-               .AddScenario(
+                .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<PutRecordResult>
                         {
-                            Name = "constructor should throw ArgumentNullException when parameter 'existingRecordIds' is empty collection AND the 'internalRecordId' is null scenario",
+                            Name = "constructor should throw ArgumentException when parameter 'existingRecordIds' is empty collection AND the 'internalRecordId' is null scenario",
                             ConstructionFunc = () =>
-                                               {
-                                                   var result = new PutRecordResult(
-                                                       null,
-                                                       new List<long>());
+                            {
+                                var result = new PutRecordResult(
+                                    null,
+                                    new List<long>());
 
-                                                   return result;
-                                               },
-                            ExpectedExceptionType = typeof(ArgumentNullException),
-                            ExpectedExceptionMessageContains = new[]
-                                                               {
-                                                                   "the expectation is that the record was written OR there was an existing record",
-                                                               },
+                                return result;
+                            },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[] { "the expectation is that the record was written OR there was an existing record", },
                         });
 
             EquatableTestScenarios

@@ -15,10 +15,10 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the most recent record with the specified identifier.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The record.</returns>
@@ -39,10 +39,10 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the most recent record with the specified identifier.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The record.</returns>

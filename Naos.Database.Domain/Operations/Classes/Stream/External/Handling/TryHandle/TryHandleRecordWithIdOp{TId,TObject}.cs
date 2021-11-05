@@ -13,8 +13,8 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Try to handle a record of type <typeparamref name="TObject"/> using object identifier type <typeparamref name="TId"/> for a specified concern.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class TryHandleRecordWithIdOp<TId, TObject> : ReturningOperationBase<StreamRecordWithId<TId, TObject>>, ITryHandleRecordOp
     {
         /// <summary>

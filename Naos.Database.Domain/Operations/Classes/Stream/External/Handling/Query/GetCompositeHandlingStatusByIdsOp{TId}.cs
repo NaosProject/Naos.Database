@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the <see cref="CompositeHandlingStatus"/> of a set of records matched by ids.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public partial class GetCompositeHandlingStatusByIdsOp<TId> : ReturningOperationBase<CompositeHandlingStatus>, IHaveHandleRecordConcern
     {
         /// <summary>

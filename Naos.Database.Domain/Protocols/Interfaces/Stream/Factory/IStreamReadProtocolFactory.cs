@@ -27,14 +27,14 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Builds the <see cref="IStreamReadWithIdProtocols{TId}"/> protocol.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <returns>Protocols for read operations.</returns>
         IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>();
 
         /// <summary>
         /// Builds the <see cref="IStreamReadWithIdProtocols{TId,TObject}"/> protocol.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <returns>Protocols for read operations.</returns>
         IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>();

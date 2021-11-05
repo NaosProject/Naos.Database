@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Result of <see cref="StandardPutRecordOp"/>.
+    /// The result of executing <see cref="StandardPutRecordOp"/>.
     /// </summary>
     public partial class PutRecordResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
     {
@@ -21,15 +21,15 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="internalRecordIdOfPutRecord">The internal record identifier of the new record.</param>
         /// <param name="existingRecordIds">The internal record identifier of any existing records per matching criteria.</param>
-        /// <param name="prunedRecordIds">The internal record identifier of any records that were removed.</param>
+        /// <param name="prunedRecordIds">The internal record identifier of any records that were pruned.</param>
         public PutRecordResult(
             long? internalRecordIdOfPutRecord,
             IReadOnlyCollection<long> existingRecordIds = null,
             IReadOnlyCollection<long> prunedRecordIds = null)
         {
-            if (internalRecordIdOfPutRecord == null && !(existingRecordIds?.Any() ?? false))
+            if ((internalRecordIdOfPutRecord == null) && !(existingRecordIds?.Any() ?? false))
             {
-                throw new ArgumentNullException(FormattableString.Invariant($"Cannot have a null {nameof(internalRecordIdOfPutRecord)} AND and an empty {nameof(existingRecordIds)}; the expectation is that the record was written OR there was an existing record."));
+                throw new ArgumentException(FormattableString.Invariant($"Cannot have a null {nameof(internalRecordIdOfPutRecord)} AND and an empty {nameof(existingRecordIds)}; the expectation is that the record was written OR there was an existing record."));
             }
 
             this.InternalRecordIdOfPutRecord = internalRecordIdOfPutRecord;
@@ -43,12 +43,12 @@ namespace Naos.Database.Domain
         public long? InternalRecordIdOfPutRecord { get; private set; }
 
         /// <summary>
-        /// Gets the existing record identifiers.
+        /// Gets the internal record identifier of any existing records per matching criteria.
         /// </summary>
         public IReadOnlyCollection<long> ExistingRecordIds { get; private set; }
 
         /// <summary>
-        /// Gets the pruned record identifiers.
+        /// Gets the internal record identifier of any records that were pruned.
         /// </summary>
         public IReadOnlyCollection<long> PrunedRecordIds { get; private set; }
     }

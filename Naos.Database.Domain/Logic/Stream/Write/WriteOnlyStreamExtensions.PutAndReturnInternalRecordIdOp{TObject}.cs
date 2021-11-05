@@ -17,7 +17,7 @@ namespace Naos.Database.Domain
         /// Put an object into a stream and return the internal identifier of the record
         /// or null if the specified strategy for dealing with an existing record prevents the object from being written.
         /// </summary>
-        /// <typeparam name="TObject">Type of object being written.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>
@@ -45,7 +45,7 @@ namespace Naos.Database.Domain
         /// Put an object into a stream and return the internal identifier of the record
         /// or null if the specified strategy for dealing with an existing record prevents the object from being written.
         /// </summary>
-        /// <typeparam name="TObject">Type of object being written.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <param name="objectToPut">The object to put.</param>
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>

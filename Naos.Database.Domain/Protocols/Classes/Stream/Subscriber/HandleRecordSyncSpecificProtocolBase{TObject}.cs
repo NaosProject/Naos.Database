@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Base class implementation of an <see cref="ISyncAndAsyncVoidProtocol{TOperation}"/> for <see cref="HandleRecordOp{TObject}"/> for <typeparamref name="TObject"/>.
     /// </summary>
-    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public abstract class HandleRecordSyncSpecificProtocolBase<TObject> : SyncSpecificVoidProtocolBase<HandleRecordOp<TObject>>
     {
     }

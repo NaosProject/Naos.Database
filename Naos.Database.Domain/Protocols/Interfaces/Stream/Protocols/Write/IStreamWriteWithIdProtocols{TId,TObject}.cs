@@ -11,8 +11,8 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to protocol the basic stream writing operations with a typed identifier and with a typed record payload.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier.</typeparam>
-    /// <typeparam name="TObject">Type of the object.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IStreamWriteWithIdProtocols<TId, TObject> :
         ISyncAndAsyncReturningProtocol<PutWithIdAndReturnInternalRecordIdOp<TId, TObject>, long?>,
         ISyncAndAsyncVoidProtocol<PutWithIdOp<TId, TObject>>

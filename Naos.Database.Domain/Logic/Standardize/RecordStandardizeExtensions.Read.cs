@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -41,7 +41,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -70,7 +70,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -99,8 +99,8 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -128,7 +128,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
@@ -151,7 +151,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
@@ -174,8 +174,8 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -203,7 +203,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -231,7 +231,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
@@ -259,7 +259,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>

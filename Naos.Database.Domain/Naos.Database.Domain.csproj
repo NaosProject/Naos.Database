@@ -217,6 +217,9 @@
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.designer.cs">
       <DependentUpon>ResourceLocatorBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadata.designer.cs">
+      <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
@@ -437,22 +440,19 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByTagsOp.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.designer.cs">
+    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntry.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntry.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadata.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntry.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingHistoryOp.cs" />
     <Compile Include="Models\Enums\HandlingStatus.cs" />
-    <Compile Include="Stream\Handling\Model\StreamRecordHandlingEntryMetadata.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifier.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingStatusOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForRecordOp.cs" />
-    <Compile Include="Stream\Handling\Model\StringSerializedIdentifier.designer.cs">
+    <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
@@ -499,29 +499,29 @@
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Handling.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Write.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Read.cs" />
-    <Compile Include="Stream\Model\PutRecordResult.designer.cs">
+    <Compile Include="Models\Classes\Stream\Write\PutRecordResult.designer.cs">
       <DependentUpon>PutRecordResult.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StandardCreateStreamResult.designer.cs">
-      <DependentUpon>StandardCreateStreamResult.cs</DependentUpon>
+    <Compile Include="Models\Classes\Stream\Management\CreateStreamResult.designer.cs">
+      <DependentUpon>CreateStreamResult.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StreamAccessModes.cs" />
-    <Compile Include="Stream\Model\StreamRecord.designer.cs">
+    <Compile Include="Models\Enums\StreamAccessModes.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord.designer.cs">
       <DependentUpon>StreamRecord.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StreamRecordMetadata.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata.designer.cs">
       <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StreamRecordMetadata{TId}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}.designer.cs">
       <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}.designer.cs">
       <DependentUpon>StreamRecordWithId{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StreamRecordWithId{TId}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}.designer.cs">
       <DependentUpon>StreamRecordWithId{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Model\StreamRecord{TObject}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}.designer.cs">
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\TagMatchStrategy.designer.cs">
@@ -543,13 +543,13 @@
     <Compile Include="Events\Classes\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOp.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.cs" />
-    <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
-    <Compile Include="Stream\Model\PutRecordResult.cs" />
+    <Compile Include="Models\Classes\Stream\Management\CreateStreamResult.cs" />
+    <Compile Include="Models\Classes\Stream\Write\PutRecordResult.cs" />
     <Compile Include="Models\Enums\OrderRecordsBy.cs" />
-    <Compile Include="Stream\Model\RecordNotFoundStrategy.cs" />
+    <Compile Include="Models\Enums\RecordNotFoundStrategy.cs" />
     <Compile Include="Stream\Model\StreamRecordExtensions.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadataExtensions.cs" />
-    <Compile Include="Stream\Model\StreamRecordWithId{TId,TObject}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}.cs" />
     <Compile Include="Stream\Model\TagMatchStrategy.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOp.cs" />
@@ -632,7 +632,7 @@
     <Compile Include="Models\Classes\ResourceLocation\Database\FileSystemDatabaseLocator.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\NullDatabaseLocator.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBase.cs" />
-    <Compile Include="Stream\Model\ExistingRecordStrategy.cs" />
+    <Compile Include="Models\Enums\ExistingRecordStrategy.cs" />
     <Compile Include="Models\Enums\StreamNotFoundStrategy.cs" />
     <Compile Include="Models\Enums\ExistingStreamStrategy.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamRecordHandlingProtocolFactory.cs" />
@@ -646,10 +646,10 @@
     <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
     <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStream.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols.cs" />
-    <Compile Include="Stream\Model\StreamRecordMetadata{TId}.cs" />
-    <Compile Include="Stream\Model\StreamRecordWithId{TId}.cs" />
-    <Compile Include="Stream\Model\StreamRecord{TObject}.cs" />
-    <Compile Include="Stream\Model\StreamRecord.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadProtocols{TObject}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamReadProtocolFactory.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamWriteProtocolFactory.cs" />
@@ -666,7 +666,7 @@
     <Compile Include="Stream\GetStreamFromRepresentationByNameProtocolFactory.cs" />
     <Compile Include="Stream\Representation\StreamRepresentation.cs" />
     <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />
-    <Compile Include="Stream\Model\StreamRecordMetadata.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

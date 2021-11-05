@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Put an object into a stream.
     /// </summary>
-    /// <typeparam name="TObject">Type of data being written.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class PutOp<TObject> : VoidOperationBase, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>

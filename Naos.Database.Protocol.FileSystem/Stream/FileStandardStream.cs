@@ -89,7 +89,7 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override StandardCreateStreamResult Execute(
+        public override CreateStreamResult Execute(
             StandardCreateStreamOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -135,7 +135,7 @@ namespace Naos.Database.Protocol.FileSystem
                 }
             }
 
-            var result = new StandardCreateStreamResult(alreadyExists, wasCreated);
+            var result = new CreateStreamResult(alreadyExists, wasCreated);
             return result;
         }
 
@@ -718,8 +718,7 @@ namespace Naos.Database.Protocol.FileSystem
                                     recordToHandle.Metadata.TypeRepresentationOfId,
                                     requestedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                                     handlingTags,
-                                    requestedTimestamp,
-                                    requestedEvent.TimestampUtc);
+                                    requestedTimestamp);
 
                                 var requestedEntryId = this.GetNextRecordHandlingEntryId(locator);
                                 this.PutRecordHandlingEntry(locator, operation.Concern, requestedEntryId, requestedMetadata, requestedPayload);
@@ -746,8 +745,7 @@ namespace Naos.Database.Protocol.FileSystem
                                 recordToHandle.Metadata.TypeRepresentationOfId,
                                 runningPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                                 handlingTags,
-                                runningTimestamp,
-                                runningEvent.TimestampUtc);
+                                runningTimestamp);
 
                             var runningEntryId = this.GetNextRecordHandlingEntryId(locator);
                             this.PutRecordHandlingEntry(locator, operation.Concern, runningEntryId, runningMetadata, runningPayload);
@@ -1339,8 +1337,7 @@ namespace Naos.Database.Protocol.FileSystem
                     NullStreamIdentifier.TypeRepresentation,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    utcNow,
-                    statusEvent.TimestampUtc);
+                    utcNow);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
                 this.PutRecordHandlingEntry(locator, concern, entryId, metadata, payload);
@@ -1441,8 +1438,7 @@ namespace Naos.Database.Protocol.FileSystem
                     mostRecent.Metadata.TypeRepresentationOfId,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    timestamp);
 
                 var entryId = this.GetNextRecordHandlingEntryId(fileSystemDatabaseLocator);
                 this.PutRecordHandlingEntry(fileSystemDatabaseLocator, operation.Concern, entryId, metadata, payload);
@@ -1483,8 +1479,7 @@ namespace Naos.Database.Protocol.FileSystem
                     mostRecent.Metadata.TypeRepresentationOfId,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    timestamp);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
                 this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
@@ -1524,8 +1519,7 @@ namespace Naos.Database.Protocol.FileSystem
                     mostRecent.Metadata.TypeRepresentationOfId,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    timestamp);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
                 this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
@@ -1566,8 +1560,7 @@ namespace Naos.Database.Protocol.FileSystem
                     mostRecent.Metadata.TypeRepresentationOfId,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    timestamp);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
                 this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
@@ -1608,8 +1601,7 @@ namespace Naos.Database.Protocol.FileSystem
                     mostRecent.Metadata.TypeRepresentationOfId,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    timestamp);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
                 this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);
@@ -1650,8 +1642,7 @@ namespace Naos.Database.Protocol.FileSystem
                     mostRecent.Metadata.TypeRepresentationOfId,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
-                    timestamp,
-                    newEvent.TimestampUtc);
+                    timestamp);
 
                 var entryId = this.GetNextRecordHandlingEntryId(locator);
                 this.PutRecordHandlingEntry(locator, operation.Concern, entryId, metadata, payload);

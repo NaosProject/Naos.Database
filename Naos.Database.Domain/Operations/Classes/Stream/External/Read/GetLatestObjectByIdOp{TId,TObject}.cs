@@ -11,14 +11,14 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the most recent object with a specified identifier.
     /// </summary>
-    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     public partial class GetLatestObjectByIdOp<TId, TObject> : ReturningOperationBase<TObject>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetLatestObjectByIdOp{TId, TObject}"/> class.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         public GetLatestObjectByIdOp(

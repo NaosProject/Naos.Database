@@ -6,7 +6,9 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Diagnostics.CodeAnalysis;
     using Naos.CodeAnalysis.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -18,19 +20,21 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="StringSerializedIdentifier"/> class.
         /// </summary>
-        /// <param name="stringSerializedId">The string serialized identifier.</param>
+        /// <param name="stringSerializedId">The object's identifier serialized as a string.</param>
         /// <param name="identifierType">Type of the identifier.</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StringSerializedIdentifier(
             string stringSerializedId,
             TypeRepresentation identifierType)
         {
+            identifierType.MustForArg(nameof(identifierType)).NotBeNull();
+
             this.StringSerializedId = stringSerializedId;
             this.IdentifierType = identifierType;
         }
 
         /// <summary>
-        /// Gets the string serialized identifier.
+        /// Gets the object's identifier serialized as a string.
         /// </summary>
         public string StringSerializedId { get; private set; }
 

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StandardCreateStreamResult.cs" company="Naos Project">
+// <copyright file="CreateStreamResult.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -10,20 +10,20 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Result of <see cref="StandardCreateStreamOp"/>.
+    /// The result of executing a <see cref="StandardCreateStreamOp"/>.
     /// </summary>
-    public partial class StandardCreateStreamResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class CreateStreamResult : IModelViaCodeGen, IForsakeDeepCloneWithVariantsViaCodeGen
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StandardCreateStreamResult"/> class.
+        /// Initializes a new instance of the <see cref="CreateStreamResult"/> class.
         /// </summary>
-        /// <param name="alreadyExisted">if set to <c>true</c> [already existed].</param>
-        /// <param name="wasCreated">if set to <c>true</c> [was created].</param>
-        public StandardCreateStreamResult(
+        /// <param name="alreadyExisted">A value indicating whether the stream already exists.</param>
+        /// <param name="wasCreated">A value indicating whether the stream was created.</param>
+        public CreateStreamResult(
             bool alreadyExisted,
             bool wasCreated)
         {
-            if (!alreadyExisted && !wasCreated)
+            if ((!alreadyExisted) && (!wasCreated))
             {
                 throw new ArgumentException(FormattableString.Invariant($"Cannot have both '{nameof(alreadyExisted)}' AND '{nameof(wasCreated)}' be false; the expectation is that the stream was created or there was an existing one."));
             }
@@ -33,12 +33,12 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Gets a value indicating whether [already existed].
+        /// Gets a value indicating whether the stream already exists.
         /// </summary>
         public bool AlreadyExisted { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether [was created].
+        /// Gets a value indicating whether the stream was created.
         /// </summary>
         public bool WasCreated { get; private set; }
     }

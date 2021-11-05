@@ -34,8 +34,9 @@ namespace Naos.Database.Domain
             int? recordRetentionCount = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
-            if (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
-             || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
+
+            if ((existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById) || (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType))
             {
                 recordRetentionCount.MustForArg(nameof(recordRetentionCount)).NotBeNull("Must have a retention count if pruning.").And().BeGreaterThanOrEqualTo((int?)0);
             }

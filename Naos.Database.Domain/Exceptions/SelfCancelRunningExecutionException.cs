@@ -30,6 +30,7 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null)
             : base(details)
         {
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 
             this.Details = details;

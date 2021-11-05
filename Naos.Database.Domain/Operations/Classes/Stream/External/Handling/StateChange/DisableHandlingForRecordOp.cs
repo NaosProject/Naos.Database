@@ -29,6 +29,7 @@ namespace Naos.Database.Domain
             bool inheritRecordTags = false)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.InternalRecordId = internalRecordId;
             this.Details = details;

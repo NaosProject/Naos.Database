@@ -32,6 +32,7 @@ namespace Naos.Database.Domain
         {
             concern.ThrowIfInvalidOrReservedConcern();
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.InternalRecordId = internalRecordId;
             this.Concern = concern;

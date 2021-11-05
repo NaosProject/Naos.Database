@@ -18,7 +18,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Equality.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Type;
     using Xunit;
 
     using static System.FormattableString;
@@ -91,6 +91,26 @@ namespace Naos.Database.Domain.Test
                        },
                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                        ExpectedExceptionMessageContains = new[] { "recordRetentionCount", },
+                   })
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tags' contains at least one null element",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                           var result = new PutAndReturnInternalRecordIdOp<Version>(
+                               referenceObject.ObjectToPut,
+                               new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
+                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToLowerInvariant().Contains("prune")),
+                               referenceObject.RecordRetentionCount,
+                               referenceObject.VersionMatchStrategy);
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentException),
+                       ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element" },
                    });
 
             EquatableTestScenarios

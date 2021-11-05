@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -50,6 +50,7 @@ namespace Naos.Database.Domain
         {
             concern.ThrowIfInvalidOrReservedConcern();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.Concern = concern;
             this.IdentifierType = identifierType;

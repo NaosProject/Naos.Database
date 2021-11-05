@@ -17,7 +17,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Type;
     using Xunit;
 
     using static System.FormattableString;
@@ -96,6 +96,28 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version, Version>>();
+
+                            var result = new TryHandleRecordWithIdOp<Version, Version>(
+                                referenceObject.Concern,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.OrderRecordsBy,
+                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
                     });
         }
     }

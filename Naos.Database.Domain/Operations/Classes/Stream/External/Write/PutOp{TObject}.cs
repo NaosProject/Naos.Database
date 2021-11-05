@@ -31,6 +31,8 @@ namespace Naos.Database.Domain
             int? recordRetentionCount = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
         {
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
+
             if (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
              || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
             {

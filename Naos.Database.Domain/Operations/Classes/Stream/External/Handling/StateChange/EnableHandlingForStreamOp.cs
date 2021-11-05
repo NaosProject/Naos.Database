@@ -26,6 +26,7 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.Details = details;
             this.Tags = tags;

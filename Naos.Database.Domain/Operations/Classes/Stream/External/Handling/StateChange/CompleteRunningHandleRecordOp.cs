@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -30,6 +31,7 @@ namespace Naos.Database.Domain
             bool inheritRecordTags = false)
         {
             concern.ThrowIfInvalidOrReservedConcern();
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.InternalRecordId = internalRecordId;
             this.Concern = concern;

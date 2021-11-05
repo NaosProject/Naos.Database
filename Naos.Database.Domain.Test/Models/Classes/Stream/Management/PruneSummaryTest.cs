@@ -31,23 +31,20 @@ namespace Naos.Database.Domain.Test
         {
             ConstructorArgumentValidationTestScenarios
                .RemoveAllScenarios()
-               .AddScenario(
-                    () =>
-                        new ConstructorArgumentValidationTestScenario<PruneSummary>
-                        {
-                            Name = "constructor should throw ArgumentNullException when parameter 'internalRecordIdsRemoved' is null scenario",
-                            ConstructionFunc = () =>
-                                               {
-                                                   var result = new PruneSummary(null);
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<PruneSummary>
+                   {
+                       Name = "constructor should throw ArgumentNullException when parameter 'internalRecordIdsRemoved' is null scenario",
+                       ConstructionFunc = () =>
+                       {
+                           var result = new PruneSummary(
+                               null);
 
-                                                   return result;
-                                               },
-                            ExpectedExceptionType = typeof(ArgumentNullException),
-                            ExpectedExceptionMessageContains = new[]
-                                                               {
-                                                                   "internalRecordIdsRemoved",
-                                                               },
-                        });
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentNullException),
+                       ExpectedExceptionMessageContains = new[] { "internalRecordIdsRemoved", },
+                   });
         }
     }
 }

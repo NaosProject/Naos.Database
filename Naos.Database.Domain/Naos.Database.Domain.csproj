@@ -474,16 +474,16 @@
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Operations\Interfaces\ITryHandleRecordOp.cs" />
-    <Compile Include="Stream\Management\PruneRequestCancelledEvent.designer.cs">
+    <Compile Include="Events\Classes\Management\PruneRequestCancelledEvent.designer.cs">
       <DependentUpon>PruneRequestCancelledEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\PruneOperationExecutedEvent.designer.cs">
+    <Compile Include="Events\Classes\Management\PruneOperationExecutedEvent.designer.cs">
       <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\PruneOperationRequestedEvent.designer.cs">
+    <Compile Include="Events\Classes\Management\PruneOperationRequestedEvent.designer.cs">
       <DependentUpon>PruneOperationRequestedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\PruneSummary.designer.cs">
+    <Compile Include="Models\Classes\Stream\Management\PruneSummary.designer.cs">
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.designer.cs">
@@ -538,9 +538,9 @@
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamRecordWithIdHandlingProtocols{TId}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteWithIdProtocols{TId}.cs" />
-    <Compile Include="Stream\Management\PruneOperationRequestedEvent.cs" />
-    <Compile Include="Stream\Management\PruneSummary.cs" />
-    <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
+    <Compile Include="Events\Classes\Management\PruneOperationRequestedEvent.cs" />
+    <Compile Include="Models\Classes\Stream\Management\PruneSummary.cs" />
+    <Compile Include="Events\Classes\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOp.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.cs" />
     <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
@@ -608,7 +608,7 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />
-    <Compile Include="Stream\Management\PruneRequestCancelledEvent.cs" />
+    <Compile Include="Events\Classes\Management\PruneRequestCancelledEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
     <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.cs" />
@@ -677,7 +677,9 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Stream\Management\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>

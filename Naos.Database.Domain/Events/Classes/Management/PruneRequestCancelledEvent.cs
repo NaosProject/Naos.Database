@@ -11,9 +11,9 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
+    /// The request to prune an <see cref="IManagementOnlyStream"/> was cancelled.
     /// </summary>
-    public partial class PruneRequestCancelledEvent : EventBase
+    public partial class PruneRequestCancelledEvent : EventBase, IHaveDetails
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PruneRequestCancelledEvent"/> class.
@@ -26,12 +26,11 @@ namespace Naos.Database.Domain
             : base(timestampUtc)
         {
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
+
             this.Details = details;
         }
 
-        /// <summary>
-        /// Gets the details.
-        /// </summary>
+        /// <inheritdoc />
         public string Details { get; private set; }
     }
 }

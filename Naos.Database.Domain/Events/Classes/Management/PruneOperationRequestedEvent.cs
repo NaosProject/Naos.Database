@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PruneOperationExecutedEvent.cs" company="Naos Project">
+// <copyright file="PruneOperationRequestedEvent.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,43 +7,35 @@
 namespace Naos.Database.Domain
 {
     using System;
-    using System.Collections.Generic;
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
+    /// A request was made to prune an <see cref="IManagementOnlyStream"/>.
     /// </summary>
-    public partial class PruneOperationExecutedEvent : EventBase
+    /// <remarks>
+    /// Standard reads will ignore records prior to the requested pruning checkpoint.
+    /// </remarks>
+    public partial class PruneOperationRequestedEvent : EventBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PruneOperationExecutedEvent"/> class.
+        /// Initializes a new instance of the <see cref="PruneOperationRequestedEvent"/> class.
         /// </summary>
         /// <param name="pruneOperation">The prune operation.</param>
-        /// <param name="pruneSummary">The prune summary.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        public PruneOperationExecutedEvent(
+        public PruneOperationRequestedEvent(
             IPruneOp pruneOperation,
-            PruneSummary pruneSummary,
             DateTime timestampUtc)
             : base(timestampUtc)
         {
             pruneOperation.MustForArg(nameof(pruneOperation)).NotBeNull();
-            pruneSummary.MustForArg(nameof(pruneSummary)).NotBeNull();
 
             this.PruneOperation = pruneOperation;
-            this.PruneSummary = pruneSummary;
         }
 
         /// <summary>
         /// Gets the prune operation.
         /// </summary>
         public IPruneOp PruneOperation { get; private set; }
-
-        /// <summary>
-        /// Gets the prune summary.
-        /// </summary>
-        public PruneSummary PruneSummary { get; private set; }
     }
 }

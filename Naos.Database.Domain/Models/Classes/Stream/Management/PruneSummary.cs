@@ -6,14 +6,12 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
     using System.Collections.Generic;
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
+    /// A summary of an executed <see cref="IPruneOp"/>.
     /// </summary>
     public partial class PruneSummary : IModelViaCodeGen
     {

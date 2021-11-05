@@ -467,17 +467,17 @@
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOpTest.designer.cs">
       <DependentUpon>PruneBeforeInternalRecordIdOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PruneOperationExecutedEventTest.designer.cs">
+    <Compile Include="Events\Classes\Management\PruneOperationExecutedEventTest.designer.cs">
       <DependentUpon>PruneOperationExecutedEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PruneOperationRequestedEventTest.designer.cs">
+    <Compile Include="Events\Classes\Management\PruneOperationRequestedEventTest.designer.cs">
       <DependentUpon>PruneOperationRequestedEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PruneRequestCancelledEventTest.cs" />
-    <Compile Include="PruneRequestCancelledEventTest.designer.cs">
+    <Compile Include="Events\Classes\Management\PruneRequestCancelledEventTest.cs" />
+    <Compile Include="Events\Classes\Management\PruneRequestCancelledEventTest.designer.cs">
       <DependentUpon>PruneRequestCancelledEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PruneSummaryTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Management\PruneSummaryTest.designer.cs">
       <DependentUpon>PruneSummaryTest.cs</DependentUpon>
     </Compile>
     <Compile Include="PutRecordResultTest.designer.cs">
@@ -665,9 +665,9 @@
     <Compile Include="Stream\Handling\HandleRecordWithIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOpTest.cs" />
-    <Compile Include="PruneOperationExecutedEventTest.cs" />
-    <Compile Include="PruneOperationRequestedEventTest.cs" />
-    <Compile Include="PruneSummaryTest.cs" />
+    <Compile Include="Events\Classes\Management\PruneOperationExecutedEventTest.cs" />
+    <Compile Include="Events\Classes\Management\PruneOperationRequestedEventTest.cs" />
+    <Compile Include="Models\Classes\Stream\Management\PruneSummaryTest.cs" />
     <Compile Include="Stream\StreamExtensionsTests.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}Test.cs" />

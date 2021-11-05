@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardUpdateHandlingStatusForStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardUpdateHandlingStatusForStreamOp: NewStatus = {systemUnderTest.NewStatus.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardUpdateHandlingStatusForStreamOp: NewStatus = {systemUnderTest.NewStatus.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,6 +66,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              null,
+                                             referenceObject.Tags,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -84,12 +85,70 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.Tags,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
+
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
+                                             referenceObject.NewStatus,
+                                             referenceObject.Details,
+                                             null,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "tags", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
+
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
+                                             referenceObject.NewStatus,
+                                             referenceObject.Details,
+                                             new List<NamedValue<string>>(),
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
+
+                        var result = new StandardUpdateHandlingStatusForStreamOp(
+                                             referenceObject.NewStatus,
+                                             referenceObject.Details,
+                                             new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
@@ -102,6 +161,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardUpdateHandlingStatusForStreamOp(
                                              referenceObject.NewStatus,
                                              referenceObject.Details,
+                                             referenceObject.Tags,
                                              null);
 
                         return result;
@@ -124,6 +184,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.Details,
+                                                      referenceObject.Tags,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.NewStatus,
                         };
@@ -145,6 +206,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.Details,
+                                                      referenceObject.Tags,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
@@ -152,6 +214,28 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "Details",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForStreamOp>
+                {
+                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardUpdateHandlingStatusForStreamOp>
+                        {
+                            SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
+                                                      referenceObject.NewStatus,
+                                                      referenceObject.Details,
+                                                      referenceObject.Tags,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Tags",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardUpdateHandlingStatusForStreamOp>
@@ -166,6 +250,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardUpdateHandlingStatusForStreamOp(
                                                       referenceObject.NewStatus,
                                                       referenceObject.Details,
+                                                      referenceObject.Tags,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -219,6 +304,26 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForStreamOp>
                 {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
+
+                        var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardUpdateHandlingStatusForStreamOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardUpdateHandlingStatusForStreamOp>
+                {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -250,6 +355,7 @@ namespace Naos.Database.Domain.Test
                         new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StandardUpdateHandlingStatusForStreamOp[]
@@ -257,14 +363,22 @@ namespace Naos.Database.Domain.Test
                         new StandardUpdateHandlingStatusForStreamOp(
                                 A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.NewStatus.IsEqualTo(ReferenceObjectForEquatableTestScenarios.NewStatus)).NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardUpdateHandlingStatusForStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.NewStatus,
                                 ReferenceObjectForEquatableTestScenarios.Details,
+                                A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardUpdateHandlingStatusForStreamOp(
+                                ReferenceObjectForEquatableTestScenarios.NewStatus,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 A.Dummy<StandardUpdateHandlingStatusForStreamOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -608,6 +722,18 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
+                if (systemUnderTest.Tags == null)
+                {
+                    actual.Tags.AsTest().Must().BeNull();
+                }
+                else if (!actual.Tags.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                }
+
                 if (systemUnderTest.SpecifiedResourceLocator == null)
                 {
                     actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
@@ -637,7 +763,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "NewStatus", "Details", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "NewStatus", "Details", "Tags", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1757,7 +1883,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact]
+            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

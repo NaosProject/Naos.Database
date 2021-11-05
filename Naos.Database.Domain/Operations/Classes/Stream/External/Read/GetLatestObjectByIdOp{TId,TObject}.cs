@@ -11,8 +11,8 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the most recent object with a specified identifier.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
+    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
     public partial class GetLatestObjectByIdOp<TId, TObject> : ReturningOperationBase<TObject>, IHaveId<TId>
     {
         /// <summary>

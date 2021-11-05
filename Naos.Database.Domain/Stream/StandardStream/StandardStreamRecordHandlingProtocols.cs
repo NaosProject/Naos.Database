@@ -31,6 +31,7 @@ namespace Naos.Database.Domain
             IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
+
             this.stream = stream;
         }
 
@@ -38,11 +39,8 @@ namespace Naos.Database.Domain
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOp operation)
         {
-            var standardizedOperation = new StandardGetHandlingHistoryOp(
-                operation.InternalRecordId,
-                operation.Concern);
+            var result = this.stream.Execute(operation.Standardize());
 
-            var result = this.stream.Execute(standardizedOperation);
             return result;
         }
 
@@ -59,15 +57,7 @@ namespace Naos.Database.Domain
         public CompositeHandlingStatus Execute(
             GetCompositeHandlingStatusByIdsOp operation)
         {
-            var standardizedOperation = new StandardGetHandlingStatusOp(
-                operation.Concern,
-                null,
-                operation.IdsToMatch,
-                operation.VersionMatchStrategy,
-                null,
-                null);
-
-            var handlingStatuses = this.stream.Execute(standardizedOperation);
+            var handlingStatuses = this.stream.Execute(operation.Standardize());
 
             var result = handlingStatuses.ToCompositeHandlingStatus();
 
@@ -87,16 +77,7 @@ namespace Naos.Database.Domain
         public CompositeHandlingStatus Execute(
             GetCompositeHandlingStatusByTagsOp operation)
         {
-            var standardizedOperation = new StandardGetHandlingStatusOp(
-                operation.Concern,
-                null,
-                null,
-                null,
-                operation.TagsToMatch,
-                operation.TagMatchStrategy,
-                null);
-
-            var handlingStatuses = this.stream.Execute(standardizedOperation);
+            var handlingStatuses = this.stream.Execute(operation.Standardize());
 
             var result = handlingStatuses.ToCompositeHandlingStatus();
 
@@ -116,15 +97,7 @@ namespace Naos.Database.Domain
         public HandlingStatus Execute(
             GetHandlingStatusOp operation)
         {
-            var standardizedOperation = new StandardGetHandlingStatusOp(
-                operation.Concern,
-                operation.InternalRecordId,
-                null,
-                null,
-                null,
-                null);
-
-            var handlingStatuses = this.stream.Execute(standardizedOperation);
+            var handlingStatuses = this.stream.Execute(operation.Standardize());
 
             var result = handlingStatuses.Single();
 
@@ -144,11 +117,7 @@ namespace Naos.Database.Domain
         public void Execute(
             DisableHandlingForStreamOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForStreamOp(
-                HandlingStatus.DisabledForStream,
-                operation.Details);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -163,11 +132,7 @@ namespace Naos.Database.Domain
         public void Execute(
             EnableHandlingForStreamOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForStreamOp(
-                HandlingStatus.AvailableByDefault,
-                operation.Details);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -182,21 +147,7 @@ namespace Naos.Database.Domain
         public void Execute(
             DisableHandlingForRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
-                operation.InternalRecordId,
-                null,
-                HandlingStatus.DisabledForRecord,
-                new[]
-                {
-                    HandlingStatus.AvailableByDefault,
-                    HandlingStatus.Running,
-                    HandlingStatus.Failed,
-                },
-                operation.Details,
-                operation.Tags,
-                operation.InheritRecordTags);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -211,19 +162,7 @@ namespace Naos.Database.Domain
         public void Execute(
             CancelRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
-                operation.InternalRecordId,
-                operation.Concern,
-                HandlingStatus.AvailableAfterExternalCancellation,
-                new[]
-                {
-                    HandlingStatus.Running,
-                },
-                operation.Details,
-                operation.Tags,
-                operation.InheritRecordTags);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -238,19 +177,7 @@ namespace Naos.Database.Domain
         public void Execute(
             CompleteRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
-                operation.InternalRecordId,
-                operation.Concern,
-                HandlingStatus.Completed,
-                new[]
-                {
-                    HandlingStatus.Running,
-                },
-                operation.Details,
-                operation.Tags,
-                operation.InheritRecordTags);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -265,19 +192,7 @@ namespace Naos.Database.Domain
         public void Execute(
             FailRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
-                operation.InternalRecordId,
-                operation.Concern,
-                HandlingStatus.Failed,
-                new[]
-                {
-                    HandlingStatus.Running,
-                },
-                operation.Details,
-                operation.Tags,
-                operation.InheritRecordTags);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -292,19 +207,7 @@ namespace Naos.Database.Domain
         public void Execute(
             SelfCancelRunningHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
-                operation.InternalRecordId,
-                operation.Concern,
-                HandlingStatus.AvailableAfterSelfCancellation,
-                new[]
-                {
-                    HandlingStatus.Running,
-                },
-                operation.Details,
-                operation.Tags,
-                operation.InheritRecordTags);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -319,19 +222,7 @@ namespace Naos.Database.Domain
         public void Execute(
             ResetFailedHandleRecordOp operation)
         {
-            var standardizedOperation = new StandardUpdateHandlingStatusForRecordOp(
-                operation.InternalRecordId,
-                operation.Concern,
-                HandlingStatus.AvailableAfterFailure,
-                new[]
-                {
-                    HandlingStatus.Failed,
-                },
-                operation.Details,
-                operation.Tags,
-                operation.InheritRecordTags);
-
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />

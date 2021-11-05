@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the most recent object.
     /// </summary>
-    /// <typeparam name="TObject">Type of data being written.</typeparam>
+    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
     public partial class GetLatestObjectOp<TObject> : ReturningOperationBase<TObject>
     {
         /// <summary>

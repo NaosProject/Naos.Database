@@ -33,11 +33,7 @@ namespace Naos.Database.Domain
         public void Execute(
             PruneBeforeInternalRecordDateOp operation)
         {
-            var standardizedOperation = new StandardPruneStreamOp(
-                null,
-                operation.InternalRecordDate,
-                operation.Details);
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />
@@ -52,11 +48,7 @@ namespace Naos.Database.Domain
         public void Execute(
             PruneBeforeInternalRecordIdOp operation)
         {
-            var standardizedOperation = new StandardPruneStreamOp(
-                operation.InternalRecordId,
-                null,
-                operation.Details);
-            this.stream.Execute(standardizedOperation);
+            this.stream.Execute(operation.Standardize());
         }
 
         /// <inheritdoc />

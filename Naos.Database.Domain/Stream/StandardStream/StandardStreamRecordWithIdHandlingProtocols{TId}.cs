@@ -98,6 +98,7 @@ namespace Naos.Database.Domain
             foreach (var locatorAndId in groupedByLocators)
             {
                 var idsToMatch = locatorAndId.Select(_ => _.Item2).ToList();
+
                 var standardizedOperation = new StandardGetHandlingStatusOp(
                     operation.Concern,
                     null,

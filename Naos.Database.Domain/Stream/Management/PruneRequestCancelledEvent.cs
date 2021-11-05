@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CanceledPruneRequestedEvent.cs" company="Naos Project">
+// <copyright file="PruneRequestCancelledEvent.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -13,14 +13,14 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Event indicating a prune should be done on the stream (standard reads will not go prior to the requested checkpoint).
     /// </summary>
-    public partial class CanceledPruneRequestedEvent : EventBase
+    public partial class PruneRequestCancelledEvent : EventBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CanceledPruneRequestedEvent"/> class.
+        /// Initializes a new instance of the <see cref="PruneRequestCancelledEvent"/> class.
         /// </summary>
         /// <param name="details">The details.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        public CanceledPruneRequestedEvent(
+        public PruneRequestCancelledEvent(
             string details,
             DateTime timestampUtc)
             : base(timestampUtc)

@@ -39,7 +39,7 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Gets the executed operation.
+        /// Gets the record to handle.
         /// </summary>
         public StreamRecord RecordToHandle { get; private set; }
     }

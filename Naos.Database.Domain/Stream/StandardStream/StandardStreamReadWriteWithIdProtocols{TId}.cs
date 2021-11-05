@@ -87,17 +87,13 @@ namespace Naos.Database.Domain
             DoesAnyExistByIdOp<TId> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
-            var delegatedOperation = new StandardDoesAnyExistByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.VersionMatchStrategy,
-                locator);
 
-            var result = this.stream.Execute(delegatedOperation);
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var result = this.stream.Execute(operation.Standardize(serializer, locator));
+
             return result;
         }
 

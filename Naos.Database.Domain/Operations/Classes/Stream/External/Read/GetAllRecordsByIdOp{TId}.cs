@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets all records with the specified identifier.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
     public partial class GetAllRecordsByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordWithId<TId>>>, IHaveId<TId>
     {
         /// <summary>

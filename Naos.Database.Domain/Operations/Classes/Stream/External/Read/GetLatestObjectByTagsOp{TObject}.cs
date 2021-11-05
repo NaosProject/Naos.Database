@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the most recent object with the specified tags.
     /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
+    /// <typeparam name="TObject">Type of the object in the record.</typeparam>
     public partial class GetLatestObjectByTagsOp<TObject> : ReturningOperationBase<TObject>
     {
         /// <summary>

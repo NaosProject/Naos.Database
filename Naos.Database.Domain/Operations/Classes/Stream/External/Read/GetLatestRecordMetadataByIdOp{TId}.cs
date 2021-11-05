@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the latest record metadata with the specified identifier.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
     public partial class GetLatestRecordMetadataByIdOp<TId> : ReturningOperationBase<StreamRecordMetadata<TId>>, IHaveId<TId>
     {
         /// <summary>

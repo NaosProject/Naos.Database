@@ -286,7 +286,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledPruneRequestedEvent(
+                () => new PruneRequestCancelledEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<UtcDateTime>()));
 

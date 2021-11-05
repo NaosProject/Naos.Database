@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RecordStandardizeExtensions.Handling.cs" company="Naos Project">
+// <copyright file="RecordStandardizeExtensions.Handling.TryHandle.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,12 +11,17 @@ namespace Naos.Database.Domain
     public static partial class RecordStandardizeExtensions
     {
         /// <summary>
-        /// Converts to common base format <see cref="StandardTryHandleRecordOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <returns>TryHandleRecordOp.</returns>
-        public static StandardTryHandleRecordOp Standardize<TObject>(this TryHandleRecordOp<TObject> operation)
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardTryHandleRecordOp Standardize<TObject>(
+            this TryHandleRecordOp<TObject> operation,
+            IResourceLocator specifiedResourceLocator = null)
         {
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
@@ -28,20 +33,24 @@ namespace Naos.Database.Domain
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
-                null);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardTryHandleRecordOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <returns>TryHandleRecordOp.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardTryHandleRecordOp Standardize<TId, TObject>(
-            this TryHandleRecordWithIdOp<TId, TObject> operation)
+            this TryHandleRecordWithIdOp<TId, TObject> operation,
+            IResourceLocator specifiedResourceLocator = null)
         {
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
@@ -53,19 +62,23 @@ namespace Naos.Database.Domain
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
-                null);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardTryHandleRecordOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <returns>TryHandleRecordOp.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardTryHandleRecordOp Standardize<TId>(
-            this TryHandleRecordWithIdOp<TId> operation)
+            this TryHandleRecordWithIdOp<TId> operation,
+            IResourceLocator specifiedResourceLocator = null)
         {
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
@@ -77,7 +90,7 @@ namespace Naos.Database.Domain
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
-                null);
+                specifiedResourceLocator);
 
             return result;
         }

@@ -12,17 +12,19 @@ namespace Naos.Database.Domain
     public static partial class RecordStandardizeExtensions
     {
         /// <summary>
-        /// Converts to common base format <see cref="StandardDoesAnyExistByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardDoesAnyExistByIdOp Standardize<TId>(
             this DoesAnyExistByIdOp<TId> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -31,23 +33,25 @@ namespace Naos.Database.Domain
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,
                 operation.VersionMatchStrategy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetAllRecordsByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetAllRecordsByIdOp Standardize<TId>(
             this GetAllRecordsByIdOp<TId> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -58,23 +62,25 @@ namespace Naos.Database.Domain
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.OrderRecordsBy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetAllRecordsMetadataByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetAllRecordsMetadataByIdOp Standardize<TId>(
             this GetAllRecordsMetadataByIdOp<TId> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -85,24 +91,26 @@ namespace Naos.Database.Domain
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.OrderRecordsBy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordByIdOp Standardize<TId, TObject>(
             this GetLatestObjectByIdOp<TId, TObject> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -112,59 +120,72 @@ namespace Naos.Database.Domain
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordByTagsOp Standardize<TObject>(
-            this GetLatestObjectByTagsOp<TObject> operation)
+            this GetLatestObjectByTagsOp<TObject> operation,
+            IResourceLocator specifiedResourceLocator = null)
         {
             var result = new StandardGetLatestRecordByTagsOp(
                 operation.Tags,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
-                operation.RecordNotFoundStrategy);
+                operation.RecordNotFoundStrategy,
+                specifiedResourceLocator);
+
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordOp Standardize<TObject>(
-            this GetLatestObjectOp<TObject> operation)
+            this GetLatestObjectOp<TObject> operation,
+            IResourceLocator specifiedResourceLocator = null)
         {
             var result = new StandardGetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
-                operation.RecordNotFoundStrategy);
+                operation.RecordNotFoundStrategy,
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordByIdOp Standardize<TId, TObject>(
             this GetLatestRecordByIdOp<TId, TObject> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -174,23 +195,25 @@ namespace Naos.Database.Domain
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordByIdOp Standardize<TId>(
             this GetLatestRecordByIdOp<TId> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -200,23 +223,25 @@ namespace Naos.Database.Domain
                 operation.ObjectType,
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordMetadataByIdOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="serializer">The serializer for the identifier.</param>
-        /// <param name="locator">The locator determined by the identifier.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordMetadataByIdOp Standardize<TId>(
             this GetLatestRecordMetadataByIdOp<TId> operation,
             IStringSerialize serializer,
-            IResourceLocator locator)
+            IResourceLocator specifiedResourceLocator = null)
         {
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
@@ -226,25 +251,31 @@ namespace Naos.Database.Domain
                 operation.ObjectType,
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
-                locator);
+                specifiedResourceLocator);
 
             return result;
         }
 
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetLatestRecordOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <returns>The standardized operation.</returns>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordOp Standardize<TObject>(
-            this GetLatestRecordOp<TObject> operation)
+            this GetLatestRecordOp<TObject> operation,
+            IResourceLocator specifiedResourceLocator = null)
         {
             var result = new StandardGetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
-                operation.RecordNotFoundStrategy);
+                operation.RecordNotFoundStrategy,
+                specifiedResourceLocator);
+
             return result;
         }
     }

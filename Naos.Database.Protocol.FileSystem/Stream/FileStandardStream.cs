@@ -1338,7 +1338,7 @@ namespace Naos.Database.Protocol.FileSystem
                     this.DefaultSerializerRepresentation,
                     NullStreamIdentifier.TypeRepresentation,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                    null,
+                    operation.Tags,
                     utcNow,
                     statusEvent.TimestampUtc);
 

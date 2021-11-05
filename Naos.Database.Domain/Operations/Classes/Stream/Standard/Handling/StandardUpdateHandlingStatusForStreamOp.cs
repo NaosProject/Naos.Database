@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
@@ -19,23 +20,26 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardUpdateHandlingStatusForStreamOp : VoidOperationBase, IHaveDetails, ISpecifyResourceLocator
+    public partial class StandardUpdateHandlingStatusForStreamOp : VoidOperationBase, IHaveDetails, IHaveTags, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardUpdateHandlingStatusForStreamOp"/> class.
         /// </summary>
         /// <param name="newStatus">The new <see cref="HandlingStatus"/> to apply to all records in the stream.</param>
         /// <param name="details">Details to write to the resulting <see cref="IHandlingEvent"/>.</param>
+        /// <param name="tags">OPTIONAL tags to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no tags.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardUpdateHandlingStatusForStreamOp(
             HandlingStatus newStatus,
             string details,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             IResourceLocator specifiedResourceLocator = null)
         {
             newStatus.MustForArg(nameof(newStatus)).BeEqualToAnyOf(new[] { HandlingStatus.DisabledForStream, HandlingStatus.AvailableByDefault });
 
             this.NewStatus = newStatus;
             this.Details = details;
+            this.Tags = tags;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
@@ -46,6 +50,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public string Details { get; private set; }
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

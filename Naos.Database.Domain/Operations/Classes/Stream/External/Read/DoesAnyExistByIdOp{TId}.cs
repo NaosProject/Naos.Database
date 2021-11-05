@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets a value indicating whether or not any record by the provided identifier exists.
     /// </summary>
-    /// <typeparam name="TId">The type of the identifier.</typeparam>
+    /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
     public partial class DoesAnyExistByIdOp<TId> : ReturningOperationBase<bool>, IHaveId<TId>
     {
         /// <summary>

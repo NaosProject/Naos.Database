@@ -39,11 +39,6 @@ namespace Naos.Database.Domain.Test
         public DefaultDatabaseDummyFactory()
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CanceledPruneRequestedEvent(
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CancelRunningHandleRecordOp(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
@@ -337,6 +332,11 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationRequestedEvent(
                                  A.Dummy<IPruneOp>(),
+                                 A.Dummy<DateTime>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneRequestCancelledEvent(
+                                 A.Dummy<string>(),
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -652,6 +652,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardUpdateHandlingStatusForStreamOp(
                                  A.Dummy<HandlingStatus>(),
                                  A.Dummy<string>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

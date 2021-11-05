@@ -173,6 +173,9 @@
       <DependentUpon>IdDeprecatedEvent{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\Standardize\RecordStandardizeExtensions.cs" />
+    <Compile Include="Logic\Standardize\RecordStandardizeExtensions.Handling.StateChange.cs" />
+    <Compile Include="Logic\Standardize\RecordStandardizeExtensions.Management.cs" />
+    <Compile Include="Logic\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
     <Compile Include="Logic\StandardPruneStreamOpExtensions.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdOp{TId,TObject}.cs" />
@@ -428,7 +431,7 @@
     <Compile Include="Logic\Stream\Handling\Concerns.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\SelfCancelRunningHandleRecordOp.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveHandleRecordConcern.cs" />
-    <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
+    <Compile Include="Exceptions\SelfCancelRunningExecutionException.cs" />
     <Compile Include="Logic\Stream\Handling\HandlingStatusExtensions.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingStatusOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp.cs" />
@@ -471,8 +474,8 @@
     </Compile>
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Operations\Interfaces\ITryHandleRecordOp.cs" />
-    <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
-      <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
+    <Compile Include="Stream\Management\PruneRequestCancelledEvent.designer.cs">
+      <DependentUpon>PruneRequestCancelledEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.designer.cs">
       <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
@@ -525,7 +528,7 @@
       <DependentUpon>TagMatchStrategy.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\Model\TryHandleRecordResult.cs" />
-    <Compile Include="Logic\Standardize\RecordStandardizeExtensions.Handling.cs" />
+    <Compile Include="Logic\Standardize\RecordStandardizeExtensions.Handling.Query.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardTryHandleRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
@@ -542,7 +545,7 @@
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.cs" />
     <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
     <Compile Include="Stream\Model\PutRecordResult.cs" />
-    <Compile Include="Stream\Model\OrderRecordsBy.cs" />
+    <Compile Include="Models\Enums\OrderRecordsBy.cs" />
     <Compile Include="Stream\Model\RecordNotFoundStrategy.cs" />
     <Compile Include="Stream\Model\StreamRecordExtensions.cs" />
     <Compile Include="Stream\Model\StreamRecordMetadataExtensions.cs" />
@@ -605,7 +608,7 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />
-    <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
+    <Compile Include="Stream\Management\PruneRequestCancelledEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
     <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.cs" />

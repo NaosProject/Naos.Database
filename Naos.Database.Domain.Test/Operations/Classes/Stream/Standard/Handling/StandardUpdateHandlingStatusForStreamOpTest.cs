@@ -42,6 +42,7 @@ namespace Naos.Database.Domain.Test
                             var result = new StandardUpdateHandlingStatusForStreamOp(
                                                  A.Dummy<HandlingStatus>().ThatIsNotIn(new[] { HandlingStatus.DisabledForStream, HandlingStatus.AvailableByDefault }),
                                                  referenceObject.Details,
+                                                 referenceObject.Tags,
                                                  referenceObject.SpecifiedResourceLocator);
 
                             return result;

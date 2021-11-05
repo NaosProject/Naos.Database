@@ -116,7 +116,7 @@ namespace Naos.Database.Domain
                 this.DefaultSerializerRepresentation,
                 NullStreamIdentifier.TypeRepresentation,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
-                null,
+                operation.Tags,
                 utcNow,
                 statusEvent.TimestampUtc);
 

@@ -473,6 +473,10 @@
     <Compile Include="PruneOperationRequestedEventTest.designer.cs">
       <DependentUpon>PruneOperationRequestedEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="PruneRequestCancelledEventTest.cs" />
+    <Compile Include="PruneRequestCancelledEventTest.designer.cs">
+      <DependentUpon>PruneRequestCancelledEventTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="PruneSummaryTest.designer.cs">
       <DependentUpon>PruneSummaryTest.cs</DependentUpon>
     </Compile>

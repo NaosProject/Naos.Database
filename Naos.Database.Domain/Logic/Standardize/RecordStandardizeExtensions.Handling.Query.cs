@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RecordStandardizeExtensions.Write.cs" company="Naos Project">
+// <copyright file="RecordStandardizeExtensions.Handling.Query.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -11,16 +11,23 @@ namespace Naos.Database.Domain
     public static partial class RecordStandardizeExtensions
     {
         /// <summary>
-        /// Converts to common base format <see cref="StandardGetNextUniqueLongOp"/>.
+        /// Converts the operation to it's standardized form.
         /// </summary>
         /// <param name="operation">The operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
-        /// <returns>The standardized operation.</returns>
-        public static StandardGetNextUniqueLongOp Standardize(
-            this GetNextUniqueLongOp operation,
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardGetHandlingStatusOp Standardize(
+            this GetCompositeHandlingStatusByIdsOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
-            var result = new StandardGetNextUniqueLongOp(operation.Details, specifiedResourceLocator);
+            var result = new StandardGetHandlingStatusOp(
+                operation.Concern,
+                null,
+                operation.IdsToMatch,
+                operation.VersionMatchStrategy,
+                specifiedResourceLocator: specifiedResourceLocator);
 
             return result;
         }
@@ -28,47 +35,14 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
-        /// <param name="operation">The operation.</param>
-        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
-        /// <returns>
-        /// The standardized operation.
-        /// </returns>
-        public static StandardPutRecordOp Standardize<TObject>(
-            this PutAndReturnInternalRecordIdOp<TObject> operation,
-            IResourceLocator specifiedResourceLocator = null)
-        {
-            throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
-        }
-
-        /// <summary>
-        /// Converts the operation to it's standardized form.
-        /// </summary>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
-        /// <param name="operation">The operation.</param>
-        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
-        /// <returns>
-        /// The standardized operation.
-        /// </returns>
-        public static StandardPutRecordOp Standardize<TObject>(
-            this PutOp<TObject> operation,
-            IResourceLocator specifiedResourceLocator = null)
-        {
-            throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
-        }
-
-        /// <summary>
-        /// Converts the operation to it's standardized form.
-        /// </summary>
         /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
-        public static StandardPutRecordOp Standardize<TId, TObject>(
-            this PutWithIdAndReturnInternalRecordIdOp<TId, TObject> operation,
+        public static StandardGetHandlingStatusOp Standardize<TId>(
+            this GetCompositeHandlingStatusByIdsOp<TId> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
             throw new NotImplementedException("We need to migrate the standardizing behavior out of the wrapping protocol.");
@@ -77,18 +51,65 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Converts the operation to it's standardized form.
         /// </summary>
-        /// <typeparam name="TId">Type of the identifier of the record.</typeparam>
-        /// <typeparam name="TObject">Type of the object in the record.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
-        public static StandardPutRecordOp Standardize<TId, TObject>(
-            this PutWithIdOp<TId, TObject> operation,
+        public static StandardGetHandlingStatusOp Standardize(
+            this GetCompositeHandlingStatusByTagsOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
-            throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
+            var result = new StandardGetHandlingStatusOp(
+                operation.Concern,
+                null,
+                null,
+                null,
+                operation.TagsToMatch,
+                operation.TagMatchStrategy,
+                specifiedResourceLocator);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the operation to it's standardized form.
+        /// </summary>
+        /// <param name="operation">The operation.</param>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardGetHandlingStatusOp Standardize(
+            this GetHandlingStatusOp operation,
+            IResourceLocator specifiedResourceLocator = null)
+        {
+            var result = new StandardGetHandlingStatusOp(
+                operation.Concern,
+                operation.InternalRecordId,
+                specifiedResourceLocator: specifiedResourceLocator);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the operation to it's standardized form.
+        /// </summary>
+        /// <param name="operation">The operation.</param>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardGetHandlingHistoryOp Standardize(
+            this GetHandlingHistoryOp operation,
+            IResourceLocator specifiedResourceLocator = null)
+        {
+            var result = new StandardGetHandlingHistoryOp(
+                operation.InternalRecordId,
+                operation.Concern,
+                specifiedResourceLocator);
+
+            return result;
         }
     }
 }

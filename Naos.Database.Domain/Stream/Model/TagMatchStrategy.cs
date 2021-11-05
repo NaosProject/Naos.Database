@@ -38,13 +38,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the scope of find set.
         /// </summary>
-        /// <value>The scope of find set.</value>
         public TagMatchScope ScopeOfFindSet { get; private set; }
 
         /// <summary>
         /// Gets the scope of target.
         /// </summary>
-        /// <value>The scope of target.</value>
         public TagMatchScope ScopeOfTarget { get; private set; }
     }
 

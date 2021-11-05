@@ -81,19 +81,16 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the status.
         /// </summary>
-        /// <value>The status.</value>
         public HandlingStatus Status { get; private set; }
 
         /// <summary>
         /// Gets the identifier.
         /// </summary>
-        /// <value>The identifier.</value>
         public string StringSerializedId { get; private set; }
 
         /// <summary>
         /// Gets the serializer representation.
         /// </summary>
-        /// <value>The serializer representation.</value>
         public SerializerRepresentation SerializerRepresentation { get; private set; }
 
         /// <inheritdoc />
@@ -102,13 +99,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the type representation of identifier.
         /// </summary>
-        /// <value>The type representation of identifier.</value>
         public TypeRepresentationWithAndWithoutVersion TypeRepresentationOfId { get; private set; }
 
         /// <summary>
         /// Gets the type representation of object.
         /// </summary>
-        /// <value>The type representation of object.</value>
         public TypeRepresentationWithAndWithoutVersion TypeRepresentationOfObject { get; private set; }
 
         /// <inheritdoc />
@@ -117,7 +112,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the object timestamp in UTC (if applicable).
         /// </summary>
-        /// <value>The object timestamp in UTC (if applicable).</value>
         public DateTime? ObjectTimestampUtc { get; private set; }
     }
 }

@@ -33,7 +33,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the name of the process name.
         /// </summary>
-        /// <value>The name of the process name.</value>
         public string Id { get; private set; }
     }
 }

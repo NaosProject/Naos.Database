@@ -55,7 +55,12 @@ namespace Naos.Database.Domain.Test
                         // We do not know in advance if this will happen.  As such, the following objects are commented out.
                         // (RecordHandlingEventBase)ReferenceObjectForEquatableTestScenarios.DeepCloneWithTimestampUtc(A.Dummy<RecordHandlingEventBase>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
                         // (RecordHandlingEventBase)ReferenceObjectForEquatableTestScenarios.DeepCloneWithDetails(A.Dummy<RecordHandlingEventBase>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
+                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithConcern(A.Dummy<RecordHandlingEventBase>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern),
                         // ReferenceObjectForEquatableTestScenarios.DeepCloneWithInternalRecordId(A.Dummy<RecordHandlingEventBase>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId),
+                    },
+                    ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject = new RecordHandlingEventBase[]
+                    {
+                        A.Dummy<RecordHandlingEventBase>().Whose(_ => _.GetType() != ReferenceObjectForEquatableTestScenarios.GetType()),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {

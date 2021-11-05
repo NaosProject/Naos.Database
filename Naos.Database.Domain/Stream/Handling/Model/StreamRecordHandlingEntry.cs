@@ -40,19 +40,16 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the internal handling entry identifier.
         /// </summary>
-        /// <value>The internal handling entry identifier.</value>
         public long InternalHandlingEntryId { get; private set; }
 
         /// <summary>
         /// Gets the metadata.
         /// </summary>
-        /// <value>The metadata.</value>
         public StreamRecordHandlingEntryMetadata Metadata { get; private set; }
 
         /// <summary>
         /// Gets the payload.
         /// </summary>
-        /// <value>The payload.</value>
         public DescribedSerializationBase Payload { get; private set; }
     }
 }

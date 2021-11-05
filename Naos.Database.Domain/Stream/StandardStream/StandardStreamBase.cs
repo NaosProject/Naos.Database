@@ -170,7 +170,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract StreamRecord Execute(
-            StandardGetLatestRecordByTagOp operation);
+            StandardGetLatestRecordByTagsOp operation);
 
         /// <inheritdoc />
         public abstract StandardCreateStreamResult Execute(

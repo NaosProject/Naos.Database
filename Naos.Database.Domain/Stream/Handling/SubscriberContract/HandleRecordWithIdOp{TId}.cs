@@ -30,7 +30,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the record to handle.
         /// </summary>
-        /// <value>The record to handle.</value>
         public StreamRecordWithId<TId> RecordToHandle { get; private set; }
     }
 }

@@ -135,6 +135,39 @@
     <Compile Include=".recipes\OBeautifulCode.Validation\ParameterValidator.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\Range.cs" />
     <Compile Include=".recipes\OBeautifulCode.Validation\ValidatedNotNullAttribute.cs" />
+    <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.designer.cs">
+      <DependentUpon>HandlingForStreamDisabledEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEvent.designer.cs">
+      <DependentUpon>HandlingForStreamEnabledEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\HandlingForRecordDisabledEvent.designer.cs">
+      <DependentUpon>HandlingForRecordDisabledEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingAvailableEvent.designer.cs">
+      <DependentUpon>RecordHandlingAvailableEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCancelledEvent.designer.cs">
+      <DependentUpon>RecordHandlingCancelledEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCompletedEvent.designer.cs">
+      <DependentUpon>RecordHandlingCompletedEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingEventBase.designer.cs">
+      <DependentUpon>RecordHandlingEventBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingFailedEvent.designer.cs">
+      <DependentUpon>RecordHandlingFailedEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingFailureResetEvent.designer.cs">
+      <DependentUpon>RecordHandlingFailureResetEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingRunningEvent.designer.cs">
+      <DependentUpon>RecordHandlingRunningEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCancelledEvent.designer.cs">
+      <DependentUpon>RecordHandlingSelfCancelledEvent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\IdDeprecatedEvent{TId}.cs" />
     <Compile Include="Events\IdDeprecatedEvent{TId}.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TId}.cs</DependentUpon>
@@ -151,7 +184,7 @@
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectByTagOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectByTagsOp{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestObjectByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsByIdOp{TId}.cs" />
@@ -243,6 +276,12 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.designer.cs">
       <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOp.designer.cs">
+      <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.designer.cs">
+      <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId}.cs</DependentUpon>
     </Compile>
@@ -255,8 +294,8 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectByTagOp{TObject}.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectByTagsOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
@@ -318,8 +357,8 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOp.designer.cs">
       <DependentUpon>StandardGetLatestRecordByIdOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagOp.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByTagOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOp.designer.cs">
+      <DependentUpon>StandardGetLatestRecordByTagsOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOp.designer.cs">
       <DependentUpon>StandardGetLatestRecordMetadataByIdOp.cs</DependentUpon>
@@ -337,6 +376,7 @@
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOp.designer.cs">
       <DependentUpon>StandardPutRecordOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Interfaces\IPruneOp.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyResourceLocator.cs" />
@@ -385,7 +425,7 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CompleteRunningHandleRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetFailedHandleRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\FailRunningHandleRecordOp.cs" />
-    <Compile Include="Stream\Handling\Execution\Concerns.cs" />
+    <Compile Include="Logic\Stream\Handling\Concerns.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\SelfCancelRunningHandleRecordOp.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveHandleRecordConcern.cs" />
     <Compile Include="Stream\Handling\Execution\SelfCancelRunningExecutionException.cs" />
@@ -434,12 +474,6 @@
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.designer.cs">
       <DependentUpon>CanceledPruneRequestedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.designer.cs">
-      <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.designer.cs">
-      <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.designer.cs">
       <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
     </Compile>
@@ -449,14 +483,14 @@
     <Compile Include="Stream\Management\PruneSummary.designer.cs">
       <DependentUpon>PruneSummary.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\StandardCreateStreamOp.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.designer.cs">
       <DependentUpon>StandardCreateStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\StandardDeleteStreamOp.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Standard\Management\StandardDeleteStreamOp.designer.cs">
       <DependentUpon>StandardDeleteStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Management\StandardPruneStreamOp.cs" />
-    <Compile Include="Stream\Management\StandardPruneStreamOp.designer.cs">
+    <Compile Include="Operations\Classes\Stream\Standard\Management\StandardPruneStreamOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Management\StandardPruneStreamOp.designer.cs">
       <DependentUpon>StandardPruneStreamOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Handling.cs" />
@@ -496,7 +530,6 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId}.cs" />
-    <Compile Include="Operations\Interfaces\IPruneOp.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadWithIdProtocols{TId}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamRecordHandlingProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamRecordWithIdHandlingProtocols{TId}.cs" />
@@ -505,7 +538,7 @@
     <Compile Include="Stream\Management\PruneOperationRequestedEvent.cs" />
     <Compile Include="Stream\Management\PruneSummary.cs" />
     <Compile Include="Stream\Management\PruneOperationExecutedEvent.cs" />
-    <Compile Include="Stream\Management\PruneBeforeInternalRecordDateOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOp.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.cs" />
     <Compile Include="Stream\Model\StandardCreateStreamResult.cs" />
     <Compile Include="Stream\Model\PutRecordResult.cs" />
@@ -521,8 +554,8 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsByIdOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.cs" />
@@ -573,7 +606,7 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />
     <Compile Include="Stream\Management\CanceledPruneRequestedEvent.cs" />
-    <Compile Include="Stream\Management\PruneBeforeInternalRecordIdOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Stream\Model\UniqueLongIssuedEvent.cs" />
     <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.cs" />
     <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEvent.cs" />
@@ -581,8 +614,8 @@
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Stream\Handling\SubscriberContract\HandleRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOp.cs" />
-    <Compile Include="Stream\Management\StandardDeleteStreamOp.cs" />
-    <Compile Include="Stream\Management\StandardCreateStreamOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Management\StandardDeleteStreamOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.cs" />
     <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
@@ -597,8 +630,8 @@
     <Compile Include="Models\Classes\ResourceLocation\Database\NullDatabaseLocator.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBase.cs" />
     <Compile Include="Stream\Model\ExistingRecordStrategy.cs" />
-    <Compile Include="Stream\Model\StreamNotFoundStrategy.cs" />
-    <Compile Include="Stream\Model\ExistingStreamStrategy.cs" />
+    <Compile Include="Models\Enums\StreamNotFoundStrategy.cs" />
+    <Compile Include="Models\Enums\ExistingStreamStrategy.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamRecordHandlingProtocolFactory.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Management\IStreamManagementProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamManagementProtocolFactory.cs" />
@@ -641,9 +674,7 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Stream\Handling\Execution\Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>

@@ -32,7 +32,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the details about why it's blocked.
         /// </summary>
-        /// <value>The details about why it's blocked.</value>
         public string Details { get; private set; }
     }
 }

@@ -123,11 +123,11 @@ namespace Naos.Database.Domain
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
         /// <returns>The standardized operation.</returns>
-        public static StandardGetLatestRecordByTagOp Standardize<TObject>(
-            this GetLatestObjectByTagOp<TObject> operation)
+        public static StandardGetLatestRecordByTagsOp Standardize<TObject>(
+            this GetLatestObjectByTagsOp<TObject> operation)
         {
-            var result = new StandardGetLatestRecordByTagOp(
-                operation.Tag,
+            var result = new StandardGetLatestRecordByTagsOp(
+                operation.Tags,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy);

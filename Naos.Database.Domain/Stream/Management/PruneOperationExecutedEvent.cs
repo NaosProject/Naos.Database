@@ -39,13 +39,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the prune operation.
         /// </summary>
-        /// <value>The prune operation.</value>
         public IPruneOp PruneOperation { get; private set; }
 
         /// <summary>
         /// Gets the prune summary.
         /// </summary>
-        /// <value>The prune summary.</value>
         public PruneSummary PruneSummary { get; private set; }
     }
 }

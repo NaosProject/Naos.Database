@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">Type of object used.</typeparam>
     public interface IStreamReadProtocols<TObject>
         : ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>,
-          ISyncAndAsyncReturningProtocol<GetLatestObjectByTagOp<TObject>, TObject>,
+          ISyncAndAsyncReturningProtocol<GetLatestObjectByTagsOp<TObject>, TObject>,
           ISyncAndAsyncReturningProtocol<GetLatestRecordOp<TObject>, StreamRecord<TObject>>
     {
     }

@@ -938,7 +938,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            StandardGetLatestRecordByTagOp operation)
+            StandardGetLatestRecordByTagsOp operation)
         {
             throw new NotImplementedException();
         }

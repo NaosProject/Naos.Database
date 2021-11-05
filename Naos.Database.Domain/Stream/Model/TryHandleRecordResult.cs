@@ -29,13 +29,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the record to handle.
         /// </summary>
-        /// <value>The record to handle.</value>
         public StreamRecord RecordToHandle { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether handling is blocked.
         /// </summary>
-        /// <value><c>true</c> if handling is blocked; otherwise, <c>false</c>.</value>
         public bool IsBlocked { get; private set; }
     }
 }

@@ -27,7 +27,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the stream.
         /// </summary>
-        /// <value>The stream.</value>
         public ResourceLocatorBase ResourceLocator { get; private set; }
     }
 }

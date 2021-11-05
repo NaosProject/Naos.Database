@@ -40,13 +40,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the metadata.
         /// </summary>
-        /// <value>The metadata.</value>
         public StreamRecordMetadata Metadata { get; private set; }
 
         /// <summary>
         /// Gets the payload.
         /// </summary>
-        /// <value>The payload.</value>
         public DescribedSerializationBase Payload { get; private set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Naos.Database.Domain
           ISyncReturningProtocol<StandardGetRecordByInternalRecordIdOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetAllRecordsByIdOp, IReadOnlyList<StreamRecord>>,
           ISyncReturningProtocol<StandardGetAllRecordsMetadataByIdOp, IReadOnlyList<StreamRecordMetadata>>,
-          ISyncReturningProtocol<StandardGetLatestRecordByTagOp, StreamRecord>,
+          ISyncReturningProtocol<StandardGetLatestRecordByTagsOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetLatestRecordOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
           ISyncReturningProtocol<StandardGetLatestRecordByIdOp, StreamRecord>

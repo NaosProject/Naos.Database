@@ -65,7 +65,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the identifier.
         /// </summary>
-        /// <value>The identifier.</value>
         public string Id { get; private set; }
 
         /// <inheritdoc />

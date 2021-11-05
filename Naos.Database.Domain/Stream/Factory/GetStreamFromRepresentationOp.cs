@@ -37,7 +37,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the stream representation.
         /// </summary>
-        /// <value>The stream representation.</value>
         public IStreamRepresentation StreamRepresentation { get; private set; }
     }
 }

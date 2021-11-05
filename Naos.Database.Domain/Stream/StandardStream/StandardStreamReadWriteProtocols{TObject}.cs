@@ -123,7 +123,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public TObject Execute(
-            GetLatestObjectByTagOp<TObject> operation)
+            GetLatestObjectByTagsOp<TObject> operation)
         {
             var standardizedOperation = operation.Standardize();
             var record = this.stream.Execute(standardizedOperation);
@@ -137,7 +137,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<TObject> ExecuteAsync(
-            GetLatestObjectByTagOp<TObject> operation)
+            GetLatestObjectByTagsOp<TObject> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

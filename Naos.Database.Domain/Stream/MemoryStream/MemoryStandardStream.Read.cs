@@ -373,7 +373,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            StandardGetLatestRecordByTagOp operation)
+            StandardGetLatestRecordByTagsOp operation)
         {
             throw new NotImplementedException();
         }

@@ -14,7 +14,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the name of the stream.
         /// </summary>
-        /// <value>The name of the stream.</value>
         string Name { get; }
     }
 }

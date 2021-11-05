@@ -39,7 +39,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the tags.
         /// </summary>
-        /// <value>The tags.</value>
         public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <inheritdoc />

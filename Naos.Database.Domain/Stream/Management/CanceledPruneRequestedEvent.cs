@@ -32,7 +32,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the details.
         /// </summary>
-        /// <value>The details.</value>
         public string Details { get; private set; }
     }
 }

@@ -13,6 +13,13 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Update the <see cref="HandlingStatus"/> of a record.
     /// </summary>
+    /// <remarks>
+    /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardStream"/>.
+    /// While technically there are no limitations on who may execute this operation on such a stream,
+    /// these are "bare metal" operations and can be misused without a deeper understanding of what will happen.
+    /// Most typically, you will use the operations that are exposed via these extension methods
+    /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
+    /// </remarks>
     public partial class StandardUpdateHandlingStatusForRecordOp : VoidOperationBase, IHaveDetails, IHaveTags, ISpecifyResourceLocator, IHaveInternalRecordId, IHaveHandleRecordConcern
     {
         /// <summary>

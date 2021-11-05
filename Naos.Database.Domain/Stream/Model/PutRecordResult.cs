@@ -40,19 +40,16 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the internal record identifier of new record.
         /// </summary>
-        /// <value>The internal record identifier of put record.</value>
         public long? InternalRecordIdOfPutRecord { get; private set; }
 
         /// <summary>
         /// Gets the existing record identifiers.
         /// </summary>
-        /// <value>The existing record identifiers.</value>
         public IReadOnlyCollection<long> ExistingRecordIds { get; private set; }
 
         /// <summary>
         /// Gets the pruned record identifiers.
         /// </summary>
-        /// <value>The pruned record identifiers.</value>
         public IReadOnlyCollection<long> PrunedRecordIds { get; private set; }
     }
 }

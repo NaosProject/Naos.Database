@@ -36,8 +36,7 @@ namespace Naos.Database.Domain
             var standardizedOperation = new StandardPruneStreamOp(
                 null,
                 operation.InternalRecordDate,
-                operation.Details,
-                operation.SpecifiedResourceLocator);
+                operation.Details);
             this.stream.Execute(standardizedOperation);
         }
 
@@ -56,8 +55,7 @@ namespace Naos.Database.Domain
             var standardizedOperation = new StandardPruneStreamOp(
                 operation.InternalRecordId,
                 null,
-                operation.Details,
-                operation.SpecifiedResourceLocator);
+                operation.Details);
             this.stream.Execute(standardizedOperation);
         }
 

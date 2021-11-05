@@ -30,7 +30,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the ID.
         /// </summary>
-        /// <value>The ID.</value>
         public TId Id { get; private set; }
     }
 }

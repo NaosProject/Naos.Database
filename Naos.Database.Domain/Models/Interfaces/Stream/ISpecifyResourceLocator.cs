@@ -14,7 +14,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the specified resource locator.
         /// </summary>
-        /// <value>The specified resource locator.</value>
         IResourceLocator SpecifiedResourceLocator { get; }
     }
 }

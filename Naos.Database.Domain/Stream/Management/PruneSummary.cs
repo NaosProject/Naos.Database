@@ -32,7 +32,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the internal record identifiers that were removed.
         /// </summary>
-        /// <value>The internal record identifiers that were removed.</value>
         public IReadOnlyList<long> InternalRecordIdsRemoved { get; private set; }
     }
 }

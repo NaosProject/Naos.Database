@@ -388,8 +388,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var stop = DateTime.UtcNow;
 
             var pruneDate = start.AddMilliseconds((stop - start).TotalMilliseconds / 2);
-            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.", _)));
-            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordIdOp(25, "Pruning by id.", _)));
+            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.")));
+            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordIdOp(25, "Pruning by id.")));
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
@@ -571,8 +571,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var allLocators = stream.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp()).ToList();
             var pruneDate = start.AddMilliseconds((stop - start).TotalMilliseconds / 2);
-            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.", _)));
-            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordIdOp(7, "Pruning by id.", _)));
+            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.")));
+            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordIdOp(7, "Pruning by id.")));
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }

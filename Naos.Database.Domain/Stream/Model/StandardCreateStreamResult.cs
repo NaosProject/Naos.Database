@@ -35,13 +35,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets a value indicating whether [already existed].
         /// </summary>
-        /// <value><c>true</c> if [already existed]; otherwise, <c>false</c>.</value>
         public bool AlreadyExisted { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether [was created].
         /// </summary>
-        /// <value><c>true</c> if [was created]; otherwise, <c>false</c>.</value>
         public bool WasCreated { get; private set; }
     }
 }

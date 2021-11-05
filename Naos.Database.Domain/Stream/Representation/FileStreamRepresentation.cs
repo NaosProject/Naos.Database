@@ -34,7 +34,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the <see cref="FileSystemDatabaseLocator"/>'s associated with the stream.
         /// </summary>
-        /// <value>The <see cref="FileSystemDatabaseLocator"/>'s associated with the stream.</value>
         public IReadOnlyList<FileSystemDatabaseLocator> FileSystemDatabaseLocators { get; private set; }
     }
 }

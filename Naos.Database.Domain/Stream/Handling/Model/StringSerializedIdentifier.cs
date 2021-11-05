@@ -32,13 +32,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the string serialized identifier.
         /// </summary>
-        /// <value>The string serialized identifier.</value>
         public string StringSerializedId { get; private set; }
 
         /// <summary>
         /// Gets the type of the identifier.
         /// </summary>
-        /// <value>The type of the identifier.</value>
         public TypeRepresentation IdentifierType { get; private set; }
     }
 }

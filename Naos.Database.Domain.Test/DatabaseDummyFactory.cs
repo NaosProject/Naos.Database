@@ -39,6 +39,7 @@ namespace Naos.Database.Domain.Test
         {
             // ------------------------------- ENUMS --------------------------------------
             AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(HandlingStatus.Unknown);
 
             // ------------------------------- EVENTS -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -192,35 +193,41 @@ namespace Naos.Database.Domain.Test
                 () =>
                 {
                     var streamRecord = A.Dummy<StreamRecord>();
+
                     return new RecordHandlingAvailableEvent(
                         streamRecord.InternalRecordId,
-                        A.Dummy<DateTime>(),
-                        streamRecord);
+                        A.Dummy<string>(),
+                        streamRecord,
+                        A.Dummy<UtcDateTime>());
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandlingForRecordDisabledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordHandlingCancelledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordHandlingCompletedEvent(
                                  A.Dummy<long>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordHandlingFailureResetEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
@@ -228,38 +235,42 @@ namespace Naos.Database.Domain.Test
                     var record = A.Dummy<StreamRecord>();
                     return new RecordHandlingAvailableEvent(
                         record.InternalRecordId,
-                        A.Dummy<DateTime>().ToUniversalTime(),
+                        A.Dummy<string>(),
                         record,
+                        A.Dummy<UtcDateTime>(),
                         A.Dummy<string>());
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordHandlingRunningEvent(
                                  A.Dummy<long>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordHandlingSelfCancelledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandlingForStreamDisabledEvent(
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandlingForStreamEnabledEvent(
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordHandlingFailedEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntryMetadata(
@@ -271,30 +282,29 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CanceledPruneRequestedEvent(
                                  A.Dummy<string>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneBeforeInternalRecordDateOp(
-                                 A.Dummy<DateTime>().ToUniversalTime(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<IResourceLocator>()));
+                                 A.Dummy<UtcDateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationExecutedEvent(
                                  A.Dummy<IPruneOp>(),
                                  A.Dummy<PruneSummary>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationRequestedEvent(
                                  A.Dummy<IPruneOp>(),
-                                 A.Dummy<DateTime>().ToUniversalTime()));
+                                 A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordMetadata(
@@ -303,7 +313,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -313,13 +323,13 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<DateTime?>().ToUniversalTime()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new UniqueLongIssuedEvent(
                                  A.Dummy<long>(),
-                                 A.Dummy<DateTime>().ToUniversalTime(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

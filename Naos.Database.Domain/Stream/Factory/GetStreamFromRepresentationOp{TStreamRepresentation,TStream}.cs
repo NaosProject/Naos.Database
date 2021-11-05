@@ -40,13 +40,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the stream representation.
         /// </summary>
-        /// <value>The stream representation.</value>
         public IStreamRepresentation StreamRepresentation => this.TypedStreamRepresentation;
 
         /// <summary>
         /// Gets the typed stream representation.
         /// </summary>
-        /// <value>The typed stream representation.</value>
         public TStreamRepresentation TypedStreamRepresentation { get; private set; }
     }
 }

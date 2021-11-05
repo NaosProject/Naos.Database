@@ -6,14 +6,12 @@
 
 namespace Naos.Database.Domain
 {
-    using System.Diagnostics.CodeAnalysis;
-    using Naos.CodeAnalysis.Recipes;
+    using OBeautifulCode.Type;
 
     /// <summary>
-    /// Management interface if an <see cref="IStream"/> supports.
+    /// A pruning operation.
     /// </summary>
-    [SuppressMessage("Microsoft.Design", "CA1040:AvoidEmptyInterfaces", Justification = NaosSuppressBecause.CA1040_AvoidEmptyInterfaces_NeedToIdentifyGroupOfTypesAndPreferInterfaceOverAttribute)]
-    public interface IPruneOp : ISpecifyResourceLocator
+    public interface IPruneOp : IHaveDetails, IOperation
     {
     }
 }

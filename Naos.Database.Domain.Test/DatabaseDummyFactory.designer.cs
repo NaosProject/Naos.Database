@@ -39,29 +39,7 @@ namespace Naos.Database.Domain.Test
         public DefaultDatabaseDummyFactory()
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new HandlingForStreamDisabledEvent(
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new HandlingForStreamEnabledEvent(
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CanceledPruneRequestedEvent(
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new HandlingForRecordDisabledEvent(
-                                 A.Dummy<long>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingCancelledEvent(
-                                 A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>()));
 
@@ -72,12 +50,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<bool>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingCompletedEvent(
-                                 A.Dummy<long>(),
-                                 A.Dummy<DateTime>(),
-                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CompleteRunningHandleRecordOp(
@@ -128,12 +100,6 @@ namespace Naos.Database.Domain.Test
                 () => new EnableHandlingForStreamOp(
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingFailedEvent(
-                                 A.Dummy<long>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailRunningHandleRecordOp(
@@ -206,8 +172,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<RecordNotFoundStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestObjectByTagOp<Version>(
-                                 A.Dummy<NamedValue<string>>(),
+                () => new GetLatestObjectByTagsOp<Version>(
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>()));
 
@@ -283,7 +249,16 @@ namespace Naos.Database.Domain.Test
                 {
                     var availableTypes = new[]
                     {
-                        
+                        typeof(HandlingForRecordDisabledEvent),
+                        typeof(HandlingForStreamDisabledEvent),
+                        typeof(HandlingForStreamEnabledEvent),
+                        typeof(RecordHandlingAvailableEvent),
+                        typeof(RecordHandlingCancelledEvent),
+                        typeof(RecordHandlingCompletedEvent),
+                        typeof(RecordHandlingFailedEvent),
+                        typeof(RecordHandlingFailureResetEvent),
+                        typeof(RecordHandlingRunningEvent),
+                        typeof(RecordHandlingSelfCancelledEvent)
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
@@ -294,6 +269,23 @@ namespace Naos.Database.Domain.Test
 
                     return result;
                 });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new HandlingForRecordDisabledEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new HandlingForStreamDisabledEvent(
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new HandlingForStreamEnabledEvent(
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new IdDeprecatedEvent<Version>(
@@ -329,14 +321,12 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneBeforeInternalRecordDateOp(
                                  A.Dummy<DateTime>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<IResourceLocator>()));
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneBeforeInternalRecordIdOp(
                                  A.Dummy<long>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<IResourceLocator>()));
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneOperationExecutedEvent(
@@ -394,11 +384,40 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordHandlingAvailableEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<StreamRecord>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordHandlingCancelledEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordHandlingCompletedEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
                     var availableTypes = new[]
                     {
-                        
+                        typeof(HandlingForRecordDisabledEvent),
+                        typeof(RecordHandlingAvailableEvent),
+                        typeof(RecordHandlingCancelledEvent),
+                        typeof(RecordHandlingCompletedEvent),
+                        typeof(RecordHandlingFailedEvent),
+                        typeof(RecordHandlingFailureResetEvent),
+                        typeof(RecordHandlingRunningEvent),
+                        typeof(RecordHandlingSelfCancelledEvent)
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
@@ -411,10 +430,31 @@ namespace Naos.Database.Domain.Test
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingAvailableEvent(
+                () => new RecordHandlingFailedEvent(
                                  A.Dummy<long>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<DateTime>(),
-                                 A.Dummy<StreamRecord>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordHandlingFailureResetEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordHandlingRunningEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordHandlingSelfCancelledEvent(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -445,24 +485,6 @@ namespace Naos.Database.Domain.Test
 
                     return result;
                 });
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingFailureResetEvent(
-                                 A.Dummy<long>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingRunningEvent(
-                                 A.Dummy<long>(),
-                                 A.Dummy<DateTime>(),
-                                 A.Dummy<string>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingSelfCancelledEvent(
-                                 A.Dummy<long>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new SelfCancelRunningHandleRecordOp(
@@ -550,8 +572,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetLatestRecordByTagOp(
-                                 A.Dummy<NamedValue<string>>(),
+                () => new StandardGetLatestRecordByTagsOp(
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),

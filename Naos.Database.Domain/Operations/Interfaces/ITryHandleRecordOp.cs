@@ -11,7 +11,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to manage common aspects of the Try Handle operation family which cannot have a base class because they are all based on different operation types.
     /// </summary>
-    public interface ITryHandleRecordOp : IHaveDetails, IHaveTags, IHaveHandleRecordConcern
+    public interface ITryHandleRecordOp : IOperation, IHaveDetails, IHaveTags, IHaveHandleRecordConcern
     {
         /// <summary>
         /// Gets the strategy to use to filter on the version of the object type.

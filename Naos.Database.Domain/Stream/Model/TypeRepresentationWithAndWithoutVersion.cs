@@ -36,13 +36,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the with version.
         /// </summary>
-        /// <value>The with version.</value>
         public TypeRepresentation WithVersion { get; private set; }
 
         /// <summary>
         /// Gets the without version.
         /// </summary>
-        /// <value>The without version.</value>
         public TypeRepresentation WithoutVersion { get; private set; }
     }
 

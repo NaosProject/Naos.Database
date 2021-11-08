@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
 
@@ -26,6 +27,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardDoesAnyExistByIdOp(
@@ -53,6 +57,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardGetAllRecordsByIdOp(
@@ -82,6 +89,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardGetAllRecordsMetadataByIdOp(
@@ -112,6 +122,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardGetLatestRecordByIdOp(
@@ -138,6 +151,8 @@ namespace Naos.Database.Domain
             this GetLatestObjectByTagsOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetLatestRecordByTagsOp(
                 operation.TagsToMatch,
                 operation.TagMatchStrategy,
@@ -162,6 +177,8 @@ namespace Naos.Database.Domain
             this GetLatestObjectOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),
@@ -188,6 +205,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardGetLatestRecordByIdOp(
@@ -216,6 +236,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardGetLatestRecordByIdOp(
@@ -244,6 +267,9 @@ namespace Naos.Database.Domain
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
             var result = new StandardGetLatestRecordMetadataByIdOp(
@@ -270,6 +296,8 @@ namespace Naos.Database.Domain
             this GetLatestRecordOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetLatestRecordOp(
                 operation.IdentifierType,
                 typeof(TObject).ToRepresentation(),

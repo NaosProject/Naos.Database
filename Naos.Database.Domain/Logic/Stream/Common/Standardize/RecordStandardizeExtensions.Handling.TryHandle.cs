@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
 
     public static partial class RecordStandardizeExtensions
@@ -23,6 +24,8 @@ namespace Naos.Database.Domain
             this TryHandleRecordOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
                 operation.IdentifierType,
@@ -52,6 +55,8 @@ namespace Naos.Database.Domain
             this TryHandleRecordWithIdOp<TId, TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
                 typeof(TId).ToRepresentation(),
@@ -80,6 +85,8 @@ namespace Naos.Database.Domain
             this TryHandleRecordWithIdOp<TId> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
                 typeof(TId).ToRepresentation(),

@@ -6,6 +6,8 @@
 
 namespace Naos.Database.Domain
 {
+    using OBeautifulCode.Assertion.Recipes;
+
     public static partial class RecordStandardizeExtensions
     {
         /// <summary>
@@ -20,6 +22,8 @@ namespace Naos.Database.Domain
             this CancelRunningHandleRecordOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 operation.Concern,
@@ -48,6 +52,8 @@ namespace Naos.Database.Domain
             this CompleteRunningHandleRecordOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 operation.Concern,
@@ -76,6 +82,8 @@ namespace Naos.Database.Domain
             this DisableHandlingForRecordOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 null,
@@ -110,6 +118,8 @@ namespace Naos.Database.Domain
             this DisableHandlingForStreamOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForStreamOp(
                 HandlingStatus.DisabledForStream,
                 operation.Details,
@@ -131,6 +141,8 @@ namespace Naos.Database.Domain
             this EnableHandlingForStreamOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForStreamOp(
                 HandlingStatus.AvailableByDefault,
                 operation.Details,
@@ -152,6 +164,8 @@ namespace Naos.Database.Domain
             this FailRunningHandleRecordOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 operation.Concern,
@@ -180,6 +194,8 @@ namespace Naos.Database.Domain
             this ResetFailedHandleRecordOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 operation.Concern,
@@ -208,6 +224,8 @@ namespace Naos.Database.Domain
             this SelfCancelRunningHandleRecordOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
                 operation.Concern,

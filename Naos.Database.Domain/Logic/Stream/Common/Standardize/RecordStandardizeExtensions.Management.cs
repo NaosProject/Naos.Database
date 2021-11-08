@@ -20,6 +20,8 @@ namespace Naos.Database.Domain
             this PruneBeforeInternalRecordDateOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardPruneStreamOp(
                 null,
                 operation.InternalRecordDate,
@@ -41,6 +43,8 @@ namespace Naos.Database.Domain
             this PruneBeforeInternalRecordIdOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardPruneStreamOp(
                 operation.InternalRecordId,
                 null,

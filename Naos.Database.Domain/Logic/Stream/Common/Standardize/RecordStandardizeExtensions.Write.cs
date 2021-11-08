@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using OBeautifulCode.Assertion.Recipes;
 
     public static partial class RecordStandardizeExtensions
     {
@@ -20,6 +21,8 @@ namespace Naos.Database.Domain
             this GetNextUniqueLongOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetNextUniqueLongOp(operation.Details, specifiedResourceLocator);
 
             return result;
@@ -38,6 +41,8 @@ namespace Naos.Database.Domain
             this PutAndReturnInternalRecordIdOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
         }
 
@@ -54,6 +59,8 @@ namespace Naos.Database.Domain
             this PutOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
         }
 
@@ -71,6 +78,8 @@ namespace Naos.Database.Domain
             this PutWithIdAndReturnInternalRecordIdOp<TId, TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             throw new NotImplementedException("We need to migrate the standardizing behavior out of the wrapping protocol.");
         }
 
@@ -88,6 +97,8 @@ namespace Naos.Database.Domain
             this PutWithIdOp<TId, TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
         }
     }

@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using OBeautifulCode.Assertion.Recipes;
 
     public static partial class RecordStandardizeExtensions
     {
@@ -22,6 +23,8 @@ namespace Naos.Database.Domain
             this GetCompositeHandlingStatusByIdsOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 null,
@@ -45,6 +48,8 @@ namespace Naos.Database.Domain
             this GetCompositeHandlingStatusByIdsOp<TId> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             throw new NotImplementedException("We need to migrate the standardizing behavior out of the wrapping protocol.");
         }
 
@@ -60,6 +65,8 @@ namespace Naos.Database.Domain
             this GetCompositeHandlingStatusByTagsOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 null,
@@ -84,6 +91,8 @@ namespace Naos.Database.Domain
             this GetHandlingStatusOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 operation.InternalRecordId,
@@ -104,6 +113,8 @@ namespace Naos.Database.Domain
             this GetHandlingHistoryOp operation,
             IResourceLocator specifiedResourceLocator = null)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = new StandardGetHandlingHistoryOp(
                 operation.InternalRecordId,
                 operation.Concern,

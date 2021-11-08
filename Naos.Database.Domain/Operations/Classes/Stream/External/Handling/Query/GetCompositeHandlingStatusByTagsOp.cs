@@ -20,14 +20,15 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="concern">The record handling concern.</param>
         /// <param name="tagsToMatch">The tags to match.</param>
-        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         public GetCompositeHandlingStatusByTagsOp(
             string concern,
             IReadOnlyCollection<NamedValue<string>> tagsToMatch,
-            TagMatchStrategy tagMatchStrategy = null)
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags)
         {
             concern.ThrowIfInvalidOrReservedConcern();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotBeNullNorEmptyEnumerableNorContainAnyNulls();
+            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
 
             this.Concern = concern;
             this.TagsToMatch = tagsToMatch;
@@ -43,7 +44,7 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use for comparing tags or null to use the defaults of <see cref="Domain.TagMatchStrategy"/>.
+        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
         /// </summary>
         public TagMatchStrategy TagMatchStrategy { get; private set; }
     }

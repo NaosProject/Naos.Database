@@ -12,6 +12,11 @@ namespace Naos.Database.Domain
     public enum ExistingRecordStrategy
     {
         /// <summary>
+        /// Unknown (default).
+        /// </summary>
+        Unknown,
+
+        /// <summary>
         /// Do not apply any strategy, will put a new record regardless of any existing records.
         /// </summary>
         None,

@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         public const long GlobalBlockingRecordId = 0;
 
         /// <summary>
-        /// Throws if the concern specified is reserved.
+        /// Throws if the concern specified is invalid or reserved.
         /// </summary>
         /// <param name="concern">The concern to check.</param>
         public static void ThrowIfInvalidOrReservedConcern(

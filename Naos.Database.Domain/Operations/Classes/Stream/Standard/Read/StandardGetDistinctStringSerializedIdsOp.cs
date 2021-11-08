@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
-
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -28,19 +28,21 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no tag filtering.</param>
-        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetDistinctStringSerializedIdsOp(
             TypeRepresentation identifierType = null,
             TypeRepresentation objectType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
-            TagMatchStrategy tagMatchStrategy = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IResourceLocator specifiedResourceLocator = null)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
+            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
 
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
@@ -61,7 +63,7 @@ namespace Naos.Database.Domain
         public TypeRepresentation ObjectType { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type.
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
@@ -71,7 +73,7 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use for comparing tags or null to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <see cref="TagsToMatch"/> is specified.
+        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
         /// </summary>
         public TagMatchStrategy TagMatchStrategy { get; private set; }
 

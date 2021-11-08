@@ -84,7 +84,7 @@ namespace Naos.Database.Domain
 
                         var matchingRecords = recordsToConsiderForHandling
                                              .Where(
-                                                  _ => _.FuzzyMatch(
+                                                  _ => _.Metadata.FuzzyMatchTypes(
                                                       operation.IdentifierType,
                                                       operation.ObjectType,
                                                       operation.VersionMatchStrategy))

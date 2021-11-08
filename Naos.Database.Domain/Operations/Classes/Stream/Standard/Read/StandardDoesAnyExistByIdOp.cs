@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
         /// <param name="stringSerializedId">The object's identifier serialized as a string.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardDoesAnyExistByIdOp(
             string stringSerializedId,
@@ -61,7 +61,7 @@ namespace Naos.Database.Domain
         public TypeRepresentation ObjectType { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type.
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 

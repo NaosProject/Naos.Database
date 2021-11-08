@@ -138,6 +138,24 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
+
+                            var result = new GetCompositeHandlingStatusByTagsOp(
+                                referenceObject.Concern,
+                                referenceObject.TagsToMatch,
+                                TagMatchStrategy.Unknown);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
                     });
         }
     }

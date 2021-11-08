@@ -11,19 +11,16 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// Set of protocols:
-    /// Implements the <see cref="IStreamReadProtocols{TObject}" />
-    /// Implements the <see cref="IStreamWriteProtocols{TObject}" />.
+    /// Set of protocols to execute read and write operations on a stream,
+    /// without a typed identifier and with a typed record payload.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="IStreamReadProtocols{TObject}" />
-    /// <seealso cref="IStreamWriteProtocols{TObject}" />
     public class StandardStreamReadWriteProtocols<TObject> :
         IStreamReadProtocols<TObject>,
         IStreamWriteProtocols<TObject>
     {
         private readonly IStandardStream stream;
-        private readonly StandardStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject> delegatedWithIdProtocols;
+        private readonly StandardStreamReadWriteWithIdProtocols<NullIdentifier, TObject> delegatedWithIdProtocols;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamReadWriteProtocols{TObject}"/> class.
@@ -35,14 +32,22 @@ namespace Naos.Database.Domain
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
-            this.delegatedWithIdProtocols = new StandardStreamReadWriteWithIdProtocols<NullStreamIdentifier, TObject>(stream);
+            this.delegatedWithIdProtocols = new StandardStreamReadWriteWithIdProtocols<NullIdentifier, TObject>(stream);
         }
 
         /// <inheritdoc />
         public void Execute(
             PutOp<TObject> operation)
         {
-            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(operation.ObjectToPut, operation.Tags, operation.ExistingRecordStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(
+                operation.ObjectToPut,
+                operation.Tags,
+                operation.ExistingRecordStrategy,
+                operation.RecordRetentionCount,
+                operation.VersionMatchStrategy);
+
             this.Execute(delegatedOperation);
         }
 
@@ -51,15 +56,26 @@ namespace Naos.Database.Domain
             PutOp<TObject> operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public long? Execute(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullStreamIdentifier, TObject>(null, operation.ObjectToPut, operation.Tags, operation.ExistingRecordStrategy, operation.RecordRetentionCount, operation.VersionMatchStrategy);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullIdentifier, TObject>(
+                null,
+                operation.ObjectToPut,
+                operation.Tags,
+                operation.ExistingRecordStrategy,
+                operation.RecordRetentionCount,
+                operation.VersionMatchStrategy);
+
             var result = this.delegatedWithIdProtocols.Execute(delegatedOperation);
+
             return result;
         }
 
@@ -67,8 +83,8 @@ namespace Naos.Database.Domain
         public async Task<long?> ExecuteAsync(
             PutAndReturnInternalRecordIdOp<TObject> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -76,11 +92,14 @@ namespace Naos.Database.Domain
         public TObject Execute(
             GetLatestObjectOp<TObject> operation)
         {
-            var standardizedOperation = operation.Standardize();
-            var record = this.stream.Execute(standardizedOperation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var record = this.stream.Execute(standardOp);
 
             var result = record == null
-                ? default(TObject)
+                ? default
                 : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 
             return result;
@@ -90,8 +109,8 @@ namespace Naos.Database.Domain
         public async Task<TObject> ExecuteAsync(
             GetLatestObjectOp<TObject> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -99,8 +118,11 @@ namespace Naos.Database.Domain
         public StreamRecord<TObject> Execute(
             GetLatestRecordOp<TObject> operation)
         {
-            var standardizedOperation = operation.Standardize();
-            var record = this.stream.Execute(standardizedOperation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var record = this.stream.Execute(standardOp);
 
             if (record == null)
             {
@@ -108,7 +130,9 @@ namespace Naos.Database.Domain
             }
 
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
+
             return result;
         }
 
@@ -116,8 +140,8 @@ namespace Naos.Database.Domain
         public async Task<StreamRecord<TObject>> ExecuteAsync(
             GetLatestRecordOp<TObject> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -125,11 +149,14 @@ namespace Naos.Database.Domain
         public TObject Execute(
             GetLatestObjectByTagsOp<TObject> operation)
         {
-            var standardizedOperation = operation.Standardize();
-            var record = this.stream.Execute(standardizedOperation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var record = this.stream.Execute(standardOp);
 
             var result = record == null
-                ? default(TObject)
+                ? default
                 : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 
             return result;
@@ -139,8 +166,8 @@ namespace Naos.Database.Domain
         public async Task<TObject> ExecuteAsync(
             GetLatestObjectByTagsOp<TObject> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
     }

@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetLatestObjectByTagsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestObjectByTagsOp<Version>: Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestObjectByTagsOp<Version>: TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -58,63 +58,66 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
 
                         var result = new GetLatestObjectByTagsOp<Version>(
                                              null,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
 
                         var result = new GetLatestObjectByTagsOp<Version>(
                                              new List<NamedValue<string>>(),
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
 
                         var result = new GetLatestObjectByTagsOp<Version>(
-                                             new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
+                                             new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetLatestObjectByTagsOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetLatestObjectByTagsOp<Version>>()
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetLatestObjectByTagsOp<Version>>
                 {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
+                    Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
@@ -122,15 +125,38 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectByTagsOp<Version>>
                         {
                             SystemUnderTest = new GetLatestObjectByTagsOp<Version>(
-                                                      referenceObject.Tags,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy),
-                            ExpectedPropertyValue = referenceObject.Tags,
+                            ExpectedPropertyValue = referenceObject.TagsToMatch,
                         };
 
                         return result;
                     },
-                    PropertyName = "Tags",
+                    PropertyName = "TagsToMatch",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectByTagsOp<Version>>
+                {
+                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectByTagsOp<Version>>
+                        {
+                            SystemUnderTest = new GetLatestObjectByTagsOp<Version>(
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy),
+                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TagMatchStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetLatestObjectByTagsOp<Version>>
@@ -143,7 +169,8 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectByTagsOp<Version>>
                         {
                             SystemUnderTest = new GetLatestObjectByTagsOp<Version>(
-                                                      referenceObject.Tags,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy),
                             ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
@@ -164,7 +191,8 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectByTagsOp<Version>>
                         {
                             SystemUnderTest = new GetLatestObjectByTagsOp<Version>(
-                                                      referenceObject.Tags,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy),
                             ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
@@ -179,18 +207,38 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<GetLatestObjectByTagsOp<Version>>
                 {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
+                    Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
+                    WithPropertyName = "TagsToMatch",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<GetLatestObjectByTagsOp<Version>>();
 
-                        var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+                        var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
 
                         var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectByTagsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
+                            DeepCloneWithValue = referenceObject.TagsToMatch,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetLatestObjectByTagsOp<Version>>
+                {
+                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
+                    WithPropertyName = "TagMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                        var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectByTagsOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
@@ -248,22 +296,31 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetLatestObjectByTagsOp<Version>[]
                     {
                         new GetLatestObjectByTagsOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetLatestObjectByTagsOp<Version>[]
                     {
                         new GetLatestObjectByTagsOp<Version>(
-                                A.Dummy<GetLatestObjectByTagsOp<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                A.Dummy<GetLatestObjectByTagsOp<Version>>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy),
                         new GetLatestObjectByTagsOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                A.Dummy<GetLatestObjectByTagsOp<Version>>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy),
+                        new GetLatestObjectByTagsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 A.Dummy<GetLatestObjectByTagsOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy),
                         new GetLatestObjectByTagsOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 A.Dummy<GetLatestObjectByTagsOp<Version>>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy),
                     },
@@ -608,16 +665,16 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.Tags == null)
+                if (systemUnderTest.TagsToMatch == null)
                 {
-                    actual.Tags.AsTest().Must().BeNull();
+                    actual.TagsToMatch.AsTest().Must().BeNull();
                 }
-                else if (!actual.Tags.GetType().IsValueType)
+                else if (!actual.TagsToMatch.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                    actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
                 }
             }
 
@@ -637,7 +694,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Tags", "VersionMatchStrategy", "RecordNotFoundStrategy" };
+                var propertyNames = new string[] { "TagsToMatch", "TagMatchStrategy", "VersionMatchStrategy", "RecordNotFoundStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

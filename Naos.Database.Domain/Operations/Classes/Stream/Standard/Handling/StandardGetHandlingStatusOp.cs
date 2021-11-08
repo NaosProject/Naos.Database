@@ -28,9 +28,9 @@ namespace Naos.Database.Domain
         /// <param name="concern">The record handling concern.</param>
         /// <param name="internalRecordId">OPTIONAL internal record identifier to match on.  DEFAULT is no matching on internal record id.</param>
         /// <param name="idsToMatch">OPTIONAL string serialized object identifiers to match on.  DEFAULT is no matching on object id.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
-        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetHandlingStatusOp(
             string concern,
@@ -38,10 +38,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<StringSerializedIdentifier> idsToMatch = null,
             VersionMatchStrategy? versionMatchStrategy = null,
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
-            TagMatchStrategy tagMatchStrategy = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IResourceLocator specifiedResourceLocator = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
+            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
+            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
             var allMatchingParametersAreNull = internalRecordId == null && idsToMatch == null && tagsToMatch == null;
             allMatchingParametersAreNull.MustForArg(nameof(allMatchingParametersAreNull)).BeFalse();
 
@@ -78,7 +80,7 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use for comparing tags or null to use the defaults of <see cref="Domain.TagMatchStrategy"/> when <see cref="TagsToMatch"/> are specified.
+        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
         /// </summary>
         public TagMatchStrategy TagMatchStrategy { get; private set; }
 

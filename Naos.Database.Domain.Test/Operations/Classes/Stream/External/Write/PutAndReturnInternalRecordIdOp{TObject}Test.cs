@@ -95,7 +95,7 @@ namespace Naos.Database.Domain.Test
                .AddScenario(() =>
                    new ConstructorArgumentValidationTestScenario<PutAndReturnInternalRecordIdOp<Version>>
                    {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tags' contains at least one null element",
+                       Name = "constructor should throw ArgumentException when parameter 'tags' contains at least one null element",
                        ConstructionFunc = () =>
                        {
                            var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
@@ -111,6 +111,26 @@ namespace Naos.Database.Domain.Test
                        },
                        ExpectedExceptionType = typeof(ArgumentException),
                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element" },
+                   })
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'existingRecordStrategy' is ExistingRecordStrategy.Unknown scenario",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                           var result = new PutAndReturnInternalRecordIdOp<Version>(
+                               referenceObject.ObjectToPut,
+                               referenceObject.Tags,
+                               ExistingRecordStrategy.Unknown,
+                               referenceObject.RecordRetentionCount,
+                               referenceObject.VersionMatchStrategy);
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                       ExpectedExceptionMessageContains = new[] { "existingRecordStrategy", "Unknown" },
                    });
 
             EquatableTestScenarios

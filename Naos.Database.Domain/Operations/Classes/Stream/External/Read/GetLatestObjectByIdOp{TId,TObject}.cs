@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -19,7 +20,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="GetLatestObjectByIdOp{TId, TObject}"/> class.
         /// </summary>
         /// <param name="id">The identifier of the object.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         public GetLatestObjectByIdOp(
             TId id,
@@ -27,6 +28,7 @@ namespace Naos.Database.Domain
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
 
             this.Id = id;
             this.VersionMatchStrategy = versionMatchStrategy;
@@ -37,7 +39,7 @@ namespace Naos.Database.Domain
         public TId Id { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type.
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 

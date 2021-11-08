@@ -29,7 +29,7 @@ namespace Naos.Database.Domain
         /// <param name="payload">The payload.</param>
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type when looking for existing records.  DEFAULT is no filter (any version is a match).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="internalRecordId">OPTIONAL internal record identifier to use.  DEFAULT is to let the stream assign the identifier.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardPutRecordOp(
@@ -43,9 +43,9 @@ namespace Naos.Database.Domain
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
+            existingRecordStrategy.MustForArg(nameof(existingRecordStrategy)).NotBeEqualTo(ExistingRecordStrategy.Unknown);
 
-            if (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
-             || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
+            if (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
             {
                 recordRetentionCount.MustForArg(nameof(recordRetentionCount)).NotBeNull("Must have a retention count if pruning.").And().BeGreaterThanOrEqualTo((int?)0);
             }
@@ -86,7 +86,7 @@ namespace Naos.Database.Domain
         public int? RecordRetentionCount { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type when looking for existing records.
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 

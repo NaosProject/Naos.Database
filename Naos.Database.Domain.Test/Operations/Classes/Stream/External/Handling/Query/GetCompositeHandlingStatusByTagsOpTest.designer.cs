@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetCompositeHandlingStatusByTagsOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetCompositeHandlingStatusByTagsOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetCompositeHandlingStatusByTagsOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -144,24 +144,6 @@ namespace Naos.Database.Domain.Test
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tagMatchStrategy' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                        var result = new GetCompositeHandlingStatusByTagsOp(
-                                             referenceObject.Concern,
-                                             referenceObject.TagsToMatch,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetCompositeHandlingStatusByTagsOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetCompositeHandlingStatusByTagsOp>()
@@ -672,18 +654,6 @@ namespace Naos.Database.Domain.Test
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
                     actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
-                }
-
-                if (systemUnderTest.TagMatchStrategy == null)
-                {
-                    actual.TagMatchStrategy.AsTest().Must().BeNull();
-                }
-                else if (!actual.TagMatchStrategy.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.TagMatchStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagMatchStrategy);
                 }
             }
 

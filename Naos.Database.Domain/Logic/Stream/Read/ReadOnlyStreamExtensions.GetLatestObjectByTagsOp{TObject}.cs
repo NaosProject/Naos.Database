@@ -18,19 +18,21 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="tags">The tags to match.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">The tags to match.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The object.</returns>
         public static TObject GetLatestObjectByTags<TObject>(
             this IReadOnlyStream stream,
-            IReadOnlyCollection<NamedValue<string>> tags,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectByTagsOp<TObject>(tags, versionMatchStrategy, recordNotFoundStrategy);
+            var operation = new GetLatestObjectByTagsOp<TObject>(tagsToMatch, tagMatchStrategy, versionMatchStrategy, recordNotFoundStrategy);
             var protocol = stream.GetStreamReadingProtocols<TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -41,19 +43,21 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="tags">The tag to match.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">The tags to match.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The object.</returns>
         public static async Task<TObject> GetLatestObjectByTagsAsync<TObject>(
             this IReadOnlyStream stream,
-            IReadOnlyCollection<NamedValue<string>> tags,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectByTagsOp<TObject>(tags, versionMatchStrategy, recordNotFoundStrategy);
+            var operation = new GetLatestObjectByTagsOp<TObject>(tagsToMatch, tagMatchStrategy, versionMatchStrategy, recordNotFoundStrategy);
             var protocol = stream.GetStreamReadingProtocols<TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;

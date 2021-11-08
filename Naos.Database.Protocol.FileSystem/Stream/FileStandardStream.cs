@@ -191,7 +191,7 @@ namespace Naos.Database.Protocol.FileSystem
                 {
                     var internalRecordId = GetInternalRecordIdFromRecordFilePath(fileToConsiderRemoving);
                     var internalRecordDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
-                    if (operation.ShouldInclude(internalRecordId, internalRecordDate))
+                    if (operation.ShouldPrune(internalRecordId, internalRecordDate))
                     {
                         File.Delete(fileToConsiderRemoving);
                     }
@@ -211,7 +211,7 @@ namespace Naos.Database.Protocol.FileSystem
                     {
                         var internalRecordId = GetInternalRecordIdFromEntryFilePath(fileToConsiderRemoving);
                         var internalEntryDate = this.GetRootDateFromFilePath(fileToConsiderRemoving);
-                        if (operation.ShouldInclude(internalRecordId, internalEntryDate))
+                        if (operation.ShouldPrune(internalRecordId, internalEntryDate))
                         {
                             File.Delete(fileToConsiderRemoving);
                         }
@@ -534,7 +534,7 @@ namespace Naos.Database.Protocol.FileSystem
                         : new List<UniqueLongIssuedEvent>();
 
                     nextLong = currentList.Any()
-                        ? currentList.Max(_ => _.Id) + 1
+                        ? currentList.Max(_ => _.UniqueLong) + 1
                         : 1;
 
                     currentList.Add(new UniqueLongIssuedEvent(nextLong, DateTime.UtcNow, operation.Details));
@@ -1334,7 +1334,7 @@ namespace Naos.Database.Protocol.FileSystem
                     HandlingStatus.AvailableByDefault,
                     null,
                     this.DefaultSerializerRepresentation,
-                    NullStreamIdentifier.TypeRepresentation,
+                    NullIdentifier.TypeRepresentation,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                     operation.Tags,
                     utcNow);

@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -31,6 +32,8 @@ namespace Naos.Database.Domain
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IResourceLocator specifiedResourceLocator = null)
         {
+            recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
+
             this.InternalRecordId = internalRecordId;
             this.RecordNotFoundStrategy = recordNotFoundStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;

@@ -127,7 +127,7 @@ namespace Naos.Database.Domain
                                  this.IdsToMatch?.DeepClone(),
                                  this.VersionMatchStrategy?.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -163,7 +163,7 @@ namespace Naos.Database.Domain
                                  this.IdsToMatch?.DeepClone(),
                                  this.VersionMatchStrategy?.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -199,7 +199,7 @@ namespace Naos.Database.Domain
                                  idsToMatch,
                                  this.VersionMatchStrategy?.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -235,7 +235,7 @@ namespace Naos.Database.Domain
                                  this.IdsToMatch?.DeepClone(),
                                  versionMatchStrategy,
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -271,7 +271,7 @@ namespace Naos.Database.Domain
                                  this.IdsToMatch?.DeepClone(),
                                  this.VersionMatchStrategy?.DeepClone(),
                                  tagsToMatch,
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -343,7 +343,7 @@ namespace Naos.Database.Domain
                                  this.IdsToMatch?.DeepClone(),
                                  this.VersionMatchStrategy?.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -359,7 +359,7 @@ namespace Naos.Database.Domain
                                  this.IdsToMatch?.DeepClone(),
                                  this.VersionMatchStrategy?.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -369,7 +369,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetHandlingStatusOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {this.IdsToMatch?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy?.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetHandlingStatusOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdsToMatch = {this.IdsToMatch?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy?.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

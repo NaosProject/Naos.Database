@@ -105,8 +105,7 @@ namespace Naos.Database.Domain
                     idsToMatch,
                     operation.VersionMatchStrategy,
                     null,
-                    null,
-                    locatorAndId.Key);
+                    specifiedResourceLocator: locatorAndId.Key);
 
                 var localHandlingStatuses = this.stream.Execute(standardizedOperation);
                 handlingStatues.AddRange(localHandlingStatuses);

@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId>(
             this IReadOnlyStream stream,
@@ -43,7 +43,7 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IReadOnlyStream stream,

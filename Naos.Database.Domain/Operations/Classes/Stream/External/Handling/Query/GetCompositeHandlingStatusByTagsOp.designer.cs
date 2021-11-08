@@ -116,7 +116,7 @@ namespace Naos.Database.Domain
             var result = new GetCompositeHandlingStatusByTagsOp(
                                  concern,
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone());
+                                 this.TagMatchStrategy.DeepClone());
 
             return result;
         }
@@ -148,7 +148,7 @@ namespace Naos.Database.Domain
             var result = new GetCompositeHandlingStatusByTagsOp(
                                  this.Concern?.DeepClone(),
                                  tagsToMatch,
-                                 this.TagMatchStrategy?.DeepClone());
+                                 this.TagMatchStrategy.DeepClone());
 
             return result;
         }
@@ -192,7 +192,7 @@ namespace Naos.Database.Domain
             var result = new GetCompositeHandlingStatusByTagsOp(
                                  this.Concern?.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone());
+                                 this.TagMatchStrategy.DeepClone());
 
             return result;
         }
@@ -201,7 +201,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.GetCompositeHandlingStatusByTagsOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.GetCompositeHandlingStatusByTagsOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

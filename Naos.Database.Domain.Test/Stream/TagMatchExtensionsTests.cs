@@ -6,132 +6,129 @@
 
 namespace Naos.Database.Domain.Test
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-
-    using FakeItEasy;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.Cloning.Recipes;
-    using OBeautifulCode.CodeAnalysis.Recipes;
-    using OBeautifulCode.CodeGen.ModelObject.Recipes;
-    using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Type;
     using Xunit;
 
-    using static System.FormattableString;
-
-    public static partial class TagMatchExtensionsTests
+    public static class TagMatchExtensionsTests
     {
         [Fact]
-        public static void FuzzyMatchAccordingToStrategy___AllAny()
+        public static void FuzzyMatchAccordingToStrategy___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAnyQueryTag()
         {
-            var targetSet = new List<NamedValue<string>>
-                            {
-                                new NamedValue<string>("key1", "value1"),
-                                new NamedValue<string>("key2", "value2"),
-                                new NamedValue<string>("key3", "value3"),
-                            };
+            // Arrange
+            var recordTags = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key1", "value1"),
+                new NamedValue<string>("key2", "value2"),
+                new NamedValue<string>("key3", "value3"),
+            };
 
-            var findSetMatch = new List<NamedValue<string>>
-                               {
-                                   new NamedValue<string>("key1", "value1"),
-                               };
+            var queryTagsThatMatch = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key", "value"),
+                new NamedValue<string>("key2", "value2"),
+            };
 
-            var findSetNoMatch = new List<NamedValue<string>>
-                                 {
-                                     new NamedValue<string>("key", "value"),
-                                 };
+            var queryTagsThatDoNotMatch = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key", "value"),
+            };
 
-            var resultMatch = findSetMatch.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.All, TagMatchScope.Any));
+            // Act
+            var actualMatch = queryTagsThatMatch.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAnyQueryTag);
 
-            resultMatch.MustForTest().BeTrue();
+            var actualDoNotMatch = queryTagsThatDoNotMatch.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAnyQueryTag);
 
-            var resultNoMatch = findSetNoMatch.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.All, TagMatchScope.Any));
-
-            resultNoMatch.MustForTest().BeFalse();
+            // Assert
+            actualMatch.MustForTest().BeTrue();
+            actualDoNotMatch.MustForTest().BeFalse();
         }
 
         [Fact]
-        public static void FuzzyMatchAccordingToStrategy___AnyAny()
+        public static void FuzzyMatchAccordingToStrategy___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAllQueryTags()
         {
-            var targetSet = new List<NamedValue<string>>
-                            {
-                                new NamedValue<string>("key1", "value1"),
-                                new NamedValue<string>("key2", "value2"),
-                                new NamedValue<string>("key3", "value3"),
-                            };
+            // Arrange
+            var recordTags = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key1", "value1"),
+                new NamedValue<string>("key2", "value2"),
+                new NamedValue<string>("key3", "value3"),
+            };
 
-            var findSetMatch = new List<NamedValue<string>>
-                               {
-                                   new NamedValue<string>("key1", "value1"),
-                                   new NamedValue<string>("key2", "value2"),
-                               };
+            var queryTagsThatMatch = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key1", "value1"),
+                new NamedValue<string>("key3", "value3"),
+            };
 
-            var findSetNoMatch = new List<NamedValue<string>>
-                                 {
-                                     new NamedValue<string>("key", "value"),
-                                 };
+            var queryTagsThatDoNotMatch = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key1", "value1"),
+                new NamedValue<string>("key", "value2"),
+            };
 
-            var resultMatch = findSetMatch.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.Any, TagMatchScope.Any));
+            // Act
+            var actualMatch = queryTagsThatMatch.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAllQueryTags);
 
-            resultMatch.MustForTest().BeTrue();
+            var actualThatDoNotMatch = queryTagsThatDoNotMatch.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAllQueryTags);
 
-            var resultNoMatch = findSetNoMatch.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.Any, TagMatchScope.Any));
+            // Assert
+            actualMatch.MustForTest().BeTrue();
 
-            resultNoMatch.MustForTest().BeFalse();
+            actualThatDoNotMatch.MustForTest().BeFalse();
         }
 
         [Fact]
-        public static void FuzzyMatchAccordingToStrategy___AllAll()
+        public static void FuzzyMatchAccordingToStrategy___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAllQueryTagsAndNoneOther()
         {
-            var targetSet = new List<NamedValue<string>>
-                            {
-                                new NamedValue<string>("key1", "value1"),
-                                new NamedValue<string>("key2", "value2"),
-                                new NamedValue<string>("key3", "value3"),
-                            };
+            // Arrange
+            var recordTags = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key1", "value1"),
+                new NamedValue<string>("key2", "value2"),
+                new NamedValue<string>("key3", "value3"),
+            };
 
-            var findSetMatch = targetSet.DeepClone();
+            var queryTagsThatMatch = recordTags.DeepClone();
 
-            var findSetNoMatchOne = new List<NamedValue<string>>
-                                 {
-                                     new NamedValue<string>("key", "value"),
-                                 };
+            var queryTagsThatDoNotMatch1 = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key", "value"),
+            };
 
-            var findSetNoMatchTwo = new List<NamedValue<string>>
-                               {
-                                   new NamedValue<string>("key1", "value1"),
-                                   new NamedValue<string>("key2", "value2"),
-                               };
+            var queryTagsThatDoNotMatch2 = new List<NamedValue<string>>
+            {
+                new NamedValue<string>("key1", "value1"),
+                new NamedValue<string>("key2", "value2"),
+            };
 
-            var resultMatch = findSetMatch.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.All, TagMatchScope.All));
+            // Act
+            var actualMatch = queryTagsThatMatch.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther);
 
-            resultMatch.MustForTest().BeTrue();
+            var actualDoNotMatch1 = queryTagsThatDoNotMatch1.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther);
 
-            var resultNoMatchOne = findSetNoMatchOne.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.All, TagMatchScope.All));
+            var actualDoNotMatch2 = queryTagsThatDoNotMatch2.FuzzyMatchAccordingToStrategy(
+                recordTags,
+                TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther);
 
-            resultNoMatchOne.MustForTest().BeFalse();
-
-            var resultNoMatchTwo = findSetNoMatchTwo.FuzzyMatchAccordingToStrategy(
-                targetSet,
-                new TagMatchStrategy(TagMatchScope.All, TagMatchScope.All));
-
-            resultNoMatchTwo.MustForTest().BeFalse();
+            // Assert
+            actualMatch.MustForTest().BeTrue();
+            actualDoNotMatch1.MustForTest().BeFalse();
+            actualDoNotMatch2.MustForTest().BeFalse();
         }
     }
 }

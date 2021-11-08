@@ -103,7 +103,30 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
                     {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is reserved",
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                            var result = new TryHandleRecordWithIdOp<Version>(
+                                referenceObject.Concern,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                OrderRecordsBy.Unknown,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();

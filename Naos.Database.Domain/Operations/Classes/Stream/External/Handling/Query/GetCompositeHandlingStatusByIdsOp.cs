@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="concern">The record handling concern.</param>
         /// <param name="idsToMatch">The string serialized object identifiers to match.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         public GetCompositeHandlingStatusByIdsOp(
             string concern,
             IReadOnlyCollection<StringSerializedIdentifier> idsToMatch,
@@ -44,7 +44,7 @@ namespace Naos.Database.Domain
         public IReadOnlyCollection<StringSerializedIdentifier> IdsToMatch { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type.
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
     }

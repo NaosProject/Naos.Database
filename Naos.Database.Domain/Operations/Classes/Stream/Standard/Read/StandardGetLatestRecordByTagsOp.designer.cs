@@ -70,7 +70,8 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.Tags.IsEqualTo(other.Tags)
+            var result = this.TagsToMatch.IsEqualTo(other.TagsToMatch)
+                      && this.TagMatchStrategy.IsEqualTo(other.TagMatchStrategy)
                       && this.ObjectType.IsEqualTo(other.ObjectType)
                       && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
                       && this.RecordNotFoundStrategy.IsEqualTo(other.RecordNotFoundStrategy)
@@ -84,7 +85,8 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.Tags)
+            .Hash(this.TagsToMatch)
+            .Hash(this.TagMatchStrategy)
             .Hash(this.ObjectType)
             .Hash(this.VersionMatchStrategy)
             .Hash(this.RecordNotFoundStrategy)
@@ -95,10 +97,10 @@ namespace Naos.Database.Domain
         public new StandardGetLatestRecordByTagsOp DeepClone() => (StandardGetLatestRecordByTagsOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Tags" />.
+        /// Deep clones this object with a new <see cref="TagsToMatch" />.
         /// </summary>
-        /// <param name="tags">The new <see cref="Tags" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetLatestRecordByTagsOp" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
+        /// <param name="tagsToMatch">The new <see cref="TagsToMatch" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetLatestRecordByTagsOp" /> using the specified <paramref name="tagsToMatch" /> for <see cref="TagsToMatch" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -116,10 +118,46 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetLatestRecordByTagsOp DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
+        public StandardGetLatestRecordByTagsOp DeepCloneWithTagsToMatch(IReadOnlyCollection<NamedValue<string>> tagsToMatch)
         {
             var result = new StandardGetLatestRecordByTagsOp(
-                                 tags,
+                                 tagsToMatch,
+                                 this.TagMatchStrategy.DeepClone(),
+                                 this.ObjectType?.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.RecordNotFoundStrategy.DeepClone(),
+                                 this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="TagMatchStrategy" />.
+        /// </summary>
+        /// <param name="tagMatchStrategy">The new <see cref="TagMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetLatestRecordByTagsOp" /> using the specified <paramref name="tagMatchStrategy" /> for <see cref="TagMatchStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardGetLatestRecordByTagsOp DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
+        {
+            var result = new StandardGetLatestRecordByTagsOp(
+                                 this.TagsToMatch?.DeepClone(),
+                                 tagMatchStrategy,
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
@@ -153,7 +191,8 @@ namespace Naos.Database.Domain
         public StandardGetLatestRecordByTagsOp DeepCloneWithObjectType(TypeRepresentation objectType)
         {
             var result = new StandardGetLatestRecordByTagsOp(
-                                 this.Tags?.DeepClone(),
+                                 this.TagsToMatch?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  objectType,
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
@@ -187,7 +226,8 @@ namespace Naos.Database.Domain
         public StandardGetLatestRecordByTagsOp DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
         {
             var result = new StandardGetLatestRecordByTagsOp(
-                                 this.Tags?.DeepClone(),
+                                 this.TagsToMatch?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  versionMatchStrategy,
                                  this.RecordNotFoundStrategy.DeepClone(),
@@ -221,7 +261,8 @@ namespace Naos.Database.Domain
         public StandardGetLatestRecordByTagsOp DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
         {
             var result = new StandardGetLatestRecordByTagsOp(
-                                 this.Tags?.DeepClone(),
+                                 this.TagsToMatch?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  recordNotFoundStrategy,
@@ -255,7 +296,8 @@ namespace Naos.Database.Domain
         public StandardGetLatestRecordByTagsOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
             var result = new StandardGetLatestRecordByTagsOp(
-                                 this.Tags?.DeepClone(),
+                                 this.TagsToMatch?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
@@ -269,7 +311,8 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new StandardGetLatestRecordByTagsOp(
-                                 this.Tags?.DeepClone(),
+                                 this.TagsToMatch?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
@@ -282,7 +325,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetLatestRecordByTagsOp: Tags = {this.Tags?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetLatestRecordByTagsOp: TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

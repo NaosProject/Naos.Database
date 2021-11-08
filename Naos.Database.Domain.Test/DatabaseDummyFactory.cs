@@ -39,7 +39,14 @@ namespace Naos.Database.Domain.Test
         {
             // ------------------------------- ENUMS --------------------------------------
             AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CompositeHandlingStatus.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingRecordStrategy.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingStreamStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(HandlingStatus.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(OrderRecordsBy.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(RecordNotFoundStrategy.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(StreamNotFoundStrategy.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(TagMatchStrategy.Unknown);
 
             // ------------------------------- EVENTS -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(

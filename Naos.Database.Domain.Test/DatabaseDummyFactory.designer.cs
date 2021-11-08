@@ -174,6 +174,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestObjectByTagsOp<Version>(
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>()));
 
@@ -310,10 +311,10 @@ namespace Naos.Database.Domain.Test
                 () => new NullDatabaseLocator());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new NullResourceLocator());
+                () => new NullIdentifier());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new NullStreamIdentifier());
+                () => new NullResourceLocator());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullStreamRepresentation());
@@ -574,6 +575,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetLatestRecordByTagsOp(
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
@@ -744,11 +746,6 @@ namespace Naos.Database.Domain.Test
                 () => new StringSerializedIdentifier(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new TagMatchStrategy(
-                                 A.Dummy<TagMatchScope>(),
-                                 A.Dummy<TagMatchScope>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new ThrowIfResourceUnavailableOp(

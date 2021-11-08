@@ -31,7 +31,25 @@ namespace Naos.Database.Domain.Test
         {
             ConstructorArgumentValidationTestScenarios
                .RemoveAllScenarios()
-               .AddScenario(ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>.ForceGeneratedTestsToPassAndWriteMyOwnScenario);
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
+
+                           var result = new GetLatestRecordMetadataByIdOp<Version>(
+                               referenceObject.Id,
+                               referenceObject.ObjectType,
+                               referenceObject.VersionMatchStrategy,
+                               RecordNotFoundStrategy.Unknown);
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                       ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
+                   });
         }
     }
 }

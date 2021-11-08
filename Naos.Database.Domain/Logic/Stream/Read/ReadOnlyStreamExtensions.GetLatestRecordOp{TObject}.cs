@@ -19,7 +19,7 @@ namespace Naos.Database.Domain
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The record.</returns>
         public static StreamRecord<TObject> GetLatestRecord<TObject>(
@@ -42,7 +42,7 @@ namespace Naos.Database.Domain
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The record.</returns>
         public static async Task<StreamRecord<TObject>> GetLatestRecordByIdAsync<TObject>(

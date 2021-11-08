@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     public interface ITryHandleRecordOp : IOperation, IHaveDetails, IHaveTags, IHaveHandleRecordConcern
     {
         /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type.
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation.
         /// </summary>
         VersionMatchStrategy VersionMatchStrategy { get; }
 

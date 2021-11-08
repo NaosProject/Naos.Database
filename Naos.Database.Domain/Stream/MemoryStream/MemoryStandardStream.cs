@@ -114,7 +114,7 @@ namespace Naos.Database.Domain
                 newStatus,
                 null,
                 this.DefaultSerializerRepresentation,
-                NullStreamIdentifier.TypeRepresentation,
+                NullIdentifier.TypeRepresentation,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
                 utcNow);
@@ -215,10 +215,10 @@ namespace Naos.Database.Domain
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             bool RecordPredicate(
-                StreamRecord record) => operation.ShouldInclude(record.InternalRecordId, record.Metadata.TimestampUtc);
+                StreamRecord record) => operation.ShouldPrune(record.InternalRecordId, record.Metadata.TimestampUtc);
 
             bool HandlingPredicate(
-                StreamRecordHandlingEntry handlingEntry) => operation.ShouldInclude(
+                StreamRecordHandlingEntry handlingEntry) => operation.ShouldPrune(
                 handlingEntry.Metadata.InternalRecordId,
                 handlingEntry.Metadata.TimestampUtc);
 

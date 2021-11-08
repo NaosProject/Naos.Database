@@ -34,13 +34,14 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordByTagsOp>
                     {
-                        Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                        Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardGetLatestRecordByTagsOp>();
 
                             var result = new StandardGetLatestRecordByTagsOp(
                                                  null,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
@@ -49,18 +50,19 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "tags", },
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordByTagsOp>
                     {
-                        Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardGetLatestRecordByTagsOp>();
 
                             var result = new StandardGetLatestRecordByTagsOp(
                                                  new List<NamedValue<string>>(),
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
@@ -69,18 +71,19 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordByTagsOp>
                     {
-                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardGetLatestRecordByTagsOp>();
 
                             var result = new StandardGetLatestRecordByTagsOp(
-                                                 new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
+                                                 new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
@@ -89,7 +92,49 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordByTagsOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetLatestRecordByTagsOp>();
+
+                            var result = new StandardGetLatestRecordByTagsOp(
+                                referenceObject.TagsToMatch,
+                                TagMatchStrategy.Unknown,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.RecordNotFoundStrategy,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordByTagsOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetLatestRecordByTagsOp>();
+
+                            var result = new StandardGetLatestRecordByTagsOp(
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                RecordNotFoundStrategy.Unknown,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
                     });
         }
     }

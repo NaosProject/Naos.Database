@@ -12,6 +12,11 @@ namespace Naos.Database.Domain
     public enum OrderRecordsBy
     {
         /// <summary>
+        /// Unknown (default).
+        /// </summary>
+        Unknown,
+
+        /// <summary>
         /// Orders the records by the internal record identifier from lowest to highest.
         /// </summary>
         InternalRecordIdAscending,

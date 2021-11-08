@@ -31,7 +31,28 @@ namespace Naos.Database.Domain.Test
         {
             ConstructorArgumentValidationTestScenarios
                 .RemoveAllScenarios()
-                .AddScenario(ConstructorArgumentValidationTestScenario<StandardGetAllRecordsByIdOp>.ConstructorCannotThrowScenario);
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetAllRecordsByIdOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetAllRecordsByIdOp>();
+
+                            var result = new StandardGetAllRecordsByIdOp(
+                                referenceObject.StringSerializedId,
+                                referenceObject.IdentifierType,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.RecordNotFoundStrategy,
+                                OrderRecordsBy.Unknown,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "orderRecordsBy", "Unknown" },
+                    });
         }
     }
 }

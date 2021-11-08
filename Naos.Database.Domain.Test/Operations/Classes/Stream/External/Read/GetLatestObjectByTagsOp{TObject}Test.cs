@@ -29,6 +29,45 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static GetLatestObjectByTagsOpTObjectTest()
         {
+            ConstructorArgumentValidationTestScenarios
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                            var result = new GetLatestObjectByTagsOp<Version>(
+                                referenceObject.TagsToMatch,
+                                TagMatchStrategy.Unknown,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.RecordNotFoundStrategy);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                            var result = new GetLatestObjectByTagsOp<Version>(
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
+                                referenceObject.VersionMatchStrategy,
+                                RecordNotFoundStrategy.Unknown);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
+                    });
         }
     }
 }

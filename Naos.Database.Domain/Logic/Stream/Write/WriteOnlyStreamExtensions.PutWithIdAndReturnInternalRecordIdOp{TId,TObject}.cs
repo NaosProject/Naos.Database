@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type when looking for existing records.  DEFAULT is no filter (any version is a match).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static long? PutWithIdAndReturnInternalRecordId<TId, TObject>(
             this IWriteOnlyStream stream,
@@ -54,7 +54,7 @@ namespace Naos.Database.Domain
         /// <param name="tags">OPTIONAL tags to put with the record.  DEFAULT is no tags.</param>
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the object type when looking for existing records.  DEFAULT is no filter (any version is a match).</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static async Task<long?> PutWithIdAndReturnInternalRecordIdAsync<TId, TObject>(
             this IWriteOnlyStream stream,

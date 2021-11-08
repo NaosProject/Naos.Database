@@ -125,7 +125,7 @@ namespace Naos.Database.Domain
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -160,7 +160,7 @@ namespace Naos.Database.Domain
                                  objectType,
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -195,7 +195,7 @@ namespace Naos.Database.Domain
                                  this.ObjectType?.DeepClone(),
                                  versionMatchStrategy,
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -230,7 +230,7 @@ namespace Naos.Database.Domain
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  tagsToMatch,
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -300,7 +300,7 @@ namespace Naos.Database.Domain
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -315,7 +315,7 @@ namespace Naos.Database.Domain
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -325,7 +325,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

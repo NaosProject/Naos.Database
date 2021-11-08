@@ -111,6 +111,26 @@ namespace Naos.Database.Domain.Test
                        },
                        ExpectedExceptionType = typeof(ArgumentException),
                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                   })
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<PutOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'existingRecordStrategy' is ExistingRecordStrategy.Unknown scenario",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<PutOp<Version>>();
+
+                           var result = new PutOp<Version>(
+                               referenceObject.ObjectToPut,
+                               referenceObject.Tags,
+                               ExistingRecordStrategy.Unknown,
+                               referenceObject.RecordRetentionCount,
+                               referenceObject.VersionMatchStrategy);
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                       ExpectedExceptionMessageContains = new[] { "existingRecordStrategy", "Unknown", },
                    });
 
             EquatableTestScenarios

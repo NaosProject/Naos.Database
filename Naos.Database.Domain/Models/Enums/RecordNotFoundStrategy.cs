@@ -12,6 +12,11 @@ namespace Naos.Database.Domain
     public enum RecordNotFoundStrategy
     {
         /// <summary>
+        /// Unknown (default).
+        /// </summary>
+        Unknown,
+
+        /// <summary>
         /// Returns default of queried type.
         /// </summary>
         ReturnDefault,

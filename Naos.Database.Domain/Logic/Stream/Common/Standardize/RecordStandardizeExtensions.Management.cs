@@ -6,6 +6,8 @@
 
 namespace Naos.Database.Domain
 {
+    using OBeautifulCode.Assertion.Recipes;
+
     public static partial class RecordStandardizeExtensions
     {
         /// <summary>

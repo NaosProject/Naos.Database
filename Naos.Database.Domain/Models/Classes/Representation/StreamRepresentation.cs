@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     /// <summary>
-    /// Stream description to allow the <see cref="GetStreamFromRepresentationByNameProtocolFactory"/> to produce the correct stream.
+    /// A representation of an persistence-agnostic stream.
     /// </summary>
     public partial class StreamRepresentation : StreamRepresentationBase
     {
@@ -19,7 +19,6 @@ namespace Naos.Database.Domain
             string name)
             : base(name)
         {
-            /* no-op */
         }
     }
 }

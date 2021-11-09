@@ -6,17 +6,11 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.CodeAnalysis.Recipes;
-    using OBeautifulCode.Equality.Recipes;
     using OBeautifulCode.Type;
-    using OBeautifulCode.Type.Recipes;
-    using static System.FormattableString;
 
     /// <summary>
-    /// Operation to get a specific <see cref="IStream"/> by a specific <see cref="IStreamRepresentation"/>.
+    /// Gets an <see cref="IStream"/> by the specified <see cref="IStreamRepresentation"/>.
     /// </summary>
     public partial class GetStreamFromRepresentationOp :
         ReturningOperationBase<IStreamRepresentation>,
@@ -25,7 +19,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="GetStreamFromRepresentationOp"/> class.
         /// </summary>
-        /// <param name="streamRepresentation">The typed stream representation.</param>
+        /// <param name="streamRepresentation">The stream representation.</param>
         public GetStreamFromRepresentationOp(
             IStreamRepresentation streamRepresentation)
         {

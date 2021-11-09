@@ -8,36 +8,37 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Stream factory to get an <see cref="IReadWriteStream"/> or <see cref="IReadOnlyStream"/> from a <see cref="StreamRepresentation"/>.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class GetStreamFromRepresentationByNameProtocolFactory : SyncSpecificReturningProtocolBase<GetStreamFromRepresentationOp, IStream>
+    public class GetStreamFromRepresentationByNameProtocolFactory :
+        SyncSpecificReturningProtocolBase<GetStreamFromRepresentationOp, IStream>
     {
-        private readonly IReadOnlyDictionary<string, Func<IReadWriteStream>> streamNameToStreamMap;
+        private readonly IReadOnlyDictionary<string, Func<IStream>> streamNameToStreamMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetStreamFromRepresentationByNameProtocolFactory"/> class.
         /// </summary>
         /// <param name="streamNameToStreamMap">The stream name to stream map.</param>
         public GetStreamFromRepresentationByNameProtocolFactory(
-            IReadOnlyDictionary<string, Func<IReadWriteStream>> streamNameToStreamMap)
+            IReadOnlyDictionary<string, Func<IStream>> streamNameToStreamMap)
         {
             streamNameToStreamMap.MustForArg(nameof(streamNameToStreamMap)).NotBeNull();
 
-            this.streamNameToStreamMap = streamNameToStreamMap ?? throw new ArgumentNullException(nameof(streamNameToStreamMap));
+            this.streamNameToStreamMap = streamNameToStreamMap;
         }
 
         /// <inheritdoc />
-        public override IStream Execute(GetStreamFromRepresentationOp operation)
+        public override IStream Execute(
+            GetStreamFromRepresentationOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var exists = this.streamNameToStreamMap.TryGetValue(operation.StreamRepresentation.Name, out var result);
+
             if (exists)
             {
                 return result();
@@ -58,12 +59,13 @@ namespace Naos.Database.Domain
             where TStreamRepresentation : IStreamRepresentation
             where TStream : IStream
         {
-            return new LambdaReturningProtocol<GetStreamFromRepresentationOp<TStreamRepresentation, TStream>, TStream>(synchronousLambda:
+            return new LambdaReturningProtocol<GetStreamFromRepresentationOp<TStreamRepresentation, TStream>, TStream>(
                 operation =>
                 {
                     operation.MustForArg(nameof(operation)).NotBeNull();
 
                     var exists = this.streamNameToStreamMap.TryGetValue(operation.StreamRepresentation.Name, out var result);
+
                     if (exists)
                     {
                         return (TStream)result();

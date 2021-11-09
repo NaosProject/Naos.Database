@@ -221,6 +221,7 @@
       <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
+    <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>
@@ -403,11 +404,11 @@
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStandardStreamRecordHandlingProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStandardStreamWriteProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStandardStreamReadProtocols.cs" />
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp.cs" />
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp.designer.cs">
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp.cs" />
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\Handling\HandlingEventBase.designer.cs">
@@ -572,33 +573,33 @@
     <Compile Include="Events\Classes\Write\UniqueLongIssuedEvent.designer.cs">
       <DependentUpon>UniqueLongIssuedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\NullObjectPattern\NullIdentifier.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\NullIdentifier.designer.cs">
       <DependentUpon>NullIdentifier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.designer.cs">
+    <Compile Include="Models\Classes\Representation\NullStreamRepresentation.designer.cs">
       <DependentUpon>NullStreamRepresentation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\FileStreamRepresentation.designer.cs">
+    <Compile Include="Models\Classes\Representation\FileStreamRepresentation.designer.cs">
       <DependentUpon>FileStreamRepresentation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\MemoryStreamRepresentation.designer.cs">
+    <Compile Include="Models\Classes\Representation\MemoryStreamRepresentation.designer.cs">
       <DependentUpon>MemoryStreamRepresentation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentation.designer.cs">
+    <Compile Include="Models\Classes\Representation\StreamRepresentation.designer.cs">
       <DependentUpon>StreamRepresentation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentationBase.designer.cs">
+    <Compile Include="Models\Classes\Representation\StreamRepresentationBase.designer.cs">
       <DependentUpon>StreamRepresentationBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamManagementProtocols.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamReadWriteProtocols.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamReadWriteProtocols{TObject}.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamReadWriteWithIdProtocols{TId}.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamRecordHandlingProtocols.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamRecordHandlingProtocols{TObject}.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
-    <Compile Include="Stream\StandardStream\StandardStreamRecordWithIdHandlingProtocols{TId}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamReadWriteProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamReadWriteWithIdProtocols{TId}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamRecordHandlingProtocols.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamRecordHandlingProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamRecordWithIdHandlingProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamRecordWithIdHandlingProtocols{TId}.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamBase.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}.cs" />
@@ -619,7 +620,7 @@
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.cs" />
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}.cs" />
@@ -641,8 +642,8 @@
     <Compile Include="Protocols\Interfaces\Stream\Classification\IWriteOnlyStream.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadProtocols.cs" />
     <Compile Include="Protocols\Classes\ResourceLocation\NullResourceLocatorProtocols.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullStreamRepresentation.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullStandardReadWriteStream.cs" />
+    <Compile Include="Models\Classes\Representation\NullStreamRepresentation.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\NullStandardStream.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}.cs" />
@@ -655,15 +656,15 @@
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols{TObject}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteWithIdProtocols{TId,TObject}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Classification\IReadOnlyStream.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullIdentifier.cs" />
+    <Compile Include="Models\Classes\Stream\Common\NullIdentifier.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Classification\IStream.cs" />
-    <Compile Include="Stream\Representation\FileStreamRepresentation.cs" />
-    <Compile Include="Stream\Representation\IStreamRepresentation.cs" />
-    <Compile Include="Stream\Representation\MemoryStreamRepresentation.cs" />
+    <Compile Include="Models\Classes\Representation\FileStreamRepresentation.cs" />
+    <Compile Include="Models\Interfaces\Representation\IStreamRepresentation.cs" />
+    <Compile Include="Models\Classes\Representation\MemoryStreamRepresentation.cs" />
     <Compile Include="Models\Classes\Stream\Common\TypeRepresentationWithAndWithoutVersion.cs" />
-    <Compile Include="Stream\GetStreamFromRepresentationByNameProtocolFactory.cs" />
-    <Compile Include="Stream\Representation\StreamRepresentation.cs" />
-    <Compile Include="Stream\Representation\StreamRepresentationBase.cs" />
+    <Compile Include="Protocols\Classes\Representation\GetStreamFromRepresentationByNameProtocolFactory.cs" />
+    <Compile Include="Models\Classes\Representation\StreamRepresentation.cs" />
+    <Compile Include="Models\Classes\Representation\StreamRepresentationBase.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata.cs" />
   </ItemGroup>
   <ItemGroup>

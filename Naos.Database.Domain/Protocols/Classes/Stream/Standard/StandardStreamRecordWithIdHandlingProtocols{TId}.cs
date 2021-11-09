@@ -10,21 +10,18 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Set of protocols to handle <see cref="IEvent"/>'s in a stream.
+    /// Set of protocols to execute record handling operations
+    /// with a typed identifier and without a typed record payload.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
-    /// <seealso cref="IStreamReadWithIdProtocols{TId}" />
-    /// <seealso cref="IStreamWriteWithIdProtocols{TId}" />
     public class StandardStreamRecordWithIdHandlingProtocols<TId> :
         IStreamRecordWithIdHandlingProtocols<TId>
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
         private readonly IStandardStream stream;
 
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
@@ -37,6 +34,7 @@ namespace Naos.Database.Domain
             IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
+
             this.stream = stream;
             this.locatorProtocols = stream.ResourceLocatorProtocols.GetResourceLocatorByIdProtocol<TId>();
         }
@@ -45,8 +43,12 @@ namespace Naos.Database.Domain
         public StreamRecordWithId<TId> Execute(
             TryHandleRecordWithIdOp<TId> operation)
         {
-            var delegatedOperation = operation.Standardize();
-            var tryHandleResult = this.stream.Execute(delegatedOperation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var tryHandleResult = this.stream.Execute(standardOp);
+
             var record = tryHandleResult.RecordToHandle;
 
             if (record?.Payload == null)
@@ -55,7 +57,9 @@ namespace Naos.Database.Domain
             }
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);
+
             var id = serializer.Deserialize<TId>(record.Metadata.StringSerializedId);
+
             var metadata = new StreamRecordMetadata<TId>(
                 id,
                 record.Metadata.SerializerRepresentation,
@@ -66,6 +70,7 @@ namespace Naos.Database.Domain
                 record.Metadata.ObjectTimestampUtc);
 
             var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
+
             return result;
         }
 
@@ -73,8 +78,8 @@ namespace Naos.Database.Domain
         public async Task<StreamRecordWithId<TId>> ExecuteAsync(
             TryHandleRecordWithIdOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -82,19 +87,29 @@ namespace Naos.Database.Domain
         public CompositeHandlingStatus Execute(
             GetCompositeHandlingStatusByIdsOp<TId> operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
             var identifierType = typeof(TId).ToRepresentation();
+
             var items = new List<Tuple<IResourceLocator, StringSerializedIdentifier>>();
+
             foreach (var id in operation.IdsToMatch)
             {
                 var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(id));
+
                 var stringSerializedId = serializer.SerializeToString(id);
+
                 var identified = new StringSerializedIdentifier(stringSerializedId, identifierType);
+
                 items.Add(new Tuple<IResourceLocator, StringSerializedIdentifier>(locator, identified));
             }
 
             var handlingStatues = new List<HandlingStatus>();
+
             var groupedByLocators = items.GroupBy(_ => _.Item1).ToList();
+
             foreach (var locatorAndId in groupedByLocators)
             {
                 var idsToMatch = locatorAndId.Select(_ => _.Item2).ToList();
@@ -108,6 +123,7 @@ namespace Naos.Database.Domain
                     specifiedResourceLocator: locatorAndId.Key);
 
                 var localHandlingStatuses = this.stream.Execute(standardizedOperation);
+
                 handlingStatues.AddRange(localHandlingStatuses);
             }
 
@@ -120,8 +136,8 @@ namespace Naos.Database.Domain
         public async Task<CompositeHandlingStatus> ExecuteAsync(
             GetCompositeHandlingStatusByIdsOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
     }

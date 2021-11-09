@@ -8,6 +8,9 @@ namespace Naos.Database.Domain
 {
     using System;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
 
     public static partial class RecordStandardizeExtensions
     {
@@ -70,17 +73,55 @@ namespace Naos.Database.Domain
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardPutRecordOp Standardize<TId, TObject>(
             this PutWithIdAndReturnInternalRecordIdOp<TId, TObject> operation,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            throw new NotImplementedException("We need to migrate the standardizing behavior out of the wrapping protocol.");
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var serializedStringId = serializer.SerializeToString(operation.Id);
+
+            var identifierTypeRep = (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation();
+
+            var objectTypeRep = (operation.ObjectToPut?.GetType() ?? typeof(TObject)).ToRepresentation();
+
+            var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
+                stream.DefaultSerializerRepresentation,
+                stream.SerializerFactory,
+                stream.DefaultSerializationFormat);
+
+            var objectTimestamp = operation.ObjectToPut is IHaveTimestampUtc objectWithTimestamp
+                ? objectWithTimestamp.TimestampUtc
+                : (DateTime?)null;
+
+            var metadata = new StreamRecordMetadata(
+                serializedStringId,
+                stream.DefaultSerializerRepresentation,
+                identifierTypeRep.ToWithAndWithoutVersion(),
+                objectTypeRep.ToWithAndWithoutVersion(),
+                operation.Tags,
+                DateTime.UtcNow,
+                objectTimestamp);
+
+            var result = new StandardPutRecordOp(
+                metadata,
+                describedSerialization,
+                operation.ExistingRecordStrategy,
+                operation.RecordRetentionCount,
+                operation.VersionMatchStrategy,
+                null,
+                specifiedResourceLocator);
+
+            return result;
         }
 
         /// <summary>

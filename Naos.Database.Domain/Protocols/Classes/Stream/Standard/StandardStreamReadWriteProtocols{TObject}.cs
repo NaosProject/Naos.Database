@@ -20,6 +20,7 @@ namespace Naos.Database.Domain
         IStreamWriteProtocols<TObject>
     {
         private readonly IStandardStream stream;
+
         private readonly StandardStreamReadWriteWithIdProtocols<NullIdentifier, TObject> delegatedWithIdProtocols;
 
         /// <summary>
@@ -41,14 +42,14 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var delegatedOperation = new PutAndReturnInternalRecordIdOp<TObject>(
+            var delegatedOp = new PutAndReturnInternalRecordIdOp<TObject>(
                 operation.ObjectToPut,
                 operation.Tags,
                 operation.ExistingRecordStrategy,
                 operation.RecordRetentionCount,
                 operation.VersionMatchStrategy);
 
-            this.Execute(delegatedOperation);
+            this.Execute(delegatedOp);
         }
 
         /// <inheritdoc />
@@ -66,7 +67,7 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var delegatedOperation = new PutWithIdAndReturnInternalRecordIdOp<NullIdentifier, TObject>(
+            var delegatedOp = new PutWithIdAndReturnInternalRecordIdOp<NullIdentifier, TObject>(
                 null,
                 operation.ObjectToPut,
                 operation.Tags,
@@ -74,7 +75,7 @@ namespace Naos.Database.Domain
                 operation.RecordRetentionCount,
                 operation.VersionMatchStrategy);
 
-            var result = this.delegatedWithIdProtocols.Execute(delegatedOperation);
+            var result = this.delegatedWithIdProtocols.Execute(delegatedOp);
 
             return result;
         }
@@ -98,8 +99,9 @@ namespace Naos.Database.Domain
 
             var record = this.stream.Execute(standardOp);
 
+            // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null
-                ? default
+                ? default(TObject)
                 : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 
             return result;
@@ -155,8 +157,9 @@ namespace Naos.Database.Domain
 
             var record = this.stream.Execute(standardOp);
 
+            // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null
-                ? default
+                ? default(TObject)
                 : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 
             return result;

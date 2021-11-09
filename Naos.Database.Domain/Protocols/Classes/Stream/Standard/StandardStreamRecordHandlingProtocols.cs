@@ -9,18 +9,15 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
     using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
-    /// Set of protocols to handle a record in a stream.
+    /// Set of protocols to execute record handling operations
+    /// without a typed identifier and without a typed record payload.
     /// </summary>
-    /// <seealso cref="IStreamReadProtocols" />
-    /// <seealso cref="IStreamWriteProtocols" />
     public class StandardStreamRecordHandlingProtocols :
         IStreamRecordHandlingProtocols
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
         private readonly IStandardStream stream;
 
         /// <summary>
@@ -39,6 +36,8 @@ namespace Naos.Database.Domain
         public IReadOnlyList<StreamRecordHandlingEntry> Execute(
             GetHandlingHistoryOp operation)
         {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = this.stream.Execute(operation.Standardize());
 
             return result;
@@ -48,8 +47,8 @@ namespace Naos.Database.Domain
         public async Task<IReadOnlyList<StreamRecordHandlingEntry>> ExecuteAsync(
             GetHandlingHistoryOp operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -57,7 +56,11 @@ namespace Naos.Database.Domain
         public CompositeHandlingStatus Execute(
             GetCompositeHandlingStatusByIdsOp operation)
         {
-            var handlingStatuses = this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var handlingStatuses = this.stream.Execute(standardOp);
 
             var result = handlingStatuses.ToCompositeHandlingStatus();
 
@@ -68,8 +71,8 @@ namespace Naos.Database.Domain
         public async Task<CompositeHandlingStatus> ExecuteAsync(
             GetCompositeHandlingStatusByIdsOp operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -77,7 +80,11 @@ namespace Naos.Database.Domain
         public CompositeHandlingStatus Execute(
             GetCompositeHandlingStatusByTagsOp operation)
         {
-            var handlingStatuses = this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var handlingStatuses = this.stream.Execute(standardOp);
 
             var result = handlingStatuses.ToCompositeHandlingStatus();
 
@@ -88,8 +95,8 @@ namespace Naos.Database.Domain
         public async Task<CompositeHandlingStatus> ExecuteAsync(
             GetCompositeHandlingStatusByTagsOp operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -97,7 +104,11 @@ namespace Naos.Database.Domain
         public HandlingStatus Execute(
             GetHandlingStatusOp operation)
         {
-            var handlingStatuses = this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var handlingStatuses = this.stream.Execute(standardOp);
 
             var result = handlingStatuses.Single();
 
@@ -108,8 +119,8 @@ namespace Naos.Database.Domain
         public async Task<HandlingStatus> ExecuteAsync(
             GetHandlingStatusOp operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -117,7 +128,11 @@ namespace Naos.Database.Domain
         public void Execute(
             DisableHandlingForStreamOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -125,14 +140,19 @@ namespace Naos.Database.Domain
             DisableHandlingForStreamOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             EnableHandlingForStreamOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -140,14 +160,19 @@ namespace Naos.Database.Domain
             EnableHandlingForStreamOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             DisableHandlingForRecordOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -155,14 +180,19 @@ namespace Naos.Database.Domain
             DisableHandlingForRecordOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             CancelRunningHandleRecordOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -170,14 +200,19 @@ namespace Naos.Database.Domain
             CancelRunningHandleRecordOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             CompleteRunningHandleRecordOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -185,14 +220,19 @@ namespace Naos.Database.Domain
             CompleteRunningHandleRecordOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             FailRunningHandleRecordOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -200,14 +240,19 @@ namespace Naos.Database.Domain
             FailRunningHandleRecordOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             SelfCancelRunningHandleRecordOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -215,14 +260,19 @@ namespace Naos.Database.Domain
             SelfCancelRunningHandleRecordOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
 
         /// <inheritdoc />
         public void Execute(
             ResetFailedHandleRecordOp operation)
         {
-            this.stream.Execute(operation.Standardize());
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
         }
 
         /// <inheritdoc />
@@ -230,7 +280,8 @@ namespace Naos.Database.Domain
             ResetFailedHandleRecordOp operation)
         {
             this.Execute(operation);
-            await Task.FromResult(true); // just for await.
+
+            await Task.FromResult(true);
         }
     }
 }

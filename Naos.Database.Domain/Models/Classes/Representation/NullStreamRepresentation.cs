@@ -9,7 +9,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// A null object to be used as the id of an object in a <see cref="IReadWriteStream"/> that does not have an actual identifier.
+    /// A null object pattern implementation of an <see cref="IStreamRepresentation"/>.
     /// </summary>
     public partial class NullStreamRepresentation : IStreamRepresentation, IModelViaCodeGen
     {

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IStreamRepresentation.cs" company="Naos Project">
+// <copyright file="IHaveStreamRepresentation.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,13 +7,13 @@
 namespace Naos.Database.Domain
 {
     /// <summary>
-    /// Stream description to allow the <see cref="GetStreamFromRepresentationByNameProtocolFactory"/> to produce the correct stream.
+    /// Interface to expose a <see cref="IStreamRepresentation"/>.
     /// </summary>
-    public interface IStreamRepresentation
+    public interface IHaveStreamRepresentation
     {
         /// <summary>
-        /// Gets the name of the stream.
+        /// Gets the stream representation.
         /// </summary>
-        string Name { get; }
+        IStreamRepresentation StreamRepresentation { get; }
     }
 }

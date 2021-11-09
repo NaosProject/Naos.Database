@@ -8,23 +8,20 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Database.Domain;
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
-    using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
-    using DomainExtensions = OBeautifulCode.Serialization.DomainExtensions;
 
     /// <summary>
     /// In memory implementation of <see cref="StandardStreamBase"/>.
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
+    [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class MemoryStandardStream :
         StandardStreamBase
     {
@@ -234,9 +231,7 @@ namespace Naos.Database.Domain
                     {
                         foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
                         {
-                            var newHandlingList =
-                                this.locatorToHandlingEntriesByConcernMap[locator][concern]
-                                    .Where(HandlingPredicate);
+                            var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern].Where(HandlingPredicate);
                             this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
                             this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
                         }

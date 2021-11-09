@@ -9,24 +9,20 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Set of protocols to work with known identifier and/or object type.
-    /// Implements the <see cref="IStreamReadWithIdProtocols{TId}" />
-    /// Implements the <see cref="IStreamWriteProtocols{TId}" />.
+    /// Set of protocols to execute read and write operations on a stream,
+    /// with a typed identifier and without a typed record payload.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
-    /// <seealso cref="IStreamReadWithIdProtocols{TId}" />
-    /// <seealso cref="IStreamWriteWithIdProtocols{TId}" />
     public class StandardStreamReadWriteWithIdProtocols<TId> :
         IStreamReadWithIdProtocols<TId>,
         IStreamWriteWithIdProtocols<TId>
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "temp")]
         private readonly IStandardStream stream;
+
         private readonly ISyncAndAsyncReturningProtocol<GetResourceLocatorByIdOp<TId>, IResourceLocator> locatorProtocols;
 
         /// <summary>
@@ -49,10 +45,12 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardizedOperation = operation.Standardize(serializer, locator);
-            var record = this.stream.Execute(standardizedOperation);
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var record = this.stream.Execute(standardOp);
 
             if (record == null)
             {
@@ -69,6 +67,7 @@ namespace Naos.Database.Domain
                 record.Metadata.ObjectTimestampUtc);
 
             var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
+
             return result;
         }
 
@@ -76,8 +75,8 @@ namespace Naos.Database.Domain
         public async Task<StreamRecordWithId<TId>> ExecuteAsync(
             GetLatestRecordByIdOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -91,7 +90,9 @@ namespace Naos.Database.Domain
 
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var result = this.stream.Execute(operation.Standardize(serializer, locator));
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var result = this.stream.Execute(standardOp);
 
             return result;
         }
@@ -100,8 +101,8 @@ namespace Naos.Database.Domain
         public async Task<bool> ExecuteAsync(
             DoesAnyExistByIdOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -112,27 +113,30 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardizedOperation = operation.Standardize(serializer, locator);
-            var records = this.stream.Execute(standardizedOperation);
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var records = this.stream.Execute(standardOp);
 
             var result = records?.Select(
-                                      _ =>
-                                      {
-                                          var metadata = new StreamRecordMetadata<TId>(
-                                              operation.Id,
-                                              _.Metadata.SerializerRepresentation,
-                                              _.Metadata.TypeRepresentationOfId,
-                                              _.Metadata.TypeRepresentationOfObject,
-                                              _.Metadata.Tags,
-                                              _.Metadata.TimestampUtc,
-                                              _.Metadata.ObjectTimestampUtc);
+                    _ =>
+                    {
+                        var metadata = new StreamRecordMetadata<TId>(
+                            operation.Id,
+                            _.Metadata.SerializerRepresentation,
+                            _.Metadata.TypeRepresentationOfId,
+                            _.Metadata.TypeRepresentationOfObject,
+                            _.Metadata.Tags,
+                            _.Metadata.TimestampUtc,
+                            _.Metadata.ObjectTimestampUtc);
 
-                                          var localResult = new StreamRecordWithId<TId>(_.InternalRecordId, metadata, _.Payload);
-                                          return localResult;
-                                      })
-                                 .ToList();
+                        var streamRecord = new StreamRecordWithId<TId>(_.InternalRecordId, metadata, _.Payload);
+
+                        return streamRecord;
+                    })
+                .ToList();
 
             return result;
         }
@@ -141,8 +145,8 @@ namespace Naos.Database.Domain
         public async Task<IReadOnlyList<StreamRecordWithId<TId>>> ExecuteAsync(
             GetAllRecordsByIdOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -153,10 +157,12 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardizedOperation = operation.Standardize(serializer, locator);
-            var metadata = this.stream.Execute(standardizedOperation);
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var metadata = this.stream.Execute(standardOp);
 
             if (metadata == null)
             {
@@ -179,8 +185,8 @@ namespace Naos.Database.Domain
         public async Task<StreamRecordMetadata<TId>> ExecuteAsync(
             GetLatestRecordMetadataByIdOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
 
@@ -191,25 +197,28 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardizedOperation = operation.Standardize(serializer, locator);
-            var records = this.stream.Execute(standardizedOperation);
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var records = this.stream.Execute(standardOp);
 
             var result = records?.Select(
-                                      _ =>
-                                      {
-                                          var metadata = new StreamRecordMetadata<TId>(
-                                              operation.Id,
-                                              _.SerializerRepresentation,
-                                              _.TypeRepresentationOfId,
-                                              _.TypeRepresentationOfObject,
-                                              _.Tags,
-                                              _.TimestampUtc,
-                                              _.ObjectTimestampUtc);
-                                          return metadata;
-                                      })
-                                 .ToList();
+                    _ =>
+                    {
+                        var metadata = new StreamRecordMetadata<TId>(
+                            operation.Id,
+                            _.SerializerRepresentation,
+                            _.TypeRepresentationOfId,
+                            _.TypeRepresentationOfObject,
+                            _.Tags,
+                            _.TimestampUtc,
+                            _.ObjectTimestampUtc);
+
+                        return metadata;
+                    })
+                .ToList();
 
             return result;
         }
@@ -218,8 +227,8 @@ namespace Naos.Database.Domain
         public async Task<IReadOnlyList<StreamRecordMetadata<TId>>> ExecuteAsync(
             GetAllRecordsMetadataByIdOp<TId> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
     }

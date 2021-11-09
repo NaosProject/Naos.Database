@@ -12,15 +12,13 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// Set of protocols to handle a record in a stream.
+    /// Set of protocols to execute record handling operations
+    /// without a typed identifier and with a typed record payload.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="IStreamReadProtocols{TObject}" />
-    /// <seealso cref="IStreamWriteProtocols{TObject}" />
     public class StandardStreamRecordHandlingProtocols<TObject> :
         IStreamRecordHandlingProtocols<TObject>
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
         private readonly IStandardStream stream;
 
         /// <summary>
@@ -38,8 +36,12 @@ namespace Naos.Database.Domain
         public StreamRecord<TObject> Execute(
             TryHandleRecordOp<TObject> operation)
         {
-            var delegatedOperation = operation.Standardize();
-            var tryHandleResult = this.stream.Execute(delegatedOperation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var tryHandleResult = this.stream.Execute(standardOp);
+
             var record = tryHandleResult.RecordToHandle;
 
             if (record?.Payload == null)
@@ -48,7 +50,9 @@ namespace Naos.Database.Domain
             }
 
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
+
             return result;
         }
 
@@ -56,8 +60,8 @@ namespace Naos.Database.Domain
         public async Task<StreamRecord<TObject>> ExecuteAsync(
             TryHandleRecordOp<TObject> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
     }

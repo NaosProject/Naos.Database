@@ -271,8 +271,8 @@
     <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEventTest.designer.cs">
       <DependentUpon>HandlingForStreamEnabledEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\NullObjectPattern\NullIdentifierTest.cs" />
-    <Compile Include="Stream\NullObjectPattern\NullIdentifierTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\NullIdentifierTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\NullIdentifierTest.designer.cs">
       <DependentUpon>NullIdentifierTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CancelRunningHandleRecordOpTest.cs" />
@@ -328,7 +328,7 @@
     <Compile Include="Events\Classes\IdDeprecatedEvent{TId}Test.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOpTest.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBaseTest.designer.cs">
@@ -536,7 +536,7 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}Test.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.cs" />
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOpTest.cs" />
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOpTest.cs" />
     <Compile Include="Events\Classes\IdDeprecatedEvent{TId}Test.cs" />
     <Compile Include="Models\Classes\Stream\Management\CreateStreamResultTest.designer.cs">
       <DependentUpon>CreateStreamResultTest.cs</DependentUpon>
@@ -581,7 +581,7 @@
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}Test.designer.cs">
       <DependentUpon>StreamRecordWithId{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.designer.cs">
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOpTest.designer.cs">
@@ -631,19 +631,19 @@
     <Compile Include="Events\Classes\Write\UniqueLongIssuedEventTest.designer.cs">
       <DependentUpon>UniqueLongIssuedEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\FileStreamRepresentationTest.designer.cs">
+    <Compile Include="Models\Classes\Representation\FileStreamRepresentationTest.designer.cs">
       <DependentUpon>FileStreamRepresentationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\MemoryStreamRepresentationTest.designer.cs">
+    <Compile Include="Models\Classes\Representation\MemoryStreamRepresentationTest.designer.cs">
       <DependentUpon>MemoryStreamRepresentationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\NullStreamRepresentationTest.designer.cs">
+    <Compile Include="Models\Classes\Representation\NullStreamRepresentationTest.designer.cs">
       <DependentUpon>NullStreamRepresentationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentationBaseTest.designer.cs">
+    <Compile Include="Models\Classes\Representation\StreamRepresentationBaseTest.designer.cs">
       <DependentUpon>StreamRepresentationBaseTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\Representation\StreamRepresentationTest.designer.cs">
+    <Compile Include="Models\Classes\Representation\StreamRepresentationTest.designer.cs">
       <DependentUpon>StreamRepresentationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Stream\TagMatchExtensionsTests.cs" />
@@ -656,20 +656,20 @@
     <Compile Include="Events\Classes\Management\PruneOperationExecutedEventTest.cs" />
     <Compile Include="Events\Classes\Management\PruneOperationRequestedEventTest.cs" />
     <Compile Include="Models\Classes\Stream\Management\PruneSummaryTest.cs" />
-    <Compile Include="Stream\StreamExtensionsTests.cs" />
+    <Compile Include="Logic\Stream\StreamExtensionsTests.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}Test.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}Test.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}Test.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}Test.cs" />
-    <Compile Include="Stream\Representation\FileStreamRepresentationTest.cs" />
+    <Compile Include="Models\Classes\Representation\FileStreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\FileSystemDatabaseLocatorTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOpTest.cs" />
-    <Compile Include="Stream\Factory\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs" />
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\MemoryDatabaseLocatorTest.cs" />
-    <Compile Include="Stream\Representation\MemoryStreamRepresentationTest.cs" />
+    <Compile Include="Models\Classes\Representation\MemoryStreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\NullDatabaseLocatorTest.cs" />
-    <Compile Include="Stream\Representation\NullStreamRepresentationTest.cs" />
+    <Compile Include="Models\Classes\Representation\NullStreamRepresentationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutOp{TObject}Test.cs" />
@@ -680,8 +680,8 @@
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadataTest.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordTest.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}Test.cs" />
-    <Compile Include="Stream\Representation\StreamRepresentationBaseTest.cs" />
-    <Compile Include="Stream\Representation\StreamRepresentationTest.cs" />
+    <Compile Include="Models\Classes\Representation\StreamRepresentationBaseTest.cs" />
+    <Compile Include="Models\Classes\Representation\StreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\Stream\Common\TypeRepresentationWithAndWithoutVersionTest.cs" />
     <Compile Include="Events\Classes\Write\UniqueLongIssuedEventTest.cs" />
     <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifierTest.cs" />
@@ -722,7 +722,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\Interfaces\" />
-    <Folder Include="Logic\" />
     <Folder Include="Protocols\ResourceLocation\" />
   </ItemGroup>
   <ItemGroup>

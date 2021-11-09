@@ -12,16 +12,14 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// Set of protocols to handle a record in a stream.
+    /// Set of protocols to execute record handling operations
+    /// with a typed identifier and with a typed record payload.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="IStreamReadWithIdProtocols{TId,TObject}" />
-    /// <seealso cref="IStreamWriteWithIdProtocols{TId,TObject}" />
     public class StandardStreamRecordWithIdHandlingProtocols<TId, TObject> :
         IStreamRecordWithIdHandlingProtocols<TId, TObject>
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Temporary.")]
         private readonly IStandardStream stream;
 
         /// <summary>
@@ -32,6 +30,7 @@ namespace Naos.Database.Domain
             IStandardStream stream)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
+
             this.stream = stream;
         }
 
@@ -39,8 +38,12 @@ namespace Naos.Database.Domain
         public StreamRecordWithId<TId, TObject> Execute(
             TryHandleRecordWithIdOp<TId, TObject> operation)
         {
-            var delegatedOperation = operation.Standardize();
-            var tryHandleResult = this.stream.Execute(delegatedOperation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            var tryHandleResult = this.stream.Execute(standardOp);
+
             var record = tryHandleResult.RecordToHandle;
 
             if (record?.Payload == null)
@@ -49,8 +52,11 @@ namespace Naos.Database.Domain
             }
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);
+
             var payload = record.Payload.DeserializePayloadUsingSpecificSerializer<TObject>(serializer);
+
             var id = serializer.Deserialize<TId>(record.Metadata.StringSerializedId);
+
             var metadata = new StreamRecordMetadata<TId>(
                 id,
                 record.Metadata.SerializerRepresentation,
@@ -61,6 +67,7 @@ namespace Naos.Database.Domain
                 record.Metadata.ObjectTimestampUtc);
 
             var result = new StreamRecordWithId<TId, TObject>(record.InternalRecordId, metadata, payload);
+
             return result;
         }
 
@@ -68,8 +75,8 @@ namespace Naos.Database.Domain
         public async Task<StreamRecordWithId<TId, TObject>> ExecuteAsync(
             TryHandleRecordWithIdOp<TId, TObject> operation)
         {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
+            var result = await Task.FromResult(this.Execute(operation));
+
             return result;
         }
     }

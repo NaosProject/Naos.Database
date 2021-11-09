@@ -45,7 +45,7 @@ namespace Naos.Database.Domain.Test
 
                            return result;
                        },
-                       ExpectedExceptionType = typeof(ArgumentException),
+                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                        ExpectedExceptionMessageContains = new[] { "Timestamp must be UTC", },
                    })
                .AddScenario(() =>

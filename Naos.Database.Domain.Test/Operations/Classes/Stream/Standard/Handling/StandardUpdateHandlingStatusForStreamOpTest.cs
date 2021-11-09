@@ -34,7 +34,7 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                     {
-                        Name = "constructor should throw ArgumentException when parameter 'newStatus' is neither HandlingStatus.DisabledForStream nor HandlingStatus.AvailableByDefault",
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'newStatus' is neither HandlingStatus.DisabledForStream nor HandlingStatus.AvailableByDefault",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
@@ -47,8 +47,8 @@ namespace Naos.Database.Domain.Test
 
                             return result;
                         },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "details", "white space", },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "newStatus", "DisabledForStream", "AvailableByDefault" },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>

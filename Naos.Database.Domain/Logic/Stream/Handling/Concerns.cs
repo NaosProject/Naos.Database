@@ -43,7 +43,7 @@ namespace Naos.Database.Domain
 
             if (concern == RecordHandlingConcern)
             {
-                throw new ArgumentException(Invariant($"Concern '{concern}' is reserved for internal use and may not be used."));
+                throw new ArgumentException(Invariant($"Specified concern '{concern}' is reserved for internal use and may not be used."));
             }
         }
     }

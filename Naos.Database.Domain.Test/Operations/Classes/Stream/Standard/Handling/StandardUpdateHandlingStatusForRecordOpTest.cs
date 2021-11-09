@@ -30,6 +30,7 @@ namespace Naos.Database.Domain.Test
         static StandardUpdateHandlingStatusForRecordOpTest()
         {
             ConstructorArgumentValidationTestScenarios
+                .RemoveAllScenarios()
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                     {
@@ -212,7 +213,7 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", "is an empty enumerable", },
+                        ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", "contains an element that is equal to", "Unknown" },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>

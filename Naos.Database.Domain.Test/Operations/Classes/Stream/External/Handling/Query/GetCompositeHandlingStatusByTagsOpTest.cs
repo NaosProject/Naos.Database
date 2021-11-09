@@ -70,7 +70,7 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
                     {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is reserved",
+                        Name = "constructor should throw ArgumentException when parameter 'concern' is reserved",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
@@ -82,7 +82,7 @@ namespace Naos.Database.Domain.Test
 
                             return result;
                         },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used" },
                     })
                 .AddScenario(() =>

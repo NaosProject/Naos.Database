@@ -121,7 +121,7 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                        ExpectedExceptionMessageContains = new[] { "orderRecordsBy", "Unknown", },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>

@@ -82,6 +82,7 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         PropertyName = "WithoutVersion",
+                        CompareActualToExpectedUsing = CompareActualToExpectedUsing.ValueEquality,
                     });
         }
     }

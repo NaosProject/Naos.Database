@@ -45,7 +45,7 @@ namespace Naos.Database.Domain
         {
             concern.ThrowIfInvalidOrReservedConcern();
             newStatus.MustForArg(nameof(newStatus)).NotBeEqualToAnyOf(new[] { HandlingStatus.Unknown, HandlingStatus.DisabledForStream });
-            newStatus.MustForArg(nameof(acceptableCurrentStatuses)).NotBeNullNorEmptyEnumerable().And().Each().NotBeEqualTo(HandlingStatus.Unknown);
+            acceptableCurrentStatuses.MustForArg(nameof(acceptableCurrentStatuses)).NotBeNullNorEmptyEnumerable().And().Each().NotBeEqualTo(HandlingStatus.Unknown);
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.InternalRecordId = internalRecordId;

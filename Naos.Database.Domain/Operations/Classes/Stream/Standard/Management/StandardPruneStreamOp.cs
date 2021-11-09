@@ -36,7 +36,7 @@ namespace Naos.Database.Domain
             string details,
             IResourceLocator specifiedResourceLocator = null)
         {
-            if (internalRecordId == null && internalRecordDate == null)
+            if ((internalRecordId == null) && (internalRecordDate == null))
             {
                 throw new ArgumentException(Invariant($"Either '{nameof(internalRecordId)}' or '{nameof(internalRecordDate)}' must be specified."));
             }

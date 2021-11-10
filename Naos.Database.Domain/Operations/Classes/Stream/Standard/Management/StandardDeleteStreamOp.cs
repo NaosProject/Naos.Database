@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardDeleteStreamOp : VoidOperationBase
+    public partial class StandardDeleteStreamOp : VoidOperationBase, IHaveStreamRepresentation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardDeleteStreamOp"/> class.
@@ -39,9 +39,7 @@ namespace Naos.Database.Domain
             this.StreamNotFoundStrategy = streamNotFoundStrategy;
         }
 
-        /// <summary>
-        /// Gets a value that determines what to do when the stream is not found.
-        /// </summary>
+        /// <inheritdoc />
         public IStreamRepresentation StreamRepresentation { get; private set; }
 
         /// <summary>

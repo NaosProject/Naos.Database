@@ -14,6 +14,11 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the stream representation.
         /// </summary>
+        /// <remarks>
+        /// This enables the stream to be passed thru process boundaries.
+        /// The stream provides a representation of itself, which can be serialized
+        /// and then later deserialized and available to execute operations against.
+        /// </remarks>
         IStreamRepresentation StreamRepresentation { get; }
     }
 }

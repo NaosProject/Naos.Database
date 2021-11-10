@@ -14,7 +14,8 @@ namespace Naos.Database.Domain
     /// </summary>
     public partial class GetStreamFromRepresentationOp :
         ReturningOperationBase<IStreamRepresentation>,
-        IReturningOperation<IStream>
+        IReturningOperation<IStream>,
+        IHaveStreamRepresentation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetStreamFromRepresentationOp"/> class.
@@ -28,9 +29,7 @@ namespace Naos.Database.Domain
             this.StreamRepresentation = streamRepresentation;
         }
 
-        /// <summary>
-        /// Gets the stream representation.
-        /// </summary>
+        /// <inheritdoc />
         public IStreamRepresentation StreamRepresentation { get; private set; }
     }
 }

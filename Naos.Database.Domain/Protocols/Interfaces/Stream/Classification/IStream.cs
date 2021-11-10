@@ -11,22 +11,12 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Stream interface, a stream is a list of records ordered by timestamp.
     /// </summary>
-    public interface IStream
+    public interface IStream : IHaveStreamRepresentation
     {
         /// <summary>
         /// Gets the name of the stream.
         /// </summary>
         string Name { get; }
-
-        /// <summary>
-        /// Gets a representation of the stream.
-        /// </summary>
-        /// <remarks>
-        /// This enables the stream to be passed thru process boundaries.
-        /// The stream provides a representation of itself, which can be serialized
-        /// and then later deserialized and available to execute operations against.
-        /// </remarks>
-        IStreamRepresentation StreamRepresentation { get; }
 
         /// <summary>
         /// Gets the resource locator protocols to use.

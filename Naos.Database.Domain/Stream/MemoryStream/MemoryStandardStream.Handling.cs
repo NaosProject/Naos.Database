@@ -10,27 +10,95 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
-    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
 
-    /// <summary>
-    /// In memory implementation of <see cref="IReadWriteStream"/>.
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
     public partial class MemoryStandardStream
     {
         /// <inheritdoc />
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
+        public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
+            StandardGetHandlingHistoryOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            lock (this.handlingLock)
+            {
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+
+                var entriesForInternalRecordId = entries.Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId).ToList();
+                return entriesForInternalRecordId;
+            }
+        }
+
+        /// <inheritdoc />
+        public override IReadOnlyCollection<HandlingStatus> Execute(
+            StandardGetHandlingStatusOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            lock (this.handlingLock)
+            {
+                var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingConcern);
+                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.DisabledForStream)
+                {
+                    return new[] { HandlingStatus.DisabledForStream };
+                }
+
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+
+                bool HandlingEntryMatchingPredicate(
+                    StreamRecordHandlingEntry entry)
+                {
+                    var matchResult = false;
+
+                    if (operation.InternalRecordId != null)
+                    {
+                        matchResult = entry.Metadata.InternalRecordId == operation.InternalRecordId;
+                    }
+
+                    if (operation.IdsToMatch != null && operation.IdsToMatch.Any())
+                    {
+                        var operationVersionMatchStrategy = operation.VersionMatchStrategy ?? VersionMatchStrategy.Any;
+                        matchResult = operation.IdsToMatch.Any(
+                            __ => __.StringSerializedId.Equals(entry.Metadata.StringSerializedId)
+                               && __.IdentifierType.EqualsAccordingToStrategy(
+                                      entry.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                          operationVersionMatchStrategy),
+                                      operationVersionMatchStrategy));
+                    }
+
+                    if (operation.TagsToMatch != null && operation.TagsToMatch.Any())
+                    {
+                        matchResult = operation.TagsToMatch.FuzzyMatchAccordingToStrategy(
+                            entry.Metadata.Tags,
+                            operation.TagMatchStrategy);
+                    }
+
+                    return matchResult;
+                }
+
+                var result =
+                    entries.Where(HandlingEntryMatchingPredicate)
+                           .GroupBy(_ => _.Metadata.InternalRecordId)
+                           .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
+                           .ToList();
+
+                return result;
+            }
+        }
+
+        /// <inheritdoc />
         public override TryHandleRecordResult Execute(
             StandardTryHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
+
             var allLocators = operation.SpecifiedResourceLocator != null
                 ? new[]
                   {
@@ -193,83 +261,11 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override IReadOnlyCollection<HandlingStatus> Execute(
-            StandardGetHandlingStatusOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-            lock (this.handlingLock)
-            {
-                var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingConcern);
-                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.DisabledForStream)
-                {
-                    return new[] { HandlingStatus.DisabledForStream };
-                }
-
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-
-                bool HandlingEntryMatchingPredicate(
-                    StreamRecordHandlingEntry entry)
-                {
-                    var matchResult = false;
-
-                    if (operation.InternalRecordId != null)
-                    {
-                        matchResult = entry.Metadata.InternalRecordId == operation.InternalRecordId;
-                    }
-
-                    if (operation.IdsToMatch != null && operation.IdsToMatch.Any())
-                    {
-                        var operationVersionMatchStrategy = operation.VersionMatchStrategy ?? VersionMatchStrategy.Any;
-                        matchResult = operation.IdsToMatch.Any(
-                            __ => __.StringSerializedId.Equals(entry.Metadata.StringSerializedId)
-                               && __.IdentifierType.EqualsAccordingToStrategy(
-                                      entry.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                                          operationVersionMatchStrategy),
-                                      operationVersionMatchStrategy));
-                    }
-
-                    if (operation.TagsToMatch != null && operation.TagsToMatch.Any())
-                    {
-                        matchResult = operation.TagsToMatch.FuzzyMatchAccordingToStrategy(
-                            entry.Metadata.Tags,
-                            operation.TagMatchStrategy);
-                    }
-
-                    return matchResult;
-                }
-
-                var result =
-                    entries.Where(HandlingEntryMatchingPredicate)
-                           .GroupBy(_ => _.Metadata.InternalRecordId)
-                           .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
-                           .ToList();
-
-                return result;
-            }
-        }
-
-        /// <inheritdoc />
-        public override IReadOnlyList<StreamRecordHandlingEntry> Execute(
-            StandardGetHandlingHistoryOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.handlingLock)
-            {
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-
-                var entriesForInternalRecordId = entries.Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId).ToList();
-                return entriesForInternalRecordId;
-            }
-        }
-
-        /// <inheritdoc />
         public override void Execute(
             StandardUpdateHandlingStatusForRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
+
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.handlingLock)
             {
@@ -287,22 +283,22 @@ namespace Naos.Database.Domain
                 switch (operation.NewStatus)
                 {
                     case HandlingStatus.DisabledForRecord:
-                        this.CancelHandleRecordExecutionRequest(operation, mostRecent);
+                        this.MakeHandlingDisabledForRecord(operation, mostRecent);
                         break;
                     case HandlingStatus.AvailableAfterExternalCancellation:
-                        this.CancelRunningHandleRecordExecution(operation, mostRecent);
+                        this.MakeHandlingAvailableAfterExternalCancellation(operation, mostRecent);
                         break;
                     case HandlingStatus.Completed:
-                        this.CompleteRunningHandleRecordExecution(operation, mostRecent);
+                        this.MakeHandlingCompleted(operation, mostRecent);
                         break;
                     case HandlingStatus.Failed:
-                        this.FailRunningHandleRecordExecution(operation, mostRecent);
+                        this.MakeHandlingFailed(operation, mostRecent);
                         break;
                     case HandlingStatus.AvailableAfterSelfCancellation:
-                        this.SelfCancelRunningHandleRecordExecution(operation, mostRecent);
+                        this.MakeHandlingAvailableAfterSelfCancellation(operation, mostRecent);
                         break;
                     case HandlingStatus.AvailableAfterFailure:
-                        this.RetryFailedHandleRecordExecution(operation, mostRecent);
+                        this.MakeHandlingAvailableAfterFailure(operation, mostRecent);
                         break;
                     default:
                         throw new NotSupportedException(Invariant($"Unsupported {nameof(HandlingStatus)} '{operation.NewStatus}' to update handling of {nameof(operation.InternalRecordId)}: {operation.InternalRecordId}."));
@@ -310,7 +306,64 @@ namespace Naos.Database.Domain
             }
         }
 
-        private void RetryFailedHandleRecordExecution(
+        /// <inheritdoc />
+        public override void Execute(
+            StandardUpdateHandlingStatusForStreamOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var newStatus = operation.NewStatus;
+            var concern = Concerns.RecordHandlingConcern;
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
+            var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+            var currentStatus = mostRecentEntry?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
+
+            var expectedStatus = newStatus == HandlingStatus.DisabledForStream
+                ? HandlingStatus.AvailableByDefault
+                : HandlingStatus.DisabledForStream;
+
+            if (currentStatus != expectedStatus)
+            {
+                throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecentEntry?.Metadata.Status.ToString() ?? "<null entry>"}."));
+            }
+
+            var utcNow = DateTime.UtcNow;
+            IEvent statusEvent;
+            switch (newStatus)
+            {
+                case HandlingStatus.DisabledForStream:
+                    statusEvent = new HandlingForStreamDisabledEvent(utcNow, operation.Details);
+                    break;
+                case HandlingStatus.AvailableByDefault:
+                    statusEvent = new HandlingForStreamEnabledEvent(utcNow, operation.Details);
+                    break;
+                default:
+                    throw new NotSupportedException(Invariant($"{nameof(HandlingStatus)} {newStatus} is not supported."));
+            }
+
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var payload =
+                statusEvent.ToDescribedSerializationUsingSpecificFactory(
+                    this.DefaultSerializerRepresentation,
+                    this.SerializerFactory,
+                    this.DefaultSerializationFormat);
+
+            var metadata = new StreamRecordHandlingEntryMetadata(
+                Concerns.GlobalBlockingRecordId,
+                concern,
+                newStatus,
+                null,
+                this.DefaultSerializerRepresentation,
+                NullIdentifier.TypeRepresentation,
+                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
+                operation.Tags,
+                utcNow);
+
+            this.WriteHandlingEntryToMemoryMap(locator, entryId, concern, metadata, payload);
+        }
+
+        private void MakeHandlingAvailableAfterFailure(
             StandardUpdateHandlingStatusForRecordOp operation,
             StreamRecordHandlingEntry mostRecent)
         {
@@ -343,7 +396,7 @@ namespace Naos.Database.Domain
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
         }
 
-        private void SelfCancelRunningHandleRecordExecution(
+        private void MakeHandlingAvailableAfterSelfCancellation(
             StandardUpdateHandlingStatusForRecordOp operation,
             StreamRecordHandlingEntry mostRecent)
         {
@@ -377,7 +430,7 @@ namespace Naos.Database.Domain
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
         }
 
-        private void FailRunningHandleRecordExecution(
+        private void MakeHandlingFailed(
             StandardUpdateHandlingStatusForRecordOp operation,
             StreamRecordHandlingEntry mostRecent)
         {
@@ -411,7 +464,7 @@ namespace Naos.Database.Domain
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
         }
 
-        private void CompleteRunningHandleRecordExecution(
+        private void MakeHandlingCompleted(
             StandardUpdateHandlingStatusForRecordOp operation,
             StreamRecordHandlingEntry mostRecent)
         {
@@ -444,7 +497,7 @@ namespace Naos.Database.Domain
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
         }
 
-        private void CancelRunningHandleRecordExecution(
+        private void MakeHandlingAvailableAfterExternalCancellation(
             StandardUpdateHandlingStatusForRecordOp operation,
             StreamRecordHandlingEntry mostRecent)
         {
@@ -478,7 +531,7 @@ namespace Naos.Database.Domain
             this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
         }
 
-        private void CancelHandleRecordExecutionRequest(
+        private void MakeHandlingDisabledForRecord(
             StandardUpdateHandlingStatusForRecordOp operation,
             StreamRecordHandlingEntry mostRecent)
         {
@@ -531,6 +584,7 @@ namespace Naos.Database.Domain
                 if (!this.locatorToHandlingEntriesByConcernMap.ContainsKey(memoryDatabaseLocator))
                 {
                     var newConcernToEntriesMap = new Dictionary<string, List<StreamRecordHandlingEntry>>();
+
                     this.locatorToHandlingEntriesByConcernMap.Add(memoryDatabaseLocator, newConcernToEntriesMap);
                 }
 

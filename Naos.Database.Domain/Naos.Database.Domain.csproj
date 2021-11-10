@@ -497,6 +497,7 @@
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardPruneStreamOp.designer.cs">
       <DependentUpon>StandardPruneStreamOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Management.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Handling.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Write.cs" />
     <Compile Include="Stream\MemoryStream\MemoryStandardStream.Read.cs" />

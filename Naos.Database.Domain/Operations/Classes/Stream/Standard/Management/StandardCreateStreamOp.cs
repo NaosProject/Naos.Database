@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardCreateStreamOp : ReturningOperationBase<CreateStreamResult>
+    public partial class StandardCreateStreamOp : ReturningOperationBase<CreateStreamResult>, IHaveStreamRepresentation
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardCreateStreamOp"/> class.
@@ -39,9 +39,7 @@ namespace Naos.Database.Domain
             this.ExistingStreamStrategy = existingStreamStrategy;
         }
 
-        /// <summary>
-        /// Gets a representation of the stream.
-        /// </summary>
+        /// <inheritdoc />
         public IStreamRepresentation StreamRepresentation { get; private set; }
 
         /// <summary>

@@ -8,42 +8,29 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
-    using Naos.Database.Domain;
-
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Serialization;
-    using OBeautifulCode.Type;
-    using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
-    using DomainExtensions = OBeautifulCode.Serialization.DomainExtensions;
 
-    /// <summary>
-    /// In memory implementation of <see cref="IReadWriteStream"/>.
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public partial class MemoryStandardStream :
-        StandardStreamBase
+    public partial class MemoryStandardStream
     {
-        /// <summary>
-        /// Executes the specified operation.
-        /// </summary>
-        /// <param name="operation">The operation.</param>
-        /// <returns>System.Int64.</returns>
+        /// <inheritdoc />
         public override long Execute(
             StandardGetNextUniqueLongOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
+
             var result = Interlocked.Increment(ref this.uniqueLongForExternalProtocol);
+
             return result;
         }
 
         /// <inheritdoc />
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
+        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public override PutRecordResult Execute(
             StandardPutRecordOp operation)
         {
@@ -54,10 +41,13 @@ namespace Naos.Database.Domain
             lock (this.streamLock)
             {
                 var existingRecordIds = new List<long>();
+
                 var exists = this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var recordPartition);
+
                 if (!exists)
                 {
                     recordPartition = new List<StreamRecord>();
+
                     this.locatorToRecordPartitionMap.Add(memoryDatabaseLocator, recordPartition);
                 }
 
@@ -66,12 +56,13 @@ namespace Naos.Database.Domain
                  || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundById
                  || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
                         ? recordPartition.Where(
-                                              _ => _.Metadata.FuzzyMatchTypesAndId(
-                                                  operation.Metadata.StringSerializedId,
-                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
-                                                  null,
-                                                  operation.VersionMatchStrategy))
-                                         .ToList() : new List<StreamRecord>();
+                                _ => _.Metadata.FuzzyMatchTypesAndId(
+                                    operation.Metadata.StringSerializedId,
+                                    operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
+                                    null,
+                                    operation.VersionMatchStrategy))
+                            .ToList()
+                        : new List<StreamRecord>();
 
                 var matchesIdAndObject =
                     operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
@@ -80,14 +71,16 @@ namespace Naos.Database.Domain
                  || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndType
                  || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
                         ? recordPartition.Where(
-                                              _ => _.Metadata.FuzzyMatchTypesAndId(
-                                                  operation.Metadata.StringSerializedId,
-                                                  operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
-                                                  operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
-                                                  operation.VersionMatchStrategy))
-                                         .ToList() : new List<StreamRecord>();
+                                _ => _.Metadata.FuzzyMatchTypesAndId(
+                                    operation.Metadata.StringSerializedId,
+                                    operation.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
+                                    operation.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(operation.VersionMatchStrategy),
+                                    operation.VersionMatchStrategy))
+                            .ToList()
+                        : new List<StreamRecord>();
 
                 var recordIdsToPrune = new List<long>();
+
                 switch (operation.ExistingRecordStrategy)
                 {
                     case ExistingRecordStrategy.None:
@@ -108,8 +101,7 @@ namespace Naos.Database.Domain
 
                         break;
                     case ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent:
-                        var matchesThrow =
-                            matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
+                        var matchesThrow = matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
 
                         if (matchesThrow.Any())
                         {
@@ -132,8 +124,7 @@ namespace Naos.Database.Domain
 
                         break;
                     case ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent:
-                        var matchesDoNotWrite =
-                            matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
+                        var matchesDoNotWrite = matchesIdAndObject.Where(_ => _.Payload.Equals(operation.Payload)).ToList();
 
                         if (matchesDoNotWrite.Any())
                         {
@@ -144,13 +135,10 @@ namespace Naos.Database.Domain
                     case ExistingRecordStrategy.PruneIfFoundById:
                         if (operation.RecordRetentionCount != null && matchesId.Count > operation.RecordRetentionCount - 1)
                         {
-                            existingRecordIds.AddRange(
-                                matchesId
-                                   .Select(_ => _.InternalRecordId)
-                                   .ToList());
+                            existingRecordIds.AddRange(matchesId.Select(_ => _.InternalRecordId).ToList());
 
-                            var recordsToDeleteById =
-                                matchesId.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                            var recordsToDeleteById = matchesId.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+
                             recordIdsToPrune.AddRange(recordsToDeleteById.Select(_ => _.InternalRecordId));
                         }
 
@@ -158,20 +146,20 @@ namespace Naos.Database.Domain
                     case ExistingRecordStrategy.PruneIfFoundByIdAndType:
                         if (operation.RecordRetentionCount != null && matchesIdAndObject.Count > operation.RecordRetentionCount - 1)
                         {
-                            existingRecordIds.AddRange(
-                                matchesIdAndObject
-                                   .Select(_ => _.InternalRecordId)
-                                   .ToList());
+                            existingRecordIds.AddRange(matchesIdAndObject.Select(_ => _.InternalRecordId).ToList());
 
-                            var recordsToDeleteById =
-                                matchesIdAndObject.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                            var recordsToDeleteById = matchesIdAndObject.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+
                             recordIdsToPrune.AddRange(recordsToDeleteById.Select(_ => _.InternalRecordId));
                         }
 
                         break;
+                    default:
+                        throw new NotSupportedException(Invariant($"This {nameof(ExistingRecordStrategy)} is not supported: {operation.ExistingRecordStrategy}."));
                 }
 
                 long id;
+
                 if (operation.InternalRecordId != null)
                 {
                     if (recordPartition.Any(_ => _.InternalRecordId == operation.InternalRecordId))
@@ -189,10 +177,14 @@ namespace Naos.Database.Domain
                 }
 
                 var itemToAdd = new StreamRecord(id, operation.Metadata, operation.Payload);
+
                 recordPartition.Add(itemToAdd);
+
                 recordPartition.RemoveAll(_ => recordIdsToPrune.Contains(_.InternalRecordId));
 
-                return new PutRecordResult(id, existingRecordIds, recordIdsToPrune);
+                var result = new PutRecordResult(id, existingRecordIds, recordIdsToPrune);
+
+                return result;
             }
         }
     }

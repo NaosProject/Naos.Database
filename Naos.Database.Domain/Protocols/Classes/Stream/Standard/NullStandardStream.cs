@@ -8,11 +8,13 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using OBeautifulCode.Serialization;
 
     /// <summary>
     /// A null object pattern implementation of an <see cref="IStandardStream"/>.
     /// </summary>
+    [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "'Stream' is the best term we could come up with; it's potential confusion with System.IO.Stream was debated.")]
     public class NullStandardStream : IStandardStream
     {
         /// <inheritdoc />

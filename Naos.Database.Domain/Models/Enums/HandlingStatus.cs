@@ -49,12 +49,12 @@ namespace Naos.Database.Domain
         AvailableAfterFailure,
 
         /// <summary>
-        /// The record is available to be handled for a specified concern after it was <see cref="Running"/> and then externally cancelled.
+        /// The record is available to be handled for a specified concern after it was <see cref="Running"/> and then externally canceled.
         /// </summary>
         AvailableAfterExternalCancellation,
 
         /// <summary>
-        /// The record is available to be handled for a specified concern after it was <see cref="Running"/> and then it cancelled itself.
+        /// The record is available to be handled for a specified concern after it was <see cref="Running"/> and then it canceled itself.
         /// </summary>
         AvailableAfterSelfCancellation,
 

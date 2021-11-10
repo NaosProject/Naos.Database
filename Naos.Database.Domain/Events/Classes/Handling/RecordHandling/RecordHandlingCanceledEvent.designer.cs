@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class RecordHandlingCancelledEvent : IModel<RecordHandlingCancelledEvent>
+    public partial class RecordHandlingCanceledEvent : IModel<RecordHandlingCanceledEvent>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="RecordHandlingCancelledEvent"/> are equal.
+        /// Determines whether two objects of type <see cref="RecordHandlingCanceledEvent"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(RecordHandlingCancelledEvent left, RecordHandlingCancelledEvent right)
+        public static bool operator ==(RecordHandlingCanceledEvent left, RecordHandlingCanceledEvent right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="RecordHandlingCancelledEvent"/> are not equal.
+        /// Determines whether two objects of type <see cref="RecordHandlingCanceledEvent"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(RecordHandlingCancelledEvent left, RecordHandlingCancelledEvent right) => !(left == right);
+        public static bool operator !=(RecordHandlingCanceledEvent left, RecordHandlingCanceledEvent right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(RecordHandlingCancelledEvent other)
+        public bool Equals(RecordHandlingCanceledEvent other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -78,7 +78,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as RecordHandlingCancelledEvent);
+        public override bool Equals(object obj) => this == (obj as RecordHandlingCanceledEvent);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -89,7 +89,7 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new RecordHandlingCancelledEvent DeepClone() => (RecordHandlingCancelledEvent)this.DeepCloneInternal();
+        public new RecordHandlingCanceledEvent DeepClone() => (RecordHandlingCanceledEvent)this.DeepCloneInternal();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
@@ -111,7 +111,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override EventBase DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new RecordHandlingCancelledEvent(
+            var result = new RecordHandlingCanceledEvent(
                                  this.InternalRecordId.DeepClone(),
                                  this.Concern?.DeepClone(),
                                  timestampUtc,
@@ -140,7 +140,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override HandlingEventBase DeepCloneWithDetails(string details)
         {
-            var result = new RecordHandlingCancelledEvent(
+            var result = new RecordHandlingCanceledEvent(
                                  this.InternalRecordId.DeepClone(),
                                  this.Concern?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
@@ -169,7 +169,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override RecordHandlingEventBase DeepCloneWithConcern(string concern)
         {
-            var result = new RecordHandlingCancelledEvent(
+            var result = new RecordHandlingCanceledEvent(
                                  this.InternalRecordId.DeepClone(),
                                  concern,
                                  this.TimestampUtc.DeepClone(),
@@ -198,7 +198,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override RecordHandlingEventBase DeepCloneWithInternalRecordId(long internalRecordId)
         {
-            var result = new RecordHandlingCancelledEvent(
+            var result = new RecordHandlingCanceledEvent(
                                  internalRecordId,
                                  this.Concern?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
@@ -211,7 +211,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override EventBase DeepCloneInternal()
         {
-            var result = new RecordHandlingCancelledEvent(
+            var result = new RecordHandlingCanceledEvent(
                                  this.InternalRecordId.DeepClone(),
                                  this.Concern?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
@@ -224,7 +224,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.RecordHandlingCancelledEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.RecordHandlingCanceledEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

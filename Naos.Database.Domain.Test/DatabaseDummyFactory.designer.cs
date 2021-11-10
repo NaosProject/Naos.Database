@@ -254,12 +254,12 @@ namespace Naos.Database.Domain.Test
                         typeof(HandlingForStreamDisabledEvent),
                         typeof(HandlingForStreamEnabledEvent),
                         typeof(RecordHandlingAvailableEvent),
-                        typeof(RecordHandlingCancelledEvent),
+                        typeof(RecordHandlingCanceledEvent),
                         typeof(RecordHandlingCompletedEvent),
                         typeof(RecordHandlingFailedEvent),
                         typeof(RecordHandlingFailureResetEvent),
                         typeof(RecordHandlingRunningEvent),
-                        typeof(RecordHandlingSelfCancelledEvent)
+                        typeof(RecordHandlingSelfCanceledEvent)
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
@@ -341,7 +341,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneRequestCancelledEvent(
+                () => new PruneRequestCanceledEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>()));
 
@@ -398,7 +398,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingCancelledEvent(
+                () => new RecordHandlingCanceledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>(),
@@ -418,12 +418,12 @@ namespace Naos.Database.Domain.Test
                     {
                         typeof(HandlingForRecordDisabledEvent),
                         typeof(RecordHandlingAvailableEvent),
-                        typeof(RecordHandlingCancelledEvent),
+                        typeof(RecordHandlingCanceledEvent),
                         typeof(RecordHandlingCompletedEvent),
                         typeof(RecordHandlingFailedEvent),
                         typeof(RecordHandlingFailureResetEvent),
                         typeof(RecordHandlingRunningEvent),
-                        typeof(RecordHandlingSelfCancelledEvent)
+                        typeof(RecordHandlingSelfCanceledEvent)
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
@@ -457,7 +457,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingSelfCancelledEvent(
+                () => new RecordHandlingSelfCanceledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>(),

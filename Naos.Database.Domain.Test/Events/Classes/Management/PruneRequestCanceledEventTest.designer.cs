@@ -33,37 +33,37 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class PruneRequestCancelledEventTest
+    public static partial class PruneRequestCanceledEventTest
     {
-        private static readonly StringRepresentationTestScenarios<PruneRequestCancelledEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<PruneRequestCancelledEvent>()
+        private static readonly StringRepresentationTestScenarios<PruneRequestCanceledEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<PruneRequestCanceledEvent>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<PruneRequestCancelledEvent>
+                new StringRepresentationTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestCancelledEvent>();
+                        var systemUnderTest = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<PruneRequestCancelledEvent>
+                        var result = new SystemUnderTestExpectedStringRepresentation<PruneRequestCanceledEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneRequestCancelledEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneRequestCanceledEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<PruneRequestCancelledEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<PruneRequestCancelledEvent>()
+        private static readonly ConstructorArgumentValidationTestScenarios<PruneRequestCanceledEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<PruneRequestCanceledEvent>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestCancelledEvent>
+                new ConstructorArgumentValidationTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestCancelledEvent>();
+                        var referenceObject = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var result = new PruneRequestCancelledEvent(
+                        var result = new PruneRequestCanceledEvent(
                                              null,
                                              referenceObject.TimestampUtc);
 
@@ -73,14 +73,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<PruneRequestCancelledEvent>
+                new ConstructorArgumentValidationTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestCancelledEvent>();
+                        var referenceObject = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var result = new PruneRequestCancelledEvent(
+                        var result = new PruneRequestCanceledEvent(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.TimestampUtc);
 
@@ -90,18 +90,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<PruneRequestCancelledEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PruneRequestCancelledEvent>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<PruneRequestCanceledEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<PruneRequestCanceledEvent>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneRequestCancelledEvent>
+                new ConstructorPropertyAssignmentTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestCancelledEvent>();
+                        var referenceObject = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestCancelledEvent>
+                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestCanceledEvent>
                         {
-                            SystemUnderTest = new PruneRequestCancelledEvent(
+                            SystemUnderTest = new PruneRequestCanceledEvent(
                                                       referenceObject.Details,
                                                       referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -112,16 +112,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Details",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<PruneRequestCancelledEvent>
+                new ConstructorPropertyAssignmentTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<PruneRequestCancelledEvent>();
+                        var referenceObject = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestCancelledEvent>
+                        var result = new SystemUnderTestExpectedPropertyValue<PruneRequestCanceledEvent>
                         {
-                            SystemUnderTest = new PruneRequestCancelledEvent(
+                            SystemUnderTest = new PruneRequestCanceledEvent(
                                                       referenceObject.Details,
                                                       referenceObject.TimestampUtc),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
@@ -132,19 +132,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TimestampUtc",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<PruneRequestCancelledEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PruneRequestCancelledEvent>()
+        private static readonly DeepCloneWithTestScenarios<PruneRequestCanceledEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PruneRequestCanceledEvent>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneRequestCancelledEvent>
+                new DeepCloneWithTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestCancelledEvent>();
+                        var systemUnderTest = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var referenceObject = A.Dummy<PruneRequestCancelledEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<PruneRequestCanceledEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestCancelledEvent>
+                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestCanceledEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -154,17 +154,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<PruneRequestCancelledEvent>
+                new DeepCloneWithTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<PruneRequestCancelledEvent>();
+                        var systemUnderTest = A.Dummy<PruneRequestCanceledEvent>();
 
-                        var referenceObject = A.Dummy<PruneRequestCancelledEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<PruneRequestCanceledEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestCancelledEvent>
+                        var result = new SystemUnderTestDeepCloneWithValue<PruneRequestCanceledEvent>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
@@ -174,27 +174,27 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly PruneRequestCancelledEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<PruneRequestCancelledEvent>();
+        private static readonly PruneRequestCanceledEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<PruneRequestCanceledEvent>();
 
-        private static readonly EquatableTestScenarios<PruneRequestCancelledEvent> EquatableTestScenarios = new EquatableTestScenarios<PruneRequestCancelledEvent>()
+        private static readonly EquatableTestScenarios<PruneRequestCanceledEvent> EquatableTestScenarios = new EquatableTestScenarios<PruneRequestCanceledEvent>()
             .AddScenario(() =>
-                new EquatableTestScenario<PruneRequestCancelledEvent>
+                new EquatableTestScenario<PruneRequestCanceledEvent>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PruneRequestCancelledEvent[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PruneRequestCanceledEvent[]
                     {
-                        new PruneRequestCancelledEvent(
+                        new PruneRequestCanceledEvent(
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new PruneRequestCancelledEvent[]
+                    ObjectsThatAreNotEqualToReferenceObject = new PruneRequestCanceledEvent[]
                     {
-                        new PruneRequestCancelledEvent(
+                        new PruneRequestCanceledEvent(
                                 ReferenceObjectForEquatableTestScenarios.Details,
-                                A.Dummy<PruneRequestCancelledEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
-                        new PruneRequestCancelledEvent(
-                                A.Dummy<PruneRequestCancelledEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
+                                A.Dummy<PruneRequestCanceledEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc),
+                        new PruneRequestCanceledEvent(
+                                A.Dummy<PruneRequestCanceledEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -211,12 +211,12 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PruneOperationExecutedEvent>(),
                         A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<RecordHandlingAvailableEvent>(),
-                        A.Dummy<RecordHandlingCancelledEvent>(),
+                        A.Dummy<RecordHandlingCanceledEvent>(),
                         A.Dummy<RecordHandlingCompletedEvent>(),
                         A.Dummy<RecordHandlingFailedEvent>(),
                         A.Dummy<RecordHandlingFailureResetEvent>(),
                         A.Dummy<RecordHandlingRunningEvent>(),
-                        A.Dummy<RecordHandlingSelfCancelledEvent>(),
+                        A.Dummy<RecordHandlingSelfCanceledEvent>(),
                         A.Dummy<UniqueLongIssuedEvent>(),
                     },
                 });
@@ -239,12 +239,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PruneRequestCancelledEvent___Should_implement_IModel_of_PruneRequestCancelledEvent___When_reflecting()
+            public static void PruneRequestCanceledEvent___Should_implement_IModel_of_PruneRequestCanceledEvent___When_reflecting()
             {
                 // Arrange
-                var type = typeof(PruneRequestCancelledEvent);
+                var type = typeof(PruneRequestCanceledEvent);
 
-                var expectedModelMethods = typeof(IModel<PruneRequestCancelledEvent>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<PruneRequestCanceledEvent>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -254,7 +254,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<PruneRequestCancelledEvent>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<PruneRequestCanceledEvent>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -272,10 +272,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void PruneRequestCancelledEvent___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void PruneRequestCanceledEvent___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(PruneRequestCancelledEvent);
+                var type = typeof(PruneRequestCanceledEvent);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -455,10 +455,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PruneRequestCancelledEvent>();
+                var systemUnderTest = A.Dummy<PruneRequestCanceledEvent>();
 
                 // Act
-                var actual = (PruneRequestCancelledEvent)systemUnderTest.Clone();
+                var actual = (PruneRequestCanceledEvent)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -482,7 +482,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<PruneRequestCancelledEvent>();
+                var systemUnderTest = A.Dummy<PruneRequestCanceledEvent>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -521,12 +521,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (PruneRequestCancelledEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (PruneRequestCanceledEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(PruneRequestCancelledEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(PruneRequestCanceledEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -588,7 +588,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestCancelledEvent>();
+                var expected = A.Dummy<PruneRequestCanceledEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -617,7 +617,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestCancelledEvent>();
+                var expected = A.Dummy<PruneRequestCanceledEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -646,7 +646,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestCancelledEvent>();
+                var expected = A.Dummy<PruneRequestCanceledEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -675,7 +675,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<PruneRequestCancelledEvent>();
+                var expected = A.Dummy<PruneRequestCanceledEvent>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -709,8 +709,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PruneRequestCancelledEvent systemUnderTest1 = null;
-                PruneRequestCancelledEvent systemUnderTest2 = null;
+                PruneRequestCanceledEvent systemUnderTest1 = null;
+                PruneRequestCanceledEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -740,7 +740,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PruneRequestCancelledEvent systemUnderTest = null;
+                    PruneRequestCanceledEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -889,8 +889,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                PruneRequestCancelledEvent systemUnderTest1 = null;
-                PruneRequestCancelledEvent systemUnderTest2 = null;
+                PruneRequestCanceledEvent systemUnderTest1 = null;
+                PruneRequestCanceledEvent systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -920,7 +920,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PruneRequestCancelledEvent systemUnderTest = null;
+                    PruneRequestCanceledEvent systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1209,14 +1209,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestCancelledEvent___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_PruneRequestCanceledEvent___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    PruneRequestCancelledEvent systemUnderTest = null;
+                    PruneRequestCanceledEvent systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1240,7 +1240,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestCancelledEvent___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_PruneRequestCanceledEvent___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1268,7 +1268,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestCancelledEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_PruneRequestCanceledEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1296,7 +1296,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestCancelledEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_PruneRequestCanceledEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1324,7 +1324,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_PruneRequestCancelledEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_PruneRequestCanceledEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

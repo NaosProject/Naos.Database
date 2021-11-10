@@ -9,9 +9,11 @@ namespace Naos.Database.Domain.Test.MemoryStream
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using FakeItEasy;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using Naos.Database.Serialization.Json;
     using OBeautifulCode.Assertion.Recipes;
@@ -395,6 +397,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = NaosSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         public void Create_Put_Handle___Given_valid_data___Should_roundtrip_to_through_memory()
         {
             var streamName = "MemoryStreamHandlingName";

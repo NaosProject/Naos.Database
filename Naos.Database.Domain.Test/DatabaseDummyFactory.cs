@@ -69,7 +69,7 @@ namespace Naos.Database.Domain.Test
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingCancelledEvent(
+                () => new RecordHandlingCanceledEvent(
                     A.Dummy<long>(),
                     A.Dummy<string>(),
                     A.Dummy<UtcDateTime>(),
@@ -104,7 +104,7 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new RecordHandlingSelfCancelledEvent(
+                () => new RecordHandlingSelfCanceledEvent(
                     A.Dummy<long>(),
                     A.Dummy<string>(),
                     A.Dummy<UtcDateTime>(),
@@ -122,7 +122,7 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneRequestCancelledEvent(
+                () => new PruneRequestCanceledEvent(
                     A.Dummy<string>(),
                     A.Dummy<UtcDateTime>()));
 

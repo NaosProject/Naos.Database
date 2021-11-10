@@ -56,7 +56,7 @@ namespace Naos.Database.Protocol.FileSystem
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            // var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             throw new NotImplementedException();
         }
@@ -422,7 +422,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var timestamp = DateTime.UtcNow;
 
-                var newEvent = new RecordHandlingCancelledEvent(
+                var newEvent = new RecordHandlingCanceledEvent(
                     operation.InternalRecordId,
                     operation.Concern,
                     timestamp,
@@ -544,7 +544,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var timestamp = DateTime.UtcNow;
 
-                var newEvent = new RecordHandlingSelfCancelledEvent(
+                var newEvent = new RecordHandlingSelfCanceledEvent(
                     operation.InternalRecordId,
                     operation.Concern,
                     timestamp,

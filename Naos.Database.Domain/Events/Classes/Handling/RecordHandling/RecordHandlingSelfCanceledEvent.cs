@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RecordHandlingCancelledEvent.cs" company="Naos Project">
+// <copyright file="RecordHandlingSelfCanceledEvent.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -10,18 +10,18 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Assertion.Recipes;
 
     /// <summary>
-    /// Handling of the record was externally cancelled for a specified concern.
+    /// Handling of the record was self-canceled (canceled by the protocol doing the handling) for a specified concern.
     /// </summary>
-    public partial class RecordHandlingCancelledEvent : RecordHandlingEventBase
+    public partial class RecordHandlingSelfCanceledEvent : RecordHandlingEventBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RecordHandlingCancelledEvent"/> class.
+        /// Initializes a new instance of the <see cref="RecordHandlingSelfCanceledEvent"/> class.
         /// </summary>
         /// <param name="internalRecordId">The internal record identifier of the record being handled.</param>
         /// <param name="concern">The record handling concern.</param>
         /// <param name="details">Details about the event.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
-        public RecordHandlingCancelledEvent(
+        public RecordHandlingSelfCanceledEvent(
             long internalRecordId,
             string concern,
             DateTime timestampUtc,

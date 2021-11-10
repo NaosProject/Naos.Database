@@ -7,6 +7,8 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -20,6 +22,7 @@ namespace Naos.Database.Domain
         /// <param name="uniqueLong">The unique long that was issued.</param>
         /// <param name="timestampUtc">The timestamp in UTC.</param>
         /// <param name="details">OPTIONAL details about the event.  DEFAULT is no details.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public UniqueLongIssuedEvent(
             long uniqueLong,
             DateTime timestampUtc,
@@ -33,6 +36,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the unique long that was issued.
         /// </summary>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public long UniqueLong { get; private set; }
 
         /// <inheritdoc />

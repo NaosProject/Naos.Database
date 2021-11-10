@@ -7,10 +7,12 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
+    using static System.FormattableString;
 
     public static partial class RecordStandardizeExtensions
     {
@@ -40,13 +42,14 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "specifiedResourceLocator", Justification = "Added for consistency with other extension methods.")]
         public static StandardPutRecordOp Standardize<TObject>(
             this PutAndReturnInternalRecordIdOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
+            throw new NotImplementedException(Invariant($"This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>."));
         }
 
         /// <summary>
@@ -58,13 +61,14 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "specifiedResourceLocator", Justification = "Added for consistency with other extension methods.")]
         public static StandardPutRecordOp Standardize<TObject>(
             this PutOp<TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
+            throw new NotImplementedException(Invariant($"This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp{{TId, TObject}}."));
         }
 
         /// <summary>
@@ -134,13 +138,14 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "specifiedResourceLocator", Justification = "Added for consistency with other extension methods.")]
         public static StandardPutRecordOp Standardize<TId, TObject>(
             this PutWithIdOp<TId, TObject> operation,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            throw new NotImplementedException("This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>.");
+            throw new NotImplementedException(Invariant($"This operation is transformed and then delegated to other operations, eventually making it's way into a PutWithIdAndReturnInternalRecordIdOp<TId, TObject>."));
         }
     }
 }

@@ -147,8 +147,8 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingAvailableEvent.designer.cs">
       <DependentUpon>RecordHandlingAvailableEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCancelledEvent.designer.cs">
-      <DependentUpon>RecordHandlingCancelledEvent.cs</DependentUpon>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCanceledEvent.designer.cs">
+      <DependentUpon>RecordHandlingCanceledEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCompletedEvent.designer.cs">
       <DependentUpon>RecordHandlingCompletedEvent.cs</DependentUpon>
@@ -165,8 +165,8 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingRunningEvent.designer.cs">
       <DependentUpon>RecordHandlingRunningEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCancelledEvent.designer.cs">
-      <DependentUpon>RecordHandlingSelfCancelledEvent.cs</DependentUpon>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEvent.designer.cs">
+      <DependentUpon>RecordHandlingSelfCanceledEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\IdDeprecatedEvent{TId}.cs" />
     <Compile Include="Events\Classes\IdDeprecatedEvent{TId}.designer.cs">
@@ -421,12 +421,12 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\DisableHandlingForStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\EnableHandlingForStreamOp.cs" />
     <Compile Include="Events\Classes\Handling\RecordHandling\HandlingForRecordDisabledEvent.cs" />
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCancelledEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCanceledEvent.cs" />
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCompletedEvent.cs" />
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingFailedEvent.cs" />
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingAvailableEvent.cs" />
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingRunningEvent.cs" />
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCancelledEvent.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\DisableHandlingForRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CancelRunningHandleRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CompleteRunningHandleRecordOp.cs" />
@@ -475,8 +475,8 @@
     </Compile>
     <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
     <Compile Include="Operations\Interfaces\ITryHandleRecordOp.cs" />
-    <Compile Include="Events\Classes\Management\PruneRequestCancelledEvent.designer.cs">
-      <DependentUpon>PruneRequestCancelledEvent.cs</DependentUpon>
+    <Compile Include="Events\Classes\Management\PruneRequestCanceledEvent.designer.cs">
+      <DependentUpon>PruneRequestCanceledEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\Management\PruneOperationExecutedEvent.designer.cs">
       <DependentUpon>PruneOperationExecutedEvent.cs</DependentUpon>
@@ -608,7 +608,7 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />
-    <Compile Include="Events\Classes\Management\PruneRequestCancelledEvent.cs" />
+    <Compile Include="Events\Classes\Management\PruneRequestCanceledEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.cs" />
     <Compile Include="Events\Classes\Write\UniqueLongIssuedEvent.cs" />
     <Compile Include="Events\Classes\Handling\HandlingForStreamDisabledEvent.cs" />

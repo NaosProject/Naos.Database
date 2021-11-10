@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class PruneRequestCancelledEvent : IModel<PruneRequestCancelledEvent>
+    public partial class PruneRequestCanceledEvent : IModel<PruneRequestCanceledEvent>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="PruneRequestCancelledEvent"/> are equal.
+        /// Determines whether two objects of type <see cref="PruneRequestCanceledEvent"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(PruneRequestCancelledEvent left, PruneRequestCancelledEvent right)
+        public static bool operator ==(PruneRequestCanceledEvent left, PruneRequestCanceledEvent right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="PruneRequestCancelledEvent"/> are not equal.
+        /// Determines whether two objects of type <see cref="PruneRequestCanceledEvent"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(PruneRequestCancelledEvent left, PruneRequestCancelledEvent right) => !(left == right);
+        public static bool operator !=(PruneRequestCanceledEvent left, PruneRequestCanceledEvent right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(PruneRequestCancelledEvent other)
+        public bool Equals(PruneRequestCanceledEvent other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -76,7 +76,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as PruneRequestCancelledEvent);
+        public override bool Equals(object obj) => this == (obj as PruneRequestCanceledEvent);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -85,7 +85,7 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new PruneRequestCancelledEvent DeepClone() => (PruneRequestCancelledEvent)this.DeepCloneInternal();
+        public new PruneRequestCanceledEvent DeepClone() => (PruneRequestCanceledEvent)this.DeepCloneInternal();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
@@ -107,7 +107,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override EventBase DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new PruneRequestCancelledEvent(
+            var result = new PruneRequestCanceledEvent(
                                  this.Details?.DeepClone(),
                                  timestampUtc);
 
@@ -118,7 +118,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Details" />.
         /// </summary>
         /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneRequestCancelledEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="PruneRequestCanceledEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -136,9 +136,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneRequestCancelledEvent DeepCloneWithDetails(string details)
+        public PruneRequestCanceledEvent DeepCloneWithDetails(string details)
         {
-            var result = new PruneRequestCancelledEvent(
+            var result = new PruneRequestCanceledEvent(
                                  details,
                                  this.TimestampUtc.DeepClone());
 
@@ -149,7 +149,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override EventBase DeepCloneInternal()
         {
-            var result = new PruneRequestCancelledEvent(
+            var result = new PruneRequestCanceledEvent(
                                  this.Details?.DeepClone(),
                                  this.TimestampUtc.DeepClone());
 
@@ -160,7 +160,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PruneRequestCancelledEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PruneRequestCanceledEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

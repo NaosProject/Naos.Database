@@ -44,7 +44,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.Id,
                                                  referenceObject.ObjectToPut,
                                                  referenceObject.Tags,
-                                                 A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToLowerInvariant().Contains("prune")),
+                                                 A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToUpperInvariant().Contains("PRUNE")),
                                                  null,
                                                  referenceObject.VersionMatchStrategy);
 
@@ -65,7 +65,7 @@ namespace Naos.Database.Domain.Test
                                referenceObject.Id,
                                referenceObject.ObjectToPut,
                                referenceObject.Tags,
-                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => !_.ToString().ToLowerInvariant().Contains("prune")),
+                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => !_.ToString().ToUpperInvariant().Contains("PRUNE")),
                                A.Dummy<ZeroOrPositiveInteger>(),
                                referenceObject.VersionMatchStrategy);
 
@@ -86,7 +86,7 @@ namespace Naos.Database.Domain.Test
                                referenceObject.Id,
                                referenceObject.ObjectToPut,
                                referenceObject.Tags,
-                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToLowerInvariant().Contains("prune")),
+                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToUpperInvariant().Contains("PRUNE")),
                                A.Dummy<NegativeInteger>(),
                                referenceObject.VersionMatchStrategy);
 
@@ -107,7 +107,7 @@ namespace Naos.Database.Domain.Test
                                referenceObject.Id,
                                referenceObject.ObjectToPut,
                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
-                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToLowerInvariant().Contains("prune")),
+                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToUpperInvariant().Contains("PRUNE")),
                                referenceObject.RecordRetentionCount,
                                referenceObject.VersionMatchStrategy);
 
@@ -182,9 +182,9 @@ namespace Naos.Database.Domain.Test
                                     ReferenceObjectForEquatableTestScenarios.Id,
                                     ReferenceObjectForEquatableTestScenarios.ObjectToPut,
                                     ReferenceObjectForEquatableTestScenarios.Tags,
-                                    ReferenceObjectForEquatableTestScenarios.ExistingRecordStrategy.ToString().ToLowerInvariant().Contains("prune")
-                                        ? A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().Whose(_ => _.ToString().ToLowerInvariant().Contains("prune") && !_.ExistingRecordStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordStrategy)).ExistingRecordStrategy
-                                        : A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().Whose(_ => (!_.ToString().ToLowerInvariant().Contains("prune")) && !_.ExistingRecordStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordStrategy)).ExistingRecordStrategy,
+                                    ReferenceObjectForEquatableTestScenarios.ExistingRecordStrategy.ToString().ToUpperInvariant().Contains("PRUNE")
+                                        ? A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().Whose(_ => _.ToString().ToUpperInvariant().Contains("PRUNE") && !_.ExistingRecordStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordStrategy)).ExistingRecordStrategy
+                                        : A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().Whose(_ => (!_.ToString().ToUpperInvariant().Contains("PRUNE")) && !_.ExistingRecordStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExistingRecordStrategy)).ExistingRecordStrategy,
                                     ReferenceObjectForEquatableTestScenarios.RecordRetentionCount,
                                     ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                             // Harder to test because if RecordRetentionCount is null, then ExistingRecordStrategy needs to be tweaked as well

@@ -7,6 +7,8 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
 
     public static partial class RecordStandardizeExtensions
@@ -44,6 +46,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "specifiedResourceLocator", Justification = "Added for consistency with other extension methods.")]
         public static StandardGetHandlingStatusOp Standardize<TId>(
             this GetCompositeHandlingStatusByIdsOp<TId> operation,
             IResourceLocator specifiedResourceLocator = null)

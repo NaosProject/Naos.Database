@@ -8,8 +8,10 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
@@ -94,6 +96,8 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         public override TryHandleRecordResult Execute(
             StandardTryHandleRecordOp operation)
         {
@@ -404,7 +408,7 @@ namespace Naos.Database.Domain
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new RecordHandlingSelfCancelledEvent(
+            var newEvent = new RecordHandlingSelfCanceledEvent(
                 operation.InternalRecordId,
                 operation.Concern,
                 timestamp,
@@ -505,7 +509,7 @@ namespace Naos.Database.Domain
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new RecordHandlingCancelledEvent(
+            var newEvent = new RecordHandlingCanceledEvent(
                 operation.InternalRecordId,
                 operation.Concern,
                 timestamp,

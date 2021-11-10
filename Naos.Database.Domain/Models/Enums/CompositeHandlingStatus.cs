@@ -7,11 +7,13 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// A composite of the <see cref="HandlingStatus"/> of one or more records.
     /// </summary>
     [Flags]
+    [SuppressMessage("Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue", Justification = "Zero is an invalid state, which is why it is not named 'None'.")]
     public enum CompositeHandlingStatus
     {
         /// <summary>

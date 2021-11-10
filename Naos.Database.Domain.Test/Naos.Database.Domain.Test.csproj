@@ -467,9 +467,9 @@
     <Compile Include="Events\Classes\Management\PruneOperationRequestedEventTest.designer.cs">
       <DependentUpon>PruneOperationRequestedEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\Management\PruneRequestCancelledEventTest.cs" />
-    <Compile Include="Events\Classes\Management\PruneRequestCancelledEventTest.designer.cs">
-      <DependentUpon>PruneRequestCancelledEventTest.cs</DependentUpon>
+    <Compile Include="Events\Classes\Management\PruneRequestCanceledEventTest.cs" />
+    <Compile Include="Events\Classes\Management\PruneRequestCanceledEventTest.designer.cs">
+      <DependentUpon>PruneRequestCanceledEventTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Stream\Management\PruneSummaryTest.designer.cs">
       <DependentUpon>PruneSummaryTest.cs</DependentUpon>
@@ -493,9 +493,9 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingAvailableEventTest.designer.cs">
       <DependentUpon>RecordHandlingAvailableEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCancelledEventTest.cs" />
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCancelledEventTest.designer.cs">
-      <DependentUpon>RecordHandlingCancelledEventTest.cs</DependentUpon>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCanceledEventTest.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCanceledEventTest.designer.cs">
+      <DependentUpon>RecordHandlingCanceledEventTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCompletedEventTest.cs" />
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingCompletedEventTest.designer.cs">
@@ -513,9 +513,9 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingRunningEventTest.designer.cs">
       <DependentUpon>RecordHandlingRunningEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCancelledEventTest.cs" />
-    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCancelledEventTest.designer.cs">
-      <DependentUpon>RecordHandlingSelfCancelledEventTest.cs</DependentUpon>
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEventTest.cs" />
+    <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEventTest.designer.cs">
+      <DependentUpon>RecordHandlingSelfCanceledEventTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOpTest.designer.cs">

@@ -24,29 +24,31 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Fuzzy matches according to strategy.
         /// </summary>
-        /// <param name="queryTags">The query tags.</param>
         /// <param name="recordTags">The record tags.</param>
+        /// <param name="queryTags">The query tags.</param>
         /// <param name="tagMatchStrategy">The strategy to use for comparing tags.</param>
         /// <returns>
         /// <c>true</c> if the tags match, otherwise <c>false</c>.
         /// </returns>
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
-        public static bool FuzzyMatchAccordingToStrategy(
-            this IReadOnlyCollection<NamedValue<string>> queryTags,
-            IReadOnlyCollection<NamedValue<string>> recordTags,
+        public static bool FuzzyMatchTags(
+            this IReadOnlyCollection<NamedValue<string>> recordTags,
+            IReadOnlyCollection<NamedValue<string>> queryTags,
             TagMatchStrategy tagMatchStrategy)
         {
-            queryTags.MustForArg(nameof(queryTags)).NotContainAnyNullElementsWhenNotNull();
             recordTags.MustForArg(nameof(queryTags)).NotContainAnyNullElementsWhenNotNull();
+            queryTags.MustForArg(nameof(queryTags)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
 
-            if (!queryTags.Any())
-            {
-                return false;
-            }
+            // We won't be able to construct an operation that causes this method to execute with empty query tags.
+            ////if (!queryTags.Any())
+            ////{
+            ////    return false;
+            ////}
 
             if (!recordTags.Any())
             {
+                // Short-circuited; would have returned false on all branches below.
                 return false;
             }
 

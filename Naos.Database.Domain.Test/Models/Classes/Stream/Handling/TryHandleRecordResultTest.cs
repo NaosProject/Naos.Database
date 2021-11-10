@@ -16,6 +16,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
+    using OBeautifulCode.Equality.Recipes;
     using OBeautifulCode.Math.Recipes;
 
     using Xunit;
@@ -29,10 +30,56 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static TryHandleRecordResultTest()
         {
-            ConstructorArgumentValidationTestScenarios.RemoveAllScenarios()
-                .AddScenario(
-                    ConstructorArgumentValidationTestScenario<TryHandleRecordResult>
-                        .ForceGeneratedTestsToPassAndWriteMyOwnScenario);
+            ConstructorArgumentValidationTestScenarios
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<TryHandleRecordResult>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'recordToHandle' is not null and 'isBlocked' is true scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var result = new TryHandleRecordResult(
+                                A.Dummy<StreamRecord>(),
+                                true);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "isBlocked is true", "Provided value (name: 'recordToHandle') is not null", },
+                    });
+
+            EquatableTestScenarios
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new EquatableTestScenario<TryHandleRecordResult>
+                    {
+                        Name = "Default Code Generated Scenario",
+                        ReferenceObject = ReferenceObjectForEquatableTestScenarios,
+                        ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new TryHandleRecordResult[]
+                        {
+                            new TryHandleRecordResult(
+                                ReferenceObjectForEquatableTestScenarios.RecordToHandle,
+                                ReferenceObjectForEquatableTestScenarios.IsBlocked),
+                        },
+                        ObjectsThatAreNotEqualToReferenceObject = new TryHandleRecordResult[]
+                        {
+                            // Too much effort to setup the cases to deal with the scenario that throws.
+                            ////new TryHandleRecordResult(
+                            ////    A.Dummy<TryHandleRecordResult>().Whose(_ => !_.RecordToHandle.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordToHandle)).RecordToHandle,
+                            ////    ReferenceObjectForEquatableTestScenarios.IsBlocked),
+                            ////new TryHandleRecordResult(
+                            ////    ReferenceObjectForEquatableTestScenarios.RecordToHandle,
+                            ////    A.Dummy<TryHandleRecordResult>().Whose(_ => !_.IsBlocked.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IsBlocked)).IsBlocked),
+                        },
+                        ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
+                        {
+                            A.Dummy<object>(),
+                            A.Dummy<string>(),
+                            A.Dummy<int>(),
+                            A.Dummy<int?>(),
+                            A.Dummy<Guid>(),
+                        },
+                    });
         }
     }
 }

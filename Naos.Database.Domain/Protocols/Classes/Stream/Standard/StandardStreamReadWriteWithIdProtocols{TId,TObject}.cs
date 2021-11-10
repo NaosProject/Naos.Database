@@ -6,10 +6,12 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
+    using static System.FormattableString;
 
     /// <summary>
     /// Set of protocols to execute read and write operations on a stream,
@@ -101,6 +103,11 @@ namespace Naos.Database.Domain
             var standardOp = operation.Standardize(serializer, locator);
 
             var record = this.stream.Execute(standardOp);
+
+            if ((record == null) && (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault))
+            {
+                throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+            }
 
             // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null

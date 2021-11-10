@@ -15,7 +15,7 @@ namespace Naos.Database.Domain.Test
     public static class TagMatchExtensionsTests
     {
         [Fact]
-        public static void FuzzyMatchAccordingToStrategy___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAnyQueryTag()
+        public static void FuzzyMatchTags___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAnyQueryTag()
         {
             // Arrange
             var recordTags = new List<NamedValue<string>>
@@ -37,12 +37,12 @@ namespace Naos.Database.Domain.Test
             };
 
             // Act
-            var actualMatch = queryTagsThatMatch.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualMatch = recordTags.FuzzyMatchTags(
+                queryTagsThatMatch,
                 TagMatchStrategy.RecordContainsAnyQueryTag);
 
-            var actualDoNotMatch = queryTagsThatDoNotMatch.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualDoNotMatch = recordTags.FuzzyMatchTags(
+                queryTagsThatDoNotMatch,
                 TagMatchStrategy.RecordContainsAnyQueryTag);
 
             // Assert
@@ -51,7 +51,7 @@ namespace Naos.Database.Domain.Test
         }
 
         [Fact]
-        public static void FuzzyMatchAccordingToStrategy___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAllQueryTags()
+        public static void FuzzyMatchTags___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAllQueryTags()
         {
             // Arrange
             var recordTags = new List<NamedValue<string>>
@@ -74,12 +74,12 @@ namespace Naos.Database.Domain.Test
             };
 
             // Act
-            var actualMatch = queryTagsThatMatch.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualMatch = recordTags.FuzzyMatchTags(
+                queryTagsThatMatch,
                 TagMatchStrategy.RecordContainsAllQueryTags);
 
-            var actualThatDoNotMatch = queryTagsThatDoNotMatch.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualThatDoNotMatch = recordTags.FuzzyMatchTags(
+                queryTagsThatDoNotMatch,
                 TagMatchStrategy.RecordContainsAllQueryTags);
 
             // Assert
@@ -89,7 +89,7 @@ namespace Naos.Database.Domain.Test
         }
 
         [Fact]
-        public static void FuzzyMatchAccordingToStrategy___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAllQueryTagsAndNoneOther()
+        public static void FuzzyMatchTags___Should_return_expected_result___When_tagMatchStrategy_is_RecordContainsAllQueryTagsAndNoneOther()
         {
             // Arrange
             var recordTags = new List<NamedValue<string>>
@@ -113,16 +113,16 @@ namespace Naos.Database.Domain.Test
             };
 
             // Act
-            var actualMatch = queryTagsThatMatch.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualMatch = recordTags.FuzzyMatchTags(
+                queryTagsThatMatch,
                 TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther);
 
-            var actualDoNotMatch1 = queryTagsThatDoNotMatch1.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualDoNotMatch1 = recordTags.FuzzyMatchTags(
+                queryTagsThatDoNotMatch1,
                 TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther);
 
-            var actualDoNotMatch2 = queryTagsThatDoNotMatch2.FuzzyMatchAccordingToStrategy(
-                recordTags,
+            var actualDoNotMatch2 = recordTags.FuzzyMatchTags(
+                queryTagsThatDoNotMatch2,
                 TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther);
 
             // Assert

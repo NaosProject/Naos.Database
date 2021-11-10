@@ -219,6 +219,24 @@ namespace Naos.Database.Domain.Test
                     }
                 });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var scenario = ThreadSafeRandom.Next(1, 4);
+
+                    switch (scenario)
+                    {
+                        case 1:
+                            return new TryHandleRecordResult(null, false);
+                        case 2:
+                            return new TryHandleRecordResult(A.Dummy<StreamRecord>(), false);
+                        case 3:
+                            return new TryHandleRecordResult(null, true);
+                        default:
+                            throw new NotSupportedException(FormattableString.Invariant($"Invalid scenario {scenario} for creating a dummy {nameof(TryHandleRecordResult)}."));
+                    }
+                });
+
             // ------------------------------- ENUMS --------------------------------------
             AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CompositeHandlingStatus.Unknown);

@@ -9,6 +9,7 @@ namespace Naos.Database.Domain
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Serialization;
 
     /// <summary>
@@ -27,6 +28,7 @@ namespace Naos.Database.Domain
         public IResourceLocatorProtocols ResourceLocatorProtocols => new NullResourceLocatorProtocols();
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Justification = NaosSuppressBecause.CA1065_DoNotRaiseExceptionsInUnexpectedLocations_ThrowNotImplementedExceptionWhenForcedToSpecifyMemberThatWillNeverBeUsedInTesting)]
         public ISerializerFactory SerializerFactory => throw new NotImplementedException();
 
         /// <inheritdoc />

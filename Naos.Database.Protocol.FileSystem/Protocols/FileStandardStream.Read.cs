@@ -245,7 +245,7 @@ namespace Naos.Database.Protocol.FileSystem
                                 operation.ObjectType,
                                 operation.VersionMatchStrategy)
                          && ((!operation.TagsToMatch?.Any() ?? true)
-                          || metadata.Tags.FuzzyMatchAccordingToStrategy(operation.TagsToMatch, operation.TagMatchStrategy)))
+                          || metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy)))
                         {
                             result.Add(metadata.StringSerializedId);
                         }

@@ -115,48 +115,6 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "IsBlocked",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<TryHandleRecordResult> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<TryHandleRecordResult>()
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<TryHandleRecordResult>
-                {
-                    Name = "DeepCloneWithRecordToHandle should deep clone object and replace RecordToHandle with the provided recordToHandle",
-                    WithPropertyName = "RecordToHandle",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<TryHandleRecordResult>();
-
-                        var referenceObject = A.Dummy<TryHandleRecordResult>().ThatIs(_ => !systemUnderTest.RecordToHandle.IsEqualTo(_.RecordToHandle));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordResult>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordToHandle,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<TryHandleRecordResult>
-                {
-                    Name = "DeepCloneWithIsBlocked should deep clone object and replace IsBlocked with the provided isBlocked",
-                    WithPropertyName = "IsBlocked",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<TryHandleRecordResult>();
-
-                        var referenceObject = A.Dummy<TryHandleRecordResult>().ThatIs(_ => !systemUnderTest.IsBlocked.IsEqualTo(_.IsBlocked));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordResult>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.IsBlocked,
-                        };
-
-                        return result;
-                    },
-                });
-
         private static readonly TryHandleRecordResult ReferenceObjectForEquatableTestScenarios = A.Dummy<TryHandleRecordResult>();
 
         private static readonly EquatableTestScenarios<TryHandleRecordResult> EquatableTestScenarios = new EquatableTestScenarios<TryHandleRecordResult>()
@@ -470,80 +428,6 @@ namespace Naos.Database.Domain.Test
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
                     actual.RecordToHandle.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordToHandle);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
-            {
-                var propertyNames = new string[] { "RecordToHandle", "IsBlocked" };
-
-                var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    if (scenario.WithPropertyName == DeepCloneWithTestScenario.ForceGeneratedTestsToPassAndWriteMyOwnScenarioWithPropertyName)
-                    {
-                        continue;
-                    }
-
-                    // Act
-                    var actual = (TryHandleRecordResult)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
-
-                    // Assert
-                    foreach(var propertyName in propertyNames)
-                    {
-                        var propertyInfo = typeof(TryHandleRecordResult).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
-
-                        var actualPropertyValue = propertyInfo.GetValue(actual);
-
-                        var comparisonValue = propertyName == scenario.WithPropertyName
-                            ? scenario.WithValue
-                            : propertyInfo.GetValue(scenario.SystemUnderTest);
-
-                        if (actualPropertyValue == null)
-                        {
-                            comparisonValue.Must().BeNull(because: scenario.Id);
-                        }
-                        else
-                        {
-                            // We use the runtime type here to solve for the case where the object is a boxed value type.
-                            var actualPropertyValueRuntimeType = actualPropertyValue.GetType();
-
-                            if (actualPropertyValueRuntimeType.IsValueType || (actualPropertyValueRuntimeType == typeof(string)))
-                            {
-                                // actualPropertyValue and comparisonValue are declared as typeof(object), but
-                                // BeEqualTo (which uses IsEqualTo), will do the right thing by comparing the
-                                // objects using their runtime type.
-                                actualPropertyValue.AsTest().Must().BeEqualTo(comparisonValue, because: scenario.Id);
-                            }
-                            else
-                            {
-                                if (propertyName == scenario.WithPropertyName)
-                                {
-                                    actualPropertyValue.AsTest().Must().BeSameReferenceAs(comparisonValue, because: scenario.Id);
-                                }
-                                else
-                                {
-                                    actualPropertyValue.AsTest().Must().NotBeSameReferenceAs(comparisonValue, because: scenario.Id);
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }

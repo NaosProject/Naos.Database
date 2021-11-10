@@ -6,9 +6,12 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
+
+    using static System.FormattableString;
 
     /// <summary>
     /// Set of protocols to execute read and write operations on a stream,
@@ -68,7 +71,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var delegatedOp = new PutWithIdAndReturnInternalRecordIdOp<NullIdentifier, TObject>(
-                null,
+                null, // Since we need a type, we are using NullIdentifier, however we are passing a null NullIdentifier instead of constructing one to reduce runtime complexity and payload size
                 operation.ObjectToPut,
                 operation.Tags,
                 operation.ExistingRecordStrategy,
@@ -98,6 +101,11 @@ namespace Naos.Database.Domain
             var standardOp = operation.Standardize();
 
             var record = this.stream.Execute(standardOp);
+
+            if ((record == null) && (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault))
+            {
+                throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+            }
 
             // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null
@@ -156,6 +164,11 @@ namespace Naos.Database.Domain
             var standardOp = operation.Standardize();
 
             var record = this.stream.Execute(standardOp);
+
+            if ((record == null) && (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault))
+            {
+                throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+            }
 
             // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null

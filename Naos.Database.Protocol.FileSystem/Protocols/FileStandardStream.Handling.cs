@@ -356,7 +356,7 @@ namespace Naos.Database.Protocol.FileSystem
                     internalRecordId,
                     concern,
                     HandlingStatus.AvailableByDefault,
-                    null,
+                    null, // Since we need a type, we are using NullIdentifier, however we are passing a null NullIdentifier instead of constructing one to reduce runtime complexity and payload size
                     this.DefaultSerializerRepresentation,
                     NullIdentifier.TypeRepresentation,
                     payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),

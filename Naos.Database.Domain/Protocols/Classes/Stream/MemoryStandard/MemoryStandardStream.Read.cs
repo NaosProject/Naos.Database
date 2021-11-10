@@ -188,7 +188,7 @@ namespace Naos.Database.Domain
                                     operation.ObjectType,
                                     operation.VersionMatchStrategy)
                              && ((!operation.TagsToMatch?.Any() ?? true)
-                              || streamRecord.Metadata.Tags.FuzzyMatchAccordingToStrategy(operation.TagsToMatch, operation.TagMatchStrategy)))
+                              || streamRecord.Metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy)))
                             {
                                 result.Add(streamRecord.Metadata.StringSerializedId);
                             }

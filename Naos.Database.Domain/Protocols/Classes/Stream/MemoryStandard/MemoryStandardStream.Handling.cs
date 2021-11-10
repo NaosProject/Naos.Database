@@ -77,8 +77,8 @@ namespace Naos.Database.Domain
 
                     if (operation.TagsToMatch != null && operation.TagsToMatch.Any())
                     {
-                        matchResult = operation.TagsToMatch.FuzzyMatchAccordingToStrategy(
-                            entry.Metadata.Tags,
+                        matchResult = entry.Metadata.Tags.FuzzyMatchTags(
+                            operation.TagsToMatch,
                             operation.TagMatchStrategy);
                     }
 
@@ -252,9 +252,11 @@ namespace Naos.Database.Domain
                                 runningTimestamp);
 
                             var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+
                             this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, runningEntryId, operation.Concern, runningMetadata, runningPayload);
 
                             var result = new TryHandleRecordResult(recordToHandle);
+
                             return result;
                         }
                     }
@@ -357,7 +359,7 @@ namespace Naos.Database.Domain
                 Concerns.GlobalBlockingRecordId,
                 concern,
                 newStatus,
-                null,
+                null, // Since we need a type, we are using NullIdentifier, however we are passing a null NullIdentifier instead of constructing one to reduce runtime complexity and payload size
                 this.DefaultSerializerRepresentation,
                 NullIdentifier.TypeRepresentation,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),

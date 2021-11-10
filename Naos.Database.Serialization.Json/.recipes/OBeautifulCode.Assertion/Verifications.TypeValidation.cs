@@ -66,6 +66,15 @@ namespace OBeautifulCode.Assertion.Recipes
             },
         };
 
+        private static readonly IReadOnlyCollection<TypeValidation> MustBeNullableBooleanTypeValidations = new[]
+        {
+            new TypeValidation
+            {
+                Handler = ThrowIfNotAssignableToType,
+                ReferenceTypes = new[] { NullableBoolType },
+            },
+        };
+
         private static readonly IReadOnlyCollection<TypeValidation> MustBeStringTypeValidations = new[]
         {
             new TypeValidation

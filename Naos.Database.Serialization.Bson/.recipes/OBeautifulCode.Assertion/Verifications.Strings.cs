@@ -89,6 +89,14 @@ namespace OBeautifulCode.Assertion.Recipes
 
         public const string NotBeFalseExceptionMessageSuffix = "is false";
 
+        public const string BeTrueWhenNotNullExceptionMessageSuffix = "is not null and is not true";
+
+        public const string NotBeTrueWhenNotNullExceptionMessageSuffix = "is not null and is true";
+
+        public const string BeFalseWhenNotNullExceptionMessageSuffix = "is not null and is not false";
+
+        public const string NotBeFalseWhenNotNullExceptionMessageSuffix = "is not null and is false";
+        
         public const string NotBeNullNorWhiteSpaceExceptionMessageSuffix = "is white space";
 
         public const string BeNullOrNotWhiteSpaceExceptionMessageSuffix = "is not null and is white space";

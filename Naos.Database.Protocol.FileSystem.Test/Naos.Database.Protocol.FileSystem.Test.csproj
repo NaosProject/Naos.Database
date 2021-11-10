@@ -257,7 +257,7 @@
     <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileStreamTest.cs" />
+    <Compile Include="Protocols\FileStandardStreamTest.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
   </ItemGroup>
@@ -288,6 +288,7 @@
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

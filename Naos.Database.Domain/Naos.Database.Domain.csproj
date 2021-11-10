@@ -497,10 +497,10 @@
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardPruneStreamOp.designer.cs">
       <DependentUpon>StandardPruneStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Management.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Handling.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Write.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryStandardStream.Read.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStream.Management.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStream.Handling.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStream.Write.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStream.Read.cs" />
     <Compile Include="Models\Classes\Stream\Write\PutRecordResult.designer.cs">
       <DependentUpon>PutRecordResult.cs</DependentUpon>
     </Compile>
@@ -542,7 +542,7 @@
     <Compile Include="Models\Classes\Stream\Management\PruneSummary.cs" />
     <Compile Include="Events\Classes\Management\PruneOperationExecutedEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOp.cs" />
-    <Compile Include="Stream\MemoryStream\MemoryStandardStream.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStream.cs" />
     <Compile Include="Models\Classes\Stream\Management\CreateStreamResult.cs" />
     <Compile Include="Models\Classes\Stream\Write\PutRecordResult.cs" />
     <Compile Include="Models\Enums\OrderRecordsBy.cs" />

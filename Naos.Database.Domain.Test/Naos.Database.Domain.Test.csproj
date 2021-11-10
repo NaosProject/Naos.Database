@@ -596,7 +596,7 @@
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId}Test.designer.cs">
       <DependentUpon>HandleRecordWithIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\MemoryStream\MemoryStandardStreamTest.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStreamTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\NamedResourceLocatorTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\NullResourceLocatorTest.cs" />
     <Compile Include="Program.cs" />
@@ -646,7 +646,7 @@
     <Compile Include="Models\Classes\Representation\StreamRepresentationTest.designer.cs">
       <DependentUpon>StreamRepresentationTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Stream\TagMatchExtensionsTests.cs" />
+    <Compile Include="Logic\Stream\Common\TagMatchExtensionsTests.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}Test.cs" />
@@ -722,7 +722,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\Interfaces\" />
-    <Folder Include="Protocols\ResourceLocation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FileStreamTest.cs" company="Naos Project">
+// <copyright file="FileStandardStreamTest.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -26,14 +26,11 @@ namespace Naos.Protocol.FileSystem.Test
     using Xunit.Abstractions;
     using static System.FormattableString;
 
-    /// <summary>
-    /// Tests for <see cref="FileStandardStream"/>.
-    /// </summary>
-    public partial class FileStreamTest
+    public partial class FileStandardStreamTest
     {
         private readonly ITestOutputHelper testOutputHelper;
 
-        public FileStreamTest(
+        public FileStandardStreamTest(
             ITestOutputHelper testOutputHelper)
         {
             this.testOutputHelper = testOutputHelper;

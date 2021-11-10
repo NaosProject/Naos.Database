@@ -14,9 +14,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
     using Xunit.Abstractions;
     using static System.FormattableString;
 
-    /// <summary>
-    /// Tests for <see cref="MemoryStandardStream"/>.
-    /// </summary>
     public partial class StreamExtensionsTests
     {
         private readonly ITestOutputHelper testOutputHelper;

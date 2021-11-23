@@ -18,6 +18,12 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamRecord"/> class.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="SerializerRepresentation"/> can be found on both <see cref="Metadata"/> and <see cref="Payload"/>.
+        /// This is deliberate duplication.  We have contracts that require us to return the payload only and further other
+        /// contracts that require us to return the metadata only.  In both of these scenarios, the <see cref="SerializerRepresentation"/>
+        /// is required.  To remove this duplication in this contract would produce a model that is worse than just maintaining the duplication.
+        /// </remarks>
         /// <param name="internalRecordId">The identifier.</param>
         /// <param name="metadata">The metadata.</param>
         /// <param name="payload">The payload.</param>

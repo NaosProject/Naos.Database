@@ -255,6 +255,17 @@ namespace Naos.Database.Domain
 
                             this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, runningEntryId, operation.Concern, runningMetadata, runningPayload);
 
+                            switch (operation.StreamRecordItemsToInclude)
+                            {
+                                case StreamRecordItemsToInclude.MetadataAndPayload:
+                                    break;
+                                case StreamRecordItemsToInclude.MetadataOnly:
+                                    recordToHandle = recordToHandle.DeepCloneWithPayload(new NullDescribedSerialization(recordToHandle.Payload.PayloadTypeRepresentation, recordToHandle.Payload.SerializerRepresentation));
+                                    break;
+                                default:
+                                    throw new NotSupportedException(Invariant($"This {nameof(StreamRecordItemsToInclude)} is not supported: {operation.StreamRecordItemsToInclude}."));
+                            }
+
                             var result = new TryHandleRecordResult(recordToHandle);
 
                             return result;

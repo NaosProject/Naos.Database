@@ -49,6 +49,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.Details,
                                                  referenceObject.MinimumInternalRecordId,
                                                  referenceObject.InheritRecordTags,
+                                                 referenceObject.StreamRecordItemsToInclude,
                                                  referenceObject.SpecifiedResourceLocator);
 
                             return result;
@@ -74,6 +75,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.Details,
                                                  referenceObject.MinimumInternalRecordId,
                                                  referenceObject.InheritRecordTags,
+                                                 referenceObject.StreamRecordItemsToInclude,
                                                  referenceObject.SpecifiedResourceLocator);
 
                             return result;
@@ -99,6 +101,7 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.Details,
                                 referenceObject.MinimumInternalRecordId,
                                 referenceObject.InheritRecordTags,
+                                referenceObject.StreamRecordItemsToInclude,
                                 referenceObject.SpecifiedResourceLocator);
 
                             return result;
@@ -124,6 +127,7 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.Details,
                                 referenceObject.MinimumInternalRecordId,
                                 referenceObject.InheritRecordTags,
+                                referenceObject.StreamRecordItemsToInclude,
                                 referenceObject.SpecifiedResourceLocator);
 
                             return result;
@@ -149,12 +153,39 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.Details,
                                 referenceObject.MinimumInternalRecordId,
                                 referenceObject.InheritRecordTags,
+                                referenceObject.StreamRecordItemsToInclude,
                                 referenceObject.SpecifiedResourceLocator);
 
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element" },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'streamRecordItemsToInclude' is StreamRecordItemsToInclude.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                            var result = new StandardTryHandleRecordOp(
+                                referenceObject.Concern,
+                                referenceObject.IdentifierType,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.OrderRecordsBy,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags,
+                                StreamRecordItemsToInclude.Unknown,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "streamRecordItemsToInclude", "Unknown" },
                     });
         }
     }

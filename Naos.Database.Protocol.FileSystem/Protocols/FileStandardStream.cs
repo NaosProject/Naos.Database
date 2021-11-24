@@ -146,51 +146,65 @@ namespace Naos.Database.Protocol.FileSystem
 
         private StreamRecord GetStreamRecordFromMetadataFile(
             string metadataFilePath,
-            StreamRecordMetadata metadata = null)
+            StreamRecordMetadata metadata = null,
+            StreamRecordItemsToInclude streamRecordItemsToInclude = StreamRecordItemsToInclude.MetadataAndPayload)
         {
             lock (this.fileLock)
             {
                 if (metadata == null)
                 {
                     var metadataFileText = File.ReadAllText(metadataFilePath);
+
                     metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(metadataFileText);
                 }
 
-                var filePathBase =
-                    metadataFilePath.Substring(0, metadataFilePath.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
-                var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
                 DescribedSerializationBase payload;
-                if (File.Exists(binaryFilePath))
-                {
-                    var bytes = File.ReadAllBytes(binaryFilePath);
 
-                    payload = new BinaryDescribedSerialization(
-                        metadata.TypeRepresentationOfObject.WithVersion,
-                        metadata.SerializerRepresentation,
-                        bytes);
+                if (streamRecordItemsToInclude == StreamRecordItemsToInclude.MetadataAndPayload)
+                {
+                    var filePathBase = metadataFilePath.Substring(0, metadataFilePath.Length - MetadataFileExtension.Length - 1); // remove the '.' as well.
+
+                    var binaryFilePath = Invariant($"{filePathBase}.{BinaryFileExtension}");
+
+                    if (File.Exists(binaryFilePath))
+                    {
+                        var bytes = File.ReadAllBytes(binaryFilePath);
+
+                        payload = new BinaryDescribedSerialization(
+                            metadata.TypeRepresentationOfObject.WithVersion,
+                            metadata.SerializerRepresentation,
+                            bytes);
+                    }
+                    else
+                    {
+                        var stringFilePath = Invariant($"{filePathBase}.{metadata.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)}");
+
+                        if (!File.Exists(stringFilePath))
+                        {
+                            throw new InvalidOperationException(Invariant($"Expected payload file '{stringFilePath}' to exist to accompany metadata file '{metadataFilePath}' but was not found."));
+                        }
+
+                        var stringPayload = File.ReadAllText(stringFilePath);
+
+                        payload = new StringDescribedSerialization(
+                            metadata.TypeRepresentationOfObject.WithVersion,
+                            metadata.SerializerRepresentation,
+                            stringPayload);
+                    }
+                }
+                else if (streamRecordItemsToInclude == StreamRecordItemsToInclude.MetadataOnly)
+                {
+                    payload = new NullDescribedSerialization(metadata.TypeRepresentationOfObject.WithVersion, metadata.SerializerRepresentation);
                 }
                 else
                 {
-                    var stringFilePath = Invariant(
-                        $"{filePathBase}.{metadata.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture)}");
-                    if (!File.Exists(stringFilePath))
-                    {
-                        throw new InvalidOperationException(
-                            Invariant(
-                                $"Expected payload file '{stringFilePath}' to exist to accompany metadata file '{metadataFilePath}' but was not found."));
-                    }
-
-                    var stringPayload = File.ReadAllText(stringFilePath);
-
-                    payload = new StringDescribedSerialization(
-                        metadata.TypeRepresentationOfObject.WithVersion,
-                        metadata.SerializerRepresentation,
-                        stringPayload);
+                    throw new NotSupportedException(Invariant($"This {nameof(StreamRecordItemsToInclude)} is not supported: {streamRecordItemsToInclude}."));
                 }
 
                 var internalRecordId = GetInternalRecordIdFromRecordFilePath(metadataFilePath);
 
                 var result = new StreamRecord(internalRecordId, metadata, payload);
+
                 return result;
             }
         }

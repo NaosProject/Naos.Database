@@ -75,11 +75,12 @@ namespace Naos.Database.Domain
                       && this.ObjectType.IsEqualTo(other.ObjectType)
                       && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
                       && this.OrderRecordsBy.IsEqualTo(other.OrderRecordsBy)
-                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator)
                       && this.Tags.IsEqualTo(other.Tags)
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal)
                       && this.MinimumInternalRecordId.IsEqualTo(other.MinimumInternalRecordId)
-                      && this.InheritRecordTags.IsEqualTo(other.InheritRecordTags);
+                      && this.InheritRecordTags.IsEqualTo(other.InheritRecordTags)
+                      && this.StreamRecordItemsToInclude.IsEqualTo(other.StreamRecordItemsToInclude)
+                      && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
         }
@@ -94,11 +95,12 @@ namespace Naos.Database.Domain
             .Hash(this.ObjectType)
             .Hash(this.VersionMatchStrategy)
             .Hash(this.OrderRecordsBy)
-            .Hash(this.SpecifiedResourceLocator)
             .Hash(this.Tags)
             .Hash(this.Details)
             .Hash(this.MinimumInternalRecordId)
             .Hash(this.InheritRecordTags)
+            .Hash(this.StreamRecordItemsToInclude)
+            .Hash(this.SpecifiedResourceLocator)
             .Value;
 
         /// <inheritdoc />
@@ -138,6 +140,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -177,6 +180,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -216,6 +220,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -255,6 +260,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -294,46 +300,8 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
-        /// </summary>
-        /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
-        {
-            var result = new StandardTryHandleRecordOp(
-                                 this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
-                                 this.Details?.DeepClone(),
-                                 this.MinimumInternalRecordId?.DeepClone(),
-                                 this.InheritRecordTags.DeepClone(),
-                                 specifiedResourceLocator);
 
             return result;
         }
@@ -372,6 +340,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -411,6 +380,7 @@ namespace Naos.Database.Domain
                                  details,
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -450,6 +420,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  minimumInternalRecordId,
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -489,7 +460,88 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  inheritRecordTags,
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="StreamRecordItemsToInclude" />.
+        /// </summary>
+        /// <param name="streamRecordItemsToInclude">The new <see cref="StreamRecordItemsToInclude" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="streamRecordItemsToInclude" /> for <see cref="StreamRecordItemsToInclude" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardTryHandleRecordOp DeepCloneWithStreamRecordItemsToInclude(StreamRecordItemsToInclude streamRecordItemsToInclude)
+        {
+            var result = new StandardTryHandleRecordOp(
+                                 this.Concern?.DeepClone(),
+                                 this.IdentifierType?.DeepClone(),
+                                 this.ObjectType?.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.OrderRecordsBy.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.MinimumInternalRecordId?.DeepClone(),
+                                 this.InheritRecordTags.DeepClone(),
+                                 streamRecordItemsToInclude,
+                                 this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
+        /// </summary>
+        /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardTryHandleRecordOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
+        {
+            var result = new StandardTryHandleRecordOp(
+                                 this.Concern?.DeepClone(),
+                                 this.IdentifierType?.DeepClone(),
+                                 this.ObjectType?.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.OrderRecordsBy.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.MinimumInternalRecordId?.DeepClone(),
+                                 this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
+                                 specifiedResourceLocator);
 
             return result;
         }
@@ -508,6 +560,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -517,7 +570,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {this.OrderRecordsBy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {this.OrderRecordsBy.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

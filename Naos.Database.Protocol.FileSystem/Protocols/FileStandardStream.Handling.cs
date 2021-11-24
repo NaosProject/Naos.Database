@@ -162,7 +162,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                         if (!string.IsNullOrWhiteSpace(metadataFilePath) && recordMetadata != null)
                         {
-                            var recordToHandle = this.GetStreamRecordFromMetadataFile(metadataFilePath, recordMetadata);
+                            var recordToHandle = this.GetStreamRecordFromMetadataFile(metadataFilePath, recordMetadata, operation.StreamRecordItemsToInclude);
 
                             var handlingTags = operation.InheritRecordTags
                                 ? (operation.Tags ?? new List<NamedValue<string>>())

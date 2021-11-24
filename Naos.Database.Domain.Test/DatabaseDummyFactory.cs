@@ -246,6 +246,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(OrderRecordsBy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(RecordNotFoundStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(StreamNotFoundStrategy.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(StreamRecordItemsToInclude.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(TagMatchStrategy.Unknown);
 
             // ------------------------------- MODEL INTERFACES --------------------------------------

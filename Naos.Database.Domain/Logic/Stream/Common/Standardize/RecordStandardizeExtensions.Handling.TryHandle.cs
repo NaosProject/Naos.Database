@@ -36,6 +36,7 @@ namespace Naos.Database.Domain
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
+                StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
 
             return result;
@@ -67,6 +68,7 @@ namespace Naos.Database.Domain
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
+                StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
 
             return result;
@@ -97,6 +99,7 @@ namespace Naos.Database.Domain
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
+                StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
 
             return result;

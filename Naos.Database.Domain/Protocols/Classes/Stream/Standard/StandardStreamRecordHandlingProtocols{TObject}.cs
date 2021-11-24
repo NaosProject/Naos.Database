@@ -44,7 +44,7 @@ namespace Naos.Database.Domain
 
             var record = tryHandleResult.RecordToHandle;
 
-            if (record?.Payload == null)
+            if (record == null)
             {
                 return null;
             }

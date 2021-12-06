@@ -39,7 +39,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>();
 
                             var result = new GetCompositeHandlingStatusByIdsOp<Version>(
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.IdsToMatch,
                                 referenceObject.VersionMatchStrategy);
 

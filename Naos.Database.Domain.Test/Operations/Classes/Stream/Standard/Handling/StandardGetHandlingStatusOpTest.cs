@@ -84,7 +84,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
 
                             var result = new StandardGetHandlingStatusOp(
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.InternalRecordId,
                                 referenceObject.IdsToMatch,
                                 referenceObject.VersionMatchStrategy,

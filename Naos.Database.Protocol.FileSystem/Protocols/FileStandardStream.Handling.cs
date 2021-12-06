@@ -254,8 +254,6 @@ namespace Naos.Database.Protocol.FileSystem
             var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
             var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
 
-            operation.InternalRecordId.MustForOp(nameof(operation.InternalRecordId)).NotBeNull();
-
             lock (this.handlingLock)
             {
                 var files = Directory.GetFiles(
@@ -318,7 +316,7 @@ namespace Naos.Database.Protocol.FileSystem
             {
                 var newStatus = operation.NewStatus;
                 var internalRecordId = Concerns.GlobalBlockingRecordId;
-                var concern = Concerns.RecordHandlingConcern;
+                var concern = Concerns.StreamHandlingDisabledConcern;
                 var concernDirectory = this.GetHandlingConcernDirectory(locator, concern);
 
                 var files = Directory.GetFiles(
@@ -816,7 +814,7 @@ namespace Naos.Database.Protocol.FileSystem
         private bool IsMostRecentBlocked(
             IResourceLocator locator)
         {
-            var concernDirectory = this.GetHandlingConcernDirectory(locator, Concerns.RecordHandlingConcern);
+            var concernDirectory = this.GetHandlingConcernDirectory(locator, Concerns.StreamHandlingDisabledConcern);
 
             var files = Directory.GetFiles(
                 concernDirectory,

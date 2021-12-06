@@ -79,7 +79,7 @@ namespace Naos.Database.Domain.Test
 
                                 var result = new CancelRunningHandleRecordOp(
                                     referenceObject.InternalRecordId,
-                                    Concerns.RecordHandlingConcern,
+                                    Concerns.StreamHandlingDisabledConcern,
                                     referenceObject.Details,
                                     referenceObject.Tags);
 

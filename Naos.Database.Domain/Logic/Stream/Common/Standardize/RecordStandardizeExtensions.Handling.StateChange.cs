@@ -86,7 +86,7 @@ namespace Naos.Database.Domain
 
             var result = new StandardUpdateHandlingStatusForRecordOp(
                 operation.InternalRecordId,
-                null,
+                Concerns.RecordHandlingDisabledConcern,
                 HandlingStatus.DisabledForRecord,
                 new[]
                 {

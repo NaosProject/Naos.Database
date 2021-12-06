@@ -438,11 +438,17 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 stream.PutWithId(firstObject.Id, firstObject, firstObject.Tags);
                 var first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.MustForTest().NotBeNull();
-                var getFirstStatusByIdOp = new GetCompositeHandlingStatusByTagsOp(
+
+                var getFirstHandlingStatusOp = new GetHandlingStatusOp(
+                    first.RecordToHandle.InternalRecordId,
+                    firstConcern);
+
+                var getFirstCompositeHandlingStatusByTagsOp = new GetCompositeHandlingStatusByTagsOp(
                     firstConcern,
                     firstTags);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 var firstInternalRecordId = first.RecordToHandle.InternalRecordId;
                 stream.GetStreamRecordHandlingProtocols().Execute(
@@ -451,20 +457,25 @@ namespace Naos.Database.Domain.Test.MemoryStream
                         firstConcern,
                         "Resources unavailable; node out of disk space.",
                         tags: firstTags));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForStreamOp("Stop processing, fixing resource issue."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
                 first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new EnableHandlingForStreamOp("Resume processing, fixed resource issue."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
                 first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().NotBeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new SelfCancelRunningHandleRecordOp(
@@ -472,10 +483,12 @@ namespace Naos.Database.Domain.Test.MemoryStream
                         firstConcern,
                         "Processing not finished, check later.",
                         tags: firstTags));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterSelfCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterSelfCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
                 first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().NotBeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new CompleteRunningHandleRecordOp(
@@ -483,10 +496,12 @@ namespace Naos.Database.Domain.Test.MemoryStream
                         firstConcern,
                         "Processing not finished, check later.",
                         tags: firstTags));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllCompleted);
                 first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
                 first.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllCompleted);
 
                 var firstHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(firstInternalRecordId, firstConcern));
                 firstHistory.MustForTest().HaveCount(7);
@@ -501,53 +516,68 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 var second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.MustForTest().NotBeNull();
                 var secondInternalRecordId = second.RecordToHandle.InternalRecordId;
-                var getSecondStatusByIdOp = new GetCompositeHandlingStatusByIdsOp(
+                var getSecondHandlingStatusOp = new GetHandlingStatusOp(
+                    second.RecordToHandle.InternalRecordId,
+                    secondConcern);
+
+                var getSecondCompositeHandlingStatusByIdsOp = new GetCompositeHandlingStatusByIdsOp(
                     secondConcern,
                     new[]
                     {
                         new StringSerializedIdentifier(second.RecordToHandle.Metadata.StringSerializedId, second.RecordToHandle.Metadata.TypeRepresentationOfId.WithVersion),
                     });
 
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new FailRunningHandleRecordOp(
                         secondInternalRecordId,
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1 doesn't work."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllFailed);
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllFailed);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new ResetFailedHandleRecordOp(secondInternalRecordId, secondConcern, "Redeployed Bot v1.0.1-hotfix, re-run."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForStreamOp("Stop processing, need to confirm deployment."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new EnableHandlingForStreamOp("Resume processing, confirmed deployment."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
                 second.RecordToHandle.MustForTest().NotBeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new FailRunningHandleRecordOp(
                         secondInternalRecordId,
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1-hotfix doesn't work."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllFailed);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForRecordOp(firstInternalRecordId, "Giving up."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
                 second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
                 second.RecordToHandle.MustForTest().BeNull();
 
                 var secondHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(secondInternalRecordId, secondConcern));
@@ -560,7 +590,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             $"{history.Metadata.Concern}: {history.InternalHandlingEntryId}:{history.Metadata.InternalRecordId} - {history.Metadata.Status} - {history.Payload.DeserializePayloadUsingSpecificFactory<IHaveDetails>(stream.SerializerFactory).Details ?? "<no details specified>"}"));
                 }
 
-                var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(0, Concerns.RecordHandlingConcern));
+                var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(0, Concerns.StreamHandlingDisabledConcern));
 
                 foreach (var history in blockingHistory)
                 {

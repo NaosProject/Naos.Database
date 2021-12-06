@@ -76,7 +76,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
 
                             var result = new GetCompositeHandlingStatusByTagsOp(
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.TagsToMatch,
                                 referenceObject.TagMatchStrategy);
 

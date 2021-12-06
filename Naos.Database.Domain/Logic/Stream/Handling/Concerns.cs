@@ -15,12 +15,17 @@ namespace Naos.Database.Domain
     public static class Concerns
     {
         /// <summary>
-        /// The record handling concern.
+        /// The record handling concern to use when record handling is disabled for an entire stream.
         /// </summary>
-        public const string RecordHandlingConcern = "RecordHandling";
+        public const string StreamHandlingDisabledConcern = "StreamHandlingDisabled";
 
         /// <summary>
-        /// The internal record identifier of global blocking when interacting with the <see cref="RecordHandlingConcern"/>.
+        /// The record handling concern to use when record handling is disabled for a specific record.
+        /// </summary>
+        public const string RecordHandlingDisabledConcern = "RecordHandlingDisabled";
+
+        /// <summary>
+        /// The internal record identifier of global blocking when interacting with the <see cref="StreamHandlingDisabledConcern"/>.
         /// </summary>
         public const long GlobalBlockingRecordId = 0;
 
@@ -41,7 +46,7 @@ namespace Naos.Database.Domain
                 throw new ArgumentException("Cannot be white space.", nameof(concern));
             }
 
-            if (concern == RecordHandlingConcern)
+            if (concern == StreamHandlingDisabledConcern)
             {
                 throw new ArgumentException(Invariant($"Specified concern '{concern}' is reserved for internal use and may not be used."));
             }

@@ -40,7 +40,7 @@ namespace Naos.Database.Domain.Test
 
                             var result = new GetHandlingStatusOp(
                                 referenceObject.InternalRecordId,
-                                Concerns.RecordHandlingConcern);
+                                Concerns.StreamHandlingDisabledConcern);
 
                             return result;
                         },

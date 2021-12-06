@@ -87,7 +87,7 @@ namespace Naos.Database.Domain.Test
 
                             var result = new StandardUpdateHandlingStatusForRecordOp(
                                 referenceObject.InternalRecordId,
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.NewStatus,
                                 referenceObject.AcceptableCurrentStatuses,
                                 referenceObject.Details,

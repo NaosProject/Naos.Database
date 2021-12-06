@@ -90,7 +90,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<TryHandleRecordOp<Version>>();
 
                             var result = new TryHandleRecordOp<Version>(
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.IdentifierType,
                                 referenceObject.VersionMatchStrategy,
                                 referenceObject.TagsToMatch,

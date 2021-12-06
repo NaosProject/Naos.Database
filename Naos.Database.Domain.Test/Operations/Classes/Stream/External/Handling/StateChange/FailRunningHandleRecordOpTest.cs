@@ -79,7 +79,7 @@ namespace Naos.Database.Domain.Test
 
                             var result = new FailRunningHandleRecordOp(
                                 referenceObject.InternalRecordId,
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.Details,
                                 referenceObject.Tags);
 

@@ -42,6 +42,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_GetDistinctStringSerializedIdsRecordOp";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
                     TypesToRegisterJsonSerializationConfiguration<MyObject>,
@@ -289,6 +295,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_ReadWriteTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
                     TypesToRegisterJsonSerializationConfiguration<MyObject>,
@@ -402,6 +414,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_PruneOnInsertTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -456,6 +474,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_HandlingTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -617,7 +641,7 @@ namespace Naos.Protocol.FileSystem.Test
                             $"{history.Metadata.Concern}: {history.InternalHandlingEntryId}:{history.Metadata.InternalRecordId} - {history.Metadata.Status} - {history.Payload.DeserializePayloadUsingSpecificFactory<IHaveDetails>(stream.SerializerFactory).Details ?? "<no details specified>"}"));
                 }
 
-                var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(0, Concerns.RecordHandlingConcern));
+                var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(0, Concerns.StreamHandlingDisabledConcern));
 
                 foreach (var history in blockingHistory)
                 {
@@ -643,6 +667,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_DoesNotExistTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -688,6 +718,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_GetLatestRecordMetadataByIdTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -733,6 +769,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_PutAndGetLatestRecordByInternalRecordIdTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -807,6 +849,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_NullIdentifierAndValueTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -852,6 +900,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_ExistingRecordStrategyTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -913,6 +967,12 @@ namespace Naos.Protocol.FileSystem.Test
             var streamName = "FS_GetAllRecordsAndMetadataByIdTest";
 
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 
@@ -988,6 +1048,12 @@ namespace Naos.Protocol.FileSystem.Test
         {
             var streamName = "FS_TagsCanBeNullTest";
             var testingFilePath = Path.Combine(Path.GetTempPath(), "Naos");
+
+            if (Directory.Exists(testingFilePath))
+            {
+                Directory.Delete(testingFilePath, true);
+            }
+
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
             var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
 

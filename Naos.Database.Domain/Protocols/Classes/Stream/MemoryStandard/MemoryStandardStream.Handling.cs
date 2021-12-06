@@ -46,7 +46,7 @@ namespace Naos.Database.Domain
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.handlingLock)
             {
-                var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingConcern);
+                var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
                 if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.DisabledForStream)
                 {
                     return new[] { HandlingStatus.DisabledForStream };
@@ -121,7 +121,7 @@ namespace Naos.Database.Domain
                                 $"{nameof(GetAllResourceLocatorsOp)} must only return locators of type {typeof(MemoryDatabaseLocator).ToStringReadable()}; found {locator?.GetType().ToStringReadable()}."));
                     }
 
-                    var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.RecordHandlingConcern);
+                    var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.StreamHandlingDisabledConcern);
                     var mostRecentEntry = handlingEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
                     if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.DisabledForStream)
                     {
@@ -336,7 +336,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var newStatus = operation.NewStatus;
-            var concern = Concerns.RecordHandlingConcern;
+            var concern = Concerns.StreamHandlingDisabledConcern;
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
             var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();

@@ -96,7 +96,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
 
                             var result = new StandardTryHandleRecordOp(
-                                Concerns.RecordHandlingConcern,
+                                Concerns.StreamHandlingDisabledConcern,
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,
@@ -230,7 +230,7 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
                     {
-                        Name = "constructor should throw ArgumentException when parameter 'streamRecordItemsToInclude' is StreamRecordItemsToInclude.Unknown scenario",
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'streamRecordItemsToInclude' is StreamRecordItemsToInclude.Unknown scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
@@ -252,7 +252,7 @@ namespace Naos.Database.Domain.Test
 
                             return result;
                         },
-                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "streamRecordItemsToInclude", "Unknown" },
                     });
         }

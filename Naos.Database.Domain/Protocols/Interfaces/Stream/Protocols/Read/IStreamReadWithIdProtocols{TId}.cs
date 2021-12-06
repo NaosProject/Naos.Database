@@ -18,7 +18,8 @@ namespace Naos.Database.Domain
         ISyncAndAsyncReturningProtocol<GetAllRecordsByIdOp<TId>, IReadOnlyList<StreamRecordWithId<TId>>>,
         ISyncAndAsyncReturningProtocol<GetLatestRecordMetadataByIdOp<TId>, StreamRecordMetadata<TId>>,
         ISyncAndAsyncReturningProtocol<GetAllRecordsMetadataByIdOp<TId>, IReadOnlyList<StreamRecordMetadata<TId>>>,
-        ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId>, bool>
+        ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId>, bool>,
+        ISyncAndAsyncReturningProtocol<GetLatestStringSerializedObjectByIdOp<TId>, string>
     {
     }
 }

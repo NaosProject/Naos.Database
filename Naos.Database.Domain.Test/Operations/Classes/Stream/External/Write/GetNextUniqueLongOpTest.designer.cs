@@ -174,6 +174,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordOp<Version>>(),
+                        A.Dummy<GetLatestStringSerializedObjectByIdOp<Version>>(),
                         A.Dummy<GetResourceLocatorByIdOp<Version>>(),
                         A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
                         A.Dummy<GetStreamFromRepresentationOp>(),

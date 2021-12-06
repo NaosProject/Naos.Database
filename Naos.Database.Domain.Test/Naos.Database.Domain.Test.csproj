@@ -271,6 +271,10 @@
     <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEventTest.designer.cs">
       <DependentUpon>HandlingForStreamEnabledEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.designer.cs">
+      <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\Stream\Common\NullIdentifierTest.cs" />
     <Compile Include="Models\Classes\Stream\Common\NullIdentifierTest.designer.cs">
       <DependentUpon>NullIdentifierTest.cs</DependentUpon>

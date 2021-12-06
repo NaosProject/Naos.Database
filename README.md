@@ -17,3 +17,10 @@ Objects can be put into a Stream with specified identifier or not.  When an iden
 - A non unique identifier would be used in an Event Sourced paradigm where the identifier is the Aggregate identifier and it is expected that more than one kind of event will be put into the stream for the same Aggregate.
 
 Objects can be tagged when put into a Stream to facilitate querying.  Tags are supported as strings, or key-value pairs of strings (e.g. "failure" or  { "work-result", "failed" } ).
+
+
+Adding External Operations
+--------------------------
+- Add the operation to the appropropriate Protocol Interface (e.g. `IStreamReadProtocols`)
+- If the operation is a Read or Write operation, then add the appropriate extension methods to `ReadOnlyStreamExtensions` or `WriteOnlyStreamExtensions`
+- Add a standardizing method in `RecordStandardizeExtensions`

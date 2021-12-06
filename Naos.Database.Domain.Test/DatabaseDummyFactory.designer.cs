@@ -211,6 +211,13 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<RecordNotFoundStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetLatestStringSerializedObjectByIdOp<Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<RecordNotFoundStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetNextUniqueLongOp(
                                  A.Dummy<string>()));
 

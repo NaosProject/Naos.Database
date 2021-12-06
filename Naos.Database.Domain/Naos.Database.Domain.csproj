@@ -177,6 +177,7 @@
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutOp{TObject}.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
@@ -319,6 +321,9 @@
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.designer.cs">
+      <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOp.designer.cs">
       <DependentUpon>GetNextUniqueLongOp.cs</DependentUpon>

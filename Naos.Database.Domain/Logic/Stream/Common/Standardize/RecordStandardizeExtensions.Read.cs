@@ -307,5 +307,36 @@ namespace Naos.Database.Domain
 
             return result;
         }
+
+        /// <summary>
+        /// Converts the operation to it's standardized form.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <param name="operation">The operation.</param>
+        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardGetLatestRecordByIdOp Standardize<TId>(
+            this GetLatestStringSerializedObjectByIdOp<TId> operation,
+            IStringSerialize serializer,
+            IResourceLocator specifiedResourceLocator = null)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+            serializer.MustForArg(nameof(serializer)).NotBeNull();
+
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
+
+            var result = new StandardGetLatestRecordByIdOp(
+                serializedObjectId,
+                typeof(TId).ToRepresentation(),
+                operation.ObjectType,
+                operation.VersionMatchStrategy,
+                operation.RecordNotFoundStrategy,
+                specifiedResourceLocator);
+
+            return result;
+        }
     }
 }

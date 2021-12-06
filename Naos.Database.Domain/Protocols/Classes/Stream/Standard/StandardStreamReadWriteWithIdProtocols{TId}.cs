@@ -6,11 +6,14 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
+    using static System.FormattableString;
 
     /// <summary>
     /// Set of protocols to execute read and write operations on a stream,
@@ -226,6 +229,60 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<IReadOnlyList<StreamRecordMetadata<TId>>> ExecuteAsync(
             GetAllRecordsMetadataByIdOp<TId> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public string Execute(
+            GetLatestStringSerializedObjectByIdOp<TId> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
+            var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var record = this.stream.Execute(standardOp);
+
+            string result;
+
+            if (record == null)
+            {
+                if (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault)
+                {
+                    throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+                }
+
+                result = null;
+            }
+            else
+            {
+                if (record.Payload is StringDescribedSerialization stringDescribedSerialization)
+                {
+                    result = stringDescribedSerialization.SerializedPayload;
+                }
+                else
+                {
+                    if (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault)
+                    {
+                        throw new NotSupportedException(Invariant($"record {nameof(SerializationFormat)} not {SerializationFormat.String}, it is {record.Payload.GetSerializationFormat()}, but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+                    }
+
+                    result = null;
+                }
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<string> ExecuteAsync(
+            GetLatestStringSerializedObjectByIdOp<TId> operation)
         {
             var result = await Task.FromResult(this.Execute(operation));
 

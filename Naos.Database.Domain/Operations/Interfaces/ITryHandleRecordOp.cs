@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -17,6 +18,16 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation.
         /// </summary>
         VersionMatchStrategy VersionMatchStrategy { get; }
+
+        /// <summary>
+        /// Gets the tags to match or null when not matching on tags.
+        /// </summary>
+        IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; }
+
+        /// <summary>
+        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
+        /// </summary>
+        TagMatchStrategy TagMatchStrategy { get; }
 
         /// <summary>
         /// Gets a value that specifies how to order the resulting records.

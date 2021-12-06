@@ -42,6 +42,8 @@ namespace Naos.Database.Domain.Test
                             var result = new TryHandleRecordWithIdOp<Version, Version>(
                                                  null,
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.OrderRecordsBy,
                                                  referenceObject.Tags,
                                                  referenceObject.Details,
@@ -64,6 +66,8 @@ namespace Naos.Database.Domain.Test
                             var result = new TryHandleRecordWithIdOp<Version, Version>(
                                                  Invariant($"  {Environment.NewLine}  "),
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.OrderRecordsBy,
                                                  referenceObject.Tags,
                                                  referenceObject.Details,
@@ -86,6 +90,8 @@ namespace Naos.Database.Domain.Test
                             var result = new TryHandleRecordWithIdOp<Version, Version>(
                                 Concerns.RecordHandlingConcern,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 referenceObject.OrderRecordsBy,
                                 referenceObject.Tags,
                                 referenceObject.Details,
@@ -100,6 +106,54 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version, Version>>
                     {
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version, Version>>();
+
+                            var result = new TryHandleRecordWithIdOp<Version, Version>(
+                                referenceObject.Concern,
+                                referenceObject.VersionMatchStrategy,
+                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
+                                referenceObject.TagMatchStrategy,
+                                referenceObject.OrderRecordsBy,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version, Version>>();
+
+                            var result = new TryHandleRecordWithIdOp<Version, Version>(
+                                referenceObject.Concern,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                TagMatchStrategy.Unknown,
+                                referenceObject.OrderRecordsBy,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version, Version>>
+                    {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown scenario",
                         ConstructionFunc = () =>
                         {
@@ -108,6 +162,8 @@ namespace Naos.Database.Domain.Test
                             var result = new TryHandleRecordWithIdOp<Version, Version>(
                                 referenceObject.Concern,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 OrderRecordsBy.Unknown,
                                 referenceObject.Tags,
                                 referenceObject.Details,
@@ -130,6 +186,8 @@ namespace Naos.Database.Domain.Test
                             var result = new TryHandleRecordWithIdOp<Version, Version>(
                                 referenceObject.Concern,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 referenceObject.OrderRecordsBy,
                                 new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
                                 referenceObject.Details,

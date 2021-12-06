@@ -31,6 +31,8 @@ namespace Naos.Database.Domain
         /// <param name="identifierType">OPTIONAL type of the object identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="tags">OPTIONAL tags to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no tags.</param>
         /// <param name="details">OPTIONAL details to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no details.</param>
@@ -43,6 +45,8 @@ namespace Naos.Database.Domain
             TypeRepresentation identifierType = null,
             TypeRepresentation objectType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
             IReadOnlyCollection<NamedValue<string>> tags = null,
             string details = null,
@@ -53,6 +57,8 @@ namespace Naos.Database.Domain
         {
             concern.ThrowIfInvalidOrReservedConcern();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
+            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
             orderRecordsBy.MustForArg(nameof(orderRecordsBy)).NotBeEqualTo(OrderRecordsBy.Unknown);
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
             streamRecordItemsToInclude.MustForArg(nameof(streamRecordItemsToInclude)).NotBeEqualTo(StreamRecordItemsToInclude.Unknown);
@@ -61,6 +67,8 @@ namespace Naos.Database.Domain
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
             this.VersionMatchStrategy = versionMatchStrategy;
+            this.TagsToMatch = tagsToMatch;
+            this.TagMatchStrategy = tagMatchStrategy;
             this.OrderRecordsBy = orderRecordsBy;
             this.Tags = tags;
             this.Details = details;
@@ -85,6 +93,12 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
+
+        /// <inheritdoc />
+        public TagMatchStrategy TagMatchStrategy { get; private set; }
 
         /// <inheritdoc />
         public OrderRecordsBy OrderRecordsBy { get; private set; }

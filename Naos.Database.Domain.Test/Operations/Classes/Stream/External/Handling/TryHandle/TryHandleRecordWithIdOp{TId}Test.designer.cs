@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<TryHandleRecordWithIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {systemUnderTest.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.TryHandleRecordWithIdOp<Version>: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {systemUnderTest.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -67,6 +67,8 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              referenceObject.Tags,
                                              referenceObject.Details,
@@ -90,6 +92,8 @@ namespace Naos.Database.Domain.Test
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              referenceObject.Tags,
                                              referenceObject.Details,
@@ -113,6 +117,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              null,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              referenceObject.Tags,
                                              referenceObject.Details,
@@ -127,6 +133,81 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
                 {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new TryHandleRecordWithIdOp<Version>(
+                                             referenceObject.Concern,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             null,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.OrderRecordsBy,
+                                             referenceObject.Tags,
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId,
+                                             referenceObject.InheritRecordTags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new TryHandleRecordWithIdOp<Version>(
+                                             referenceObject.Concern,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             new List<NamedValue<string>>(),
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.OrderRecordsBy,
+                                             referenceObject.Tags,
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId,
+                                             referenceObject.InheritRecordTags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new TryHandleRecordWithIdOp<Version>(
+                                             referenceObject.Concern,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.OrderRecordsBy,
+                                             referenceObject.Tags,
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId,
+                                             referenceObject.InheritRecordTags);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
                     Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
@@ -136,6 +217,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              null,
                                              referenceObject.Details,
@@ -159,6 +242,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              new List<NamedValue<string>>(),
                                              referenceObject.Details,
@@ -182,6 +267,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
                                              referenceObject.Details,
@@ -205,6 +292,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              referenceObject.Tags,
                                              null,
@@ -228,6 +317,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Concern,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
                                              referenceObject.Tags,
                                              Invariant($"  {Environment.NewLine}  "),
@@ -255,6 +346,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -281,6 +374,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -307,6 +402,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -322,6 +419,62 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
                 {
+                    Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
+                                                      referenceObject.Concern,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.OrderRecordsBy,
+                                                      referenceObject.Tags,
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId,
+                                                      referenceObject.InheritRecordTags),
+                            ExpectedPropertyValue = referenceObject.TagsToMatch,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TagsToMatch",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = new TryHandleRecordWithIdOp<Version>(
+                                                      referenceObject.Concern,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.OrderRecordsBy,
+                                                      referenceObject.Tags,
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId,
+                                                      referenceObject.InheritRecordTags),
+                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TagMatchStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
                     Name = "OrderRecordsBy should return same 'orderRecordsBy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
@@ -333,6 +486,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -359,6 +514,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -385,6 +542,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -411,6 +570,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -437,6 +598,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Concern,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.OrderRecordsBy,
                                                       referenceObject.Tags,
                                                       referenceObject.Details,
@@ -506,6 +669,46 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.VersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
+                    WithPropertyName = "TagsToMatch",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TagsToMatch,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<TryHandleRecordWithIdOp<Version>>
+                {
+                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
+                    WithPropertyName = "TagMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<TryHandleRecordWithIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<TryHandleRecordWithIdOp<Version>>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<TryHandleRecordWithIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
@@ -626,6 +829,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -638,6 +843,8 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -647,6 +854,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -656,6 +865,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -665,6 +876,30 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags),
+                        new TryHandleRecordWithIdOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags),
+                        new TryHandleRecordWithIdOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.OrderRecordsBy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.OrderRecordsBy)).OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -674,6 +909,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -683,6 +920,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 A.Dummy<TryHandleRecordWithIdOp<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
@@ -692,6 +931,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -701,6 +942,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
                                 ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
@@ -1062,6 +1305,18 @@ namespace Naos.Database.Domain.Test
                     actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
                 }
 
+                if (systemUnderTest.TagsToMatch == null)
+                {
+                    actual.TagsToMatch.AsTest().Must().BeNull();
+                }
+                else if (!actual.TagsToMatch.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
+                }
+
                 if (systemUnderTest.Tags == null)
                 {
                     actual.Tags.AsTest().Must().BeNull();
@@ -1091,7 +1346,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "ObjectType", "VersionMatchStrategy", "OrderRecordsBy", "Tags", "Details", "MinimumInternalRecordId", "InheritRecordTags" };
+                var propertyNames = new string[] { "Concern", "ObjectType", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "OrderRecordsBy", "Tags", "Details", "MinimumInternalRecordId", "InheritRecordTags" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

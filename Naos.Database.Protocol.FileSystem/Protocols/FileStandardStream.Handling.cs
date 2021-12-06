@@ -113,7 +113,15 @@ namespace Naos.Database.Protocol.FileSystem
                                                   Path = _.Path,
                                                   Metadata = metadata,
                                               };
-                                          });
+                                          })
+                                     .ToList();
+
+                        if ((operation.TagsToMatch != null) && operation.TagsToMatch.Any())
+                        {
+                            predicate = predicate
+                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy))
+                                .ToList();
+                        }
 
                         string metadataFilePath;
                         StreamRecordMetadata recordMetadata;

@@ -44,6 +44,8 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.IdentifierType,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.OrderRecordsBy,
                                                  referenceObject.Tags,
                                                  referenceObject.Details,
@@ -70,6 +72,8 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.IdentifierType,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.OrderRecordsBy,
                                                  referenceObject.Tags,
                                                  referenceObject.Details,
@@ -96,6 +100,8 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 referenceObject.OrderRecordsBy,
                                 referenceObject.Tags,
                                 referenceObject.Details,
@@ -112,6 +118,62 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
                     {
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                            var result = new StandardTryHandleRecordOp(
+                                referenceObject.Concern,
+                                referenceObject.IdentifierType,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
+                                referenceObject.TagMatchStrategy,
+                                referenceObject.OrderRecordsBy,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags,
+                                referenceObject.StreamRecordItemsToInclude,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                            var result = new StandardTryHandleRecordOp(
+                                referenceObject.Concern,
+                                referenceObject.IdentifierType,
+                                referenceObject.ObjectType,
+                                referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                TagMatchStrategy.Unknown,
+                                referenceObject.OrderRecordsBy,
+                                referenceObject.Tags,
+                                referenceObject.Details,
+                                referenceObject.MinimumInternalRecordId,
+                                referenceObject.InheritRecordTags,
+                                referenceObject.StreamRecordItemsToInclude,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                    {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown scenario",
                         ConstructionFunc = () =>
                         {
@@ -122,6 +184,8 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 OrderRecordsBy.Unknown,
                                 referenceObject.Tags,
                                 referenceObject.Details,
@@ -148,6 +212,8 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 referenceObject.OrderRecordsBy,
                                 new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
                                 referenceObject.Details,
@@ -174,6 +240,8 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 referenceObject.OrderRecordsBy,
                                 referenceObject.Tags,
                                 referenceObject.Details,

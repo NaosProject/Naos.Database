@@ -75,7 +75,7 @@ namespace Naos.Database.Domain
                                       operationVersionMatchStrategy));
                     }
 
-                    if (operation.TagsToMatch != null && operation.TagsToMatch.Any())
+                    if ((operation.TagsToMatch != null) && operation.TagsToMatch.Any())
                     {
                         matchResult = entry.Metadata.Tags.FuzzyMatchTags(
                             operation.TagsToMatch,
@@ -128,15 +128,14 @@ namespace Naos.Database.Domain
                         return new TryHandleRecordResult(null, true);
                     }
 
-                    var entries =
-                        this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern)
-                            .ToList();
+                    var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern).ToList();
 
                     var existingInternalRecordIdsToConsider = new List<long>();
                     var existingInternalRecordIdsToIgnore = new List<long>();
                     foreach (var groupedById in entries.GroupBy(_ => _.Metadata.InternalRecordId))
                     {
                         var mostRecent = groupedById.OrderByDescending(_ => _.InternalHandlingEntryId).First();
+
                         if (mostRecent.Metadata.Status.IsAvailable())
                         {
                             existingInternalRecordIdsToConsider.Add(groupedById.Key);
@@ -161,6 +160,13 @@ namespace Naos.Database.Domain
                                                       operation.ObjectType,
                                                       operation.VersionMatchStrategy))
                                              .ToList();
+
+                        if ((operation.TagsToMatch != null) && operation.TagsToMatch.Any())
+                        {
+                            matchingRecords = matchingRecords
+                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy))
+                                .ToList();
+                        }
 
                         StreamRecord recordToHandle;
                         switch (operation.OrderRecordsBy)

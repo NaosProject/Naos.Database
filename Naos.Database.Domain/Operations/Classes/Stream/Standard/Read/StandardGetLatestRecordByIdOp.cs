@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Gets the latest record with provided identifier.
+    /// Gets the most recent record with provided identifier.
     /// </summary>
     /// <remarks>
     /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardStream"/>.

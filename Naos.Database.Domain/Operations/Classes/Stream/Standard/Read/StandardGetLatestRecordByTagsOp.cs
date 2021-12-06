@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Gets the latest record with the specified tag.
+    /// Gets the most recent record with the specified tag.
     /// </summary>
     /// <remarks>
     /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardStream"/>.

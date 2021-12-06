@@ -10,6 +10,7 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Serialization;
     using static System.FormattableString;
 
     public partial class MemoryStandardStream
@@ -320,6 +321,52 @@ namespace Naos.Database.Domain
                         throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public override string Execute(
+            StandardGetLatestStringSerializedObjectByIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOp = new StandardGetLatestRecordByIdOp(
+                operation.StringSerializedId,
+                operation.IdentifierType,
+                operation.ObjectType,
+                operation.VersionMatchStrategy,
+                operation.RecordNotFoundStrategy,
+                operation.SpecifiedResourceLocator);
+
+            var record = this.Execute(delegatedOp);
+
+            string result;
+
+            if (record == null)
+            {
+                result = null;
+            }
+            else
+            {
+                if (record.Payload is StringDescribedSerialization stringDescribedSerialization)
+                {
+                    result = stringDescribedSerialization.SerializedPayload;
+                }
+                else
+                {
+                    switch (operation.RecordNotFoundStrategy)
+                    {
+                        case RecordNotFoundStrategy.ReturnDefault:
+                            result = null;
+                            break;
+                        case RecordNotFoundStrategy.Throw:
+                            throw new NotSupportedException(Invariant($"record {nameof(SerializationFormat)} not {SerializationFormat.String}, it is {record.Payload.GetSerializationFormat()}, but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <inheritdoc />

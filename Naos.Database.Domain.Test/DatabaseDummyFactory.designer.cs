@@ -606,6 +606,15 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StandardGetLatestStringSerializedObjectByIdOp(
+                                 A.Dummy<string>(),
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<IResourceLocator>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetNextUniqueLongOp(
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>()));

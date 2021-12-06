@@ -168,6 +168,10 @@ namespace Naos.Database.Domain
             StandardGetLatestRecordByTagsOp operation);
 
         /// <inheritdoc />
+        public abstract string Execute(
+            StandardGetLatestStringSerializedObjectByIdOp operation);
+
+        /// <inheritdoc />
         public abstract CreateStreamResult Execute(
             StandardCreateStreamOp operation);
 

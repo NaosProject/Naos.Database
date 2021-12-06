@@ -318,7 +318,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
-        public static StandardGetLatestRecordByIdOp Standardize<TId>(
+        public static StandardGetLatestStringSerializedObjectByIdOp Standardize<TId>(
             this GetLatestStringSerializedObjectByIdOp<TId> operation,
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
@@ -328,7 +328,7 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
-            var result = new StandardGetLatestRecordByIdOp(
+            var result = new StandardGetLatestStringSerializedObjectByIdOp(
                 serializedObjectId,
                 typeof(TId).ToRepresentation(),
                 operation.ObjectType,

@@ -13,6 +13,7 @@ namespace Naos.Database.Protocol.FileSystem
     using System.Linq;
     using Naos.Database.Domain;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Serialization;
     using static System.FormattableString;
 
     public partial class FileStandardStream
@@ -271,12 +272,9 @@ namespace Naos.Database.Protocol.FileSystem
                         case RecordNotFoundStrategy.ReturnDefault:
                             return null;
                         case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(
-                                Invariant(
-                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
+                            throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                         default:
-                            throw new NotSupportedException(
-                                Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                     }
                 }
 
@@ -428,6 +426,52 @@ namespace Naos.Database.Protocol.FileSystem
                     return ProcessDefaultReturn();
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public override string Execute(
+            StandardGetLatestStringSerializedObjectByIdOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOp = new StandardGetLatestRecordByIdOp(
+                operation.StringSerializedId,
+                operation.IdentifierType,
+                operation.ObjectType,
+                operation.VersionMatchStrategy,
+                operation.RecordNotFoundStrategy,
+                operation.SpecifiedResourceLocator);
+
+            var record = this.Execute(delegatedOp);
+
+            string result;
+
+            if (record == null)
+            {
+                result = null;
+            }
+            else
+            {
+                if (record.Payload is StringDescribedSerialization stringDescribedSerialization)
+                {
+                    result = stringDescribedSerialization.SerializedPayload;
+                }
+                else
+                {
+                    switch (operation.RecordNotFoundStrategy)
+                    {
+                        case RecordNotFoundStrategy.ReturnDefault:
+                            result = null;
+                            break;
+                        case RecordNotFoundStrategy.Throw:
+                            throw new NotSupportedException(Invariant($"record {nameof(SerializationFormat)} not {SerializationFormat.String}, it is {record.Payload.GetSerializationFormat()}, but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <inheritdoc />

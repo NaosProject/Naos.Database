@@ -701,6 +701,10 @@
     <Compile Include="Models\Classes\Stream\Handling\TryHandleRecordResultTest.designer.cs">
       <DependentUpon>TryHandleRecordResultTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectByIdOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectByIdOpTest.designer.cs">
+      <DependentUpon>StandardGetLatestStringSerializedObjectByIdOpTest.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />

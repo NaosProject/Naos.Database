@@ -1076,6 +1076,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardGetLatestRecordByTagsOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
                         A.Dummy<StandardGetLatestRecordOp>(),
+                        A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
                         A.Dummy<StandardPruneStreamOp>(),

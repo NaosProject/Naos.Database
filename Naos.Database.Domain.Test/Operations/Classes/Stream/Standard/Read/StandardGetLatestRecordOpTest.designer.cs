@@ -443,6 +443,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardGetLatestRecordByIdOp>(),
                         A.Dummy<StandardGetLatestRecordByTagsOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
+                        A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
                         A.Dummy<StandardPruneStreamOp>(),

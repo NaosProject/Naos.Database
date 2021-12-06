@@ -247,35 +247,7 @@ namespace Naos.Database.Domain
 
             var standardOp = operation.Standardize(serializer, locator);
 
-            var record = this.stream.Execute(standardOp);
-
-            string result;
-
-            if (record == null)
-            {
-                if (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault)
-                {
-                    throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
-                }
-
-                result = null;
-            }
-            else
-            {
-                if (record.Payload is StringDescribedSerialization stringDescribedSerialization)
-                {
-                    result = stringDescribedSerialization.SerializedPayload;
-                }
-                else
-                {
-                    if (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault)
-                    {
-                        throw new NotSupportedException(Invariant($"record {nameof(SerializationFormat)} not {SerializationFormat.String}, it is {record.Payload.GetSerializationFormat()}, but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
-                    }
-
-                    result = null;
-                }
-            }
+            var result = this.stream.Execute(standardOp);
 
             return result;
         }

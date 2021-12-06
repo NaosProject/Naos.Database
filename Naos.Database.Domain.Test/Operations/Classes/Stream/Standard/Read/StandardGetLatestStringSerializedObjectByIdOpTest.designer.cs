@@ -33,101 +33,200 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class DoesAnyExistByIdOpTIdTest
+    public static partial class StandardGetLatestStringSerializedObjectByIdOpTest
     {
-        private static readonly StringRepresentationTestScenarios<DoesAnyExistByIdOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<DoesAnyExistByIdOp<Version>>()
+        private static readonly StringRepresentationTestScenarios<StandardGetLatestStringSerializedObjectByIdOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetLatestStringSerializedObjectByIdOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<DoesAnyExistByIdOp<Version>>
+                new StringRepresentationTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetLatestStringSerializedObjectByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.DoesAnyExistByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetLatestStringSerializedObjectByIdOp: StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<DoesAnyExistByIdOp<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<DoesAnyExistByIdOp<Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetLatestStringSerializedObjectByIdOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetLatestStringSerializedObjectByIdOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'stringSerializedId' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var result = new DoesAnyExistByIdOp<Version>(
+                        var result = new StandardGetLatestStringSerializedObjectByIdOp(
                                              null,
+                                             referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "id", },
+                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'stringSerializedId' is white space scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var result = new StandardGetLatestStringSerializedObjectByIdOp(
+                                             Invariant($"  {Environment.NewLine}  "),
+                                             referenceObject.IdentifierType,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'identifierType' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var result = new StandardGetLatestStringSerializedObjectByIdOp(
+                                             referenceObject.StringSerializedId,
+                                             null,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "identifierType", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'objectType' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var result = new DoesAnyExistByIdOp<Version>(
-                                             referenceObject.Id,
+                        var result = new StandardGetLatestStringSerializedObjectByIdOp(
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.IdentifierType,
                                              null,
-                                             referenceObject.VersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "objectType", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var result = new StandardGetLatestStringSerializedObjectByIdOp(
+                                             referenceObject.StringSerializedId,
+                                             referenceObject.IdentifierType,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<DoesAnyExistByIdOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<DoesAnyExistByIdOp<Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetLatestStringSerializedObjectByIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetLatestStringSerializedObjectByIdOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<DoesAnyExistByIdOp<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
-                    Name = "Id should return same 'id' parameter passed to constructor when getting",
+                    Name = "StringSerializedId should return same 'stringSerializedId' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestStringSerializedObjectByIdOp>
                         {
-                            SystemUnderTest = new DoesAnyExistByIdOp<Version>(
-                                                      referenceObject.Id,
+                            SystemUnderTest = new StandardGetLatestStringSerializedObjectByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy),
-                            ExpectedPropertyValue = referenceObject.Id,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.StringSerializedId,
                         };
 
                         return result;
                     },
-                    PropertyName = "Id",
+                    PropertyName = "StringSerializedId",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<DoesAnyExistByIdOp<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "IdentifierType should return same 'identifierType' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestStringSerializedObjectByIdOp>
+                        {
+                            SystemUnderTest = new StandardGetLatestStringSerializedObjectByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.IdentifierType,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "IdentifierType",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "ObjectType should return same 'objectType' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestStringSerializedObjectByIdOp>
                         {
-                            SystemUnderTest = new DoesAnyExistByIdOp<Version>(
-                                                      referenceObject.Id,
+                            SystemUnderTest = new StandardGetLatestStringSerializedObjectByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.ObjectType,
                         };
 
@@ -136,60 +235,131 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "ObjectType",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<DoesAnyExistByIdOp<Version>>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestStringSerializedObjectByIdOp>
                         {
-                            SystemUnderTest = new DoesAnyExistByIdOp<Version>(
-                                                      referenceObject.Id,
+                            SystemUnderTest = new StandardGetLatestStringSerializedObjectByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
                     },
                     PropertyName = "VersionMatchStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "RecordNotFoundStrategy should return same 'recordNotFoundStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestStringSerializedObjectByIdOp>
+                        {
+                            SystemUnderTest = new StandardGetLatestStringSerializedObjectByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "RecordNotFoundStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestStringSerializedObjectByIdOp>
+                        {
+                            SystemUnderTest = new StandardGetLatestStringSerializedObjectByIdOp(
+                                                      referenceObject.StringSerializedId,
+                                                      referenceObject.IdentifierType,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SpecifiedResourceLocator",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<DoesAnyExistByIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<DoesAnyExistByIdOp<Version>>()
+        private static readonly DeepCloneWithTestScenarios<StandardGetLatestStringSerializedObjectByIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetLatestStringSerializedObjectByIdOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<DoesAnyExistByIdOp<Version>>
+                new DeepCloneWithTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
-                    Name = "DeepCloneWithId should deep clone object and replace Id with the provided id",
-                    WithPropertyName = "Id",
+                    Name = "DeepCloneWithStringSerializedId should deep clone object and replace StringSerializedId with the provided stringSerializedId",
+                    WithPropertyName = "StringSerializedId",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>().ThatIs(_ => !systemUnderTest.Id.IsEqualTo(_.Id));
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().ThatIs(_ => !systemUnderTest.StringSerializedId.IsEqualTo(_.StringSerializedId));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestStringSerializedObjectByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Id,
+                            DeepCloneWithValue = referenceObject.StringSerializedId,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<DoesAnyExistByIdOp<Version>>
+                new DeepCloneWithTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "DeepCloneWithIdentifierType should deep clone object and replace IdentifierType with the provided identifierType",
+                    WithPropertyName = "IdentifierType",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().ThatIs(_ => !systemUnderTest.IdentifierType.IsEqualTo(_.IdentifierType));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestStringSerializedObjectByIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.IdentifierType,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "DeepCloneWithObjectType should deep clone object and replace ObjectType with the provided objectType",
                     WithPropertyName = "ObjectType",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestStringSerializedObjectByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.ObjectType,
@@ -199,17 +369,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<DoesAnyExistByIdOp<Version>>
+                new DeepCloneWithTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
                     WithPropertyName = "VersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<DoesAnyExistByIdOp<Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestStringSerializedObjectByIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.VersionMatchStrategy,
@@ -217,37 +387,110 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "DeepCloneWithRecordNotFoundStrategy should deep clone object and replace RecordNotFoundStrategy with the provided recordNotFoundStrategy",
+                    WithPropertyName = "RecordNotFoundStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().ThatIs(_ => !systemUnderTest.RecordNotFoundStrategy.IsEqualTo(_.RecordNotFoundStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestStringSerializedObjectByIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.RecordNotFoundStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
+                {
+                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
+                    WithPropertyName = "SpecifiedResourceLocator",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
+
+                        var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestStringSerializedObjectByIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                        };
+
+                        return result;
+                    },
                 });
 
-        private static readonly DoesAnyExistByIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<DoesAnyExistByIdOp<Version>>();
+        private static readonly StandardGetLatestStringSerializedObjectByIdOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
-        private static readonly EquatableTestScenarios<DoesAnyExistByIdOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<DoesAnyExistByIdOp<Version>>()
+        private static readonly EquatableTestScenarios<StandardGetLatestStringSerializedObjectByIdOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetLatestStringSerializedObjectByIdOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<DoesAnyExistByIdOp<Version>>
+                new EquatableTestScenario<StandardGetLatestStringSerializedObjectByIdOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new DoesAnyExistByIdOp<Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetLatestStringSerializedObjectByIdOp[]
                     {
-                        new DoesAnyExistByIdOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new DoesAnyExistByIdOp<Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetLatestStringSerializedObjectByIdOp[]
                     {
-                        new DoesAnyExistByIdOp<Version>(
-                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().Whose(_ => !_.StringSerializedId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StringSerializedId)).StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
-                        new DoesAnyExistByIdOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
-                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
-                        new DoesAnyExistByIdOp<Version>(
-                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().Whose(_ => !_.IdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdentifierType)).IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
+                                A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetLatestStringSerializedObjectByIdOp(
+                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -260,6 +503,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<CompleteRunningHandleRecordOp>(),
                         A.Dummy<DisableHandlingForRecordOp>(),
                         A.Dummy<DisableHandlingForStreamOp>(),
+                        A.Dummy<DoesAnyExistByIdOp<Version>>(),
                         A.Dummy<EnableHandlingForStreamOp>(),
                         A.Dummy<FailRunningHandleRecordOp>(),
                         A.Dummy<GetAllRecordsByIdOp<Version>>(),
@@ -307,7 +551,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardGetLatestRecordByTagsOp>(),
                         A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
                         A.Dummy<StandardGetLatestRecordOp>(),
-                        A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
@@ -340,12 +583,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void DoesAnyExistByIdOp_of_Version___Should_implement_IModel_of_DoesAnyExistByIdOp_of_Version___When_reflecting()
+            public static void StandardGetLatestStringSerializedObjectByIdOp___Should_implement_IModel_of_StandardGetLatestStringSerializedObjectByIdOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(DoesAnyExistByIdOp<Version>);
+                var type = typeof(StandardGetLatestStringSerializedObjectByIdOp);
 
-                var expectedModelMethods = typeof(IModel<DoesAnyExistByIdOp<Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardGetLatestStringSerializedObjectByIdOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -355,7 +598,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<DoesAnyExistByIdOp<Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetLatestStringSerializedObjectByIdOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -373,10 +616,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void DoesAnyExistByIdOp_of_Version___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void StandardGetLatestStringSerializedObjectByIdOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(DoesAnyExistByIdOp<Version>);
+                var type = typeof(StandardGetLatestStringSerializedObjectByIdOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -556,10 +799,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
                 // Act
-                var actual = (DoesAnyExistByIdOp<Version>)systemUnderTest.Clone();
+                var actual = (StandardGetLatestStringSerializedObjectByIdOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -583,7 +826,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                var systemUnderTest = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -592,16 +835,16 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.Id == null)
+                if (systemUnderTest.IdentifierType == null)
                 {
-                    actual.Id.AsTest().Must().BeNull();
+                    actual.IdentifierType.AsTest().Must().BeNull();
                 }
-                else if (!actual.Id.GetType().IsValueType)
+                else if (!actual.IdentifierType.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.Id.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Id);
+                    actual.IdentifierType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.IdentifierType);
                 }
 
                 if (systemUnderTest.ObjectType == null)
@@ -614,6 +857,18 @@ namespace Naos.Database.Domain.Test
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
                     actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
+                }
+
+                if (systemUnderTest.SpecifiedResourceLocator == null)
+                {
+                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                }
+                else if (!actual.SpecifiedResourceLocator.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
                 }
             }
 
@@ -633,7 +888,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "ObjectType", "VersionMatchStrategy" };
+                var propertyNames = new string[] { "StringSerializedId", "IdentifierType", "ObjectType", "VersionMatchStrategy", "RecordNotFoundStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -646,12 +901,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (DoesAnyExistByIdOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardGetLatestStringSerializedObjectByIdOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(DoesAnyExistByIdOp<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardGetLatestStringSerializedObjectByIdOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -713,7 +968,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                var expected = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -742,7 +997,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                var expected = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -771,7 +1026,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                var expected = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -800,7 +1055,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                var expected = A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -834,8 +1089,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                DoesAnyExistByIdOp<Version> systemUnderTest1 = null;
-                DoesAnyExistByIdOp<Version> systemUnderTest2 = null;
+                StandardGetLatestStringSerializedObjectByIdOp systemUnderTest1 = null;
+                StandardGetLatestStringSerializedObjectByIdOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -865,7 +1120,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    DoesAnyExistByIdOp<Version> systemUnderTest = null;
+                    StandardGetLatestStringSerializedObjectByIdOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1014,8 +1269,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                DoesAnyExistByIdOp<Version> systemUnderTest1 = null;
-                DoesAnyExistByIdOp<Version> systemUnderTest2 = null;
+                StandardGetLatestStringSerializedObjectByIdOp systemUnderTest1 = null;
+                StandardGetLatestStringSerializedObjectByIdOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1045,7 +1300,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    DoesAnyExistByIdOp<Version> systemUnderTest = null;
+                    StandardGetLatestStringSerializedObjectByIdOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1334,17 +1589,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_bool___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase_of_string___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<bool> systemUnderTest = null;
+                    ReturningOperationBase<string> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<bool>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<string>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1365,14 +1620,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_bool___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase_of_string___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<bool>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<string>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1393,14 +1648,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_bool___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase_of_string___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<bool>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<string>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1421,14 +1676,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_bool___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase_of_string___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<bool>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<string>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1449,14 +1704,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_bool___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase_of_string___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<bool>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<string>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1477,14 +1732,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_DoesAnyExistByIdOp_of_Version___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_StandardGetLatestStringSerializedObjectByIdOp___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    DoesAnyExistByIdOp<Version> systemUnderTest = null;
+                    StandardGetLatestStringSerializedObjectByIdOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1508,7 +1763,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_DoesAnyExistByIdOp_of_Version___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_StandardGetLatestStringSerializedObjectByIdOp___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1536,7 +1791,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_DoesAnyExistByIdOp_of_Version___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_StandardGetLatestStringSerializedObjectByIdOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1564,7 +1819,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_DoesAnyExistByIdOp_of_Version___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_StandardGetLatestStringSerializedObjectByIdOp___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1592,7 +1847,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_DoesAnyExistByIdOp_of_Version___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_StandardGetLatestStringSerializedObjectByIdOp___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

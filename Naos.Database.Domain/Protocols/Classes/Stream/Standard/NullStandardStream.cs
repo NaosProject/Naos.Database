@@ -170,6 +170,12 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public string Execute(StandardGetLatestStringSerializedObjectByIdOp operation)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
         public PutRecordResult Execute(StandardPutRecordOp operation)
         {
             throw new NotImplementedException();

@@ -31,8 +31,13 @@ namespace Naos.Database.Domain
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
-                var entriesForInternalRecordId = entries.Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId).ToList();
+                var entriesForInternalRecordId =
+                    (entries ?? new List<StreamRecordHandlingEntry>())
+                   .Concat(recordBlockedEntries ?? new List<StreamRecordHandlingEntry>())
+                   .Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId)
+                   .ToList();
                 return entriesForInternalRecordId;
             }
         }
@@ -53,6 +58,7 @@ namespace Naos.Database.Domain
                 }
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
                 bool HandlingEntryMatchingPredicate(
                     StreamRecordHandlingEntry entry)
@@ -86,10 +92,12 @@ namespace Naos.Database.Domain
                 }
 
                 var result =
-                    entries.Where(HandlingEntryMatchingPredicate)
-                           .GroupBy(_ => _.Metadata.InternalRecordId)
-                           .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
-                           .ToList();
+                    (entries ?? new List<StreamRecordHandlingEntry>())
+                   .Concat(recordBlockedEntries ?? new List<StreamRecordHandlingEntry>())
+                   .Where(HandlingEntryMatchingPredicate)
+                   .GroupBy(_ => _.Metadata.InternalRecordId)
+                   .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
+                   .ToList();
 
                 return result;
             }
@@ -129,10 +137,12 @@ namespace Naos.Database.Domain
                     }
 
                     var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern).ToList();
+                    var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern).ToList();
 
                     var existingInternalRecordIdsToConsider = new List<long>();
                     var existingInternalRecordIdsToIgnore = new List<long>();
-                    foreach (var groupedById in entries.GroupBy(_ => _.Metadata.InternalRecordId))
+                    var mergedEntries = entries.Concat(recordBlockedEntries);
+                    foreach (var groupedById in mergedEntries.GroupBy(_ => _.Metadata.InternalRecordId))
                     {
                         var mostRecent = groupedById.OrderByDescending(_ => _.InternalHandlingEntryId).First();
 
@@ -573,13 +583,33 @@ namespace Naos.Database.Domain
                 this.SerializerFactory,
                 this.DefaultSerializationFormat);
 
+            string stringSerializedId;
+            TypeRepresentationWithAndWithoutVersion identifierTypeRepresentationWithAndWithoutVersion;
+
+            if (mostRecent != null)
+            {
+                stringSerializedId = mostRecent.Metadata.StringSerializedId;
+                identifierTypeRepresentationWithAndWithoutVersion = mostRecent.Metadata.TypeRepresentationOfId;
+            }
+            else
+            {
+                var record = this.Execute(new StandardGetRecordByInternalRecordIdOp(operation.InternalRecordId));
+                if (record == null)
+                {
+                    throw new ArgumentException(Invariant($"Specified {nameof(operation.InternalRecordId)}: {operation.InternalRecordId} does not exist in stream: {this.StreamRepresentation}."));
+                }
+
+                stringSerializedId = record.Metadata.StringSerializedId;
+                identifierTypeRepresentationWithAndWithoutVersion = record.Metadata.TypeRepresentationOfId;
+            }
+
             var metadata = new StreamRecordHandlingEntryMetadata(
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.DisabledForRecord,
-                mostRecent.Metadata.StringSerializedId,
+                stringSerializedId,
                 payload.SerializerRepresentation,
-                mostRecent.Metadata.TypeRepresentationOfId,
+                identifierTypeRepresentationWithAndWithoutVersion,
                 payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
                 timestamp);

@@ -46,7 +46,9 @@ namespace Naos.Database.Domain
             ////    return false;
             ////}
 
-            if (!recordTags.Any())
+            var localRecordTags = recordTags ?? new List<NamedValue<string>>();
+
+            if (!localRecordTags.Any())
             {
                 // Short-circuited; would have returned false on all branches below.
                 return false;
@@ -56,15 +58,15 @@ namespace Naos.Database.Domain
 
             if (tagMatchStrategy == TagMatchStrategy.RecordContainsAnyQueryTag)
             {
-                result = queryTags.Intersect(recordTags).Any();
+                result = queryTags.Intersect(localRecordTags).Any();
             }
             else if (tagMatchStrategy == TagMatchStrategy.RecordContainsAllQueryTags)
             {
-                result = !queryTags.Except(recordTags).Any();
+                result = !queryTags.Except(localRecordTags).Any();
             }
             else if (tagMatchStrategy == TagMatchStrategy.RecordContainsAllQueryTagsAndNoneOther)
             {
-                result = queryTags.Distinct().IsEqualTo(recordTags.Distinct());
+                result = queryTags.Distinct().IsEqualTo(localRecordTags.Distinct());
             }
             else
             {

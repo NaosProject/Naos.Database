@@ -83,8 +83,8 @@ namespace Naos.Database.Domain.Test
                     {
                         new PutRecordResult(
                                 (ReferenceObjectForEquatableTestScenarios.ExistingRecordIds?.Any() ?? false)
-                                    ? A.Dummy<PutRecordResult>().Whose(_ => !_.InternalRecordIdOfPutRecord.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordIdOfPutRecord) && (_.InternalRecordIdOfPutRecord != null)).InternalRecordIdOfPutRecord
-                                    : A.Dummy<PutRecordResult>().Whose(_ => !_.InternalRecordIdOfPutRecord.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordIdOfPutRecord)).InternalRecordIdOfPutRecord,
+                                    ? A.Dummy<PutRecordResult>().Whose(_ => !_.InternalRecordIdOfPutRecord.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordIdOfPutRecord)).InternalRecordIdOfPutRecord
+                                    : A.Dummy<PutRecordResult>().Whose(_ => !_.InternalRecordIdOfPutRecord.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordIdOfPutRecord) && (_.InternalRecordIdOfPutRecord != null)).InternalRecordIdOfPutRecord,
                                 ReferenceObjectForEquatableTestScenarios.ExistingRecordIds,
                                 ReferenceObjectForEquatableTestScenarios.PrunedRecordIds),
                         new PutRecordResult(

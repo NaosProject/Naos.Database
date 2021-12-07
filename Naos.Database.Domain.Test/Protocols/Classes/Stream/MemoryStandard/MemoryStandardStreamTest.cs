@@ -604,8 +604,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var allLocators = stream.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp()).ToList();
             var pruneDate = start.AddMilliseconds((stop - start).TotalMilliseconds / 2);
-            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.")));
-            allLocators.ForEach(_ => stream.GetStreamManagementProtocols().Execute(new PruneBeforeInternalRecordIdOp(7, "Pruning by id.")));
+            allLocators.ForEach(_ => stream.Execute(new PruneBeforeInternalRecordDateOp(pruneDate, "Pruning by date.").Standardize(_)));
+            allLocators.ForEach(_ => stream.Execute(new PruneBeforeInternalRecordIdOp(7, "Pruning by id.").Standardize(_)));
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }

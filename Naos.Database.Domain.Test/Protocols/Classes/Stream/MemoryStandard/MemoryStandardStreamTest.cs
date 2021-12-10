@@ -700,7 +700,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         {
             var streamName = "MS_PutAndGetLatestRecordByInternalRecordIdTest";
 
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(new MemoryDatabaseLocator(streamName));
+            var resourceLocatorProtocol = new MemoryDatabaseLocator(streamName).ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<

@@ -421,7 +421,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -481,7 +481,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -674,7 +674,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -725,7 +725,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -776,7 +776,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -856,7 +856,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -907,7 +907,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -974,7 +974,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<
@@ -1055,7 +1055,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var fileSystemLocator = new FileSystemDatabaseLocator(testingFilePath);
-            var resourceLocatorProtocol = new SingleResourceLocatorProtocols(fileSystemLocator);
+            var resourceLocatorProtocol = fileSystemLocator.ToResourceLocatorProtocols();
 
             var configurationTypeRepresentation =
                 typeof(DependencyOnlyJsonSerializationConfiguration<

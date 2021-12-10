@@ -52,5 +52,22 @@ namespace Naos.Database.Domain
 
             return result;
         }
+
+        /// <summary>
+        /// Builds a <see cref="SingleResourceLocatorProtocols"/> from a resource locator.
+        /// </summary>
+        /// <param name="resourceLocator">The resource locator.</param>
+        /// <returns>
+        /// The protocols.
+        /// </returns>
+        public static SingleResourceLocatorProtocols ToResourceLocatorProtocols(
+            this IResourceLocator resourceLocator)
+        {
+            resourceLocator.MustForArg(nameof(resourceLocator)).NotBeNull();
+
+            var result = new SingleResourceLocatorProtocols(resourceLocator);
+
+            return result;
+        }
     }
 }

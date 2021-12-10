@@ -24,7 +24,8 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="SingleResourceLocatorProtocols"/> class.
         /// </summary>
         /// <param name="resourceLocator">The SQL stream locator.</param>
-        public SingleResourceLocatorProtocols(IResourceLocator resourceLocator)
+        public SingleResourceLocatorProtocols(
+            IResourceLocator resourceLocator)
         {
             this.resourceLocator = resourceLocator ?? throw new ArgumentNullException(nameof(resourceLocator));
         }

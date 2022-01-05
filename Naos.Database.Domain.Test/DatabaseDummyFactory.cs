@@ -135,8 +135,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
-                    var result = new IdDeprecatedEvent<Version>(
-                        A.Dummy<Version>(),
+                    var result = new IdDeprecatedEvent(
                         A.Dummy<UtcDateTime>(),
                         A.Dummy<string>());
 

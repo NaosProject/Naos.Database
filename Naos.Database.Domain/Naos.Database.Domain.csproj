@@ -168,9 +168,9 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEvent.designer.cs">
       <DependentUpon>RecordHandlingSelfCanceledEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId}.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId}.designer.cs">
-      <DependentUpon>IdDeprecatedEvent{TId}.cs</DependentUpon>
+    <Compile Include="Events\Classes\IdDeprecatedEvent.cs" />
+    <Compile Include="Events\Classes\IdDeprecatedEvent.designer.cs">
+      <DependentUpon>IdDeprecatedEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.StateChange.cs" />

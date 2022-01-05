@@ -271,6 +271,9 @@
     <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEventTest.designer.cs">
       <DependentUpon>HandlingForStreamEnabledEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Classes\IdDeprecatedEventTest.designer.cs">
+      <DependentUpon>IdDeprecatedEventTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}Test.cs</DependentUpon>
@@ -328,9 +331,6 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingStatusOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingStatusOpTest.designer.cs">
       <DependentUpon>GetHandlingStatusOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId}Test.designer.cs">
-      <DependentUpon>IdDeprecatedEvent{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOpTest.designer.cs">
       <DependentUpon>GetStreamFromRepresentationOpTest.cs</DependentUpon>
@@ -541,7 +541,7 @@
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOpTest.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecatedEventTest.cs" />
     <Compile Include="Models\Classes\Stream\Management\CreateStreamResultTest.designer.cs">
       <DependentUpon>CreateStreamResultTest.cs</DependentUpon>
     </Compile>

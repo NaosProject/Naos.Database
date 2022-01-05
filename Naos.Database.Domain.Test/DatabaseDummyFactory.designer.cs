@@ -296,8 +296,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new IdDeprecatedEvent<Version>(
-                                 A.Dummy<Version>(),
+                () => new IdDeprecatedEvent(
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>()));
 

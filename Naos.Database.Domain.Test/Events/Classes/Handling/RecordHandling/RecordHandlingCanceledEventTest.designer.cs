@@ -353,7 +353,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<HandlingForRecordDisabledEvent>(),
                         A.Dummy<HandlingForStreamDisabledEvent>(),
                         A.Dummy<HandlingForStreamEnabledEvent>(),
-                        A.Dummy<IdDeprecatedEvent<Version>>(),
+                        A.Dummy<IdDeprecatedEvent>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
                         A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<PruneRequestCanceledEvent>(),

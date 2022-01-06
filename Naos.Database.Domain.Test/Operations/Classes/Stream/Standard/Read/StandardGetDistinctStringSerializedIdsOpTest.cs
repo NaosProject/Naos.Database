@@ -40,6 +40,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                referenceObject.DeprecatedIdentifierType,
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,
@@ -61,6 +62,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                referenceObject.DeprecatedIdentifierType,
                                 referenceObject.IdentifierType,
                                 referenceObject.ObjectType,
                                 referenceObject.VersionMatchStrategy,

@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: DeprecatedIdentifierType = {systemUnderTest.DeprecatedIdentifierType?.ToString() ?? "<null>"}, IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -58,12 +58,35 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardGetDistinctStringSerializedIdsOp>
                 {
+                    Name = "constructor should throw ArgumentNullException when parameter 'deprecatedIdentifierType' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
+
+                        var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             null,
+                                             referenceObject.IdentifierType,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdentifierType", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetDistinctStringSerializedIdsOp>
+                {
                     Name = "constructor should throw ArgumentNullException when parameter 'identifierType' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             referenceObject.DeprecatedIdentifierType,
                                              null,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
@@ -85,6 +108,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             referenceObject.DeprecatedIdentifierType,
                                              referenceObject.IdentifierType,
                                              null,
                                              referenceObject.VersionMatchStrategy,
@@ -106,6 +130,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             referenceObject.DeprecatedIdentifierType,
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
@@ -127,6 +152,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             referenceObject.DeprecatedIdentifierType,
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
@@ -148,6 +174,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             referenceObject.DeprecatedIdentifierType,
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
@@ -169,6 +196,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
+                                             referenceObject.DeprecatedIdentifierType,
                                              referenceObject.IdentifierType,
                                              referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
@@ -186,6 +214,31 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetDistinctStringSerializedIdsOp>
                 {
+                    Name = "DeprecatedIdentifierType should return same 'deprecatedIdentifierType' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
+                        {
+                            SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
+                                                      referenceObject.IdentifierType,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.DeprecatedIdentifierType,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "DeprecatedIdentifierType",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetDistinctStringSerializedIdsOp>
+                {
                     Name = "IdentifierType should return same 'identifierType' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
@@ -194,6 +247,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
@@ -218,6 +272,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
@@ -242,6 +297,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
@@ -266,6 +322,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
@@ -290,6 +347,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
@@ -314,6 +372,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
+                                                      referenceObject.DeprecatedIdentifierType,
                                                       referenceObject.IdentifierType,
                                                       referenceObject.ObjectType,
                                                       referenceObject.VersionMatchStrategy,
@@ -329,6 +388,26 @@ namespace Naos.Database.Domain.Test
                 });
 
         private static readonly DeepCloneWithTestScenarios<StandardGetDistinctStringSerializedIdsOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetDistinctStringSerializedIdsOp>()
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetDistinctStringSerializedIdsOp>
+                {
+                    Name = "DeepCloneWithDeprecatedIdentifierType should deep clone object and replace DeprecatedIdentifierType with the provided deprecatedIdentifierType",
+                    WithPropertyName = "DeprecatedIdentifierType",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
+
+                        var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>().ThatIs(_ => !systemUnderTest.DeprecatedIdentifierType.IsEqualTo(_.DeprecatedIdentifierType));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetDistinctStringSerializedIdsOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.DeprecatedIdentifierType,
+                        };
+
+                        return result;
+                    },
+                })
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardGetDistinctStringSerializedIdsOp>
                 {
@@ -461,6 +540,7 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetDistinctStringSerializedIdsOp[]
                     {
                         new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
@@ -471,6 +551,15 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreNotEqualToReferenceObject = new StandardGetDistinctStringSerializedIdsOp[]
                     {
                         new StandardGetDistinctStringSerializedIdsOp(
+                                A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.DeprecatedIdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType)).DeprecatedIdentifierType,
+                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.IdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdentifierType)).IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
@@ -478,6 +567,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
@@ -485,6 +575,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
@@ -492,6 +583,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
@@ -499,6 +591,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
@@ -506,6 +599,7 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.IdentifierType,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
@@ -856,6 +950,18 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
+                if (systemUnderTest.DeprecatedIdentifierType == null)
+                {
+                    actual.DeprecatedIdentifierType.AsTest().Must().BeNull();
+                }
+                else if (!actual.DeprecatedIdentifierType.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.DeprecatedIdentifierType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.DeprecatedIdentifierType);
+                }
+
                 if (systemUnderTest.IdentifierType == null)
                 {
                     actual.IdentifierType.AsTest().Must().BeNull();
@@ -921,7 +1027,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "IdentifierType", "ObjectType", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "DeprecatedIdentifierType", "IdentifierType", "ObjectType", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

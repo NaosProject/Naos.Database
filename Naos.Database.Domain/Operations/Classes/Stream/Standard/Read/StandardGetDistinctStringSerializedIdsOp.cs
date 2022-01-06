@@ -26,6 +26,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardGetDistinctStringSerializedIdsOp"/> class.
         /// </summary>
+        /// <param name="deprecatedIdentifierType">OPTIONAL type to consider as a deprecated identifier (e.g. <see cref="IdDeprecatedEvent"/>).  DEFAULT is none.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
@@ -33,6 +34,7 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetDistinctStringSerializedIdsOp(
+            TypeRepresentation deprecatedIdentifierType = null,
             TypeRepresentation identifierType = null,
             TypeRepresentation objectType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
@@ -44,6 +46,7 @@ namespace Naos.Database.Domain
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
 
+            this.DeprecatedIdentifierType = deprecatedIdentifierType;
             this.IdentifierType = identifierType;
             this.ObjectType = objectType;
             this.VersionMatchStrategy = versionMatchStrategy;
@@ -51,6 +54,11 @@ namespace Naos.Database.Domain
             this.TagMatchStrategy = tagMatchStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
+
+        /// <summary>
+        /// Gets the type to consider as a deprecated identifier (e.g. <see cref="IdDeprecatedEvent"/>).
+        /// </summary>
+        public TypeRepresentation DeprecatedIdentifierType { get; private set; }
 
         /// <summary>
         /// Gets the type of identifier to filter on or null for no filter.

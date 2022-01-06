@@ -217,6 +217,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     null,
+                    null,
                     VersionMatchStrategy.Any,
                     new List<NamedValue<string>>
                     {
@@ -234,6 +235,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new StandardGetDistinctStringSerializedIdsOp(
                     typeof(decimal?).ToRepresentation(),
                     null,
+                    null,
                     VersionMatchStrategy.Any,
                     new List<NamedValue<string>>
                     {
@@ -246,6 +248,7 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinctWrongObjectType = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
+                    null,
                     null,
                     typeof(short).ToRepresentation(),
                     VersionMatchStrategy.Any,
@@ -262,6 +265,7 @@ namespace Naos.Protocol.FileSystem.Test
                 new StandardGetDistinctStringSerializedIdsOp(
                     null,
                     null,
+                    null,
                     VersionMatchStrategy.Any,
                     new List<NamedValue<string>>
                     {
@@ -274,6 +278,7 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinctWrongTagName = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
+                    null,
                     null,
                     null,
                     VersionMatchStrategy.Any,

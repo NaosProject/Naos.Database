@@ -70,7 +70,8 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.IdentifierType.IsEqualTo(other.IdentifierType)
+            var result = this.DeprecatedIdentifierType.IsEqualTo(other.DeprecatedIdentifierType)
+                      && this.IdentifierType.IsEqualTo(other.IdentifierType)
                       && this.ObjectType.IsEqualTo(other.ObjectType)
                       && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
                       && this.TagsToMatch.IsEqualTo(other.TagsToMatch)
@@ -85,6 +86,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
+            .Hash(this.DeprecatedIdentifierType)
             .Hash(this.IdentifierType)
             .Hash(this.ObjectType)
             .Hash(this.VersionMatchStrategy)
@@ -95,6 +97,42 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public new StandardGetDistinctStringSerializedIdsOp DeepClone() => (StandardGetDistinctStringSerializedIdsOp)this.DeepCloneInternal();
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="DeprecatedIdentifierType" />.
+        /// </summary>
+        /// <param name="deprecatedIdentifierType">The new <see cref="DeprecatedIdentifierType" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="deprecatedIdentifierType" /> for <see cref="DeprecatedIdentifierType" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithDeprecatedIdentifierType(TypeRepresentation deprecatedIdentifierType)
+        {
+            var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 deprecatedIdentifierType,
+                                 this.IdentifierType?.DeepClone(),
+                                 this.ObjectType?.DeepClone(),
+                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.TagsToMatch?.DeepClone(),
+                                 this.TagMatchStrategy.DeepClone(),
+                                 this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
 
         /// <summary>
         /// Deep clones this object with a new <see cref="IdentifierType" />.
@@ -121,6 +159,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithIdentifierType(TypeRepresentation identifierType)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  identifierType,
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
@@ -156,6 +195,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithObjectType(TypeRepresentation objectType)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
                                  objectType,
                                  this.VersionMatchStrategy.DeepClone(),
@@ -191,6 +231,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  versionMatchStrategy,
@@ -226,6 +267,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithTagsToMatch(IReadOnlyCollection<NamedValue<string>> tagsToMatch)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
@@ -261,6 +303,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
@@ -296,6 +339,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
@@ -311,6 +355,7 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.DeprecatedIdentifierType?.DeepClone(),
                                  this.IdentifierType?.DeepClone(),
                                  this.ObjectType?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
@@ -325,7 +370,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: DeprecatedIdentifierType = {this.DeprecatedIdentifierType?.ToString() ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

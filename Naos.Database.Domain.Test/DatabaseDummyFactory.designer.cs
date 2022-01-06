@@ -548,6 +548,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardGetDistinctStringSerializedIdsOp(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),

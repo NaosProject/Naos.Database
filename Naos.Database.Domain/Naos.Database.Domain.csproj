@@ -218,6 +218,14 @@
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.designer.cs">
       <DependentUpon>ResourceLocatorBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Common\RecordFilter.cs" />
+    <Compile Include="Models\Classes\Stream\Common\RecordFilter.designer.cs">
+      <DependentUpon>RecordFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Common\RecordLocator.cs" />
+    <Compile Include="Models\Classes\Stream\Common\RecordLocator.designer.cs">
+      <DependentUpon>RecordLocator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadata.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
     </Compile>
@@ -225,6 +233,8 @@
     <Compile Include="Models\Enums\StreamRecordItemsToInclude.cs" />
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
+    <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
+    <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>
     </Compile>

@@ -681,6 +681,10 @@
     <Compile Include="RecordFilterTest.designer.cs">
       <DependentUpon>RecordFilterTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="RecordLocatorTest.cs" />
+    <Compile Include="RecordLocatorTest.designer.cs">
+      <DependentUpon>RecordLocatorTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DatabaseDummyFactory.cs" />

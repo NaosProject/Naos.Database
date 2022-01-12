@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using OBeautifulCode.Assertion.Recipes;
@@ -131,6 +132,35 @@ namespace Naos.Database.Domain
                 result |= CompositeHandlingStatus.NoneDisabled;
             }
 
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all handling statuses from the supplied map.
+        /// </summary>
+        /// <param name="statusMap">The status map.</param>
+        /// <returns>Collection of <see cref="HandlingStatus"/>.</returns>
+        public static IReadOnlyCollection<HandlingStatus> GetAllHandlingStatuses(
+            this IReadOnlyDictionary<IResourceLocator, IReadOnlyDictionary<long, HandlingStatus>> statusMap)
+        {
+            var result = statusMap.Values.SelectMany(_ => _.Values).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all handling statuses from the supplied map.
+        /// </summary>
+        /// <param name="statusMap">The status map.</param>
+        /// <returns>Collection of <see cref="HandlingStatus"/>.</returns>
+        public static IReadOnlyDictionary<IRecordLocator, HandlingStatus> ConvertToRecordLocatorToStatusMap(
+            this IReadOnlyDictionary<IResourceLocator, IReadOnlyDictionary<long, HandlingStatus>> statusMap)
+        {
+            var list = statusMap
+                      .SelectMany(
+                           _ => _.Value
+                                 .Select(__ => new Tuple<IRecordLocator, HandlingStatus>(new RecordLocator(_.Key, __.Key), __.Value)))
+                      .ToList();
+            var result = list.ToDictionary(k => k.Item1, v => v.Item2);
             return result;
         }
     }

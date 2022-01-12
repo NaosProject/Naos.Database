@@ -60,7 +60,9 @@ namespace Naos.Database.Domain
 
             var standardOp = operation.Standardize();
 
-            var handlingStatuses = this.stream.Execute(standardOp);
+            var handlingStatusMap = this.stream.Execute(standardOp);
+
+            var handlingStatuses = handlingStatusMap.Values.ToList();
 
             var result = handlingStatuses.ToCompositeHandlingStatus();
 
@@ -84,7 +86,9 @@ namespace Naos.Database.Domain
 
             var standardOp = operation.Standardize();
 
-            var handlingStatuses = this.stream.Execute(standardOp);
+            var handlingStatusMap = this.stream.Execute(standardOp);
+
+            var handlingStatuses = handlingStatusMap.Values.ToList();
 
             var result = handlingStatuses.ToCompositeHandlingStatus();
 
@@ -108,7 +112,9 @@ namespace Naos.Database.Domain
 
             var standardOp = operation.Standardize();
 
-            var handlingStatuses = this.stream.Execute(standardOp);
+            var handlingStatusMap = this.stream.Execute(standardOp);
+
+            var handlingStatuses = handlingStatusMap.Values.ToList();
 
             var result = handlingStatuses.Single();
 

@@ -148,7 +148,7 @@ namespace Naos.Database.Domain
             StandardUpdateHandlingStatusForStreamOp operation);
 
         /// <inheritdoc />
-        public abstract IReadOnlyCollection<HandlingStatus> Execute(
+        public abstract IReadOnlyDictionary<long, HandlingStatus> Execute(
             StandardGetHandlingStatusOp operation);
 
         /// <inheritdoc />

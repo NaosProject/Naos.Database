@@ -20,71 +20,34 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardGetHandlingStatusOp : ReturningOperationBase<IReadOnlyCollection<HandlingStatus>>, ISpecifyResourceLocator, IHaveHandleRecordConcern
+    public partial class StandardGetHandlingStatusOp : ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>>, ISpecifyResourceLocator, ISpecifyRecordFilter, IHaveHandleRecordConcern
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardGetHandlingStatusOp"/> class.
         /// </summary>
         /// <param name="concern">The record handling concern.</param>
-        /// <param name="internalRecordId">OPTIONAL internal record identifier to match on.  DEFAULT is no matching on internal record id.</param>
-        /// <param name="idsToMatch">OPTIONAL string serialized object identifiers to match on.  DEFAULT is no matching on object id.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
-        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
-        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="recordFilter">The filter to apply to the set of records to query for handling status.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetHandlingStatusOp(
             string concern,
-            long? internalRecordId = null,
-            IReadOnlyCollection<StringSerializedIdentifier> idsToMatch = null,
-            VersionMatchStrategy? versionMatchStrategy = null,
-            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
-            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
+            RecordFilter recordFilter,
             IResourceLocator specifiedResourceLocator = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
-            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
-            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
-            var allMatchingParametersAreNull = internalRecordId == null && idsToMatch == null && tagsToMatch == null;
-            allMatchingParametersAreNull.MustForArg(nameof(allMatchingParametersAreNull)).BeFalse();
+            recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
 
             this.Concern = concern;
-            this.InternalRecordId = internalRecordId;
-            this.IdsToMatch = idsToMatch;
-            this.VersionMatchStrategy = versionMatchStrategy;
-            this.TagsToMatch = tagsToMatch;
-            this.TagMatchStrategy = tagMatchStrategy;
+            this.RecordFilter = recordFilter;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
         /// <inheritdoc />
         public string Concern { get; private set; }
 
-        /// <summary>
-        /// Gets the internal record identifier to match or null when not matching on internal record id.
-        /// </summary>
-        public long? InternalRecordId { get; private set; }
-
-        /// <summary>
-        /// Gets the string serialized object identifiers to match on or null when not matching on object id.
-        /// </summary>
-        public IReadOnlyCollection<StringSerializedIdentifier> IdsToMatch { get; private set; }
-
-        /// <summary>
-        /// Gets the strategy to use to filter on the version of the object type.
-        /// </summary>
-        public VersionMatchStrategy? VersionMatchStrategy { get; private set; }
-
-        /// <summary>
-        /// Gets the tags to match or null when not matching on tags.
-        /// </summary>
-        public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
-
-        /// <summary>
-        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
-        /// </summary>
-        public TagMatchStrategy TagMatchStrategy { get; private set; }
-
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }
+
+        /// <inheritdoc />
+        public RecordFilter RecordFilter { get; private set; }
     }
 }

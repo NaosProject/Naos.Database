@@ -119,15 +119,12 @@ namespace Naos.Database.Domain
 
                 var standardizedOperation = new StandardGetHandlingStatusOp(
                     operation.Concern,
-                    null,
-                    idsToMatch,
-                    operation.VersionMatchStrategy,
-                    null,
-                    specifiedResourceLocator: locatorAndId.Key);
+                    new RecordFilter(ids: idsToMatch, versionMatchStrategy: operation.VersionMatchStrategy),
+                    locatorAndId.Key);
 
-                var localHandlingStatuses = this.stream.Execute(standardizedOperation);
+                var localHandlingStatusMap = this.stream.Execute(standardizedOperation);
 
-                handlingStatues.AddRange(localHandlingStatuses);
+                handlingStatues.AddRange(localHandlingStatusMap.Values);
             }
 
             var result = handlingStatues.ToCompositeHandlingStatus();

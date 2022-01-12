@@ -212,7 +212,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<HandlingStatus> Execute(StandardGetHandlingStatusOp operation)
+        public IReadOnlyDictionary<long, HandlingStatus> Execute(StandardGetHandlingStatusOp operation)
         {
             throw new NotImplementedException();
         }

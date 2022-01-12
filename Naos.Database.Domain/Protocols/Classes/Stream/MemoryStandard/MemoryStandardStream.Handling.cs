@@ -43,7 +43,8 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override IReadOnlyCollection<HandlingStatus> Execute(
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
+        public override IReadOnlyDictionary<long, HandlingStatus> Execute(
             StandardGetHandlingStatusOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -54,7 +55,10 @@ namespace Naos.Database.Domain
                 var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
                 if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.DisabledForStream)
                 {
-                    return new[] { HandlingStatus.DisabledForStream };
+                    return new Dictionary<long, HandlingStatus>
+                           {
+                               { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
+                           };
                 }
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
@@ -65,27 +69,40 @@ namespace Naos.Database.Domain
                 {
                     var matchResult = false;
 
-                    if (operation.InternalRecordId != null)
+                    if (operation.RecordFilter.InternalRecordIds != null && operation.RecordFilter.InternalRecordIds.Any())
                     {
-                        matchResult = entry.Metadata.InternalRecordId == operation.InternalRecordId;
+                        matchResult = matchResult || operation.RecordFilter.InternalRecordIds.Contains(entry.Metadata.InternalRecordId);
                     }
 
-                    if (operation.IdsToMatch != null && operation.IdsToMatch.Any())
+                    if (operation.RecordFilter.Ids != null && operation.RecordFilter.Ids.Any())
                     {
-                        var operationVersionMatchStrategy = operation.VersionMatchStrategy ?? VersionMatchStrategy.Any;
-                        matchResult = operation.IdsToMatch.Any(
+                        matchResult = matchResult || operation.RecordFilter.Ids.Any(
                             __ => __.StringSerializedId.Equals(entry.Metadata.StringSerializedId)
                                && __.IdentifierType.EqualsAccordingToStrategy(
                                       entry.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                                          operationVersionMatchStrategy),
-                                      operationVersionMatchStrategy));
+                                          operation.RecordFilter.VersionMatchStrategy),
+                                      operation.RecordFilter.VersionMatchStrategy));
                     }
 
-                    if ((operation.TagsToMatch != null) && operation.TagsToMatch.Any())
+                    if (operation.RecordFilter.IdTypes != null && operation.RecordFilter.IdTypes.Any())
                     {
-                        matchResult = entry.Metadata.Tags.FuzzyMatchTags(
-                            operation.TagsToMatch,
-                            operation.TagMatchStrategy);
+                        matchResult = matchResult
+                                   || operation.RecordFilter.IdTypes.Contains(
+                                          entry.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                              operation.RecordFilter.VersionMatchStrategy));
+                    }
+
+                    if (operation.RecordFilter.ObjectTypes != null && operation.RecordFilter.ObjectTypes.Any())
+                    {
+                        matchResult = matchResult
+                                   || operation.RecordFilter.ObjectTypes.Contains(
+                                          entry.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(
+                                              operation.RecordFilter.VersionMatchStrategy));
+                    }
+
+                    if (operation.RecordFilter.Tags != null && operation.RecordFilter.Tags.Any())
+                    {
+                        matchResult = matchResult || entry.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy);
                     }
 
                     return matchResult;
@@ -96,8 +113,8 @@ namespace Naos.Database.Domain
                    .Concat(recordBlockedEntries ?? new List<StreamRecordHandlingEntry>())
                    .Where(HandlingEntryMatchingPredicate)
                    .GroupBy(_ => _.Metadata.InternalRecordId)
-                   .Select(_ => _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status)
-                   .ToList();
+                   .Select(_ => new Tuple<long, HandlingStatus>(_.Key, _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status))
+                   .ToDictionary(k => k.Item1, v => v.Item2);
 
                 return result;
             }

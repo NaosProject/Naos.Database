@@ -51,14 +51,24 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override IReadOnlyCollection<HandlingStatus> Execute(
+        public override IReadOnlyDictionary<long, HandlingStatus> Execute(
             StandardGetHandlingStatusOp operation)
         {
+            throw new NotImplementedException();
+
+            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            // var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
 
-            throw new NotImplementedException();
+            if (globalBlocked)
+            {
+                return new Dictionary<long, HandlingStatus>
+                                                  {
+                                                      { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
+                                                  };
+            }
+            */
         }
 
         /// <inheritdoc />

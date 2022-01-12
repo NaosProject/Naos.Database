@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     public interface IStandardStreamRecordHandlingProtocols
         :
             ISyncReturningProtocol<StandardTryHandleRecordOp, TryHandleRecordResult>,
-            ISyncReturningProtocol<StandardGetHandlingStatusOp, IReadOnlyCollection<HandlingStatus>>,
+            ISyncReturningProtocol<StandardGetHandlingStatusOp, IReadOnlyDictionary<long, HandlingStatus>>,
             ISyncReturningProtocol<StandardGetHandlingHistoryOp, IReadOnlyList<StreamRecordHandlingEntry>>,
             ISyncVoidProtocol<StandardUpdateHandlingStatusForStreamOp>,
             ISyncVoidProtocol<StandardUpdateHandlingStatusForRecordOp>

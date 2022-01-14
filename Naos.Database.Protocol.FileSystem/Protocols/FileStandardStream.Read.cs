@@ -8,9 +8,11 @@ namespace Naos.Database.Protocol.FileSystem
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using Naos.CodeAnalysis.Recipes;
     using Naos.Database.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
@@ -205,12 +207,13 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override IReadOnlyCollection<string> Execute(
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
+        public override IReadOnlyCollection<StringSerializedIdentifier> Execute(
             StandardGetDistinctStringSerializedIdsOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var result = new HashSet<string>();
+            var result = new HashSet<StringSerializedIdentifier>();
             lock (this.fileLock)
             {
                 var locators = new List<FileSystemDatabaseLocator>();
@@ -242,13 +245,16 @@ namespace Naos.Database.Protocol.FileSystem
                         var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
 
                         if (metadata.FuzzyMatchTypes(
-                                operation.IdentifierType,
-                                operation.ObjectType,
-                                operation.VersionMatchStrategy)
-                         && ((!operation.TagsToMatch?.Any() ?? true)
-                          || metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy)))
+                                operation.RecordFilter.IdTypes,
+                                operation.RecordFilter.ObjectTypes,
+                                operation.RecordFilter.VersionMatchStrategy)
+                         && ((!operation.RecordFilter.Tags?.Any() ?? true)
+                          || metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy)))
                         {
-                            result.Add(metadata.StringSerializedId);
+                            result.Add(
+                                new StringSerializedIdentifier(
+                                    metadata.StringSerializedId,
+                                    metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(operation.RecordFilter.VersionMatchStrategy)));
                         }
                     }
                 }

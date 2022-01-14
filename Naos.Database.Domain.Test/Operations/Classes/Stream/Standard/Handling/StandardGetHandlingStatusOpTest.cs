@@ -29,8 +29,56 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetHandlingStatusOpTest()
         {
-            //ConstructorArgumentValidationTestScenarios
-            //    .RemoveAllScenarios()
+            /*
+            concern.ThrowIfInvalidOrReservedConcern();
+            recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
+             */
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                                                   var result = new StandardGetHandlingStatusOp(
+                                                       null,
+                                                       referenceObject.RecordFilter,
+                                                       referenceObject.SpecifiedResourceLocator);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "concern",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                                                   var result = new StandardGetHandlingStatusOp(
+                                                       referenceObject.Concern,
+                                                       null,
+                                                       referenceObject.SpecifiedResourceLocator);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "recordFilter",
+                                                               },
+                        });
         }
     }
 }

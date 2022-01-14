@@ -274,6 +274,18 @@
     <Compile Include="Events\Classes\IdDeprecatedEventTest.designer.cs">
       <DependentUpon>IdDeprecatedEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}Test.designer.cs">
+      <DependentUpon>GetDistinctIdsOp{TId}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}Test.designer.cs">
+      <DependentUpon>IdDeprecatedEvent{TId,TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}Test.designer.cs">
+      <DependentUpon>IdDeprecatedEvent{TObject}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}Test.cs</DependentUpon>
@@ -677,12 +689,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutOp{TObject}Test.cs" />
-    <Compile Include="RecordFilterTest.cs" />
-    <Compile Include="RecordFilterTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\RecordFilterTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\RecordFilterTest.designer.cs">
       <DependentUpon>RecordFilterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="RecordLocatorTest.cs" />
-    <Compile Include="RecordLocatorTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\RecordLocatorTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\RecordLocatorTest.designer.cs">
       <DependentUpon>RecordLocatorTest.cs</DependentUpon>
     </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
@@ -696,8 +708,8 @@
     <Compile Include="Models\Classes\Representation\StreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\Stream\Common\TypeRepresentationWithAndWithoutVersionTest.cs" />
     <Compile Include="Events\Classes\Write\UniqueLongIssuedEventTest.cs" />
-    <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifierTest.cs" />
-    <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifierTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\StringSerializedIdentifierTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StringSerializedIdentifierTest.designer.cs">
       <DependentUpon>StringSerializedIdentifierTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\ResourceLocation\ThrowIfResourceUnavailableOpTest.cs" />

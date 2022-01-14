@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardTryHandleRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {systemUnderTest.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {systemUnderTest.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {systemUnderTest.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {systemUnderTest.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -65,13 +65,8 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardTryHandleRecordOp(
                                              null,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.RecordFilter,
                                              referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
@@ -93,13 +88,8 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardTryHandleRecordOp(
                                              Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.RecordFilter,
                                              referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
@@ -114,7 +104,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'identifierType' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
@@ -122,12 +112,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardTryHandleRecordOp(
                                              referenceObject.Concern,
                                              null,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
                                              referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
@@ -137,203 +122,7 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "identifierType", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'objectType' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             null,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "objectType", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             null,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             new List<NamedValue<string>>(),
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             null,
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "tags", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             new List<NamedValue<string>>(),
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new StandardTryHandleRecordOp(
-                                             referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
-                                             referenceObject.Details,
-                                             referenceObject.MinimumInternalRecordId,
-                                             referenceObject.InheritRecordTags,
-                                             referenceObject.StreamRecordItemsToInclude,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                    ExpectedExceptionMessageContains = new[] { "recordFilter", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
@@ -345,13 +134,8 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardTryHandleRecordOp(
                                              referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.RecordFilter,
                                              referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
                                              null,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
@@ -373,13 +157,8 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardTryHandleRecordOp(
                                              referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.RecordFilter,
                                              referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
@@ -401,13 +180,8 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardTryHandleRecordOp(
                                              referenceObject.Concern,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.RecordFilter,
                                              referenceObject.OrderRecordsBy,
-                                             referenceObject.Tags,
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
@@ -433,13 +207,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -455,7 +224,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
                 {
-                    Name = "IdentifierType should return same 'identifierType' parameter passed to constructor when getting",
+                    Name = "RecordFilter should return same 'recordFilter' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
@@ -464,148 +233,19 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.IdentifierType,
+                            ExpectedPropertyValue = referenceObject.RecordFilter,
                         };
 
                         return result;
                     },
-                    PropertyName = "IdentifierType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "ObjectType should return same 'objectType' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = new StandardTryHandleRecordOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
-                                                      referenceObject.Details,
-                                                      referenceObject.MinimumInternalRecordId,
-                                                      referenceObject.InheritRecordTags,
-                                                      referenceObject.StreamRecordItemsToInclude,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "ObjectType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = new StandardTryHandleRecordOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
-                                                      referenceObject.Details,
-                                                      referenceObject.MinimumInternalRecordId,
-                                                      referenceObject.InheritRecordTags,
-                                                      referenceObject.StreamRecordItemsToInclude,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "VersionMatchStrategy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = new StandardTryHandleRecordOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
-                                                      referenceObject.Details,
-                                                      referenceObject.MinimumInternalRecordId,
-                                                      referenceObject.InheritRecordTags,
-                                                      referenceObject.StreamRecordItemsToInclude,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.TagsToMatch,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TagsToMatch",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = new StandardTryHandleRecordOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
-                                                      referenceObject.Details,
-                                                      referenceObject.MinimumInternalRecordId,
-                                                      referenceObject.InheritRecordTags,
-                                                      referenceObject.StreamRecordItemsToInclude,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TagMatchStrategy",
+                    PropertyName = "RecordFilter",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
@@ -619,13 +259,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -641,37 +276,6 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
                 {
-                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = new StandardTryHandleRecordOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
-                                                      referenceObject.Details,
-                                                      referenceObject.MinimumInternalRecordId,
-                                                      referenceObject.InheritRecordTags,
-                                                      referenceObject.StreamRecordItemsToInclude,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.Tags,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "Tags",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
-                {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
@@ -681,13 +285,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -712,13 +311,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -743,13 +337,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -774,13 +363,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -805,13 +389,8 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardTryHandleRecordOp(
                                                       referenceObject.Concern,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.OrderRecordsBy,
-                                                      referenceObject.Tags,
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
@@ -849,98 +428,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
                 {
-                    Name = "DeepCloneWithIdentifierType should deep clone object and replace IdentifierType with the provided identifierType",
-                    WithPropertyName = "IdentifierType",
+                    Name = "DeepCloneWithRecordFilter should deep clone object and replace RecordFilter with the provided recordFilter",
+                    WithPropertyName = "RecordFilter",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.IdentifierType.IsEqualTo(_.IdentifierType));
+                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.RecordFilter.IsEqualTo(_.RecordFilter));
 
                         var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.IdentifierType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "DeepCloneWithObjectType should deep clone object and replace ObjectType with the provided objectType",
-                    WithPropertyName = "ObjectType",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
-                    WithPropertyName = "VersionMatchStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
-                    WithPropertyName = "TagsToMatch",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TagsToMatch,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
-                    WithPropertyName = "TagMatchStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
+                            DeepCloneWithValue = referenceObject.RecordFilter,
                         };
 
                         return result;
@@ -961,26 +460,6 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.OrderRecordsBy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
-                {
-                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
-                    WithPropertyName = "Tags",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Tags,
                         };
 
                         return result;
@@ -1099,13 +578,8 @@ namespace Naos.Database.Domain.Test
                     {
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1116,13 +590,8 @@ namespace Naos.Database.Domain.Test
                     {
                         new StandardTryHandleRecordOp(
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1130,13 +599,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.IdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdentifierType)).IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1144,69 +608,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
-                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardTryHandleRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
-                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardTryHandleRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
-                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardTryHandleRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
-                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardTryHandleRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.OrderRecordsBy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.OrderRecordsBy)).OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1214,27 +617,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
-                                ReferenceObjectForEquatableTestScenarios.Details,
-                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
-                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardTryHandleRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1242,13 +626,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.MinimumInternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId)).MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1256,13 +635,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.InheritRecordTags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InheritRecordTags)).InheritRecordTags,
@@ -1270,13 +644,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1284,13 +653,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
@@ -1317,6 +681,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
                         A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
                         A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetDistinctIdsOp<Version>>(),
                         A.Dummy<GetHandlingHistoryOp>(),
                         A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
@@ -1640,52 +1005,16 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.IdentifierType == null)
+                if (systemUnderTest.RecordFilter == null)
                 {
-                    actual.IdentifierType.AsTest().Must().BeNull();
+                    actual.RecordFilter.AsTest().Must().BeNull();
                 }
-                else if (!actual.IdentifierType.GetType().IsValueType)
+                else if (!actual.RecordFilter.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.IdentifierType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.IdentifierType);
-                }
-
-                if (systemUnderTest.ObjectType == null)
-                {
-                    actual.ObjectType.AsTest().Must().BeNull();
-                }
-                else if (!actual.ObjectType.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
-                }
-
-                if (systemUnderTest.TagsToMatch == null)
-                {
-                    actual.TagsToMatch.AsTest().Must().BeNull();
-                }
-                else if (!actual.TagsToMatch.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
-                }
-
-                if (systemUnderTest.Tags == null)
-                {
-                    actual.Tags.AsTest().Must().BeNull();
-                }
-                else if (!actual.Tags.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                    actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
                 }
 
                 if (systemUnderTest.SpecifiedResourceLocator == null)
@@ -1717,7 +1046,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "IdentifierType", "ObjectType", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "OrderRecordsBy", "Tags", "Details", "MinimumInternalRecordId", "InheritRecordTags", "StreamRecordItemsToInclude", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Concern", "RecordFilter", "OrderRecordsBy", "Details", "MinimumInternalRecordId", "InheritRecordTags", "StreamRecordItemsToInclude", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

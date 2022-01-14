@@ -33,233 +33,249 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StandardGetAllRecordsMetadataByIdOpTest
+    public static partial class GetDistinctIdsOpTIdTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardGetAllRecordsMetadataByIdOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetAllRecordsMetadataByIdOp>()
+        private static readonly StringRepresentationTestScenarios<GetDistinctIdsOp<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetDistinctIdsOp<Version>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new StringRepresentationTestScenario<GetDistinctIdsOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetAllRecordsMetadataByIdOp: StringSerializedId = {systemUnderTest.StringSerializedId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetDistinctIdsOp<Version>: ObjectTypes = {systemUnderTest.ObjectTypes?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetAllRecordsMetadataByIdOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetAllRecordsMetadataByIdOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<GetDistinctIdsOp<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetDistinctIdsOp<Version>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'stringSerializedId' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'objectTypes' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new StandardGetAllRecordsMetadataByIdOp(
+                        var result = new GetDistinctIdsOp<Version>(
                                              null,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
                                              referenceObject.VersionMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", },
+                    ExpectedExceptionMessageContains = new[] { "objectTypes", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'stringSerializedId' is white space scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'objectTypes' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new StandardGetAllRecordsMetadataByIdOp(
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
+                        var result = new GetDistinctIdsOp<Version>(
+                                             new List<TypeRepresentation>(),
                                              referenceObject.VersionMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "stringSerializedId", "white space", },
+                    ExpectedExceptionMessageContains = new[] { "objectTypes", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'identifierType' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'objectTypes' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new StandardGetAllRecordsMetadataByIdOp(
-                                             referenceObject.StringSerializedId,
-                                             null,
-                                             referenceObject.ObjectType,
+                        var result = new GetDistinctIdsOp<Version>(
+                                             new TypeRepresentation[0].Concat(referenceObject.ObjectTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.ObjectTypes).ToList(),
                                              referenceObject.VersionMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "objectTypes", "contains at least one null element", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
+                                             referenceObject.VersionMatchStrategy,
+                                             null,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "identifierType", },
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'objectType' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new StandardGetAllRecordsMetadataByIdOp(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.IdentifierType,
-                                             null,
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
                                              referenceObject.VersionMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             new List<NamedValue<string>>(),
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
 
                         return result;
                     },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "objectType", },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new StandardGetAllRecordsMetadataByIdOp(
-                                             referenceObject.StringSerializedId,
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
                                              referenceObject.VersionMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
+                                             new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'deprecatedIdTypes' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' is an empty enumerable scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             new List<TypeRepresentation>());
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "is an empty enumerable", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetAllRecordsMetadataByIdOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetAllRecordsMetadataByIdOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetDistinctIdsOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetDistinctIdsOp<Version>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorPropertyAssignmentTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "StringSerializedId should return same 'stringSerializedId' parameter passed to constructor when getting",
+                    Name = "ObjectTypes should return same 'objectTypes' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetDistinctIdsOp<Version>>
                         {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetDistinctIdsOp<Version>(
+                                                      referenceObject.ObjectTypes,
                                                       referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.StringSerializedId,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
+                            ExpectedPropertyValue = referenceObject.ObjectTypes,
                         };
 
                         return result;
                     },
-                    PropertyName = "StringSerializedId",
+                    PropertyName = "ObjectTypes",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
-                {
-                    Name = "IdentifierType should return same 'identifierType' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
-                        {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.IdentifierType,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "IdentifierType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
-                {
-                    Name = "ObjectType should return same 'objectType' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
-                        {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "ObjectType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorPropertyAssignmentTestScenario<GetDistinctIdsOp<Version>>
                 {
                     Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetDistinctIdsOp<Version>>
                         {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetDistinctIdsOp<Version>(
+                                                      referenceObject.ObjectTypes,
                                                       referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
                             ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
@@ -268,154 +284,108 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "VersionMatchStrategy",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorPropertyAssignmentTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "RecordNotFoundStrategy should return same 'recordNotFoundStrategy' parameter passed to constructor when getting",
+                    Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetDistinctIdsOp<Version>>
                         {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetDistinctIdsOp<Version>(
+                                                      referenceObject.ObjectTypes,
                                                       referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
+                            ExpectedPropertyValue = referenceObject.TagsToMatch,
                         };
 
                         return result;
                     },
-                    PropertyName = "RecordNotFoundStrategy",
+                    PropertyName = "TagsToMatch",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorPropertyAssignmentTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "OrderRecordsBy should return same 'orderRecordsBy' parameter passed to constructor when getting",
+                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetDistinctIdsOp<Version>>
                         {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetDistinctIdsOp<Version>(
+                                                      referenceObject.ObjectTypes,
                                                       referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.OrderRecordsBy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
+                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "OrderRecordsBy",
+                    PropertyName = "TagMatchStrategy",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new ConstructorPropertyAssignmentTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
+                    Name = "DeprecatedIdTypes should return same 'deprecatedIdTypes' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetDistinctIdsOp<Version>>
                         {
-                            SystemUnderTest = new StandardGetAllRecordsMetadataByIdOp(
-                                                      referenceObject.StringSerializedId,
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
+                            SystemUnderTest = new GetDistinctIdsOp<Version>(
+                                                      referenceObject.ObjectTypes,
                                                       referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
+                            ExpectedPropertyValue = referenceObject.DeprecatedIdTypes,
                         };
 
                         return result;
                     },
-                    PropertyName = "SpecifiedResourceLocator",
+                    PropertyName = "DeprecatedIdTypes",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardGetAllRecordsMetadataByIdOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetAllRecordsMetadataByIdOp>()
+        private static readonly DeepCloneWithTestScenarios<GetDistinctIdsOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetDistinctIdsOp<Version>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new DeepCloneWithTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "DeepCloneWithStringSerializedId should deep clone object and replace StringSerializedId with the provided stringSerializedId",
-                    WithPropertyName = "StringSerializedId",
+                    Name = "DeepCloneWithObjectTypes should deep clone object and replace ObjectTypes with the provided objectTypes",
+                    WithPropertyName = "ObjectTypes",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.StringSerializedId.IsEqualTo(_.StringSerializedId));
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>().ThatIs(_ => !systemUnderTest.ObjectTypes.IsEqualTo(_.ObjectTypes));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.StringSerializedId,
+                            DeepCloneWithValue = referenceObject.ObjectTypes,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
-                {
-                    Name = "DeepCloneWithIdentifierType should deep clone object and replace IdentifierType with the provided identifierType",
-                    WithPropertyName = "IdentifierType",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
-
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.IdentifierType.IsEqualTo(_.IdentifierType));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.IdentifierType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
-                {
-                    Name = "DeepCloneWithObjectType should deep clone object and replace ObjectType with the provided objectType",
-                    WithPropertyName = "ObjectType",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
-
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new DeepCloneWithTestScenario<GetDistinctIdsOp<Version>>
                 {
                     Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
                     WithPropertyName = "VersionMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.VersionMatchStrategy,
@@ -425,143 +395,115 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new DeepCloneWithTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "DeepCloneWithRecordNotFoundStrategy should deep clone object and replace RecordNotFoundStrategy with the provided recordNotFoundStrategy",
-                    WithPropertyName = "RecordNotFoundStrategy",
+                    Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
+                    WithPropertyName = "TagsToMatch",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.RecordNotFoundStrategy.IsEqualTo(_.RecordNotFoundStrategy));
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordNotFoundStrategy,
+                            DeepCloneWithValue = referenceObject.TagsToMatch,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new DeepCloneWithTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "DeepCloneWithOrderRecordsBy should deep clone object and replace OrderRecordsBy with the provided orderRecordsBy",
-                    WithPropertyName = "OrderRecordsBy",
+                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
+                    WithPropertyName = "TagMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.OrderRecordsBy.IsEqualTo(_.OrderRecordsBy));
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.OrderRecordsBy,
+                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new DeepCloneWithTestScenario<GetDistinctIdsOp<Version>>
                 {
-                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
-                    WithPropertyName = "SpecifiedResourceLocator",
+                    Name = "DeepCloneWithDeprecatedIdTypes should deep clone object and replace DeprecatedIdTypes with the provided deprecatedIdTypes",
+                    WithPropertyName = "DeprecatedIdTypes",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
-                        var referenceObject = A.Dummy<StandardGetAllRecordsMetadataByIdOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>().ThatIs(_ => !systemUnderTest.DeprecatedIdTypes.IsEqualTo(_.DeprecatedIdTypes));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetAllRecordsMetadataByIdOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                            DeepCloneWithValue = referenceObject.DeprecatedIdTypes,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly StandardGetAllRecordsMetadataByIdOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+        private static readonly GetDistinctIdsOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetDistinctIdsOp<Version>>();
 
-        private static readonly EquatableTestScenarios<StandardGetAllRecordsMetadataByIdOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetAllRecordsMetadataByIdOp>()
+        private static readonly EquatableTestScenarios<GetDistinctIdsOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<GetDistinctIdsOp<Version>>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardGetAllRecordsMetadataByIdOp>
+                new EquatableTestScenario<GetDistinctIdsOp<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetAllRecordsMetadataByIdOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetDistinctIdsOp<Version>[]
                     {
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                        new GetDistinctIdsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetAllRecordsMetadataByIdOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetDistinctIdsOp<Version>[]
                     {
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.StringSerializedId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StringSerializedId)).StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                        new GetDistinctIdsOp<Version>(
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.ObjectTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectTypes)).ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.IdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdentifierType)).IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                        new GetDistinctIdsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.ObjectTypes,
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                        new GetDistinctIdsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                        new GetDistinctIdsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                        new GetDistinctIdsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.OrderRecordsBy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.OrderRecordsBy)).OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetAllRecordsMetadataByIdOp(
-                                ReferenceObjectForEquatableTestScenarios.StringSerializedId,
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                A.Dummy<StandardGetAllRecordsMetadataByIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.DeprecatedIdTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes)).DeprecatedIdTypes),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -583,7 +525,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
                         A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
                         A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
-                        A.Dummy<GetDistinctIdsOp<Version>>(),
                         A.Dummy<GetHandlingHistoryOp>(),
                         A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
@@ -615,6 +556,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
                         A.Dummy<StandardGetAllRecordsByIdOp>(),
+                        A.Dummy<StandardGetAllRecordsMetadataByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
                         A.Dummy<StandardGetHandlingHistoryOp>(),
                         A.Dummy<StandardGetHandlingStatusOp>(),
@@ -655,12 +597,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardGetAllRecordsMetadataByIdOp___Should_implement_IModel_of_StandardGetAllRecordsMetadataByIdOp___When_reflecting()
+            public static void GetDistinctIdsOp_of_Version___Should_implement_IModel_of_GetDistinctIdsOp_of_Version___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetAllRecordsMetadataByIdOp);
+                var type = typeof(GetDistinctIdsOp<Version>);
 
-                var expectedModelMethods = typeof(IModel<StandardGetAllRecordsMetadataByIdOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetDistinctIdsOp<Version>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -670,7 +612,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetAllRecordsMetadataByIdOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetDistinctIdsOp<Version>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -688,10 +630,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardGetAllRecordsMetadataByIdOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetDistinctIdsOp_of_Version___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetAllRecordsMetadataByIdOp);
+                var type = typeof(GetDistinctIdsOp<Version>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -871,10 +813,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
                 // Act
-                var actual = (StandardGetAllRecordsMetadataByIdOp)systemUnderTest.Clone();
+                var actual = (GetDistinctIdsOp<Version>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -898,7 +840,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -907,40 +849,40 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.IdentifierType == null)
+                if (systemUnderTest.ObjectTypes == null)
                 {
-                    actual.IdentifierType.AsTest().Must().BeNull();
+                    actual.ObjectTypes.AsTest().Must().BeNull();
                 }
-                else if (!actual.IdentifierType.GetType().IsValueType)
+                else if (!actual.ObjectTypes.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.IdentifierType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.IdentifierType);
+                    actual.ObjectTypes.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectTypes);
                 }
 
-                if (systemUnderTest.ObjectType == null)
+                if (systemUnderTest.TagsToMatch == null)
                 {
-                    actual.ObjectType.AsTest().Must().BeNull();
+                    actual.TagsToMatch.AsTest().Must().BeNull();
                 }
-                else if (!actual.ObjectType.GetType().IsValueType)
+                else if (!actual.TagsToMatch.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
+                    actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
                 }
 
-                if (systemUnderTest.SpecifiedResourceLocator == null)
+                if (systemUnderTest.DeprecatedIdTypes == null)
                 {
-                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
+                    actual.DeprecatedIdTypes.AsTest().Must().BeNull();
                 }
-                else if (!actual.SpecifiedResourceLocator.GetType().IsValueType)
+                else if (!actual.DeprecatedIdTypes.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                    actual.DeprecatedIdTypes.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.DeprecatedIdTypes);
                 }
             }
 
@@ -960,7 +902,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "StringSerializedId", "IdentifierType", "ObjectType", "VersionMatchStrategy", "RecordNotFoundStrategy", "OrderRecordsBy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "ObjectTypes", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "DeprecatedIdTypes" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -973,12 +915,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardGetAllRecordsMetadataByIdOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (GetDistinctIdsOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardGetAllRecordsMetadataByIdOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(GetDistinctIdsOp<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -1040,7 +982,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                var expected = A.Dummy<GetDistinctIdsOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1069,7 +1011,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                var expected = A.Dummy<GetDistinctIdsOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1098,7 +1040,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                var expected = A.Dummy<GetDistinctIdsOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1127,7 +1069,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetAllRecordsMetadataByIdOp>();
+                var expected = A.Dummy<GetDistinctIdsOp<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1161,8 +1103,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetAllRecordsMetadataByIdOp systemUnderTest1 = null;
-                StandardGetAllRecordsMetadataByIdOp systemUnderTest2 = null;
+                GetDistinctIdsOp<Version> systemUnderTest1 = null;
+                GetDistinctIdsOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1192,7 +1134,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetAllRecordsMetadataByIdOp systemUnderTest = null;
+                    GetDistinctIdsOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1341,8 +1283,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetAllRecordsMetadataByIdOp systemUnderTest1 = null;
-                StandardGetAllRecordsMetadataByIdOp systemUnderTest2 = null;
+                GetDistinctIdsOp<Version> systemUnderTest1 = null;
+                GetDistinctIdsOp<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1372,7 +1314,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetAllRecordsMetadataByIdOp systemUnderTest = null;
+                    GetDistinctIdsOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1661,17 +1603,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_StreamRecordMetadata___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_Version___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<IReadOnlyList<StreamRecordMetadata>> systemUnderTest = null;
+                    ReturningOperationBase<IReadOnlyCollection<Version>> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<StreamRecordMetadata>>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<Version>>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1692,14 +1634,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_StreamRecordMetadata___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_Version___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<StreamRecordMetadata>>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<Version>>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1720,14 +1662,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_StreamRecordMetadata___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_Version___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<StreamRecordMetadata>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1748,14 +1690,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_StreamRecordMetadata___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_Version___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<StreamRecordMetadata>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1776,14 +1718,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_StreamRecordMetadata___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_Version___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<StreamRecordMetadata>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<Version>>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1804,14 +1746,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetAllRecordsMetadataByIdOp___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_GetDistinctIdsOp_of_Version___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetAllRecordsMetadataByIdOp systemUnderTest = null;
+                    GetDistinctIdsOp<Version> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1835,7 +1777,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetAllRecordsMetadataByIdOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetDistinctIdsOp_of_Version___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1863,7 +1805,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetAllRecordsMetadataByIdOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetDistinctIdsOp_of_Version___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1891,7 +1833,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetAllRecordsMetadataByIdOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetDistinctIdsOp_of_Version___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1919,7 +1861,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetAllRecordsMetadataByIdOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetDistinctIdsOp_of_Version___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -2080,7 +2022,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact]
+            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

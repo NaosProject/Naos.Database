@@ -207,6 +207,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<HandlingForRecordDisabledEvent>(),
                         A.Dummy<HandlingForStreamEnabledEvent>(),
                         A.Dummy<IdDeprecatedEvent>(),
+                        A.Dummy<IdDeprecatedEvent<Version, Version>>(),
+                        A.Dummy<IdDeprecatedEvent<Version>>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
                         A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<PruneRequestCanceledEvent>(),

@@ -322,6 +322,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetAllResourceLocatorsOp>(),
                         A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
                         A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
+                        A.Dummy<GetDistinctIdsOp<Version>>(),
                         A.Dummy<GetHandlingHistoryOp>(),
                         A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),

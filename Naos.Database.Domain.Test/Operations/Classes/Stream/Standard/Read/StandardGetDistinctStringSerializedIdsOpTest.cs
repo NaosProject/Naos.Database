@@ -29,52 +29,8 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetDistinctStringSerializedIdsOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetDistinctStringSerializedIdsOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
-
-                            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                referenceObject.DeprecatedIdentifierType,
-                                referenceObject.IdentifierType,
-                                referenceObject.ObjectType,
-                                referenceObject.VersionMatchStrategy,
-                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
-                                referenceObject.TagMatchStrategy,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element" },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetDistinctStringSerializedIdsOp>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
-
-                            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                referenceObject.DeprecatedIdentifierType,
-                                referenceObject.IdentifierType,
-                                referenceObject.ObjectType,
-                                referenceObject.VersionMatchStrategy,
-                                referenceObject.TagsToMatch,
-                                TagMatchStrategy.Unknown,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown" },
-                    });
+            //ConstructorArgumentValidationTestScenarios
+            //    .RemoveAllScenarios()
         }
     }
 }

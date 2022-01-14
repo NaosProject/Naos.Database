@@ -165,7 +165,7 @@ namespace Naos.Protocol.FileSystem.Test
             }
 
             var anyDistinct = stream.Execute(
-                new StandardGetDistinctStringSerializedIdsOp());
+                new StandardGetDistinctStringSerializedIdsOp(new RecordFilter()));
             anyDistinct.ToList().MustForTest()
                        .BeEqualTo(
                             new List<string>
@@ -178,8 +178,12 @@ namespace Naos.Protocol.FileSystem.Test
 
             var objectObjectDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    null,
-                    typeof(MyObject).ToRepresentation()));
+                    new RecordFilter(
+                        objectTypes: new[]
+                                     {
+                                         typeof(MyObject).ToRepresentation(),
+                                     })));
+
             objectObjectDistinct.ToList().MustForTest()
                        .BeEqualTo(
                             new List<string>
@@ -191,7 +195,12 @@ namespace Naos.Protocol.FileSystem.Test
 
             var stringIdDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    typeof(string).ToRepresentation()));
+                    new RecordFilter(
+                        idTypes: new[]
+                                 {
+                                     typeof(string).ToRepresentation(),
+                                 })));
+
             stringIdDistinct.ToList().MustForTest()
                             .BeEqualTo(
                                  new List<string>
@@ -203,8 +212,15 @@ namespace Naos.Protocol.FileSystem.Test
 
             var stringIdObjectObjectDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    typeof(string).ToRepresentation(),
-                    typeof(MyObject).ToRepresentation()));
+                    new RecordFilter(
+                        idTypes: new[]
+                                 {
+                                     typeof(string).ToRepresentation(),
+                                 },
+                        objectTypes: new[]
+                                     {
+                                         typeof(MyObject).ToRepresentation(),
+                                     })));
             stringIdObjectObjectDistinct.ToList().MustForTest()
                             .BeEqualTo(
                                  new List<string>
@@ -215,14 +231,11 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    null,
-                    null,
-                    null,
-                    VersionMatchStrategy.Any,
-                    new List<NamedValue<string>>
-                    {
-                        new NamedValue<string>("tag", "one"),
-                    }));
+                    new RecordFilter(
+                        tags: new List<NamedValue<string>>
+                              {
+                                  new NamedValue<string>("tag", "one"),
+                              })));
 
             tagDistinct.ToList().MustForTest()
                             .BeEqualTo(
@@ -233,14 +246,16 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinctWrongIdType = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    typeof(decimal?).ToRepresentation(),
-                    null,
-                    null,
-                    VersionMatchStrategy.Any,
-                    new List<NamedValue<string>>
-                    {
-                        new NamedValue<string>("tag", "one"),
-                    }));
+                    new RecordFilter(
+                        idTypes: new[]
+                                 {
+                                     typeof(decimal?).ToRepresentation(),
+                                 },
+                        versionMatchStrategy: VersionMatchStrategy.Any,
+                        tags: new List<NamedValue<string>>
+                              {
+                                  new NamedValue<string>("tag", "one"),
+                              })));
 
             tagDistinctWrongIdType.ToList()
                               .MustForTest()
@@ -248,14 +263,16 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinctWrongObjectType = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    null,
-                    null,
-                    typeof(short).ToRepresentation(),
-                    VersionMatchStrategy.Any,
-                    new List<NamedValue<string>>
-                    {
-                        new NamedValue<string>("tag", "one"),
-                    }));
+                    new RecordFilter(
+                        objectTypes: new[]
+                                     {
+                                         typeof(short).ToRepresentation(),
+                                     },
+                        versionMatchStrategy: VersionMatchStrategy.Any,
+                        tags: new List<NamedValue<string>>
+                              {
+                                  new NamedValue<string>("tag", "one"),
+                              })));
 
             tagDistinctWrongObjectType.ToList()
                               .MustForTest()
@@ -263,14 +280,11 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinctWrongTagValue = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    null,
-                    null,
-                    null,
-                    VersionMatchStrategy.Any,
-                    new List<NamedValue<string>>
-                    {
-                        new NamedValue<string>("tag", "monkey"),
-                    }));
+                    new RecordFilter(
+                        tags: new List<NamedValue<string>>
+                              {
+                                  new NamedValue<string>("tag", "monkey"),
+                              })));
 
             tagDistinctWrongTagValue.ToList()
                                     .MustForTest()
@@ -278,14 +292,12 @@ namespace Naos.Protocol.FileSystem.Test
 
             var tagDistinctWrongTagName = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
-                    null,
-                    null,
-                    null,
-                    VersionMatchStrategy.Any,
-                    new List<NamedValue<string>>
-                    {
-                        new NamedValue<string>("monkey", "one"),
-                    }));
+                    new RecordFilter(
+                        tags:
+                        new List<NamedValue<string>>
+                        {
+                            new NamedValue<string>("monkey", "one"),
+                        })));
 
             tagDistinctWrongTagName.ToList()
                                     .MustForTest()
@@ -514,21 +526,28 @@ namespace Naos.Protocol.FileSystem.Test
                 var key = Invariant($"{stream.Name}Key{idx}");
 
                 var firstValue = "Testing again.";
-                var firstObject = new MyObject(key, firstValue);
                 var firstConcern = "CanceledPickedBackUpScenario";
                 var firstTags = new List<NamedValue<string>>
                                 {
                                     new NamedValue<string>("Run", Guid.NewGuid().ToString().ToUpper(CultureInfo.InvariantCulture)),
                                 };
 
-                stream.PutWithId(firstObject.Id, firstObject, firstObject.Tags);
-                var first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
+                var firstObject = new MyObject(key, firstValue);
+
+                stream.PutWithId(firstObject.Id, firstObject, firstTags);
+                var first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, new RecordFilter(tags: firstTags)));
                 first.MustForTest().NotBeNull();
-                var getFirstStatusByIdOp = new GetCompositeHandlingStatusByTagsOp(
+
+                var getFirstHandlingStatusOp = new GetHandlingStatusOp(
+                    first.RecordToHandle.InternalRecordId,
+                    firstConcern);
+
+                var getFirstCompositeHandlingStatusByTagsOp = new GetCompositeHandlingStatusByTagsOp(
                     firstConcern,
                     firstTags);
 
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 var firstInternalRecordId = first.RecordToHandle.InternalRecordId;
                 stream.GetStreamRecordHandlingProtocols().Execute(
@@ -537,20 +556,25 @@ namespace Naos.Protocol.FileSystem.Test
                         firstConcern,
                         "Resources unavailable; node out of disk space.",
                         tags: firstTags));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForStreamOp("Stop processing, fixing resource issue."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
-                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, new RecordFilter(tags: firstTags)));
                 first.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new EnableHandlingForStreamOp("Resume processing, fixed resource issue."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterExternalCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
-                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, new RecordFilter(tags: firstTags)));
                 first.RecordToHandle.MustForTest().NotBeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new SelfCancelRunningHandleRecordOp(
@@ -558,10 +582,12 @@ namespace Naos.Protocol.FileSystem.Test
                         firstConcern,
                         "Processing not finished, check later.",
                         tags: firstTags));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterSelfCancellation);
-                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterSelfCancellation);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, new RecordFilter(tags: firstTags)));
                 first.RecordToHandle.MustForTest().NotBeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new CompleteRunningHandleRecordOp(
@@ -569,10 +595,12 @@ namespace Naos.Protocol.FileSystem.Test
                         firstConcern,
                         "Processing not finished, check later.",
                         tags: firstTags));
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
-                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, tags: firstTags));
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllCompleted);
+                first = stream.Execute(new StandardTryHandleRecordOp(firstConcern, new RecordFilter(tags: firstTags)));
                 first.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getFirstStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Completed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getFirstCompositeHandlingStatusByTagsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllCompleted);
 
                 var firstHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(firstInternalRecordId, firstConcern));
                 firstHistory.MustForTest().HaveCount(7);
@@ -584,56 +612,71 @@ namespace Naos.Protocol.FileSystem.Test
                 }
 
                 var secondConcern = "FailedRetriedScenario";
-                var second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
+                var second = stream.Execute(new StandardTryHandleRecordOp(secondConcern, new RecordFilter()));
                 second.MustForTest().NotBeNull();
                 var secondInternalRecordId = second.RecordToHandle.InternalRecordId;
-                var getSecondStatusByIdOp = new GetCompositeHandlingStatusByIdsOp(
+                var getSecondHandlingStatusOp = new GetHandlingStatusOp(
+                    second.RecordToHandle.InternalRecordId,
+                    secondConcern);
+
+                var getSecondCompositeHandlingStatusByIdsOp = new GetCompositeHandlingStatusByIdsOp(
                     secondConcern,
                     new[]
                     {
                         new StringSerializedIdentifier(second.RecordToHandle.Metadata.StringSerializedId, second.RecordToHandle.Metadata.TypeRepresentationOfId.WithVersion),
                     });
 
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new FailRunningHandleRecordOp(
                         secondInternalRecordId,
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1 doesn't work."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
-                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllFailed);
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern, new RecordFilter()));
                 second.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllFailed);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new ResetFailedHandleRecordOp(secondInternalRecordId, secondConcern, "Redeployed Bot v1.0.1-hotfix, re-run."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForStreamOp("Stop processing, need to confirm deployment."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
-                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern, new RecordFilter()));
                 second.RecordToHandle.MustForTest().BeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForStream);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new EnableHandlingForStreamOp("Resume processing, confirmed deployment."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.AvailableAfterFailure);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllAvailable);
 
-                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern, new RecordFilter()));
                 second.RecordToHandle.MustForTest().NotBeNull();
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Running);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllRunning);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(
                     new FailRunningHandleRecordOp(
                         secondInternalRecordId,
                         secondConcern,
                         "NullReferenceException: Bot v1.0.1-hotfix doesn't work."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.Failed);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllFailed);
 
                 stream.GetStreamRecordHandlingProtocols().Execute(new DisableHandlingForRecordOp(firstInternalRecordId, "Giving up."));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
-                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern));
-                stream.GetStreamRecordHandlingProtocols().Execute(getSecondStatusByIdOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
+                second = stream.Execute(new StandardTryHandleRecordOp(secondConcern, new RecordFilter()));
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondHandlingStatusOp).MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
+                stream.GetStreamRecordHandlingProtocols().Execute(getSecondCompositeHandlingStatusByIdsOp).MustForTest().BeEqualTo(CompositeHandlingStatus.AllDisabled);
                 second.RecordToHandle.MustForTest().BeNull();
 
                 var secondHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(secondInternalRecordId, secondConcern));
@@ -887,13 +930,13 @@ namespace Naos.Protocol.FileSystem.Test
             result.MustForTest().BeNull();
 
             var concern = "NullIdentifierAndValueTest";
-            var record = stream.Execute(new StandardTryHandleRecordOp(concern));
+            var record = stream.Execute(new StandardTryHandleRecordOp(concern, new RecordFilter()));
             record?.RecordToHandle.MustForTest().NotBeNull();
             ((StringDescribedSerialization)record?.RecordToHandle.Payload)?.SerializedPayload.MustForTest().BeEqualTo("null");
 
             stream.GetStreamRecordHandlingProtocols().Execute(new CompleteRunningHandleRecordOp(record.RecordToHandle.InternalRecordId, concern));
 
-            var recordAgain = stream.Execute(new StandardTryHandleRecordOp(concern));
+            var recordAgain = stream.Execute(new StandardTryHandleRecordOp(concern, new RecordFilter()));
             recordAgain.RecordToHandle.MustForTest().BeNull();
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));

@@ -45,9 +45,9 @@ namespace Naos.Database.Domain
         public string Concern { get; private set; }
 
         /// <inheritdoc />
-        public IResourceLocator SpecifiedResourceLocator { get; private set; }
+        public RecordFilter RecordFilter { get; private set; }
 
         /// <inheritdoc />
-        public RecordFilter RecordFilter { get; private set; }
+        public IResourceLocator SpecifiedResourceLocator { get; private set; }
     }
 }

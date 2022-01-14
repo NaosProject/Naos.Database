@@ -153,12 +153,12 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override IReadOnlyCollection<string> Execute(
+        public override IReadOnlyCollection<StringSerializedIdentifier> Execute(
             StandardGetDistinctStringSerializedIdsOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var result = new HashSet<string>();
+            var result = new HashSet<StringSerializedIdentifier>();
             lock (this.streamLock)
             {
                 var locators = new List<MemoryDatabaseLocator>();
@@ -185,13 +185,17 @@ namespace Naos.Database.Domain
                         foreach (var streamRecord in partition)
                         {
                             if (streamRecord.Metadata.FuzzyMatchTypes(
-                                    operation.IdentifierType,
-                                    operation.ObjectType,
-                                    operation.VersionMatchStrategy)
-                             && ((!operation.TagsToMatch?.Any() ?? true)
-                              || streamRecord.Metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy)))
+                                    operation.RecordFilter.IdTypes,
+                                    operation.RecordFilter.ObjectTypes,
+                                    operation.RecordFilter.VersionMatchStrategy)
+                             && ((!operation.RecordFilter.Tags?.Any() ?? true)
+                              || streamRecord.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy)))
                             {
-                                result.Add(streamRecord.Metadata.StringSerializedId);
+                                result.Add(
+                                    new StringSerializedIdentifier(
+                                        streamRecord.Metadata.StringSerializedId,
+                                        streamRecord.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                            operation.RecordFilter.VersionMatchStrategy)));
                             }
                         }
                     }
@@ -299,12 +303,18 @@ namespace Naos.Database.Domain
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
 
                 var result = partition?
-                    .OrderByDescending(_ => _.InternalRecordId)
-                    .FirstOrDefault(
-                        _ => _.Metadata.FuzzyMatchTypes(
-                            operation.IdentifierType,
-                            operation.ObjectType,
-                            operation.VersionMatchStrategy));
+                            .OrderByDescending(_ => _.InternalRecordId)
+                            .FirstOrDefault(
+                                 _ => _.Metadata.FuzzyMatchTypes(
+                                     new[]
+                                     {
+                                         operation.IdentifierType,
+                                     },
+                                     new[]
+                                     {
+                                         operation.ObjectType,
+                                     },
+                                     operation.VersionMatchStrategy));
 
                 if (result != null)
                 {

@@ -116,7 +116,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<string> Execute(StandardGetDistinctStringSerializedIdsOp operation)
+        public IReadOnlyCollection<StringSerializedIdentifier> Execute(StandardGetDistinctStringSerializedIdsOp operation)
         {
             throw new NotImplementedException();
         }

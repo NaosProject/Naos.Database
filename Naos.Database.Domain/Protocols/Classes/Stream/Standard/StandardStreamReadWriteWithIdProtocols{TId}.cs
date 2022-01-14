@@ -260,5 +260,31 @@ namespace Naos.Database.Domain
 
             return result;
         }
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<TId> Execute(
+            GetDistinctIdsOp<TId> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
+            var standardOp = operation.Standardize();
+
+            var standardResult = this.stream.Execute(standardOp);
+
+            var result = standardResult.Select(_ => serializer.Deserialize<TId>(_.StringSerializedId)).ToList();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyCollection<TId>> ExecuteAsync(
+            GetDistinctIdsOp<TId> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
     }
 }

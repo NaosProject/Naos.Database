@@ -17,7 +17,6 @@ namespace Naos.Database.Domain
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
-    using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -70,12 +69,7 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.DeprecatedIdentifierType.IsEqualTo(other.DeprecatedIdentifierType)
-                      && this.IdentifierType.IsEqualTo(other.IdentifierType)
-                      && this.ObjectType.IsEqualTo(other.ObjectType)
-                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
-                      && this.TagsToMatch.IsEqualTo(other.TagsToMatch)
-                      && this.TagMatchStrategy.IsEqualTo(other.TagMatchStrategy)
+            var result = this.RecordFilter.IsEqualTo(other.RecordFilter)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -86,12 +80,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.DeprecatedIdentifierType)
-            .Hash(this.IdentifierType)
-            .Hash(this.ObjectType)
-            .Hash(this.VersionMatchStrategy)
-            .Hash(this.TagsToMatch)
-            .Hash(this.TagMatchStrategy)
+            .Hash(this.RecordFilter)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -99,10 +88,10 @@ namespace Naos.Database.Domain
         public new StandardGetDistinctStringSerializedIdsOp DeepClone() => (StandardGetDistinctStringSerializedIdsOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="DeprecatedIdentifierType" />.
+        /// Deep clones this object with a new <see cref="RecordFilter" />.
         /// </summary>
-        /// <param name="deprecatedIdentifierType">The new <see cref="DeprecatedIdentifierType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="deprecatedIdentifierType" /> for <see cref="DeprecatedIdentifierType" /> and a deep clone of every other property.</returns>
+        /// <param name="recordFilter">The new <see cref="RecordFilter" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="recordFilter" /> for <see cref="RecordFilter" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -120,195 +109,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithDeprecatedIdentifierType(TypeRepresentation deprecatedIdentifierType)
+        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithRecordFilter(RecordFilter recordFilter)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 deprecatedIdentifierType,
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="IdentifierType" />.
-        /// </summary>
-        /// <param name="identifierType">The new <see cref="IdentifierType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="identifierType" /> for <see cref="IdentifierType" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithIdentifierType(TypeRepresentation identifierType)
-        {
-            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 identifierType,
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="ObjectType" />.
-        /// </summary>
-        /// <param name="objectType">The new <see cref="ObjectType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="objectType" /> for <see cref="ObjectType" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithObjectType(TypeRepresentation objectType)
-        {
-            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 objectType,
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
-        /// </summary>
-        /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
-        {
-            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 versionMatchStrategy,
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="TagsToMatch" />.
-        /// </summary>
-        /// <param name="tagsToMatch">The new <see cref="TagsToMatch" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="tagsToMatch" /> for <see cref="TagsToMatch" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithTagsToMatch(IReadOnlyCollection<NamedValue<string>> tagsToMatch)
-        {
-            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 tagsToMatch,
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="TagMatchStrategy" />.
-        /// </summary>
-        /// <param name="tagMatchStrategy">The new <see cref="TagMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="tagMatchStrategy" /> for <see cref="TagMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
-        {
-            var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 tagMatchStrategy,
+                                 recordFilter,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -339,12 +143,7 @@ namespace Naos.Database.Domain
         public StandardGetDistinctStringSerializedIdsOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -355,12 +154,7 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
-                                 this.DeprecatedIdentifierType?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -370,7 +164,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: DeprecatedIdentifierType = {this.DeprecatedIdentifierType?.ToString() ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

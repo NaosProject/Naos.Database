@@ -172,11 +172,20 @@
     <Compile Include="Events\Classes\IdDeprecatedEvent.designer.cs">
       <DependentUpon>IdDeprecatedEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}.cs" />
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}.designer.cs">
+      <DependentUpon>IdDeprecatedEvent{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}.cs" />
+    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}.designer.cs">
+      <DependentUpon>IdDeprecatedEvent{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.StateChange.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.PutWithIdOp{TId,TObject}.cs" />
@@ -309,6 +318,10 @@
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}.designer.cs">
+      <DependentUpon>GetDistinctIdsOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
@@ -468,12 +481,12 @@
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntry.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingHistoryOp.cs" />
     <Compile Include="Models\Enums\HandlingStatus.cs" />
-    <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifier.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StringSerializedIdentifier.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingStatusOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardGetHandlingHistoryOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForRecordOp.cs" />
-    <Compile Include="Models\Classes\Stream\Handling\StringSerializedIdentifier.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\StringSerializedIdentifier.designer.cs">
       <DependentUpon>StringSerializedIdentifier.cs</DependentUpon>
     </Compile>
     <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordAsyncSpecificProtocolBase{TObject}.cs" />
@@ -494,7 +507,6 @@
       <DependentUpon>HandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Protocols\Classes\Stream\Subscriber\HandleRecordWithIdSyncSpecificProtocolBase{TId,TObject}.cs" />
-    <Compile Include="Operations\Interfaces\ITryHandleRecordOp.cs" />
     <Compile Include="Events\Classes\Management\PruneRequestCanceledEvent.designer.cs">
       <DependentUpon>PruneRequestCanceledEvent.cs</DependentUpon>
     </Compile>

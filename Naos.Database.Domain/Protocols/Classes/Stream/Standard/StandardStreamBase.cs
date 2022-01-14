@@ -160,7 +160,7 @@ namespace Naos.Database.Domain
             StandardUpdateHandlingStatusForRecordOp operation);
 
         /// <inheritdoc />
-        public abstract IReadOnlyCollection<string> Execute(
+        public abstract IReadOnlyCollection<StringSerializedIdentifier> Execute(
             StandardGetDistinctStringSerializedIdsOp operation);
 
         /// <inheritdoc />

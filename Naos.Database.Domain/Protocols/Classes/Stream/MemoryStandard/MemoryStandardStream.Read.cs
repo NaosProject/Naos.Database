@@ -306,14 +306,18 @@ namespace Naos.Database.Domain
                             .OrderByDescending(_ => _.InternalRecordId)
                             .FirstOrDefault(
                                  _ => _.Metadata.FuzzyMatchTypes(
-                                     new[]
-                                     {
-                                         operation.IdentifierType,
-                                     },
-                                     new[]
-                                     {
-                                         operation.ObjectType,
-                                     },
+                                     operation.IdentifierType == null
+                                         ? null
+                                         : new[]
+                                           {
+                                               operation.IdentifierType,
+                                           },
+                                     operation.ObjectType == null
+                                         ? null
+                                         : new[]
+                                           {
+                                               operation.ObjectType,
+                                           },
                                      operation.VersionMatchStrategy));
 
                 if (result != null)

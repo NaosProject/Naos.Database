@@ -166,7 +166,7 @@ namespace Naos.Protocol.FileSystem.Test
 
             var anyDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(new RecordFilter()));
-            anyDistinct.ToList().MustForTest()
+            anyDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                        .BeEqualTo(
                             new List<string>
                             {
@@ -184,14 +184,14 @@ namespace Naos.Protocol.FileSystem.Test
                                          typeof(MyObject).ToRepresentation(),
                                      })));
 
-            objectObjectDistinct.ToList().MustForTest()
-                       .BeEqualTo(
-                            new List<string>
-                            {
-                                zeroObjectStringSerializedId,
-                                firstObjectStringSerializedId,
-                                secondObjectStringSerializedId,
-                            });
+            objectObjectDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
+                                .BeEqualTo(
+                                     new List<string>
+                                     {
+                                         zeroObjectStringSerializedId,
+                                         firstObjectStringSerializedId,
+                                         secondObjectStringSerializedId,
+                                     });
 
             var stringIdDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
@@ -201,7 +201,7 @@ namespace Naos.Protocol.FileSystem.Test
                                      typeof(string).ToRepresentation(),
                                  })));
 
-            stringIdDistinct.ToList().MustForTest()
+            stringIdDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                             .BeEqualTo(
                                  new List<string>
                                  {
@@ -221,13 +221,13 @@ namespace Naos.Protocol.FileSystem.Test
                                      {
                                          typeof(MyObject).ToRepresentation(),
                                      })));
-            stringIdObjectObjectDistinct.ToList().MustForTest()
-                            .BeEqualTo(
-                                 new List<string>
-                                 {
-                                     firstObjectStringSerializedId,
-                                     secondObjectStringSerializedId,
-                                 });
+            stringIdObjectObjectDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
+                                        .BeEqualTo(
+                                             new List<string>
+                                             {
+                                                 firstObjectStringSerializedId,
+                                                 secondObjectStringSerializedId,
+                                             });
 
             var tagDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
@@ -237,12 +237,12 @@ namespace Naos.Protocol.FileSystem.Test
                                   new NamedValue<string>("tag", "one"),
                               })));
 
-            tagDistinct.ToList().MustForTest()
-                            .BeEqualTo(
-                                 new List<string>
-                                 {
-                                     firstObjectStringSerializedId,
-                                 });
+            tagDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
+                       .BeEqualTo(
+                            new List<string>
+                            {
+                                firstObjectStringSerializedId,
+                            });
 
             var tagDistinctWrongIdType = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
@@ -257,9 +257,9 @@ namespace Naos.Protocol.FileSystem.Test
                                   new NamedValue<string>("tag", "one"),
                               })));
 
-            tagDistinctWrongIdType.ToList()
-                              .MustForTest()
-                              .BeEmptyEnumerable();
+            tagDistinctWrongIdType.Select(_ => _.StringSerializedId).ToList()
+                                  .MustForTest()
+                                  .BeEmptyEnumerable();
 
             var tagDistinctWrongObjectType = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
@@ -274,9 +274,9 @@ namespace Naos.Protocol.FileSystem.Test
                                   new NamedValue<string>("tag", "one"),
                               })));
 
-            tagDistinctWrongObjectType.ToList()
-                              .MustForTest()
-                              .BeEmptyEnumerable();
+            tagDistinctWrongObjectType.Select(_ => _.StringSerializedId).ToList()
+                                      .MustForTest()
+                                      .BeEmptyEnumerable();
 
             var tagDistinctWrongTagValue = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(
@@ -286,7 +286,7 @@ namespace Naos.Protocol.FileSystem.Test
                                   new NamedValue<string>("tag", "monkey"),
                               })));
 
-            tagDistinctWrongTagValue.ToList()
+            tagDistinctWrongTagValue.Select(_ => _.StringSerializedId).ToList()
                                     .MustForTest()
                                     .BeEmptyEnumerable();
 
@@ -299,9 +299,9 @@ namespace Naos.Protocol.FileSystem.Test
                             new NamedValue<string>("monkey", "one"),
                         })));
 
-            tagDistinctWrongTagName.ToList()
-                                    .MustForTest()
-                                    .BeEmptyEnumerable();
+            tagDistinctWrongTagName.Select(_ => _.StringSerializedId).ToList()
+                                   .MustForTest()
+                                   .BeEmptyEnumerable();
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }

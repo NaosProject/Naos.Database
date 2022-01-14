@@ -117,7 +117,7 @@ namespace Naos.Database.Protocol.FileSystem
                 return matchResult;
             }
 
-            var internalRecordIdsToConsider = new List<long>();
+            var internalRecordIdsToConsider = new HashSet<long>();
             foreach (var recordMetadataFilePath in recordMetadataFiles)
             {
                 var recordMetadataFileText = File.ReadAllText(recordMetadataFilePath);

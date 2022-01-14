@@ -78,14 +78,18 @@ namespace Naos.Database.Domain
             streamRecordMetadata.MustForArg(nameof(streamRecordMetadata)).NotBeNull();
 
             var result = streamRecordMetadata.FuzzyMatchTypes(
-                new[]
-                {
-                    identifierType,
-                },
-                new[]
-                {
-                    objectType,
-                },
+                identifierType == null
+                    ? null
+                    : new[]
+                      {
+                          identifierType,
+                      },
+                objectType == null
+                    ? null
+                    : new[]
+                      {
+                          objectType,
+                      },
                 versionMatchStrategy);
 
             if (result && (stringSerializedId != streamRecordMetadata.StringSerializedId))

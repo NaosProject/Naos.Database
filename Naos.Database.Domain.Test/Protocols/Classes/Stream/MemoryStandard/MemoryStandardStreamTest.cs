@@ -161,7 +161,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var anyDistinct = stream.Execute(
                 new StandardGetDistinctStringSerializedIdsOp(new RecordFilter()));
-            anyDistinct.ToList().MustForTest()
+            anyDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                        .BeEqualTo(
                             new List<string>
                             {
@@ -179,7 +179,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                          typeof(MyObject).ToRepresentation(),
                                      })));
 
-            objectObjectDistinct.ToList().MustForTest()
+            objectObjectDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                        .BeEqualTo(
                             new List<string>
                             {
@@ -196,7 +196,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                      typeof(string).ToRepresentation(),
                                  })));
 
-            stringIdDistinct.ToList().MustForTest()
+            stringIdDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                             .BeEqualTo(
                                  new List<string>
                                  {
@@ -216,7 +216,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                      {
                                          typeof(MyObject).ToRepresentation(),
                                      })));
-            stringIdObjectObjectDistinct.ToList().MustForTest()
+            stringIdObjectObjectDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                             .BeEqualTo(
                                  new List<string>
                                  {
@@ -232,7 +232,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                   new NamedValue<string>("tag", "one"),
                               })));
 
-            tagDistinct.ToList().MustForTest()
+            tagDistinct.Select(_ => _.StringSerializedId).ToList().MustForTest()
                             .BeEqualTo(
                                  new List<string>
                                  {
@@ -252,7 +252,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                   new NamedValue<string>("tag", "one"),
                               })));
 
-            tagDistinctWrongIdType.ToList()
+            tagDistinctWrongIdType.Select(_ => _.StringSerializedId).ToList()
                               .MustForTest()
                               .BeEmptyEnumerable();
 
@@ -269,7 +269,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                   new NamedValue<string>("tag", "one"),
                               })));
 
-            tagDistinctWrongObjectType.ToList()
+            tagDistinctWrongObjectType.Select(_ => _.StringSerializedId).ToList()
                               .MustForTest()
                               .BeEmptyEnumerable();
 
@@ -281,7 +281,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                                   new NamedValue<string>("tag", "monkey"),
                               })));
 
-            tagDistinctWrongTagValue.ToList()
+            tagDistinctWrongTagValue.Select(_ => _.StringSerializedId).ToList()
                                     .MustForTest()
                                     .BeEmptyEnumerable();
 
@@ -294,7 +294,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             new NamedValue<string>("monkey", "one"),
                         })));
 
-            tagDistinctWrongTagName.ToList()
+            tagDistinctWrongTagName.Select(_ => _.StringSerializedId).ToList()
                                     .MustForTest()
                                     .BeEmptyEnumerable();
 

@@ -29,8 +29,29 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetDistinctStringSerializedIdsOpTest()
         {
-            //ConstructorArgumentValidationTestScenarios
-            //    .RemoveAllScenarios()
+            ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<StandardGetDistinctStringSerializedIdsOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
+
+                                                   var result = new StandardGetDistinctStringSerializedIdsOp(
+                                                       null,
+                                                       referenceObject.SpecifiedResourceLocator);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "recordFilter",
+                                                               },
+                        });
         }
     }
 }

@@ -142,6 +142,17 @@ namespace Naos.Database.Domain.Test
                     return result;
                 });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new IdDeprecatedEvent<Version, Version>(
+                    A.Dummy<Version>(),
+                    A.Dummy<UtcDateTime>(),
+                    A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new IdDeprecatedEvent<Version>(
+                    A.Dummy<UtcDateTime>(),
+                    A.Dummy<string>()));
+
             // ------------------------------- MODELS -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntryMetadata(

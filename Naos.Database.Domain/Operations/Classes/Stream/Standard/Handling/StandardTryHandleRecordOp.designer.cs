@@ -17,7 +17,6 @@ namespace Naos.Database.Domain
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
-    using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -71,13 +70,8 @@ namespace Naos.Database.Domain
             }
 
             var result = this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
-                      && this.IdentifierType.IsEqualTo(other.IdentifierType)
-                      && this.ObjectType.IsEqualTo(other.ObjectType)
-                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
-                      && this.TagsToMatch.IsEqualTo(other.TagsToMatch)
-                      && this.TagMatchStrategy.IsEqualTo(other.TagMatchStrategy)
+                      && this.RecordFilter.IsEqualTo(other.RecordFilter)
                       && this.OrderRecordsBy.IsEqualTo(other.OrderRecordsBy)
-                      && this.Tags.IsEqualTo(other.Tags)
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal)
                       && this.MinimumInternalRecordId.IsEqualTo(other.MinimumInternalRecordId)
                       && this.InheritRecordTags.IsEqualTo(other.InheritRecordTags)
@@ -93,13 +87,8 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.Concern)
-            .Hash(this.IdentifierType)
-            .Hash(this.ObjectType)
-            .Hash(this.VersionMatchStrategy)
-            .Hash(this.TagsToMatch)
-            .Hash(this.TagMatchStrategy)
+            .Hash(this.RecordFilter)
             .Hash(this.OrderRecordsBy)
-            .Hash(this.Tags)
             .Hash(this.Details)
             .Hash(this.MinimumInternalRecordId)
             .Hash(this.InheritRecordTags)
@@ -136,13 +125,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  concern,
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -153,10 +137,10 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="IdentifierType" />.
+        /// Deep clones this object with a new <see cref="RecordFilter" />.
         /// </summary>
-        /// <param name="identifierType">The new <see cref="IdentifierType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="identifierType" /> for <see cref="IdentifierType" /> and a deep clone of every other property.</returns>
+        /// <param name="recordFilter">The new <see cref="RecordFilter" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="recordFilter" /> for <see cref="RecordFilter" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -174,185 +158,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithIdentifierType(TypeRepresentation identifierType)
+        public StandardTryHandleRecordOp DeepCloneWithRecordFilter(RecordFilter recordFilter)
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 identifierType,
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 recordFilter,
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
-                                 this.Details?.DeepClone(),
-                                 this.MinimumInternalRecordId?.DeepClone(),
-                                 this.InheritRecordTags.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="ObjectType" />.
-        /// </summary>
-        /// <param name="objectType">The new <see cref="ObjectType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="objectType" /> for <see cref="ObjectType" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithObjectType(TypeRepresentation objectType)
-        {
-            var result = new StandardTryHandleRecordOp(
-                                 this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 objectType,
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
-                                 this.Details?.DeepClone(),
-                                 this.MinimumInternalRecordId?.DeepClone(),
-                                 this.InheritRecordTags.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
-        /// </summary>
-        /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
-        {
-            var result = new StandardTryHandleRecordOp(
-                                 this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 versionMatchStrategy,
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
-                                 this.Details?.DeepClone(),
-                                 this.MinimumInternalRecordId?.DeepClone(),
-                                 this.InheritRecordTags.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="TagsToMatch" />.
-        /// </summary>
-        /// <param name="tagsToMatch">The new <see cref="TagsToMatch" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="tagsToMatch" /> for <see cref="TagsToMatch" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithTagsToMatch(IReadOnlyCollection<NamedValue<string>> tagsToMatch)
-        {
-            var result = new StandardTryHandleRecordOp(
-                                 this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 tagsToMatch,
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
-                                 this.Details?.DeepClone(),
-                                 this.MinimumInternalRecordId?.DeepClone(),
-                                 this.InheritRecordTags.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="TagMatchStrategy" />.
-        /// </summary>
-        /// <param name="tagMatchStrategy">The new <see cref="TagMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="tagMatchStrategy" /> for <see cref="TagMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
-        {
-            var result = new StandardTryHandleRecordOp(
-                                 this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 tagMatchStrategy,
-                                 this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -388,55 +199,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  orderRecordsBy,
-                                 this.Tags?.DeepClone(),
-                                 this.Details?.DeepClone(),
-                                 this.MinimumInternalRecordId?.DeepClone(),
-                                 this.InheritRecordTags.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="Tags" />.
-        /// </summary>
-        /// <param name="tags">The new <see cref="Tags" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardTryHandleRecordOp DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
-        {
-            var result = new StandardTryHandleRecordOp(
-                                 this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.OrderRecordsBy.DeepClone(),
-                                 tags,
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -472,13 +236,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  details,
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -514,13 +273,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  minimumInternalRecordId,
                                  this.InheritRecordTags.DeepClone(),
@@ -556,13 +310,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  inheritRecordTags,
@@ -598,13 +347,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -640,13 +384,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -662,13 +401,8 @@ namespace Naos.Database.Domain
         {
             var result = new StandardTryHandleRecordOp(
                                  this.Concern?.DeepClone(),
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.OrderRecordsBy.DeepClone(),
-                                 this.Tags?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
@@ -682,7 +416,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {this.OrderRecordsBy.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, OrderRecordsBy = {this.OrderRecordsBy.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

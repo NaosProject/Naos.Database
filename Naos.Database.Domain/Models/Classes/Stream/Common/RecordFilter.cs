@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -25,6 +26,7 @@ namespace Naos.Database.Domain
         /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
         /// <param name="tags">The tags to match or null when not matching on tags.</param>
         /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <see cref="Tags"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
         public RecordFilter(
             IReadOnlyCollection<long> internalRecordIds = null,
             IReadOnlyCollection<StringSerializedIdentifier> ids = null,
@@ -34,8 +36,13 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<TypeRepresentation> objectTypes = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IReadOnlyCollection<NamedValue<string>> tags = null,
-            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags)
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
+            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
+            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
+
             this.InternalRecordIds = internalRecordIds;
             this.Ids = ids;
             this.IdTypes = idTypes;
@@ -43,6 +50,7 @@ namespace Naos.Database.Domain
             this.VersionMatchStrategy = versionMatchStrategy;
             this.Tags = tags;
             this.TagMatchStrategy = tagMatchStrategy;
+            this.DeprecatedIdTypes = deprecatedIdTypes;
         }
 
         /// <summary>
@@ -79,5 +87,10 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use for comparing tags when <see cref="Tags"/> is specified.
         /// </summary>
         public TagMatchStrategy TagMatchStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the object types used in a record that indicates an identifier deprecation.
+        /// </summary>
+        public IReadOnlyCollection<TypeRepresentation> DeprecatedIdTypes { get; private set; }
     }
 }

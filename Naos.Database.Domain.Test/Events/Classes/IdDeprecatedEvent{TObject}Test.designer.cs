@@ -33,37 +33,37 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class IdDeprecatedEventTest
+    public static partial class IdDeprecatedEventTObjectTest
     {
-        private static readonly StringRepresentationTestScenarios<IdDeprecatedEvent> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<IdDeprecatedEvent>()
+        private static readonly StringRepresentationTestScenarios<IdDeprecatedEvent<Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<IdDeprecatedEvent<Version>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<IdDeprecatedEvent>
+                new StringRepresentationTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<IdDeprecatedEvent>();
+                        var systemUnderTest = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<IdDeprecatedEvent>
+                        var result = new SystemUnderTestExpectedStringRepresentation<IdDeprecatedEvent<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.IdDeprecatedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.IdDeprecatedEvent<Version>: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<IdDeprecatedEvent> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<IdDeprecatedEvent>()
+        private static readonly ConstructorArgumentValidationTestScenarios<IdDeprecatedEvent<Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<IdDeprecatedEvent<Version>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<IdDeprecatedEvent>
+                new ConstructorArgumentValidationTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<IdDeprecatedEvent>();
+                        var referenceObject = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var result = new IdDeprecatedEvent(
+                        var result = new IdDeprecatedEvent<Version>(
                                              referenceObject.TimestampUtc,
                                              null);
 
@@ -73,14 +73,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<IdDeprecatedEvent>
+                new ConstructorArgumentValidationTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<IdDeprecatedEvent>();
+                        var referenceObject = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var result = new IdDeprecatedEvent(
+                        var result = new IdDeprecatedEvent<Version>(
                                              referenceObject.TimestampUtc,
                                              Invariant($"  {Environment.NewLine}  "));
 
@@ -90,18 +90,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<IdDeprecatedEvent> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<IdDeprecatedEvent>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<IdDeprecatedEvent<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<IdDeprecatedEvent<Version>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<IdDeprecatedEvent>
+                new ConstructorPropertyAssignmentTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "TimestampUtc should return same 'timestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<IdDeprecatedEvent>();
+                        var referenceObject = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<IdDeprecatedEvent>
+                        var result = new SystemUnderTestExpectedPropertyValue<IdDeprecatedEvent<Version>>
                         {
-                            SystemUnderTest = new IdDeprecatedEvent(
+                            SystemUnderTest = new IdDeprecatedEvent<Version>(
                                                       referenceObject.TimestampUtc,
                                                       referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.TimestampUtc,
@@ -112,16 +112,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TimestampUtc",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<IdDeprecatedEvent>
+                new ConstructorPropertyAssignmentTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "Details should return same 'details' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<IdDeprecatedEvent>();
+                        var referenceObject = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<IdDeprecatedEvent>
+                        var result = new SystemUnderTestExpectedPropertyValue<IdDeprecatedEvent<Version>>
                         {
-                            SystemUnderTest = new IdDeprecatedEvent(
+                            SystemUnderTest = new IdDeprecatedEvent<Version>(
                                                       referenceObject.TimestampUtc,
                                                       referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -132,19 +132,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Details",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<IdDeprecatedEvent> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<IdDeprecatedEvent>()
+        private static readonly DeepCloneWithTestScenarios<IdDeprecatedEvent<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<IdDeprecatedEvent<Version>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<IdDeprecatedEvent>
+                new DeepCloneWithTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "DeepCloneWithTimestampUtc should deep clone object and replace TimestampUtc with the provided timestampUtc",
                     WithPropertyName = "TimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<IdDeprecatedEvent>();
+                        var systemUnderTest = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var referenceObject = A.Dummy<IdDeprecatedEvent>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
+                        var referenceObject = A.Dummy<IdDeprecatedEvent<Version>>().ThatIs(_ => !systemUnderTest.TimestampUtc.IsEqualTo(_.TimestampUtc));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<IdDeprecatedEvent>
+                        var result = new SystemUnderTestDeepCloneWithValue<IdDeprecatedEvent<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.TimestampUtc,
@@ -154,17 +154,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<IdDeprecatedEvent>
+                new DeepCloneWithTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "DeepCloneWithDetails should deep clone object and replace Details with the provided details",
                     WithPropertyName = "Details",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<IdDeprecatedEvent>();
+                        var systemUnderTest = A.Dummy<IdDeprecatedEvent<Version>>();
 
-                        var referenceObject = A.Dummy<IdDeprecatedEvent>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
+                        var referenceObject = A.Dummy<IdDeprecatedEvent<Version>>().ThatIs(_ => !systemUnderTest.Details.IsEqualTo(_.Details));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<IdDeprecatedEvent>
+                        var result = new SystemUnderTestDeepCloneWithValue<IdDeprecatedEvent<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Details,
@@ -174,28 +174,28 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly IdDeprecatedEvent ReferenceObjectForEquatableTestScenarios = A.Dummy<IdDeprecatedEvent>();
+        private static readonly IdDeprecatedEvent<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<IdDeprecatedEvent<Version>>();
 
-        private static readonly EquatableTestScenarios<IdDeprecatedEvent> EquatableTestScenarios = new EquatableTestScenarios<IdDeprecatedEvent>()
+        private static readonly EquatableTestScenarios<IdDeprecatedEvent<Version>> EquatableTestScenarios = new EquatableTestScenarios<IdDeprecatedEvent<Version>>()
             .AddScenario(() =>
-                new EquatableTestScenario<IdDeprecatedEvent>
+                new EquatableTestScenario<IdDeprecatedEvent<Version>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new IdDeprecatedEvent[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new IdDeprecatedEvent<Version>[]
                     {
-                        new IdDeprecatedEvent(
+                        new IdDeprecatedEvent<Version>(
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new IdDeprecatedEvent[]
+                    ObjectsThatAreNotEqualToReferenceObject = new IdDeprecatedEvent<Version>[]
                     {
-                        new IdDeprecatedEvent(
-                                A.Dummy<IdDeprecatedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
+                        new IdDeprecatedEvent<Version>(
+                                A.Dummy<IdDeprecatedEvent<Version>>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details),
-                        new IdDeprecatedEvent(
+                        new IdDeprecatedEvent<Version>(
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<IdDeprecatedEvent>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
+                                A.Dummy<IdDeprecatedEvent<Version>>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -207,8 +207,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<HandlingForRecordDisabledEvent>(),
                         A.Dummy<HandlingForStreamDisabledEvent>(),
                         A.Dummy<HandlingForStreamEnabledEvent>(),
+                        A.Dummy<IdDeprecatedEvent>(),
                         A.Dummy<IdDeprecatedEvent<Version, Version>>(),
-                        A.Dummy<IdDeprecatedEvent<Version>>(),
                         A.Dummy<PruneOperationExecutedEvent>(),
                         A.Dummy<PruneOperationRequestedEvent>(),
                         A.Dummy<PruneRequestCanceledEvent>(),
@@ -241,12 +241,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void IdDeprecatedEvent___Should_implement_IModel_of_IdDeprecatedEvent___When_reflecting()
+            public static void IdDeprecatedEvent_of_Version___Should_implement_IModel_of_IdDeprecatedEvent_of_Version___When_reflecting()
             {
                 // Arrange
-                var type = typeof(IdDeprecatedEvent);
+                var type = typeof(IdDeprecatedEvent<Version>);
 
-                var expectedModelMethods = typeof(IModel<IdDeprecatedEvent>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<IdDeprecatedEvent<Version>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -256,7 +256,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<IdDeprecatedEvent>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<IdDeprecatedEvent<Version>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -274,10 +274,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void IdDeprecatedEvent___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void IdDeprecatedEvent_of_Version___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(IdDeprecatedEvent);
+                var type = typeof(IdDeprecatedEvent<Version>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -457,10 +457,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<IdDeprecatedEvent>();
+                var systemUnderTest = A.Dummy<IdDeprecatedEvent<Version>>();
 
                 // Act
-                var actual = (IdDeprecatedEvent)systemUnderTest.Clone();
+                var actual = (IdDeprecatedEvent<Version>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -484,7 +484,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<IdDeprecatedEvent>();
+                var systemUnderTest = A.Dummy<IdDeprecatedEvent<Version>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -523,12 +523,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (IdDeprecatedEvent)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (IdDeprecatedEvent<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(IdDeprecatedEvent).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(IdDeprecatedEvent<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -590,7 +590,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<IdDeprecatedEvent>();
+                var expected = A.Dummy<IdDeprecatedEvent<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -619,7 +619,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<IdDeprecatedEvent>();
+                var expected = A.Dummy<IdDeprecatedEvent<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -648,7 +648,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<IdDeprecatedEvent>();
+                var expected = A.Dummy<IdDeprecatedEvent<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -677,7 +677,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<IdDeprecatedEvent>();
+                var expected = A.Dummy<IdDeprecatedEvent<Version>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -711,8 +711,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                IdDeprecatedEvent systemUnderTest1 = null;
-                IdDeprecatedEvent systemUnderTest2 = null;
+                IdDeprecatedEvent<Version> systemUnderTest1 = null;
+                IdDeprecatedEvent<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -742,7 +742,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    IdDeprecatedEvent systemUnderTest = null;
+                    IdDeprecatedEvent<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -891,8 +891,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                IdDeprecatedEvent systemUnderTest1 = null;
-                IdDeprecatedEvent systemUnderTest2 = null;
+                IdDeprecatedEvent<Version> systemUnderTest1 = null;
+                IdDeprecatedEvent<Version> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -922,7 +922,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    IdDeprecatedEvent systemUnderTest = null;
+                    IdDeprecatedEvent<Version> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1211,14 +1211,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_IdDeprecatedEvent___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_IdDeprecatedEvent_of_Version___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    IdDeprecatedEvent systemUnderTest = null;
+                    IdDeprecatedEvent<Version> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1242,7 +1242,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_IdDeprecatedEvent___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_IdDeprecatedEvent_of_Version___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1270,7 +1270,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_IdDeprecatedEvent___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_IdDeprecatedEvent_of_Version___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1298,7 +1298,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_IdDeprecatedEvent___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_IdDeprecatedEvent_of_Version___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1326,7 +1326,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_IdDeprecatedEvent___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_IdDeprecatedEvent_of_Version___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

@@ -54,21 +54,99 @@ namespace Naos.Database.Protocol.FileSystem
         public override IReadOnlyDictionary<long, HandlingStatus> Execute(
             StandardGetHandlingStatusOp operation)
         {
-            throw new NotImplementedException();
-
-            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var locator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var concernDirectory = this.GetHandlingConcernDirectory(locator, operation.Concern);
 
-            if (globalBlocked)
+            if (this.IsMostRecentBlocked(locator))
             {
                 return new Dictionary<long, HandlingStatus>
-                                                  {
-                                                      { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
-                                                  };
+                       {
+                           { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
+                       };
             }
-            */
+
+            var recordMetadataFiles = Directory.GetFiles(
+                this.GetRootPathFromLocator(locator),
+                Invariant($"*.{MetadataFileExtension}"),
+                SearchOption.TopDirectoryOnly);
+
+            bool HandlingEntryMatchingPredicate(
+                long internalRecordId,
+                StreamRecordMetadata localMetadata)
+            {
+                var matchResult = false;
+
+                if (operation.RecordFilter.InternalRecordIds != null && operation.RecordFilter.InternalRecordIds.Any())
+                {
+                    matchResult = matchResult || operation.RecordFilter.InternalRecordIds.Contains(internalRecordId);
+                }
+
+                if (operation.RecordFilter.Ids != null && operation.RecordFilter.Ids.Any())
+                {
+                    matchResult = matchResult || operation.RecordFilter.Ids.Any(
+                        __ => __.StringSerializedId.Equals(localMetadata.StringSerializedId)
+                           && __.IdentifierType.EqualsAccordingToStrategy(
+                                  localMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                      operation.RecordFilter.VersionMatchStrategy),
+                                  operation.RecordFilter.VersionMatchStrategy));
+                }
+
+                if (operation.RecordFilter.IdTypes != null && operation.RecordFilter.IdTypes.Any())
+                {
+                    matchResult = matchResult
+                               || operation.RecordFilter.IdTypes.Contains(
+                                      localMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                          operation.RecordFilter.VersionMatchStrategy));
+                }
+
+                if (operation.RecordFilter.ObjectTypes != null && operation.RecordFilter.ObjectTypes.Any())
+                {
+                    matchResult = matchResult
+                               || operation.RecordFilter.ObjectTypes.Contains(
+                                      localMetadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(
+                                          operation.RecordFilter.VersionMatchStrategy));
+                }
+
+                if (operation.RecordFilter.Tags != null && operation.RecordFilter.Tags.Any())
+                {
+                    matchResult = matchResult || localMetadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy);
+                }
+
+                return matchResult;
+            }
+
+            var internalRecordIdsToConsider = new List<long>();
+            foreach (var recordMetadataFilePath in recordMetadataFiles)
+            {
+                var recordMetadataFileText = File.ReadAllText(recordMetadataFilePath);
+                var internalRecordId = GetInternalRecordIdFromRecordFilePath(recordMetadataFilePath);
+                var recordMetadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(recordMetadataFileText);
+                if (HandlingEntryMatchingPredicate(internalRecordId, recordMetadata))
+                {
+                    internalRecordIdsToConsider.Add(internalRecordId);
+                }
+            }
+
+            var result = internalRecordIdsToConsider.ToDictionary(
+                k => k,
+                v =>
+                {
+                    var files = Directory.GetFiles(
+                        concernDirectory,
+                        Invariant($"*___Id-{v.PadWithLeadingZeros()}___*.{MetadataFileExtension}"),
+                        SearchOption.TopDirectoryOnly);
+
+                    var mostRecentFilePath = files.OrderByDescending(_ => _).FirstOrDefault();
+
+                    var mostRecent = this.GetStreamRecordHandlingEntryFromMetadataFile(mostRecentFilePath);
+
+                    var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
+                    return currentHandlingStatus;
+                });
+
+            return result;
         }
 
         /// <inheritdoc />
@@ -126,10 +204,10 @@ namespace Naos.Database.Protocol.FileSystem
                                           })
                                      .ToList();
 
-                        if ((operation.TagsToMatch != null) && operation.TagsToMatch.Any())
+                        if ((operation.RecordFilter.Tags != null) && operation.RecordFilter.Tags.Any())
                         {
                             predicate = predicate
-                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy))
+                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy))
                                 .ToList();
                         }
 
@@ -141,9 +219,9 @@ namespace Naos.Database.Protocol.FileSystem
                                 var ascItem = predicate.OrderBy(_ => _.Id)
                                                        .FirstOrDefault(
                                                             _ => _.Metadata.FuzzyMatchTypes(
-                                                                     operation.IdentifierType,
-                                                                     operation.ObjectType,
-                                                                     operation.VersionMatchStrategy)
+                                                                     operation.RecordFilter.IdTypes,
+                                                                     operation.RecordFilter.ObjectTypes,
+                                                                     operation.RecordFilter.VersionMatchStrategy)
                                                               && (operation.MinimumInternalRecordId == null
                                                                || _.Id >= operation.MinimumInternalRecordId));
                                 metadataFilePath = ascItem?.Path;
@@ -153,9 +231,9 @@ namespace Naos.Database.Protocol.FileSystem
                                 var descItem = predicate.OrderByDescending(_ => _.Id)
                                                        .FirstOrDefault(
                                                             _ => _.Metadata.FuzzyMatchTypes(
-                                                                     operation.IdentifierType,
-                                                                     operation.ObjectType,
-                                                                     operation.VersionMatchStrategy)
+                                                                     operation.RecordFilter.IdTypes,
+                                                                     operation.RecordFilter.ObjectTypes,
+                                                                     operation.RecordFilter.VersionMatchStrategy)
                                                               && (operation.MinimumInternalRecordId == null
                                                                || _.Id >= operation.MinimumInternalRecordId));
                                 metadataFilePath = descItem?.Path;
@@ -166,9 +244,9 @@ namespace Naos.Database.Protocol.FileSystem
                                 var randItem = predicate.OrderBy(_ => Guid.NewGuid())
                                                        .FirstOrDefault(
                                                             _ => _.Metadata.FuzzyMatchTypes(
-                                                                     operation.IdentifierType,
-                                                                     operation.ObjectType,
-                                                                     operation.VersionMatchStrategy)
+                                                                     operation.RecordFilter.IdTypes,
+                                                                     operation.RecordFilter.ObjectTypes,
+                                                                     operation.RecordFilter.VersionMatchStrategy)
                                                               && (operation.MinimumInternalRecordId == null
                                                                || _.Id >= operation.MinimumInternalRecordId));
                                 metadataFilePath = randItem?.Path;
@@ -183,10 +261,10 @@ namespace Naos.Database.Protocol.FileSystem
                             var recordToHandle = this.GetStreamRecordFromMetadataFile(metadataFilePath, recordMetadata, operation.StreamRecordItemsToInclude);
 
                             var handlingTags = operation.InheritRecordTags
-                                ? (operation.Tags ?? new List<NamedValue<string>>())
+                                ? (operation.RecordFilter.Tags ?? new List<NamedValue<string>>())
                                  .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
                                  .ToList()
-                                : operation.Tags;
+                                : operation.RecordFilter.Tags;
 
                             if (!tupleOfIdsToHandleAndIdsToIgnore.Item1.Contains(recordToHandle.InternalRecordId))
                             {
@@ -371,7 +449,7 @@ namespace Naos.Database.Protocol.FileSystem
                 var metadata = new StreamRecordHandlingEntryMetadata(
                     internalRecordId,
                     concern,
-                    HandlingStatus.AvailableByDefault,
+                    newStatus,
                     null, // Since we need a type, we are using NullIdentifier, however we are passing a null NullIdentifier instead of constructing one to reduce runtime complexity and payload size
                     this.DefaultSerializerRepresentation,
                     NullIdentifier.TypeRepresentation,

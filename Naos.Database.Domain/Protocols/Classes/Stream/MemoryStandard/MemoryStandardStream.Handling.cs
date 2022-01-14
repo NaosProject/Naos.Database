@@ -183,15 +183,15 @@ namespace Naos.Database.Domain
                         var matchingRecords = recordsToConsiderForHandling
                                              .Where(
                                                   _ => _.Metadata.FuzzyMatchTypes(
-                                                      operation.IdentifierType,
-                                                      operation.ObjectType,
-                                                      operation.VersionMatchStrategy))
+                                                      operation.RecordFilter.IdTypes,
+                                                      operation.RecordFilter.ObjectTypes,
+                                                      operation.RecordFilter.VersionMatchStrategy))
                                              .ToList();
 
-                        if ((operation.TagsToMatch != null) && operation.TagsToMatch.Any())
+                        if ((operation.RecordFilter.Tags != null) && operation.RecordFilter.Tags.Any())
                         {
                             matchingRecords = matchingRecords
-                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.TagsToMatch, operation.TagMatchStrategy))
+                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy))
                                 .ToList();
                         }
 
@@ -226,10 +226,10 @@ namespace Naos.Database.Domain
                         if (recordToHandle != null)
                         {
                             var handlingTags = operation.InheritRecordTags
-                                ? (operation.Tags ?? new List<NamedValue<string>>())
+                                ? (operation.RecordFilter.Tags ?? new List<NamedValue<string>>())
                                  .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
                                  .ToList()
-                                : operation.Tags;
+                                : operation.RecordFilter.Tags;
 
                             if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))
                             {

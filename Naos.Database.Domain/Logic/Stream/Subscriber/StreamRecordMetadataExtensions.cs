@@ -6,7 +6,9 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
@@ -22,16 +24,16 @@ namespace Naos.Database.Domain
         /// is matched by a specified object type and/or object identifier type.
         /// </summary>
         /// <param name="streamRecordMetadata">The stream record metadata.</param>
-        /// <param name="identifierType">Type of the object's identifier; null will exclude from matching.</param>
-        /// <param name="objectType">Type of the object; null will exclude from matching.</param>
+        /// <param name="identifierTypes">Types of the object's identifier; null will exclude from matching.</param>
+        /// <param name="objectTypes">Types of the object; null will exclude from matching.</param>
         /// <param name="versionMatchStrategy">The strategy to use for matching the version of the object type and the version of the object's identifier type.</param>
         /// <returns>
         /// <c>true</c> if the record is a match, otherwise <c>false</c>.
         /// </returns>
         public static bool FuzzyMatchTypes(
             this StreamRecordMetadata streamRecordMetadata,
-            TypeRepresentation identifierType,
-            TypeRepresentation objectType,
+            IReadOnlyCollection<TypeRepresentation> identifierTypes,
+            IReadOnlyCollection<TypeRepresentation> objectTypes,
             VersionMatchStrategy versionMatchStrategy)
         {
             streamRecordMetadata.MustForArg(nameof(streamRecordMetadata)).NotBeNull();
@@ -39,14 +41,14 @@ namespace Naos.Database.Domain
             var match = true;
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse -- prefer this for safety in refactoring order
-            if (match && (identifierType != null))
+            if (match && (identifierTypes != null))
             {
-                match = streamRecordMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(versionMatchStrategy).EqualsAccordingToStrategy(identifierType, versionMatchStrategy);
+                match = identifierTypes.Any(_ => streamRecordMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(versionMatchStrategy).EqualsAccordingToStrategy(_, versionMatchStrategy));
             }
 
-            if (match && (objectType != null))
+            if (match && (objectTypes != null))
             {
-                match = streamRecordMetadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(versionMatchStrategy).EqualsAccordingToStrategy(objectType, versionMatchStrategy);
+                match = objectTypes.Any(_ => streamRecordMetadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(versionMatchStrategy).EqualsAccordingToStrategy(_, versionMatchStrategy));
             }
 
             return match;
@@ -75,7 +77,16 @@ namespace Naos.Database.Domain
         {
             streamRecordMetadata.MustForArg(nameof(streamRecordMetadata)).NotBeNull();
 
-            var result = streamRecordMetadata.FuzzyMatchTypes(identifierType, objectType, versionMatchStrategy);
+            var result = streamRecordMetadata.FuzzyMatchTypes(
+                new[]
+                {
+                    identifierType,
+                },
+                new[]
+                {
+                    objectType,
+                },
+                versionMatchStrategy);
 
             if (result && (stringSerializedId != streamRecordMetadata.StringSerializedId))
             {

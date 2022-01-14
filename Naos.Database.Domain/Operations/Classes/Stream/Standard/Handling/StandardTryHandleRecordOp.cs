@@ -22,19 +22,14 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, ITryHandleRecordOp, ISpecifyResourceLocator
+    public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, IHaveHandleRecordConcern, IHaveDetails, ISpecifyRecordFilter, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardTryHandleRecordOp"/> class.
         /// </summary>
         /// <param name="concern">The record handling concern.</param>
-        /// <param name="identifierType">OPTIONAL type of the object identifier to filter on.  DEFAULT is no filter.</param>
-        /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
-        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
-        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="recordFilter">The filter to apply to the set of records to consider for handling.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
-        /// <param name="tags">OPTIONAL tags to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no tags.</param>
         /// <param name="details">OPTIONAL details to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no details.</param>
         /// <param name="minimumInternalRecordId">OPTIONAL minimum internal record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be a desired behavior on protocols that self-cancel and are long running). DEFAULT is no minimum internal identifier.</param>
         /// <param name="inheritRecordTags">OPTIONAL value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.  DEFAULT is to not inherit tags.</param>
@@ -42,13 +37,8 @@ namespace Naos.Database.Domain
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardTryHandleRecordOp(
             string concern,
-            TypeRepresentation identifierType = null,
-            TypeRepresentation objectType = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
-            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
+            RecordFilter recordFilter,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<NamedValue<string>> tags = null,
             string details = null,
             long? minimumInternalRecordId = null,
             bool inheritRecordTags = false,
@@ -56,21 +46,13 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
-            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
-            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
-            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
+            recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
             orderRecordsBy.MustForArg(nameof(orderRecordsBy)).NotBeEqualTo(OrderRecordsBy.Unknown);
-            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
             streamRecordItemsToInclude.MustForArg(nameof(streamRecordItemsToInclude)).NotBeEqualTo(StreamRecordItemsToInclude.Unknown);
 
             this.Concern = concern;
-            this.IdentifierType = identifierType;
-            this.ObjectType = objectType;
-            this.VersionMatchStrategy = versionMatchStrategy;
-            this.TagsToMatch = tagsToMatch;
-            this.TagMatchStrategy = tagMatchStrategy;
+            this.RecordFilter = recordFilter;
             this.OrderRecordsBy = orderRecordsBy;
-            this.Tags = tags;
             this.Details = details;
             this.MinimumInternalRecordId = minimumInternalRecordId;
             this.InheritRecordTags = inheritRecordTags;
@@ -81,38 +63,28 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public string Concern { get; private set; }
 
-        /// <summary>
-        /// Gets the type of the identifier to filter on or null when not matching on object identifier type.
-        /// </summary>
-        public TypeRepresentation IdentifierType { get; private set; }
+        /// <inheritdoc />
+        public RecordFilter RecordFilter { get; private set; }
 
         /// <summary>
-        /// Gets the type of the object to filter on or null when not matching on object type.
+        /// Gets a value that specifies how to order the resulting records.
         /// </summary>
-        public TypeRepresentation ObjectType { get; private set; }
-
-        /// <inheritdoc />
-        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
-
-        /// <inheritdoc />
-        public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
-
-        /// <inheritdoc />
-        public TagMatchStrategy TagMatchStrategy { get; private set; }
-
-        /// <inheritdoc />
         public OrderRecordsBy OrderRecordsBy { get; private set; }
-
-        /// <inheritdoc />
-        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <inheritdoc />
         public string Details { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the minimum internal record identifier to consider for handling or null for no minimum identifier.
+        /// </summary>
+        /// <remarks>
+        /// This will allow for ordinal traversal and handle each record once before starting over which can be a desired behavior on protocols that self-cancel and are long running.
+        /// </remarks>
         public long? MinimumInternalRecordId { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets a value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.
+        /// </summary>
         public bool InheritRecordTags { get; private set; }
 
         /// <summary>

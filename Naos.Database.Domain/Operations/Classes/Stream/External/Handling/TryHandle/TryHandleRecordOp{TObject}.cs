@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// Try to handle a record of type <typeparamref name="TObject"/> for a specified concern.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class TryHandleRecordOp<TObject> : ReturningOperationBase<StreamRecord<TObject>>, ITryHandleRecordOp
+    public partial class TryHandleRecordOp<TObject> : ReturningOperationBase<StreamRecord<TObject>>, IHaveHandleRecordConcern, IHaveDetails, IHaveTags
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryHandleRecordOp{TObject}"/> class.
@@ -69,16 +69,24 @@ namespace Naos.Database.Domain
         /// </summary>
         public TypeRepresentation IdentifierType { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation.
+        /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the tags to match or null when not matching on tags.
+        /// </summary>
         public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
+        /// </summary>
         public TagMatchStrategy TagMatchStrategy { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets a value that specifies how to order the resulting records.
+        /// </summary>
         public OrderRecordsBy OrderRecordsBy { get; private set; }
 
         /// <inheritdoc />
@@ -87,10 +95,17 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public string Details { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets the minimum internal record identifier to consider for handling or null for no minimum identifier.
+        /// </summary>
+        /// <remarks>
+        /// This will allow for ordinal traversal and handle each record once before starting over which can be a desired behavior on protocols that self-cancel and are long running.
+        /// </remarks>
         public long? MinimumInternalRecordId { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets a value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.
+        /// </summary>
         public bool InheritRecordTags { get; private set; }
     }
 }

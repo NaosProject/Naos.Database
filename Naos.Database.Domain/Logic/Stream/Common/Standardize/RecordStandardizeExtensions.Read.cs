@@ -338,5 +338,30 @@ namespace Naos.Database.Domain
 
             return result;
         }
+
+        /// <summary>
+        /// Converts the operation to it's standardized form.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <param name="operation">The operation.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardGetDistinctStringSerializedIdsOp Standardize<TId>(
+            this GetDistinctIdsOp<TId> operation)
+        {
+            var result = new StandardGetDistinctStringSerializedIdsOp(new RecordFilter(
+                idTypes: new[]
+                         {
+                             typeof(TId).ToRepresentation(),
+                         },
+                objectTypes: operation.ObjectTypes,
+                versionMatchStrategy: operation.VersionMatchStrategy,
+                tags: operation.TagsToMatch,
+                tagMatchStrategy: operation.TagMatchStrategy,
+                deprecatedIdTypes: operation.DeprecatedIdTypes));
+
+            return result;
+        }
     }
 }

@@ -28,13 +28,19 @@ namespace Naos.Database.Domain
 
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
-                operation.IdentifierType,
-                typeof(TObject).ToRepresentation(),
-                operation.VersionMatchStrategy,
-                operation.TagsToMatch,
-                operation.TagMatchStrategy,
+                new RecordFilter(
+                    idTypes: new[]
+                             {
+                                 operation.IdentifierType,
+                             },
+                    objectTypes: new[]
+                                 {
+                                     typeof(TObject).ToRepresentation(),
+                                 },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy),
                 operation.OrderRecordsBy,
-                operation.Tags,
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
@@ -62,13 +68,19 @@ namespace Naos.Database.Domain
 
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
-                typeof(TId).ToRepresentation(),
-                typeof(TObject).ToRepresentation(),
-                operation.VersionMatchStrategy,
-                operation.TagsToMatch,
-                operation.TagMatchStrategy,
+                new RecordFilter(
+                    idTypes: new[]
+                             {
+                                 typeof(TId).ToRepresentation(),
+                             },
+                    objectTypes: new[]
+                                 {
+                                     typeof(TObject).ToRepresentation(),
+                                 },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy),
                 operation.OrderRecordsBy,
-                operation.Tags,
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,
@@ -95,13 +107,19 @@ namespace Naos.Database.Domain
 
             var result = new StandardTryHandleRecordOp(
                 operation.Concern,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.VersionMatchStrategy,
-                operation.TagsToMatch,
-                operation.TagMatchStrategy,
+                new RecordFilter(
+                    idTypes: new[]
+                             {
+                                 typeof(TId).ToRepresentation(),
+                             },
+                    objectTypes: new[]
+                                 {
+                                     operation.ObjectType,
+                                 },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy),
                 operation.OrderRecordsBy,
-                operation.Tags,
                 operation.Details,
                 operation.MinimumInternalRecordId,
                 operation.InheritRecordTags,

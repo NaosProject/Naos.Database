@@ -63,23 +63,24 @@ namespace Naos.Database.Domain
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
-
+                var records = this.locatorToRecordPartitionMap[memoryDatabaseLocator];
                 bool HandlingEntryMatchingPredicate(
-                    StreamRecordHandlingEntry entry)
+                    long internalRecordId,
+                    StreamRecordMetadata localMetadata)
                 {
                     var matchResult = false;
 
                     if (operation.RecordFilter.InternalRecordIds != null && operation.RecordFilter.InternalRecordIds.Any())
                     {
-                        matchResult = matchResult || operation.RecordFilter.InternalRecordIds.Contains(entry.Metadata.InternalRecordId);
+                        matchResult = matchResult || operation.RecordFilter.InternalRecordIds.Contains(internalRecordId);
                     }
 
                     if (operation.RecordFilter.Ids != null && operation.RecordFilter.Ids.Any())
                     {
                         matchResult = matchResult || operation.RecordFilter.Ids.Any(
-                            __ => __.StringSerializedId.Equals(entry.Metadata.StringSerializedId)
+                            __ => __.StringSerializedId.Equals(localMetadata.StringSerializedId)
                                && __.IdentifierType.EqualsAccordingToStrategy(
-                                      entry.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                      localMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
                                           operation.RecordFilter.VersionMatchStrategy),
                                       operation.RecordFilter.VersionMatchStrategy));
                     }
@@ -88,7 +89,7 @@ namespace Naos.Database.Domain
                     {
                         matchResult = matchResult
                                    || operation.RecordFilter.IdTypes.Contains(
-                                          entry.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
+                                          localMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
                                               operation.RecordFilter.VersionMatchStrategy));
                     }
 
@@ -96,25 +97,37 @@ namespace Naos.Database.Domain
                     {
                         matchResult = matchResult
                                    || operation.RecordFilter.ObjectTypes.Contains(
-                                          entry.Metadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(
+                                          localMetadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(
                                               operation.RecordFilter.VersionMatchStrategy));
                     }
 
                     if (operation.RecordFilter.Tags != null && operation.RecordFilter.Tags.Any())
                     {
-                        matchResult = matchResult || entry.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy);
+                        matchResult = matchResult || localMetadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy);
                     }
 
                     return matchResult;
                 }
 
-                var result =
-                    (entries ?? new List<StreamRecordHandlingEntry>())
-                   .Concat(recordBlockedEntries ?? new List<StreamRecordHandlingEntry>())
-                   .Where(HandlingEntryMatchingPredicate)
-                   .GroupBy(_ => _.Metadata.InternalRecordId)
-                   .Select(_ => new Tuple<long, HandlingStatus>(_.Key, _.OrderByDescending(__ => __.InternalHandlingEntryId).First().Metadata.Status))
-                   .ToDictionary(k => k.Item1, v => v.Item2);
+                var internalRecordIdsToConsider = new HashSet<long>();
+                foreach (var record in records)
+                {
+                    if (HandlingEntryMatchingPredicate(record.InternalRecordId, record.Metadata))
+                    {
+                        internalRecordIdsToConsider.Add(record.InternalRecordId);
+                    }
+                }
+
+                var result = internalRecordIdsToConsider
+                   .ToDictionary(
+                        k => k,
+                        v => entries
+                            .Concat(blockedEntries)
+                            .Where(_ => _.Metadata.InternalRecordId == v)
+                            .OrderByDescending(__ => __.InternalHandlingEntryId)
+                            .FirstOrDefault()
+                           ?.Metadata.Status
+                          ?? HandlingStatus.AvailableByDefault);
 
                 return result;
             }

@@ -51,6 +51,7 @@ namespace Naos.Database.Domain.Test
                                                        referenceObject.Details,
                                                        referenceObject.MinimumInternalRecordId,
                                                        referenceObject.InheritRecordTags,
+                                                       referenceObject.Tags,
                                                        referenceObject.StreamRecordItemsToInclude,
                                                        referenceObject.SpecifiedResourceLocator);
 
@@ -77,6 +78,7 @@ namespace Naos.Database.Domain.Test
                                                                referenceObject.Details,
                                                                referenceObject.MinimumInternalRecordId,
                                                                referenceObject.InheritRecordTags,
+                                                               referenceObject.Tags,
                                                                referenceObject.StreamRecordItemsToInclude,
                                                                referenceObject.SpecifiedResourceLocator);
 
@@ -100,6 +102,7 @@ namespace Naos.Database.Domain.Test
                                                                referenceObject.Details,
                                                                referenceObject.MinimumInternalRecordId,
                                                                referenceObject.InheritRecordTags,
+                                                               referenceObject.Tags,
                                                                referenceObject.StreamRecordItemsToInclude,
                                                                referenceObject.SpecifiedResourceLocator);
 
@@ -123,6 +126,7 @@ namespace Naos.Database.Domain.Test
                                                                referenceObject.Details,
                                                                referenceObject.MinimumInternalRecordId,
                                                                referenceObject.InheritRecordTags,
+                                                               referenceObject.Tags,
                                                                StreamRecordItemsToInclude.Unknown,
                                                                referenceObject.SpecifiedResourceLocator);
 

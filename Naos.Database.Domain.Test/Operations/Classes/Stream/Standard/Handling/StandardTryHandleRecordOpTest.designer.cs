@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardTryHandleRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {systemUnderTest.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {systemUnderTest.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {systemUnderTest.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {systemUnderTest.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, StreamRecordItemsToInclude = {systemUnderTest.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -70,6 +70,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
+                                             referenceObject.Tags,
                                              referenceObject.StreamRecordItemsToInclude,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -93,6 +94,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
+                                             referenceObject.Tags,
                                              referenceObject.StreamRecordItemsToInclude,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -116,6 +118,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
+                                             referenceObject.Tags,
                                              referenceObject.StreamRecordItemsToInclude,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -139,6 +142,7 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
+                                             referenceObject.Tags,
                                              referenceObject.StreamRecordItemsToInclude,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -162,6 +166,7 @@ namespace Naos.Database.Domain.Test
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
+                                             referenceObject.Tags,
                                              referenceObject.StreamRecordItemsToInclude,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -169,6 +174,78 @@ namespace Naos.Database.Domain.Test
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "details", "white space", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                        var result = new StandardTryHandleRecordOp(
+                                             referenceObject.Concern,
+                                             referenceObject.RecordFilter,
+                                             referenceObject.OrderRecordsBy,
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId,
+                                             referenceObject.InheritRecordTags,
+                                             null,
+                                             referenceObject.StreamRecordItemsToInclude,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "tags", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                        var result = new StandardTryHandleRecordOp(
+                                             referenceObject.Concern,
+                                             referenceObject.RecordFilter,
+                                             referenceObject.OrderRecordsBy,
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId,
+                                             referenceObject.InheritRecordTags,
+                                             new List<NamedValue<string>>(),
+                                             referenceObject.StreamRecordItemsToInclude,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                        var result = new StandardTryHandleRecordOp(
+                                             referenceObject.Concern,
+                                             referenceObject.RecordFilter,
+                                             referenceObject.OrderRecordsBy,
+                                             referenceObject.Details,
+                                             referenceObject.MinimumInternalRecordId,
+                                             referenceObject.InheritRecordTags,
+                                             new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
+                                             referenceObject.StreamRecordItemsToInclude,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
@@ -185,6 +262,7 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Details,
                                              referenceObject.MinimumInternalRecordId,
                                              referenceObject.InheritRecordTags,
+                                             referenceObject.Tags,
                                              referenceObject.StreamRecordItemsToInclude,
                                              null);
 
@@ -212,6 +290,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Concern,
@@ -238,6 +317,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordFilter,
@@ -264,6 +344,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.OrderRecordsBy,
@@ -290,6 +371,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -316,6 +398,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.MinimumInternalRecordId,
@@ -342,6 +425,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.InheritRecordTags,
@@ -350,6 +434,33 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "InheritRecordTags",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
+                {
+                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardTryHandleRecordOp>
+                        {
+                            SystemUnderTest = new StandardTryHandleRecordOp(
+                                                      referenceObject.Concern,
+                                                      referenceObject.RecordFilter,
+                                                      referenceObject.OrderRecordsBy,
+                                                      referenceObject.Details,
+                                                      referenceObject.MinimumInternalRecordId,
+                                                      referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
+                                                      referenceObject.StreamRecordItemsToInclude,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "Tags",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardTryHandleRecordOp>
@@ -368,6 +479,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.StreamRecordItemsToInclude,
@@ -394,6 +506,7 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Details,
                                                       referenceObject.MinimumInternalRecordId,
                                                       referenceObject.InheritRecordTags,
+                                                      referenceObject.Tags,
                                                       referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
@@ -528,6 +641,26 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
                 {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardTryHandleRecordOp>();
+
+                        var referenceObject = A.Dummy<StandardTryHandleRecordOp>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardTryHandleRecordOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardTryHandleRecordOp>
+                {
                     Name = "DeepCloneWithStreamRecordItemsToInclude should deep clone object and replace StreamRecordItemsToInclude with the provided streamRecordItemsToInclude",
                     WithPropertyName = "StreamRecordItemsToInclude",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -583,6 +716,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
@@ -595,6 +729,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -604,6 +739,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -613,6 +749,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -622,6 +759,7 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -631,6 +769,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.MinimumInternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId)).MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -640,6 +779,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.InheritRecordTags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InheritRecordTags)).InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -649,6 +789,17 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardTryHandleRecordOp(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.StreamRecordItemsToInclude.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude)).StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardTryHandleRecordOp(
@@ -658,6 +809,7 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.MinimumInternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.InheritRecordTags,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
                                 ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 A.Dummy<StandardTryHandleRecordOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
@@ -1017,6 +1169,18 @@ namespace Naos.Database.Domain.Test
                     actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
                 }
 
+                if (systemUnderTest.Tags == null)
+                {
+                    actual.Tags.AsTest().Must().BeNull();
+                }
+                else if (!actual.Tags.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                }
+
                 if (systemUnderTest.SpecifiedResourceLocator == null)
                 {
                     actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
@@ -1046,7 +1210,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "RecordFilter", "OrderRecordsBy", "Details", "MinimumInternalRecordId", "InheritRecordTags", "StreamRecordItemsToInclude", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Concern", "RecordFilter", "OrderRecordsBy", "Details", "MinimumInternalRecordId", "InheritRecordTags", "Tags", "StreamRecordItemsToInclude", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

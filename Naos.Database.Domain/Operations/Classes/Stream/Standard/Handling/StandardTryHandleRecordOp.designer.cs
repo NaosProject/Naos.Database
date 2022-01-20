@@ -75,6 +75,7 @@ namespace Naos.Database.Domain
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal)
                       && this.MinimumInternalRecordId.IsEqualTo(other.MinimumInternalRecordId)
                       && this.InheritRecordTags.IsEqualTo(other.InheritRecordTags)
+                      && this.Tags.IsEqualTo(other.Tags)
                       && this.StreamRecordItemsToInclude.IsEqualTo(other.StreamRecordItemsToInclude)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
@@ -92,6 +93,7 @@ namespace Naos.Database.Domain
             .Hash(this.Details)
             .Hash(this.MinimumInternalRecordId)
             .Hash(this.InheritRecordTags)
+            .Hash(this.Tags)
             .Hash(this.StreamRecordItemsToInclude)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
@@ -130,6 +132,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -167,6 +170,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -204,6 +208,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -241,6 +246,7 @@ namespace Naos.Database.Domain
                                  details,
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -278,6 +284,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  minimumInternalRecordId,
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -315,6 +322,45 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  inheritRecordTags,
+                                 this.Tags?.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
+                                 this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Tags" />.
+        /// </summary>
+        /// <param name="tags">The new <see cref="Tags" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardTryHandleRecordOp" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardTryHandleRecordOp DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
+        {
+            var result = new StandardTryHandleRecordOp(
+                                 this.Concern?.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
+                                 this.OrderRecordsBy.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.MinimumInternalRecordId?.DeepClone(),
+                                 this.InheritRecordTags.DeepClone(),
+                                 tags,
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -352,6 +398,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  streamRecordItemsToInclude,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -389,6 +436,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  specifiedResourceLocator);
 
@@ -406,6 +454,7 @@ namespace Naos.Database.Domain
                                  this.Details?.DeepClone(),
                                  this.MinimumInternalRecordId?.DeepClone(),
                                  this.InheritRecordTags.DeepClone(),
+                                 this.Tags?.DeepClone(),
                                  this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -416,7 +465,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, OrderRecordsBy = {this.OrderRecordsBy.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardTryHandleRecordOp: Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, OrderRecordsBy = {this.OrderRecordsBy.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, MinimumInternalRecordId = {this.MinimumInternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InheritRecordTags = {this.InheritRecordTags.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

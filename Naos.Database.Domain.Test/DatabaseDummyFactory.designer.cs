@@ -676,6 +676,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<long?>(),
                                  A.Dummy<bool>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<StreamRecordItemsToInclude>(),
                                  A.Dummy<IResourceLocator>()));
 

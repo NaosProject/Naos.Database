@@ -22,7 +22,7 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, IHaveHandleRecordConcern, IHaveDetails, ISpecifyRecordFilter, ISpecifyResourceLocator
+    public partial class StandardTryHandleRecordOp : ReturningOperationBase<TryHandleRecordResult>, IHaveHandleRecordConcern, IHaveDetails, IHaveTags, ISpecifyRecordFilter, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardTryHandleRecordOp"/> class.
@@ -33,6 +33,7 @@ namespace Naos.Database.Domain
         /// <param name="details">OPTIONAL details to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no details.</param>
         /// <param name="minimumInternalRecordId">OPTIONAL minimum internal record identifier to consider for handling (this will allow for ordinal traversal and handle each record once before starting over which can be a desired behavior on protocols that self-cancel and are long running). DEFAULT is no minimum internal identifier.</param>
         /// <param name="inheritRecordTags">OPTIONAL value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.  DEFAULT is to not inherit tags.</param>
+        /// <param name="tags">OPTIONAL tags to add to any new entries.</param>
         /// <param name="streamRecordItemsToInclude">OPTIONAL value that determines which aspects of a <see cref="StreamRecord"/> to include with the result.  DEFAULT is to include both the metadata and the payload.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardTryHandleRecordOp(
@@ -42,6 +43,7 @@ namespace Naos.Database.Domain
             string details = null,
             long? minimumInternalRecordId = null,
             bool inheritRecordTags = false,
+            IReadOnlyCollection<NamedValue<string>> tags = null,
             StreamRecordItemsToInclude streamRecordItemsToInclude = StreamRecordItemsToInclude.MetadataAndPayload,
             IResourceLocator specifiedResourceLocator = null)
         {
@@ -56,6 +58,7 @@ namespace Naos.Database.Domain
             this.Details = details;
             this.MinimumInternalRecordId = minimumInternalRecordId;
             this.InheritRecordTags = inheritRecordTags;
+            this.Tags = tags;
             this.StreamRecordItemsToInclude = streamRecordItemsToInclude;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
@@ -86,6 +89,9 @@ namespace Naos.Database.Domain
         /// Gets a value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.
         /// </summary>
         public bool InheritRecordTags { get; private set; }
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<NamedValue<string>> Tags { get; private set; }
 
         /// <summary>
         /// Gets a value that determines which aspects of a <see cref="StreamRecord"/> to include with the result.

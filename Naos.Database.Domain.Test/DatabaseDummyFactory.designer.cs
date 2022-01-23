@@ -560,26 +560,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetAllRecordsByIdOp(
-                                 A.Dummy<string>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<OrderRecordsBy>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetAllRecordsMetadataByIdOp(
-                                 A.Dummy<string>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<OrderRecordsBy>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetDistinctStringSerializedIdsOp(
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<IResourceLocator>()));
@@ -648,6 +628,13 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetRecordByInternalRecordIdOp(
                                  A.Dummy<long>(),
+                                 A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<StreamRecordItemsToInclude>(),
+                                 A.Dummy<IResourceLocator>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StandardGetRecordIdsOp(
+                                 A.Dummy<RecordFilter>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 

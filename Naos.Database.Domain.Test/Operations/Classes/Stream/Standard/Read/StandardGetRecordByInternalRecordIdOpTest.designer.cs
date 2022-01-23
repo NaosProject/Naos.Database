@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardGetRecordByInternalRecordIdOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetRecordByInternalRecordIdOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetRecordByInternalRecordIdOp: InternalRecordId = {systemUnderTest.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, StreamRecordItemsToInclude = {systemUnderTest.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,6 +66,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetRecordByInternalRecordIdOp(
                                              referenceObject.InternalRecordId,
                                              referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.StreamRecordItemsToInclude,
                                              null);
 
                         return result;
@@ -88,6 +89,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetRecordByInternalRecordIdOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.InternalRecordId,
                         };
@@ -109,6 +111,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetRecordByInternalRecordIdOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
                         };
@@ -116,6 +119,28 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "RecordNotFoundStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordByInternalRecordIdOp>
+                {
+                    Name = "StreamRecordItemsToInclude should return same 'streamRecordItemsToInclude' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetRecordByInternalRecordIdOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordByInternalRecordIdOp>
+                        {
+                            SystemUnderTest = new StandardGetRecordByInternalRecordIdOp(
+                                                      referenceObject.InternalRecordId,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.StreamRecordItemsToInclude,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "StreamRecordItemsToInclude",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetRecordByInternalRecordIdOp>
@@ -130,6 +155,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetRecordByInternalRecordIdOp(
                                                       referenceObject.InternalRecordId,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -183,6 +209,26 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardGetRecordByInternalRecordIdOp>
                 {
+                    Name = "DeepCloneWithStreamRecordItemsToInclude should deep clone object and replace StreamRecordItemsToInclude with the provided streamRecordItemsToInclude",
+                    WithPropertyName = "StreamRecordItemsToInclude",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetRecordByInternalRecordIdOp>();
+
+                        var referenceObject = A.Dummy<StandardGetRecordByInternalRecordIdOp>().ThatIs(_ => !systemUnderTest.StreamRecordItemsToInclude.IsEqualTo(_.StreamRecordItemsToInclude));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordByInternalRecordIdOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.StreamRecordItemsToInclude,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetRecordByInternalRecordIdOp>
+                {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -214,6 +260,7 @@ namespace Naos.Database.Domain.Test
                         new StandardGetRecordByInternalRecordIdOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StandardGetRecordByInternalRecordIdOp[]
@@ -221,14 +268,22 @@ namespace Naos.Database.Domain.Test
                         new StandardGetRecordByInternalRecordIdOp(
                                 A.Dummy<StandardGetRecordByInternalRecordIdOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetRecordByInternalRecordIdOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 A.Dummy<StandardGetRecordByInternalRecordIdOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetRecordByInternalRecordIdOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                A.Dummy<StandardGetRecordByInternalRecordIdOp>().Whose(_ => !_.StreamRecordItemsToInclude.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude)).StreamRecordItemsToInclude,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetRecordByInternalRecordIdOp(
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordId,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 A.Dummy<StandardGetRecordByInternalRecordIdOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -282,8 +337,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
                         A.Dummy<StandardDoesAnyExistByIdOp>(),
-                        A.Dummy<StandardGetAllRecordsByIdOp>(),
-                        A.Dummy<StandardGetAllRecordsMetadataByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
                         A.Dummy<StandardGetHandlingHistoryOp>(),
                         A.Dummy<StandardGetHandlingStatusOp>(),
@@ -293,6 +346,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardGetLatestRecordOp>(),
                         A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
+                        A.Dummy<StandardGetRecordIdsOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
@@ -604,7 +658,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "InternalRecordId", "RecordNotFoundStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "InternalRecordId", "RecordNotFoundStrategy", "StreamRecordItemsToInclude", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

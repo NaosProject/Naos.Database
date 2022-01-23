@@ -441,12 +441,6 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.designer.cs">
       <DependentUpon>StandardDoesAnyExistByIdOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetAllRecordsByIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetAllRecordsMetadataByIdOpTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.designer.cs">
       <DependentUpon>StandardGetDistinctStringSerializedIdsOpTest.cs</DependentUpon>
     </Compile>
@@ -620,8 +614,6 @@
     <Compile Include="Models\Classes\Stream\Write\PutRecordResultTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBaseTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsByIdOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetAllRecordsMetadataByIdOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOpTest.cs" />
@@ -725,6 +717,10 @@
       <DependentUpon>StandardGetLatestStringSerializedObjectByIdOpTest.cs</DependentUpon>
     </Compile>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordIdsOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordIdsOpTest.designer.cs">
+      <DependentUpon>StandardGetRecordIdsOpTest.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />

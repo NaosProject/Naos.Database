@@ -717,9 +717,9 @@
       <DependentUpon>StandardGetLatestStringSerializedObjectByIdOpTest.cs</DependentUpon>
     </Compile>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordIdsOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordIdsOpTest.designer.cs">
-      <DependentUpon>StandardGetRecordIdsOpTest.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOpTest.designer.cs">
+      <DependentUpon>StandardGetInternalRecordIdsOpTest.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

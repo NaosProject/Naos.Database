@@ -403,8 +403,8 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOp.designer.cs">
       <DependentUpon>StandardGetRecordByInternalRecordIdOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordIdsOp.designer.cs">
-      <DependentUpon>StandardGetRecordIdsOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOp.designer.cs">
+      <DependentUpon>StandardGetInternalRecordIdsOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOp.designer.cs">
@@ -583,7 +583,7 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordIdsOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOp.cs" />

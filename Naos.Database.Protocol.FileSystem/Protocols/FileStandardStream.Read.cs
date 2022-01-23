@@ -62,7 +62,7 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override IReadOnlyCollection<long> Execute(
-            StandardGetRecordIdsOp operation)
+            StandardGetInternalRecordIdsOp operation)
         {
             throw new NotImplementedException();
 

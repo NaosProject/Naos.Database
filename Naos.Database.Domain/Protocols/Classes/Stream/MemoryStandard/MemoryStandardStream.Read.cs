@@ -42,7 +42,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override IReadOnlyCollection<long> Execute(
-            StandardGetRecordIdsOp operation)
+            StandardGetInternalRecordIdsOp operation)
         {
             throw new NotImplementedException();
 

@@ -122,7 +122,7 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
-            var internalRecordIdsOp = new StandardGetRecordIdsOp(
+            var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                          {
@@ -226,7 +226,7 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
-            var internalRecordIdsOp = new StandardGetRecordIdsOp(
+            var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                          {

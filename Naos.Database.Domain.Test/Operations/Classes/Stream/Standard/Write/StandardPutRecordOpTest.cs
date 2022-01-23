@@ -294,7 +294,7 @@ namespace Naos.Database.Domain.Test
                             A.Dummy<ResetFailedHandleRecordOp>(),
                             A.Dummy<SelfCancelRunningHandleRecordOp>(),
                             A.Dummy<StandardDoesAnyExistByIdOp>(),
-                            A.Dummy<StandardGetRecordIdsOp>(),
+                            A.Dummy<StandardGetInternalRecordIdsOp>(),
                             A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
                             A.Dummy<StandardGetLatestRecordByIdOp>(),
                             A.Dummy<StandardGetLatestRecordByTagsOp>(),

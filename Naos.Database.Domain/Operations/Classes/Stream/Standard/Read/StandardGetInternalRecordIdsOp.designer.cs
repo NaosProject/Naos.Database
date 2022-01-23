@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class StandardGetRecordIdsOp : IModel<StandardGetRecordIdsOp>
+    public partial class StandardGetInternalRecordIdsOp : IModel<StandardGetInternalRecordIdsOp>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="StandardGetRecordIdsOp"/> are equal.
+        /// Determines whether two objects of type <see cref="StandardGetInternalRecordIdsOp"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(StandardGetRecordIdsOp left, StandardGetRecordIdsOp right)
+        public static bool operator ==(StandardGetInternalRecordIdsOp left, StandardGetInternalRecordIdsOp right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="StandardGetRecordIdsOp"/> are not equal.
+        /// Determines whether two objects of type <see cref="StandardGetInternalRecordIdsOp"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(StandardGetRecordIdsOp left, StandardGetRecordIdsOp right) => !(left == right);
+        public static bool operator !=(StandardGetInternalRecordIdsOp left, StandardGetInternalRecordIdsOp right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(StandardGetRecordIdsOp other)
+        public bool Equals(StandardGetInternalRecordIdsOp other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -77,7 +77,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as StandardGetRecordIdsOp);
+        public override bool Equals(object obj) => this == (obj as StandardGetInternalRecordIdsOp);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -87,13 +87,13 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new StandardGetRecordIdsOp DeepClone() => (StandardGetRecordIdsOp)this.DeepCloneInternal();
+        public new StandardGetInternalRecordIdsOp DeepClone() => (StandardGetInternalRecordIdsOp)this.DeepCloneInternal();
 
         /// <summary>
         /// Deep clones this object with a new <see cref="RecordFilter" />.
         /// </summary>
         /// <param name="recordFilter">The new <see cref="RecordFilter" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordIdsOp" /> using the specified <paramref name="recordFilter" /> for <see cref="RecordFilter" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardGetInternalRecordIdsOp" /> using the specified <paramref name="recordFilter" /> for <see cref="RecordFilter" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -111,9 +111,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordIdsOp DeepCloneWithRecordFilter(RecordFilter recordFilter)
+        public StandardGetInternalRecordIdsOp DeepCloneWithRecordFilter(RecordFilter recordFilter)
         {
-            var result = new StandardGetRecordIdsOp(
+            var result = new StandardGetInternalRecordIdsOp(
                                  recordFilter,
                                  this.RecordNotFoundStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
@@ -125,7 +125,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="RecordNotFoundStrategy" />.
         /// </summary>
         /// <param name="recordNotFoundStrategy">The new <see cref="RecordNotFoundStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordIdsOp" /> using the specified <paramref name="recordNotFoundStrategy" /> for <see cref="RecordNotFoundStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardGetInternalRecordIdsOp" /> using the specified <paramref name="recordNotFoundStrategy" /> for <see cref="RecordNotFoundStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -143,9 +143,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordIdsOp DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
+        public StandardGetInternalRecordIdsOp DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
         {
-            var result = new StandardGetRecordIdsOp(
+            var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  recordNotFoundStrategy,
                                  this.SpecifiedResourceLocator?.DeepClone());
@@ -157,7 +157,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
         /// </summary>
         /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordIdsOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardGetInternalRecordIdsOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -175,9 +175,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordIdsOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
+        public StandardGetInternalRecordIdsOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
-            var result = new StandardGetRecordIdsOp(
+            var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
                                  specifiedResourceLocator);
@@ -189,7 +189,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new StandardGetRecordIdsOp(
+            var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());

@@ -137,7 +137,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract IReadOnlyCollection<long> Execute(
-            StandardGetRecordIdsOp operation);
+            StandardGetInternalRecordIdsOp operation);
 
         /// <inheritdoc />
         public abstract void Execute(

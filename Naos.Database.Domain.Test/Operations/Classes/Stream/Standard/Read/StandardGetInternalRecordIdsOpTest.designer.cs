@@ -33,18 +33,18 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StandardGetRecordIdsOpTest
+    public static partial class StandardGetInternalRecordIdsOpTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardGetRecordIdsOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetRecordIdsOp>()
+        private static readonly StringRepresentationTestScenarios<StandardGetInternalRecordIdsOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetInternalRecordIdsOp>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardGetRecordIdsOp>
+                new StringRepresentationTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordIdsOp>();
+                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetInternalRecordIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetRecordIdsOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
@@ -54,16 +54,16 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetRecordIdsOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetRecordIdsOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetInternalRecordIdsOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetInternalRecordIdsOp>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordIdsOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>();
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var result = new StandardGetRecordIdsOp(
+                        var result = new StandardGetInternalRecordIdsOp(
                                              null,
                                              referenceObject.RecordNotFoundStrategy,
                                              referenceObject.SpecifiedResourceLocator);
@@ -74,14 +74,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "recordFilter", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetRecordIdsOp>
+                new ConstructorArgumentValidationTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>();
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var result = new StandardGetRecordIdsOp(
+                        var result = new StandardGetInternalRecordIdsOp(
                                              referenceObject.RecordFilter,
                                              referenceObject.RecordNotFoundStrategy,
                                              null);
@@ -92,18 +92,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetRecordIdsOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetRecordIdsOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetInternalRecordIdsOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetInternalRecordIdsOp>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordIdsOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "RecordFilter should return same 'recordFilter' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>();
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
                         {
-                            SystemUnderTest = new StandardGetRecordIdsOp(
+                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
                                                       referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
@@ -115,16 +115,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "RecordFilter",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordIdsOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "RecordNotFoundStrategy should return same 'recordNotFoundStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>();
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
                         {
-                            SystemUnderTest = new StandardGetRecordIdsOp(
+                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
                                                       referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
@@ -136,16 +136,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "RecordNotFoundStrategy",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetRecordIdsOp>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>();
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
                         {
-                            SystemUnderTest = new StandardGetRecordIdsOp(
+                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
                                                       referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
@@ -157,19 +157,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "SpecifiedResourceLocator",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardGetRecordIdsOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetRecordIdsOp>()
+        private static readonly DeepCloneWithTestScenarios<StandardGetInternalRecordIdsOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetInternalRecordIdsOp>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordIdsOp>
+                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "DeepCloneWithRecordFilter should deep clone object and replace RecordFilter with the provided recordFilter",
                     WithPropertyName = "RecordFilter",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordIdsOp>();
+                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordFilter.IsEqualTo(_.RecordFilter));
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordFilter.IsEqualTo(_.RecordFilter));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.RecordFilter,
@@ -179,17 +179,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordIdsOp>
+                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "DeepCloneWithRecordNotFoundStrategy should deep clone object and replace RecordNotFoundStrategy with the provided recordNotFoundStrategy",
                     WithPropertyName = "RecordNotFoundStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordIdsOp>();
+                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordNotFoundStrategy.IsEqualTo(_.RecordNotFoundStrategy));
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordNotFoundStrategy.IsEqualTo(_.RecordNotFoundStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.RecordNotFoundStrategy,
@@ -199,17 +199,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetRecordIdsOp>
+                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetRecordIdsOp>();
+                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-                        var referenceObject = A.Dummy<StandardGetRecordIdsOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetRecordIdsOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
@@ -219,35 +219,35 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StandardGetRecordIdsOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetRecordIdsOp>();
+        private static readonly StandardGetInternalRecordIdsOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetInternalRecordIdsOp>();
 
-        private static readonly EquatableTestScenarios<StandardGetRecordIdsOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetRecordIdsOp>()
+        private static readonly EquatableTestScenarios<StandardGetInternalRecordIdsOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetInternalRecordIdsOp>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardGetRecordIdsOp>
+                new EquatableTestScenario<StandardGetInternalRecordIdsOp>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetRecordIdsOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetInternalRecordIdsOp[]
                     {
-                        new StandardGetRecordIdsOp(
+                        new StandardGetInternalRecordIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetRecordIdsOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetInternalRecordIdsOp[]
                     {
-                        new StandardGetRecordIdsOp(
-                                A.Dummy<StandardGetRecordIdsOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
+                        new StandardGetInternalRecordIdsOp(
+                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordIdsOp(
+                        new StandardGetInternalRecordIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                A.Dummy<StandardGetRecordIdsOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
+                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetRecordIdsOp(
+                        new StandardGetInternalRecordIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                A.Dummy<StandardGetRecordIdsOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -343,9 +343,9 @@ namespace Naos.Database.Domain.Test
             public static void StandardGetRecordIdsOp___Should_implement_IModel_of_StandardGetRecordIdsOp___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetRecordIdsOp);
+                var type = typeof(StandardGetInternalRecordIdsOp);
 
-                var expectedModelMethods = typeof(IModel<StandardGetRecordIdsOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardGetInternalRecordIdsOp>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -355,7 +355,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetRecordIdsOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetInternalRecordIdsOp>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -376,7 +376,7 @@ namespace Naos.Database.Domain.Test
             public static void StandardGetRecordIdsOp___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetRecordIdsOp);
+                var type = typeof(StandardGetInternalRecordIdsOp);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -556,10 +556,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetRecordIdsOp>();
+                var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
 
                 // Act
-                var actual = (StandardGetRecordIdsOp)systemUnderTest.Clone();
+                var actual = (StandardGetInternalRecordIdsOp)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -583,7 +583,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetRecordIdsOp>();
+                var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -646,12 +646,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardGetRecordIdsOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardGetInternalRecordIdsOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardGetRecordIdsOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardGetInternalRecordIdsOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -713,7 +713,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordIdsOp>();
+                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -742,7 +742,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordIdsOp>();
+                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -771,7 +771,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordIdsOp>();
+                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -800,7 +800,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetRecordIdsOp>();
+                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -834,8 +834,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetRecordIdsOp systemUnderTest1 = null;
-                StandardGetRecordIdsOp systemUnderTest2 = null;
+                StandardGetInternalRecordIdsOp systemUnderTest1 = null;
+                StandardGetInternalRecordIdsOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -865,7 +865,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetRecordIdsOp systemUnderTest = null;
+                    StandardGetInternalRecordIdsOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1014,8 +1014,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetRecordIdsOp systemUnderTest1 = null;
-                StandardGetRecordIdsOp systemUnderTest2 = null;
+                StandardGetInternalRecordIdsOp systemUnderTest1 = null;
+                StandardGetInternalRecordIdsOp systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1045,7 +1045,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetRecordIdsOp systemUnderTest = null;
+                    StandardGetInternalRecordIdsOp systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1484,7 +1484,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetRecordIdsOp systemUnderTest = null;
+                    StandardGetInternalRecordIdsOp systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

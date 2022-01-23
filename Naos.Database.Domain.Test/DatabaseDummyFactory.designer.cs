@@ -633,7 +633,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetRecordIdsOp(
+                () => new StandardGetInternalRecordIdsOp(
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IResourceLocator>()));

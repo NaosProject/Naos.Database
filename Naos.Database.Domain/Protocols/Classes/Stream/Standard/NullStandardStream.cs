@@ -134,7 +134,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<long> Execute(StandardGetRecordIdsOp operation)
+        public IReadOnlyCollection<long> Execute(StandardGetInternalRecordIdsOp operation)
         {
             throw new NotImplementedException();
         }

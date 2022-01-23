@@ -385,7 +385,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<StandardGetLatestStringSerializedObjectByIdOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
                         A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
-                        A.Dummy<StandardGetRecordIdsOp>(),
+                        A.Dummy<StandardGetInternalRecordIdsOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
                         A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),

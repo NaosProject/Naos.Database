@@ -41,21 +41,24 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override IReadOnlyList<StreamRecord> Execute(
-            StandardGetAllRecordsByIdOp operation)
+        public override IReadOnlyCollection<long> Execute(
+            StandardGetRecordIdsOp operation)
         {
+            throw new NotImplementedException();
+
+            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             lock (this.streamLock)
             {
-                IReadOnlyList<StreamRecord> ProcessDefaultReturn()
+                IReadOnlyCollection<long> ProcessDefaultReturn()
                 {
                     switch (operation.RecordNotFoundStrategy)
                     {
                         case RecordNotFoundStrategy.ReturnDefault:
-                            return new StreamRecord[0];
+                            return new long[0];
                         case RecordNotFoundStrategy.Throw:
                             throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
                         default:
@@ -71,85 +74,34 @@ namespace Naos.Database.Domain
                 }
 
                 var result = partition
-                    .Where(
-                        _ => _.Metadata.FuzzyMatchTypesAndId(
-                            operation.StringSerializedId,
-                            operation.IdentifierType,
-                            operation.ObjectType,
-                            operation.VersionMatchStrategy))
-                    .ToList();
+                            .Where(
+                                 _ => _.Metadata.FuzzyMatchTypes(
+                                     operation.RecordFilter.IdTypes,
+                                     operation.RecordFilter.ObjectTypes,
+                                     operation.RecordFilter.VersionMatchStrategy))
+                            .Select(_ => _.InternalRecordId)
+                            .Union(
+                                 operation.RecordFilter.Ids.Any()
+                                 partition
+                                    .Where(
+                                         _ => _.Metadata.FuzzyMatchTypesAndId(
+                                             operation.StringSerializedId,
+                                             operation.IdentifierType,
+                                             operation.ObjectType,
+                                             operation.VersionMatchStrategy))
+                                    .Select(_ => _.InternalRecordId))
+                            .ToList();
 
                 if (result.Any())
                 {
-                    switch (operation.OrderRecordsBy)
-                    {
-                        case OrderRecordsBy.InternalRecordIdAscending:
-                            return result.OrderBy(_ => _.InternalRecordId).ToList();
-                        case OrderRecordsBy.InternalRecordIdDescending:
-                            return result.OrderByDescending(_ => _.InternalRecordId).ToList();
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
-                    }
+                    return result;
                 }
-
-                return ProcessDefaultReturn();
-            }
-        }
-
-        /// <inheritdoc />
-        public override IReadOnlyList<StreamRecordMetadata> Execute(
-            StandardGetAllRecordsMetadataByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.streamLock)
-            {
-                IReadOnlyList<StreamRecordMetadata> ProcessDefaultReturn()
-                {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            return new StreamRecordMetadata[0];
-                        case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
-                }
-
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                if (partition == null)
+                else
                 {
                     return ProcessDefaultReturn();
                 }
-
-                var result = partition
-                    .Where(
-                        _ => _.Metadata.FuzzyMatchTypesAndId(
-                            operation.StringSerializedId,
-                            operation.IdentifierType,
-                            operation.ObjectType,
-                            operation.VersionMatchStrategy))
-                    .ToList();
-
-                if (result.Any())
-                {
-                    switch (operation.OrderRecordsBy)
-                    {
-                        case OrderRecordsBy.InternalRecordIdAscending:
-                            return result.OrderBy(_ => _.InternalRecordId).Select(_ => _.Metadata).ToList();
-                        case OrderRecordsBy.InternalRecordIdDescending:
-                            return result.OrderByDescending(_ => _.InternalRecordId).Select(_ => _.Metadata).ToList();
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
-                    }
-                }
-
-                return ProcessDefaultReturn();
             }
+            */
         }
 
         /// <inheritdoc />

@@ -11,6 +11,7 @@ namespace Naos.Database.Domain
     using System.Linq;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -119,9 +120,29 @@ namespace Naos.Database.Domain
 
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
 
-            var records = this.stream.Execute(standardOp);
+            var internalRecordIdsOp = new StandardGetRecordIdsOp(
+                new RecordFilter(
+                    ids: new[]
+                         {
+                             new StringSerializedIdentifier(serializedObjectId, (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                         },
+                    versionMatchStrategy: operation.VersionMatchStrategy),
+                operation.RecordNotFoundStrategy,
+                locator);
+            var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+            var records = internalRecordIds
+                         .Select(
+                              _ =>
+                                  this.stream.Execute(
+                                      new StandardGetRecordByInternalRecordIdOp(
+                                          _,
+                                          operation.RecordNotFoundStrategy,
+                                          StreamRecordItemsToInclude.MetadataAndPayload,
+                                          locator)))
+                         .ToList();
 
             var result = records?.Select(
                     _ =>
@@ -203,21 +224,41 @@ namespace Naos.Database.Domain
 
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var serializedObjectId = serializer.SerializeToString(operation.Id);
 
-            var records = this.stream.Execute(standardOp);
+            var internalRecordIdsOp = new StandardGetRecordIdsOp(
+                new RecordFilter(
+                    ids: new[]
+                         {
+                             new StringSerializedIdentifier(serializedObjectId, (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                         },
+                    versionMatchStrategy: operation.VersionMatchStrategy),
+                operation.RecordNotFoundStrategy,
+                locator);
+            var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+            var records = internalRecordIds
+                         .Select(
+                              _ =>
+                                  this.stream.Execute(
+                                      new StandardGetRecordByInternalRecordIdOp(
+                                          _,
+                                          operation.RecordNotFoundStrategy,
+                                          StreamRecordItemsToInclude.MetadataOnly,
+                                          locator)))
+                         .ToList();
 
             var result = records?.Select(
                     _ =>
                     {
                         var metadata = new StreamRecordMetadata<TId>(
                             operation.Id,
-                            _.SerializerRepresentation,
-                            _.TypeRepresentationOfId,
-                            _.TypeRepresentationOfObject,
-                            _.Tags,
-                            _.TimestampUtc,
-                            _.ObjectTimestampUtc);
+                            _.Metadata.SerializerRepresentation,
+                            _.Metadata.TypeRepresentationOfId,
+                            _.Metadata.TypeRepresentationOfObject,
+                            _.Metadata.Tags,
+                            _.Metadata.TimestampUtc,
+                            _.Metadata.ObjectTimestampUtc);
 
                         return metadata;
                     })

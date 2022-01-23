@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class StandardGetRecordByInternalRecordIdOp : IModel<StandardGetRecordByInternalRecordIdOp>
+    public partial class StandardGetRecordIdsOp : IModel<StandardGetRecordIdsOp>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="StandardGetRecordByInternalRecordIdOp"/> are equal.
+        /// Determines whether two objects of type <see cref="StandardGetRecordIdsOp"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(StandardGetRecordByInternalRecordIdOp left, StandardGetRecordByInternalRecordIdOp right)
+        public static bool operator ==(StandardGetRecordIdsOp left, StandardGetRecordIdsOp right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="StandardGetRecordByInternalRecordIdOp"/> are not equal.
+        /// Determines whether two objects of type <see cref="StandardGetRecordIdsOp"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(StandardGetRecordByInternalRecordIdOp left, StandardGetRecordByInternalRecordIdOp right) => !(left == right);
+        public static bool operator !=(StandardGetRecordIdsOp left, StandardGetRecordIdsOp right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(StandardGetRecordByInternalRecordIdOp other)
+        public bool Equals(StandardGetRecordIdsOp other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -69,33 +69,31 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.InternalRecordId.IsEqualTo(other.InternalRecordId)
+            var result = this.RecordFilter.IsEqualTo(other.RecordFilter)
                       && this.RecordNotFoundStrategy.IsEqualTo(other.RecordNotFoundStrategy)
-                      && this.StreamRecordItemsToInclude.IsEqualTo(other.StreamRecordItemsToInclude)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as StandardGetRecordByInternalRecordIdOp);
+        public override bool Equals(object obj) => this == (obj as StandardGetRecordIdsOp);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.InternalRecordId)
+            .Hash(this.RecordFilter)
             .Hash(this.RecordNotFoundStrategy)
-            .Hash(this.StreamRecordItemsToInclude)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
         /// <inheritdoc />
-        public new StandardGetRecordByInternalRecordIdOp DeepClone() => (StandardGetRecordByInternalRecordIdOp)this.DeepCloneInternal();
+        public new StandardGetRecordIdsOp DeepClone() => (StandardGetRecordIdsOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="InternalRecordId" />.
+        /// Deep clones this object with a new <see cref="RecordFilter" />.
         /// </summary>
-        /// <param name="internalRecordId">The new <see cref="InternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordByInternalRecordIdOp" /> using the specified <paramref name="internalRecordId" /> for <see cref="InternalRecordId" /> and a deep clone of every other property.</returns>
+        /// <param name="recordFilter">The new <see cref="RecordFilter" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetRecordIdsOp" /> using the specified <paramref name="recordFilter" /> for <see cref="RecordFilter" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -113,12 +111,11 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordByInternalRecordIdOp DeepCloneWithInternalRecordId(long internalRecordId)
+        public StandardGetRecordIdsOp DeepCloneWithRecordFilter(RecordFilter recordFilter)
         {
-            var result = new StandardGetRecordByInternalRecordIdOp(
-                                 internalRecordId,
+            var result = new StandardGetRecordIdsOp(
+                                 recordFilter,
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -128,7 +125,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="RecordNotFoundStrategy" />.
         /// </summary>
         /// <param name="recordNotFoundStrategy">The new <see cref="RecordNotFoundStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordByInternalRecordIdOp" /> using the specified <paramref name="recordNotFoundStrategy" /> for <see cref="RecordNotFoundStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardGetRecordIdsOp" /> using the specified <paramref name="recordNotFoundStrategy" /> for <see cref="RecordNotFoundStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -146,45 +143,11 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordByInternalRecordIdOp DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
+        public StandardGetRecordIdsOp DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
         {
-            var result = new StandardGetRecordByInternalRecordIdOp(
-                                 this.InternalRecordId.DeepClone(),
+            var result = new StandardGetRecordIdsOp(
+                                 this.RecordFilter?.DeepClone(),
                                  recordNotFoundStrategy,
-                                 this.StreamRecordItemsToInclude.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="StreamRecordItemsToInclude" />.
-        /// </summary>
-        /// <param name="streamRecordItemsToInclude">The new <see cref="StreamRecordItemsToInclude" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordByInternalRecordIdOp" /> using the specified <paramref name="streamRecordItemsToInclude" /> for <see cref="StreamRecordItemsToInclude" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordByInternalRecordIdOp DeepCloneWithStreamRecordItemsToInclude(StreamRecordItemsToInclude streamRecordItemsToInclude)
-        {
-            var result = new StandardGetRecordByInternalRecordIdOp(
-                                 this.InternalRecordId.DeepClone(),
-                                 this.RecordNotFoundStrategy.DeepClone(),
-                                 streamRecordItemsToInclude,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -194,7 +157,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="SpecifiedResourceLocator" />.
         /// </summary>
         /// <param name="specifiedResourceLocator">The new <see cref="SpecifiedResourceLocator" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetRecordByInternalRecordIdOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="StandardGetRecordIdsOp" /> using the specified <paramref name="specifiedResourceLocator" /> for <see cref="SpecifiedResourceLocator" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -212,12 +175,11 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetRecordByInternalRecordIdOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
+        public StandardGetRecordIdsOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
-            var result = new StandardGetRecordByInternalRecordIdOp(
-                                 this.InternalRecordId.DeepClone(),
+            var result = new StandardGetRecordIdsOp(
+                                 this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -227,10 +189,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new StandardGetRecordByInternalRecordIdOp(
-                                 this.InternalRecordId.DeepClone(),
+            var result = new StandardGetRecordIdsOp(
+                                 this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -240,7 +201,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetRecordByInternalRecordIdOp: InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetRecordIdsOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

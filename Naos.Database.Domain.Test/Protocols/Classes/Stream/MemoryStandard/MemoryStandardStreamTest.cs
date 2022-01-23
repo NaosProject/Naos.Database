@@ -651,6 +651,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
+            /*
             var key = Guid.NewGuid().ToString().ToUpperInvariant();
             var allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(key));
             allRecords.MustForTest().BeEmptyEnumerable();
@@ -672,6 +673,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             allRecords = stream.Execute(new StandardGetAllRecordsByIdOp(serializedKey));
             allRecords.MustForTest().HaveCount(retentionCount);
+            */
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }

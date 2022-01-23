@@ -136,12 +136,8 @@ namespace Naos.Database.Domain
             StandardGetLatestRecordMetadataByIdOp operation);
 
         /// <inheritdoc />
-        public abstract IReadOnlyList<StreamRecord> Execute(
-            StandardGetAllRecordsByIdOp operation);
-
-        /// <inheritdoc />
-        public abstract IReadOnlyList<StreamRecordMetadata> Execute(
-            StandardGetAllRecordsMetadataByIdOp operation);
+        public abstract IReadOnlyCollection<long> Execute(
+            StandardGetRecordIdsOp operation);
 
         /// <inheritdoc />
         public abstract void Execute(

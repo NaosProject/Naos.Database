@@ -61,9 +61,12 @@ namespace Naos.Database.Protocol.FileSystem
         }
 
         /// <inheritdoc />
-        public override IReadOnlyList<StreamRecord> Execute(
-            StandardGetAllRecordsByIdOp operation)
+        public override IReadOnlyCollection<long> Execute(
+            StandardGetRecordIdsOp operation)
         {
+            throw new NotImplementedException();
+
+            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             lock (this.fileLock)
@@ -131,79 +134,7 @@ namespace Naos.Database.Protocol.FileSystem
                     return ProcessDefaultReturn();
                 }
             }
-        }
-
-        /// <inheritdoc />
-        public override IReadOnlyList<StreamRecordMetadata> Execute(
-            StandardGetAllRecordsMetadataByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            lock (this.fileLock)
-            {
-                IReadOnlyList<StreamRecordMetadata> ProcessDefaultReturn()
-                {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            return new StreamRecordMetadata[0];
-                        case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(
-                                Invariant(
-                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                        default:
-                            throw new NotSupportedException(
-                                Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
-                }
-
-                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-
-                var metadataPathsThatCouldMatch = Directory.GetFiles(
-                    rootPath,
-                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-                if (!orderedDescendingByInternalRecordId.Any())
-                {
-                    return ProcessDefaultReturn();
-                }
-
-                var result = new List<Tuple<long, StreamRecordMetadata>>();
-                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
-                {
-                    var fileText = File.ReadAllText(metadataFilePathToTest);
-                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
-                    if (metadata.FuzzyMatchTypesAndId(
-                        operation.StringSerializedId,
-                        operation.IdentifierType,
-                        operation.ObjectType,
-                        operation.VersionMatchStrategy))
-                    {
-                        var internalRecordId = GetRootIdFromFilePath(metadataFilePathToTest);
-                        result.Add(new Tuple<long, StreamRecordMetadata>(internalRecordId, metadata));
-                    }
-                }
-
-                if (result.Any())
-                {
-                    switch (operation.OrderRecordsBy)
-                    {
-                        case OrderRecordsBy.InternalRecordIdAscending:
-                            return result.OrderBy(_ => _.Item1).Select(_ => _.Item2).ToList();
-                        case OrderRecordsBy.InternalRecordIdDescending:
-                            return result.OrderByDescending(_ => _.Item1).Select(_ => _.Item2).ToList();
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
-                    }
-                }
-                else
-                {
-                    return ProcessDefaultReturn();
-                }
-            }
+            */
         }
 
         /// <inheritdoc />
@@ -536,6 +467,7 @@ namespace Naos.Database.Protocol.FileSystem
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Keeping for potential use.")]
         private static long GetRootIdFromFilePath(
             string filePath)
         {

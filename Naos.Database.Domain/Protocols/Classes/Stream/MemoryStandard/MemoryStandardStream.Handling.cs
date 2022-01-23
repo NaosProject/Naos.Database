@@ -62,7 +62,8 @@ namespace Naos.Database.Domain
                 }
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
+
+                // var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
                 var records = this.locatorToRecordPartitionMap[memoryDatabaseLocator];
                 bool HandlingEntryMatchingPredicate(
                     long internalRecordId,

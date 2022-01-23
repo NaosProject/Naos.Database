@@ -134,13 +134,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public IReadOnlyList<StreamRecord> Execute(StandardGetAllRecordsByIdOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyList<StreamRecordMetadata> Execute(StandardGetAllRecordsMetadataByIdOp operation)
+        public IReadOnlyCollection<long> Execute(StandardGetRecordIdsOp operation)
         {
             throw new NotImplementedException();
         }

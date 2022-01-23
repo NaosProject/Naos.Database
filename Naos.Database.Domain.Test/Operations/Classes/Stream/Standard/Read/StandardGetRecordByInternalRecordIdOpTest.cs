@@ -42,12 +42,32 @@ namespace Naos.Database.Domain.Test
                             var result = new StandardGetRecordByInternalRecordIdOp(
                                 referenceObject.InternalRecordId,
                                 RecordNotFoundStrategy.Unknown,
+                                referenceObject.StreamRecordItemsToInclude,
                                 referenceObject.SpecifiedResourceLocator);
 
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<StandardGetRecordByInternalRecordIdOp>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'streamRecordItemsToInclude' is StreamRecordItemsToInclude.Unknown scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<StandardGetRecordByInternalRecordIdOp>();
+
+                            var result = new StandardGetRecordByInternalRecordIdOp(
+                                referenceObject.InternalRecordId,
+                                referenceObject.RecordNotFoundStrategy,
+                                StreamRecordItemsToInclude.Unknown,
+                                referenceObject.SpecifiedResourceLocator);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "streamRecordItemsToInclude", "Unknown" },
                     });
         }
     }

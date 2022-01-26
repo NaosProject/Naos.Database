@@ -384,7 +384,7 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.designer.cs">
       <DependentUpon>StandardGetDistinctStringSerializedIdsOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectByIdOp.cs" />
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOp.designer.cs">
       <DependentUpon>StandardGetLatestRecordByIdOp.cs</DependentUpon>
     </Compile>
@@ -397,8 +397,8 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.designer.cs">
       <DependentUpon>StandardGetLatestRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectByIdOp.designer.cs">
-      <DependentUpon>StandardGetLatestStringSerializedObjectByIdOp.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectOp.designer.cs">
+      <DependentUpon>StandardGetLatestStringSerializedObjectOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOp.designer.cs">
       <DependentUpon>StandardGetRecordByInternalRecordIdOp.cs</DependentUpon>

@@ -165,7 +165,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract string Execute(
-            StandardGetLatestStringSerializedObjectByIdOp operation);
+            StandardGetLatestStringSerializedObjectOp operation);
 
         /// <inheritdoc />
         public abstract CreateStreamResult Execute(

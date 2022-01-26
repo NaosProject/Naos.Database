@@ -254,7 +254,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
-        public static StandardGetLatestStringSerializedObjectByIdOp Standardize<TId>(
+        public static StandardGetLatestStringSerializedObjectOp Standardize<TId>(
             this GetLatestStringSerializedObjectByIdOp<TId> operation,
             IStringSerialize serializer,
             IResourceLocator specifiedResourceLocator = null)
@@ -264,11 +264,19 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
-            var result = new StandardGetLatestStringSerializedObjectByIdOp(
-                serializedObjectId,
-                typeof(TId).ToRepresentation(),
-                operation.ObjectType,
-                operation.VersionMatchStrategy,
+            var result = new StandardGetLatestStringSerializedObjectOp(
+                new RecordFilter(
+                    ids: new[]
+                         {
+                             new StringSerializedIdentifier(serializedObjectId, typeof(TId).ToRepresentation()),
+                         },
+                    objectTypes: operation.ObjectType == null
+                        ? null
+                        : new[]
+                          {
+                              operation.ObjectType,
+                          },
+                    versionMatchStrategy: operation.VersionMatchStrategy),
                 operation.RecordNotFoundStrategy,
                 specifiedResourceLocator);
 

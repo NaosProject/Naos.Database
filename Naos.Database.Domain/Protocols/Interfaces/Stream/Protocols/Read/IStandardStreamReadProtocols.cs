@@ -22,7 +22,7 @@ namespace Naos.Database.Domain
           ISyncReturningProtocol<StandardGetLatestRecordOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
           ISyncReturningProtocol<StandardGetLatestRecordByIdOp, StreamRecord>,
-          ISyncReturningProtocol<StandardGetLatestStringSerializedObjectByIdOp, string>
+          ISyncReturningProtocol<StandardGetLatestStringSerializedObjectOp, string>
     {
     }
 }

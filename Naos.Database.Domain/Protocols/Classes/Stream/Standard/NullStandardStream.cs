@@ -164,7 +164,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public string Execute(StandardGetLatestStringSerializedObjectByIdOp operation)
+        public string Execute(StandardGetLatestStringSerializedObjectOp operation)
         {
             throw new NotImplementedException();
         }

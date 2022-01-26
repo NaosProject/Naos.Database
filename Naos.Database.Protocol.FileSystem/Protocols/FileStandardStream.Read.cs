@@ -367,15 +367,16 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override string Execute(
-            StandardGetLatestStringSerializedObjectByIdOp operation)
+            StandardGetLatestStringSerializedObjectOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
+            var stringSerializedIdentifier = operation.RecordFilter.Ids.Single();
             var delegatedOp = new StandardGetLatestRecordByIdOp(
-                operation.StringSerializedId,
-                operation.IdentifierType,
-                operation.ObjectType,
-                operation.VersionMatchStrategy,
+                stringSerializedIdentifier.StringSerializedId,
+                stringSerializedIdentifier.IdentifierType,
+                operation.RecordFilter.ObjectTypes.Single(),
+                operation.RecordFilter.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.SpecifiedResourceLocator);
 

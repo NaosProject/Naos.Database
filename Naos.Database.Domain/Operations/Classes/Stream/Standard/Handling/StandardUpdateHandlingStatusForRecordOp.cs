@@ -44,7 +44,7 @@ namespace Naos.Database.Domain
             IResourceLocator specifiedResourceLocator = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
-            newStatus.MustForArg(nameof(newStatus)).NotBeEqualToAnyOf(new[] { HandlingStatus.Unknown, HandlingStatus.DisabledForStream });
+            newStatus.MustForArg(nameof(newStatus)).NotBeElementIn(new[] { HandlingStatus.Unknown, HandlingStatus.DisabledForStream });
             acceptableCurrentStatuses.MustForArg(nameof(acceptableCurrentStatuses)).NotBeNullNorEmptyEnumerable().And().Each().NotBeEqualTo(HandlingStatus.Unknown);
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 

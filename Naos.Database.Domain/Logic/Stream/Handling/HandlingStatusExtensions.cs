@@ -83,7 +83,7 @@ namespace Naos.Database.Domain
             this IReadOnlyCollection<HandlingStatus> statuses)
         {
             // This is protection against other HandlingStatus values being added without this method being updated accordingly.
-            statuses.MustForArg(nameof(statuses)).NotBeNull().And().Each().BeEqualToAnyOf(SupportedHandlingStatuses);
+            statuses.MustForArg(nameof(statuses)).NotBeNull().And().Each().BeElementIn(SupportedHandlingStatuses);
 
             var result = CompositeHandlingStatus.Unknown;
 

@@ -163,6 +163,22 @@ namespace OBeautifulCode.Assertion.Recipes
 
         public const string NotBeGreaterThanOrEqualToExceptionMessageSuffix = "is greater than or equal to the comparison value";
 
+        public const string BeLessThanWhenNotNullExceptionMessageSuffix = "is not null and is not less than the comparison value";
+
+        public const string NotBeLessThanWhenNotNullExceptionMessageSuffix = "is not null and is less than the comparison value";
+
+        public const string BeGreaterThanWhenNotNullExceptionMessageSuffix = "is not null and is not greater than the comparison value";
+
+        public const string NotBeGreaterThanWhenNotNullExceptionMessageSuffix = "is not null and is greater than the comparison value";
+
+        public const string BeLessThanOrEqualToWhenNotNullExceptionMessageSuffix = "is not null and is not less than or equal to the comparison value";
+
+        public const string NotBeLessThanOrEqualToWhenNotNullExceptionMessageSuffix = "is not null and is less than or equal to the comparison value";
+
+        public const string BeGreaterThanOrEqualToWhenNotNullExceptionMessageSuffix = "is not null and is not greater than or equal to the comparison value";
+
+        public const string NotBeGreaterThanOrEqualToWhenNotNullExceptionMessageSuffix = "is not null and is greater than or equal to the comparison value";
+
         public const string BeEqualToExceptionMessageSuffix = "is not equal to the comparison value";
 
         public const string NotBeEqualToExceptionMessageSuffix = "is equal to the comparison value";
@@ -171,13 +187,13 @@ namespace OBeautifulCode.Assertion.Recipes
 
         public const string NotBeEqualToWhenNotNullExceptionMessageSuffix = "is not null and is equal to the comparison value";
 
-        public const string BeEqualToAnyOfExceptionMessageSuffix = "is not equal to any of the comparison values";
+        public const string BeElementInExceptionMessageSuffix = "is not equal to any of the comparison values";
 
-        public const string NotBeEqualToAnyOfExceptionMessageSuffix = "is equal to one or more of the comparison values";
+        public const string NotBeElementInExceptionMessageSuffix = "is equal to one or more of the comparison values";
 
-        public const string BeEqualToAnyOfWhenNotNullExceptionMessageSuffix = "is not null and is not equal to any of the comparison values";
+        public const string BeElementInWhenNotNullExceptionMessageSuffix = "is not null and is not equal to any of the comparison values";
 
-        public const string NotBeEqualToAnyOfWhenNotNullExceptionMessageSuffix = "is not null and is equal to one or more of the comparison values";
+        public const string NotBeElementInWhenNotNullExceptionMessageSuffix = "is not null and is equal to one or more of the comparison values";
 
         public const string BeInRangeExceptionMessageSuffix = "is not within the specified range";
 
@@ -210,6 +226,10 @@ namespace OBeautifulCode.Assertion.Recipes
         public const string StartWithExceptionMessageSuffix = "does not start with the specified comparison value";
 
         public const string NotStartWithExceptionMessageSuffix = "starts with the specified comparison value";
+
+        public const string EndWithExceptionMessageSuffix = "does not end with the specified comparison value";
+
+        public const string NotEndWithExceptionMessageSuffix = "ends with the specified comparison value";
 
         public const string BeSameReferenceAsExceptionMessageSuffix = "is not the same reference as the comparison value";
 

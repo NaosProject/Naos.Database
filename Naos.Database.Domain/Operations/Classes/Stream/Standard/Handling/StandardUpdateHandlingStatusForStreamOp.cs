@@ -35,7 +35,7 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             IResourceLocator specifiedResourceLocator = null)
         {
-            newStatus.MustForArg(nameof(newStatus)).BeEqualToAnyOf(new[] { HandlingStatus.DisabledForStream, HandlingStatus.AvailableByDefault });
+            newStatus.MustForArg(nameof(newStatus)).BeElementIn(new[] { HandlingStatus.DisabledForStream, HandlingStatus.AvailableByDefault });
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             this.NewStatus = newStatus;

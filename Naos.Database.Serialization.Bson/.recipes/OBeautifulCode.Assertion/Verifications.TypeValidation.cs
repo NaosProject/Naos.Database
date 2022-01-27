@@ -168,6 +168,22 @@ namespace OBeautifulCode.Assertion.Recipes
             },
         };
 
+        private static readonly IReadOnlyCollection<TypeValidation> NullableInequalityTypeValidations = new[]
+        {
+            new TypeValidation
+            {
+                Handler = ThrowIfTypeCannotBeAssignedToNull,
+            },
+            new TypeValidation
+            {
+                Handler = ThrowIfTypeDoesNotHaveWorkingDefaultComparer,
+            },
+            new TypeValidation
+            {
+                Handler = ThrowIfTypeIsNotEqualToAllVerificationParameterType,
+            },
+        };
+
         private static readonly IReadOnlyCollection<TypeValidation> BeSameReferenceAsTypeValidations = new[]
         {
             new TypeValidation

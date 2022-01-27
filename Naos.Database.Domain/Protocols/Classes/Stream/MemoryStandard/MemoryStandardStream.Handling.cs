@@ -624,7 +624,15 @@ namespace Naos.Database.Domain
             }
             else
             {
-                var record = this.Execute(new StandardGetRecordByInternalRecordIdOp(operation.InternalRecordId));
+                var record = this.Execute(
+                    new StandardGetLatestRecordOp(
+                        new RecordFilter(
+                            internalRecordIds: new[]
+                                               {
+                                                   operation.InternalRecordId,
+                                               }),
+                        RecordNotFoundStrategy.ReturnDefault,
+                        StreamRecordItemsToInclude.MetadataAndPayload));
                 if (record == null)
                 {
                     throw new ArgumentException(Invariant($"Specified {nameof(operation.InternalRecordId)}: {operation.InternalRecordId} does not exist in stream: {this.StreamRepresentation}."));

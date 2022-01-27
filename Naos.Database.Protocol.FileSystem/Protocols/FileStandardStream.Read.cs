@@ -21,46 +21,6 @@ namespace Naos.Database.Protocol.FileSystem
     public partial class FileStandardStream
     {
         /// <inheritdoc />
-        public override bool Execute(
-            StandardDoesAnyExistByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            lock (this.fileLock)
-            {
-                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-
-                var metadataPathsThatCouldMatch = Directory.GetFiles(
-                    rootPath,
-                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-                if (!orderedDescendingByInternalRecordId.Any())
-                {
-                    return default;
-                }
-
-                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
-                {
-                    var fileText = File.ReadAllText(metadataFilePathToTest);
-                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
-                    if (metadata.FuzzyMatchTypesAndId(
-                        operation.StringSerializedId,
-                        operation.IdentifierType,
-                        operation.ObjectType,
-                        operation.VersionMatchStrategy))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        /// <inheritdoc />
         public override IReadOnlyCollection<long> Execute(
             StandardGetInternalRecordIdsOp operation)
         {
@@ -196,125 +156,6 @@ namespace Naos.Database.Protocol.FileSystem
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            StandardGetLatestRecordByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            lock (this.fileLock)
-            {
-                StreamRecord ProcessDefaultReturn()
-                {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            return null;
-                        case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
-                }
-
-                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-
-                var metadataPathsThatCouldMatch = Directory.GetFiles(
-                    rootPath,
-                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-                if (!orderedDescendingByInternalRecordId.Any())
-                {
-                    return ProcessDefaultReturn();
-                }
-
-                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
-                {
-                    var fileText = File.ReadAllText(metadataFilePathToTest);
-                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
-                    if (metadata.FuzzyMatchTypesAndId(
-                        operation.StringSerializedId,
-                        operation.IdentifierType,
-                        operation.ObjectType,
-                        operation.VersionMatchStrategy))
-                    {
-                        var result = this.GetStreamRecordFromMetadataFile(metadataFilePathToTest, metadata);
-                        return result;
-                    }
-                }
-
-                return ProcessDefaultReturn();
-            }
-        }
-
-        /// <inheritdoc />
-        public override StreamRecord Execute(
-            StandardGetLatestRecordByTagsOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public override StreamRecordMetadata Execute(
-            StandardGetLatestRecordMetadataByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            lock (this.fileLock)
-            {
-                StreamRecordMetadata ProcessDefaultReturn()
-                {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            return null;
-                        case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(
-                                Invariant(
-                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                        default:
-                            throw new NotSupportedException(
-                                Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
-                }
-
-                var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-                var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-
-                var metadataPathsThatCouldMatch = Directory.GetFiles(
-                    rootPath,
-                    Invariant($"*___{operation.StringSerializedId?.EncodeForFilePath() ?? NullToken}.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                var orderedDescendingByInternalRecordId = metadataPathsThatCouldMatch.OrderByDescending(Path.GetFileName).ToList();
-                if (!orderedDescendingByInternalRecordId.Any())
-                {
-                    return ProcessDefaultReturn();
-                }
-
-                foreach (var metadataFilePathToTest in orderedDescendingByInternalRecordId)
-                {
-                    var fileText = File.ReadAllText(metadataFilePathToTest);
-                    var metadata = this.internalSerializer.Deserialize<StreamRecordMetadata>(fileText);
-                    if (metadata.FuzzyMatchTypesAndId(
-                        operation.StringSerializedId,
-                        operation.IdentifierType,
-                        operation.ObjectType,
-                        operation.VersionMatchStrategy))
-                    {
-                        return metadata;
-                    }
-                }
-
-                return ProcessDefaultReturn();
-            }
-        }
-
-        /// <inheritdoc />
-        public override StreamRecord Execute(
             StandardGetLatestRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -369,6 +210,9 @@ namespace Naos.Database.Protocol.FileSystem
         public override string Execute(
             StandardGetLatestStringSerializedObjectOp operation)
         {
+            throw new NotImplementedException();
+
+            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var stringSerializedIdentifier = operation.RecordFilter.Ids.Single();
@@ -410,62 +254,7 @@ namespace Naos.Database.Protocol.FileSystem
             }
 
             return result;
-        }
-
-        /// <inheritdoc />
-        public override StreamRecord Execute(
-            StandardGetRecordByInternalRecordIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var fileSystemLocator = operation.GetSpecifiedLocatorConverted<FileSystemDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var rootPath = this.GetRootPathFromLocator(fileSystemLocator);
-            lock (this.fileLock)
-            {
-                StreamRecord ProcessDefaultReturn()
-                {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            return null;
-                        case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(
-                                Invariant(
-                                    $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                        default:
-                            throw new NotSupportedException(
-                                Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
-                }
-
-                var metadataPathsThatCouldMatch = Directory.GetFiles(
-                    rootPath,
-                    Invariant($"*.{MetadataFileExtension}"),
-                    SearchOption.TopDirectoryOnly);
-
-                StreamRecord result = null;
-
-                var matchingIdFile = metadataPathsThatCouldMatch.FirstOrDefault(_ => _ == null ? throw new InvalidOperationException("This should not have happened, a null path was returned for Directory . Get Files for " + rootPath) : Path.GetFileName(_).StartsWith(Invariant($"{((long)operation.InternalRecordId).PadWithLeadingZeros()}"), StringComparison.Ordinal));
-
-                if (matchingIdFile == null)
-                {
-                    // could not find a matching file but a direct ID match was expected.
-                    ProcessDefaultReturn();
-                }
-                else
-                {
-                    result = this.GetStreamRecordFromMetadataFile(matchingIdFile);
-                }
-
-                if (result != null)
-                {
-                    return result;
-                }
-                else
-                {
-                    return ProcessDefaultReturn();
-                }
-            }
+            */
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Justification = "Keeping for potential use.")]

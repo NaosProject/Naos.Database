@@ -122,43 +122,13 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public bool Execute(StandardDoesAnyExistByIdOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public StreamRecord Execute(StandardGetRecordByInternalRecordIdOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public IReadOnlyCollection<long> Execute(StandardGetInternalRecordIdsOp operation)
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public StreamRecord Execute(StandardGetLatestRecordByTagsOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public StreamRecord Execute(StandardGetLatestRecordOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public StreamRecordMetadata Execute(StandardGetLatestRecordMetadataByIdOp operation)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public StreamRecord Execute(StandardGetLatestRecordByIdOp operation)
         {
             throw new NotImplementedException();
         }

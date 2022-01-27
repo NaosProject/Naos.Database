@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardGetLatestRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetLatestRecordOp: IdentifierType = {systemUnderTest.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetLatestRecordOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, StreamRecordItemsToInclude = {systemUnderTest.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -58,42 +58,21 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordOp>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'identifierType' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
 
                         var result = new StandardGetLatestRecordOp(
                                              null,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.StreamRecordItemsToInclude,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "identifierType", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordOp>
-                {
-                    Name = "constructor should throw ArgumentNullException when parameter 'objectType' is null scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
-
-                        var result = new StandardGetLatestRecordOp(
-                                             referenceObject.IdentifierType,
-                                             null,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "objectType", },
+                    ExpectedExceptionMessageContains = new[] { "recordFilter", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordOp>
@@ -104,10 +83,9 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
 
                         var result = new StandardGetLatestRecordOp(
-                                             referenceObject.IdentifierType,
-                                             referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.RecordFilter,
                                              referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.StreamRecordItemsToInclude,
                                              null);
 
                         return result;
@@ -120,7 +98,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetLatestRecordOp>
                 {
-                    Name = "IdentifierType should return same 'identifierType' parameter passed to constructor when getting",
+                    Name = "RecordFilter should return same 'recordFilter' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
@@ -128,63 +106,16 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestRecordOp>
                         {
                             SystemUnderTest = new StandardGetLatestRecordOp(
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.IdentifierType,
+                            ExpectedPropertyValue = referenceObject.RecordFilter,
                         };
 
                         return result;
                     },
-                    PropertyName = "IdentifierType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestRecordOp>
-                {
-                    Name = "ObjectType should return same 'objectType' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestRecordOp>
-                        {
-                            SystemUnderTest = new StandardGetLatestRecordOp(
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "ObjectType",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestRecordOp>
-                {
-                    Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestRecordOp>
-                        {
-                            SystemUnderTest = new StandardGetLatestRecordOp(
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "VersionMatchStrategy",
+                    PropertyName = "RecordFilter",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetLatestRecordOp>
@@ -197,10 +128,9 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestRecordOp>
                         {
                             SystemUnderTest = new StandardGetLatestRecordOp(
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
                         };
@@ -208,6 +138,28 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "RecordNotFoundStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetLatestRecordOp>
+                {
+                    Name = "StreamRecordItemsToInclude should return same 'streamRecordItemsToInclude' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestRecordOp>
+                        {
+                            SystemUnderTest = new StandardGetLatestRecordOp(
+                                                      referenceObject.RecordFilter,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.StreamRecordItemsToInclude,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "StreamRecordItemsToInclude",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetLatestRecordOp>
@@ -220,10 +172,9 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<StandardGetLatestRecordOp>
                         {
                             SystemUnderTest = new StandardGetLatestRecordOp(
-                                                      referenceObject.IdentifierType,
-                                                      referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.StreamRecordItemsToInclude,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -237,58 +188,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardGetLatestRecordOp>
                 {
-                    Name = "DeepCloneWithIdentifierType should deep clone object and replace IdentifierType with the provided identifierType",
-                    WithPropertyName = "IdentifierType",
+                    Name = "DeepCloneWithRecordFilter should deep clone object and replace RecordFilter with the provided recordFilter",
+                    WithPropertyName = "RecordFilter",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<StandardGetLatestRecordOp>();
 
-                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>().ThatIs(_ => !systemUnderTest.IdentifierType.IsEqualTo(_.IdentifierType));
+                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>().ThatIs(_ => !systemUnderTest.RecordFilter.IsEqualTo(_.RecordFilter));
 
                         var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestRecordOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.IdentifierType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetLatestRecordOp>
-                {
-                    Name = "DeepCloneWithObjectType should deep clone object and replace ObjectType with the provided objectType",
-                    WithPropertyName = "ObjectType",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetLatestRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>().ThatIs(_ => !systemUnderTest.ObjectType.IsEqualTo(_.ObjectType));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ObjectType,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetLatestRecordOp>
-                {
-                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
-                    WithPropertyName = "VersionMatchStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetLatestRecordOp>();
-
-                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestRecordOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
+                            DeepCloneWithValue = referenceObject.RecordFilter,
                         };
 
                         return result;
@@ -309,6 +220,26 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.RecordNotFoundStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetLatestRecordOp>
+                {
+                    Name = "DeepCloneWithStreamRecordItemsToInclude should deep clone object and replace StreamRecordItemsToInclude with the provided streamRecordItemsToInclude",
+                    WithPropertyName = "StreamRecordItemsToInclude",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetLatestRecordOp>();
+
+                        var referenceObject = A.Dummy<StandardGetLatestRecordOp>().ThatIs(_ => !systemUnderTest.StreamRecordItemsToInclude.IsEqualTo(_.StreamRecordItemsToInclude));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetLatestRecordOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.StreamRecordItemsToInclude,
                         };
 
                         return result;
@@ -346,43 +277,32 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetLatestRecordOp[]
                     {
                         new StandardGetLatestRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StandardGetLatestRecordOp[]
                     {
                         new StandardGetLatestRecordOp(
-                                A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.IdentifierType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.IdentifierType)).IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetLatestRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetLatestRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetLatestRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetLatestRecordOp(
-                                ReferenceObjectForEquatableTestScenarios.IdentifierType,
-                                ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.StreamRecordItemsToInclude.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude)).StreamRecordItemsToInclude,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetLatestRecordOp(
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.StreamRecordItemsToInclude,
                                 A.Dummy<StandardGetLatestRecordOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -435,17 +355,12 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
                         A.Dummy<StandardDeleteStreamOp>(),
-                        A.Dummy<StandardDoesAnyExistByIdOp>(),
                         A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
                         A.Dummy<StandardGetHandlingHistoryOp>(),
                         A.Dummy<StandardGetHandlingStatusOp>(),
                         A.Dummy<StandardGetInternalRecordIdsOp>(),
-                        A.Dummy<StandardGetLatestRecordByIdOp>(),
-                        A.Dummy<StandardGetLatestRecordByTagsOp>(),
-                        A.Dummy<StandardGetLatestRecordMetadataByIdOp>(),
                         A.Dummy<StandardGetLatestStringSerializedObjectOp>(),
                         A.Dummy<StandardGetNextUniqueLongOp>(),
-                        A.Dummy<StandardGetRecordByInternalRecordIdOp>(),
                         A.Dummy<StandardPruneStreamOp>(),
                         A.Dummy<StandardPutRecordOp>(),
                         A.Dummy<StandardTryHandleRecordOp>(),
@@ -728,28 +643,16 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.IdentifierType == null)
+                if (systemUnderTest.RecordFilter == null)
                 {
-                    actual.IdentifierType.AsTest().Must().BeNull();
+                    actual.RecordFilter.AsTest().Must().BeNull();
                 }
-                else if (!actual.IdentifierType.GetType().IsValueType)
+                else if (!actual.RecordFilter.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.IdentifierType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.IdentifierType);
-                }
-
-                if (systemUnderTest.ObjectType == null)
-                {
-                    actual.ObjectType.AsTest().Must().BeNull();
-                }
-                else if (!actual.ObjectType.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
+                    actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
                 }
 
                 if (systemUnderTest.SpecifiedResourceLocator == null)
@@ -781,7 +684,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "IdentifierType", "ObjectType", "VersionMatchStrategy", "RecordNotFoundStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "RecordFilter", "RecordNotFoundStrategy", "StreamRecordItemsToInclude", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1901,7 +1804,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact]
+            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

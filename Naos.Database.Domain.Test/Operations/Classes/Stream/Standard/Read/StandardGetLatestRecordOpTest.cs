@@ -40,10 +40,9 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
 
                             var result = new StandardGetLatestRecordOp(
-                                referenceObject.IdentifierType,
-                                referenceObject.ObjectType,
-                                referenceObject.VersionMatchStrategy,
+                                referenceObject.RecordFilter,
                                 RecordNotFoundStrategy.Unknown,
+                                referenceObject.StreamRecordItemsToInclude,
                                 referenceObject.SpecifiedResourceLocator);
 
                             return result;

@@ -7,7 +7,6 @@
 namespace Naos.Database.Domain
 {
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -20,52 +19,43 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardGetLatestRecordOp : ReturningOperationBase<StreamRecord>, ISpecifyResourceLocator
+    public partial class StandardGetLatestRecordOp : ReturningOperationBase<StreamRecord>, ISpecifyRecordFilter, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardGetLatestRecordOp"/> class.
         /// </summary>
-        /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
-        /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
-        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="recordFilter">Filter to evaluate on records.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
+        /// <param name="streamRecordItemsToInclude">OPTIONAL items to retrieve.  DEFAULT is <see cref="StreamRecordItemsToInclude.MetadataAndPayload"/>.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetLatestRecordOp(
-            TypeRepresentation identifierType = null,
-            TypeRepresentation objectType = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            RecordFilter recordFilter,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
+            StreamRecordItemsToInclude streamRecordItemsToInclude = StreamRecordItemsToInclude.MetadataAndPayload,
             IResourceLocator specifiedResourceLocator = null)
         {
-            versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
             recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
+            streamRecordItemsToInclude.MustForArg(nameof(streamRecordItemsToInclude)).NotBeEqualTo(StreamRecordItemsToInclude.Unknown);
 
-            this.IdentifierType = identifierType;
-            this.ObjectType = objectType;
-            this.VersionMatchStrategy = versionMatchStrategy;
+            this.RecordFilter = recordFilter;
             this.RecordNotFoundStrategy = recordNotFoundStrategy;
+            this.StreamRecordItemsToInclude = streamRecordItemsToInclude;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
-        /// <summary>
-        /// Gets the type of identifier to filter on or null for no filter.
-        /// </summary>
-        public TypeRepresentation IdentifierType { get; private set; }
-
-        /// <summary>
-        /// Gets the type object to filter on or null for no filter.
-        /// </summary>
-        public TypeRepresentation ObjectType { get; private set; }
-
-        /// <summary>
-        /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
-        /// </summary>
-        public VersionMatchStrategy VersionMatchStrategy { get; private set; }
+        /// <inheritdoc />
+        public RecordFilter RecordFilter { get; private set; }
 
         /// <summary>
         /// Gets the strategy to use when no record(s) are found.
         /// </summary>
         public RecordNotFoundStrategy RecordNotFoundStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the items to retrieve from the record.
+        /// </summary>
+        public StreamRecordItemsToInclude StreamRecordItemsToInclude { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

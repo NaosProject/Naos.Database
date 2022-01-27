@@ -438,26 +438,11 @@
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardTryHandleRecordOpTest.designer.cs">
       <DependentUpon>StandardTryHandleRecordOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.designer.cs">
-      <DependentUpon>StandardDoesAnyExistByIdOpTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.designer.cs">
       <DependentUpon>StandardGetDistinctStringSerializedIdsOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByIdOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByTagsOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOpTest.designer.cs">
-      <DependentUpon>StandardGetLatestRecordMetadataByIdOpTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOpTest.designer.cs">
       <DependentUpon>StandardGetLatestRecordOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOpTest.designer.cs">
-      <DependentUpon>StandardGetRecordByInternalRecordIdOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.designer.cs">
       <DependentUpon>StandardGetNextUniqueLongOpTest.cs</DependentUpon>
@@ -613,14 +598,9 @@
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Models\Classes\Stream\Write\PutRecordResultTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBaseTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOpTest.cs" />
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadataTest.cs" />
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryTest.cs" />

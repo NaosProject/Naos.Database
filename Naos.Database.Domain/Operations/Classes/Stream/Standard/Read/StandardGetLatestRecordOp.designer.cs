@@ -17,7 +17,6 @@ namespace Naos.Database.Domain
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
-    using global::OBeautifulCode.Representation.System;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -70,10 +69,9 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.IdentifierType.IsEqualTo(other.IdentifierType)
-                      && this.ObjectType.IsEqualTo(other.ObjectType)
-                      && this.VersionMatchStrategy.IsEqualTo(other.VersionMatchStrategy)
+            var result = this.RecordFilter.IsEqualTo(other.RecordFilter)
                       && this.RecordNotFoundStrategy.IsEqualTo(other.RecordNotFoundStrategy)
+                      && this.StreamRecordItemsToInclude.IsEqualTo(other.StreamRecordItemsToInclude)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -84,10 +82,9 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.IdentifierType)
-            .Hash(this.ObjectType)
-            .Hash(this.VersionMatchStrategy)
+            .Hash(this.RecordFilter)
             .Hash(this.RecordNotFoundStrategy)
+            .Hash(this.StreamRecordItemsToInclude)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -95,10 +92,10 @@ namespace Naos.Database.Domain
         public new StandardGetLatestRecordOp DeepClone() => (StandardGetLatestRecordOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="IdentifierType" />.
+        /// Deep clones this object with a new <see cref="RecordFilter" />.
         /// </summary>
-        /// <param name="identifierType">The new <see cref="IdentifierType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetLatestRecordOp" /> using the specified <paramref name="identifierType" /> for <see cref="IdentifierType" /> and a deep clone of every other property.</returns>
+        /// <param name="recordFilter">The new <see cref="RecordFilter" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetLatestRecordOp" /> using the specified <paramref name="recordFilter" /> for <see cref="RecordFilter" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -116,81 +113,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetLatestRecordOp DeepCloneWithIdentifierType(TypeRepresentation identifierType)
+        public StandardGetLatestRecordOp DeepCloneWithRecordFilter(RecordFilter recordFilter)
         {
             var result = new StandardGetLatestRecordOp(
-                                 identifierType,
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
+                                 recordFilter,
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="ObjectType" />.
-        /// </summary>
-        /// <param name="objectType">The new <see cref="ObjectType" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetLatestRecordOp" /> using the specified <paramref name="objectType" /> for <see cref="ObjectType" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetLatestRecordOp DeepCloneWithObjectType(TypeRepresentation objectType)
-        {
-            var result = new StandardGetLatestRecordOp(
-                                 this.IdentifierType?.DeepClone(),
-                                 objectType,
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.RecordNotFoundStrategy.DeepClone(),
-                                 this.SpecifiedResourceLocator?.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
-        /// </summary>
-        /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetLatestRecordOp" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetLatestRecordOp DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
-        {
-            var result = new StandardGetLatestRecordOp(
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 versionMatchStrategy,
-                                 this.RecordNotFoundStrategy.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -221,10 +149,42 @@ namespace Naos.Database.Domain
         public StandardGetLatestRecordOp DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
         {
             var result = new StandardGetLatestRecordOp(
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  recordNotFoundStrategy,
+                                 this.StreamRecordItemsToInclude.DeepClone(),
+                                 this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="StreamRecordItemsToInclude" />.
+        /// </summary>
+        /// <param name="streamRecordItemsToInclude">The new <see cref="StreamRecordItemsToInclude" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetLatestRecordOp" /> using the specified <paramref name="streamRecordItemsToInclude" /> for <see cref="StreamRecordItemsToInclude" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardGetLatestRecordOp DeepCloneWithStreamRecordItemsToInclude(StreamRecordItemsToInclude streamRecordItemsToInclude)
+        {
+            var result = new StandardGetLatestRecordOp(
+                                 this.RecordFilter?.DeepClone(),
+                                 this.RecordNotFoundStrategy.DeepClone(),
+                                 streamRecordItemsToInclude,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -255,10 +215,9 @@ namespace Naos.Database.Domain
         public StandardGetLatestRecordOp DeepCloneWithSpecifiedResourceLocator(IResourceLocator specifiedResourceLocator)
         {
             var result = new StandardGetLatestRecordOp(
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -269,10 +228,9 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new StandardGetLatestRecordOp(
-                                 this.IdentifierType?.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
+                                 this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
+                                 this.StreamRecordItemsToInclude.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -282,7 +240,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetLatestRecordOp: IdentifierType = {this.IdentifierType?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetLatestRecordOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, StreamRecordItemsToInclude = {this.StreamRecordItemsToInclude.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

@@ -109,15 +109,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public abstract StreamRecord Execute(
-            StandardGetRecordByInternalRecordIdOp operation);
-
-        /// <inheritdoc />
-        public abstract StreamRecord Execute(
             StandardGetLatestRecordOp operation);
-
-        /// <inheritdoc />
-        public abstract StreamRecord Execute(
-            StandardGetLatestRecordByIdOp operation);
 
         /// <inheritdoc />
         public abstract TryHandleRecordResult Execute(
@@ -126,14 +118,6 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public abstract PutRecordResult Execute(
             StandardPutRecordOp operation);
-
-        /// <inheritdoc />
-        public abstract bool Execute(
-            StandardDoesAnyExistByIdOp operation);
-
-        /// <inheritdoc />
-        public abstract StreamRecordMetadata Execute(
-            StandardGetLatestRecordMetadataByIdOp operation);
 
         /// <inheritdoc />
         public abstract IReadOnlyCollection<long> Execute(
@@ -158,10 +142,6 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public abstract IReadOnlyCollection<StringSerializedIdentifier> Execute(
             StandardGetDistinctStringSerializedIdsOp operation);
-
-        /// <inheritdoc />
-        public abstract StreamRecord Execute(
-            StandardGetLatestRecordByTagsOp operation);
 
         /// <inheritdoc />
         public abstract string Execute(

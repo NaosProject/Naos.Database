@@ -98,7 +98,7 @@ namespace Naos.Database.Domain
 
             var result = this.stream.Execute(standardOp);
 
-            return result;
+            return result.Any();
         }
 
         /// <inheritdoc />
@@ -137,8 +137,12 @@ namespace Naos.Database.Domain
                          .Select(
                               _ =>
                                   this.stream.Execute(
-                                      new StandardGetRecordByInternalRecordIdOp(
-                                          _,
+                                      new StandardGetLatestRecordOp(
+                                          new RecordFilter(
+                                              internalRecordIds: new[]
+                                                                 {
+                                                                     _,
+                                                                 }),
                                           operation.RecordNotFoundStrategy,
                                           StreamRecordItemsToInclude.MetadataAndPayload,
                                           locator)))
@@ -186,21 +190,21 @@ namespace Naos.Database.Domain
 
             var standardOp = operation.Standardize(serializer, locator);
 
-            var metadata = this.stream.Execute(standardOp);
+            var recordWithOnlyMetadata = this.stream.Execute(standardOp);
 
-            if (metadata == null)
+            if (recordWithOnlyMetadata == null)
             {
                 return null;
             }
 
             var result = new StreamRecordMetadata<TId>(
                 operation.Id,
-                metadata.SerializerRepresentation,
-                metadata.TypeRepresentationOfId,
-                metadata.TypeRepresentationOfObject,
-                metadata.Tags,
-                metadata.TimestampUtc,
-                metadata.ObjectTimestampUtc);
+                recordWithOnlyMetadata.Metadata.SerializerRepresentation,
+                recordWithOnlyMetadata.Metadata.TypeRepresentationOfId,
+                recordWithOnlyMetadata.Metadata.TypeRepresentationOfObject,
+                recordWithOnlyMetadata.Metadata.Tags,
+                recordWithOnlyMetadata.Metadata.TimestampUtc,
+                recordWithOnlyMetadata.Metadata.ObjectTimestampUtc);
 
             return result;
         }
@@ -241,8 +245,12 @@ namespace Naos.Database.Domain
                          .Select(
                               _ =>
                                   this.stream.Execute(
-                                      new StandardGetRecordByInternalRecordIdOp(
-                                          _,
+                                      new StandardGetLatestRecordOp(
+                                          new RecordFilter(
+                                              internalRecordIds: new[]
+                                                                 {
+                                                                     _,
+                                                                 }),
                                           operation.RecordNotFoundStrategy,
                                           StreamRecordItemsToInclude.MetadataOnly,
                                           locator)))

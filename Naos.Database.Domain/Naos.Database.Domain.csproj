@@ -378,30 +378,15 @@
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForStreamOp.designer.cs">
       <DependentUpon>StandardUpdateHandlingStatusForStreamOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOp.designer.cs">
-      <DependentUpon>StandardDoesAnyExistByIdOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.designer.cs">
       <DependentUpon>StandardGetDistinctStringSerializedIdsOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectOp.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOp.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByIdOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOp.designer.cs">
-      <DependentUpon>StandardGetLatestRecordByTagsOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOp.designer.cs">
-      <DependentUpon>StandardGetLatestRecordMetadataByIdOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.designer.cs">
       <DependentUpon>StandardGetLatestRecordOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestStringSerializedObjectOp.designer.cs">
       <DependentUpon>StandardGetLatestStringSerializedObjectOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOp.designer.cs">
-      <DependentUpon>StandardGetRecordByInternalRecordIdOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOp.designer.cs">
       <DependentUpon>StandardGetInternalRecordIdsOp.cs</DependentUpon>
@@ -580,16 +565,12 @@
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}.cs" />
     <Compile Include="Models\Enums\TagMatchStrategy.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardDoesAnyExistByIdOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByTagsOp.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordMetadataByIdOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetRecordByInternalRecordIdOp.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Read.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Classification\IStandardStream.cs" />
     <Compile Include="Models\Classes\Stream\Handling\TryHandleRecordResult.designer.cs">
@@ -632,7 +613,6 @@
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamBase.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordByIdOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />

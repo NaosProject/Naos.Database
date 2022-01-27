@@ -15,13 +15,8 @@ namespace Naos.Database.Domain
     public interface IStandardStreamReadProtocols
         :
           ISyncReturningProtocol<StandardGetDistinctStringSerializedIdsOp, IReadOnlyCollection<StringSerializedIdentifier>>,
-          ISyncReturningProtocol<StandardDoesAnyExistByIdOp, bool>,
-          ISyncReturningProtocol<StandardGetRecordByInternalRecordIdOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetInternalRecordIdsOp, IReadOnlyCollection<long>>,
-          ISyncReturningProtocol<StandardGetLatestRecordByTagsOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetLatestRecordOp, StreamRecord>,
-          ISyncReturningProtocol<StandardGetLatestRecordMetadataByIdOp, StreamRecordMetadata>,
-          ISyncReturningProtocol<StandardGetLatestRecordByIdOp, StreamRecord>,
           ISyncReturningProtocol<StandardGetLatestStringSerializedObjectOp, string>
     {
     }

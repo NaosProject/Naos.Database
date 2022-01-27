@@ -552,14 +552,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<StreamNotFoundStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardDoesAnyExistByIdOp(
-                                 A.Dummy<string>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetDistinctStringSerializedIdsOp(
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<IResourceLocator>()));
@@ -583,38 +575,10 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetLatestRecordByIdOp(
-                                 A.Dummy<string>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetLatestRecordByTagsOp(
-                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<TagMatchStrategy>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetLatestRecordMetadataByIdOp(
-                                 A.Dummy<string>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetLatestRecordOp(
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<TypeRepresentation>(),
-                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<RecordFilter>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<StreamRecordItemsToInclude>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -626,13 +590,6 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetNextUniqueLongOp(
                                  A.Dummy<string>(),
-                                 A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardGetRecordByInternalRecordIdOp(
-                                 A.Dummy<long>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<StreamRecordItemsToInclude>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

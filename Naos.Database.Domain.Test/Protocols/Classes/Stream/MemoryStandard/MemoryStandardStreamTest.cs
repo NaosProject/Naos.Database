@@ -704,13 +704,25 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var id = A.Dummy<string>();
             var putOpOne = new PutAndReturnInternalRecordIdOp<string>(A.Dummy<string>());
             var internalRecordIdOne = stream.GetStreamWritingProtocols<string>().Execute(putOpOne);
-            var latestOne = stream.Execute(new StandardGetLatestRecordOp());
+            var latestOne = stream.Execute(
+                new StandardGetLatestRecordOp(
+                    new RecordFilter(
+                        new[]
+                        {
+                            (long)internalRecordIdOne,
+                        })));
             latestOne.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdOne);
             latestOne.Metadata.Tags.MustForTest().BeNull();
 
             var putOpTwo = new PutWithIdAndReturnInternalRecordIdOp<string, string>(id, A.Dummy<string>());
             var internalRecordIdTwo = stream.GetStreamWritingWithIdProtocols<string, string>().Execute(putOpTwo);
-            var latestTwo = stream.Execute(new StandardGetLatestRecordByIdOp("\"" + id + "\""));
+            var latestTwo = stream.Execute(
+                new StandardGetLatestRecordOp(
+                    new RecordFilter(
+                        new[]
+                        {
+                            (long)internalRecordIdTwo,
+                        })));
             latestTwo.InternalRecordId.MustForTest().BeEqualTo((long)internalRecordIdTwo);
             latestTwo.Metadata.Tags.MustForTest().BeNull();
         }
@@ -779,7 +791,13 @@ namespace Naos.Database.Domain.Test.MemoryStream
             exception.MustForTest().NotBeNull().And().BeOfType<InvalidOperationException>();
             exception.Message.MustForTest().BeEqualTo("Operation specified an InternalRecordId of 1 but that InternalRecordId is already present in the stream.");
 
-            var foundRecord = stream.Execute(new StandardGetRecordByInternalRecordIdOp(internalRecordId));
+            var foundRecord = stream.Execute(
+                new StandardGetLatestRecordOp(
+                    new RecordFilter(
+                        new[]
+                        {
+                            (long)internalRecordId,
+                        })));
             foundRecord.MustForTest().NotBeNull();
             foundRecord.Metadata.MustForTest().BeEqualTo(metadata);
             foundRecord.Payload.MustForTest().BeEqualTo(payload);

@@ -16,31 +16,6 @@ namespace Naos.Database.Domain
     public partial class MemoryStandardStream
     {
         /// <inheritdoc />
-        public override bool Execute(
-            StandardDoesAnyExistByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.streamLock)
-            {
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                var result = partition?
-                    .OrderByDescending(_ => _.InternalRecordId)
-                    .FirstOrDefault(
-                        _ => _.Metadata.FuzzyMatchTypesAndId(
-                            operation.StringSerializedId,
-                            operation.IdentifierType,
-                            operation.ObjectType,
-                            operation.VersionMatchStrategy));
-
-                return result != null;
-            }
-        }
-
-        /// <inheritdoc />
         public override IReadOnlyCollection<long> Execute(
             StandardGetInternalRecordIdsOp operation)
         {
@@ -159,93 +134,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override StreamRecord Execute(
-            StandardGetLatestRecordByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.streamLock)
-            {
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                var result = partition?
-                    .OrderByDescending(_ => _.InternalRecordId)
-                    .FirstOrDefault(
-                        _ => _.Metadata.FuzzyMatchTypesAndId(
-                            operation.StringSerializedId,
-                            operation.IdentifierType,
-                            operation.ObjectType,
-                            operation.VersionMatchStrategy));
-
-                if (result != null)
-                {
-                    return result;
-                }
-
-                switch (operation.RecordNotFoundStrategy)
-                {
-                    case RecordNotFoundStrategy.ReturnDefault:
-                        return null;
-                    case RecordNotFoundStrategy.Throw:
-                        throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                    default:
-                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public override StreamRecord Execute(
-            StandardGetLatestRecordByTagsOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public override StreamRecordMetadata Execute(
-            StandardGetLatestRecordMetadataByIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.streamLock)
-            {
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                var result = partition?
-                    .OrderByDescending(_ => _.InternalRecordId)
-                    .FirstOrDefault(
-                        _ => _.Metadata.FuzzyMatchTypesAndId(
-                            operation.StringSerializedId,
-                            operation.IdentifierType,
-                            operation.ObjectType,
-                            operation.VersionMatchStrategy))?.Metadata;
-
-                if (result != null)
-                {
-                    return result;
-                }
-
-                switch (operation.RecordNotFoundStrategy)
-                {
-                    case RecordNotFoundStrategy.ReturnDefault:
-                        return null;
-                    case RecordNotFoundStrategy.Throw:
-                        throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                    default:
-                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public override StreamRecord Execute(
             StandardGetLatestRecordOp operation)
         {
+            throw new NotImplementedException();
+
+            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
@@ -287,6 +180,7 @@ namespace Naos.Database.Domain
                         throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
                 }
             }
+            */
         }
 
         /// <inheritdoc />
@@ -295,13 +189,10 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var stringSerializedIdentifier = operation.RecordFilter.Ids.Single();
-            var delegatedOp = new StandardGetLatestRecordByIdOp(
-                stringSerializedIdentifier.StringSerializedId,
-                stringSerializedIdentifier.IdentifierType,
-                operation.RecordFilter.ObjectTypes.Single(),
-                operation.RecordFilter.VersionMatchStrategy,
+            var delegatedOp = new StandardGetLatestRecordOp(
+                operation.RecordFilter,
                 operation.RecordNotFoundStrategy,
+                StreamRecordItemsToInclude.MetadataAndPayload,
                 operation.SpecifiedResourceLocator);
 
             var record = this.Execute(delegatedOp);
@@ -334,37 +225,6 @@ namespace Naos.Database.Domain
             }
 
             return result;
-        }
-
-        /// <inheritdoc />
-        public override StreamRecord Execute(
-            StandardGetRecordByInternalRecordIdOp operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.streamLock)
-            {
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                var result = partition?.FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
-
-                if (result != null)
-                {
-                    return result;
-                }
-
-                switch (operation.RecordNotFoundStrategy)
-                {
-                    case RecordNotFoundStrategy.ReturnDefault:
-                        return null;
-                    case RecordNotFoundStrategy.Throw:
-                        throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                    default:
-                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                }
-            }
         }
     }
 }

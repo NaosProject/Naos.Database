@@ -250,6 +250,7 @@ namespace Naos.Database.Domain.Test
             // ------------------------------- ENUMS --------------------------------------
             AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CompositeHandlingStatus.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingDatabaseStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingRecordStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingStreamStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(HandlingStatus.Unknown);

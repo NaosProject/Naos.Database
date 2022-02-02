@@ -239,6 +239,7 @@
       <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
+    <Compile Include="Models\Enums\ExistingDatabaseStrategy.cs" />
     <Compile Include="Models\Enums\StreamRecordItemsToInclude.cs" />
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />

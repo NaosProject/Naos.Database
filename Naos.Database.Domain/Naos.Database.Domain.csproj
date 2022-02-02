@@ -245,6 +245,14 @@
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
     <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />
+    <Compile Include="Operations\Classes\Management\CreateDatabaseOp.designer.cs">
+      <DependentUpon>CreateDatabaseOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Management\DeleteDatabaseOp.cs" />
+    <Compile Include="Operations\Classes\Management\CreateDatabaseOp.cs" />
+    <Compile Include="Operations\Classes\Management\DeleteDatabaseOp.designer.cs">
+      <DependentUpon>DeleteDatabaseOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>
     </Compile>
@@ -399,6 +407,7 @@
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOp.designer.cs">
       <DependentUpon>StandardPutRecordOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Interfaces\Management\IDatabaseDefinition.cs" />
     <Compile Include="Operations\Interfaces\IPruneOp.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
@@ -689,6 +698,7 @@
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Naos.Build.Analyzers.1.55.57\build\Naos.Build.Analyzers.targets" Condition="Exists('..\packages\Naos.Build.Analyzers.1.55.57\build\Naos.Build.Analyzers.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

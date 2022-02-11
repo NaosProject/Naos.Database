@@ -238,6 +238,7 @@
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadata.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enums\StreamAccessKinds.cs" />
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
     <Compile Include="Models\Enums\ExistingDatabaseStrategy.cs" />
     <Compile Include="Models\Enums\StreamRecordItemsToInclude.cs" />

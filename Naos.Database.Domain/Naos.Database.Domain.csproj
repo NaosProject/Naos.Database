@@ -414,6 +414,7 @@
     <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyResourceLocator.cs" />
     <Compile Include="Models\Interfaces\ResourceLocation\IResourceLocator.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\DelegatedStandardStream.cs" />
     <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.cs" />

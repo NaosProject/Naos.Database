@@ -58,9 +58,11 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(record.Payload.SerializerRepresentation);
+            var identifierSerializer = this.stream
+                                           .SerializerFactory
+                                           .BuildSerializer(this.stream.DefaultSerializerRepresentation);
 
-            var id = serializer.Deserialize<TId>(record.Metadata.StringSerializedId);
+            var id = identifierSerializer.Deserialize<TId>(record.Metadata.StringSerializedId);
 
             var metadata = new StreamRecordMetadata<TId>(
                 id,

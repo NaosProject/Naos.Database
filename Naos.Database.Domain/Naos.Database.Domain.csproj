@@ -184,6 +184,7 @@
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.StateChange.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
+    <Compile Include="Logic\Stream\Common\RecordFilterExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />

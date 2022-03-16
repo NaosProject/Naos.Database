@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     /// <summary>
@@ -15,14 +16,24 @@ namespace Naos.Database.Domain
     public static class Concerns
     {
         /// <summary>
+        /// The default execution concern to use when handling a <see cref="ExecuteOpRequestedEvent{TOperation}"/>.
+        /// </summary>
+        public const string DefaultConcern = "default";
+
+        /// <summary>
+        /// The default execution concern to use when handling a <see cref="ExecuteOpRequestedEvent{TOperation}"/>.
+        /// </summary>
+        public const string DefaultExecutionConcern = "default-execute-op";
+
+        /// <summary>
         /// The record handling concern to use when record handling is disabled for an entire stream.
         /// </summary>
-        public const string StreamHandlingDisabledConcern = "StreamHandlingDisabled";
+        public const string StreamHandlingDisabledConcern = "stream-handling-disabled";
 
         /// <summary>
         /// The record handling concern to use when record handling is disabled for a specific record.
         /// </summary>
-        public const string RecordHandlingDisabledConcern = "RecordHandlingDisabled";
+        public const string RecordHandlingDisabledConcern = "record-handling-disabled";
 
         /// <summary>
         /// The internal record identifier of global blocking when interacting with the <see cref="StreamHandlingDisabledConcern"/>.

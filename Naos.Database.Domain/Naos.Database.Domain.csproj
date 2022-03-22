@@ -180,6 +180,7 @@
     <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Stream\Common\StreamExtensions.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.StateChange.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />

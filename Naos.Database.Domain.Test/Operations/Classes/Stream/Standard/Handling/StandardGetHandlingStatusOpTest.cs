@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new StandardGetHandlingStatusOp(
                                                        null,
                                                        referenceObject.RecordFilter,
-                                                       referenceObject.SpecifiedResourceLocator);
+                                                       specifiedResourceLocator: referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
                                                },
@@ -69,7 +69,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new StandardGetHandlingStatusOp(
                                                        referenceObject.Concern,
                                                        null,
-                                                       referenceObject.SpecifiedResourceLocator);
+                                                       specifiedResourceLocator: referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
                                                },

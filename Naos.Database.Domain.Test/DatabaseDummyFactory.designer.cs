@@ -575,6 +575,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardGetHandlingStatusOp(
                                  A.Dummy<string>(),
                                  A.Dummy<RecordFilter>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

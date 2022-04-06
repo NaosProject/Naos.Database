@@ -27,10 +27,12 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="concern">The record handling concern.</param>
         /// <param name="recordFilter">The filter to apply to the set of records to query for handling status.</param>
+        /// <param name="handlingTags">The optional handling tags to use along with the <paramref name="recordFilter"/>.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetHandlingStatusOp(
             string concern,
             RecordFilter recordFilter,
+            IReadOnlyCollection<NamedValue<string>> handlingTags = null,
             IResourceLocator specifiedResourceLocator = null)
         {
             concern.ThrowIfInvalidOrReservedConcern();
@@ -38,6 +40,7 @@ namespace Naos.Database.Domain
 
             this.Concern = concern;
             this.RecordFilter = recordFilter;
+            this.HandlingTags = handlingTags;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
@@ -46,6 +49,11 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public RecordFilter RecordFilter { get; private set; }
+
+        /// <summary>
+        /// Gets the handling tags to use along with <see cref="RecordFilter"/>.
+        /// </summary>
+        public IReadOnlyCollection<NamedValue<string>> HandlingTags { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

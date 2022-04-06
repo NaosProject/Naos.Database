@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardGetHandlingStatusOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetHandlingStatusOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetHandlingStatusOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, HandlingTags = {systemUnderTest.HandlingTags?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,6 +66,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetHandlingStatusOp(
                                              null,
                                              referenceObject.RecordFilter,
+                                             referenceObject.HandlingTags,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -84,6 +85,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetHandlingStatusOp(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.RecordFilter,
+                                             referenceObject.HandlingTags,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -102,12 +104,70 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              null,
+                                             referenceObject.HandlingTags,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "recordFilter", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'handlingTags' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                        var result = new StandardGetHandlingStatusOp(
+                                             referenceObject.Concern,
+                                             referenceObject.RecordFilter,
+                                             null,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "handlingTags", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'handlingTags' is an empty enumerable scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                        var result = new StandardGetHandlingStatusOp(
+                                             referenceObject.Concern,
+                                             referenceObject.RecordFilter,
+                                             new List<NamedValue<string>>(),
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "handlingTags", "is an empty enumerable", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'handlingTags' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                        var result = new StandardGetHandlingStatusOp(
+                                             referenceObject.Concern,
+                                             referenceObject.RecordFilter,
+                                             new NamedValue<string>[0].Concat(referenceObject.HandlingTags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.HandlingTags).ToList(),
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "handlingTags", "contains at least one null element", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
@@ -120,6 +180,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetHandlingStatusOp(
                                              referenceObject.Concern,
                                              referenceObject.RecordFilter,
+                                             referenceObject.HandlingTags,
                                              null);
 
                         return result;
@@ -142,6 +203,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.RecordFilter,
+                                                      referenceObject.HandlingTags,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
@@ -163,6 +225,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.RecordFilter,
+                                                      referenceObject.HandlingTags,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordFilter,
                         };
@@ -170,6 +233,28 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "RecordFilter",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
+                {
+                    Name = "HandlingTags should return same 'handlingTags' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
+                        {
+                            SystemUnderTest = new StandardGetHandlingStatusOp(
+                                                      referenceObject.Concern,
+                                                      referenceObject.RecordFilter,
+                                                      referenceObject.HandlingTags,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.HandlingTags,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "HandlingTags",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
@@ -184,6 +269,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetHandlingStatusOp(
                                                       referenceObject.Concern,
                                                       referenceObject.RecordFilter,
+                                                      referenceObject.HandlingTags,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -237,6 +323,26 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
                 {
+                    Name = "DeepCloneWithHandlingTags should deep clone object and replace HandlingTags with the provided handlingTags",
+                    WithPropertyName = "HandlingTags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+
+                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.HandlingTags.IsEqualTo(_.HandlingTags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.HandlingTags,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
+                {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -268,6 +374,7 @@ namespace Naos.Database.Domain.Test
                         new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.HandlingTags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StandardGetHandlingStatusOp[]
@@ -275,14 +382,22 @@ namespace Naos.Database.Domain.Test
                         new StandardGetHandlingStatusOp(
                                 A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.HandlingTags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.HandlingTags,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetHandlingStatusOp(
                                 ReferenceObjectForEquatableTestScenarios.Concern,
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.HandlingTags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.HandlingTags)).HandlingTags,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetHandlingStatusOp(
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.HandlingTags,
                                 A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -637,6 +752,18 @@ namespace Naos.Database.Domain.Test
                     actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
                 }
 
+                if (systemUnderTest.HandlingTags == null)
+                {
+                    actual.HandlingTags.AsTest().Must().BeNull();
+                }
+                else if (!actual.HandlingTags.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.HandlingTags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.HandlingTags);
+                }
+
                 if (systemUnderTest.SpecifiedResourceLocator == null)
                 {
                     actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
@@ -666,7 +793,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "RecordFilter", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "Concern", "RecordFilter", "HandlingTags", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

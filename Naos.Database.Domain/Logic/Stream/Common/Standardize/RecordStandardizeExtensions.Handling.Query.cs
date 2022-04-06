@@ -71,7 +71,7 @@ namespace Naos.Database.Domain
             var result = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 new RecordFilter(tags: operation.TagsToMatch, tagMatchStrategy: operation.TagMatchStrategy),
-                specifiedResourceLocator);
+                specifiedResourceLocator: specifiedResourceLocator);
 
             return result;
         }
@@ -97,7 +97,7 @@ namespace Naos.Database.Domain
                                        {
                                            operation.InternalRecordId,
                                        }),
-                specifiedResourceLocator);
+                specifiedResourceLocator: specifiedResourceLocator);
 
             return result;
         }

@@ -97,6 +97,7 @@ namespace Naos.Database.Domain
                     HandlingStatus.Running,
                     HandlingStatus.Completed,
                     HandlingStatus.Failed,
+                    HandlingStatus.ArchivedAfterFailure,
                 },
                 operation.Details,
                 operation.Tags,
@@ -173,6 +174,36 @@ namespace Naos.Database.Domain
                 new[]
                 {
                     HandlingStatus.Running,
+                },
+                operation.Details,
+                operation.Tags,
+                operation.InheritRecordTags,
+                specifiedResourceLocator);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the operation to it's standardized form.
+        /// </summary>
+        /// <param name="operation">The operation.</param>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
+        public static StandardUpdateHandlingStatusForRecordOp Standardize(
+            this ArchiveFailureToHandleRecordOp operation,
+            IResourceLocator specifiedResourceLocator = null)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var result = new StandardUpdateHandlingStatusForRecordOp(
+                operation.InternalRecordId,
+                operation.Concern,
+                HandlingStatus.ArchivedAfterFailure,
+                new[]
+                {
+                    HandlingStatus.Failed,
                 },
                 operation.Details,
                 operation.Tags,

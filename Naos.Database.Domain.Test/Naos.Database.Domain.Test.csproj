@@ -255,6 +255,10 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include="ArchiveFailureToHandleRecordOpTest.cs" />
+    <Compile Include="ArchiveFailureToHandleRecordOpTest.designer.cs">
+      <DependentUpon>ArchiveFailureToHandleRecordOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="Operations\Classes\Management\CreateDatabaseOpTest.cs" />
     <Compile Include="Operations\Classes\Management\CreateDatabaseOpTest.designer.cs">

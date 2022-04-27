@@ -252,6 +252,26 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public void Execute(
+            ArchiveFailureToHandleRecordOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            ArchiveFailureToHandleRecordOp operation)
+        {
+            this.Execute(operation);
+
+            await Task.FromResult(true);
+        }
+
+        /// <inheritdoc />
+        public void Execute(
             SelfCancelRunningHandleRecordOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();

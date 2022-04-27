@@ -44,6 +44,11 @@ namespace Naos.Database.Domain
         Failed,
 
         /// <summary>
+        /// The record was handled for a specified concern but an error occurred when executing and was then archived.
+        /// </summary>
+        ArchivedAfterFailure,
+
+        /// <summary>
         /// The record is available to be handled for a specified concern after it <see cref="Failed"/>.
         /// </summary>
         AvailableAfterFailure,

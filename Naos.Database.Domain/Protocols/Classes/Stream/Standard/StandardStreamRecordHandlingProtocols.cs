@@ -309,5 +309,25 @@ namespace Naos.Database.Domain
 
             await Task.FromResult(true);
         }
+
+        /// <inheritdoc />
+        public void Execute(
+            ResetCompletedHandleRecordOp operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var standardOp = operation.Standardize();
+
+            this.stream.Execute(standardOp);
+        }
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync(
+            ResetCompletedHandleRecordOp operation)
+        {
+            this.Execute(operation);
+
+            await Task.FromResult(true);
+        }
     }
 }

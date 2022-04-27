@@ -20,6 +20,7 @@ namespace Naos.Database.Domain
             new[]
             {
                 HandlingStatus.AvailableAfterExternalCancellation,
+                HandlingStatus.AvailableAfterCompletion,
                 HandlingStatus.AvailableAfterFailure,
                 HandlingStatus.AvailableAfterSelfCancellation,
                 HandlingStatus.AvailableByDefault,
@@ -44,6 +45,7 @@ namespace Naos.Database.Domain
             {
                 case HandlingStatus.AvailableByDefault:
                 case HandlingStatus.AvailableAfterFailure:
+                case HandlingStatus.AvailableAfterCompletion:
                 case HandlingStatus.AvailableAfterExternalCancellation:
                 case HandlingStatus.AvailableAfterSelfCancellation:
                     return true;

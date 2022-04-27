@@ -522,6 +522,14 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ResetCompletedHandleRecordOp(
+                                 A.Dummy<long>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<bool>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new ResetFailedHandleRecordOp(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),

@@ -25,6 +25,7 @@ namespace Naos.Database.Domain
           ISyncAndAsyncVoidProtocol<FailRunningHandleRecordOp>,
           ISyncAndAsyncVoidProtocol<ArchiveFailureToHandleRecordOp>,
           ISyncAndAsyncVoidProtocol<ResetFailedHandleRecordOp>,
+          ISyncAndAsyncVoidProtocol<ResetCompletedHandleRecordOp>,
           ISyncAndAsyncVoidProtocol<SelfCancelRunningHandleRecordOp>
     {
     }

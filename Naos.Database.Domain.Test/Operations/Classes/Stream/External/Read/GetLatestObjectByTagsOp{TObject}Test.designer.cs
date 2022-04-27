@@ -372,6 +372,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
+                        A.Dummy<ResetCompletedHandleRecordOp>(),
                         A.Dummy<ResetFailedHandleRecordOp>(),
                         A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),

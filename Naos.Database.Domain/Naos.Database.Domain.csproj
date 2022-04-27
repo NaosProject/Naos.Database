@@ -271,6 +271,7 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByTagsOp.designer.cs">
       <DependentUpon>GetCompositeHandlingStatusByTagsOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetCompletedHandleRecordOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ArchiveFailureToHandleRecordOp.designer.cs">
       <DependentUpon>ArchiveFailureToHandleRecordOp.cs</DependentUpon>
     </Compile>
@@ -304,6 +305,9 @@
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingStatusOp.designer.cs">
       <DependentUpon>GetHandlingStatusOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetCompletedHandleRecordOp.designer.cs">
+      <DependentUpon>ResetCompletedHandleRecordOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetFailedHandleRecordOp.designer.cs">
       <DependentUpon>ResetFailedHandleRecordOp.cs</DependentUpon>

@@ -681,6 +681,10 @@
     <Compile Include="Models\Classes\Stream\Common\RecordLocatorTest.designer.cs">
       <DependentUpon>RecordLocatorTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResetCompletedHandleRecordOpTest.cs" />
+    <Compile Include="ResetCompletedHandleRecordOpTest.designer.cs">
+      <DependentUpon>ResetCompletedHandleRecordOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DatabaseDummyFactory.cs" />

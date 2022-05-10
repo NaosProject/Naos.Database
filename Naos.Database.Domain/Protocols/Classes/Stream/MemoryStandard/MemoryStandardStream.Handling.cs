@@ -36,7 +36,7 @@ namespace Naos.Database.Domain
                 var entriesForInternalRecordId =
                     (entries ?? new List<StreamRecordHandlingEntry>())
                    .Concat(recordBlockedEntries ?? new List<StreamRecordHandlingEntry>())
-                   .Where(_ => _.Metadata.InternalRecordId == operation.InternalRecordId)
+                   .Where(_ => _.InternalRecordId == operation.InternalRecordId)
                    .ToList();
                 return entriesForInternalRecordId;
             }
@@ -53,7 +53,7 @@ namespace Naos.Database.Domain
             lock (this.handlingLock)
             {
                 var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
-                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Metadata.Status == HandlingStatus.DisabledForStream)
+                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Status == HandlingStatus.DisabledForStream)
                 {
                     return new Dictionary<long, HandlingStatus>
                            {
@@ -124,10 +124,10 @@ namespace Naos.Database.Domain
                         k => k,
                         v => entries
                             .Concat(blockedEntries)
-                            .Where(_ => _.Metadata.InternalRecordId == v)
+                            .Where(_ => _.InternalRecordId == v)
                             .OrderByDescending(__ => __.InternalHandlingEntryId)
                             .FirstOrDefault()
-                           ?.Metadata.Status
+                           ?.Status
                           ?? HandlingStatus.AvailableByDefault);
 
                 return result;
@@ -162,7 +162,7 @@ namespace Naos.Database.Domain
 
                     var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.StreamHandlingDisabledConcern);
                     var mostRecentEntry = handlingEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-                    if (mostRecentEntry != null && mostRecentEntry.Metadata.Status == HandlingStatus.DisabledForStream)
+                    if (mostRecentEntry != null && mostRecentEntry.Status == HandlingStatus.DisabledForStream)
                     {
                         return new TryHandleRecordResult(null, true);
                     }
@@ -173,11 +173,11 @@ namespace Naos.Database.Domain
                     var existingInternalRecordIdsToConsider = new List<long>();
                     var existingInternalRecordIdsToIgnore = new List<long>();
                     var mergedEntries = entries.Concat(recordBlockedEntries);
-                    foreach (var groupedById in mergedEntries.GroupBy(_ => _.Metadata.InternalRecordId))
+                    foreach (var groupedById in mergedEntries.GroupBy(_ => _.InternalRecordId))
                     {
                         var mostRecent = groupedById.OrderByDescending(_ => _.InternalHandlingEntryId).First();
 
-                        if (mostRecent.Metadata.Status.IsAvailable())
+                        if (mostRecent.Status.IsAvailable())
                         {
                             existingInternalRecordIdsToConsider.Add(groupedById.Key);
                         }
@@ -249,58 +249,32 @@ namespace Naos.Database.Domain
                             {
                                 // first time needs a requested record
                                 var requestedTimestamp = DateTime.UtcNow;
-                                var requestedEvent = new RecordHandlingAvailableEvent(
-                                    recordToHandle.InternalRecordId,
-                                    operation.Concern,
-                                    recordToHandle,
-                                    requestedTimestamp);
-
-                                var requestedPayload = requestedEvent.ToDescribedSerializationUsingSpecificFactory(
-                                    this.DefaultSerializerRepresentation,
-                                    this.SerializerFactory,
-                                    this.DefaultSerializationFormat);
-
-                                var requestedMetadata = new StreamRecordHandlingEntryMetadata(
+                                var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                                var requestedMetadata = new StreamRecordHandlingEntry(
+                                    requestedEntryId,
                                     recordToHandle.InternalRecordId,
                                     operation.Concern,
                                     HandlingStatus.AvailableByDefault,
-                                    recordToHandle.Metadata.StringSerializedId,
-                                    requestedPayload.SerializerRepresentation,
-                                    recordToHandle.Metadata.TypeRepresentationOfId,
-                                    requestedPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                                     handlingTags,
+                                    operation.Details,
                                     requestedTimestamp);
 
-                                var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                                this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, requestedEntryId, operation.Concern, requestedMetadata, requestedPayload);
+                                this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, requestedMetadata);
                             }
 
                             var runningTimestamp = DateTime.UtcNow;
 
-                            var runningEvent = new RecordHandlingRunningEvent(
-                                recordToHandle.InternalRecordId,
-                                operation.Concern,
-                                runningTimestamp);
-
-                            var runningPayload = runningEvent.ToDescribedSerializationUsingSpecificFactory(
-                                this.DefaultSerializerRepresentation,
-                                this.SerializerFactory,
-                                this.DefaultSerializationFormat);
-
-                            var runningMetadata = new StreamRecordHandlingEntryMetadata(
+                            var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                            var runningMetadata = new StreamRecordHandlingEntry(
+                                runningEntryId,
                                 recordToHandle.InternalRecordId,
                                 operation.Concern,
                                 HandlingStatus.Running,
-                                recordToHandle.Metadata.StringSerializedId,
-                                runningPayload.SerializerRepresentation,
-                                recordToHandle.Metadata.TypeRepresentationOfId,
-                                runningPayload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                                 handlingTags,
+                                operation.Details,
                                 runningTimestamp);
 
-                            var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-
-                            this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, runningEntryId, operation.Concern, runningMetadata, runningPayload);
+                            this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, runningMetadata);
 
                             switch (operation.StreamRecordItemsToInclude)
                             {
@@ -334,9 +308,9 @@ namespace Naos.Database.Domain
             lock (this.handlingLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.Metadata.InternalRecordId == operation.InternalRecordId);
+                var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
 
-                var currentHandlingStatus = mostRecent?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
+                var currentHandlingStatus = mostRecent?.Status ?? HandlingStatus.AvailableByDefault;
                 if (!operation.AcceptableCurrentStatuses.Contains(currentHandlingStatus))
                 {
                     var acceptableStatusesCsvString = string.Join(",", operation.AcceptableCurrentStatuses);
@@ -347,22 +321,22 @@ namespace Naos.Database.Domain
                 switch (operation.NewStatus)
                 {
                     case HandlingStatus.DisabledForRecord:
-                        this.MakeHandlingDisabledForRecord(operation, mostRecent);
+                        this.MakeHandlingDisabledForRecord(operation);
                         break;
                     case HandlingStatus.AvailableAfterExternalCancellation:
-                        this.MakeHandlingAvailableAfterExternalCancellation(operation, mostRecent);
+                        this.MakeHandlingAvailableAfterExternalCancellation(operation);
                         break;
                     case HandlingStatus.Completed:
-                        this.MakeHandlingCompleted(operation, mostRecent);
+                        this.MakeHandlingCompleted(operation);
                         break;
                     case HandlingStatus.Failed:
-                        this.MakeHandlingFailed(operation, mostRecent);
+                        this.MakeHandlingFailed(operation);
                         break;
                     case HandlingStatus.AvailableAfterSelfCancellation:
-                        this.MakeHandlingAvailableAfterSelfCancellation(operation, mostRecent);
+                        this.MakeHandlingAvailableAfterSelfCancellation(operation);
                         break;
                     case HandlingStatus.AvailableAfterFailure:
-                        this.MakeHandlingAvailableAfterFailure(operation, mostRecent);
+                        this.MakeHandlingAvailableAfterFailure(operation);
                         break;
                     default:
                         throw new NotSupportedException(Invariant($"Unsupported {nameof(HandlingStatus)} '{operation.NewStatus}' to update handling of {nameof(operation.InternalRecordId)}: {operation.InternalRecordId}."));
@@ -381,7 +355,7 @@ namespace Naos.Database.Domain
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
             var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-            var currentStatus = mostRecentEntry?.Metadata.Status ?? HandlingStatus.AvailableByDefault;
+            var currentStatus = mostRecentEntry?.Status ?? HandlingStatus.AvailableByDefault;
 
             var expectedStatus = newStatus == HandlingStatus.DisabledForStream
                 ? HandlingStatus.AvailableByDefault
@@ -389,272 +363,142 @@ namespace Naos.Database.Domain
 
             if (currentStatus != expectedStatus)
             {
-                throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecentEntry?.Metadata.Status.ToString() ?? "<null entry>"}."));
+                throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecentEntry?.Status.ToString() ?? "<null entry>"}."));
             }
 
             var utcNow = DateTime.UtcNow;
-            IEvent statusEvent;
-            switch (newStatus)
-            {
-                case HandlingStatus.DisabledForStream:
-                    statusEvent = new HandlingForStreamDisabledEvent(utcNow, operation.Details);
-                    break;
-                case HandlingStatus.AvailableByDefault:
-                    statusEvent = new HandlingForStreamEnabledEvent(utcNow, operation.Details);
-                    break;
-                default:
-                    throw new NotSupportedException(Invariant($"{nameof(HandlingStatus)} {newStatus} is not supported."));
-            }
 
             var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            var payload =
-                statusEvent.ToDescribedSerializationUsingSpecificFactory(
-                    this.DefaultSerializerRepresentation,
-                    this.SerializerFactory,
-                    this.DefaultSerializationFormat);
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 Concerns.GlobalBlockingRecordId,
                 concern,
                 newStatus,
-                null, // Since we need a type, we are using NullIdentifier, however we are passing a null NullIdentifier instead of constructing one to reduce runtime complexity and payload size
-                this.DefaultSerializerRepresentation,
-                NullIdentifier.TypeRepresentation,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 utcNow);
 
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, concern, metadata);
         }
 
         private void MakeHandlingAvailableAfterFailure(
-            StandardUpdateHandlingStatusForRecordOp operation,
-            StreamRecordHandlingEntry mostRecent)
+            StandardUpdateHandlingStatusForRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             var timestamp = DateTime.UtcNow;
-            var newEvent = new RecordHandlingFailureResetEvent(
-                operation.InternalRecordId,
-                operation.Concern,
-                timestamp,
-                operation.Details);
 
-            var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
-                this.DefaultSerializerRepresentation,
-                this.SerializerFactory,
-                this.DefaultSerializationFormat);
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.AvailableAfterFailure,
-                mostRecent.Metadata.StringSerializedId,
-                payload.SerializerRepresentation,
-                mostRecent.Metadata.TypeRepresentationOfId,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 timestamp);
 
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private void MakeHandlingAvailableAfterSelfCancellation(
-            StandardUpdateHandlingStatusForRecordOp operation,
-            StreamRecordHandlingEntry mostRecent)
+            StandardUpdateHandlingStatusForRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new RecordHandlingSelfCanceledEvent(
-                operation.InternalRecordId,
-                operation.Concern,
-                timestamp,
-                operation.Details);
-
-            var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
-                this.DefaultSerializerRepresentation,
-                this.SerializerFactory,
-                this.DefaultSerializationFormat);
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.AvailableAfterSelfCancellation,
-                mostRecent.Metadata.StringSerializedId,
-                payload.SerializerRepresentation,
-                mostRecent.Metadata.TypeRepresentationOfId,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 timestamp);
 
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private void MakeHandlingFailed(
-            StandardUpdateHandlingStatusForRecordOp operation,
-            StreamRecordHandlingEntry mostRecent)
+            StandardUpdateHandlingStatusForRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new RecordHandlingFailedEvent(
-                operation.InternalRecordId,
-                operation.Concern,
-                timestamp,
-                operation.Details);
-
-            var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
-                this.DefaultSerializerRepresentation,
-                this.SerializerFactory,
-                this.DefaultSerializationFormat);
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.Failed,
-                mostRecent.Metadata.StringSerializedId,
-                payload.SerializerRepresentation,
-                mostRecent.Metadata.TypeRepresentationOfId,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 timestamp);
 
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private void MakeHandlingCompleted(
-            StandardUpdateHandlingStatusForRecordOp operation,
-            StreamRecordHandlingEntry mostRecent)
+            StandardUpdateHandlingStatusForRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new RecordHandlingCompletedEvent(
-                operation.InternalRecordId,
-                operation.Concern,
-                timestamp);
-
-            var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
-                this.DefaultSerializerRepresentation,
-                this.SerializerFactory,
-                this.DefaultSerializationFormat);
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.Completed,
-                mostRecent.Metadata.StringSerializedId,
-                payload.SerializerRepresentation,
-                mostRecent.Metadata.TypeRepresentationOfId,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 timestamp);
 
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private void MakeHandlingAvailableAfterExternalCancellation(
-            StandardUpdateHandlingStatusForRecordOp operation,
-            StreamRecordHandlingEntry mostRecent)
+            StandardUpdateHandlingStatusForRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new RecordHandlingCanceledEvent(
-                operation.InternalRecordId,
-                operation.Concern,
-                timestamp,
-                operation.Details);
-
-            var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
-                this.DefaultSerializerRepresentation,
-                this.SerializerFactory,
-                this.DefaultSerializationFormat);
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.AvailableAfterExternalCancellation,
-                mostRecent.Metadata.StringSerializedId,
-                payload.SerializerRepresentation,
-                mostRecent.Metadata.TypeRepresentationOfId,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 timestamp);
 
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private void MakeHandlingDisabledForRecord(
-            StandardUpdateHandlingStatusForRecordOp operation,
-            StreamRecordHandlingEntry mostRecent)
+            StandardUpdateHandlingStatusForRecordOp operation)
         {
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
             var timestamp = DateTime.UtcNow;
 
-            var newEvent = new HandlingForRecordDisabledEvent(
-                operation.InternalRecordId,
-                operation.Concern,
-                timestamp,
-                operation.Details);
-
-            var payload = newEvent.ToDescribedSerializationUsingSpecificFactory(
-                this.DefaultSerializerRepresentation,
-                this.SerializerFactory,
-                this.DefaultSerializationFormat);
-
-            string stringSerializedId;
-            TypeRepresentationWithAndWithoutVersion identifierTypeRepresentationWithAndWithoutVersion;
-
-            if (mostRecent != null)
-            {
-                stringSerializedId = mostRecent.Metadata.StringSerializedId;
-                identifierTypeRepresentationWithAndWithoutVersion = mostRecent.Metadata.TypeRepresentationOfId;
-            }
-            else
-            {
-                var record = this.Execute(
-                    new StandardGetLatestRecordOp(
-                        new RecordFilter(
-                            internalRecordIds: new[]
-                                               {
-                                                   operation.InternalRecordId,
-                                               }),
-                        RecordNotFoundStrategy.ReturnDefault,
-                        StreamRecordItemsToInclude.MetadataAndPayload));
-                if (record == null)
-                {
-                    throw new ArgumentException(Invariant($"Specified {nameof(operation.InternalRecordId)}: {operation.InternalRecordId} does not exist in stream: {this.StreamRepresentation}."));
-                }
-
-                stringSerializedId = record.Metadata.StringSerializedId;
-                identifierTypeRepresentationWithAndWithoutVersion = record.Metadata.TypeRepresentationOfId;
-            }
-
-            var metadata = new StreamRecordHandlingEntryMetadata(
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
                 operation.InternalRecordId,
                 operation.Concern,
                 HandlingStatus.DisabledForRecord,
-                stringSerializedId,
-                payload.SerializerRepresentation,
-                identifierTypeRepresentationWithAndWithoutVersion,
-                payload.PayloadTypeRepresentation.ToWithAndWithoutVersion(),
                 operation.Tags,
+                operation.Details,
                 timestamp);
 
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            this.WriteHandlingEntryToMemoryMap(locator, entryId, operation.Concern, metadata, payload);
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private List<StreamRecordHandlingEntry> GetStreamRecordHandlingEntriesForConcern(

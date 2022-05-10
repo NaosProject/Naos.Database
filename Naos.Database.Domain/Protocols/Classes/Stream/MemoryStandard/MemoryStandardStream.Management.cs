@@ -110,8 +110,8 @@ namespace Naos.Database.Domain
 
             bool HandlingPredicate(
                 StreamRecordHandlingEntry handlingEntry) => operation.ShouldPrune(
-                handlingEntry.Metadata.InternalRecordId,
-                handlingEntry.Metadata.TimestampUtc);
+                handlingEntry.InternalRecordId,
+                handlingEntry.TimestampUtc);
 
             lock (this.streamLock)
             {

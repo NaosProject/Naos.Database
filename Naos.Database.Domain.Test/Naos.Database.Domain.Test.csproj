@@ -573,9 +573,6 @@
     <Compile Include="Operations\Classes\Stream\Standard\Handling\StandardUpdateHandlingStatusForStreamOpTest.designer.cs">
       <DependentUpon>StandardUpdateHandlingStatusForStreamOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadataTest.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntryMetadataTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryTest.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryTest.cs</DependentUpon>
     </Compile>
@@ -614,7 +611,6 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOpTest.cs" />
-    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadataTest.cs" />
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryTest.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadataTest.designer.cs">
       <DependentUpon>StreamRecordMetadataTest.cs</DependentUpon>

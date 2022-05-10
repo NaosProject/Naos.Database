@@ -92,10 +92,8 @@ namespace Naos.Database.Domain
 
         private void WriteHandlingEntryToMemoryMap(
             IResourceLocator locator,
-            long requestedEntryId,
             string concern,
-            StreamRecordHandlingEntryMetadata requestedMetadata,
-            DescribedSerializationBase requestedPayload)
+            StreamRecordHandlingEntry requestedEntry)
         {
             lock (this.handlingLock)
             {
@@ -107,7 +105,7 @@ namespace Naos.Database.Domain
 
                 // The reference would get broken in non-obvious ways when using variables so direct keying the map.
                 this.locatorToHandlingEntriesByConcernMap[memoryLocator][concern]
-                    .Add(new StreamRecordHandlingEntry(requestedEntryId, requestedMetadata, requestedPayload));
+                    .Add(requestedEntry);
             }
         }
     }

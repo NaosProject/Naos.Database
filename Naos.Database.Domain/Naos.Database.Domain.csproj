@@ -237,9 +237,6 @@
     <Compile Include="Models\Classes\Stream\Common\RecordLocator.designer.cs">
       <DependentUpon>RecordLocator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadata.designer.cs">
-      <DependentUpon>StreamRecordHandlingEntryMetadata.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Enums\StreamAccessKinds.cs" />
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
     <Compile Include="Models\Enums\ExistingDatabaseStrategy.cs" />
@@ -481,7 +478,6 @@
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntry.designer.cs">
       <DependentUpon>StreamRecordHandlingEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryMetadata.cs" />
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntry.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingHistoryOp.cs" />
     <Compile Include="Models\Enums\HandlingStatus.cs" />

@@ -17,7 +17,6 @@ namespace Naos.Database.Domain
 
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
-    using global::OBeautifulCode.Serialization;
     using global::OBeautifulCode.Type;
     using global::OBeautifulCode.Type.Recipes;
 
@@ -71,8 +70,12 @@ namespace Naos.Database.Domain
             }
 
             var result = this.InternalHandlingEntryId.IsEqualTo(other.InternalHandlingEntryId)
-                      && this.Metadata.IsEqualTo(other.Metadata)
-                      && this.Payload.IsEqualTo(other.Payload);
+                      && this.InternalRecordId.IsEqualTo(other.InternalRecordId)
+                      && this.Concern.IsEqualTo(other.Concern, StringComparer.Ordinal)
+                      && this.Status.IsEqualTo(other.Status)
+                      && this.Tags.IsEqualTo(other.Tags)
+                      && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal)
+                      && this.TimestampUtc.IsEqualTo(other.TimestampUtc);
 
             return result;
         }
@@ -83,8 +86,12 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.InternalHandlingEntryId)
-            .Hash(this.Metadata)
-            .Hash(this.Payload)
+            .Hash(this.InternalRecordId)
+            .Hash(this.Concern)
+            .Hash(this.Status)
+            .Hash(this.Tags)
+            .Hash(this.Details)
+            .Hash(this.TimestampUtc)
             .Value;
 
         /// <inheritdoc />
@@ -95,8 +102,12 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordHandlingEntry(
                                  this.InternalHandlingEntryId.DeepClone(),
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone());
+                                 this.InternalRecordId.DeepClone(),
+                                 this.Concern?.DeepClone(),
+                                 this.Status.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
@@ -127,17 +138,21 @@ namespace Naos.Database.Domain
         {
             var result = new StreamRecordHandlingEntry(
                                  internalHandlingEntryId,
-                                 this.Metadata?.DeepClone(),
-                                 this.Payload?.DeepClone());
+                                 this.InternalRecordId.DeepClone(),
+                                 this.Concern?.DeepClone(),
+                                 this.Status.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Metadata" />.
+        /// Deep clones this object with a new <see cref="InternalRecordId" />.
         /// </summary>
-        /// <param name="metadata">The new <see cref="Metadata" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="metadata" /> for <see cref="Metadata" /> and a deep clone of every other property.</returns>
+        /// <param name="internalRecordId">The new <see cref="InternalRecordId" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="internalRecordId" /> for <see cref="InternalRecordId" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -155,21 +170,25 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordHandlingEntry DeepCloneWithMetadata(StreamRecordHandlingEntryMetadata metadata)
+        public StreamRecordHandlingEntry DeepCloneWithInternalRecordId(long internalRecordId)
         {
             var result = new StreamRecordHandlingEntry(
                                  this.InternalHandlingEntryId.DeepClone(),
-                                 metadata,
-                                 this.Payload?.DeepClone());
+                                 internalRecordId,
+                                 this.Concern?.DeepClone(),
+                                 this.Status.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Payload" />.
+        /// Deep clones this object with a new <see cref="Concern" />.
         /// </summary>
-        /// <param name="payload">The new <see cref="Payload" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="payload" /> for <see cref="Payload" /> and a deep clone of every other property.</returns>
+        /// <param name="concern">The new <see cref="Concern" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="concern" /> for <see cref="Concern" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -187,12 +206,160 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StreamRecordHandlingEntry DeepCloneWithPayload(DescribedSerializationBase payload)
+        public StreamRecordHandlingEntry DeepCloneWithConcern(string concern)
         {
             var result = new StreamRecordHandlingEntry(
                                  this.InternalHandlingEntryId.DeepClone(),
-                                 this.Metadata?.DeepClone(),
-                                 payload);
+                                 this.InternalRecordId.DeepClone(),
+                                 concern,
+                                 this.Status.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Status" />.
+        /// </summary>
+        /// <param name="status">The new <see cref="Status" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="status" /> for <see cref="Status" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StreamRecordHandlingEntry DeepCloneWithStatus(HandlingStatus status)
+        {
+            var result = new StreamRecordHandlingEntry(
+                                 this.InternalHandlingEntryId.DeepClone(),
+                                 this.InternalRecordId.DeepClone(),
+                                 this.Concern?.DeepClone(),
+                                 status,
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Tags" />.
+        /// </summary>
+        /// <param name="tags">The new <see cref="Tags" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="tags" /> for <see cref="Tags" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StreamRecordHandlingEntry DeepCloneWithTags(IReadOnlyCollection<NamedValue<string>> tags)
+        {
+            var result = new StreamRecordHandlingEntry(
+                                 this.InternalHandlingEntryId.DeepClone(),
+                                 this.InternalRecordId.DeepClone(),
+                                 this.Concern?.DeepClone(),
+                                 this.Status.DeepClone(),
+                                 tags,
+                                 this.Details?.DeepClone(),
+                                 this.TimestampUtc.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Details" />.
+        /// </summary>
+        /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StreamRecordHandlingEntry DeepCloneWithDetails(string details)
+        {
+            var result = new StreamRecordHandlingEntry(
+                                 this.InternalHandlingEntryId.DeepClone(),
+                                 this.InternalRecordId.DeepClone(),
+                                 this.Concern?.DeepClone(),
+                                 this.Status.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 details,
+                                 this.TimestampUtc.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="TimestampUtc" />.
+        /// </summary>
+        /// <param name="timestampUtc">The new <see cref="TimestampUtc" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StreamRecordHandlingEntry" /> using the specified <paramref name="timestampUtc" /> for <see cref="TimestampUtc" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StreamRecordHandlingEntry DeepCloneWithTimestampUtc(DateTime timestampUtc)
+        {
+            var result = new StreamRecordHandlingEntry(
+                                 this.InternalHandlingEntryId.DeepClone(),
+                                 this.InternalRecordId.DeepClone(),
+                                 this.Concern?.DeepClone(),
+                                 this.Status.DeepClone(),
+                                 this.Tags?.DeepClone(),
+                                 this.Details?.DeepClone(),
+                                 timestampUtc);
 
             return result;
         }
@@ -201,7 +368,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntry: InternalHandlingEntryId = {this.InternalHandlingEntryId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Metadata = {this.Metadata?.ToString() ?? "<null>"}, Payload = {this.Payload?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StreamRecordHandlingEntry: InternalHandlingEntryId = {this.InternalHandlingEntryId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordId = {this.InternalRecordId.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {this.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Status = {this.Status.ToString() ?? "<null>"}, Tags = {this.Tags?.ToString() ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

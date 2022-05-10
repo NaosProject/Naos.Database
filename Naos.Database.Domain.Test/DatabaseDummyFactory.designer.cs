@@ -680,19 +680,11 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntry(
                                  A.Dummy<long>(),
-                                 A.Dummy<StreamRecordHandlingEntryMetadata>(),
-                                 A.Dummy<DescribedSerializationBase>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordHandlingEntryMetadata(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
                                  A.Dummy<HandlingStatus>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<SerializerRepresentation>(),
-                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                                 A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<string>(),
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

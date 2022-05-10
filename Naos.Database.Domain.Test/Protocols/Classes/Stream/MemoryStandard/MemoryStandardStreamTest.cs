@@ -527,7 +527,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 {
                     this.testOutputHelper.WriteLine(
                         Invariant(
-                            $"{history.Metadata.Concern}: {history.InternalHandlingEntryId}:{history.Metadata.InternalRecordId} - {history.Metadata.Status} - {history.Payload.DeserializePayloadUsingSpecificFactory<IHaveDetails>(stream.SerializerFactory).Details ?? "<no details specified>"}"));
+                            $"{history.Concern}: {history.InternalHandlingEntryId}:{history.InternalRecordId} - {history.Status} - {history.Details ?? "<no details specified>"}"));
                 }
 
                 var secondConcern = "FailedRetriedScenario";
@@ -605,7 +605,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 {
                     this.testOutputHelper.WriteLine(
                         Invariant(
-                            $"{history.Metadata.Concern}: {history.InternalHandlingEntryId}:{history.Metadata.InternalRecordId} - {history.Metadata.Status} - {history.Payload.DeserializePayloadUsingSpecificFactory<IHaveDetails>(stream.SerializerFactory).Details ?? "<no details specified>"}"));
+                            $"{history.Concern}: {history.InternalHandlingEntryId}:{history.InternalRecordId} - {history.Status} - {history.Details ?? "<no details specified>"}"));
                 }
 
                 var blockingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(0, Concerns.StreamHandlingDisabledConcern));
@@ -614,7 +614,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 {
                     this.testOutputHelper.WriteLine(
                         Invariant(
-                            $"{history.Metadata.Concern}: {history.InternalHandlingEntryId}:{history.Metadata.InternalRecordId} - {history.Metadata.Status} - {history.Payload.DeserializePayloadUsingSpecificFactory<IHaveDetails>(stream.SerializerFactory).Details ?? "<no details specified>"}"));
+                            $"{history.Concern}: {history.InternalHandlingEntryId}:{history.InternalRecordId} - {history.Status} - {history.Details ?? "<no details specified>"}"));
                 }
             }
 

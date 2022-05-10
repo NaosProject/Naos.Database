@@ -158,15 +158,13 @@ namespace Naos.Database.Domain.Test
 
             // ------------------------------- MODELS -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamRecordHandlingEntryMetadata(
+                () => new StreamRecordHandlingEntry(
+                    A.Dummy<long>(),
                     A.Dummy<long>(),
                     A.Dummy<string>(),
                     A.Dummy<HandlingStatus>(),
-                    A.Dummy<string>(),
-                    A.Dummy<SerializerRepresentation>(),
-                    A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
-                    A.Dummy<TypeRepresentationWithAndWithoutVersion>(),
                     A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                    A.Dummy<string>(),
                     A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

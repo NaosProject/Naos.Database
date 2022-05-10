@@ -47,6 +47,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new StandardGetHandlingStatusOp(
                                                        null,
                                                        referenceObject.RecordFilter,
+                                                       referenceObject.HandlingFilter,
                                                        specifiedResourceLocator: referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
@@ -61,7 +62,7 @@ namespace Naos.Database.Domain.Test
                     () =>
                         new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
                         {
-                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                            Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
@@ -69,6 +70,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new StandardGetHandlingStatusOp(
                                                        referenceObject.Concern,
                                                        null,
+                                                       referenceObject.HandlingFilter,
                                                        specifiedResourceLocator: referenceObject.SpecifiedResourceLocator);
 
                                                    return result;
@@ -77,6 +79,29 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionMessageContains = new[]
                                                                {
                                                                    "recordFilter",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'handlingFilter' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+
+                                                   var result = new StandardGetHandlingStatusOp(
+                                                       referenceObject.Concern,
+                                                       referenceObject.RecordFilter,
+                                                       null,
+                                                       specifiedResourceLocator: referenceObject.SpecifiedResourceLocator);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "handlingFilter",
                                                                },
                         });
         }

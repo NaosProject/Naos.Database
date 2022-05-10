@@ -33,334 +33,275 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StandardGetHandlingStatusOpTest
+    public static partial class HandlingFilterTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardGetHandlingStatusOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetHandlingStatusOp>()
+        private static readonly StringRepresentationTestScenarios<HandlingFilter> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<HandlingFilter>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardGetHandlingStatusOp>
+                new StringRepresentationTestScenario<HandlingFilter>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<HandlingFilter>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<HandlingFilter>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetHandlingStatusOp: Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, HandlingFilter = {systemUnderTest.HandlingFilter?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.HandlingFilter: CurrentHandlingStatuses = {systemUnderTest.CurrentHandlingStatuses?.ToString() ?? "<null>"}, Tags = {systemUnderTest.Tags?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetHandlingStatusOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetHandlingStatusOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<HandlingFilter> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<HandlingFilter>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<HandlingFilter>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'currentHandlingStatuses' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new StandardGetHandlingStatusOp(
+                        var result = new HandlingFilter(
                                              null,
-                                             referenceObject.RecordFilter,
-                                             referenceObject.HandlingFilter,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.Tags,
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "concern", },
+                    ExpectedExceptionMessageContains = new[] { "currentHandlingStatuses", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<HandlingFilter>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'currentHandlingStatuses' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new StandardGetHandlingStatusOp(
-                                             Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.RecordFilter,
-                                             referenceObject.HandlingFilter,
-                                             referenceObject.SpecifiedResourceLocator);
+                        var result = new HandlingFilter(
+                                             new List<HandlingStatus>(),
+                                             referenceObject.Tags,
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "concern", "white space", },
+                    ExpectedExceptionMessageContains = new[] { "currentHandlingStatuses", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<HandlingFilter>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'tags' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new StandardGetHandlingStatusOp(
-                                             referenceObject.Concern,
+                        var result = new HandlingFilter(
+                                             referenceObject.CurrentHandlingStatuses,
                                              null,
-                                             referenceObject.HandlingFilter,
-                                             referenceObject.SpecifiedResourceLocator);
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "recordFilter", },
+                    ExpectedExceptionMessageContains = new[] { "tags", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<HandlingFilter>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'handlingFilter' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tags' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new StandardGetHandlingStatusOp(
-                                             referenceObject.Concern,
-                                             referenceObject.RecordFilter,
-                                             null,
-                                             referenceObject.SpecifiedResourceLocator);
+                        var result = new HandlingFilter(
+                                             referenceObject.CurrentHandlingStatuses,
+                                             new List<NamedValue<string>>(),
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "handlingFilter", },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorArgumentValidationTestScenario<HandlingFilter>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'specifiedResourceLocator' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new StandardGetHandlingStatusOp(
-                                             referenceObject.Concern,
-                                             referenceObject.RecordFilter,
-                                             referenceObject.HandlingFilter,
-                                             null);
+                        var result = new HandlingFilter(
+                                             referenceObject.CurrentHandlingStatuses,
+                                             new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
+                                             referenceObject.TagMatchStrategy);
 
                         return result;
                     },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "specifiedResourceLocator", },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingStatusOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetHandlingStatusOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<HandlingFilter> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<HandlingFilter>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<HandlingFilter>
                 {
-                    Name = "Concern should return same 'concern' parameter passed to constructor when getting",
+                    Name = "CurrentHandlingStatuses should return same 'currentHandlingStatuses' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<HandlingFilter>
                         {
-                            SystemUnderTest = new StandardGetHandlingStatusOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.HandlingFilter,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.Concern,
+                            SystemUnderTest = new HandlingFilter(
+                                                      referenceObject.CurrentHandlingStatuses,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TagMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.CurrentHandlingStatuses,
                         };
 
                         return result;
                     },
-                    PropertyName = "Concern",
+                    PropertyName = "CurrentHandlingStatuses",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<HandlingFilter>
                 {
-                    Name = "RecordFilter should return same 'recordFilter' parameter passed to constructor when getting",
+                    Name = "Tags should return same 'tags' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<HandlingFilter>
                         {
-                            SystemUnderTest = new StandardGetHandlingStatusOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.HandlingFilter,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.RecordFilter,
+                            SystemUnderTest = new HandlingFilter(
+                                                      referenceObject.CurrentHandlingStatuses,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TagMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.Tags,
                         };
 
                         return result;
                     },
-                    PropertyName = "RecordFilter",
+                    PropertyName = "Tags",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
+                new ConstructorPropertyAssignmentTestScenario<HandlingFilter>
                 {
-                    Name = "HandlingFilter should return same 'handlingFilter' parameter passed to constructor when getting",
+                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
+                        var referenceObject = A.Dummy<HandlingFilter>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<HandlingFilter>
                         {
-                            SystemUnderTest = new StandardGetHandlingStatusOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.HandlingFilter,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.HandlingFilter,
+                            SystemUnderTest = new HandlingFilter(
+                                                      referenceObject.CurrentHandlingStatuses,
+                                                      referenceObject.Tags,
+                                                      referenceObject.TagMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "HandlingFilter",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetHandlingStatusOp>
-                {
-                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetHandlingStatusOp>
-                        {
-                            SystemUnderTest = new StandardGetHandlingStatusOp(
-                                                      referenceObject.Concern,
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.HandlingFilter,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "SpecifiedResourceLocator",
+                    PropertyName = "TagMatchStrategy",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardGetHandlingStatusOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetHandlingStatusOp>()
+        private static readonly DeepCloneWithTestScenarios<HandlingFilter> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<HandlingFilter>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
+                new DeepCloneWithTestScenario<HandlingFilter>
                 {
-                    Name = "DeepCloneWithConcern should deep clone object and replace Concern with the provided concern",
-                    WithPropertyName = "Concern",
+                    Name = "DeepCloneWithCurrentHandlingStatuses should deep clone object and replace CurrentHandlingStatuses with the provided currentHandlingStatuses",
+                    WithPropertyName = "CurrentHandlingStatuses",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<HandlingFilter>();
 
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.Concern.IsEqualTo(_.Concern));
+                        var referenceObject = A.Dummy<HandlingFilter>().ThatIs(_ => !systemUnderTest.CurrentHandlingStatuses.IsEqualTo(_.CurrentHandlingStatuses));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<HandlingFilter>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Concern,
+                            DeepCloneWithValue = referenceObject.CurrentHandlingStatuses,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
+                new DeepCloneWithTestScenario<HandlingFilter>
                 {
-                    Name = "DeepCloneWithRecordFilter should deep clone object and replace RecordFilter with the provided recordFilter",
-                    WithPropertyName = "RecordFilter",
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<HandlingFilter>();
 
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.RecordFilter.IsEqualTo(_.RecordFilter));
+                        var referenceObject = A.Dummy<HandlingFilter>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<HandlingFilter>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordFilter,
+                            DeepCloneWithValue = referenceObject.Tags,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
+                new DeepCloneWithTestScenario<HandlingFilter>
                 {
-                    Name = "DeepCloneWithHandlingFilter should deep clone object and replace HandlingFilter with the provided handlingFilter",
-                    WithPropertyName = "HandlingFilter",
+                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
+                    WithPropertyName = "TagMatchStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+                        var systemUnderTest = A.Dummy<HandlingFilter>();
 
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.HandlingFilter.IsEqualTo(_.HandlingFilter));
+                        var referenceObject = A.Dummy<HandlingFilter>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<HandlingFilter>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.HandlingFilter,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetHandlingStatusOp>
-                {
-                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
-                    WithPropertyName = "SpecifiedResourceLocator",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
-
-                        var referenceObject = A.Dummy<StandardGetHandlingStatusOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetHandlingStatusOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly StandardGetHandlingStatusOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetHandlingStatusOp>();
+        private static readonly HandlingFilter ReferenceObjectForEquatableTestScenarios = A.Dummy<HandlingFilter>();
 
-        private static readonly EquatableTestScenarios<StandardGetHandlingStatusOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetHandlingStatusOp>()
+        private static readonly EquatableTestScenarios<HandlingFilter> EquatableTestScenarios = new EquatableTestScenarios<HandlingFilter>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardGetHandlingStatusOp>
+                new EquatableTestScenario<HandlingFilter>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetHandlingStatusOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new HandlingFilter[]
                     {
-                        new StandardGetHandlingStatusOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.HandlingFilter,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new HandlingFilter(
+                                ReferenceObjectForEquatableTestScenarios.CurrentHandlingStatuses,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetHandlingStatusOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new HandlingFilter[]
                     {
-                        new StandardGetHandlingStatusOp(
-                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.HandlingFilter,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetHandlingStatusOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.HandlingFilter,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetHandlingStatusOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.HandlingFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.HandlingFilter)).HandlingFilter,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetHandlingStatusOp(
-                                ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.HandlingFilter,
-                                A.Dummy<StandardGetHandlingStatusOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                        new HandlingFilter(
+                                A.Dummy<HandlingFilter>().Whose(_ => !_.CurrentHandlingStatuses.IsEqualTo(ReferenceObjectForEquatableTestScenarios.CurrentHandlingStatuses)).CurrentHandlingStatuses,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy),
+                        new HandlingFilter(
+                                ReferenceObjectForEquatableTestScenarios.CurrentHandlingStatuses,
+                                A.Dummy<HandlingFilter>().Whose(_ => !_.Tags.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Tags)).Tags,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy),
+                        new HandlingFilter(
+                                ReferenceObjectForEquatableTestScenarios.CurrentHandlingStatuses,
+                                ReferenceObjectForEquatableTestScenarios.Tags,
+                                A.Dummy<HandlingFilter>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -369,68 +310,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<ArchiveFailureToHandleRecordOp>(),
-                        A.Dummy<CancelRunningHandleRecordOp>(),
-                        A.Dummy<CompleteRunningHandleRecordOp>(),
-                        A.Dummy<CreateDatabaseOp>(),
-                        A.Dummy<DeleteDatabaseOp>(),
-                        A.Dummy<DisableHandlingForRecordOp>(),
-                        A.Dummy<DisableHandlingForStreamOp>(),
-                        A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordOp>(),
-                        A.Dummy<GetAllRecordsByIdOp<Version>>(),
-                        A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
-                        A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
-                        A.Dummy<GetDistinctIdsOp<Version>>(),
-                        A.Dummy<GetHandlingHistoryOp>(),
-                        A.Dummy<GetHandlingStatusOp>(),
-                        A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestObjectByTagsOp<Version>>(),
-                        A.Dummy<GetLatestObjectOp<Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordOp<Version>>(),
-                        A.Dummy<GetLatestStringSerializedObjectByIdOp<Version>>(),
-                        A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetResourceLocatorByIdOp<Version>>(),
-                        A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, MemoryStandardStream>>(),
-                        A.Dummy<HandleRecordOp>(),
-                        A.Dummy<HandleRecordOp<Version>>(),
-                        A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<HandleRecordWithIdOp<Version>>(),
-                        A.Dummy<PruneBeforeInternalRecordDateOp>(),
-                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
-                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
-                        A.Dummy<PutOp<Version>>(),
-                        A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
-                        A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<ResetCompletedHandleRecordOp>(),
-                        A.Dummy<ResetFailedHandleRecordOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
-                        A.Dummy<StandardCreateStreamOp>(),
-                        A.Dummy<StandardDeleteStreamOp>(),
-                        A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
-                        A.Dummy<StandardGetHandlingHistoryOp>(),
-                        A.Dummy<StandardGetInternalRecordIdsOp>(),
-                        A.Dummy<StandardGetLatestRecordOp>(),
-                        A.Dummy<StandardGetLatestStringSerializedObjectOp>(),
-                        A.Dummy<StandardGetNextUniqueLongOp>(),
-                        A.Dummy<StandardPruneStreamOp>(),
-                        A.Dummy<StandardPutRecordOp>(),
-                        A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),
-                        A.Dummy<StandardUpdateHandlingStatusForStreamOp>(),
-                        A.Dummy<ThrowIfResourceUnavailableOp>(),
-                        A.Dummy<TryHandleRecordOp<Version>>(),
-                        A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<TryHandleRecordWithIdOp<Version>>(),
                     },
                 });
 
@@ -452,12 +331,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardGetHandlingStatusOp___Should_implement_IModel_of_StandardGetHandlingStatusOp___When_reflecting()
+            public static void HandlingFilter___Should_implement_IModel_of_HandlingFilter___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetHandlingStatusOp);
+                var type = typeof(HandlingFilter);
 
-                var expectedModelMethods = typeof(IModel<StandardGetHandlingStatusOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<HandlingFilter>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -467,7 +346,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetHandlingStatusOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<HandlingFilter>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -485,10 +364,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardGetHandlingStatusOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void HandlingFilter___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetHandlingStatusOp);
+                var type = typeof(HandlingFilter);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -668,10 +547,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+                var systemUnderTest = A.Dummy<HandlingFilter>();
 
                 // Act
-                var actual = (StandardGetHandlingStatusOp)systemUnderTest.Clone();
+                var actual = (HandlingFilter)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -695,7 +574,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetHandlingStatusOp>();
+                var systemUnderTest = A.Dummy<HandlingFilter>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -704,40 +583,28 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.RecordFilter == null)
+                if (systemUnderTest.CurrentHandlingStatuses == null)
                 {
-                    actual.RecordFilter.AsTest().Must().BeNull();
+                    actual.CurrentHandlingStatuses.AsTest().Must().BeNull();
                 }
-                else if (!actual.RecordFilter.GetType().IsValueType)
+                else if (!actual.CurrentHandlingStatuses.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
+                    actual.CurrentHandlingStatuses.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.CurrentHandlingStatuses);
                 }
 
-                if (systemUnderTest.HandlingFilter == null)
+                if (systemUnderTest.Tags == null)
                 {
-                    actual.HandlingFilter.AsTest().Must().BeNull();
+                    actual.Tags.AsTest().Must().BeNull();
                 }
-                else if (!actual.HandlingFilter.GetType().IsValueType)
+                else if (!actual.Tags.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.HandlingFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.HandlingFilter);
-                }
-
-                if (systemUnderTest.SpecifiedResourceLocator == null)
-                {
-                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
-                }
-                else if (!actual.SpecifiedResourceLocator.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
+                    actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
                 }
             }
 
@@ -757,7 +624,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Concern", "RecordFilter", "HandlingFilter", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "CurrentHandlingStatuses", "Tags", "TagMatchStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -770,12 +637,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardGetHandlingStatusOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (HandlingFilter)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardGetHandlingStatusOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(HandlingFilter).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -837,7 +704,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingStatusOp>();
+                var expected = A.Dummy<HandlingFilter>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -866,7 +733,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingStatusOp>();
+                var expected = A.Dummy<HandlingFilter>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -895,7 +762,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingStatusOp>();
+                var expected = A.Dummy<HandlingFilter>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -924,7 +791,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetHandlingStatusOp>();
+                var expected = A.Dummy<HandlingFilter>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -958,8 +825,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetHandlingStatusOp systemUnderTest1 = null;
-                StandardGetHandlingStatusOp systemUnderTest2 = null;
+                HandlingFilter systemUnderTest1 = null;
+                HandlingFilter systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -989,7 +856,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetHandlingStatusOp systemUnderTest = null;
+                    HandlingFilter systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1138,8 +1005,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetHandlingStatusOp systemUnderTest1 = null;
-                StandardGetHandlingStatusOp systemUnderTest2 = null;
+                HandlingFilter systemUnderTest1 = null;
+                HandlingFilter systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1169,7 +1036,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetHandlingStatusOp systemUnderTest = null;
+                    HandlingFilter systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1315,300 +1182,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_HandlingFilter___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    OperationBase systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyDictionary_of_long_HandlingStatus___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>> systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>>)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyDictionary_of_long_HandlingStatus___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>>)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyDictionary_of_long_HandlingStatus___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyDictionary_of_long_HandlingStatus___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyDictionary_of_long_HandlingStatus___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyDictionary<long, HandlingStatus>>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetHandlingStatusOp___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    StandardGetHandlingStatusOp systemUnderTest = null;
+                    HandlingFilter systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1632,7 +1213,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetHandlingStatusOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_HandlingFilter___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1660,7 +1241,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetHandlingStatusOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_HandlingFilter___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1688,7 +1269,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetHandlingStatusOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_HandlingFilter___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1716,7 +1297,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetHandlingStatusOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_HandlingFilter___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

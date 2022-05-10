@@ -30,7 +30,8 @@ namespace Naos.Database.Domain
             var result = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 new RecordFilter(ids: operation.IdsToMatch, versionMatchStrategy: operation.VersionMatchStrategy),
-                specifiedResourceLocator: specifiedResourceLocator);
+                new HandlingFilter(),
+                specifiedResourceLocator);
 
             return result;
         }
@@ -71,7 +72,8 @@ namespace Naos.Database.Domain
             var result = new StandardGetHandlingStatusOp(
                 operation.Concern,
                 new RecordFilter(tags: operation.TagsToMatch, tagMatchStrategy: operation.TagMatchStrategy),
-                specifiedResourceLocator: specifiedResourceLocator);
+                new HandlingFilter(),
+                specifiedResourceLocator);
 
             return result;
         }
@@ -97,7 +99,8 @@ namespace Naos.Database.Domain
                                        {
                                            operation.InternalRecordId,
                                        }),
-                specifiedResourceLocator: specifiedResourceLocator);
+                new HandlingFilter(),
+                specifiedResourceLocator);
 
             return result;
         }

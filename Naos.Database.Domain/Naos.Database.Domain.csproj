@@ -229,6 +229,10 @@
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.designer.cs">
       <DependentUpon>ResourceLocatorBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Common\HandlingFilter.cs" />
+    <Compile Include="Models\Classes\Stream\Common\HandlingFilter.designer.cs">
+      <DependentUpon>HandlingFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\Stream\Common\RecordFilter.cs" />
     <Compile Include="Models\Classes\Stream\Common\RecordFilter.designer.cs">
       <DependentUpon>RecordFilter.cs</DependentUpon>

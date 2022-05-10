@@ -260,6 +260,10 @@
       <DependentUpon>ArchiveFailureToHandleRecordOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="Models\Classes\Stream\Common\HandlingFilterTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\HandlingFilterTest.designer.cs">
+      <DependentUpon>HandlingFilterTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Management\CreateDatabaseOpTest.cs" />
     <Compile Include="Operations\Classes\Management\CreateDatabaseOpTest.designer.cs">
       <DependentUpon>CreateDatabaseOpTest.cs</DependentUpon>

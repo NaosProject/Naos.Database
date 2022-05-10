@@ -304,6 +304,12 @@ namespace Naos.Database.Domain.Test
                 });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new HandlingFilter(
+                                 A.Dummy<IReadOnlyCollection<HandlingStatus>>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandlingForRecordDisabledEvent(
                                  A.Dummy<long>(),
                                  A.Dummy<string>(),
@@ -591,7 +597,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardGetHandlingStatusOp(
                                  A.Dummy<string>(),
                                  A.Dummy<RecordFilter>(),
-                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<HandlingFilter>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

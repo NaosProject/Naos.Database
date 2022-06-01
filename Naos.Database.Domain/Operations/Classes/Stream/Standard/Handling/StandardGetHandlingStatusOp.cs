@@ -35,7 +35,7 @@ namespace Naos.Database.Domain
             HandlingFilter handlingFilter,
             IResourceLocator specifiedResourceLocator = null)
         {
-            concern.ThrowIfInvalidOrReservedConcern();
+            concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
             recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
             handlingFilter.MustForArg(nameof(handlingFilter)).NotBeNull();
 

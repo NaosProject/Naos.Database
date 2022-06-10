@@ -45,7 +45,8 @@ namespace Naos.Database.Domain
                         : new[]
                           {
                               operation.ObjectType,
-                          }),
+                          },
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 RecordNotFoundStrategy.ReturnDefault,
                 specifiedResourceLocator);
 
@@ -84,7 +85,8 @@ namespace Naos.Database.Domain
                     objectTypes: new[]
                                  {
                                      typeof(TObject).ToRepresentation(),
-                                 }),
+                                 },
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
@@ -190,7 +192,8 @@ namespace Naos.Database.Domain
                     objectTypes: new[]
                                  {
                                      typeof(TObject).ToRepresentation(),
-                                 }),
+                                 },
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
@@ -231,7 +234,8 @@ namespace Naos.Database.Domain
                         : new[]
                           {
                               operation.ObjectType,
-                          }),
+                          },
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
@@ -272,7 +276,8 @@ namespace Naos.Database.Domain
                         : new[]
                           {
                               operation.ObjectType,
-                          }),
+                          },
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataOnly,
                 specifiedResourceLocator);
@@ -347,7 +352,8 @@ namespace Naos.Database.Domain
                           {
                               operation.ObjectType,
                           },
-                    versionMatchStrategy: operation.VersionMatchStrategy),
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 specifiedResourceLocator);
 

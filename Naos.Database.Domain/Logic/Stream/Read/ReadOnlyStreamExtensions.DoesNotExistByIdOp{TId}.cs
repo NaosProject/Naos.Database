@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
@@ -21,16 +22,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId>(
             this IReadOnlyStream stream,
             TId id,
             TypeRepresentation objectType = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, deprecatedIdTypes);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -44,16 +47,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IReadOnlyStream stream,
             TId id,
             TypeRepresentation objectType = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, deprecatedIdTypes);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;

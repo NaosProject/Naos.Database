@@ -6,7 +6,9 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -22,10 +24,12 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.</param>
         public GetLatestObjectByIdOp(
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
+            RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
@@ -33,6 +37,7 @@ namespace Naos.Database.Domain
             this.Id = id;
             this.VersionMatchStrategy = versionMatchStrategy;
             this.RecordNotFoundStrategy = recordNotFoundStrategy;
+            this.DeprecatedIdTypes = deprecatedIdTypes;
         }
 
         /// <inheritdoc />
@@ -47,5 +52,10 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use when no record(s) are found.
         /// </summary>
         public RecordNotFoundStrategy RecordNotFoundStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the object types used in a record that indicates an identifier deprecation.
+        /// </summary>
+        public IReadOnlyCollection<TypeRepresentation> DeprecatedIdTypes { get; private set; }
     }
 }

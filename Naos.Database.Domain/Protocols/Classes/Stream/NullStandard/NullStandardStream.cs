@@ -64,25 +64,25 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public IStreamWriteProtocols GetStreamWritingProtocols()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamWriteProtocols();
         }
 
         /// <inheritdoc />
         public IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamWriteProtocols<TObject>();
         }
 
         /// <inheritdoc />
         public IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamWriteWithIdProtocols<TId>();
         }
 
         /// <inheritdoc />
         public IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamWriteWithIdProtocols<TId, TObject>();
         }
 
         /// <inheritdoc />

@@ -433,6 +433,10 @@
     <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyResourceLocator.cs" />
     <Compile Include="Models\Interfaces\ResourceLocation\IResourceLocator.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteWithIdProtocols{TId}.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteProtocols.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\DelegatedStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardRetryStream.cs" />
     <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />
@@ -683,7 +687,7 @@
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadProtocols.cs" />
     <Compile Include="Protocols\Classes\ResourceLocation\NullResourceLocatorProtocols.cs" />
     <Compile Include="Models\Classes\Representation\NullStreamRepresentation.cs" />
-    <Compile Include="Protocols\Classes\Stream\Standard\NullStandardStream.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStream.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}.cs" />

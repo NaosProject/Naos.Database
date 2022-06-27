@@ -433,10 +433,10 @@
     <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyResourceLocator.cs" />
     <Compile Include="Models\Interfaces\ResourceLocation\IResourceLocator.cs" />
-    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteWithIdProtocols{TId,TObject}.cs" />
-    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteWithIdProtocols{TId}.cs" />
-    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteProtocols{TObject}.cs" />
-    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamWriteProtocols.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteProtocols.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteProtocols{TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
+    <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId}.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\DelegatedStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardRetryStream.cs" />
     <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />

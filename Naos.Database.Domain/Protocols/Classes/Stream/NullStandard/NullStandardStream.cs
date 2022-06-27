@@ -18,6 +18,8 @@ namespace Naos.Database.Domain
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "'Stream' is the best term we could come up with; it's potential confusion with System.IO.Stream was debated.")]
     public class NullStandardStream : IStandardStream
     {
+        private static readonly Random Random = new Random();
+
         /// <inheritdoc />
         public string Name => nameof(NullStandardStream);
 
@@ -40,49 +42,49 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public IStreamReadProtocols GetStreamReadingProtocols()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamReadWriteProtocols(this);
         }
 
         /// <inheritdoc />
         public IStreamReadProtocols<TObject> GetStreamReadingProtocols<TObject>()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamReadWriteProtocols<TObject>(this);
         }
 
         /// <inheritdoc />
         public IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamReadWriteWithIdProtocols<TId>(this);
         }
 
         /// <inheritdoc />
         public IStreamReadWithIdProtocols<TId, TObject> GetStreamReadingWithIdProtocols<TId, TObject>()
         {
-            throw new NotImplementedException();
+            return new NullStandardStreamReadWriteWithIdProtocols<TId, TObject>(this);
         }
 
         /// <inheritdoc />
         public IStreamWriteProtocols GetStreamWritingProtocols()
         {
-            return new NullStandardStreamWriteProtocols();
+            return new NullStandardStreamReadWriteProtocols(this);
         }
 
         /// <inheritdoc />
         public IStreamWriteProtocols<TObject> GetStreamWritingProtocols<TObject>()
         {
-            return new NullStandardStreamWriteProtocols<TObject>();
+            return new NullStandardStreamReadWriteProtocols<TObject>(this);
         }
 
         /// <inheritdoc />
         public IStreamWriteWithIdProtocols<TId> GetStreamWritingWithIdProtocols<TId>()
         {
-            return new NullStandardStreamWriteWithIdProtocols<TId>();
+            return new NullStandardStreamReadWriteWithIdProtocols<TId>(this);
         }
 
         /// <inheritdoc />
         public IStreamWriteWithIdProtocols<TId, TObject> GetStreamWritingWithIdProtocols<TId, TObject>()
         {
-            return new NullStandardStreamWriteWithIdProtocols<TId, TObject>();
+            return new NullStandardStreamReadWriteWithIdProtocols<TId, TObject>(this);
         }
 
         /// <inheritdoc />
@@ -118,37 +120,38 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public IReadOnlyCollection<StringSerializedIdentifier> Execute(StandardGetDistinctStringSerializedIdsOp operation)
         {
-            throw new NotImplementedException();
+            return new List<StringSerializedIdentifier>();
         }
 
         /// <inheritdoc />
         public IReadOnlyCollection<long> Execute(StandardGetInternalRecordIdsOp operation)
         {
-            throw new NotImplementedException();
+            return new List<long>();
         }
 
         /// <inheritdoc />
         public StreamRecord Execute(StandardGetLatestRecordOp operation)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <inheritdoc />
         public string Execute(StandardGetLatestStringSerializedObjectOp operation)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         /// <inheritdoc />
         public PutRecordResult Execute(StandardPutRecordOp operation)
         {
-            throw new NotImplementedException();
+            return new PutRecordResult(null);
         }
 
         /// <inheritdoc />
         public long Execute(StandardGetNextUniqueLongOp operation)
         {
-            throw new NotImplementedException();
+            var result = Random.Next();
+            return result;
         }
 
         /// <inheritdoc />

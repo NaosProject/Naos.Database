@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HandlingFilterTest.cs" company="Naos Project">
+// <copyright file="NullDatabaseDefinitionTest.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -17,21 +17,18 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-    using OBeautifulCode.Type;
+
     using Xunit;
 
     using static System.FormattableString;
 
     [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
-    public static partial class HandlingFilterTest
+    public static partial class NullDatabaseDefinitionTest
     {
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
-        static HandlingFilterTest()
+        static NullDatabaseDefinitionTest()
         {
-            ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(ConstructorArgumentValidationTestScenario<HandlingFilter>.ForceGeneratedTestsToPassAndWriteMyOwnScenario);
         }
     }
 }

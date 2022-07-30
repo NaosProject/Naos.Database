@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<DoesAnyExistByIdOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.DoesAnyExistByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.DoesAnyExistByIdOp<Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, ObjectType = {systemUnderTest.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,7 +66,8 @@ namespace Naos.Database.Domain.Test
                         var result = new DoesAnyExistByIdOp<Version>(
                                              null,
                                              referenceObject.ObjectType,
-                                             referenceObject.VersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
 
                         return result;
                     },
@@ -84,12 +85,70 @@ namespace Naos.Database.Domain.Test
                         var result = new DoesAnyExistByIdOp<Version>(
                                              referenceObject.Id,
                                              null,
-                                             referenceObject.VersionMatchStrategy);
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "objectType", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'deprecatedIdTypes' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                        var result = new DoesAnyExistByIdOp<Version>(
+                                             referenceObject.Id,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' is an empty enumerable scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                        var result = new DoesAnyExistByIdOp<Version>(
+                                             referenceObject.Id,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             new List<TypeRepresentation>());
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "is an empty enumerable", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                        var result = new DoesAnyExistByIdOp<Version>(
+                                             referenceObject.Id,
+                                             referenceObject.ObjectType,
+                                             referenceObject.VersionMatchStrategy,
+                                             new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<DoesAnyExistByIdOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<DoesAnyExistByIdOp<Version>>()
@@ -106,7 +165,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -127,7 +187,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
                             ExpectedPropertyValue = referenceObject.ObjectType,
                         };
 
@@ -148,13 +209,36 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new DoesAnyExistByIdOp<Version>(
                                                       referenceObject.Id,
                                                       referenceObject.ObjectType,
-                                                      referenceObject.VersionMatchStrategy),
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
                             ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
                         return result;
                     },
                     PropertyName = "VersionMatchStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<DoesAnyExistByIdOp<Version>>
+                {
+                    Name = "DeprecatedIdTypes should return same 'deprecatedIdTypes' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<DoesAnyExistByIdOp<Version>>
+                        {
+                            SystemUnderTest = new DoesAnyExistByIdOp<Version>(
+                                                      referenceObject.Id,
+                                                      referenceObject.ObjectType,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes),
+                            ExpectedPropertyValue = referenceObject.DeprecatedIdTypes,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "DeprecatedIdTypes",
                 });
 
         private static readonly DeepCloneWithTestScenarios<DoesAnyExistByIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<DoesAnyExistByIdOp<Version>>()
@@ -217,6 +301,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<DoesAnyExistByIdOp<Version>>
+                {
+                    Name = "DeepCloneWithDeprecatedIdTypes should deep clone object and replace DeprecatedIdTypes with the provided deprecatedIdTypes",
+                    WithPropertyName = "DeprecatedIdTypes",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>().ThatIs(_ => !systemUnderTest.DeprecatedIdTypes.IsEqualTo(_.DeprecatedIdTypes));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<DoesAnyExistByIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.DeprecatedIdTypes,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly DoesAnyExistByIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<DoesAnyExistByIdOp<Version>>();
@@ -232,22 +336,31 @@ namespace Naos.Database.Domain.Test
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new DoesAnyExistByIdOp<Version>[]
                     {
                         new DoesAnyExistByIdOp<Version>(
                                 A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.ObjectType.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ObjectType)).ObjectType,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
                         new DoesAnyExistByIdOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.ObjectType,
-                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy),
+                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                        new DoesAnyExistByIdOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.ObjectType,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                A.Dummy<DoesAnyExistByIdOp<Version>>().Whose(_ => !_.DeprecatedIdTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes)).DeprecatedIdTypes),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -614,6 +727,18 @@ namespace Naos.Database.Domain.Test
                     // a deep clone of a value type object is the same object.
                     actual.ObjectType.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ObjectType);
                 }
+
+                if (systemUnderTest.DeprecatedIdTypes == null)
+                {
+                    actual.DeprecatedIdTypes.AsTest().Must().BeNull();
+                }
+                else if (!actual.DeprecatedIdTypes.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.DeprecatedIdTypes.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.DeprecatedIdTypes);
+                }
             }
 
             [Fact]
@@ -632,7 +757,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "ObjectType", "VersionMatchStrategy" };
+                var propertyNames = new string[] { "Id", "ObjectType", "VersionMatchStrategy", "DeprecatedIdTypes" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1752,7 +1877,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact]
+            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

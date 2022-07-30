@@ -211,6 +211,9 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<FileStreamRepresentation>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => (IDatabaseDefinition)new NullDatabaseDefinition(A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
                 {
                     var scenario = ThreadSafeRandom.Next(1, 5);

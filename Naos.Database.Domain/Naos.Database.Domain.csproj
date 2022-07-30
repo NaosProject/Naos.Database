@@ -216,6 +216,10 @@
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.GetNextUniqueLongOp.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Common\VersionMatchStrategyExtensions.cs" />
+    <Compile Include="Models\Classes\NullDatabaseDefinition.cs" />
+    <Compile Include="Models\Classes\NullDatabaseDefinition.designer.cs">
+      <DependentUpon>NullDatabaseDefinition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBase.designer.cs">
       <DependentUpon>DatabaseLocatorBase.cs</DependentUpon>
     </Compile>

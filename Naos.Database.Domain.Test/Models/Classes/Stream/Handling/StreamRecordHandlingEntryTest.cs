@@ -102,7 +102,7 @@ namespace Naos.Database.Domain.Test
                                                                                 .Concat(
                                                                                      new NamedValue<string>[]
                                                                                      {
-                                                                                         null
+                                                                                         null,
                                                                                      })
                                                                                 .Concat(referenceObject.Tags)
                                                                                 .ToList(),

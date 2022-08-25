@@ -19,64 +19,9 @@ namespace Naos.Database.Domain
         public override IReadOnlyCollection<long> Execute(
             StandardGetInternalRecordIdsOp operation)
         {
-            throw new NotImplementedException();
-
-            /*
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-
-            lock (this.streamLock)
-            {
-                IReadOnlyCollection<long> ProcessDefaultReturn()
-                {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            return new long[0];
-                        case RecordNotFoundStrategy.Throw:
-                            throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
-                }
-
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                if (partition == null)
-                {
-                    return ProcessDefaultReturn();
-                }
-
-                var result = partition
-                            .Where(
-                                 _ => _.Metadata.FuzzyMatchTypes(
-                                     operation.RecordFilter.IdTypes,
-                                     operation.RecordFilter.ObjectTypes,
-                                     operation.RecordFilter.VersionMatchStrategy))
-                            .Select(_ => _.InternalRecordId)
-                            .Union(
-                                 operation.RecordFilter.Ids.Any()
-                                 partition
-                                    .Where(
-                                         _ => _.Metadata.FuzzyMatchTypesAndId(
-                                             operation.StringSerializedId,
-                                             operation.IdentifierType,
-                                             operation.ObjectType,
-                                             operation.VersionMatchStrategy))
-                                    .Select(_ => _.InternalRecordId))
-                            .ToList();
-
-                if (result.Any())
-                {
-                    return result;
-                }
-                else
-                {
-                    return ProcessDefaultReturn();
-                }
-            }
-            */
+            var matchingRecords = this.GetMatchingRecords(operation);
+            var result = matchingRecords.Select(_ => _.InternalRecordId).ToList();
+            return result;
         }
 
         /// <inheritdoc />
@@ -86,48 +31,11 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var result = new HashSet<StringSerializedIdentifier>();
-            lock (this.streamLock)
-            {
-                var locators = new List<MemoryDatabaseLocator>();
-                if (operation.SpecifiedResourceLocator != null)
-                {
-                    locators.Add(operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>());
-                }
-                else
-                {
-                    var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-
-                    foreach (var locator in allLocators)
-                    {
-                        locators.Add(locator.ConfirmAndConvert<MemoryDatabaseLocator>());
-                    }
-                }
-
-                foreach (var memoryDatabaseLocator in locators)
-                {
-                    this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                    if (partition != null)
-                    {
-                        foreach (var streamRecord in partition)
-                        {
-                            if (streamRecord.Metadata.FuzzyMatchTypes(
-                                    operation.RecordFilter.IdTypes,
-                                    operation.RecordFilter.ObjectTypes,
-                                    operation.RecordFilter.VersionMatchStrategy)
-                             && ((!operation.RecordFilter.Tags?.Any() ?? true)
-                              || streamRecord.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy)))
-                            {
-                                result.Add(
-                                    new StringSerializedIdentifier(
-                                        streamRecord.Metadata.StringSerializedId,
-                                        streamRecord.Metadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                                            operation.RecordFilter.VersionMatchStrategy)));
-                            }
-                        }
-                    }
-                }
-            }
+            var matchingRecords = this.GetMatchingRecords(operation);
+            matchingRecords.ToList()
+                           .ForEach(
+                                _ => result.Add(
+                                    new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion)));
 
             return result;
         }
@@ -136,51 +44,27 @@ namespace Naos.Database.Domain
         public override StreamRecord Execute(
             StandardGetLatestRecordOp operation)
         {
-            throw new NotImplementedException();
-
-            /*
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+            var result = this.GetMatchingRecords(operation);
 
-            lock (this.streamLock)
+            if (result != null && result.Any())
             {
-                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
-
-                var result = partition?
-                            .OrderByDescending(_ => _.InternalRecordId)
-                            .FirstOrDefault(
-                                 _ => _.Metadata.FuzzyMatchTypes(
-                                     operation.IdentifierType == null
-                                         ? null
-                                         : new[]
-                                           {
-                                               operation.IdentifierType,
-                                           },
-                                     operation.ObjectType == null
-                                         ? null
-                                         : new[]
-                                           {
-                                               operation.ObjectType,
-                                           },
-                                     operation.VersionMatchStrategy));
-
-                if (result != null)
-                {
-                    return result;
-                }
-
-                switch (operation.RecordNotFoundStrategy)
-                {
-                    case RecordNotFoundStrategy.ReturnDefault:
-                        return null;
-                    case RecordNotFoundStrategy.Throw:
-                        throw new InvalidOperationException(Invariant($"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                    default:
-                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                }
+                return result.OrderBy(_ => _.InternalRecordId).Last();
             }
-            */
+
+            switch (operation.RecordNotFoundStrategy)
+            {
+                case RecordNotFoundStrategy.ReturnDefault:
+                    return null;
+                case RecordNotFoundStrategy.Throw:
+                    throw new InvalidOperationException(
+                        Invariant(
+                            $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
+                default:
+                    throw new NotSupportedException(
+                        Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+            }
         }
 
         /// <inheritdoc />

@@ -11,6 +11,7 @@ namespace Naos.Database.Domain
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Naos.CodeAnalysis.Recipes;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -58,6 +59,137 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public string Id { get; private set; }
+
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
+        private IReadOnlyList<StreamRecord> GetMatchingRecords<TOperation>(
+            TOperation operation)
+            where TOperation : ISpecifyResourceLocator, ISpecifyRecordFilter
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            lock (this.streamLock)
+            {
+                var recordFilter = operation.RecordFilter;
+                var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+                var result = new List<StreamRecord>();
+                var resultInitialized = false;
+                this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
+                if (partition == null)
+                {
+                    return result;
+                }
+
+                // Internal Record Identifier
+                if (recordFilter.InternalRecordIds != null && recordFilter.InternalRecordIds.Any())
+                {
+                    if (resultInitialized)
+                    {
+                        result.RemoveAll(_ => !recordFilter.InternalRecordIds.Contains(_.InternalRecordId));
+                    }
+                    else
+                    {
+                        result.AddRange(partition.Where(_ => recordFilter.InternalRecordIds.Contains(_.InternalRecordId)));
+                        resultInitialized = true;
+                    }
+                }
+
+                // String Serialized Identifier
+                if (recordFilter.Ids != null && recordFilter.Ids.Any())
+                {
+                    var recordsMatchingById = recordFilter.Ids.SelectMany(
+                                                               i => partition.Where(
+                                                                   _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                                       i.StringSerializedId,
+                                                                       i.IdentifierType,
+                                                                       null,
+                                                                       recordFilter.VersionMatchStrategy)))
+                                                          .ToList();
+
+                    if (resultInitialized)
+                    {
+                        result.RemoveAll(_ => recordsMatchingById.Any(__ => _.InternalRecordId != __.InternalRecordId));
+                    }
+                    else
+                    {
+                        result.AddRange(recordsMatchingById);
+                        resultInitialized = true;
+                    }
+                }
+
+                // Identifier and Object Type
+                if ((recordFilter.IdTypes != null && recordFilter.IdTypes.Any()) || (recordFilter.ObjectTypes != null && recordFilter.ObjectTypes.Any()))
+                {
+                    var recordsMatchingByType = partition.Where(
+                                                              _ => _.Metadata.FuzzyMatchTypes(
+                                                                  recordFilter.IdTypes,
+                                                                  recordFilter.ObjectTypes,
+                                                                  recordFilter.VersionMatchStrategy))
+                                                         .ToList();
+
+                    if (resultInitialized)
+                    {
+                        result.RemoveAll(_ => !recordsMatchingByType.Any(__ => __.InternalRecordId == _.InternalRecordId));
+                    }
+                    else
+                    {
+                        result.AddRange(recordsMatchingByType);
+                        resultInitialized = true;
+                    }
+                }
+
+                // Tag
+                if (recordFilter.Tags != null && recordFilter.Tags.Any())
+                {
+                    var recordsMatchingByTag = partition
+                                              .Where(_ => _.Metadata.Tags.FuzzyMatchTags(recordFilter.Tags, recordFilter.TagMatchStrategy))
+                                              .ToList();
+                    if (resultInitialized)
+                    {
+                        result.RemoveAll(_ => recordsMatchingByTag.Any(__ => _.InternalRecordId != __.InternalRecordId));
+                    }
+                    else
+                    {
+                        result.AddRange(recordsMatchingByTag);
+                        resultInitialized = true;
+                    }
+                }
+
+                if (!resultInitialized)
+                {
+                    result.AddRange(partition);
+                }
+
+                if (recordFilter.DeprecatedIdTypes != null && recordFilter.DeprecatedIdTypes.Any())
+                {
+                    var internalRecordIdsToRemove = new List<long>();
+                    foreach (var streamRecord in result)
+                    {
+                        if (
+                            recordFilter.DeprecatedIdTypes.Any(
+                                d =>
+                                    partition
+                                       .OrderBy(_ => _.InternalRecordId)
+                                       .Last(
+                                            _ => _.Metadata.FuzzyMatchTypesAndId(
+                                                streamRecord.Metadata.StringSerializedId,
+                                                streamRecord.Metadata.TypeRepresentationOfId.WithVersion,
+                                                null,
+                                                recordFilter.VersionMatchStrategy))
+                                       .Metadata.TypeRepresentationOfId.WithVersion.EqualsAccordingToStrategy(
+                                            d,
+                                            recordFilter.VersionMatchStrategy)))
+                        {
+                            internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
+                        }
+                    }
+
+                    result.RemoveAll(_ => internalRecordIdsToRemove.Contains(_.InternalRecordId));
+                }
+
+                return result;
+            }
+        }
 
         private MemoryDatabaseLocator TryGetSingleLocator()
         {

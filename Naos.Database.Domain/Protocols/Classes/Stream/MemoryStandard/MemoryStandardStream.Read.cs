@@ -46,11 +46,24 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var result = this.GetMatchingRecords(operation);
+            var matchingRecords = this.GetMatchingRecords(operation);
 
-            if (result != null && result.Any())
+            if (matchingRecords != null && matchingRecords.Any())
             {
-                return result.OrderBy(_ => _.InternalRecordId).Last();
+                var result = matchingRecords.OrderBy(_ => _.InternalRecordId).Last();
+                switch (operation.StreamRecordItemsToInclude)
+                {
+                    case StreamRecordItemsToInclude.MetadataAndPayload:
+                        return result;
+                    case StreamRecordItemsToInclude.MetadataOnly:
+                        var resultWithoutPayload = result.DeepCloneWithPayload(
+                            new NullDescribedSerialization(
+                                result.Payload.PayloadTypeRepresentation,
+                                result.Payload.SerializerRepresentation));
+                        return resultWithoutPayload;
+                    default:
+                        throw new NotSupportedException(Invariant($"Unsupported {nameof(StreamRecordItemsToInclude)}: {operation.StreamRecordItemsToInclude}."));
+                }
             }
 
             switch (operation.RecordNotFoundStrategy)

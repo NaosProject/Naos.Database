@@ -8,8 +8,10 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
@@ -111,6 +113,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public IReadOnlyList<StreamRecordWithId<TId>> Execute(
             GetAllRecordsByIdOp<TId> operation)
         {
@@ -148,23 +151,48 @@ namespace Naos.Database.Domain
                                           locator)))
                          .ToList();
 
-            var result = records?.Select(
-                    _ =>
-                    {
-                        var metadata = new StreamRecordMetadata<TId>(
-                            operation.Id,
-                            _.Metadata.SerializerRepresentation,
-                            _.Metadata.TypeRepresentationOfId,
-                            _.Metadata.TypeRepresentationOfObject,
-                            _.Metadata.Tags,
-                            _.Metadata.TimestampUtc,
-                            _.Metadata.ObjectTimestampUtc);
+            List<StreamRecordWithId<TId>> result;
 
-                        var streamRecord = new StreamRecordWithId<TId>(_.InternalRecordId, metadata, _.Payload);
+            StreamRecordWithId<TId> ProcessResultItem(
+                StreamRecord inputStreamRecord)
+            {
+                var metadata = new StreamRecordMetadata<TId>(
+                    operation.Id,
+                    inputStreamRecord.Metadata.SerializerRepresentation,
+                    inputStreamRecord.Metadata.TypeRepresentationOfId,
+                    inputStreamRecord.Metadata.TypeRepresentationOfObject,
+                    inputStreamRecord.Metadata.Tags,
+                    inputStreamRecord.Metadata.TimestampUtc,
+                    inputStreamRecord.Metadata.ObjectTimestampUtc);
 
-                        return streamRecord;
-                    })
-                .ToList();
+                var resultItem = new StreamRecordWithId<TId>(inputStreamRecord.InternalRecordId, metadata, inputStreamRecord.Payload);
+
+                return resultItem;
+            }
+
+            switch (operation.OrderRecordsBy)
+            {
+                case OrderRecordsBy.InternalRecordIdAscending:
+                    result = records
+                            .OrderBy(_ => _.InternalRecordId)
+                            .Select(ProcessResultItem)
+                            .ToList();
+                    break;
+                case OrderRecordsBy.InternalRecordIdDescending:
+                    result = records
+                            .OrderByDescending(_ => _.InternalRecordId)
+                            .Select(ProcessResultItem)
+                            .ToList();
+                    break;
+                case OrderRecordsBy.Random:
+                    result = records
+                            .OrderBy(_ => Guid.NewGuid())
+                            .Select(ProcessResultItem)
+                            .ToList();
+                    break;
+                default:
+                    throw new NotSupportedException(Invariant($"Unsupported {nameof(OrderRecordsBy)}: {operation.OrderRecordsBy}."));
+            }
 
             return result;
         }
@@ -219,6 +247,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public IReadOnlyList<StreamRecordMetadata<TId>> Execute(
             GetAllRecordsMetadataByIdOp<TId> operation)
         {
@@ -256,21 +285,47 @@ namespace Naos.Database.Domain
                                           locator)))
                          .ToList();
 
-            var result = records?.Select(
-                    _ =>
-                    {
-                        var metadata = new StreamRecordMetadata<TId>(
-                            operation.Id,
-                            _.Metadata.SerializerRepresentation,
-                            _.Metadata.TypeRepresentationOfId,
-                            _.Metadata.TypeRepresentationOfObject,
-                            _.Metadata.Tags,
-                            _.Metadata.TimestampUtc,
-                            _.Metadata.ObjectTimestampUtc);
+            List<StreamRecordMetadata<TId>> result;
 
-                        return metadata;
-                    })
-                .ToList();
+            StreamRecordMetadata<TId> ProcessResultItem(
+                StreamRecord inputRecord)
+            {
+                var resultItem = new StreamRecordMetadata<TId>(
+                    operation.Id,
+                    inputRecord.Metadata.SerializerRepresentation,
+                    inputRecord.Metadata.TypeRepresentationOfId,
+                    inputRecord.Metadata.TypeRepresentationOfObject,
+                    inputRecord.Metadata.Tags,
+                    inputRecord.Metadata.TimestampUtc,
+                    inputRecord.Metadata.ObjectTimestampUtc);
+
+                return resultItem;
+            }
+
+            switch (operation.OrderRecordsBy)
+            {
+                case OrderRecordsBy.InternalRecordIdAscending:
+                    result = records
+                            .OrderBy(_ => _.InternalRecordId)
+                            .Select(ProcessResultItem)
+                            .ToList();
+                    break;
+                case OrderRecordsBy.InternalRecordIdDescending:
+                    result = records
+                            .OrderByDescending(_ => _.InternalRecordId)
+                            .Select(ProcessResultItem)
+                            .ToList();
+                    break;
+                case OrderRecordsBy.Random:
+                    result = records
+                            .OrderBy(_ => Guid.NewGuid())
+                            .Select(ProcessResultItem)
+                            .ToList();
+                    break;
+                default:
+                    throw new NotSupportedException(
+                        Invariant($"Unsupported {nameof(OrderRecordsBy)}: {operation.OrderRecordsBy}."));
+            }
 
             return result;
         }

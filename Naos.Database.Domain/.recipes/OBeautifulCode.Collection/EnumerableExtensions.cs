@@ -86,6 +86,19 @@ namespace OBeautifulCode.Collection.Recipes
         }
 
         /// <summary>
+        /// Determines whether [is null or empty] [the specified values].
+        /// </summary>
+        /// <typeparam name="T">The type of the item.</typeparam>
+        /// <param name="values">The values.</param>
+        /// <returns><c>true</c> if [is null or empty] [the specified values]; otherwise, <c>false</c>.</returns>
+        public static bool IsNullOrEmpty<T>(
+            this IEnumerable<T> values)
+        {
+            var result = values == null || !values.Any();
+            return result;
+        }
+
+        /// <summary>
         /// Gets the longest string that is a prefix of all of the specified strings.
         /// </summary>
         /// <remarks>

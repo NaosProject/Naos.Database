@@ -13,6 +13,8 @@ namespace Naos.Database.Domain
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Collection.Recipes;
+    using OBeautifulCode.Reflection.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
@@ -52,18 +54,30 @@ namespace Naos.Database.Domain
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
             lock (this.handlingLock)
             {
+                Dictionary<long, HandlingStatus> FilterResultsByHandlingStatus(
+                    Dictionary<long, HandlingStatus> handlingStatuses)
+                {
+                    var dictionary = (operation.HandlingFilter                         == null
+                                   || operation.HandlingFilter.CurrentHandlingStatuses == null
+                                   || !operation.HandlingFilter.CurrentHandlingStatuses.Any())
+                        ? handlingStatuses
+                        : handlingStatuses.Where(_ => operation.HandlingFilter.CurrentHandlingStatuses.Contains(_.Value))
+                                          .ToDictionary(k => k.Key, v => v.Value);
+                    return dictionary;
+                }
+
                 var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
                 if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Status == HandlingStatus.DisabledForStream)
                 {
-                    return new Dictionary<long, HandlingStatus>
-                           {
-                               { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
-                           };
+                    return FilterResultsByHandlingStatus(
+                        new Dictionary<long, HandlingStatus>
+                        {
+                            { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
+                        });
                 }
 
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-
-                // var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
+                var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
                 var records = this.locatorToRecordPartitionMap[memoryDatabaseLocator];
                 bool HandlingEntryMatchingPredicate(
                     long internalRecordId,
@@ -113,22 +127,25 @@ namespace Naos.Database.Domain
                 var internalRecordIdsToConsider = new HashSet<long>();
                 foreach (var record in records)
                 {
-                    if (HandlingEntryMatchingPredicate(record.InternalRecordId, record.Metadata))
+                    if (operation.RecordFilter.IsEmptyRecordFilter() || HandlingEntryMatchingPredicate(record.InternalRecordId, record.Metadata))
                     {
                         internalRecordIdsToConsider.Add(record.InternalRecordId);
                     }
                 }
 
-                var result = internalRecordIdsToConsider
+                var unfilteredResult = internalRecordIdsToConsider
                    .ToDictionary(
                         k => k,
                         v => entries
                             .Concat(blockedEntries)
+                            .Concat(recordBlockedEntries)
                             .Where(_ => _.InternalRecordId == v)
                             .OrderByDescending(__ => __.InternalHandlingEntryId)
                             .FirstOrDefault()
                            ?.Status
                           ?? HandlingStatus.AvailableByDefault);
+
+                var result = FilterResultsByHandlingStatus(unfilteredResult);
 
                 return result;
             }

@@ -31,11 +31,16 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var result = new HashSet<StringSerializedIdentifier>();
-            var matchingRecords = this.GetMatchingRecords(operation);
-            matchingRecords.ToList()
-                           .ForEach(
-                                _ => result.Add(
-                                    new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion)));
+            var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+            foreach (var locator in allLocators)
+            {
+                var operationWithLocator = operation.DeepCloneWithSpecifiedResourceLocator(locator);
+                var matchingRecords = this.GetMatchingRecords(operationWithLocator);
+                matchingRecords.ToList()
+                               .ForEach(
+                                    _ => result.Add(
+                                        new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion)));
+            }
 
             return result;
         }

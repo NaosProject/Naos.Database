@@ -10,6 +10,7 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Collection.Recipes;
     using OBeautifulCode.Representation.System;
 
     /// <summary>
@@ -17,6 +18,24 @@ namespace Naos.Database.Domain
     /// </summary>
     public static class RecordFilterExtensions
     {
+        /// <summary>
+        /// Determines whether [is empty record filter] [the specified record filter].
+        /// </summary>
+        /// <param name="recordFilter">The record filter.</param>
+        /// <returns><c>true</c> if [is empty record filter] [the specified record filter]; otherwise, <c>false</c>.</returns>
+        public static bool IsEmptyRecordFilter(
+            this RecordFilter recordFilter)
+        {
+            recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
+
+            var result = recordFilter.Ids.IsNullOrEmpty()
+                      && recordFilter.IdTypes.IsNullOrEmpty()
+                      && recordFilter.InternalRecordIds.IsNullOrEmpty()
+                      && recordFilter.ObjectTypes.IsNullOrEmpty()
+                      && recordFilter.Tags.IsNullOrEmpty();
+            return result;
+        }
+
         /// <summary>
         /// Constructs a <see cref="RecordFilter"/> that filters on the specified object type.
         /// </summary>

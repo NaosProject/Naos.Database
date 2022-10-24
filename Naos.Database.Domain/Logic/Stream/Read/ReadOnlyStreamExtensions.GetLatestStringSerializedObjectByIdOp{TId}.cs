@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.</param>
         /// <returns>The string serialized object.</returns>
-        public static string GetLatestStringSerializedObjectByIdOp<TId>(
+        public static string GetLatestStringSerializedObjectById<TId>(
             this IReadOnlyStream stream,
             TId id,
             TypeRepresentation objectType = null,
@@ -55,7 +55,7 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.</param>
         /// <returns>The string serialized object.</returns>
-        public static async Task<string> GetLatestStringSerializedObjectByIdOpAsync<TId>(
+        public static async Task<string> GetLatestStringSerializedObjectByIdAsync<TId>(
             this IReadOnlyStream stream,
             TId id,
             TypeRepresentation objectType = null,

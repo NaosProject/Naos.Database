@@ -378,6 +378,11 @@ namespace Naos.Database.Domain.Test
                 () => new NullStreamRepresentation());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new PruneAfterInternalRecordDateOp(
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneBeforeInternalRecordDateOp(
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>()));
@@ -680,6 +685,31 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<IResourceLocator>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamConfig(
+                                 A.Dummy<string>(),
+                                 A.Dummy<StreamAccessKinds>(),
+                                 A.Dummy<SerializerRepresentation>(),
+                                 A.Dummy<SerializationFormat>(),
+                                 A.Dummy<IReadOnlyCollection<IResourceLocator>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var availableTypes = new[]
+                    {
+                        typeof(StreamConfig)
+                    };
+
+                    var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
+
+                    var randomType = availableTypes[randomIndex];
+
+                    var result = (StreamConfigBase)AD.ummy(randomType);
+
+                    return result;
+                });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord(

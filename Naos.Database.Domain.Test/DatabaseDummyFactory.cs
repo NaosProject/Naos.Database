@@ -158,6 +158,14 @@ namespace Naos.Database.Domain.Test
 
             // ------------------------------- MODELS -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamConfig(
+                    A.Dummy<string>(),
+                    A.Dummy<StreamAccessKinds>().ThatIsNot(StreamAccessKinds.None),
+                    A.Dummy<SerializerRepresentation>(),
+                    A.Dummy<SerializationFormat>(),
+                    A.Dummy<IReadOnlyCollection<IResourceLocator>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordHandlingEntry(
                     A.Dummy<long>(),
                     A.Dummy<long>(),

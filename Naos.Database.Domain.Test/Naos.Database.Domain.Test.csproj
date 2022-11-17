@@ -685,6 +685,10 @@
     <Compile Include="Models\Classes\Stream\Common\RecordLocatorTest.designer.cs">
       <DependentUpon>RecordLocatorTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="PruneAfterInternalRecordDateOpTest.cs" />
+    <Compile Include="PruneAfterInternalRecordDateOpTest.designer.cs">
+      <DependentUpon>PruneAfterInternalRecordDateOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResetCompletedHandleRecordOpTest.cs" />
     <Compile Include="ResetCompletedHandleRecordOpTest.designer.cs">
       <DependentUpon>ResetCompletedHandleRecordOpTest.cs</DependentUpon>
@@ -720,6 +724,14 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOpTest.designer.cs">
       <DependentUpon>StandardGetInternalRecordIdsOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamConfigBaseTest.cs" />
+    <Compile Include="StreamConfigBaseTest.designer.cs">
+      <DependentUpon>StreamConfigBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StreamConfigTest.cs" />
+    <Compile Include="StreamConfigTest.designer.cs">
+      <DependentUpon>StreamConfigTest.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

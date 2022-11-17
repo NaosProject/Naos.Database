@@ -347,6 +347,9 @@
       <DependentUpon>TryHandleRecordWithIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Management\PruneAfterInternalRecordDateOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneAfterInternalRecordDateOp.designer.cs">
+      <DependentUpon>PruneAfterInternalRecordDateOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordDateOp.designer.cs">
       <DependentUpon>PruneBeforeInternalRecordDateOp.cs</DependentUpon>
     </Compile>

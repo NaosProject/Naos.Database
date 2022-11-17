@@ -240,6 +240,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version>>(),
+                        A.Dummy<PruneAfterInternalRecordDateOp>(),
                         A.Dummy<PruneBeforeInternalRecordDateOp>(),
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutOp<Version>>(),

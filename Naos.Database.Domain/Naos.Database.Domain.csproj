@@ -259,6 +259,7 @@
     <Compile Include="Models\Enums\StreamRecordItemsToInclude.cs" />
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
+    <Compile Include="Models\Interfaces\Stream\IStreamConfig.cs" />
     <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />
     <Compile Include="Operations\Classes\Management\CreateDatabaseOp.designer.cs">

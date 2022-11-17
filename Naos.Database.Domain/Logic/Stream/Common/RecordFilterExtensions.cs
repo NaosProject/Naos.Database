@@ -10,7 +10,6 @@ namespace Naos.Database.Domain
     using System.Collections.Generic;
     using System.Linq;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Collection.Recipes;
     using OBeautifulCode.Representation.System;
 
     /// <summary>
@@ -67,6 +66,19 @@ namespace Naos.Database.Domain
 
             var result = new RecordFilter(objectTypes: objectTypes.Select(_ => _.ToRepresentation()).ToList());
 
+            return result;
+        }
+
+        /// <summary>
+        /// Determines whether [is null or empty] [the specified values].
+        /// </summary>
+        /// <typeparam name="T">The type of the item.</typeparam>
+        /// <param name="values">The values.</param>
+        /// <returns><c>true</c> if [is null or empty] [the specified values]; otherwise, <c>false</c>.</returns>
+        public static bool IsNullOrEmpty<T>(
+            this IEnumerable<T> values)
+        {
+            var result = values == null || !values.Any();
             return result;
         }
     }

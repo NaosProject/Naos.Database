@@ -245,6 +245,11 @@
     <Compile Include="Models\Classes\Stream\Common\HandlingFilter.designer.cs">
       <DependentUpon>HandlingFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Common\StreamConfig.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StreamConfig.designer.cs">
+      <DependentUpon>StreamConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Common\StreamConfigBase.cs" />
     <Compile Include="Models\Classes\Stream\Common\RecordFilter.cs" />
     <Compile Include="Models\Classes\Stream\Common\RecordFilter.designer.cs">
       <DependentUpon>RecordFilter.cs</DependentUpon>
@@ -252,6 +257,9 @@
     <Compile Include="Models\Classes\Stream\Common\RecordLocator.cs" />
     <Compile Include="Models\Classes\Stream\Common\RecordLocator.designer.cs">
       <DependentUpon>RecordLocator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Common\StreamConfigBase.designer.cs">
+      <DependentUpon>StreamConfigBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\StreamAccessKinds.cs" />
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />

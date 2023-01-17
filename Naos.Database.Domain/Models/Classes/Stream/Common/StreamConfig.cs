@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Base class for <see cref="IStreamConfig"/>.
+    /// Generic implementation of <see cref="StreamConfigBase"/>.
     /// </summary>
     public partial class StreamConfig : StreamConfigBase
     {

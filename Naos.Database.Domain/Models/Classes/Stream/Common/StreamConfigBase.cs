@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Base class for <see cref="IStreamConfig"/>.
     /// </summary>
-    public abstract partial class StreamConfigBase : IModelViaCodeGen
+    public abstract partial class StreamConfigBase : IStreamConfig, IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StreamConfigBase"/> class.

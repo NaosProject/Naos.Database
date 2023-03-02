@@ -756,6 +756,14 @@ namespace Naos.Database.Domain.Test.MemoryStream
                         tags: firstRecordAndHandleTags).Standardize());
                 stream.Execute(getSecondStatusByIdOp).OrderByDescending(_ => _.Key).First().Value.MustForTest().BeEqualTo(HandlingStatus.Failed);
 
+                stream.Execute(
+                    new ArchiveFailureToHandleRecordOp(
+                        secondInternalRecordId,
+                        secondConcern,
+                        "NullReferenceException: Bot v1.0.1-hotfix won't work.",
+                        tags: firstRecordAndHandleTags).Standardize());
+                stream.Execute(getSecondStatusByIdOp).OrderByDescending(_ => _.Key).First().Value.MustForTest().BeEqualTo(HandlingStatus.ArchivedAfterFailure);
+
                 stream.Execute(new DisableHandlingForRecordOp(firstInternalRecordId, "Giving up.", tags: firstRecordAndHandleTags).Standardize());
 
                 stream.Execute(getSecondStatusByIdOp).OrderByDescending(_ => _.Key).First().Value.MustForTest().BeEqualTo(HandlingStatus.DisabledForRecord);
@@ -776,7 +784,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 second.RecordToHandle.MustForTest().BeNull();
 
                 var secondHistory = stream.Execute(new StandardGetHandlingHistoryOp(secondInternalRecordId, secondConcern));
-                secondHistory.MustForTest().HaveCount(7);
+                secondHistory.MustForTest().HaveCount(8);
 
                 foreach (var history in secondHistory)
                 {

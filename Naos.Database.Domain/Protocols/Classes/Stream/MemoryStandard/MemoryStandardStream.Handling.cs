@@ -361,6 +361,9 @@ namespace Naos.Database.Domain
                     case HandlingStatus.AvailableAfterFailure:
                         this.MakeHandlingAvailableAfterFailure(operation);
                         break;
+                    case HandlingStatus.ArchivedAfterFailure:
+                        this.MakeHandlingArchivedAfterFailure(operation);
+                        break;
                     default:
                         throw new NotSupportedException(Invariant($"Unsupported {nameof(HandlingStatus)} '{operation.NewStatus}' to update handling of {nameof(operation.InternalRecordId)}: {operation.InternalRecordId}."));
                 }
@@ -402,6 +405,26 @@ namespace Naos.Database.Domain
                 utcNow);
 
             this.WriteHandlingEntryToMemoryMap(locator, concern, metadata);
+        }
+
+        private void MakeHandlingArchivedAfterFailure(
+            StandardUpdateHandlingStatusForRecordOp operation)
+        {
+            var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
+            var timestamp = DateTime.UtcNow;
+
+            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+            var metadata = new StreamRecordHandlingEntry(
+                entryId,
+                operation.InternalRecordId,
+                operation.Concern,
+                HandlingStatus.ArchivedAfterFailure,
+                operation.Tags,
+                operation.Details,
+                timestamp);
+
+            this.WriteHandlingEntryToMemoryMap(locator, operation.Concern, metadata);
         }
 
         private void MakeHandlingAvailableAfterFailure(

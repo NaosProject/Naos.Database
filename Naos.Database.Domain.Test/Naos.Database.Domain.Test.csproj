@@ -261,6 +261,7 @@
       <DependentUpon>ArchiveFailureToHandleRecordOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="Logic\Stream\Handling\HandlingStatusExtensionsTests.cs" />
     <Compile Include="Models\Classes\Stream\Common\HandlingFilterTest.cs" />
     <Compile Include="Models\Classes\Stream\Common\HandlingFilterTest.designer.cs">
       <DependentUpon>HandlingFilterTest.cs</DependentUpon>

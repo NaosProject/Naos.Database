@@ -72,28 +72,43 @@ namespace Naos.Database.Domain
         SomeDisabled = 512,
 
         /// <summary>
+        /// None of the records have their handling archived after failure.
+        /// </summary>
+        NoneArchivedAfterFailure = 1024,
+
+        /// <summary>
+        /// One or more of the records have their handling archived after failure.
+        /// </summary>
+        SomeArchivedAfterFailure = 2048,
+
+        /// <summary>
         /// All of the records are being handled.
         /// </summary>
-        AllRunning = NoneAvailable | NoneFailed | NoneCompleted | SomeRunning | NoneDisabled,
+        AllRunning = NoneAvailable | NoneFailed | NoneCompleted | SomeRunning | NoneDisabled | NoneArchivedAfterFailure,
 
         /// <summary>
         /// All of the records were handled and each executed without an error.
         /// </summary>
-        AllCompleted = NoneAvailable | NoneFailed | SomeCompleted | NoneRunning | NoneDisabled,
+        AllCompleted = NoneAvailable | NoneFailed | SomeCompleted | NoneRunning | NoneDisabled | NoneArchivedAfterFailure,
 
         /// <summary>
         /// All of the records were handled but errors occurred when executing each of them.
         /// </summary>
-        AllFailed = NoneAvailable | SomeFailed | NoneCompleted | NoneRunning | NoneDisabled,
+        AllFailed = NoneAvailable | SomeFailed | NoneCompleted | NoneRunning | NoneDisabled | NoneArchivedAfterFailure,
 
         /// <summary>
         /// All of the records are available to be handled.
         /// </summary>
-        AllAvailable = SomeAvailable | NoneFailed | NoneCompleted | NoneRunning | NoneDisabled,
+        AllAvailable = SomeAvailable | NoneFailed | NoneCompleted | NoneRunning | NoneDisabled | NoneArchivedAfterFailure,
 
         /// <summary>
         /// All of the records are have their handling disabled.
         /// </summary>
-        AllDisabled = NoneAvailable | NoneFailed | NoneCompleted | NoneRunning | SomeDisabled,
+        AllDisabled = NoneAvailable | NoneFailed | NoneCompleted | NoneRunning | SomeDisabled | NoneArchivedAfterFailure,
+
+        /// <summary>
+        /// All of the records are have their handling archived after failures.
+        /// </summary>
+        AllArchivedAfterFailure = NoneAvailable | NoneFailed | NoneCompleted | NoneRunning | NoneDisabled | SomeArchivedAfterFailure,
     }
 }

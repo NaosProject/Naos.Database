@@ -24,6 +24,7 @@ namespace Naos.Database.Domain
                 HandlingStatus.AvailableAfterFailure,
                 HandlingStatus.AvailableAfterSelfCancellation,
                 HandlingStatus.AvailableByDefault,
+                HandlingStatus.ArchivedAfterFailure,
                 HandlingStatus.Completed,
                 HandlingStatus.DisabledForRecord,
                 HandlingStatus.DisabledForStream,
@@ -132,6 +133,15 @@ namespace Naos.Database.Domain
             else
             {
                 result |= CompositeHandlingStatus.NoneDisabled;
+            }
+
+            if (statuses.Any(_ => _ == HandlingStatus.ArchivedAfterFailure))
+            {
+                result |= CompositeHandlingStatus.SomeArchivedAfterFailure;
+            }
+            else
+            {
+                result |= CompositeHandlingStatus.NoneArchivedAfterFailure;
             }
 
             return result;

@@ -256,8 +256,8 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
-    <Compile Include="ArchiveFailureToHandleRecordOpTest.cs" />
-    <Compile Include="ArchiveFailureToHandleRecordOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ArchiveFailureToHandleRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ArchiveFailureToHandleRecordOpTest.designer.cs">
       <DependentUpon>ArchiveFailureToHandleRecordOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
@@ -266,8 +266,8 @@
     <Compile Include="Models\Classes\Stream\Common\HandlingFilterTest.designer.cs">
       <DependentUpon>HandlingFilterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="NullDatabaseDefinitionTest.cs" />
-    <Compile Include="NullDatabaseDefinitionTest.designer.cs">
+    <Compile Include="Models\Classes\NullDatabaseDefinitionTest.cs" />
+    <Compile Include="Models\Classes\NullDatabaseDefinitionTest.designer.cs">
       <DependentUpon>NullDatabaseDefinitionTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Management\CreateDatabaseOpTest.cs" />
@@ -687,12 +687,12 @@
     <Compile Include="Models\Classes\Stream\Common\RecordLocatorTest.designer.cs">
       <DependentUpon>RecordLocatorTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="PruneAfterInternalRecordDateOpTest.cs" />
-    <Compile Include="PruneAfterInternalRecordDateOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneAfterInternalRecordDateOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Management\PruneAfterInternalRecordDateOpTest.designer.cs">
       <DependentUpon>PruneAfterInternalRecordDateOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="ResetCompletedHandleRecordOpTest.cs" />
-    <Compile Include="ResetCompletedHandleRecordOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetCompletedHandleRecordOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetCompletedHandleRecordOpTest.designer.cs">
       <DependentUpon>ResetCompletedHandleRecordOpTest.cs</DependentUpon>
     </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
@@ -727,12 +727,12 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOpTest.designer.cs">
       <DependentUpon>StandardGetInternalRecordIdsOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="StreamConfigBaseTest.cs" />
-    <Compile Include="StreamConfigBaseTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\StreamConfigBaseTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StreamConfigBaseTest.designer.cs">
       <DependentUpon>StreamConfigBaseTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="StreamConfigTest.cs" />
-    <Compile Include="StreamConfigTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Common\StreamConfigTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StreamConfigTest.designer.cs">
       <DependentUpon>StreamConfigTest.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />

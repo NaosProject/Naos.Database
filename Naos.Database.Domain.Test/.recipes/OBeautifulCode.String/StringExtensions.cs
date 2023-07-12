@@ -47,6 +47,13 @@ namespace OBeautifulCode.String.Recipes
                     .Concat(Enumerable.Range(65, 26).Select(Convert.ToChar))
                     .Concat(Enumerable.Range(97, 26).Select(Convert.ToChar)));
 
+        private static readonly HashSet<char> AlphaNumericCharactersHashSet =
+            new HashSet<char>(
+                new char[0]
+                    .Concat(Enumerable.Range(48, 10).Select(Convert.ToChar))
+                    .Concat(Enumerable.Range(65, 26).Select(Convert.ToChar))
+                    .Concat(Enumerable.Range(97, 26).Select(Convert.ToChar)));
+
         /// <summary>
         /// Specifies a map of <see cref="DateTimeKind"/> to the preferred format string to use for that kind.
         /// </summary>
@@ -148,6 +155,7 @@ namespace OBeautifulCode.String.Recipes
         /// Determines if a string is alpha numeric.
         /// </summary>
         /// <param name="value">The string to evaluate.</param>
+        /// <param name="otherAllowedCharacters">OPTIONAL set of other characters that are allowed.  These characters will be treated as alpha numeric.</param>
         /// <remarks>
         /// An empty string ("") is considered alpha-numeric.
         /// </remarks>
@@ -156,18 +164,15 @@ namespace OBeautifulCode.String.Recipes
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public static bool IsAlphanumeric(
-            this string value)
+            this string value,
+            IReadOnlyCollection<char> otherAllowedCharacters = null)
         {
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var result = value.All(
-                _ =>
-                    (((int)_ >= 48) && ((int)_ <= 57)) ||
-                    (((int)_ >= 65) && ((int)_ <= 90)) ||
-                    (((int)_ >= 97) && ((int)_ <= 122)));
+            var result = value.OnlyContainsCharacters(AlphaNumericCharactersHashSet, otherAllowedCharacters);
 
             return result;
         }
@@ -176,6 +181,7 @@ namespace OBeautifulCode.String.Recipes
         /// Determines if a string is alphabetic.
         /// </summary>
         /// <param name="value">The string to evaluate.</param>
+        /// <param name="otherAllowedCharacters">OPTIONAL set of other characters that are allowed.  These characters will be treated as alphabetic.</param>
         /// <remarks>
         /// An empty string ("") is considered alphabetic.
         /// </remarks>
@@ -184,14 +190,15 @@ namespace OBeautifulCode.String.Recipes
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
         public static bool IsAlphabetic(
-            this string value)
+            this string value,
+            IReadOnlyCollection<char> otherAllowedCharacters = null)
         {
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var result = value.All(_ => AlphabeticCharactersHashSet.Contains(_));
+            var result = value.OnlyContainsCharacters(AlphabeticCharactersHashSet, otherAllowedCharacters);
 
             return result;
         }
@@ -1337,10 +1344,11 @@ namespace OBeautifulCode.String.Recipes
         /// <returns>
         /// The invariant culture string representation of the specified value.
         /// </returns>
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", Justification = ObcSuppressBecause.CA1308_NormalizeStringsToUppercase_PreferGuidLowercase)]
         public static string ToStringInvariantPreferred(
             this Guid value)
         {
-            var result = value.ToString().ToUpperInvariant();
+            var result = value.ToString().ToLowerInvariant();
 
             return result;
         }
@@ -1532,6 +1540,26 @@ namespace OBeautifulCode.String.Recipes
             }
 
             var result = new string(value.Take(maxLength).ToArray());
+
+            return result;
+        }
+
+        private static bool OnlyContainsCharacters(
+            this string value,
+            HashSet<char> allowedCharactersHashSet,
+            IReadOnlyCollection<char> otherAllowedCharacters)
+        {
+            if (otherAllowedCharacters != null)
+            {
+                allowedCharactersHashSet = new HashSet<char>(allowedCharactersHashSet);
+
+                foreach (var otherAllowedCharacter in otherAllowedCharacters)
+                {
+                    allowedCharactersHashSet.Add(otherAllowedCharacter);
+                }
+            }
+
+            var result = value.All(_ => allowedCharactersHashSet.Contains(_));
 
             return result;
         }

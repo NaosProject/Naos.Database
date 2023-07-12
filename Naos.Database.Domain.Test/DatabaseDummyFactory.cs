@@ -396,6 +396,22 @@ namespace Naos.Database.Domain.Test
                     return result;
                 });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = new PruneAfterInternalRecordDateOp(A.Dummy<UtcDateTime>(), A.Dummy<string>());
+
+                    return result;
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = new PruneBeforeInternalRecordDateOp(A.Dummy<UtcDateTime>(), A.Dummy<string>());
+
+                    return result;
+                });
+
             // ------------------------------- OPERATION INTERFACES -------------------------------------
             AutoFixtureBackedDummyFactory.UseRandomInterfaceImplementationForDummy<IPruneOp>();
         }

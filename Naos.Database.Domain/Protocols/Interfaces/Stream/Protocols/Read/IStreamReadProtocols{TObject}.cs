@@ -13,7 +13,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IStreamReadProtocols<TObject>
-        : IGetLatestObjectOp<TObject>,
+        : IGetLatestObject<TObject>,
           IGetLatestObjectByTags<TObject>,
           IGetLatestRecord<TObject>
     {
@@ -32,7 +32,7 @@ namespace Naos.Database.Domain
     /// Convenience interface for protocol that executes a <see cref="GetLatestObjectOp{TObject}" />.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IGetLatestObjectOp<TObject> :
+    public interface IGetLatestObject<TObject> :
         ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>
     {
     }

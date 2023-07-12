@@ -157,7 +157,7 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The object.</returns>
         public static TObject GetLatestObject<TObject>(
-            this IGetLatestObjectOp<TObject> protocol,
+            this IGetLatestObject<TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
@@ -179,7 +179,7 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <returns>The object.</returns>
         public static async Task<TObject> GetLatestObjectAsync<TObject>(
-            this IGetLatestObjectOp<TObject> protocol,
+            this IGetLatestObject<TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)

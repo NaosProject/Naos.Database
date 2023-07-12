@@ -10,6 +10,7 @@ namespace Naos.Database.Domain
     using System.Threading.Tasks;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Type;
 
     public static partial class ReadOnlyStreamExtensions
     {
@@ -42,6 +43,99 @@ namespace Naos.Database.Domain
 
             var operation = new GetNextUniqueLongOp();
             var protocol = stream.GetStreamWritingProtocols();
+            var result = await protocol.ExecuteAsync(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
+        /// </summary>
+        /// <param name="protocol">The protocol.</param>
+        /// <returns>The next unique long.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
+        public static long GetNextUniqueLong(
+            this IStreamWriteProtocols protocol)
+        {
+            protocol.MustForArg(nameof(protocol)).NotBeNull();
+
+            var operation = new GetNextUniqueLongOp();
+            var result = protocol.Execute(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
+        /// </summary>
+        /// <param name="protocol">The protocol.</param>
+        /// <returns>The next unique long.</returns>
+        public static async Task<long> GetNextUniqueLongAsync(
+            this IStreamWriteProtocols protocol)
+        {
+            protocol.MustForArg(nameof(protocol)).NotBeNull();
+
+            var operation = new GetNextUniqueLongOp();
+            var result = await protocol.ExecuteAsync(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
+        /// </summary>
+        /// <param name="protocol">The protocol.</param>
+        /// <returns>The next unique long.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
+        public static long GetNextUniqueLong(
+            this ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long> protocol)
+        {
+            protocol.MustForArg(nameof(protocol)).NotBeNull();
+
+            var operation = new GetNextUniqueLongOp();
+            var result = protocol.Execute(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
+        /// </summary>
+        /// <param name="protocol">The protocol.</param>
+        /// <returns>The next unique long.</returns>
+        public static async Task<long> GetNextUniqueLongAsync(
+            this ISyncAndAsyncReturningProtocol<GetNextUniqueLongOp, long> protocol)
+        {
+            protocol.MustForArg(nameof(protocol)).NotBeNull();
+
+            var operation = new GetNextUniqueLongOp();
+            var result = await protocol.ExecuteAsync(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
+        /// </summary>
+        /// <param name="protocol">The protocol.</param>
+        /// <returns>The next unique long.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "long", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
+        public static long GetNextUniqueLong(
+            this IGetNextUniqueLong protocol)
+        {
+            protocol.MustForArg(nameof(protocol)).NotBeNull();
+
+            var operation = new GetNextUniqueLongOp();
+            var result = protocol.Execute(operation);
+            return result;
+        }
+
+        /// <summary>
+        /// Get a unique 64-bit integer, in sequence, that is brokered via an internal stream construct.
+        /// </summary>
+        /// <param name="protocol">The protocol.</param>
+        /// <returns>The next unique long.</returns>
+        public static async Task<long> GetNextUniqueLongAsync(
+            this IGetNextUniqueLong protocol)
+        {
+            protocol.MustForArg(nameof(protocol)).NotBeNull();
+
+            var operation = new GetNextUniqueLongOp();
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

@@ -95,5 +95,21 @@ namespace Naos.Database.Domain
             /* no-op */
             await Task.FromResult(false);
         }
+
+        /// <inheritdoc />
+        public bool Execute(
+            DoesAnyExistByIdOp<TId, TObject> operation)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> ExecuteAsync(
+            DoesAnyExistByIdOp<TId, TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

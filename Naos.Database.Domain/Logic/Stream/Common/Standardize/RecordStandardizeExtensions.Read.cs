@@ -64,6 +64,35 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The standardized operation.
         /// </returns>
+        public static StandardGetInternalRecordIdsOp Standardize<TId, TObject>(
+            this DoesAnyExistByIdOp<TId, TObject> operation,
+            IStringSerialize serializer,
+            IResourceLocator specifiedResourceLocator = null)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOperation = new DoesAnyExistByIdOp<TId>(
+                operation.Id,
+                typeof(TObject).ToRepresentation(),
+                operation.VersionMatchStrategy,
+                operation.DeprecatedIdTypes);
+
+            var result = delegatedOperation.Standardize(serializer, specifiedResourceLocator);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the operation to it's standardized form.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="operation">The operation.</param>
+        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
+        /// <returns>
+        /// The standardized operation.
+        /// </returns>
         public static StandardGetLatestRecordOp Standardize<TId, TObject>(
             this GetLatestObjectByIdOp<TId, TObject> operation,
             IStringSerialize serializer,

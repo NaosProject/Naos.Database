@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
@@ -164,6 +165,32 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<StreamRecordWithId<TId, TObject>> ExecuteAsync(
             GetLatestRecordByIdOp<TId, TObject> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public bool Execute(
+            DoesAnyExistByIdOp<TId, TObject> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
+            var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
+
+            var standardOp = operation.Standardize(serializer, locator);
+
+            var result = this.stream.Execute(standardOp);
+
+            return result.Any();
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> ExecuteAsync(
+            DoesAnyExistByIdOp<TId, TObject> operation)
         {
             var result = await Task.FromResult(this.Execute(operation));
 

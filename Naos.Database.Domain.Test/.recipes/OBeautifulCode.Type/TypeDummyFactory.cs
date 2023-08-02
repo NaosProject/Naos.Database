@@ -52,6 +52,7 @@ namespace OBeautifulCode.Type.Test
 
         public TypeDummyFactory()
         {
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CurrencyCode.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CultureKind.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(DateTimeFormatKind.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(MissingProtocolStrategy.Unknown);

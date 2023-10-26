@@ -218,9 +218,13 @@
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.GetNextUniqueLongOp.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Common\VersionMatchStrategyExtensions.cs" />
-    <Compile Include="Models\Classes\NullDatabaseDefinition.cs" />
     <Compile Include="Models\Classes\NullDatabaseDefinition.designer.cs">
       <DependentUpon>NullDatabaseDefinition.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\NullJobInformation.cs" />
+    <Compile Include="Models\Classes\NullDatabaseDefinition.cs" />
+    <Compile Include="Models\Classes\NullJobInformation.designer.cs">
+      <DependentUpon>NullJobInformation.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBase.designer.cs">
       <DependentUpon>DatabaseLocatorBase.cs</DependentUpon>
@@ -267,11 +271,13 @@
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
     <Compile Include="Models\Enums\ExistingDatabaseStrategy.cs" />
     <Compile Include="Models\Enums\StreamRecordItemsToInclude.cs" />
+    <Compile Include="Models\Interfaces\Management\IJobInformation.cs" />
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
     <Compile Include="Models\Interfaces\Stream\IStreamConfig.cs" />
     <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />
+    <Compile Include="Operations\Classes\Management\GetLatestJobInformationOp.cs" />
     <Compile Include="Operations\Classes\Management\CreateDatabaseOp.designer.cs">
       <DependentUpon>CreateDatabaseOp.cs</DependentUpon>
     </Compile>
@@ -279,6 +285,9 @@
     <Compile Include="Operations\Classes\Management\CreateDatabaseOp.cs" />
     <Compile Include="Operations\Classes\Management\DeleteDatabaseOp.designer.cs">
       <DependentUpon>DeleteDatabaseOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Management\GetLatestJobInformationOp.designer.cs">
+      <DependentUpon>GetLatestJobInformationOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>

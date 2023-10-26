@@ -223,6 +223,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
                         A.Dummy<GetDistinctIdsOp<Version>>(),
                         A.Dummy<GetHandlingHistoryOp>(),
+                        A.Dummy<GetLatestJobInformationOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectByTagsOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),

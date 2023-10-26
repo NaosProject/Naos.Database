@@ -256,6 +256,14 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include="Models\Classes\NullJobInformationTest.cs" />
+    <Compile Include="Models\Classes\NullJobInformationTest.designer.cs">
+      <DependentUpon>NullJobInformationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Management\GetLatestJobInformationOpTest.cs" />
+    <Compile Include="Operations\Classes\Management\GetLatestJobInformationOpTest.designer.cs">
+      <DependentUpon>GetLatestJobInformationOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId,TObject}Test.cs</DependentUpon>

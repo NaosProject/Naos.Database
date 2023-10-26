@@ -198,6 +198,10 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetLatestJobInformationOp(
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestObjectByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<VersionMatchStrategy>(),
@@ -376,6 +380,10 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullIdentifier());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullJobInformation(
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullResourceLocator());

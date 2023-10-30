@@ -68,8 +68,8 @@
     <Reference Include="Naos.Configuration.Domain, Version=1.0.27.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Configuration.Domain.1.0.27\lib\net462\Naos.Configuration.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Naos.Diagnostics.Domain, Version=1.3.41.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Naos.Diagnostics.Domain.1.3.41\lib\net462\Naos.Diagnostics.Domain.dll</HintPath>
+    <Reference Include="Naos.Diagnostics.Domain, Version=1.3.47.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naos.Diagnostics.Domain.1.3.47\lib\net462\Naos.Diagnostics.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Naos.Logging.Domain, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Naos.Logging.Domain.1.0.81\lib\net462\Naos.Logging.Domain.dll</HintPath>
@@ -131,6 +131,8 @@
     <Compile Include=".recipes\Naos.Bootstrapper\TestRunner.cs" />
     <Compile Include=".recipes\Naos.Bootstrapper\WellKnownConsoleVerb.cs" />
     <Compile Include=".recipes\Naos.CodeAnalysis\NaosSuppressBecause.cs" />
+    <Compile Include=".recipes\Naos.Diagnostics\DiagnosticsDummyFactory.cs" />
+    <Compile Include=".recipes\Naos.Diagnostics\DiagnosticsDummyFactory.designer.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\DomainFactory.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\MachineMemory.cs" />
     <Compile Include=".recipes\Naos.Diagnostics\MachineMemoryKind.cs" />
@@ -195,6 +197,7 @@
     <Compile Include=".recipes\OBeautifulCode.Compression\CompressorFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Compression\DotNetZipCompressor.cs" />
     <Compile Include=".recipes\OBeautifulCode.Compression\NullCompressor.cs" />
+    <Compile Include=".recipes\OBeautifulCode.DateTime\DateTimeExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Enum\EnumExtensions.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ByteArrayEqualityComparer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Equality\ColorEqualityComparer.cs" />
@@ -256,8 +259,44 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
-    <Compile Include="Models\Classes\NullJobInformationTest.cs" />
-    <Compile Include="Models\Classes\NullJobInformationTest.designer.cs">
+    <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.cs" />
+    <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.designer.cs">
+      <DependentUpon>ChecksPerformedEventTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Management\CheckJobsOpTest.cs" />
+    <Compile Include="Operations\Classes\Management\CheckJobsOpTest.designer.cs">
+      <DependentUpon>CheckJobsOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\CheckJobsReportTest.cs" />
+    <Compile Include="Models\Classes\Management\CheckJobsReportTest.designer.cs">
+      <DependentUpon>CheckJobsReportTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\CheckSingleStreamReportTest.cs" />
+    <Compile Include="Models\Classes\Management\CheckSingleStreamReportTest.designer.cs">
+      <DependentUpon>CheckSingleStreamReportTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\CheckStreamInstructionTest.cs" />
+    <Compile Include="Models\Classes\Management\CheckStreamInstructionTest.designer.cs">
+      <DependentUpon>CheckStreamInstructionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Management\CheckStreamsOpTest.cs" />
+    <Compile Include="Operations\Classes\Management\CheckStreamsOpTest.designer.cs">
+      <DependentUpon>CheckStreamsOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\CheckStreamsReportTest.cs" />
+    <Compile Include="Models\Classes\Management\CheckStreamsReportTest.designer.cs">
+      <DependentUpon>CheckStreamsReportTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\ExpectedJobWithinThresholdTest.cs" />
+    <Compile Include="Models\Classes\Management\ExpectedJobWithinThresholdTest.designer.cs">
+      <DependentUpon>ExpectedJobWithinThresholdTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdTest.cs" />
+    <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdTest.designer.cs">
+      <DependentUpon>ExpectedRecordWithinThresholdTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\NullJobInformationTest.cs" />
+    <Compile Include="Models\Classes\Management\NullJobInformationTest.designer.cs">
       <DependentUpon>NullJobInformationTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Management\GetLatestJobInformationOpTest.cs" />
@@ -278,8 +317,8 @@
     <Compile Include="Models\Classes\Stream\Common\HandlingFilterTest.designer.cs">
       <DependentUpon>HandlingFilterTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\NullDatabaseDefinitionTest.cs" />
-    <Compile Include="Models\Classes\NullDatabaseDefinitionTest.designer.cs">
+    <Compile Include="Models\Classes\Management\NullDatabaseDefinitionTest.cs" />
+    <Compile Include="Models\Classes\Management\NullDatabaseDefinitionTest.designer.cs">
       <DependentUpon>NullDatabaseDefinitionTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Management\CreateDatabaseOpTest.cs" />
@@ -706,6 +745,18 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetCompletedHandleRecordOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ResetCompletedHandleRecordOpTest.designer.cs">
       <DependentUpon>ResetCompletedHandleRecordOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledTest.cs" />
+    <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledTest.designer.cs">
+      <DependentUpon>RecordExpectedToBeHandledTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\RecordToCheckForExcessiveHandlingTest.cs" />
+    <Compile Include="Models\Classes\Management\RecordToCheckForExcessiveHandlingTest.designer.cs">
+      <DependentUpon>RecordToCheckForExcessiveHandlingTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\RecordToCheckForFailedHandlingTest.cs" />
+    <Compile Include="Models\Classes\Management\RecordToCheckForFailedHandlingTest.designer.cs">
+      <DependentUpon>RecordToCheckForFailedHandlingTest.cs</DependentUpon>
     </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />

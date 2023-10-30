@@ -16,6 +16,7 @@ namespace Naos.Database.Domain.Test
     using global::FakeItEasy;
 
     using global::Naos.Database.Domain;
+    using global::Naos.Diagnostics.Domain;
 
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.Math.Recipes;
@@ -53,6 +54,45 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<bool>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckJobsOp(
+                                 A.Dummy<IReadOnlyCollection<ExpectedJobWithinThreshold>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckJobsReport(
+                                 A.Dummy<bool>(),
+                                 A.Dummy<IReadOnlyDictionary<string, IJobInformation>>(),
+                                 A.Dummy<DateTime>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckSingleStreamReport(
+                                 A.Dummy<IReadOnlyDictionary<string, DateTime>>(),
+                                 A.Dummy<IReadOnlyDictionary<string, IReadOnlyDictionary<long, HandlingStatus>>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ChecksPerformedEvent(
+                                 A.Dummy<string>(),
+                                 A.Dummy<DateTime>(),
+                                 A.Dummy<bool>(),
+                                 A.Dummy<CheckDrivesReport>(),
+                                 A.Dummy<CheckJobsReport>(),
+                                 A.Dummy<CheckStreamsReport>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckStreamInstruction(
+                                 A.Dummy<IReadOnlyCollection<ExpectedRecordWithinThreshold>>(),
+                                 A.Dummy<IReadOnlyCollection<RecordExpectedToBeHandled>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckStreamsOp(
+                                 A.Dummy<IReadOnlyDictionary<string, CheckStreamInstruction>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckStreamsReport(
+                                 A.Dummy<bool>(),
+                                 A.Dummy<IReadOnlyDictionary<string, CheckSingleStreamReport>>(),
+                                 A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CompleteRunningHandleRecordOp(
@@ -124,6 +164,17 @@ namespace Naos.Database.Domain.Test
                 () => new EnableHandlingForStreamOp(
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExpectedJobWithinThreshold(
+                                 A.Dummy<string>(),
+                                 A.Dummy<TimeSpan>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExpectedRecordWithinThreshold(
+                                 A.Dummy<string>(),
+                                 A.Dummy<RecordFilter>(),
+                                 A.Dummy<TimeSpan>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailRunningHandleRecordOp(
@@ -467,6 +518,14 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordExpectedToBeHandled(
+                                 A.Dummy<string>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<RecordFilter>(),
+                                 A.Dummy<HandlingFilter>(),
+                                 A.Dummy<TimeSpan>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordFilter(
                                  A.Dummy<IReadOnlyCollection<long>>(),
                                  A.Dummy<IReadOnlyCollection<StringSerializedIdentifier>>(),
@@ -555,6 +614,20 @@ namespace Naos.Database.Domain.Test
                 () => new RecordLocator(
                                  A.Dummy<IResourceLocator>(),
                                  A.Dummy<long>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordToCheckForExcessiveHandling(
+                                 A.Dummy<string>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<RecordFilter>(),
+                                 A.Dummy<HandlingFilter>(),
+                                 A.Dummy<int>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordToCheckForFailedHandling(
+                                 A.Dummy<string>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<RecordFilter>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new ResetCompletedHandleRecordOp(

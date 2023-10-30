@@ -14,6 +14,7 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
     using FakeItEasy;
     using Naos.CodeAnalysis.Recipes;
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Serialization;
@@ -41,6 +42,15 @@ namespace Naos.Database.Domain.Test
         public DatabaseDummyFactory()
         {
             // ------------------------------- EVENTS -------------------------------------
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ChecksPerformedEvent(
+                    A.Dummy<string>(),
+                    A.Dummy<UtcDateTime>(),
+                    A.Dummy<bool>(),
+                    A.Dummy<CheckDrivesReport>(),
+                    A.Dummy<CheckJobsReport>(),
+                    A.Dummy<CheckStreamsReport>()));
+
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new HandlingForStreamDisabledEvent(
                     A.Dummy<UtcDateTime>(),
@@ -157,6 +167,50 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<string>()));
 
             // ------------------------------- MODELS -------------------------------------
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => (IJobInformation)new NullJobInformation(
+                    A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExpectedJobWithinThreshold(
+                    A.Dummy<string>(),
+                    TimeSpan.FromMinutes(A.Dummy<PositiveInteger>())));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExpectedRecordWithinThreshold(
+                    A.Dummy<string>(),
+                    A.Dummy<RecordFilter>(),
+                    TimeSpan.FromMinutes(A.Dummy<PositiveInteger>())));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordExpectedToBeHandled(
+                    A.Dummy<string>(),
+                    A.Dummy<string>(),
+                    A.Dummy<RecordFilter>(),
+                    A.Dummy<HandlingFilter>(),
+                    TimeSpan.FromMinutes(A.Dummy<PositiveInteger>())));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckStreamsReport(
+                    A.Dummy<bool>(),
+                    A.Dummy<IReadOnlyDictionary<string, CheckSingleStreamReport>>(),
+                    A.Dummy<UtcDateTime>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new CheckJobsReport(
+                    A.Dummy<bool>(),
+                    A.Dummy<IReadOnlyDictionary<string, IJobInformation>>(),
+                    A.Dummy<UtcDateTime>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordToCheckForExcessiveHandling(
+                    A.Dummy<string>(),
+                    A.Dummy<string>(),
+                    A.Dummy<RecordFilter>(),
+                    A.Dummy<HandlingFilter>(),
+                    A.Dummy<PositiveInteger>()));
+
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamConfig(
                     A.Dummy<string>(),

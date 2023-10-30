@@ -9,6 +9,7 @@ namespace Naos.Database.Serialization.Bson
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Naos.Diagnostics.Serialization.Bson;
     using OBeautifulCode.Serialization.Bson;
     using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
@@ -21,6 +22,13 @@ namespace Naos.Database.Serialization.Bson
             new[]
             {
                 Naos.Database.Domain.ProjectInfo.Namespace,
+            };
+
+        /// <inheritdoc />
+        protected override IReadOnlyCollection<BsonSerializationConfigurationType> DependentBsonSerializationConfigurationTypes =>
+            new[]
+            {
+                typeof(DiagnosticsBsonSerializationConfiguration).ToBsonSerializationConfigurationType(),
             };
 
         /// <inheritdoc />

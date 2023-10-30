@@ -959,6 +959,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<Guid>(),
                         A.Dummy<ArchiveFailureToHandleRecordOp>(),
                         A.Dummy<CancelRunningHandleRecordOp>(),
+                        A.Dummy<CheckJobsOp>(),
+                        A.Dummy<CheckStreamsOp>(),
                         A.Dummy<CompleteRunningHandleRecordOp>(),
                         A.Dummy<CreateDatabaseOp>(),
                         A.Dummy<DeleteDatabaseOp>(),

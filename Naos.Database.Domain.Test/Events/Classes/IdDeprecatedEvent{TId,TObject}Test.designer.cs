@@ -274,6 +274,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
+                        A.Dummy<ChecksPerformedEvent>(),
                         A.Dummy<HandlingForRecordDisabledEvent>(),
                         A.Dummy<HandlingForStreamDisabledEvent>(),
                         A.Dummy<HandlingForStreamEnabledEvent>(),

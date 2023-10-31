@@ -94,12 +94,13 @@ namespace Naos.Database.Domain
                             expectedEventWithinThreshold.RecordFilter,
                             streamRecordItemsToInclude: StreamRecordItemsToInclude.MetadataOnly));
 
-                    if (utcNow > latestRecord.Metadata.TimestampUtc.Add(expectedEventWithinThreshold.Threshold))
+                    if (latestRecord == null
+                     || utcNow       > latestRecord.Metadata.TimestampUtc.Add(expectedEventWithinThreshold.Threshold))
                     {
                         shouldAlert = true;
                     }
 
-                    expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(expectedEventWithinThreshold.Id, latestRecord.Metadata.TimestampUtc);
+                    expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(expectedEventWithinThreshold.Id, latestRecord?.Metadata.TimestampUtc ?? default);
                 }
 
                 var eventExpectedToBeHandledIdToHandlingStatusResultMap = new Dictionary<string, IReadOnlyDictionary<long, HandlingStatus>>();

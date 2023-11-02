@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
             IReadOnlyDictionary<string, CheckSingleStreamReport> streamNameToReportMap,
             DateTime sampleTimeUtc)
         {
-            streamNameToReportMap.MustForArg(nameof(streamNameToReportMap)).NotBeNullNorEmptyDictionaryNorContainAnyNullValues();
+            streamNameToReportMap.MustForArg(nameof(streamNameToReportMap)).NotBeNull().And().NotContainAnyKeyValuePairsWithNullValue();
             sampleTimeUtc.MustForArg(nameof(sampleTimeUtc)).BeUtcDateTime();
 
             this.ShouldAlert = shouldAlert;

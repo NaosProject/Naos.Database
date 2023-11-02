@@ -31,6 +31,62 @@ namespace Naos.Database.Domain.Test
         static CheckStreamsReportTest()
         {
             ConstructorArgumentValidationTestScenarios
+               .RemoveAllScenarios()
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
+                        {
+                            Name = "constructor should throw ArgumentNullException when parameter 'streamNameToReportMap' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CheckStreamsReport>();
+
+                                                   var result = new CheckStreamsReport(
+                                                       referenceObject.ShouldAlert,
+                                                       null,
+                                                       referenceObject.SampleTimeUtc);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "streamNameToReportMap",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
+                        {
+                            Name =
+                                "constructor should throw ArgumentException when parameter 'streamNameToReportMap' contains a key-value pair with a null value scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CheckStreamsReport>();
+
+                                                   var dictionaryWithNullValue =
+                                                       referenceObject.StreamNameToReportMap.ToDictionary(_ => _.Key, _ => _.Value);
+
+                                                   var randomKey =
+                                                       dictionaryWithNullValue.Keys.ElementAt(
+                                                           ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
+
+                                                   dictionaryWithNullValue[randomKey] = null;
+
+                                                   var result = new CheckStreamsReport(
+                                                       referenceObject.ShouldAlert,
+                                                       dictionaryWithNullValue,
+                                                       referenceObject.SampleTimeUtc);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "streamNameToReportMap",
+                                                                   "contains at least one key-value pair with a null value",
+                                                               },
+                        })
                .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<CheckStreamsReport>

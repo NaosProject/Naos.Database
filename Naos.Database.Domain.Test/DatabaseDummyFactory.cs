@@ -181,7 +181,8 @@ namespace Naos.Database.Domain.Test
                 () => new ExpectedRecordWithinThreshold(
                     A.Dummy<string>(),
                     A.Dummy<RecordFilter>(),
-                    TimeSpan.FromMinutes(A.Dummy<PositiveInteger>())));
+                    TimeSpan.FromMinutes(A.Dummy<PositiveInteger>()),
+                    A.Dummy<bool>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordExpectedToBeHandled(

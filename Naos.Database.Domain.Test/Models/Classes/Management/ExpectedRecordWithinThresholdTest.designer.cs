@@ -47,7 +47,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<ExpectedRecordWithinThreshold>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.ExpectedRecordWithinThreshold: Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, Threshold = {systemUnderTest.Threshold.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.ExpectedRecordWithinThreshold: Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, Threshold = {systemUnderTest.Threshold.ToString() ?? "<null>"}, SkipWhenStreamHandlingIsDisabled = {systemUnderTest.SkipWhenStreamHandlingIsDisabled.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,7 +66,8 @@ namespace Naos.Database.Domain.Test
                         var result = new ExpectedRecordWithinThreshold(
                                              null,
                                              referenceObject.RecordFilter,
-                                             referenceObject.Threshold);
+                                             referenceObject.Threshold,
+                                             referenceObject.SkipWhenStreamHandlingIsDisabled);
 
                         return result;
                     },
@@ -84,7 +85,8 @@ namespace Naos.Database.Domain.Test
                         var result = new ExpectedRecordWithinThreshold(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.RecordFilter,
-                                             referenceObject.Threshold);
+                                             referenceObject.Threshold,
+                                             referenceObject.SkipWhenStreamHandlingIsDisabled);
 
                         return result;
                     },
@@ -102,7 +104,8 @@ namespace Naos.Database.Domain.Test
                         var result = new ExpectedRecordWithinThreshold(
                                              referenceObject.Id,
                                              null,
-                                             referenceObject.Threshold);
+                                             referenceObject.Threshold,
+                                             referenceObject.SkipWhenStreamHandlingIsDisabled);
 
                         return result;
                     },
@@ -124,7 +127,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ExpectedRecordWithinThreshold(
                                                       referenceObject.Id,
                                                       referenceObject.RecordFilter,
-                                                      referenceObject.Threshold),
+                                                      referenceObject.Threshold,
+                                                      referenceObject.SkipWhenStreamHandlingIsDisabled),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -145,7 +149,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ExpectedRecordWithinThreshold(
                                                       referenceObject.Id,
                                                       referenceObject.RecordFilter,
-                                                      referenceObject.Threshold),
+                                                      referenceObject.Threshold,
+                                                      referenceObject.SkipWhenStreamHandlingIsDisabled),
                             ExpectedPropertyValue = referenceObject.RecordFilter,
                         };
 
@@ -166,13 +171,36 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ExpectedRecordWithinThreshold(
                                                       referenceObject.Id,
                                                       referenceObject.RecordFilter,
-                                                      referenceObject.Threshold),
+                                                      referenceObject.Threshold,
+                                                      referenceObject.SkipWhenStreamHandlingIsDisabled),
                             ExpectedPropertyValue = referenceObject.Threshold,
                         };
 
                         return result;
                     },
                     PropertyName = "Threshold",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<ExpectedRecordWithinThreshold>
+                {
+                    Name = "SkipWhenStreamHandlingIsDisabled should return same 'skipWhenStreamHandlingIsDisabled' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<ExpectedRecordWithinThreshold>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<ExpectedRecordWithinThreshold>
+                        {
+                            SystemUnderTest = new ExpectedRecordWithinThreshold(
+                                                      referenceObject.Id,
+                                                      referenceObject.RecordFilter,
+                                                      referenceObject.Threshold,
+                                                      referenceObject.SkipWhenStreamHandlingIsDisabled),
+                            ExpectedPropertyValue = referenceObject.SkipWhenStreamHandlingIsDisabled,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "SkipWhenStreamHandlingIsDisabled",
                 });
 
         private static readonly DeepCloneWithTestScenarios<ExpectedRecordWithinThreshold> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<ExpectedRecordWithinThreshold>()
@@ -235,6 +263,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<ExpectedRecordWithinThreshold>
+                {
+                    Name = "DeepCloneWithSkipWhenStreamHandlingIsDisabled should deep clone object and replace SkipWhenStreamHandlingIsDisabled with the provided skipWhenStreamHandlingIsDisabled",
+                    WithPropertyName = "SkipWhenStreamHandlingIsDisabled",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<ExpectedRecordWithinThreshold>();
+
+                        var referenceObject = A.Dummy<ExpectedRecordWithinThreshold>().ThatIs(_ => !systemUnderTest.SkipWhenStreamHandlingIsDisabled.IsEqualTo(_.SkipWhenStreamHandlingIsDisabled));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<ExpectedRecordWithinThreshold>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.SkipWhenStreamHandlingIsDisabled,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly ExpectedRecordWithinThreshold ReferenceObjectForEquatableTestScenarios = A.Dummy<ExpectedRecordWithinThreshold>();
@@ -250,22 +298,31 @@ namespace Naos.Database.Domain.Test
                         new ExpectedRecordWithinThreshold(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.Threshold),
+                                ReferenceObjectForEquatableTestScenarios.Threshold,
+                                ReferenceObjectForEquatableTestScenarios.SkipWhenStreamHandlingIsDisabled),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new ExpectedRecordWithinThreshold[]
                     {
                         new ExpectedRecordWithinThreshold(
                                 A.Dummy<ExpectedRecordWithinThreshold>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.Threshold),
+                                ReferenceObjectForEquatableTestScenarios.Threshold,
+                                ReferenceObjectForEquatableTestScenarios.SkipWhenStreamHandlingIsDisabled),
                         new ExpectedRecordWithinThreshold(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<ExpectedRecordWithinThreshold>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.Threshold),
+                                ReferenceObjectForEquatableTestScenarios.Threshold,
+                                ReferenceObjectForEquatableTestScenarios.SkipWhenStreamHandlingIsDisabled),
                         new ExpectedRecordWithinThreshold(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                A.Dummy<ExpectedRecordWithinThreshold>().Whose(_ => !_.Threshold.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Threshold)).Threshold),
+                                A.Dummy<ExpectedRecordWithinThreshold>().Whose(_ => !_.Threshold.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Threshold)).Threshold,
+                                ReferenceObjectForEquatableTestScenarios.SkipWhenStreamHandlingIsDisabled),
+                        new ExpectedRecordWithinThreshold(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.Threshold,
+                                A.Dummy<ExpectedRecordWithinThreshold>().Whose(_ => !_.SkipWhenStreamHandlingIsDisabled.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SkipWhenStreamHandlingIsDisabled)).SkipWhenStreamHandlingIsDisabled),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -576,7 +633,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "RecordFilter", "Threshold" };
+                var propertyNames = new string[] { "Id", "RecordFilter", "Threshold", "SkipWhenStreamHandlingIsDisabled" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -174,7 +174,8 @@ namespace Naos.Database.Domain.Test
                 () => new ExpectedRecordWithinThreshold(
                                  A.Dummy<string>(),
                                  A.Dummy<RecordFilter>(),
-                                 A.Dummy<TimeSpan>()));
+                                 A.Dummy<TimeSpan>(),
+                                 A.Dummy<bool>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailRunningHandleRecordOp(

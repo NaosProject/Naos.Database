@@ -89,18 +89,44 @@ namespace Naos.Database.Domain
                 var expectedRecordWithinThresholdIdToMostRecentTimestampMap = new Dictionary<string, DateTime>();
                 foreach (var expectedEventWithinThreshold in instruction.ExpectedRecordsWithinThreshold)
                 {
-                    var latestRecord = stream.Execute(
-                        new StandardGetLatestRecordOp(
-                            expectedEventWithinThreshold.RecordFilter,
-                            streamRecordItemsToInclude: StreamRecordItemsToInclude.MetadataOnly));
-
-                    if (latestRecord == null
-                     || utcNow       > latestRecord.Metadata.TimestampUtc.Add(expectedEventWithinThreshold.Threshold))
+                    var skipDueToDisabledStream = false;
+                    if (expectedEventWithinThreshold.SkipWhenStreamHandlingIsDisabled)
                     {
-                        shouldAlert = true;
+                        var disabledStatusCheck = stream.Execute(
+                            new StandardGetHandlingStatusOp(
+                                Naos.Database.Domain.Concerns.StreamHandlingDisabledConcern,
+                                new RecordFilter(
+                                    internalRecordIds: new[]
+                                                       {
+                                                           0L,
+                                                       }),
+                                new HandlingFilter()));
+                        skipDueToDisabledStream = disabledStatusCheck.Single().Value != HandlingStatus.AvailableByDefault;
                     }
 
-                    expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(expectedEventWithinThreshold.Id, latestRecord?.Metadata.TimestampUtc ?? default);
+                    if (!skipDueToDisabledStream)
+                    {
+                        var latestRecord = stream.Execute(
+                            new StandardGetLatestRecordOp(
+                                expectedEventWithinThreshold.RecordFilter,
+                                streamRecordItemsToInclude: StreamRecordItemsToInclude.MetadataOnly));
+
+                        if (latestRecord == null
+                         || utcNow       > latestRecord.Metadata.TimestampUtc.Add(expectedEventWithinThreshold.Threshold))
+                        {
+                            shouldAlert = true;
+                        }
+
+                        expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(
+                            expectedEventWithinThreshold.Id,
+                            latestRecord?.Metadata.TimestampUtc ?? default);
+                    }
+                    else
+                    {
+                        expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(
+                            expectedEventWithinThreshold.Id,
+                            default);
+                    }
                 }
 
                 var eventExpectedToBeHandledIdToHandlingStatusResultMap = new Dictionary<string, IReadOnlyDictionary<long, HandlingStatus>>();

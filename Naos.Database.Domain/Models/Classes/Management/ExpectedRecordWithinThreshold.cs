@@ -21,7 +21,8 @@ namespace Naos.Database.Domain
         /// <param name="id">A unique identifier to key against results.</param>
         /// <param name="recordFilter">Filter to find the records expected to be handled.</param>
         /// <param name="threshold">The time threshold to check against.</param>
-        public ExpectedRecordWithinThreshold(string id, RecordFilter recordFilter, TimeSpan threshold)
+        /// <param name="skipWhenStreamHandlingIsDisabled">OPTIONAL value indicating whether or not to skip this check when stream handling is disabled; DEFAULT is false.</param>
+        public ExpectedRecordWithinThreshold(string id, RecordFilter recordFilter, TimeSpan threshold, bool skipWhenStreamHandlingIsDisabled = false)
         {
             id.MustForArg(nameof(id)).NotBeNullNorWhiteSpace();
             recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
@@ -30,6 +31,7 @@ namespace Naos.Database.Domain
             this.Id = id;
             this.RecordFilter = recordFilter;
             this.Threshold = threshold;
+            this.SkipWhenStreamHandlingIsDisabled = skipWhenStreamHandlingIsDisabled;
         }
 
         /// <summary>
@@ -46,5 +48,10 @@ namespace Naos.Database.Domain
         /// Gets the time threshold to check against.
         /// </summary>
         public TimeSpan Threshold { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not to skip this check when stream handling is disabled.
+        /// </summary>
+        public bool SkipWhenStreamHandlingIsDisabled { get; private set; }
     }
 }

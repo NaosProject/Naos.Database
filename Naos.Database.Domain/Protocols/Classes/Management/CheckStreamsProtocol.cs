@@ -125,27 +125,17 @@ namespace Naos.Database.Domain
                             // found records in invalid state but need to check threshold.
                             foreach (var recordIdToHandlingStatus in handlingStatusMap)
                             {
-                                var handlingHistory = stream.GetStreamRecordHandlingProtocols()
-                                                            .Execute(
-                                                                 new GetHandlingHistoryOp(
-                                                                     recordIdToHandlingStatus.Key,
-                                                                     eventExpectedToBeHandled.Concern));
-                                var latestHandlingEntry = handlingHistory.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-                                var timestampToInterrogate = latestHandlingEntry?.TimestampUtc;
-                                if (timestampToInterrogate == null)
-                                {
-                                    var latestRecordMetadata = stream.Execute(
-                                        new StandardGetLatestRecordOp(
-                                            new RecordFilter(
-                                                internalRecordIds: new[]
-                                                                   {
-                                                                       recordIdToHandlingStatus.Key,
-                                                                   }),
-                                            streamRecordItemsToInclude: StreamRecordItemsToInclude.MetadataOnly));
-                                    timestampToInterrogate = latestRecordMetadata.Metadata.TimestampUtc;
-                                }
+                                var latestRecordMetadata = stream.Execute(
+                                    new StandardGetLatestRecordOp(
+                                        new RecordFilter(
+                                            internalRecordIds: new[]
+                                                               {
+                                                                   recordIdToHandlingStatus.Key,
+                                                               }),
+                                        streamRecordItemsToInclude: StreamRecordItemsToInclude.MetadataOnly));
+                                var timestampToInterrogate = latestRecordMetadata.Metadata.TimestampUtc;
 
-                                if (utcNow > ((DateTime)timestampToInterrogate).Add(eventExpectedToBeHandled.Threshold))
+                                if (utcNow > timestampToInterrogate.Add(eventExpectedToBeHandled.Threshold))
                                 {
                                     shouldAlert = true;
                                     break;

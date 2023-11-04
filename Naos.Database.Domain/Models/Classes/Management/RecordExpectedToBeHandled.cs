@@ -29,7 +29,7 @@ namespace Naos.Database.Domain
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
             recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
             handlingFilter.MustForArg(nameof(handlingFilter)).NotBeNull();
-            threshold.MustForArg(nameof(threshold)).BeGreaterThan(TimeSpan.Zero);
+            threshold.MustForArg(nameof(threshold)).BeGreaterThanOrEqualTo(TimeSpan.Zero);
 
             this.Id = id;
             this.Concern = concern;

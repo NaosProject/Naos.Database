@@ -18,6 +18,8 @@ namespace Naos.Database.Domain.Test
 
     using global::FakeItEasy;
 
+    using global::Naos.Diagnostics.Domain;
+
     using global::OBeautifulCode.Assertion.Recipes;
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -47,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<CheckSingleStreamReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CheckSingleStreamReport: ExpectedRecordWithinThresholdIdToMostRecentTimestampMap = {systemUnderTest.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap?.ToString() ?? "<null>"}, EventExpectedToBeHandledIdToHandlingStatusResultMap = {systemUnderTest.EventExpectedToBeHandledIdToHandlingStatusResultMap?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CheckSingleStreamReport: Status = {systemUnderTest.Status.ToString() ?? "<null>"}, ExpectedRecordWithinThresholdIdToReportMap = {systemUnderTest.ExpectedRecordWithinThresholdIdToReportMap?.ToString() ?? "<null>"}, RecordExpectedToBeHandledIdToReportMap = {systemUnderTest.RecordExpectedToBeHandledIdToReportMap?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -58,100 +60,129 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'expectedRecordWithinThresholdIdToMostRecentTimestampMap' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'expectedRecordWithinThresholdIdToReportMap' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<CheckSingleStreamReport>();
 
                         var result = new CheckSingleStreamReport(
+                                             referenceObject.Status,
                                              null,
-                                             referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap);
+                                             referenceObject.RecordExpectedToBeHandledIdToReportMap);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "expectedRecordWithinThresholdIdToMostRecentTimestampMap", },
+                    ExpectedExceptionMessageContains = new[] { "expectedRecordWithinThresholdIdToReportMap", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'expectedRecordWithinThresholdIdToMostRecentTimestampMap' is an empty dictionary scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'expectedRecordWithinThresholdIdToReportMap' is an empty dictionary scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<CheckSingleStreamReport>();
 
                         var result = new CheckSingleStreamReport(
-                                             new Dictionary<string, DateTime>(),
-                                             referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap);
+                                             referenceObject.Status,
+                                             new Dictionary<string, ExpectedRecordWithinThresholdReport>(),
+                                             referenceObject.RecordExpectedToBeHandledIdToReportMap);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "expectedRecordWithinThresholdIdToMostRecentTimestampMap", "is an empty dictionary", },
+                    ExpectedExceptionMessageContains = new[] { "expectedRecordWithinThresholdIdToReportMap", "is an empty dictionary", },
                 })
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'eventExpectedToBeHandledIdToHandlingStatusResultMap' is null scenario",
+                    Name = "constructor should throw ArgumentException when parameter 'expectedRecordWithinThresholdIdToReportMap' contains a key-value pair with a null value scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<CheckSingleStreamReport>();
 
-                        var result = new CheckSingleStreamReport(
-                                             referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                             null);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "eventExpectedToBeHandledIdToHandlingStatusResultMap", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'eventExpectedToBeHandledIdToHandlingStatusResultMap' is an empty dictionary scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CheckSingleStreamReport>();
-
-                        var result = new CheckSingleStreamReport(
-                                             referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                             new Dictionary<string, IReadOnlyDictionary<long, HandlingStatus>>());
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "eventExpectedToBeHandledIdToHandlingStatusResultMap", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'eventExpectedToBeHandledIdToHandlingStatusResultMap' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CheckSingleStreamReport>();
-
-                        var dictionaryWithNullValue = referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap.ToDictionary(_ => _.Key, _ => _.Value);
+                        var dictionaryWithNullValue = referenceObject.ExpectedRecordWithinThresholdIdToReportMap.ToDictionary(_ => _.Key, _ => _.Value);
 
                         var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
 
                         dictionaryWithNullValue[randomKey] = null;
 
                         var result = new CheckSingleStreamReport(
-                                             referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
+                                             referenceObject.Status,
+                                             dictionaryWithNullValue,
+                                             referenceObject.RecordExpectedToBeHandledIdToReportMap);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "expectedRecordWithinThresholdIdToReportMap", "contains at least one key-value pair with a null value", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
+                {
+                    Name = "constructor should throw ArgumentNullException when parameter 'recordExpectedToBeHandledIdToReportMap' is null scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>();
+
+                        var result = new CheckSingleStreamReport(
+                                             referenceObject.Status,
+                                             referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "recordExpectedToBeHandledIdToReportMap", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'recordExpectedToBeHandledIdToReportMap' is an empty dictionary scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>();
+
+                        var result = new CheckSingleStreamReport(
+                                             referenceObject.Status,
+                                             referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                                             new Dictionary<string, RecordExpectedToBeHandledReport>());
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "recordExpectedToBeHandledIdToReportMap", "is an empty dictionary", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'recordExpectedToBeHandledIdToReportMap' contains a key-value pair with a null value scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>();
+
+                        var dictionaryWithNullValue = referenceObject.RecordExpectedToBeHandledIdToReportMap.ToDictionary(_ => _.Key, _ => _.Value);
+
+                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
+
+                        dictionaryWithNullValue[randomKey] = null;
+
+                        var result = new CheckSingleStreamReport(
+                                             referenceObject.Status,
+                                             referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
                                              dictionaryWithNullValue);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "eventExpectedToBeHandledIdToHandlingStatusResultMap", "contains at least one key-value pair with a null value", },
+                    ExpectedExceptionMessageContains = new[] { "recordExpectedToBeHandledIdToReportMap", "contains at least one key-value pair with a null value", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<CheckSingleStreamReport> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CheckSingleStreamReport>()
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "ExpectedRecordWithinThresholdIdToMostRecentTimestampMap should return same 'expectedRecordWithinThresholdIdToMostRecentTimestampMap' parameter passed to constructor when getting",
+                    Name = "Status should return same 'status' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<CheckSingleStreamReport>();
@@ -159,19 +190,20 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<CheckSingleStreamReport>
                         {
                             SystemUnderTest = new CheckSingleStreamReport(
-                                                      referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                                      referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap),
-                            ExpectedPropertyValue = referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
+                                                      referenceObject.Status,
+                                                      referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                                                      referenceObject.RecordExpectedToBeHandledIdToReportMap),
+                            ExpectedPropertyValue = referenceObject.Status,
                         };
 
                         return result;
                     },
-                    PropertyName = "ExpectedRecordWithinThresholdIdToMostRecentTimestampMap",
+                    PropertyName = "Status",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "EventExpectedToBeHandledIdToHandlingStatusResultMap should return same 'eventExpectedToBeHandledIdToHandlingStatusResultMap' parameter passed to constructor when getting",
+                    Name = "ExpectedRecordWithinThresholdIdToReportMap should return same 'expectedRecordWithinThresholdIdToReportMap' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<CheckSingleStreamReport>();
@@ -179,32 +211,54 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<CheckSingleStreamReport>
                         {
                             SystemUnderTest = new CheckSingleStreamReport(
-                                                      referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                                      referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap),
-                            ExpectedPropertyValue = referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap,
+                                                      referenceObject.Status,
+                                                      referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                                                      referenceObject.RecordExpectedToBeHandledIdToReportMap),
+                            ExpectedPropertyValue = referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
                         };
 
                         return result;
                     },
-                    PropertyName = "EventExpectedToBeHandledIdToHandlingStatusResultMap",
+                    PropertyName = "ExpectedRecordWithinThresholdIdToReportMap",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<CheckSingleStreamReport>
+                {
+                    Name = "RecordExpectedToBeHandledIdToReportMap should return same 'recordExpectedToBeHandledIdToReportMap' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<CheckSingleStreamReport>
+                        {
+                            SystemUnderTest = new CheckSingleStreamReport(
+                                                      referenceObject.Status,
+                                                      referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                                                      referenceObject.RecordExpectedToBeHandledIdToReportMap),
+                            ExpectedPropertyValue = referenceObject.RecordExpectedToBeHandledIdToReportMap,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "RecordExpectedToBeHandledIdToReportMap",
                 });
 
         private static readonly DeepCloneWithTestScenarios<CheckSingleStreamReport> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CheckSingleStreamReport>()
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "DeepCloneWithExpectedRecordWithinThresholdIdToMostRecentTimestampMap should deep clone object and replace ExpectedRecordWithinThresholdIdToMostRecentTimestampMap with the provided expectedRecordWithinThresholdIdToMostRecentTimestampMap",
-                    WithPropertyName = "ExpectedRecordWithinThresholdIdToMostRecentTimestampMap",
+                    Name = "DeepCloneWithStatus should deep clone object and replace Status with the provided status",
+                    WithPropertyName = "Status",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<CheckSingleStreamReport>();
 
-                        var referenceObject = A.Dummy<CheckSingleStreamReport>().ThatIs(_ => !systemUnderTest.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap.IsEqualTo(_.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap));
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>().ThatIs(_ => !systemUnderTest.Status.IsEqualTo(_.Status));
 
                         var result = new SystemUnderTestDeepCloneWithValue<CheckSingleStreamReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
+                            DeepCloneWithValue = referenceObject.Status,
                         };
 
                         return result;
@@ -213,18 +267,38 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<CheckSingleStreamReport>
                 {
-                    Name = "DeepCloneWithEventExpectedToBeHandledIdToHandlingStatusResultMap should deep clone object and replace EventExpectedToBeHandledIdToHandlingStatusResultMap with the provided eventExpectedToBeHandledIdToHandlingStatusResultMap",
-                    WithPropertyName = "EventExpectedToBeHandledIdToHandlingStatusResultMap",
+                    Name = "DeepCloneWithExpectedRecordWithinThresholdIdToReportMap should deep clone object and replace ExpectedRecordWithinThresholdIdToReportMap with the provided expectedRecordWithinThresholdIdToReportMap",
+                    WithPropertyName = "ExpectedRecordWithinThresholdIdToReportMap",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<CheckSingleStreamReport>();
 
-                        var referenceObject = A.Dummy<CheckSingleStreamReport>().ThatIs(_ => !systemUnderTest.EventExpectedToBeHandledIdToHandlingStatusResultMap.IsEqualTo(_.EventExpectedToBeHandledIdToHandlingStatusResultMap));
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>().ThatIs(_ => !systemUnderTest.ExpectedRecordWithinThresholdIdToReportMap.IsEqualTo(_.ExpectedRecordWithinThresholdIdToReportMap));
 
                         var result = new SystemUnderTestDeepCloneWithValue<CheckSingleStreamReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap,
+                            DeepCloneWithValue = referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<CheckSingleStreamReport>
+                {
+                    Name = "DeepCloneWithRecordExpectedToBeHandledIdToReportMap should deep clone object and replace RecordExpectedToBeHandledIdToReportMap with the provided recordExpectedToBeHandledIdToReportMap",
+                    WithPropertyName = "RecordExpectedToBeHandledIdToReportMap",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<CheckSingleStreamReport>();
+
+                        var referenceObject = A.Dummy<CheckSingleStreamReport>().ThatIs(_ => !systemUnderTest.RecordExpectedToBeHandledIdToReportMap.IsEqualTo(_.RecordExpectedToBeHandledIdToReportMap));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<CheckSingleStreamReport>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.RecordExpectedToBeHandledIdToReportMap,
                         };
 
                         return result;
@@ -242,17 +316,24 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CheckSingleStreamReport[]
                     {
                         new CheckSingleStreamReport(
-                                ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                ReferenceObjectForEquatableTestScenarios.EventExpectedToBeHandledIdToHandlingStatusResultMap),
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToReportMap,
+                                ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandledIdToReportMap),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new CheckSingleStreamReport[]
                     {
                         new CheckSingleStreamReport(
-                                A.Dummy<CheckSingleStreamReport>().Whose(_ => !_.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap)).ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                ReferenceObjectForEquatableTestScenarios.EventExpectedToBeHandledIdToHandlingStatusResultMap),
+                                A.Dummy<CheckSingleStreamReport>().Whose(_ => !_.Status.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Status)).Status,
+                                ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToReportMap,
+                                ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandledIdToReportMap),
                         new CheckSingleStreamReport(
-                                ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                                A.Dummy<CheckSingleStreamReport>().Whose(_ => !_.EventExpectedToBeHandledIdToHandlingStatusResultMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.EventExpectedToBeHandledIdToHandlingStatusResultMap)).EventExpectedToBeHandledIdToHandlingStatusResultMap),
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                A.Dummy<CheckSingleStreamReport>().Whose(_ => !_.ExpectedRecordWithinThresholdIdToReportMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToReportMap)).ExpectedRecordWithinThresholdIdToReportMap,
+                                ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandledIdToReportMap),
+                        new CheckSingleStreamReport(
+                                ReferenceObjectForEquatableTestScenarios.Status,
+                                ReferenceObjectForEquatableTestScenarios.ExpectedRecordWithinThresholdIdToReportMap,
+                                A.Dummy<CheckSingleStreamReport>().Whose(_ => !_.RecordExpectedToBeHandledIdToReportMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandledIdToReportMap)).RecordExpectedToBeHandledIdToReportMap),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -534,28 +615,28 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap == null)
+                if (systemUnderTest.ExpectedRecordWithinThresholdIdToReportMap == null)
                 {
-                    actual.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap.AsTest().Must().BeNull();
+                    actual.ExpectedRecordWithinThresholdIdToReportMap.AsTest().Must().BeNull();
                 }
-                else if (!actual.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap.GetType().IsValueType)
+                else if (!actual.ExpectedRecordWithinThresholdIdToReportMap.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap);
+                    actual.ExpectedRecordWithinThresholdIdToReportMap.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.ExpectedRecordWithinThresholdIdToReportMap);
                 }
 
-                if (systemUnderTest.EventExpectedToBeHandledIdToHandlingStatusResultMap == null)
+                if (systemUnderTest.RecordExpectedToBeHandledIdToReportMap == null)
                 {
-                    actual.EventExpectedToBeHandledIdToHandlingStatusResultMap.AsTest().Must().BeNull();
+                    actual.RecordExpectedToBeHandledIdToReportMap.AsTest().Must().BeNull();
                 }
-                else if (!actual.EventExpectedToBeHandledIdToHandlingStatusResultMap.GetType().IsValueType)
+                else if (!actual.RecordExpectedToBeHandledIdToReportMap.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.EventExpectedToBeHandledIdToHandlingStatusResultMap.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.EventExpectedToBeHandledIdToHandlingStatusResultMap);
+                    actual.RecordExpectedToBeHandledIdToReportMap.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordExpectedToBeHandledIdToReportMap);
                 }
             }
 
@@ -575,7 +656,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ExpectedRecordWithinThresholdIdToMostRecentTimestampMap", "EventExpectedToBeHandledIdToHandlingStatusResultMap" };
+                var propertyNames = new string[] { "Status", "ExpectedRecordWithinThresholdIdToReportMap", "RecordExpectedToBeHandledIdToReportMap" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1409,7 +1490,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact]
+            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

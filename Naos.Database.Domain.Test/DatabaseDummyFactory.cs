@@ -185,12 +185,24 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<bool>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExpectedRecordWithinThresholdReport(
+                    A.Dummy<CheckStatus>(),
+                    A.Dummy<ExpectedRecordWithinThreshold>(),
+                    A.Dummy<UtcDateTime>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordExpectedToBeHandled(
                     A.Dummy<string>(),
                     A.Dummy<string>(),
                     A.Dummy<RecordFilter>(),
                     A.Dummy<HandlingFilter>(),
                     TimeSpan.FromMinutes(A.Dummy<PositiveInteger>())));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordExpectedToBeHandledReport(
+                    A.Dummy<CheckStatus>(),
+                    A.Dummy<RecordExpectedToBeHandled>(),
+                    A.Dummy<IReadOnlyDictionary<long, HandlingStatus>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckStreamsReport(

@@ -52,7 +52,6 @@ namespace Naos.Database.Domain
 
             var utcNow = this.GetUtcNow();
             var report = new Dictionary<string, CheckSingleStreamReport>();
-            var shouldAlert = false;
             foreach (var streamRepInstruction in operation.StreamNameToCheckStreamInstructionsMap)
             {
                 var streamRaw =
@@ -80,6 +79,7 @@ namespace Naos.Database.Domain
                     if (handlingStatusMap.Any())
                     {
                         // found unexpected failures.
+                        status = CheckStatus.Failure;
                         shouldAlert = true;
                     }
 
@@ -87,9 +87,10 @@ namespace Naos.Database.Domain
                 }
                 */
 
-                var expectedRecordWithinThresholdIdToMostRecentTimestampMap = new Dictionary<string, DateTime>();
+                var expectedRecordWithinThresholdIdToReportMap = new Dictionary<string, ExpectedRecordWithinThresholdReport>();
                 foreach (var expectedEventWithinThreshold in instruction.ExpectedRecordsWithinThreshold)
                 {
+                    var status = CheckStatus.Success;
                     var skipDueToDisabledStream = false;
                     if (expectedEventWithinThreshold.SkipWhenStreamHandlingIsDisabled)
                     {
@@ -115,24 +116,30 @@ namespace Naos.Database.Domain
                         if (latestRecord == null
                          || utcNow       > latestRecord.Metadata.TimestampUtc.Add(expectedEventWithinThreshold.Threshold))
                         {
-                            shouldAlert = true;
+                            status = CheckStatus.Failure;
                         }
 
-                        expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(
-                            expectedEventWithinThreshold.Id,
+                        var expectedWithinThresholdReport = new ExpectedRecordWithinThresholdReport(
+                            status,
+                            expectedEventWithinThreshold,
                             latestRecord?.Metadata.TimestampUtc ?? default);
+
+                        expectedRecordWithinThresholdIdToReportMap.Add(
+                            expectedEventWithinThreshold.Id,
+                            expectedWithinThresholdReport);
                     }
                     else
                     {
-                        expectedRecordWithinThresholdIdToMostRecentTimestampMap.Add(
+                        expectedRecordWithinThresholdIdToReportMap.Add(
                             expectedEventWithinThreshold.Id,
                             default);
                     }
                 }
 
-                var eventExpectedToBeHandledIdToHandlingStatusResultMap = new Dictionary<string, IReadOnlyDictionary<long, HandlingStatus>>();
+                var recordExpectedToBeHandledIdToReportMap = new Dictionary<string, RecordExpectedToBeHandledReport>();
                 foreach (var eventExpectedToBeHandled in instruction.RecordsExpectedToBeHandled)
                 {
+                    var status = CheckStatus.Success;
                     var handlingStatusMap = stream
                        .Execute(
                             new StandardGetHandlingStatusOp(
@@ -145,7 +152,7 @@ namespace Naos.Database.Domain
                         if (eventExpectedToBeHandled.Threshold == TimeSpan.Zero)
                         {
                             // if there isn't a threshold to check then do not spend time on subsequent calls.
-                            shouldAlert = true;
+                            status = CheckStatus.Failure;
                         }
                         else
                         {
@@ -164,14 +171,15 @@ namespace Naos.Database.Domain
 
                                 if (utcNow > timestampToInterrogate.Add(eventExpectedToBeHandled.Threshold))
                                 {
-                                    shouldAlert = true;
+                                    status = CheckStatus.Failure;
                                     break;
                                 }
                             }
                         }
                     }
 
-                    eventExpectedToBeHandledIdToHandlingStatusResultMap.Add(eventExpectedToBeHandled.Id, handlingStatusMap);
+                    var expectedToBeHandledReport = new RecordExpectedToBeHandledReport(status, eventExpectedToBeHandled, handlingStatusMap);
+                    recordExpectedToBeHandledIdToReportMap.Add(eventExpectedToBeHandled.Id, expectedToBeHandledReport);
                 }
 
                 /*
@@ -197,6 +205,7 @@ namespace Naos.Database.Domain
                         if (handlingHistory.Count > recordToCheckForExcessiveHandlingHandling.Threshold)
                         {
                             // found excessive handling.
+                            status = CheckStatus.Failure;
                             shouldAlert = true;
                         }
 
@@ -207,14 +216,21 @@ namespace Naos.Database.Domain
                 }
                 */
 
+                var singleReportStatus = expectedRecordWithinThresholdIdToReportMap
+                                        .Values.Select(_ => _.Status)
+                                        .Union(recordExpectedToBeHandledIdToReportMap.Values.Select(_ => _.Status))
+                                        .ToList()
+                                        .ReduceToSingleStatus();
+
                 var checkStreamReport = new CheckSingleStreamReport(
-                    expectedRecordWithinThresholdIdToMostRecentTimestampMap,
-                    eventExpectedToBeHandledIdToHandlingStatusResultMap);
+                    singleReportStatus,
+                    expectedRecordWithinThresholdIdToReportMap,
+                    recordExpectedToBeHandledIdToReportMap);
                 report.Add(streamRepInstruction.Key, checkStreamReport);
             }
 
-            var consolidatedStatus = shouldAlert ? CheckStatus.Failure : CheckStatus.Success;
-            var result = new CheckStreamsReport(consolidatedStatus, report, utcNow);
+            var reportStatus = report.Values.Select(_ => _.Status).ToList().ReduceToSingleStatus();
+            var result = new CheckStreamsReport(reportStatus, report, utcNow);
             return result;
         }
     }

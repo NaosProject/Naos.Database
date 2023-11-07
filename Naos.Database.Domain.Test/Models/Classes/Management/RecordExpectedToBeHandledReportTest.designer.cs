@@ -35,104 +35,98 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class CheckStreamsReportTest
+    public static partial class RecordExpectedToBeHandledReportTest
     {
-        private static readonly StringRepresentationTestScenarios<CheckStreamsReport> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<CheckStreamsReport>()
+        private static readonly StringRepresentationTestScenarios<RecordExpectedToBeHandledReport> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<RecordExpectedToBeHandledReport>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<CheckStreamsReport>
+                new StringRepresentationTestScenario<RecordExpectedToBeHandledReport>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CheckStreamsReport>();
+                        var systemUnderTest = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<CheckStreamsReport>
+                        var result = new SystemUnderTestExpectedStringRepresentation<RecordExpectedToBeHandledReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CheckStreamsReport: Status = {systemUnderTest.Status.ToString() ?? "<null>"}, StreamNameToReportMap = {systemUnderTest.StreamNameToReportMap?.ToString() ?? "<null>"}, SampleTimeUtc = {systemUnderTest.SampleTimeUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.RecordExpectedToBeHandledReport: Status = {systemUnderTest.Status.ToString() ?? "<null>"}, RecordExpectedToBeHandled = {systemUnderTest.RecordExpectedToBeHandled?.ToString() ?? "<null>"}, InternalRecordIdToHandlingStatusMap = {systemUnderTest.InternalRecordIdToHandlingStatusMap?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<CheckStreamsReport> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<CheckStreamsReport>()
+        private static readonly ConstructorArgumentValidationTestScenarios<RecordExpectedToBeHandledReport> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<RecordExpectedToBeHandledReport>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
+                new ConstructorArgumentValidationTestScenario<RecordExpectedToBeHandledReport>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'streamNameToReportMap' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'recordExpectedToBeHandled' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CheckStreamsReport>();
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var result = new CheckStreamsReport(
+                        var result = new RecordExpectedToBeHandledReport(
                                              referenceObject.Status,
                                              null,
-                                             referenceObject.SampleTimeUtc);
+                                             referenceObject.InternalRecordIdToHandlingStatusMap);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "streamNameToReportMap", },
+                    ExpectedExceptionMessageContains = new[] { "recordExpectedToBeHandled", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
+                new ConstructorArgumentValidationTestScenario<RecordExpectedToBeHandledReport>
                 {
-                    Name = "constructor should throw ArgumentException when parameter 'streamNameToReportMap' is an empty dictionary scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'internalRecordIdToHandlingStatusMap' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CheckStreamsReport>();
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var result = new CheckStreamsReport(
+                        var result = new RecordExpectedToBeHandledReport(
                                              referenceObject.Status,
-                                             new Dictionary<string, CheckSingleStreamReport>(),
-                                             referenceObject.SampleTimeUtc);
+                                             referenceObject.RecordExpectedToBeHandled,
+                                             null);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentNullException),
+                    ExpectedExceptionMessageContains = new[] { "internalRecordIdToHandlingStatusMap", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<RecordExpectedToBeHandledReport>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'internalRecordIdToHandlingStatusMap' is an empty dictionary scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>();
+
+                        var result = new RecordExpectedToBeHandledReport(
+                                             referenceObject.Status,
+                                             referenceObject.RecordExpectedToBeHandled,
+                                             new Dictionary<long, HandlingStatus>());
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "streamNameToReportMap", "is an empty dictionary", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'streamNameToReportMap' contains a key-value pair with a null value scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<CheckStreamsReport>();
-
-                        var dictionaryWithNullValue = referenceObject.StreamNameToReportMap.ToDictionary(_ => _.Key, _ => _.Value);
-
-                        var randomKey = dictionaryWithNullValue.Keys.ElementAt(ThreadSafeRandom.Next(0, dictionaryWithNullValue.Count));
-
-                        dictionaryWithNullValue[randomKey] = null;
-
-                        var result = new CheckStreamsReport(
-                                             referenceObject.Status,
-                                             dictionaryWithNullValue,
-                                             referenceObject.SampleTimeUtc);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "streamNameToReportMap", "contains at least one key-value pair with a null value", },
+                    ExpectedExceptionMessageContains = new[] { "internalRecordIdToHandlingStatusMap", "is an empty dictionary", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<CheckStreamsReport> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<CheckStreamsReport>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<RecordExpectedToBeHandledReport> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<RecordExpectedToBeHandledReport>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CheckStreamsReport>
+                new ConstructorPropertyAssignmentTestScenario<RecordExpectedToBeHandledReport>
                 {
                     Name = "Status should return same 'status' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CheckStreamsReport>();
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CheckStreamsReport>
+                        var result = new SystemUnderTestExpectedPropertyValue<RecordExpectedToBeHandledReport>
                         {
-                            SystemUnderTest = new CheckStreamsReport(
+                            SystemUnderTest = new RecordExpectedToBeHandledReport(
                                                       referenceObject.Status,
-                                                      referenceObject.StreamNameToReportMap,
-                                                      referenceObject.SampleTimeUtc),
+                                                      referenceObject.RecordExpectedToBeHandled,
+                                                      referenceObject.InternalRecordIdToHandlingStatusMap),
                             ExpectedPropertyValue = referenceObject.Status,
                         };
 
@@ -141,61 +135,61 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Status",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CheckStreamsReport>
+                new ConstructorPropertyAssignmentTestScenario<RecordExpectedToBeHandledReport>
                 {
-                    Name = "StreamNameToReportMap should return same 'streamNameToReportMap' parameter passed to constructor when getting",
+                    Name = "RecordExpectedToBeHandled should return same 'recordExpectedToBeHandled' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CheckStreamsReport>();
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CheckStreamsReport>
+                        var result = new SystemUnderTestExpectedPropertyValue<RecordExpectedToBeHandledReport>
                         {
-                            SystemUnderTest = new CheckStreamsReport(
+                            SystemUnderTest = new RecordExpectedToBeHandledReport(
                                                       referenceObject.Status,
-                                                      referenceObject.StreamNameToReportMap,
-                                                      referenceObject.SampleTimeUtc),
-                            ExpectedPropertyValue = referenceObject.StreamNameToReportMap,
+                                                      referenceObject.RecordExpectedToBeHandled,
+                                                      referenceObject.InternalRecordIdToHandlingStatusMap),
+                            ExpectedPropertyValue = referenceObject.RecordExpectedToBeHandled,
                         };
 
                         return result;
                     },
-                    PropertyName = "StreamNameToReportMap",
+                    PropertyName = "RecordExpectedToBeHandled",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<CheckStreamsReport>
+                new ConstructorPropertyAssignmentTestScenario<RecordExpectedToBeHandledReport>
                 {
-                    Name = "SampleTimeUtc should return same 'sampleTimeUtc' parameter passed to constructor when getting",
+                    Name = "InternalRecordIdToHandlingStatusMap should return same 'internalRecordIdToHandlingStatusMap' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<CheckStreamsReport>();
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<CheckStreamsReport>
+                        var result = new SystemUnderTestExpectedPropertyValue<RecordExpectedToBeHandledReport>
                         {
-                            SystemUnderTest = new CheckStreamsReport(
+                            SystemUnderTest = new RecordExpectedToBeHandledReport(
                                                       referenceObject.Status,
-                                                      referenceObject.StreamNameToReportMap,
-                                                      referenceObject.SampleTimeUtc),
-                            ExpectedPropertyValue = referenceObject.SampleTimeUtc,
+                                                      referenceObject.RecordExpectedToBeHandled,
+                                                      referenceObject.InternalRecordIdToHandlingStatusMap),
+                            ExpectedPropertyValue = referenceObject.InternalRecordIdToHandlingStatusMap,
                         };
 
                         return result;
                     },
-                    PropertyName = "SampleTimeUtc",
+                    PropertyName = "InternalRecordIdToHandlingStatusMap",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<CheckStreamsReport> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<CheckStreamsReport>()
+        private static readonly DeepCloneWithTestScenarios<RecordExpectedToBeHandledReport> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<RecordExpectedToBeHandledReport>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CheckStreamsReport>
+                new DeepCloneWithTestScenario<RecordExpectedToBeHandledReport>
                 {
                     Name = "DeepCloneWithStatus should deep clone object and replace Status with the provided status",
                     WithPropertyName = "Status",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CheckStreamsReport>();
+                        var systemUnderTest = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var referenceObject = A.Dummy<CheckStreamsReport>().ThatIs(_ => !systemUnderTest.Status.IsEqualTo(_.Status));
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>().ThatIs(_ => !systemUnderTest.Status.IsEqualTo(_.Status));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CheckStreamsReport>
+                        var result = new SystemUnderTestDeepCloneWithValue<RecordExpectedToBeHandledReport>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Status,
@@ -205,75 +199,75 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CheckStreamsReport>
+                new DeepCloneWithTestScenario<RecordExpectedToBeHandledReport>
                 {
-                    Name = "DeepCloneWithStreamNameToReportMap should deep clone object and replace StreamNameToReportMap with the provided streamNameToReportMap",
-                    WithPropertyName = "StreamNameToReportMap",
+                    Name = "DeepCloneWithRecordExpectedToBeHandled should deep clone object and replace RecordExpectedToBeHandled with the provided recordExpectedToBeHandled",
+                    WithPropertyName = "RecordExpectedToBeHandled",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CheckStreamsReport>();
+                        var systemUnderTest = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var referenceObject = A.Dummy<CheckStreamsReport>().ThatIs(_ => !systemUnderTest.StreamNameToReportMap.IsEqualTo(_.StreamNameToReportMap));
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>().ThatIs(_ => !systemUnderTest.RecordExpectedToBeHandled.IsEqualTo(_.RecordExpectedToBeHandled));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CheckStreamsReport>
+                        var result = new SystemUnderTestDeepCloneWithValue<RecordExpectedToBeHandledReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.StreamNameToReportMap,
+                            DeepCloneWithValue = referenceObject.RecordExpectedToBeHandled,
                         };
 
                         return result;
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<CheckStreamsReport>
+                new DeepCloneWithTestScenario<RecordExpectedToBeHandledReport>
                 {
-                    Name = "DeepCloneWithSampleTimeUtc should deep clone object and replace SampleTimeUtc with the provided sampleTimeUtc",
-                    WithPropertyName = "SampleTimeUtc",
+                    Name = "DeepCloneWithInternalRecordIdToHandlingStatusMap should deep clone object and replace InternalRecordIdToHandlingStatusMap with the provided internalRecordIdToHandlingStatusMap",
+                    WithPropertyName = "InternalRecordIdToHandlingStatusMap",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<CheckStreamsReport>();
+                        var systemUnderTest = A.Dummy<RecordExpectedToBeHandledReport>();
 
-                        var referenceObject = A.Dummy<CheckStreamsReport>().ThatIs(_ => !systemUnderTest.SampleTimeUtc.IsEqualTo(_.SampleTimeUtc));
+                        var referenceObject = A.Dummy<RecordExpectedToBeHandledReport>().ThatIs(_ => !systemUnderTest.InternalRecordIdToHandlingStatusMap.IsEqualTo(_.InternalRecordIdToHandlingStatusMap));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<CheckStreamsReport>
+                        var result = new SystemUnderTestDeepCloneWithValue<RecordExpectedToBeHandledReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.SampleTimeUtc,
+                            DeepCloneWithValue = referenceObject.InternalRecordIdToHandlingStatusMap,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly CheckStreamsReport ReferenceObjectForEquatableTestScenarios = A.Dummy<CheckStreamsReport>();
+        private static readonly RecordExpectedToBeHandledReport ReferenceObjectForEquatableTestScenarios = A.Dummy<RecordExpectedToBeHandledReport>();
 
-        private static readonly EquatableTestScenarios<CheckStreamsReport> EquatableTestScenarios = new EquatableTestScenarios<CheckStreamsReport>()
+        private static readonly EquatableTestScenarios<RecordExpectedToBeHandledReport> EquatableTestScenarios = new EquatableTestScenarios<RecordExpectedToBeHandledReport>()
             .AddScenario(() =>
-                new EquatableTestScenario<CheckStreamsReport>
+                new EquatableTestScenario<RecordExpectedToBeHandledReport>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CheckStreamsReport[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new RecordExpectedToBeHandledReport[]
                     {
-                        new CheckStreamsReport(
+                        new RecordExpectedToBeHandledReport(
                                 ReferenceObjectForEquatableTestScenarios.Status,
-                                ReferenceObjectForEquatableTestScenarios.StreamNameToReportMap,
-                                ReferenceObjectForEquatableTestScenarios.SampleTimeUtc),
+                                ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandled,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordIdToHandlingStatusMap),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new CheckStreamsReport[]
+                    ObjectsThatAreNotEqualToReferenceObject = new RecordExpectedToBeHandledReport[]
                     {
-                        new CheckStreamsReport(
-                                A.Dummy<CheckStreamsReport>().Whose(_ => !_.Status.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Status)).Status,
-                                ReferenceObjectForEquatableTestScenarios.StreamNameToReportMap,
-                                ReferenceObjectForEquatableTestScenarios.SampleTimeUtc),
-                        new CheckStreamsReport(
+                        new RecordExpectedToBeHandledReport(
+                                A.Dummy<RecordExpectedToBeHandledReport>().Whose(_ => !_.Status.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Status)).Status,
+                                ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandled,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordIdToHandlingStatusMap),
+                        new RecordExpectedToBeHandledReport(
                                 ReferenceObjectForEquatableTestScenarios.Status,
-                                A.Dummy<CheckStreamsReport>().Whose(_ => !_.StreamNameToReportMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamNameToReportMap)).StreamNameToReportMap,
-                                ReferenceObjectForEquatableTestScenarios.SampleTimeUtc),
-                        new CheckStreamsReport(
+                                A.Dummy<RecordExpectedToBeHandledReport>().Whose(_ => !_.RecordExpectedToBeHandled.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandled)).RecordExpectedToBeHandled,
+                                ReferenceObjectForEquatableTestScenarios.InternalRecordIdToHandlingStatusMap),
+                        new RecordExpectedToBeHandledReport(
                                 ReferenceObjectForEquatableTestScenarios.Status,
-                                ReferenceObjectForEquatableTestScenarios.StreamNameToReportMap,
-                                A.Dummy<CheckStreamsReport>().Whose(_ => !_.SampleTimeUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SampleTimeUtc)).SampleTimeUtc),
+                                ReferenceObjectForEquatableTestScenarios.RecordExpectedToBeHandled,
+                                A.Dummy<RecordExpectedToBeHandledReport>().Whose(_ => !_.InternalRecordIdToHandlingStatusMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordIdToHandlingStatusMap)).InternalRecordIdToHandlingStatusMap),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -303,12 +297,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void CheckStreamsReport___Should_implement_IModel_of_CheckStreamsReport___When_reflecting()
+            public static void RecordExpectedToBeHandledReport___Should_implement_IModel_of_RecordExpectedToBeHandledReport___When_reflecting()
             {
                 // Arrange
-                var type = typeof(CheckStreamsReport);
+                var type = typeof(RecordExpectedToBeHandledReport);
 
-                var expectedModelMethods = typeof(IModel<CheckStreamsReport>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<RecordExpectedToBeHandledReport>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -318,7 +312,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<CheckStreamsReport>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<RecordExpectedToBeHandledReport>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -336,10 +330,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void CheckStreamsReport___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void RecordExpectedToBeHandledReport___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(CheckStreamsReport);
+                var type = typeof(RecordExpectedToBeHandledReport);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -519,10 +513,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CheckStreamsReport>();
+                var systemUnderTest = A.Dummy<RecordExpectedToBeHandledReport>();
 
                 // Act
-                var actual = (CheckStreamsReport)systemUnderTest.Clone();
+                var actual = (RecordExpectedToBeHandledReport)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -546,7 +540,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<CheckStreamsReport>();
+                var systemUnderTest = A.Dummy<RecordExpectedToBeHandledReport>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -555,16 +549,28 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.StreamNameToReportMap == null)
+                if (systemUnderTest.RecordExpectedToBeHandled == null)
                 {
-                    actual.StreamNameToReportMap.AsTest().Must().BeNull();
+                    actual.RecordExpectedToBeHandled.AsTest().Must().BeNull();
                 }
-                else if (!actual.StreamNameToReportMap.GetType().IsValueType)
+                else if (!actual.RecordExpectedToBeHandled.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.StreamNameToReportMap.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.StreamNameToReportMap);
+                    actual.RecordExpectedToBeHandled.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordExpectedToBeHandled);
+                }
+
+                if (systemUnderTest.InternalRecordIdToHandlingStatusMap == null)
+                {
+                    actual.InternalRecordIdToHandlingStatusMap.AsTest().Must().BeNull();
+                }
+                else if (!actual.InternalRecordIdToHandlingStatusMap.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.InternalRecordIdToHandlingStatusMap.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.InternalRecordIdToHandlingStatusMap);
                 }
             }
 
@@ -584,7 +590,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Status", "StreamNameToReportMap", "SampleTimeUtc" };
+                var propertyNames = new string[] { "Status", "RecordExpectedToBeHandled", "InternalRecordIdToHandlingStatusMap" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -597,12 +603,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (CheckStreamsReport)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (RecordExpectedToBeHandledReport)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(CheckStreamsReport).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(RecordExpectedToBeHandledReport).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -664,7 +670,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CheckStreamsReport>();
+                var expected = A.Dummy<RecordExpectedToBeHandledReport>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -693,7 +699,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CheckStreamsReport>();
+                var expected = A.Dummy<RecordExpectedToBeHandledReport>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -722,7 +728,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CheckStreamsReport>();
+                var expected = A.Dummy<RecordExpectedToBeHandledReport>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -751,7 +757,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<CheckStreamsReport>();
+                var expected = A.Dummy<RecordExpectedToBeHandledReport>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -785,8 +791,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CheckStreamsReport systemUnderTest1 = null;
-                CheckStreamsReport systemUnderTest2 = null;
+                RecordExpectedToBeHandledReport systemUnderTest1 = null;
+                RecordExpectedToBeHandledReport systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -816,7 +822,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CheckStreamsReport systemUnderTest = null;
+                    RecordExpectedToBeHandledReport systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -965,8 +971,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                CheckStreamsReport systemUnderTest1 = null;
-                CheckStreamsReport systemUnderTest2 = null;
+                RecordExpectedToBeHandledReport systemUnderTest1 = null;
+                RecordExpectedToBeHandledReport systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -996,7 +1002,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CheckStreamsReport systemUnderTest = null;
+                    RecordExpectedToBeHandledReport systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1142,14 +1148,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CheckStreamsReport___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_RecordExpectedToBeHandledReport___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    CheckStreamsReport systemUnderTest = null;
+                    RecordExpectedToBeHandledReport systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1173,7 +1179,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CheckStreamsReport___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_RecordExpectedToBeHandledReport___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1201,7 +1207,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CheckStreamsReport___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_RecordExpectedToBeHandledReport___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1229,7 +1235,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CheckStreamsReport___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_RecordExpectedToBeHandledReport___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1257,7 +1263,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_CheckStreamsReport___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_RecordExpectedToBeHandledReport___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 

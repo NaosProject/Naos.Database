@@ -25,15 +25,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class CheckSingleStreamReport : IModel<CheckSingleStreamReport>
+    public partial class ExpectedRecordWithinThresholdReport : IModel<ExpectedRecordWithinThresholdReport>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="CheckSingleStreamReport"/> are equal.
+        /// Determines whether two objects of type <see cref="ExpectedRecordWithinThresholdReport"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(CheckSingleStreamReport left, CheckSingleStreamReport right)
+        public static bool operator ==(ExpectedRecordWithinThresholdReport left, ExpectedRecordWithinThresholdReport right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -51,15 +51,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="CheckSingleStreamReport"/> are not equal.
+        /// Determines whether two objects of type <see cref="ExpectedRecordWithinThresholdReport"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(CheckSingleStreamReport left, CheckSingleStreamReport right) => !(left == right);
+        public static bool operator !=(ExpectedRecordWithinThresholdReport left, ExpectedRecordWithinThresholdReport right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(CheckSingleStreamReport other)
+        public bool Equals(ExpectedRecordWithinThresholdReport other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -72,32 +72,32 @@ namespace Naos.Database.Domain
             }
 
             var result = this.Status.IsEqualTo(other.Status)
-                      && this.ExpectedRecordWithinThresholdIdToReportMap.IsEqualTo(other.ExpectedRecordWithinThresholdIdToReportMap)
-                      && this.RecordExpectedToBeHandledIdToReportMap.IsEqualTo(other.RecordExpectedToBeHandledIdToReportMap);
+                      && this.ExpectedRecordWithinThreshold.IsEqualTo(other.ExpectedRecordWithinThreshold)
+                      && this.LatestMatchingRecordTimestampUtc.IsEqualTo(other.LatestMatchingRecordTimestampUtc);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as CheckSingleStreamReport);
+        public override bool Equals(object obj) => this == (obj as ExpectedRecordWithinThresholdReport);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.Status)
-            .Hash(this.ExpectedRecordWithinThresholdIdToReportMap)
-            .Hash(this.RecordExpectedToBeHandledIdToReportMap)
+            .Hash(this.ExpectedRecordWithinThreshold)
+            .Hash(this.LatestMatchingRecordTimestampUtc)
             .Value;
 
         /// <inheritdoc />
         public object Clone() => this.DeepClone();
 
         /// <inheritdoc />
-        public CheckSingleStreamReport DeepClone()
+        public ExpectedRecordWithinThresholdReport DeepClone()
         {
-            var result = new CheckSingleStreamReport(
+            var result = new ExpectedRecordWithinThresholdReport(
                                  this.Status.DeepClone(),
-                                 this.ExpectedRecordWithinThresholdIdToReportMap?.DeepClone(),
-                                 this.RecordExpectedToBeHandledIdToReportMap?.DeepClone());
+                                 this.ExpectedRecordWithinThreshold?.DeepClone(),
+                                 this.LatestMatchingRecordTimestampUtc.DeepClone());
 
             return result;
         }
@@ -106,7 +106,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="Status" />.
         /// </summary>
         /// <param name="status">The new <see cref="Status" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CheckSingleStreamReport" /> using the specified <paramref name="status" /> for <see cref="Status" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="ExpectedRecordWithinThresholdReport" /> using the specified <paramref name="status" /> for <see cref="Status" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -124,21 +124,21 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CheckSingleStreamReport DeepCloneWithStatus(CheckStatus status)
+        public ExpectedRecordWithinThresholdReport DeepCloneWithStatus(CheckStatus status)
         {
-            var result = new CheckSingleStreamReport(
+            var result = new ExpectedRecordWithinThresholdReport(
                                  status,
-                                 this.ExpectedRecordWithinThresholdIdToReportMap?.DeepClone(),
-                                 this.RecordExpectedToBeHandledIdToReportMap?.DeepClone());
+                                 this.ExpectedRecordWithinThreshold?.DeepClone(),
+                                 this.LatestMatchingRecordTimestampUtc.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="ExpectedRecordWithinThresholdIdToReportMap" />.
+        /// Deep clones this object with a new <see cref="ExpectedRecordWithinThreshold" />.
         /// </summary>
-        /// <param name="expectedRecordWithinThresholdIdToReportMap">The new <see cref="ExpectedRecordWithinThresholdIdToReportMap" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CheckSingleStreamReport" /> using the specified <paramref name="expectedRecordWithinThresholdIdToReportMap" /> for <see cref="ExpectedRecordWithinThresholdIdToReportMap" /> and a deep clone of every other property.</returns>
+        /// <param name="expectedRecordWithinThreshold">The new <see cref="ExpectedRecordWithinThreshold" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="ExpectedRecordWithinThresholdReport" /> using the specified <paramref name="expectedRecordWithinThreshold" /> for <see cref="ExpectedRecordWithinThreshold" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -156,21 +156,21 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CheckSingleStreamReport DeepCloneWithExpectedRecordWithinThresholdIdToReportMap(IReadOnlyDictionary<string, ExpectedRecordWithinThresholdReport> expectedRecordWithinThresholdIdToReportMap)
+        public ExpectedRecordWithinThresholdReport DeepCloneWithExpectedRecordWithinThreshold(ExpectedRecordWithinThreshold expectedRecordWithinThreshold)
         {
-            var result = new CheckSingleStreamReport(
+            var result = new ExpectedRecordWithinThresholdReport(
                                  this.Status.DeepClone(),
-                                 expectedRecordWithinThresholdIdToReportMap,
-                                 this.RecordExpectedToBeHandledIdToReportMap?.DeepClone());
+                                 expectedRecordWithinThreshold,
+                                 this.LatestMatchingRecordTimestampUtc.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="RecordExpectedToBeHandledIdToReportMap" />.
+        /// Deep clones this object with a new <see cref="LatestMatchingRecordTimestampUtc" />.
         /// </summary>
-        /// <param name="recordExpectedToBeHandledIdToReportMap">The new <see cref="RecordExpectedToBeHandledIdToReportMap" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CheckSingleStreamReport" /> using the specified <paramref name="recordExpectedToBeHandledIdToReportMap" /> for <see cref="RecordExpectedToBeHandledIdToReportMap" /> and a deep clone of every other property.</returns>
+        /// <param name="latestMatchingRecordTimestampUtc">The new <see cref="LatestMatchingRecordTimestampUtc" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="ExpectedRecordWithinThresholdReport" /> using the specified <paramref name="latestMatchingRecordTimestampUtc" /> for <see cref="LatestMatchingRecordTimestampUtc" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -188,12 +188,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CheckSingleStreamReport DeepCloneWithRecordExpectedToBeHandledIdToReportMap(IReadOnlyDictionary<string, RecordExpectedToBeHandledReport> recordExpectedToBeHandledIdToReportMap)
+        public ExpectedRecordWithinThresholdReport DeepCloneWithLatestMatchingRecordTimestampUtc(DateTime latestMatchingRecordTimestampUtc)
         {
-            var result = new CheckSingleStreamReport(
+            var result = new ExpectedRecordWithinThresholdReport(
                                  this.Status.DeepClone(),
-                                 this.ExpectedRecordWithinThresholdIdToReportMap?.DeepClone(),
-                                 recordExpectedToBeHandledIdToReportMap);
+                                 this.ExpectedRecordWithinThreshold?.DeepClone(),
+                                 latestMatchingRecordTimestampUtc);
 
             return result;
         }
@@ -202,7 +202,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.CheckSingleStreamReport: Status = {this.Status.ToString() ?? "<null>"}, ExpectedRecordWithinThresholdIdToReportMap = {this.ExpectedRecordWithinThresholdIdToReportMap?.ToString() ?? "<null>"}, RecordExpectedToBeHandledIdToReportMap = {this.RecordExpectedToBeHandledIdToReportMap?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.ExpectedRecordWithinThresholdReport: Status = {this.Status.ToString() ?? "<null>"}, ExpectedRecordWithinThreshold = {this.ExpectedRecordWithinThreshold?.ToString() ?? "<null>"}, LatestMatchingRecordTimestampUtc = {this.LatestMatchingRecordTimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

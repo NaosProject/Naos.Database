@@ -67,8 +67,9 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckSingleStreamReport(
-                                 A.Dummy<IReadOnlyDictionary<string, DateTime>>(),
-                                 A.Dummy<IReadOnlyDictionary<string, IReadOnlyDictionary<long, HandlingStatus>>>()));
+                                 A.Dummy<CheckStatus>(),
+                                 A.Dummy<IReadOnlyDictionary<string, ExpectedRecordWithinThresholdReport>>(),
+                                 A.Dummy<IReadOnlyDictionary<string, RecordExpectedToBeHandledReport>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new ChecksPerformedEvent(
@@ -176,6 +177,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<TimeSpan>(),
                                  A.Dummy<bool>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ExpectedRecordWithinThresholdReport(
+                                 A.Dummy<CheckStatus>(),
+                                 A.Dummy<ExpectedRecordWithinThreshold>(),
+                                 A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new FailRunningHandleRecordOp(
@@ -525,6 +532,12 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<HandlingFilter>(),
                                  A.Dummy<TimeSpan>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordExpectedToBeHandledReport(
+                                 A.Dummy<CheckStatus>(),
+                                 A.Dummy<RecordExpectedToBeHandled>(),
+                                 A.Dummy<IReadOnlyDictionary<long, HandlingStatus>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordFilter(

@@ -8,38 +8,46 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Report of checks on a stream.
     /// </summary>
-    public partial class CheckSingleStreamReport : IModelViaCodeGen
+    public partial class CheckSingleStreamReport : IHaveCheckStatus, IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckSingleStreamReport"/> class.
         /// </summary>
-        /// <param name="expectedRecordWithinThresholdIdToMostRecentTimestampMap">The expected record within threshold identifier to most recent timestamp map.</param>
-        /// <param name="eventExpectedToBeHandledIdToHandlingStatusResultMap">The event expected to be handled identifier to handling status result map.</param>
+        /// <param name="status">Evaluated check status.</param>
+        /// <param name="expectedRecordWithinThresholdIdToReportMap">The expected record within threshold identifier to report map.</param>
+        /// <param name="recordExpectedToBeHandledIdToReportMap">The record expected to be handled identifier to report map.</param>
         public CheckSingleStreamReport(
-            IReadOnlyDictionary<string, DateTime> expectedRecordWithinThresholdIdToMostRecentTimestampMap,
-            IReadOnlyDictionary<string, IReadOnlyDictionary<long, HandlingStatus>> eventExpectedToBeHandledIdToHandlingStatusResultMap)
+            CheckStatus status,
+            IReadOnlyDictionary<string, ExpectedRecordWithinThresholdReport> expectedRecordWithinThresholdIdToReportMap,
+            IReadOnlyDictionary<string, RecordExpectedToBeHandledReport> recordExpectedToBeHandledIdToReportMap)
         {
-            expectedRecordWithinThresholdIdToMostRecentTimestampMap.MustForArg(nameof(expectedRecordWithinThresholdIdToMostRecentTimestampMap)).NotBeNull();
-            eventExpectedToBeHandledIdToHandlingStatusResultMap.MustForArg(nameof(eventExpectedToBeHandledIdToHandlingStatusResultMap)).NotBeNull().And().NotContainAnyKeyValuePairsWithNullValue();
+            status.MustForArg(nameof(status)).NotBeEqualTo(CheckStatus.Invalid);
+            expectedRecordWithinThresholdIdToReportMap.MustForArg(nameof(expectedRecordWithinThresholdIdToReportMap)).NotBeNull();
+            recordExpectedToBeHandledIdToReportMap.MustForArg(nameof(recordExpectedToBeHandledIdToReportMap)).NotBeNull().And().NotContainAnyKeyValuePairsWithNullValue();
 
-            this.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap = expectedRecordWithinThresholdIdToMostRecentTimestampMap;
-            this.EventExpectedToBeHandledIdToHandlingStatusResultMap = eventExpectedToBeHandledIdToHandlingStatusResultMap;
+            this.Status = status;
+            this.ExpectedRecordWithinThresholdIdToReportMap = expectedRecordWithinThresholdIdToReportMap;
+            this.RecordExpectedToBeHandledIdToReportMap = recordExpectedToBeHandledIdToReportMap;
         }
 
-        /// <summary>
-        /// Gets the expected record within threshold identifier to most recent timestamp map.
-        /// </summary>
-        public IReadOnlyDictionary<string, DateTime> ExpectedRecordWithinThresholdIdToMostRecentTimestampMap { get; private set; }
+        /// <inheritdoc />
+        public CheckStatus Status { get; private set; }
 
         /// <summary>
-        /// Gets the event expected to be handled identifier to handling status result map.
+        /// Gets the expected record within threshold identifier to report map.
         /// </summary>
-        public IReadOnlyDictionary<string, IReadOnlyDictionary<long, HandlingStatus>> EventExpectedToBeHandledIdToHandlingStatusResultMap { get; private set; }
+        public IReadOnlyDictionary<string, ExpectedRecordWithinThresholdReport> ExpectedRecordWithinThresholdIdToReportMap { get; private set; }
+
+        /// <summary>
+        /// Gets the record expected expected to be handled identifier to report map.
+        /// </summary>
+        public IReadOnlyDictionary<string, RecordExpectedToBeHandledReport> RecordExpectedToBeHandledIdToReportMap { get; private set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
 
     using FakeItEasy;
-
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -36,21 +36,22 @@ namespace Naos.Database.Domain.Test
                         new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
                         {
                             Name =
-                                "constructor should throw ArgumentNullException when parameter 'expectedRecordWithinThresholdIdToMostRecentTimestampMap' is null scenario",
+                                "constructor should throw ArgumentOutOfRangeException when parameter 'status' is 'Invalid' scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<CheckSingleStreamReport>();
 
                                                    var result = new CheckSingleStreamReport(
-                                                       null,
-                                                       referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap);
+                                                       CheckStatus.Invalid,
+                                                       referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
+                                                       referenceObject.RecordExpectedToBeHandledIdToReportMap);
 
                                                    return result;
                                                },
-                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "expectedRecordWithinThresholdIdToMostRecentTimestampMap",
+                                                                   "status",
                                                                },
                         })
                .AddScenario(
@@ -58,13 +59,37 @@ namespace Naos.Database.Domain.Test
                         new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
                         {
                             Name =
-                                "constructor should throw ArgumentNullException when parameter 'eventExpectedToBeHandledIdToHandlingStatusResultMap' is null scenario",
+                                "constructor should throw ArgumentNullException when parameter 'expectedRecordWithinThresholdIdToReportMap' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<CheckSingleStreamReport>();
 
                                                    var result = new CheckSingleStreamReport(
-                                                       referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
+                                                       referenceObject.Status,
+                                                       null,
+                                                       referenceObject.RecordExpectedToBeHandledIdToReportMap);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "expectedRecordWithinThresholdIdToReportMap",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
+                        {
+                            Name =
+                                "constructor should throw ArgumentNullException when parameter 'recordExpectedToBeHandledIdToReportMap' is null scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CheckSingleStreamReport>();
+
+                                                   var result = new CheckSingleStreamReport(
+                                                       referenceObject.Status,
+                                                       referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
                                                        null);
 
                                                    return result;
@@ -72,7 +97,7 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionType = typeof(ArgumentNullException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "eventExpectedToBeHandledIdToHandlingStatusResultMap",
+                                                                   "recordExpectedToBeHandledIdToReportMap",
                                                                },
                         })
                .AddScenario(
@@ -80,13 +105,13 @@ namespace Naos.Database.Domain.Test
                         new ConstructorArgumentValidationTestScenario<CheckSingleStreamReport>
                         {
                             Name =
-                                "constructor should throw ArgumentException when parameter 'eventExpectedToBeHandledIdToHandlingStatusResultMap' contains a key-value pair with a null value scenario",
+                                "constructor should throw ArgumentException when parameter 'recordExpectedToBeHandledIdToReportMap' contains a key-value pair with a null value scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<CheckSingleStreamReport>();
 
                                                    var dictionaryWithNullValue =
-                                                       referenceObject.EventExpectedToBeHandledIdToHandlingStatusResultMap.ToDictionary(
+                                                       referenceObject.RecordExpectedToBeHandledIdToReportMap.ToDictionary(
                                                            _ => _.Key,
                                                            _ => _.Value);
 
@@ -97,7 +122,8 @@ namespace Naos.Database.Domain.Test
                                                    dictionaryWithNullValue[randomKey] = null;
 
                                                    var result = new CheckSingleStreamReport(
-                                                       referenceObject.ExpectedRecordWithinThresholdIdToMostRecentTimestampMap,
+                                                       referenceObject.Status,
+                                                       referenceObject.ExpectedRecordWithinThresholdIdToReportMap,
                                                        dictionaryWithNullValue);
 
                                                    return result;
@@ -105,7 +131,7 @@ namespace Naos.Database.Domain.Test
                             ExpectedExceptionType = typeof(ArgumentException),
                             ExpectedExceptionMessageContains = new[]
                                                                {
-                                                                   "eventExpectedToBeHandledIdToHandlingStatusResultMap",
+                                                                   "recordExpectedToBeHandledIdToReportMap",
                                                                    "contains at least one key-value pair with a null value",
                                                                },
                         });

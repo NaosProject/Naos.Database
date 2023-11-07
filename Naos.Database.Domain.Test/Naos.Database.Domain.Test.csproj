@@ -263,6 +263,10 @@
     <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.designer.cs">
       <DependentUpon>ChecksPerformedEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.cs" />
+    <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.designer.cs">
+      <DependentUpon>ExpectedRecordWithinThresholdReportTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Management\CheckJobsOpTest.cs" />
     <Compile Include="Operations\Classes\Management\CheckJobsOpTest.designer.cs">
       <DependentUpon>CheckJobsOpTest.cs</DependentUpon>
@@ -757,6 +761,10 @@
     <Compile Include="Models\Classes\Management\RecordToCheckForFailedHandlingTest.cs" />
     <Compile Include="Models\Classes\Management\RecordToCheckForFailedHandlingTest.designer.cs">
       <DependentUpon>RecordToCheckForFailedHandlingTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledReportTest.cs" />
+    <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledReportTest.designer.cs">
+      <DependentUpon>RecordExpectedToBeHandledReportTest.cs</DependentUpon>
     </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />

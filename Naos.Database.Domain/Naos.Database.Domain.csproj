@@ -225,11 +225,16 @@
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.GetNextUniqueLongOp.cs" />
     <Compile Include="Logic\Stream\Write\WriteOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Common\VersionMatchStrategyExtensions.cs" />
-    <Compile Include="Models\Classes\Management\CheckJobsReport.designer.cs">
-      <DependentUpon>CheckJobsReport.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Classes\Management\CheckSingleStreamReport.designer.cs">
       <DependentUpon>CheckSingleStreamReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReport.designer.cs">
+      <DependentUpon>ExpectedRecordWithinThresholdReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledReport.cs" />
+    <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReport.cs" />
+    <Compile Include="Models\Classes\Management\CheckJobsReport.designer.cs">
+      <DependentUpon>CheckJobsReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Management\CheckStreamInstruction.designer.cs">
       <DependentUpon>CheckStreamInstruction.cs</DependentUpon>
@@ -255,6 +260,9 @@
     <Compile Include="Models\Classes\Management\RecordExpectedToBeHandled.cs" />
     <Compile Include="Models\Classes\Management\RecordExpectedToBeHandled.designer.cs">
       <DependentUpon>RecordExpectedToBeHandled.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledReport.designer.cs">
+      <DependentUpon>RecordExpectedToBeHandledReport.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Management\RecordToCheckForExcessiveHandling.cs" />
     <Compile Include="Models\Classes\Management\RecordToCheckForExcessiveHandling.designer.cs">

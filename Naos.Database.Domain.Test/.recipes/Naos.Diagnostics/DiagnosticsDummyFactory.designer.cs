@@ -38,17 +38,20 @@ namespace Naos.Diagnostics.Domain.Test
         {
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckDrivesOp(
+                                 A.Dummy<decimal>(),
                                  A.Dummy<decimal>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckDrivesReport(
-                                 A.Dummy<bool>(),
+                                 A.Dummy<CheckStatus>(),
                                  A.Dummy<IReadOnlyDictionary<string, CheckSingleDriveReport>>(),
+                                 A.Dummy<CheckDrivesOp>(),
                                  A.Dummy<DateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckSingleDriveReport(
                                  A.Dummy<string>(),
+                                 A.Dummy<CheckStatus>(),
                                  A.Dummy<long>(),
                                  A.Dummy<long>()));
 

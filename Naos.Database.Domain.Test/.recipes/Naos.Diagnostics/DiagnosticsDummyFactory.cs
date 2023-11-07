@@ -36,14 +36,22 @@ namespace Naos.Diagnostics.Domain.Test
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "This is not excessively complex.  Dummy factories typically wire-up many types.")]
         public DiagnosticsDummyFactory()
         {
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CheckStatus.Invalid);
+
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new CheckDrivesOp(
-                    (decimal)A.Dummy<int>().ThatIsInRange(0, 100)/100));
+                () =>
+                {
+                    var failureThresholdSeed = A.Dummy<int>();
+                    return new CheckDrivesOp(
+                        (decimal)failureThresholdSeed.ThatIsInRange(0, 100)          / 100,
+                        (decimal)A.Dummy<int>().ThatIsInRange(0, 100).ThatIsNot(failureThresholdSeed) / 100);
+                });
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckDrivesReport(
-                    A.Dummy<bool>(),
+                    A.Dummy<CheckStatus>(),
                     A.Dummy<IReadOnlyDictionary<string, CheckSingleDriveReport>>(),
+                    A.Dummy<CheckDrivesOp>(),
                     A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -53,6 +61,7 @@ namespace Naos.Diagnostics.Domain.Test
                     var totalFreeSpaceInBytes = A.Dummy<int>().ThatIsInRange(1, totalSizeInBytes - 1);
                     return new CheckSingleDriveReport(
                         A.Dummy<string>(),
+                        A.Dummy<CheckStatus>(),
                         totalFreeSpaceInBytes,
                         totalSizeInBytes);
                 });

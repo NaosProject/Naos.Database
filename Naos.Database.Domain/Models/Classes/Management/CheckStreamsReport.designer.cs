@@ -15,6 +15,8 @@ namespace Naos.Database.Domain
     using global::System.Globalization;
     using global::System.Linq;
 
+    using global::Naos.Diagnostics.Domain;
+
     using global::OBeautifulCode.Cloning.Recipes;
     using global::OBeautifulCode.Equality.Recipes;
     using global::OBeautifulCode.Type;
@@ -69,7 +71,7 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.ShouldAlert.IsEqualTo(other.ShouldAlert)
+            var result = this.Status.IsEqualTo(other.Status)
                       && this.StreamNameToReportMap.IsEqualTo(other.StreamNameToReportMap)
                       && this.SampleTimeUtc.IsEqualTo(other.SampleTimeUtc);
 
@@ -81,7 +83,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.ShouldAlert)
+            .Hash(this.Status)
             .Hash(this.StreamNameToReportMap)
             .Hash(this.SampleTimeUtc)
             .Value;
@@ -93,7 +95,7 @@ namespace Naos.Database.Domain
         public CheckStreamsReport DeepClone()
         {
             var result = new CheckStreamsReport(
-                                 this.ShouldAlert.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.StreamNameToReportMap?.DeepClone(),
                                  this.SampleTimeUtc.DeepClone());
 
@@ -101,10 +103,10 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="ShouldAlert" />.
+        /// Deep clones this object with a new <see cref="Status" />.
         /// </summary>
-        /// <param name="shouldAlert">The new <see cref="ShouldAlert" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="CheckStreamsReport" /> using the specified <paramref name="shouldAlert" /> for <see cref="ShouldAlert" /> and a deep clone of every other property.</returns>
+        /// <param name="status">The new <see cref="Status" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="CheckStreamsReport" /> using the specified <paramref name="status" /> for <see cref="Status" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -122,10 +124,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public CheckStreamsReport DeepCloneWithShouldAlert(bool shouldAlert)
+        public CheckStreamsReport DeepCloneWithStatus(CheckStatus status)
         {
             var result = new CheckStreamsReport(
-                                 shouldAlert,
+                                 status,
                                  this.StreamNameToReportMap?.DeepClone(),
                                  this.SampleTimeUtc.DeepClone());
 
@@ -157,7 +159,7 @@ namespace Naos.Database.Domain
         public CheckStreamsReport DeepCloneWithStreamNameToReportMap(IReadOnlyDictionary<string, CheckSingleStreamReport> streamNameToReportMap)
         {
             var result = new CheckStreamsReport(
-                                 this.ShouldAlert.DeepClone(),
+                                 this.Status.DeepClone(),
                                  streamNameToReportMap,
                                  this.SampleTimeUtc.DeepClone());
 
@@ -189,7 +191,7 @@ namespace Naos.Database.Domain
         public CheckStreamsReport DeepCloneWithSampleTimeUtc(DateTime sampleTimeUtc)
         {
             var result = new CheckStreamsReport(
-                                 this.ShouldAlert.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.StreamNameToReportMap?.DeepClone(),
                                  sampleTimeUtc);
 
@@ -200,7 +202,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.CheckStreamsReport: ShouldAlert = {this.ShouldAlert.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, StreamNameToReportMap = {this.StreamNameToReportMap?.ToString() ?? "<null>"}, SampleTimeUtc = {this.SampleTimeUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.CheckStreamsReport: Status = {this.Status.ToString() ?? "<null>"}, StreamNameToReportMap = {this.StreamNameToReportMap?.ToString() ?? "<null>"}, SampleTimeUtc = {this.SampleTimeUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

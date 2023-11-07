@@ -194,13 +194,13 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckStreamsReport(
-                    A.Dummy<bool>(),
+                    A.Dummy<CheckStatus>(),
                     A.Dummy<IReadOnlyDictionary<string, CheckSingleStreamReport>>(),
                     A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CheckJobsReport(
-                    A.Dummy<bool>(),
+                    A.Dummy<CheckStatus>(),
                     A.Dummy<IReadOnlyDictionary<string, IJobInformation>>(),
                     A.Dummy<UtcDateTime>()));
 

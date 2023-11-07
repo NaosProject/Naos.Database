@@ -8,37 +8,37 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
     /// Report returned from <see cref="CheckJobsOp" />.
     /// </summary>
-    public partial class CheckJobsReport : IModelViaCodeGen
+    public partial class CheckJobsReport : IHaveCheckStatus, IModelViaCodeGen
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckJobsReport"/> class.
         /// </summary>
-        /// <param name="shouldAlert">A value indicating whether the the results of the checks should be alerted.</param>
+        /// <param name="status">Evaluated check status.</param>
         /// <param name="jobNameToInformationMap">The job name to information map.</param>
         /// <param name="sampleTimeUtc">The sample time UTC.</param>
         public CheckJobsReport(
-            bool shouldAlert,
+            CheckStatus status,
             IReadOnlyDictionary<string, IJobInformation> jobNameToInformationMap,
             DateTime sampleTimeUtc)
         {
+            status.MustForArg(nameof(status)).NotBeEqualTo(CheckStatus.Invalid);
             jobNameToInformationMap.MustForArg(nameof(jobNameToInformationMap)).NotBeNull().And().NotContainAnyKeyValuePairsWithNullValue();
             sampleTimeUtc.MustForArg(nameof(sampleTimeUtc)).BeUtcDateTime();
 
-            this.ShouldAlert = shouldAlert;
+            this.Status = status;
             this.JobNameToInformationMap = jobNameToInformationMap;
             this.SampleTimeUtc = sampleTimeUtc;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the the results of the checks should be alerted.
-        /// </summary>
-        public bool ShouldAlert { get; private set; }
+        /// <inheritdoc />
+        public CheckStatus Status { get; private set; }
 
         /// <summary>
         /// Gets the job name to information map.

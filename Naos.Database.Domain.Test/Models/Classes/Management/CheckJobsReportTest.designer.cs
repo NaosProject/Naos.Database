@@ -18,6 +18,8 @@ namespace Naos.Database.Domain.Test
 
     using global::FakeItEasy;
 
+    using global::Naos.Diagnostics.Domain;
+
     using global::OBeautifulCode.Assertion.Recipes;
     using global::OBeautifulCode.AutoFakeItEasy;
     using global::OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -47,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<CheckJobsReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CheckJobsReport: ShouldAlert = {systemUnderTest.ShouldAlert.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, JobNameToInformationMap = {systemUnderTest.JobNameToInformationMap?.ToString() ?? "<null>"}, SampleTimeUtc = {systemUnderTest.SampleTimeUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.CheckJobsReport: Status = {systemUnderTest.Status.ToString() ?? "<null>"}, JobNameToInformationMap = {systemUnderTest.JobNameToInformationMap?.ToString() ?? "<null>"}, SampleTimeUtc = {systemUnderTest.SampleTimeUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -64,7 +66,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<CheckJobsReport>();
 
                         var result = new CheckJobsReport(
-                                             referenceObject.ShouldAlert,
+                                             referenceObject.Status,
                                              null,
                                              referenceObject.SampleTimeUtc);
 
@@ -82,7 +84,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<CheckJobsReport>();
 
                         var result = new CheckJobsReport(
-                                             referenceObject.ShouldAlert,
+                                             referenceObject.Status,
                                              new Dictionary<string, IJobInformation>(),
                                              referenceObject.SampleTimeUtc);
 
@@ -106,7 +108,7 @@ namespace Naos.Database.Domain.Test
                         dictionaryWithNullValue[randomKey] = null;
 
                         var result = new CheckJobsReport(
-                                             referenceObject.ShouldAlert,
+                                             referenceObject.Status,
                                              dictionaryWithNullValue,
                                              referenceObject.SampleTimeUtc);
 
@@ -120,7 +122,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<CheckJobsReport>
                 {
-                    Name = "ShouldAlert should return same 'shouldAlert' parameter passed to constructor when getting",
+                    Name = "Status should return same 'status' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<CheckJobsReport>();
@@ -128,15 +130,15 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<CheckJobsReport>
                         {
                             SystemUnderTest = new CheckJobsReport(
-                                                      referenceObject.ShouldAlert,
+                                                      referenceObject.Status,
                                                       referenceObject.JobNameToInformationMap,
                                                       referenceObject.SampleTimeUtc),
-                            ExpectedPropertyValue = referenceObject.ShouldAlert,
+                            ExpectedPropertyValue = referenceObject.Status,
                         };
 
                         return result;
                     },
-                    PropertyName = "ShouldAlert",
+                    PropertyName = "Status",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<CheckJobsReport>
@@ -149,7 +151,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<CheckJobsReport>
                         {
                             SystemUnderTest = new CheckJobsReport(
-                                                      referenceObject.ShouldAlert,
+                                                      referenceObject.Status,
                                                       referenceObject.JobNameToInformationMap,
                                                       referenceObject.SampleTimeUtc),
                             ExpectedPropertyValue = referenceObject.JobNameToInformationMap,
@@ -170,7 +172,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<CheckJobsReport>
                         {
                             SystemUnderTest = new CheckJobsReport(
-                                                      referenceObject.ShouldAlert,
+                                                      referenceObject.Status,
                                                       referenceObject.JobNameToInformationMap,
                                                       referenceObject.SampleTimeUtc),
                             ExpectedPropertyValue = referenceObject.SampleTimeUtc,
@@ -185,18 +187,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<CheckJobsReport>
                 {
-                    Name = "DeepCloneWithShouldAlert should deep clone object and replace ShouldAlert with the provided shouldAlert",
-                    WithPropertyName = "ShouldAlert",
+                    Name = "DeepCloneWithStatus should deep clone object and replace Status with the provided status",
+                    WithPropertyName = "Status",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<CheckJobsReport>();
 
-                        var referenceObject = A.Dummy<CheckJobsReport>().ThatIs(_ => !systemUnderTest.ShouldAlert.IsEqualTo(_.ShouldAlert));
+                        var referenceObject = A.Dummy<CheckJobsReport>().ThatIs(_ => !systemUnderTest.Status.IsEqualTo(_.Status));
 
                         var result = new SystemUnderTestDeepCloneWithValue<CheckJobsReport>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.ShouldAlert,
+                            DeepCloneWithValue = referenceObject.Status,
                         };
 
                         return result;
@@ -254,22 +256,22 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new CheckJobsReport[]
                     {
                         new CheckJobsReport(
-                                ReferenceObjectForEquatableTestScenarios.ShouldAlert,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.JobNameToInformationMap,
                                 ReferenceObjectForEquatableTestScenarios.SampleTimeUtc),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new CheckJobsReport[]
                     {
                         new CheckJobsReport(
-                                A.Dummy<CheckJobsReport>().Whose(_ => !_.ShouldAlert.IsEqualTo(ReferenceObjectForEquatableTestScenarios.ShouldAlert)).ShouldAlert,
+                                A.Dummy<CheckJobsReport>().Whose(_ => !_.Status.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Status)).Status,
                                 ReferenceObjectForEquatableTestScenarios.JobNameToInformationMap,
                                 ReferenceObjectForEquatableTestScenarios.SampleTimeUtc),
                         new CheckJobsReport(
-                                ReferenceObjectForEquatableTestScenarios.ShouldAlert,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 A.Dummy<CheckJobsReport>().Whose(_ => !_.JobNameToInformationMap.IsEqualTo(ReferenceObjectForEquatableTestScenarios.JobNameToInformationMap)).JobNameToInformationMap,
                                 ReferenceObjectForEquatableTestScenarios.SampleTimeUtc),
                         new CheckJobsReport(
-                                ReferenceObjectForEquatableTestScenarios.ShouldAlert,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.JobNameToInformationMap,
                                 A.Dummy<CheckJobsReport>().Whose(_ => !_.SampleTimeUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SampleTimeUtc)).SampleTimeUtc),
                     },
@@ -582,7 +584,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ShouldAlert", "JobNameToInformationMap", "SampleTimeUtc" };
+                var propertyNames = new string[] { "Status", "JobNameToInformationMap", "SampleTimeUtc" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

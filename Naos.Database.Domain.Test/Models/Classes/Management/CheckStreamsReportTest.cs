@@ -12,7 +12,7 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
 
     using FakeItEasy;
-
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -36,13 +36,35 @@ namespace Naos.Database.Domain.Test
                     () =>
                         new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
                         {
+                            Name = "constructor should throw ArgumentOutOfRangeException when parameter 'status' is 'Invalid' scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<CheckStreamsReport>();
+
+                                                   var result = new CheckStreamsReport(
+                                                       CheckStatus.Invalid,
+                                                       referenceObject.StreamNameToReportMap,
+                                                       referenceObject.SampleTimeUtc);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "status",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<CheckStreamsReport>
+                        {
                             Name = "constructor should throw ArgumentNullException when parameter 'streamNameToReportMap' is null scenario",
                             ConstructionFunc = () =>
                                                {
                                                    var referenceObject = A.Dummy<CheckStreamsReport>();
 
                                                    var result = new CheckStreamsReport(
-                                                       referenceObject.ShouldAlert,
+                                                       referenceObject.Status,
                                                        null,
                                                        referenceObject.SampleTimeUtc);
 
@@ -74,7 +96,7 @@ namespace Naos.Database.Domain.Test
                                                    dictionaryWithNullValue[randomKey] = null;
 
                                                    var result = new CheckStreamsReport(
-                                                       referenceObject.ShouldAlert,
+                                                       referenceObject.Status,
                                                        dictionaryWithNullValue,
                                                        referenceObject.SampleTimeUtc);
 
@@ -97,7 +119,7 @@ namespace Naos.Database.Domain.Test
                                                    var referenceObject = A.Dummy<CheckStreamsReport>();
 
                                                    var result = new CheckStreamsReport(
-                                                       referenceObject.ShouldAlert,
+                                                       referenceObject.Status,
                                                        referenceObject.StreamNameToReportMap,
                                                        referenceObject.SampleTimeUtc.ToUnspecified());
 

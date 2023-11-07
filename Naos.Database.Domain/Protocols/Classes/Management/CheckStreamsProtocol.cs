@@ -11,6 +11,7 @@ namespace Naos.Database.Domain
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Naos.CodeAnalysis.Recipes;
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
@@ -212,7 +213,8 @@ namespace Naos.Database.Domain
                 report.Add(streamRepInstruction.Key, checkStreamReport);
             }
 
-            var result = new CheckStreamsReport(shouldAlert, report, utcNow);
+            var consolidatedStatus = shouldAlert ? CheckStatus.Failure : CheckStatus.Success;
+            var result = new CheckStreamsReport(consolidatedStatus, report, utcNow);
             return result;
         }
     }

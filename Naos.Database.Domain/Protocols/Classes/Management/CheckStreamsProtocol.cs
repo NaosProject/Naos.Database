@@ -44,6 +44,7 @@ namespace Naos.Database.Domain
         public Func<DateTime> GetUtcNow { get; set; }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public override CheckStreamsReport Execute(
             CheckStreamsOp operation)
@@ -100,7 +101,7 @@ namespace Naos.Database.Domain
                                 new RecordFilter(
                                     internalRecordIds: new[]
                                                        {
-                                                           0L,
+                                                           Concerns.GlobalBlockingRecordId,
                                                        }),
                                 new HandlingFilter()));
                         skipDueToDisabledStream = disabledStatusCheck.Single().Value != HandlingStatus.AvailableByDefault;
@@ -119,10 +120,26 @@ namespace Naos.Database.Domain
                             status = CheckStatus.Failure;
                         }
 
-                        var expectedWithinThresholdReport = new ExpectedRecordWithinThresholdReport(
-                            status,
-                            expectedEventWithinThreshold,
-                            latestRecord?.Metadata.TimestampUtc ?? default);
+                        var skipDueToStreamNotEnabledLongerThanThreshold = false;
+                        if (status == CheckStatus.Failure && expectedEventWithinThreshold.SkipWhenStreamHandlingIsDisabled)
+                        {
+                            var disabledHistory = stream.Execute(
+                                new StandardGetHandlingHistoryOp(
+                                    Concerns.GlobalBlockingRecordId,
+                                    Concerns.StreamHandlingDisabledConcern));
+                            var latestEntry = disabledHistory.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                            skipDueToStreamNotEnabledLongerThanThreshold =
+                                latestEntry                                                          != null
+                             && latestEntry.Status                                                   == HandlingStatus.AvailableByDefault
+                             && latestEntry.TimestampUtc.Add(expectedEventWithinThreshold.Threshold) > utcNow;
+                        }
+
+                        var expectedWithinThresholdReport = skipDueToStreamNotEnabledLongerThanThreshold
+                            ? null
+                            : new ExpectedRecordWithinThresholdReport(
+                                status,
+                                expectedEventWithinThreshold,
+                                latestRecord?.Metadata.TimestampUtc ?? default);
 
                         expectedRecordWithinThresholdIdToReportMap.Add(
                             expectedEventWithinThreshold.Id,
@@ -132,7 +149,7 @@ namespace Naos.Database.Domain
                     {
                         expectedRecordWithinThresholdIdToReportMap.Add(
                             expectedEventWithinThreshold.Id,
-                            default);
+                            null);
                     }
                 }
 

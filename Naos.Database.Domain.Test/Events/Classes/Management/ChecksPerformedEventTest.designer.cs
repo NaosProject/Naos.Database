@@ -49,7 +49,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<ChecksPerformedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.ChecksPerformedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Alerted = {systemUnderTest.Alerted.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, CheckDrivesReport = {systemUnderTest.CheckDrivesReport?.ToString() ?? "<null>"}, CheckJobsReport = {systemUnderTest.CheckJobsReport?.ToString() ?? "<null>"}, CheckStreamsReport = {systemUnderTest.CheckStreamsReport?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.ChecksPerformedEvent: TimestampUtc = {systemUnderTest.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Status = {systemUnderTest.Status.ToString() ?? "<null>"}, CheckDrivesReport = {systemUnderTest.CheckDrivesReport?.ToString() ?? "<null>"}, CheckJobsReport = {systemUnderTest.CheckJobsReport?.ToString() ?? "<null>"}, CheckStreamsReport = {systemUnderTest.CheckStreamsReport?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,7 +68,7 @@ namespace Naos.Database.Domain.Test
                         var result = new ChecksPerformedEvent(
                                              null,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Alerted,
+                                             referenceObject.Status,
                                              referenceObject.CheckDrivesReport,
                                              referenceObject.CheckJobsReport,
                                              referenceObject.CheckStreamsReport);
@@ -89,7 +89,7 @@ namespace Naos.Database.Domain.Test
                         var result = new ChecksPerformedEvent(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Alerted,
+                                             referenceObject.Status,
                                              referenceObject.CheckDrivesReport,
                                              referenceObject.CheckJobsReport,
                                              referenceObject.CheckStreamsReport);
@@ -110,7 +110,7 @@ namespace Naos.Database.Domain.Test
                         var result = new ChecksPerformedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Alerted,
+                                             referenceObject.Status,
                                              null,
                                              referenceObject.CheckJobsReport,
                                              referenceObject.CheckStreamsReport);
@@ -131,7 +131,7 @@ namespace Naos.Database.Domain.Test
                         var result = new ChecksPerformedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Alerted,
+                                             referenceObject.Status,
                                              referenceObject.CheckDrivesReport,
                                              null,
                                              referenceObject.CheckStreamsReport);
@@ -152,7 +152,7 @@ namespace Naos.Database.Domain.Test
                         var result = new ChecksPerformedEvent(
                                              referenceObject.Id,
                                              referenceObject.TimestampUtc,
-                                             referenceObject.Alerted,
+                                             referenceObject.Status,
                                              referenceObject.CheckDrivesReport,
                                              referenceObject.CheckJobsReport,
                                              null);
@@ -177,7 +177,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ChecksPerformedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Alerted,
+                                                      referenceObject.Status,
                                                       referenceObject.CheckDrivesReport,
                                                       referenceObject.CheckJobsReport,
                                                       referenceObject.CheckStreamsReport),
@@ -201,7 +201,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ChecksPerformedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Alerted,
+                                                      referenceObject.Status,
                                                       referenceObject.CheckDrivesReport,
                                                       referenceObject.CheckJobsReport,
                                                       referenceObject.CheckStreamsReport),
@@ -215,7 +215,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<ChecksPerformedEvent>
                 {
-                    Name = "Alerted should return same 'alerted' parameter passed to constructor when getting",
+                    Name = "Status should return same 'status' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<ChecksPerformedEvent>();
@@ -225,16 +225,16 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ChecksPerformedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Alerted,
+                                                      referenceObject.Status,
                                                       referenceObject.CheckDrivesReport,
                                                       referenceObject.CheckJobsReport,
                                                       referenceObject.CheckStreamsReport),
-                            ExpectedPropertyValue = referenceObject.Alerted,
+                            ExpectedPropertyValue = referenceObject.Status,
                         };
 
                         return result;
                     },
-                    PropertyName = "Alerted",
+                    PropertyName = "Status",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<ChecksPerformedEvent>
@@ -249,7 +249,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ChecksPerformedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Alerted,
+                                                      referenceObject.Status,
                                                       referenceObject.CheckDrivesReport,
                                                       referenceObject.CheckJobsReport,
                                                       referenceObject.CheckStreamsReport),
@@ -273,7 +273,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ChecksPerformedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Alerted,
+                                                      referenceObject.Status,
                                                       referenceObject.CheckDrivesReport,
                                                       referenceObject.CheckJobsReport,
                                                       referenceObject.CheckStreamsReport),
@@ -297,7 +297,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new ChecksPerformedEvent(
                                                       referenceObject.Id,
                                                       referenceObject.TimestampUtc,
-                                                      referenceObject.Alerted,
+                                                      referenceObject.Status,
                                                       referenceObject.CheckDrivesReport,
                                                       referenceObject.CheckJobsReport,
                                                       referenceObject.CheckStreamsReport),
@@ -353,18 +353,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<ChecksPerformedEvent>
                 {
-                    Name = "DeepCloneWithAlerted should deep clone object and replace Alerted with the provided alerted",
-                    WithPropertyName = "Alerted",
+                    Name = "DeepCloneWithStatus should deep clone object and replace Status with the provided status",
+                    WithPropertyName = "Status",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<ChecksPerformedEvent>();
 
-                        var referenceObject = A.Dummy<ChecksPerformedEvent>().ThatIs(_ => !systemUnderTest.Alerted.IsEqualTo(_.Alerted));
+                        var referenceObject = A.Dummy<ChecksPerformedEvent>().ThatIs(_ => !systemUnderTest.Status.IsEqualTo(_.Status));
 
                         var result = new SystemUnderTestDeepCloneWithValue<ChecksPerformedEvent>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Alerted,
+                            DeepCloneWithValue = referenceObject.Status,
                         };
 
                         return result;
@@ -444,7 +444,7 @@ namespace Naos.Database.Domain.Test
                         new ChecksPerformedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Alerted,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.CheckDrivesReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckJobsReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckStreamsReport),
@@ -454,42 +454,42 @@ namespace Naos.Database.Domain.Test
                         new ChecksPerformedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.TimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TimestampUtc)).TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Alerted,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.CheckDrivesReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckJobsReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckStreamsReport),
                         new ChecksPerformedEvent(
                                 A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Alerted,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.CheckDrivesReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckJobsReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckStreamsReport),
                         new ChecksPerformedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.Alerted.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Alerted)).Alerted,
+                                A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.Status.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Status)).Status,
                                 ReferenceObjectForEquatableTestScenarios.CheckDrivesReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckJobsReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckStreamsReport),
                         new ChecksPerformedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Alerted,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.CheckDrivesReport.IsEqualTo(ReferenceObjectForEquatableTestScenarios.CheckDrivesReport)).CheckDrivesReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckJobsReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckStreamsReport),
                         new ChecksPerformedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Alerted,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.CheckDrivesReport,
                                 A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.CheckJobsReport.IsEqualTo(ReferenceObjectForEquatableTestScenarios.CheckJobsReport)).CheckJobsReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckStreamsReport),
                         new ChecksPerformedEvent(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.TimestampUtc,
-                                ReferenceObjectForEquatableTestScenarios.Alerted,
+                                ReferenceObjectForEquatableTestScenarios.Status,
                                 ReferenceObjectForEquatableTestScenarios.CheckDrivesReport,
                                 ReferenceObjectForEquatableTestScenarios.CheckJobsReport,
                                 A.Dummy<ChecksPerformedEvent>().Whose(_ => !_.CheckStreamsReport.IsEqualTo(ReferenceObjectForEquatableTestScenarios.CheckStreamsReport)).CheckStreamsReport),
@@ -844,7 +844,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "TimestampUtc", "Id", "Alerted", "CheckDrivesReport", "CheckJobsReport", "CheckStreamsReport" };
+                var propertyNames = new string[] { "TimestampUtc", "Id", "Status", "CheckDrivesReport", "CheckJobsReport", "CheckStreamsReport" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

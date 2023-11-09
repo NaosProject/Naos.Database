@@ -73,7 +73,7 @@ namespace Naos.Database.Domain
 
             var result = this.TimestampUtc.IsEqualTo(other.TimestampUtc)
                       && this.Id.IsEqualTo(other.Id, StringComparer.Ordinal)
-                      && this.Alerted.IsEqualTo(other.Alerted)
+                      && this.Status.IsEqualTo(other.Status)
                       && this.CheckDrivesReport.IsEqualTo(other.CheckDrivesReport)
                       && this.CheckJobsReport.IsEqualTo(other.CheckJobsReport)
                       && this.CheckStreamsReport.IsEqualTo(other.CheckStreamsReport);
@@ -88,7 +88,7 @@ namespace Naos.Database.Domain
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.TimestampUtc)
             .Hash(this.Id)
-            .Hash(this.Alerted)
+            .Hash(this.Status)
             .Hash(this.CheckDrivesReport)
             .Hash(this.CheckJobsReport)
             .Hash(this.CheckStreamsReport)
@@ -120,7 +120,7 @@ namespace Naos.Database.Domain
             var result = new ChecksPerformedEvent(
                                  this.Id?.DeepClone(),
                                  timestampUtc,
-                                 this.Alerted.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.CheckDrivesReport?.DeepClone(),
                                  this.CheckJobsReport?.DeepClone(),
                                  this.CheckStreamsReport?.DeepClone());
@@ -151,7 +151,7 @@ namespace Naos.Database.Domain
             var result = new ChecksPerformedEvent(
                                  id,
                                  this.TimestampUtc.DeepClone(),
-                                 this.Alerted.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.CheckDrivesReport?.DeepClone(),
                                  this.CheckJobsReport?.DeepClone(),
                                  this.CheckStreamsReport?.DeepClone());
@@ -160,10 +160,10 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="Alerted" />.
+        /// Deep clones this object with a new <see cref="Status" />.
         /// </summary>
-        /// <param name="alerted">The new <see cref="Alerted" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="ChecksPerformedEvent" /> using the specified <paramref name="alerted" /> for <see cref="Alerted" /> and a deep clone of every other property.</returns>
+        /// <param name="status">The new <see cref="Status" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="ChecksPerformedEvent" /> using the specified <paramref name="status" /> for <see cref="Status" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -181,12 +181,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public ChecksPerformedEvent DeepCloneWithAlerted(bool alerted)
+        public ChecksPerformedEvent DeepCloneWithStatus(CheckStatus status)
         {
             var result = new ChecksPerformedEvent(
                                  this.Id?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
-                                 alerted,
+                                 status,
                                  this.CheckDrivesReport?.DeepClone(),
                                  this.CheckJobsReport?.DeepClone(),
                                  this.CheckStreamsReport?.DeepClone());
@@ -221,7 +221,7 @@ namespace Naos.Database.Domain
             var result = new ChecksPerformedEvent(
                                  this.Id?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
-                                 this.Alerted.DeepClone(),
+                                 this.Status.DeepClone(),
                                  checkDrivesReport,
                                  this.CheckJobsReport?.DeepClone(),
                                  this.CheckStreamsReport?.DeepClone());
@@ -256,7 +256,7 @@ namespace Naos.Database.Domain
             var result = new ChecksPerformedEvent(
                                  this.Id?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
-                                 this.Alerted.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.CheckDrivesReport?.DeepClone(),
                                  checkJobsReport,
                                  this.CheckStreamsReport?.DeepClone());
@@ -291,7 +291,7 @@ namespace Naos.Database.Domain
             var result = new ChecksPerformedEvent(
                                  this.Id?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
-                                 this.Alerted.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.CheckDrivesReport?.DeepClone(),
                                  this.CheckJobsReport?.DeepClone(),
                                  checkStreamsReport);
@@ -306,7 +306,7 @@ namespace Naos.Database.Domain
             var result = new ChecksPerformedEvent(
                                  this.Id?.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
-                                 this.Alerted.DeepClone(),
+                                 this.Status.DeepClone(),
                                  this.CheckDrivesReport?.DeepClone(),
                                  this.CheckJobsReport?.DeepClone(),
                                  this.CheckStreamsReport?.DeepClone());
@@ -318,7 +318,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.ChecksPerformedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {this.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Alerted = {this.Alerted.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, CheckDrivesReport = {this.CheckDrivesReport?.ToString() ?? "<null>"}, CheckJobsReport = {this.CheckJobsReport?.ToString() ?? "<null>"}, CheckStreamsReport = {this.CheckStreamsReport?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.ChecksPerformedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {this.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Status = {this.Status.ToString() ?? "<null>"}, CheckDrivesReport = {this.CheckDrivesReport?.ToString() ?? "<null>"}, CheckJobsReport = {this.CheckJobsReport?.ToString() ?? "<null>"}, CheckStreamsReport = {this.CheckStreamsReport?.ToString() ?? "<null>"}.");
 
             return result;
         }

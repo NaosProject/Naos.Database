@@ -75,7 +75,7 @@ namespace Naos.Database.Domain.Test
                 () => new ChecksPerformedEvent(
                                  A.Dummy<string>(),
                                  A.Dummy<DateTime>(),
-                                 A.Dummy<bool>(),
+                                 A.Dummy<CheckStatus>(),
                                  A.Dummy<CheckDrivesReport>(),
                                  A.Dummy<CheckJobsReport>(),
                                  A.Dummy<CheckStreamsReport>()));

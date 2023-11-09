@@ -12,7 +12,7 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
 
     using FakeItEasy;
-
+    using Naos.Diagnostics.Domain;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -43,7 +43,7 @@ namespace Naos.Database.Domain.Test
                                                    var result = new ChecksPerformedEvent(
                                                        referenceObject.Id,
                                                        referenceObject.TimestampUtc.ToUnspecified(),
-                                                       referenceObject.Alerted,
+                                                       referenceObject.Status,
                                                        referenceObject.CheckDrivesReport,
                                                        referenceObject.CheckJobsReport,
                                                        referenceObject.CheckStreamsReport);
@@ -55,6 +55,31 @@ namespace Naos.Database.Domain.Test
                                                                {
                                                                    "timestampUtc",
                                                                    "not DateTimeKind.Utc",
+                                                               },
+                        })
+               .AddScenario(
+                    () =>
+                        new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
+                        {
+                            Name = "constructor should throw ArgumentOutOfRangeException when parameter 'checkStatus' is not 'Invalid' scenario",
+                            ConstructionFunc = () =>
+                                               {
+                                                   var referenceObject = A.Dummy<ChecksPerformedEvent>();
+
+                                                   var result = new ChecksPerformedEvent(
+                                                       referenceObject.Id,
+                                                       referenceObject.TimestampUtc,
+                                                       CheckStatus.Invalid,
+                                                       referenceObject.CheckDrivesReport,
+                                                       referenceObject.CheckJobsReport,
+                                                       referenceObject.CheckStreamsReport);
+
+                                                   return result;
+                                               },
+                            ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                            ExpectedExceptionMessageContains = new[]
+                                                               {
+                                                                   "status",
                                                                },
                         });
         }

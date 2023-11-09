@@ -14,41 +14,40 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Report returned from <see cref="PerformDefaultDiagnosticChecksOp" />.
     /// </summary>
-    public partial class ChecksPerformedEvent : EventBase<string>
+    public partial class ChecksPerformedEvent : EventBase<string>, IHaveCheckStatus
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChecksPerformedEvent"/> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="timestampUtc">The timestamp UTC.</param>
-        /// <param name="alerted">if set to <c>true</c> then triggered an alert.</param>
+        /// <param name="status">Evaluated check status.</param>
         /// <param name="checkDrivesReport">The check drives report.</param>
         /// <param name="checkJobsReport">The check jobs report.</param>
         /// <param name="checkStreamsReport">The check streams report.</param>
         public ChecksPerformedEvent(
             string id,
             DateTime timestampUtc,
-            bool alerted,
+            CheckStatus status,
             CheckDrivesReport checkDrivesReport,
             CheckJobsReport checkJobsReport,
             CheckStreamsReport checkStreamsReport)
             : base(id, timestampUtc)
         {
             id.MustForArg(nameof(id)).NotBeNullNorWhiteSpace();
+            status.MustForArg(nameof(status)).NotBeEqualTo(CheckStatus.Invalid);
             checkDrivesReport.MustForArg(nameof(checkDrivesReport)).NotBeNull();
             checkJobsReport.MustForArg(nameof(checkJobsReport)).NotBeNull();
             checkStreamsReport.MustForArg(nameof(checkStreamsReport)).NotBeNull();
 
-            this.Alerted = alerted;
+            this.Status = status;
             this.CheckDrivesReport = checkDrivesReport;
             this.CheckJobsReport = checkJobsReport;
             this.CheckStreamsReport = checkStreamsReport;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether an alert was triggered.
-        /// </summary>
-        public bool Alerted { get; private set; }
+        /// <inheritdoc />
+        public CheckStatus Status { get; private set; }
 
         /// <summary>
         /// Gets the check drives report.

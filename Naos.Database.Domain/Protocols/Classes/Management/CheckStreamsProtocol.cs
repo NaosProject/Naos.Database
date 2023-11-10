@@ -234,8 +234,8 @@ namespace Naos.Database.Domain
                 */
 
                 var singleReportStatus = expectedRecordWithinThresholdIdToReportMap
-                                        .Values.Select(_ => _.Status)
-                                        .Union(recordExpectedToBeHandledIdToReportMap.Values.Select(_ => _.Status))
+                                        .Values.Where(_ => _ != null).Select(_ => _.Status)
+                                        .Union(recordExpectedToBeHandledIdToReportMap.Values.Where(_ => _ != null).Select(_ => _.Status))
                                         .ToList()
                                         .ReduceToSingleStatus();
 

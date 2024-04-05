@@ -1237,6 +1237,38 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             stream.Execute(new StandardDeleteStreamOp(stream.StreamRepresentation, StreamNotFoundStrategy.Throw));
         }
+
+        [Fact]
+        public static void PutWithId___Should_get_object_put_into_stream___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                "test-stream-name",
+                new SerializerRepresentation(SerializationKind.Json),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            // notes:
+            // - This call is totally unnecessary on a MemoryStream, but if we are using a "real"
+            //   provider (e.g. SQL Server), then we'd need to create the stream which builds-out the
+            //   necessary supporting structures (e.g. tables, indexes, stored procedures).
+            // - Someday we might add extension methods like PutWithId below,
+            //   but we don't create streams that often outside of testing.
+            stream.Execute(
+                new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
+
+            var expected = 1000;
+            var id = A.Dummy<string>();
+
+            stream.PutWithId(A.Dummy<string>(), expected - 1);
+            stream.PutWithId(id, expected);
+
+            // Act
+            var actual = stream.GetLatestObjectById<string, int>(id);
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
     }
 
     public class MyObject : IHaveId<string>, IHaveTags

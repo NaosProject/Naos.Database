@@ -13,7 +13,16 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IStreamRecordHandlingProtocols<TObject>
-        : ISyncAndAsyncReturningProtocol<TryHandleRecordOp<TObject>, StreamRecord<TObject>>
+        : ITryHandleRecord<TObject>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="TryHandleRecordOp{TObject}" />.
+    /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    public interface ITryHandleRecord<TObject> :
+        ISyncAndAsyncReturningProtocol<TryHandleRecordOp<TObject>, StreamRecord<TObject>>
     {
     }
 }

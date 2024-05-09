@@ -479,6 +479,18 @@ namespace Naos.Database.Domain.Test
                     return result;
                 });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = new WaitOneOp(
+                        A.Dummy<string>(),
+                        A.Dummy<string>(),
+                        A.Dummy<string>(),
+                        A.Dummy<TimeSpan>().Whose(_=> _.TotalMilliseconds >= 0));
+
+                    return result;
+                });
+
             // ------------------------------- OPERATION INTERFACES -------------------------------------
             AutoFixtureBackedDummyFactory.UseRandomInterfaceImplementationForDummy<IPruneOp>();
         }

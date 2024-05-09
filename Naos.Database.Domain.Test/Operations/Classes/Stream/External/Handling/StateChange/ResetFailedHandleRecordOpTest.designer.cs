@@ -519,6 +519,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
                         A.Dummy<PutWithIdOp<Version, Version>>(),
+                        A.Dummy<ReleaseMutexOp>(),
                         A.Dummy<ResetCompletedHandleRecordOp>(),
                         A.Dummy<SelfCancelRunningHandleRecordOp>(),
                         A.Dummy<StandardCreateStreamOp>(),
@@ -539,6 +540,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
+                        A.Dummy<WaitOneOp>(),
                     },
                 });
 

@@ -201,6 +201,8 @@
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
     <Compile Include="Logic\Stream\Common\RecordFilterExtensions.cs" />
+    <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.Mutex.cs" />
+    <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.DoesNotExistByIdOp{TId,TObject}.cs" />
@@ -318,6 +320,10 @@
     <Compile Include="Models\Classes\Stream\Common\StreamConfigBase.designer.cs">
       <DependentUpon>StreamConfigBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\MutexObject.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\MutexObject.designer.cs">
+      <DependentUpon>MutexObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Enums\StreamAccessKinds.cs" />
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
     <Compile Include="Models\Enums\ExistingDatabaseStrategy.cs" />
@@ -426,6 +432,13 @@
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.designer.cs">
       <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\ReleaseMutexOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\ReleaseMutexOp.designer.cs">
+      <DependentUpon>ReleaseMutexOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\WaitOneOp.designer.cs">
+      <DependentUpon>WaitOneOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId,TObject}.cs</DependentUpon>
@@ -531,6 +544,7 @@
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId}.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\DelegatedStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardRetryStream.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamDistributedMutexProtocols.cs" />
     <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.cs" />
@@ -543,8 +557,10 @@
     <Compile Include="Logic\ResourceLocatorExtensions.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Classification\IManagementOnlyStream.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Classification\IRecordHandlingOnlyStream.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamDistributedMutexProtocolFactory.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Management\IStandardStreamManagementProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStandardStreamRecordHandlingProtocols.cs" />
+    <Compile Include="Protocols\Interfaces\Stream\Protocols\Handling\IStreamDistributedMutexProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStandardStreamWriteProtocols.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStandardStreamReadProtocols.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp.cs" />
@@ -752,6 +768,7 @@
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordWithIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Subscriber\HandleRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\WaitOneOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardDeleteStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.cs" />

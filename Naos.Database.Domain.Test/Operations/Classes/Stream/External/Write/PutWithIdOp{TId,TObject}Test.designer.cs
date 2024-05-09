@@ -423,6 +423,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
                         A.Dummy<PutOp<Version>>(),
                         A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
+                        A.Dummy<ReleaseMutexOp>(),
                         A.Dummy<ResetCompletedHandleRecordOp>(),
                         A.Dummy<ResetFailedHandleRecordOp>(),
                         A.Dummy<SelfCancelRunningHandleRecordOp>(),
@@ -444,6 +445,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
+                        A.Dummy<WaitOneOp>(),
                     },
                 });
 

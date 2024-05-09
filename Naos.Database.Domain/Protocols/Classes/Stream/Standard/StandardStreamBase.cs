@@ -101,6 +101,9 @@ namespace Naos.Database.Domain
         public IStreamRecordWithIdHandlingProtocols<TId, TObject> GetStreamRecordWithIdHandlingProtocols<TId, TObject>() => new StandardStreamRecordWithIdHandlingProtocols<TId, TObject>(this);
 
         /// <inheritdoc />
+        public IStreamDistributedMutexProtocols GetStreamDistributedMutexProtocols() => new StandardStreamDistributedMutexProtocols(this);
+
+        /// <inheritdoc />
         public abstract IStreamRepresentation StreamRepresentation { get; }
 
         /// <inheritdoc />

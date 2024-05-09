@@ -427,6 +427,10 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new MutexObject(
+                                 A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NamedResourceLocator(
                                  A.Dummy<string>()));
 
@@ -642,6 +646,11 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<RecordFilter>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new ReleaseMutexOp(
+                                 A.Dummy<WaitOneOp>(),
+                                 A.Dummy<long>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new ResetCompletedHandleRecordOp(
@@ -951,6 +960,13 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>(),
                                  A.Dummy<DateTime>(),
                                  A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new WaitOneOp(
+                                 A.Dummy<string>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<TimeSpan>()));
         }
 
         /// <inheritdoc />

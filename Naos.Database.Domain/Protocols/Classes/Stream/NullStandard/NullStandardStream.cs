@@ -118,6 +118,12 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public IStreamDistributedMutexProtocols GetStreamDistributedMutexProtocols()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
         public IReadOnlyCollection<StringSerializedIdentifier> Execute(StandardGetDistinctStringSerializedIdsOp operation)
         {
             return new List<StringSerializedIdentifier>();

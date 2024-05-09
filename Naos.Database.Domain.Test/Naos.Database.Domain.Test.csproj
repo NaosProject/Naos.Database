@@ -273,6 +273,10 @@
     <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.designer.cs">
       <DependentUpon>ExpectedRecordWithinThresholdReportTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Mutex\MutexObjectTest.cs" />
+    <Compile Include="Models\Classes\Stream\Mutex\MutexObjectTest.designer.cs">
+      <DependentUpon>MutexObjectTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Management\CheckJobsOpTest.cs" />
     <Compile Include="Operations\Classes\Management\CheckJobsOpTest.designer.cs">
       <DependentUpon>CheckJobsOpTest.cs</DependentUpon>
@@ -772,6 +776,10 @@
     <Compile Include="Models\Classes\Management\RecordExpectedToBeHandledReportTest.designer.cs">
       <DependentUpon>RecordExpectedToBeHandledReportTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Mutex\ReleaseMutexOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Mutex\ReleaseMutexOpTest.designer.cs">
+      <DependentUpon>ReleaseMutexOpTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DatabaseDummyFactory.cs" />
@@ -811,6 +819,10 @@
     <Compile Include="Models\Classes\Stream\Common\StreamConfigTest.cs" />
     <Compile Include="Models\Classes\Stream\Common\StreamConfigTest.designer.cs">
       <DependentUpon>StreamConfigTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Mutex\WaitOneOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Mutex\WaitOneOpTest.designer.cs">
+      <DependentUpon>WaitOneOpTest.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

@@ -14,7 +14,8 @@ namespace Naos.Database.Domain
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "'Stream' is the best term we could come up with; it's potential confusion with System.IO.Stream was debated.")]
     public interface IRecordHandlingOnlyStream
         : IStream,
-          IStreamRecordHandlingProtocolFactory
+          IStreamRecordHandlingProtocolFactory,
+          IStreamDistributedMutexProtocolFactory
     {
     }
 }

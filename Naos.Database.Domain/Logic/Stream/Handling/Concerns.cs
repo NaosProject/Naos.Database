@@ -26,6 +26,11 @@ namespace Naos.Database.Domain
         public const string DefaultExecutionConcern = "default-execute-op";
 
         /// <summary>
+        /// The default concern to use when handling a <see cref="MutexObject"/>.
+        /// </summary>
+        public const string DefaultMutexConcern = "default-mutex";
+
+        /// <summary>
         /// The record handling concern to use when record handling is disabled for an entire stream.
         /// </summary>
         public const string StreamHandlingDisabledConcern = "stream-handling-disabled";

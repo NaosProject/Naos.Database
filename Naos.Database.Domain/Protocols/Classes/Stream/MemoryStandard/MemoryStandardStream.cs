@@ -11,7 +11,6 @@ namespace Naos.Database.Domain
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Naos.CodeAnalysis.Recipes;
-    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -86,7 +85,7 @@ namespace Naos.Database.Domain
 
                     this.singleLocator = result;
 
-                    return this.singleLocator;
+                    return result;
                 }
             }
         }

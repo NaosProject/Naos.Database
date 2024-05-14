@@ -89,24 +89,5 @@ namespace Naos.Database.Domain
                 }
             }
         }
-
-        private void WriteHandlingEntryToMemoryMap(
-            IResourceLocator locator,
-            string concern,
-            StreamRecordHandlingEntry requestedEntry)
-        {
-            lock (this.handlingLock)
-            {
-                // Do not need this call but it has the confirm key path exists logic and I do not want to refactor yet another method for them to share...
-                this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
-
-                // Above will throw if this cast is not possible.
-                var memoryLocator = (MemoryDatabaseLocator)locator;
-
-                // The reference would get broken in non-obvious ways when using variables so direct keying the map.
-                this.locatorToHandlingEntriesByConcernMap[memoryLocator][concern]
-                    .Add(requestedEntry);
-            }
-        }
     }
 }

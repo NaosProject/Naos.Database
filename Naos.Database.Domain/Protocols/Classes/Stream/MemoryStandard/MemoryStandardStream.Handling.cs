@@ -13,8 +13,6 @@ namespace Naos.Database.Domain
     using System.Threading;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Collection.Recipes;
-    using OBeautifulCode.Reflection.Recipes;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using OBeautifulCode.Type.Recipes;
@@ -35,12 +33,13 @@ namespace Naos.Database.Domain
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
-                var entriesForInternalRecordId =
-                    (entries ?? new List<StreamRecordHandlingEntry>())
-                   .Concat(recordBlockedEntries ?? new List<StreamRecordHandlingEntry>())
-                   .Where(_ => _.InternalRecordId == operation.InternalRecordId)
-                   .ToList();
-                return entriesForInternalRecordId;
+                var result = new StreamRecordHandlingEntry[0]
+                    .Concat(entries)
+                    .Concat(recordBlockedEntries)
+                    .Where(_ => _.InternalRecordId == operation.InternalRecordId)
+                    .ToList();
+
+                return result;
             }
         }
 
@@ -558,7 +557,7 @@ namespace Naos.Database.Domain
 
             if (!(locator is MemoryDatabaseLocator memoryDatabaseLocator))
             {
-                throw new ArgumentException(Invariant($"Only {nameof(MemoryDatabaseLocator)}'s are supported; specified type: {locator.GetType().ToStringReadable()} - {locator.ToString()}"), nameof(locator));
+                throw new ArgumentException(Invariant($"Only {nameof(MemoryDatabaseLocator)}'s are supported; specified type: {locator.GetType().ToStringReadable()} - {locator}"), nameof(locator));
             }
 
             lock (this.handlingLock)

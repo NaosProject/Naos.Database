@@ -173,109 +173,107 @@ namespace Naos.Database.Domain
                         }
                     }
 
+                    var recordsToConsiderForHandling =
+                        this.locatorToRecordPartitionMap[memoryDatabaseLocator]
+                            .Where(_ => !existingInternalRecordIdsToIgnore.Contains(_.InternalRecordId))
+                            .ToList();
+
+                    var matchingRecords = recordsToConsiderForHandling
+                                            .Where(
+                                                _ => _.Metadata.FuzzyMatchTypes(
+                                                    operation.RecordFilter.IdTypes,
+                                                    operation.RecordFilter.ObjectTypes,
+                                                    operation.RecordFilter.VersionMatchStrategy))
+                                            .ToList();
+
+                    if ((operation.RecordFilter.Tags != null) && operation.RecordFilter.Tags.Any())
                     {
-                        var recordsToConsiderForHandling =
-                            this.locatorToRecordPartitionMap[memoryDatabaseLocator]
-                                .Where(_ => !existingInternalRecordIdsToIgnore.Contains(_.InternalRecordId))
-                                .ToList();
+                        matchingRecords = matchingRecords
+                            .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy))
+                            .ToList();
+                    }
 
-                        var matchingRecords = recordsToConsiderForHandling
-                                             .Where(
-                                                  _ => _.Metadata.FuzzyMatchTypes(
-                                                      operation.RecordFilter.IdTypes,
-                                                      operation.RecordFilter.ObjectTypes,
-                                                      operation.RecordFilter.VersionMatchStrategy))
-                                             .ToList();
+                    StreamRecord recordToHandle;
+                    switch (operation.OrderRecordsBy)
+                    {
+                        case OrderRecordsBy.InternalRecordIdAscending:
+                            recordToHandle = matchingRecords
+                                            .OrderBy(_ => _.InternalRecordId)
+                                            .FirstOrDefault(
+                                                    _ => operation.MinimumInternalRecordId == null
+                                                    || _.InternalRecordId >= operation.MinimumInternalRecordId);
+                            break;
+                        case OrderRecordsBy.InternalRecordIdDescending:
+                            recordToHandle = matchingRecords
+                                            .OrderByDescending(_ => _.InternalRecordId)
+                                            .FirstOrDefault(
+                                                    _ => operation.MinimumInternalRecordId == null
+                                                    || _.InternalRecordId >= operation.MinimumInternalRecordId);
+                            break;
+                        case OrderRecordsBy.Random:
+                            recordToHandle = matchingRecords
+                                            .OrderByDescending(_ => Guid.NewGuid())
+                                            .FirstOrDefault(
+                                                    _ => operation.MinimumInternalRecordId == null
+                                                    || _.InternalRecordId >= operation.MinimumInternalRecordId);
+                            break;
+                        default:
+                            throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
+                    }
 
-                        if ((operation.RecordFilter.Tags != null) && operation.RecordFilter.Tags.Any())
+                    if (recordToHandle != null)
+                    {
+                        var handlingTags = operation.InheritRecordTags
+                            ? (operation.RecordFilter.Tags ?? new List<NamedValue<string>>())
+                                .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
+                                .ToList()
+                            : operation.RecordFilter.Tags;
+
+                        if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))
                         {
-                            matchingRecords = matchingRecords
-                                .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy))
-                                .ToList();
-                        }
-
-                        StreamRecord recordToHandle;
-                        switch (operation.OrderRecordsBy)
-                        {
-                            case OrderRecordsBy.InternalRecordIdAscending:
-                                recordToHandle = matchingRecords
-                                                .OrderBy(_ => _.InternalRecordId)
-                                                .FirstOrDefault(
-                                                     _ => operation.MinimumInternalRecordId == null
-                                                       || _.InternalRecordId >= operation.MinimumInternalRecordId);
-                                break;
-                            case OrderRecordsBy.InternalRecordIdDescending:
-                                recordToHandle = matchingRecords
-                                                .OrderByDescending(_ => _.InternalRecordId)
-                                                .FirstOrDefault(
-                                                     _ => operation.MinimumInternalRecordId == null
-                                                       || _.InternalRecordId >= operation.MinimumInternalRecordId);
-                                break;
-                            case OrderRecordsBy.Random:
-                                recordToHandle = matchingRecords
-                                                .OrderByDescending(_ => Guid.NewGuid())
-                                                .FirstOrDefault(
-                                                     _ => operation.MinimumInternalRecordId == null
-                                                       || _.InternalRecordId >= operation.MinimumInternalRecordId);
-                                break;
-                            default:
-                                throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
-                        }
-
-                        if (recordToHandle != null)
-                        {
-                            var handlingTags = operation.InheritRecordTags
-                                ? (operation.RecordFilter.Tags ?? new List<NamedValue<string>>())
-                                 .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
-                                 .ToList()
-                                : operation.RecordFilter.Tags;
-
-                            if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))
-                            {
-                                // first time needs a requested record
-                                var requestedTimestamp = DateTime.UtcNow;
-                                var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                                var requestedMetadata = new StreamRecordHandlingEntry(
-                                    requestedEntryId,
-                                    recordToHandle.InternalRecordId,
-                                    operation.Concern,
-                                    HandlingStatus.AvailableByDefault,
-                                    handlingTags,
-                                    operation.Details,
-                                    requestedTimestamp);
-
-                                this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, requestedMetadata);
-                            }
-
-                            var runningTimestamp = DateTime.UtcNow;
-
-                            var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                            var runningMetadata = new StreamRecordHandlingEntry(
-                                runningEntryId,
+                            // first time needs a requested record
+                            var requestedTimestamp = DateTime.UtcNow;
+                            var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                            var requestedMetadata = new StreamRecordHandlingEntry(
+                                requestedEntryId,
                                 recordToHandle.InternalRecordId,
                                 operation.Concern,
-                                HandlingStatus.Running,
+                                HandlingStatus.AvailableByDefault,
                                 handlingTags,
                                 operation.Details,
-                                runningTimestamp);
+                                requestedTimestamp);
 
-                            this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, runningMetadata);
-
-                            switch (operation.StreamRecordItemsToInclude)
-                            {
-                                case StreamRecordItemsToInclude.MetadataAndPayload:
-                                    break;
-                                case StreamRecordItemsToInclude.MetadataOnly:
-                                    recordToHandle = recordToHandle.DeepCloneWithPayload(new NullDescribedSerialization(recordToHandle.Payload.PayloadTypeRepresentation, recordToHandle.Payload.SerializerRepresentation));
-                                    break;
-                                default:
-                                    throw new NotSupportedException(Invariant($"This {nameof(StreamRecordItemsToInclude)} is not supported: {operation.StreamRecordItemsToInclude}."));
-                            }
-
-                            var result = new TryHandleRecordResult(recordToHandle);
-
-                            return result;
+                            this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, requestedMetadata);
                         }
+
+                        var runningTimestamp = DateTime.UtcNow;
+
+                        var runningEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                        var runningMetadata = new StreamRecordHandlingEntry(
+                            runningEntryId,
+                            recordToHandle.InternalRecordId,
+                            operation.Concern,
+                            HandlingStatus.Running,
+                            handlingTags,
+                            operation.Details,
+                            runningTimestamp);
+
+                        this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, runningMetadata);
+
+                        switch (operation.StreamRecordItemsToInclude)
+                        {
+                            case StreamRecordItemsToInclude.MetadataAndPayload:
+                                break;
+                            case StreamRecordItemsToInclude.MetadataOnly:
+                                recordToHandle = recordToHandle.DeepCloneWithPayload(new NullDescribedSerialization(recordToHandle.Payload.PayloadTypeRepresentation, recordToHandle.Payload.SerializerRepresentation));
+                                break;
+                            default:
+                                throw new NotSupportedException(Invariant($"This {nameof(StreamRecordItemsToInclude)} is not supported: {operation.StreamRecordItemsToInclude}."));
+                        }
+
+                        var result = new TryHandleRecordResult(recordToHandle);
+
+                        return result;
                     }
                 }
 

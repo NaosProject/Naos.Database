@@ -86,15 +86,15 @@ namespace Naos.Database.Domain
                         });
                 }
 
-                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
-                var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
+                // Short-circuit case where there are no records.
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var records);
                 if (records == null)
                 {
-                    // No records exist for locator so no handling statuses either.
                     return new Dictionary<long, HandlingStatus>();
                 }
 
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
+                var recordHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
                 bool HandlingEntryMatchingPredicate(
                     long internalRecordId,
                     StreamRecordMetadata localMetadata)
@@ -153,8 +153,8 @@ namespace Naos.Database.Domain
                    .ToDictionary(
                         k => k,
                         v => entries
-                            .Concat(blockedEntries)
-                            .Concat(recordBlockedEntries)
+                            .Concat(streamHandlingDisabledEntries) // this is needed to accomodate querying on Concerns.GlobalBlockingRecordId to check if AvailableByDefault
+                            .Concat(recordHandlingDisabledEntries)
                             .Where(_ => _.InternalRecordId == v)
                             .OrderByDescending(__ => __.InternalHandlingEntryId)
                             .FirstOrDefault()

@@ -85,7 +85,7 @@ namespace Naos.Database.Domain
 
                     this.singleLocator = result;
 
-                    return result;
+                    return this.singleLocator;
                 }
             }
         }

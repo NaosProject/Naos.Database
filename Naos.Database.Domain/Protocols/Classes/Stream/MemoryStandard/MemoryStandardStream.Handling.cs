@@ -129,10 +129,11 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var allLocators = operation.SpecifiedResourceLocator != null
+            var allLocators = (operation.SpecifiedResourceLocator != null)
                 ? new[]
-                  {
-                      operation.SpecifiedResourceLocator,
-                  }
+                {
+                    operation.SpecifiedResourceLocator,
+                }
                 : this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
 
             lock (this.streamLock)
@@ -146,30 +147,33 @@ namespace Naos.Database.Domain
                                 $"{nameof(GetAllResourceLocatorsOp)} must only return locators of type {typeof(MemoryDatabaseLocator).ToStringReadable()}; found {locator?.GetType().ToStringReadable()}."));
                     }
 
-                    var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.StreamHandlingDisabledConcern);
-                    var mostRecentEntry = handlingEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-                    if (mostRecentEntry != null && mostRecentEntry.Status == HandlingStatus.DisabledForStream)
+                    var streamHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.StreamHandlingDisabledConcern);
+                    var streamHandlingDisabledStatus = streamHandlingDisabledEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Status;
+                    if (streamHandlingDisabledStatus == HandlingStatus.DisabledForStream)
                     {
                         return new TryHandleRecordResult(null, true);
                     }
 
-                    var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern).ToList();
+                    var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern).ToList();
                     var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern).ToList();
+                    var mergedEntries = new StreamRecordHandlingEntry[0]
+                        .Concat(handlingEntries)
+                        .Concat(recordBlockedEntries)
+                        .ToList();
 
                     var existingInternalRecordIdsToConsider = new List<long>();
                     var existingInternalRecordIdsToIgnore = new List<long>();
-                    var mergedEntries = entries.Concat(recordBlockedEntries);
-                    foreach (var groupedById in mergedEntries.GroupBy(_ => _.InternalRecordId))
+                    foreach (var groupedByInternalRecordId in mergedEntries.GroupBy(_ => _.InternalRecordId))
                     {
-                        var mostRecent = groupedById.OrderByDescending(_ => _.InternalHandlingEntryId).First();
+                        var mostRecentEntry = groupedByInternalRecordId.OrderByDescending(_ => _.InternalHandlingEntryId).First();
 
-                        if (mostRecent.Status.IsAvailable())
+                        if (mostRecentEntry.Status.IsAvailable())
                         {
-                            existingInternalRecordIdsToConsider.Add(groupedById.Key);
+                            existingInternalRecordIdsToConsider.Add(groupedByInternalRecordId.Key);
                         }
                         else
                         {
-                            existingInternalRecordIdsToIgnore.Add(groupedById.Key);
+                            existingInternalRecordIdsToIgnore.Add(groupedByInternalRecordId.Key);
                         }
                     }
 

@@ -140,6 +140,8 @@ namespace Naos.Database.Domain
                     return matchResult;
                 }
 
+                // The reason we iterate through ALL records is that all records start in the AvailableByDefault
+                // status for all concerns.  So we first need to determine which of those records pass the RecordFilter.
                 var internalRecordIdsToConsider = new HashSet<long>();
                 foreach (var record in records)
                 {

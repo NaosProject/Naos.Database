@@ -99,15 +99,6 @@ namespace Naos.Database.Domain
                 var filteredRecords = ApplyRecordFilterToPartition(operation.RecordFilter, records);
                 var internalRecordIdsToConsider = new HashSet<long>(filteredRecords.Select(_ => _.InternalRecordId));
 
-                ////var internalRecordIdsToConsider = new HashSet<long>();
-                ////foreach (var record in records)
-                ////{
-                ////    if (operation.RecordFilter.IsEmptyRecordFilter() || HandlingEntryMatchingPredicate(record.InternalRecordId, record.Metadata, operation.RecordFilter))
-                ////    {
-                ////        internalRecordIdsToConsider.Add(record.InternalRecordId);
-                ////    }
-                ////}
-
                 // todo: Filtering by handling status should be done in conjunction with filtering by record filter
                 // (e.g. FirstOrDefault return some status that is subsequently filtered out, but the second status
                 // would pass the filter).  What do we do in SQL?
@@ -127,61 +118,6 @@ namespace Naos.Database.Domain
 
                 return result;
             }
-        }
-
-        // todo: why isn't this just using the front door?
-        private bool HandlingEntryMatchingPredicate(
-            long internalRecordId,
-            StreamRecordMetadata localMetadata,
-            RecordFilter operationRecordFilter)
-        {
-            var matchResult = false;
-
-            if ((operationRecordFilter.InternalRecordIds != null) && operationRecordFilter.InternalRecordIds.Any())
-            {
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                matchResult = matchResult || operationRecordFilter.InternalRecordIds.Contains(internalRecordId);
-            }
-
-            if ((operationRecordFilter.Ids != null) && operationRecordFilter.Ids.Any())
-            {
-                // todo: discuss.  Do we need everything after the &&?  Why are we considering
-                // VersionMatchStrategy when comparing Ids? Shouldn't any version suffice?
-                // VersionMatchStrategy should only apply to IdTypes and ObjectTypes.  What do we do in SQL?
-                matchResult = matchResult || operationRecordFilter.Ids.Any(
-                    __ => __.StringSerializedId.Equals(localMetadata.StringSerializedId)
-                          && __.IdentifierType.EqualsAccordingToStrategy(
-                              localMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                                  operationRecordFilter.VersionMatchStrategy),
-                              operationRecordFilter.VersionMatchStrategy));
-            }
-
-            if ((operationRecordFilter.IdTypes != null) && operationRecordFilter.IdTypes.Any())
-            {
-                matchResult = matchResult || operationRecordFilter.IdTypes.Contains(
-                    localMetadata.TypeRepresentationOfId.GetTypeRepresentationByStrategy(
-                        operationRecordFilter.VersionMatchStrategy));
-            }
-
-            if ((operationRecordFilter.ObjectTypes != null) && operationRecordFilter.ObjectTypes.Any())
-            {
-                matchResult = matchResult || operationRecordFilter.ObjectTypes.Contains(
-                                  localMetadata.TypeRepresentationOfObject.GetTypeRepresentationByStrategy(
-                                      operationRecordFilter.VersionMatchStrategy));
-            }
-
-            if (operationRecordFilter.Tags != null && operationRecordFilter.Tags.Any())
-            {
-                matchResult = matchResult || localMetadata.Tags.FuzzyMatchTags(operationRecordFilter.Tags, operationRecordFilter.TagMatchStrategy);
-            }
-
-            // todo: What does DeprecatedIdTypes mean in the context of getting handling status?  Is this supported in SQL?
-            if (operationRecordFilter.DeprecatedIdTypes != null)
-            {
-                throw new NotImplementedException(Invariant($"Filtering using {nameof(RecordFilter)}.{nameof(RecordFilter.DeprecatedIdTypes)} is not implemented."));
-            }
-
-            return matchResult;
         }
 
         /// <inheritdoc />

@@ -18,9 +18,9 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="HandlingFilter"/> class.
         /// </summary>
-        /// <param name="currentHandlingStatuses">The current statuses to match.</param>
-        /// <param name="tags">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <see cref="Tags"/> is specified.</param>
+        /// <param name="currentHandlingStatuses">OPTIONAL current statuses to match.  DEFAULT is to not filter on <see cref="HandlingStatus"/>.  Empty collection will be treated as null.</param>
+        /// <param name="tags">OPTIONAL tags to match.  DEFAULT is to not matching on tags.  Empty collection will be treated as null.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags when <see cref="Tags"/> is specified.  DEFAULT is to match if the record contains all of the queried tags (with extra tags on the record ignored).</param>
         public HandlingFilter(
             IReadOnlyCollection<HandlingStatus> currentHandlingStatuses = null,
             IReadOnlyCollection<NamedValue<string>> tags = null,

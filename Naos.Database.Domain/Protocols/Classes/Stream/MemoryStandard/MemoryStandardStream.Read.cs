@@ -8,7 +8,9 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
     using static System.FormattableString;
@@ -141,123 +143,142 @@ namespace Naos.Database.Domain
             {
                 var recordFilter = operation.RecordFilter;
                 var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-                var result = new List<StreamRecord>();
-                var resultInitialized = false;
                 this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition);
                 if (partition == null)
                 {
-                    return result;
+                    return new List<StreamRecord>();
                 }
 
-                // Internal Record Identifier
-                if (recordFilter.InternalRecordIds != null && recordFilter.InternalRecordIds.Any())
-                {
-                    if (resultInitialized)
-                    {
-                        result.RemoveAll(_ => !recordFilter.InternalRecordIds.Contains(_.InternalRecordId));
-                    }
-                    else
-                    {
-                        result.AddRange(partition.Where(_ => recordFilter.InternalRecordIds.Contains(_.InternalRecordId)));
-                        resultInitialized = true;
-                    }
-                }
-
-                // String Serialized Identifier
-                if (recordFilter.Ids != null && recordFilter.Ids.Any())
-                {
-                    var recordsMatchingById = recordFilter.Ids.SelectMany(
-                                                               i => partition.Where(
-                                                                   _ => _.Metadata.FuzzyMatchTypesAndId(
-                                                                       i.StringSerializedId,
-                                                                       i.IdentifierType,
-                                                                       null,
-                                                                       recordFilter.VersionMatchStrategy)))
-                                                          .ToList();
-
-                    if (resultInitialized)
-                    {
-                        result.RemoveAll(_ => recordsMatchingById.Any(__ => _.InternalRecordId != __.InternalRecordId));
-                    }
-                    else
-                    {
-                        result.AddRange(recordsMatchingById);
-                        resultInitialized = true;
-                    }
-                }
-
-                // Identifier and Object Type
-                if ((recordFilter.IdTypes != null && recordFilter.IdTypes.Any()) || (recordFilter.ObjectTypes != null && recordFilter.ObjectTypes.Any()))
-                {
-                    var recordsMatchingByType = partition.Where(
-                                                              _ => _.Metadata.FuzzyMatchTypes(
-                                                                  recordFilter.IdTypes,
-                                                                  recordFilter.ObjectTypes,
-                                                                  recordFilter.VersionMatchStrategy))
-                                                         .ToList();
-
-                    if (resultInitialized)
-                    {
-                        result.RemoveAll(_ => !recordsMatchingByType.Any(__ => __.InternalRecordId == _.InternalRecordId));
-                    }
-                    else
-                    {
-                        result.AddRange(recordsMatchingByType);
-                        resultInitialized = true;
-                    }
-                }
-
-                // Tag
-                if (recordFilter.Tags != null && recordFilter.Tags.Any())
-                {
-                    var recordsMatchingByTag = partition
-                                              .Where(_ => _.Metadata.Tags.FuzzyMatchTags(recordFilter.Tags, recordFilter.TagMatchStrategy))
-                                              .ToList();
-                    if (resultInitialized)
-                    {
-                        result.RemoveAll(_ => recordsMatchingByTag.Any(__ => _.InternalRecordId != __.InternalRecordId));
-                    }
-                    else
-                    {
-                        result.AddRange(recordsMatchingByTag);
-                        resultInitialized = true;
-                    }
-                }
-
-                if (!resultInitialized)
-                {
-                    result.AddRange(partition);
-                }
-
-                if (recordFilter.DeprecatedIdTypes != null && recordFilter.DeprecatedIdTypes.Any())
-                {
-                    var internalRecordIdsToRemove = new List<long>();
-                    foreach (var streamRecord in result)
-                    {
-                        if (
-                            recordFilter.DeprecatedIdTypes.Any(
-                                d =>
-                                    partition
-                                       .OrderBy(_ => _.InternalRecordId)
-                                       .Last(
-                                            _ => _.Metadata.FuzzyMatchTypesAndId(
-                                                streamRecord.Metadata.StringSerializedId,
-                                                streamRecord.Metadata.TypeRepresentationOfId.WithVersion,
-                                                null,
-                                                recordFilter.VersionMatchStrategy))
-                                       .Metadata.TypeRepresentationOfId.WithVersion.EqualsAccordingToStrategy(
-                                            d,
-                                            recordFilter.VersionMatchStrategy)))
-                        {
-                            internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
-                        }
-                    }
-
-                    result.RemoveAll(_ => internalRecordIdsToRemove.Contains(_.InternalRecordId));
-                }
+                var result = ApplyRecordFilterToPartition(recordFilter, partition);
 
                 return result;
             }
+        }
+
+        private static List<StreamRecord> ApplyRecordFilterToPartition(
+            RecordFilter recordFilter,
+            List<StreamRecord> partition)
+        {
+            // Short-circuit empty record filter to return all records.
+            if (recordFilter.IsEmptyRecordFilter())
+            {
+                return partition;
+            }
+
+            var result = new List<StreamRecord>();
+            var resultInitialized = false;
+
+            // Internal Record Identifier
+            if ((recordFilter.InternalRecordIds != null) && recordFilter.InternalRecordIds.Any())
+            {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (resultInitialized)
+                {
+                    result.RemoveAll(_ => !recordFilter.InternalRecordIds.Contains(_.InternalRecordId));
+                }
+                else
+                {
+                    result.AddRange(partition.Where(_ => recordFilter.InternalRecordIds.Contains(_.InternalRecordId)));
+                    resultInitialized = true;
+                }
+            }
+
+            // String Serialized Identifier
+            if (recordFilter.Ids != null && recordFilter.Ids.Any())
+            {
+                var recordsMatchingById = recordFilter.Ids.SelectMany(
+                        i => partition.Where(
+                            _ => _.Metadata.FuzzyMatchTypesAndId(
+                                i.StringSerializedId,
+                                i.IdentifierType,
+                                null,
+                                recordFilter.VersionMatchStrategy)))
+                    .ToList();
+
+                if (resultInitialized)
+                {
+                    result.RemoveAll(_ => recordsMatchingById.Any(__ => _.InternalRecordId != __.InternalRecordId));
+                }
+                else
+                {
+                    result.AddRange(recordsMatchingById);
+                    resultInitialized = true;
+                }
+            }
+
+            // Identifier and Object Type
+            if ((recordFilter.IdTypes != null && recordFilter.IdTypes.Any()) ||
+                (recordFilter.ObjectTypes != null && recordFilter.ObjectTypes.Any()))
+            {
+                var recordsMatchingByType = partition.Where(
+                        _ => _.Metadata.FuzzyMatchTypes(
+                            recordFilter.IdTypes,
+                            recordFilter.ObjectTypes,
+                            recordFilter.VersionMatchStrategy))
+                    .ToList();
+
+                if (resultInitialized)
+                {
+                    result.RemoveAll(_ => !recordsMatchingByType.Any(__ => __.InternalRecordId == _.InternalRecordId));
+                }
+                else
+                {
+                    result.AddRange(recordsMatchingByType);
+                    resultInitialized = true;
+                }
+            }
+
+            // Tag
+            if (recordFilter.Tags != null && recordFilter.Tags.Any())
+            {
+                var recordsMatchingByTag = partition
+                    .Where(_ => _.Metadata.Tags.FuzzyMatchTags(recordFilter.Tags, recordFilter.TagMatchStrategy))
+                    .ToList();
+                if (resultInitialized)
+                {
+                    result.RemoveAll(_ => recordsMatchingByTag.Any(__ => _.InternalRecordId != __.InternalRecordId));
+                }
+                else
+                {
+                    result.AddRange(recordsMatchingByTag);
+                    resultInitialized = true;
+                }
+            }
+
+            if (!resultInitialized)
+            {
+                result.AddRange(partition);
+            }
+
+            if ((recordFilter.DeprecatedIdTypes != null) && recordFilter.DeprecatedIdTypes.Any())
+            {
+                var internalRecordIdsToRemove = new List<long>();
+                foreach (var streamRecord in result)
+                {
+                    // todo: What if the id is un-deprecated?
+                    if (
+                        recordFilter.DeprecatedIdTypes.Any(
+                            d =>
+                                partition
+                                    .OrderBy(_ => _.InternalRecordId)
+                                    .Last(
+                                        _ => _.Metadata.FuzzyMatchTypesAndId(
+                                            streamRecord.Metadata.StringSerializedId,
+                                            streamRecord.Metadata.TypeRepresentationOfId.WithVersion,
+                                            null,
+                                            recordFilter.VersionMatchStrategy))
+                                    .Metadata.TypeRepresentationOfId.WithVersion.EqualsAccordingToStrategy(
+                                        d,
+                                        recordFilter.VersionMatchStrategy)))
+                    {
+                        internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
+                    }
+                }
+
+                result.RemoveAll(_ => internalRecordIdsToRemove.Contains(_.InternalRecordId));
+            }
+
+            return result;
         }
     }
 }

@@ -23,7 +23,6 @@ namespace Naos.Database.Domain
     public partial class MemoryStandardStream : StandardStreamBase, IHaveStringId
     {
         private readonly object streamLock = new object();
-        private readonly object handlingLock = new object();
         private readonly object singleLocatorLock = new object();
 
         private readonly Dictionary<MemoryDatabaseLocator, List<StreamRecord>> locatorToRecordPartitionMap = new Dictionary<MemoryDatabaseLocator, List<StreamRecord>>();

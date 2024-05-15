@@ -119,16 +119,13 @@ namespace Naos.Database.Domain
                 this.locatorToRecordPartitionMap[locator].Clear();
                 this.locatorToRecordPartitionMap[locator].AddRange(newList);
 
-                lock (this.handlingLock)
+                if (this.locatorToHandlingEntriesByConcernMap.ContainsKey(locator) && this.locatorToHandlingEntriesByConcernMap[locator].Any())
                 {
-                    if (this.locatorToHandlingEntriesByConcernMap.ContainsKey(locator) && this.locatorToHandlingEntriesByConcernMap[locator].Any())
+                    foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
                     {
-                        foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
-                        {
-                            var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern].Where(HandlingPredicate);
-                            this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
-                            this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
-                        }
+                        var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern].Where(HandlingPredicate);
+                        this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
+                        this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
                     }
                 }
             }

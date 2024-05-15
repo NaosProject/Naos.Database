@@ -28,7 +28,7 @@ namespace Naos.Database.Domain
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
-            lock (this.handlingLock)
+            lock (this.streamLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
@@ -52,7 +52,7 @@ namespace Naos.Database.Domain
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
-            lock (this.handlingLock)
+            lock (this.streamLock)
             {
                 Dictionary<long, HandlingStatus> ApplyHandlingFilter(
                     Dictionary<long, HandlingStatus> handlingStatuses)
@@ -178,7 +178,7 @@ namespace Naos.Database.Domain
                   }
                 : this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
 
-            lock (this.handlingLock)
+            lock (this.streamLock)
             {
                 foreach (var locator in allLocators)
                 {
@@ -216,7 +216,6 @@ namespace Naos.Database.Domain
                         }
                     }
 
-                    lock (this.streamLock)
                     {
                         var recordsToConsiderForHandling =
                             this.locatorToRecordPartitionMap[memoryDatabaseLocator]
@@ -334,7 +333,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-            lock (this.handlingLock)
+            lock (this.streamLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
@@ -567,7 +566,7 @@ namespace Naos.Database.Domain
                 throw new ArgumentException(Invariant($"Only {nameof(MemoryDatabaseLocator)}'s are supported; specified type: {locator.GetType().ToStringReadable()} - {locator}"), nameof(locator));
             }
 
-            lock (this.handlingLock)
+            lock (this.streamLock)
             {
                 if (!this.locatorToHandlingEntriesByConcernMap.ContainsKey(memoryDatabaseLocator))
                 {
@@ -592,7 +591,7 @@ namespace Naos.Database.Domain
             string concern,
             StreamRecordHandlingEntry requestedEntry)
         {
-            lock (this.handlingLock)
+            lock (this.streamLock)
             {
                 // Do not need this call but it has the confirm key path exists logic and I do not want to refactor yet another method for them to share...
                 this.GetStreamRecordHandlingEntriesForConcern(locator, concern);

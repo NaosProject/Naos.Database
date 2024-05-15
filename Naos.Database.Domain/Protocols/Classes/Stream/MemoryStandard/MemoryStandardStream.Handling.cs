@@ -72,8 +72,12 @@ namespace Naos.Database.Domain
                     return dictionary;
                 }
 
-                var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
-                if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Status == HandlingStatus.DisabledForStream)
+                // If DisabledForStream is the most recent status for the StreamHandlingDisabledConcern concern
+                // then the stream is disabled for handling; it doesn't matter what the handling status is for any
+                // record.  At that point, all records are blocked from being handled and are considered to have a status of DisabledForStream.
+                // It's not possible to handle any record until the AvailableByDefault status is set for the StreamHandlingDisabledConcern concern.
+                var streamHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
+                if (streamHandlingDisabledEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Status == HandlingStatus.DisabledForStream)
                 {
                     return ApplyHandlingFilter(
                         new Dictionary<long, HandlingStatus>

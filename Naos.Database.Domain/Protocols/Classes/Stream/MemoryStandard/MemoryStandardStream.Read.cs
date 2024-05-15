@@ -171,7 +171,10 @@ namespace Naos.Database.Domain
             // Internal Record Identifier
             if ((recordFilter.InternalRecordIds != null) && recordFilter.InternalRecordIds.Any())
             {
+                // This is using the same pattern as the subsequent filters, even though it's not necessary it enables
+                // us to re-order the filters with no negative consequences.
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                // ReSharper disable HeuristicUnreachableCode
                 if (resultInitialized)
                 {
                     result.RemoveAll(_ => !recordFilter.InternalRecordIds.Contains(_.InternalRecordId));
@@ -181,11 +184,17 @@ namespace Naos.Database.Domain
                     result.AddRange(partition.Where(_ => recordFilter.InternalRecordIds.Contains(_.InternalRecordId)));
                     resultInitialized = true;
                 }
+
+                // ReSharper restore HeuristicUnreachableCode
             }
 
             // String Serialized Identifier
-            if (recordFilter.Ids != null && recordFilter.Ids.Any())
+            if ((recordFilter.Ids != null) && recordFilter.Ids.Any())
             {
+                // Why are we not just filtering on the Ids themselves?  Why does the type and version matching strategy matter?
+                // Technically Ids can be objects and objects can serialize differently depending on their version or properties
+                // can have different meaning dependent on the version.  If you are running using VersionMatchStrategy.SpecifiedVersion
+                // and not confirming that the version is consistent with the object used as the identifier, you could have an invalid match.
                 var recordsMatchingById = recordFilter.Ids.SelectMany(
                         i => partition.Where(
                             _ => _.Metadata.FuzzyMatchTypesAndId(
@@ -207,7 +216,7 @@ namespace Naos.Database.Domain
             }
 
             // Identifier and Object Type
-            if ((recordFilter.IdTypes != null && recordFilter.IdTypes.Any()) ||
+            if (((recordFilter.IdTypes != null) && recordFilter.IdTypes.Any()) ||
                 (recordFilter.ObjectTypes != null && recordFilter.ObjectTypes.Any()))
             {
                 var recordsMatchingByType = partition.Where(
@@ -219,6 +228,7 @@ namespace Naos.Database.Domain
 
                 if (resultInitialized)
                 {
+                    // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
                     result.RemoveAll(_ => !recordsMatchingByType.Any(__ => __.InternalRecordId == _.InternalRecordId));
                 }
                 else
@@ -229,7 +239,7 @@ namespace Naos.Database.Domain
             }
 
             // Tag
-            if (recordFilter.Tags != null && recordFilter.Tags.Any())
+            if ((recordFilter.Tags != null) && recordFilter.Tags.Any())
             {
                 var recordsMatchingByTag = partition
                     .Where(_ => _.Metadata.Tags.FuzzyMatchTags(recordFilter.Tags, recordFilter.TagMatchStrategy))

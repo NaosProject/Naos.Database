@@ -51,24 +51,31 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.handlingLock)
             {
-                Dictionary<long, HandlingStatus> FilterResultsByHandlingStatus(
+                Dictionary<long, HandlingStatus> ApplyHandlingFilter(
                     Dictionary<long, HandlingStatus> handlingStatuses)
                 {
-                    var dictionary = (operation.HandlingFilter                         == null
-                                   || operation.HandlingFilter.CurrentHandlingStatuses == null
-                                   || !operation.HandlingFilter.CurrentHandlingStatuses.Any())
+                    if (operation.HandlingFilter.Tags != null)
+                    {
+                        throw new NotImplementedException(Invariant($"Filtering using {nameof(HandlingFilter)}.{nameof(HandlingFilter.Tags)} is not implemented."));
+                    }
+
+                    var dictionary = ((operation.HandlingFilter?.CurrentHandlingStatuses == null) ||
+                                      (!operation.HandlingFilter.CurrentHandlingStatuses.Any()))
                         ? handlingStatuses
-                        : handlingStatuses.Where(_ => operation.HandlingFilter.CurrentHandlingStatuses.Contains(_.Value))
-                                          .ToDictionary(k => k.Key, v => v.Value);
+                        : handlingStatuses
+                            .Where(_ => operation.HandlingFilter.CurrentHandlingStatuses.Contains(_.Value))
+                            .ToDictionary(k => k.Key, v => v.Value);
+
                     return dictionary;
                 }
 
                 var blockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.StreamHandlingDisabledConcern);
                 if (blockedEntries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault()?.Status == HandlingStatus.DisabledForStream)
                 {
-                    return FilterResultsByHandlingStatus(
+                    return ApplyHandlingFilter(
                         new Dictionary<long, HandlingStatus>
                         {
                             { Concerns.GlobalBlockingRecordId, HandlingStatus.DisabledForStream },
@@ -150,7 +157,7 @@ namespace Naos.Database.Domain
                            ?.Status
                           ?? HandlingStatus.AvailableByDefault);
 
-                var result = FilterResultsByHandlingStatus(unfilteredResult);
+                var result = ApplyHandlingFilter(unfilteredResult);
 
                 return result;
             }

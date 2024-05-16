@@ -28,7 +28,7 @@ namespace Naos.Database.Domain
         /// <param name="internalRecordId">The internal record identifier.</param>
         /// <param name="concern">The record handling concern.</param>
         /// <param name="newStatus">The new <see cref="HandlingStatus"/> to apply to the record.</param>
-        /// <param name="acceptableCurrentStatuses">The set of acceptable <see cref="HandlingStatus"/> for the record.  The record's status must be in this set for the update to be applied.</param>
+        /// <param name="acceptableCurrentStatuses">The set of acceptable <see cref="HandlingStatus"/> for the record.  The record's status must be in this set for the update to be applied, otherwise the protocol will throw.</param>
         /// <param name="details">OPTIONAL details to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no details.</param>
         /// <param name="tags">OPTIONAL tags to write to the resulting <see cref="IHandlingEvent"/>.  DEFAULT is no tags.</param>
         /// <param name="inheritRecordTags">OPTIONAL value indicating whether the resulting <see cref="IHandlingEvent"/> should inherit tags from the record being handled.  DEFAULT is to not inherit tags.</param>
@@ -70,7 +70,8 @@ namespace Naos.Database.Domain
         public HandlingStatus NewStatus { get; private set; }
 
         /// <summary>
-        /// Gets the set of acceptable <see cref="HandlingStatus"/>.  The record's status must be in this set for the update to be applied.
+        /// Gets the set of acceptable <see cref="HandlingStatus"/>.
+        /// The record's status must be in this set for the update to be applied, otherwise the protocol will throw.
         /// </summary>
         public IReadOnlyCollection<HandlingStatus> AcceptableCurrentStatuses { get; private set; }
 

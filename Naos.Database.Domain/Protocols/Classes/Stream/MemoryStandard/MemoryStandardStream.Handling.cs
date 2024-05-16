@@ -113,11 +113,11 @@ namespace Naos.Database.Domain
                 var recordHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
                 var filteredRecords = ApplyRecordFilterToPartition(operation.RecordFilter, records);
-                var internalRecordIdsToConsider = new HashSet<long>(filteredRecords.Select(_ => _.InternalRecordId));
 
                 // Get latest status for each record to consider.
-                var unfilteredResult = internalRecordIdsToConsider
-                   .ToDictionary(
+                var unfilteredResult = filteredRecords
+                    .Select(_ => _.InternalRecordId)
+                    .ToDictionary(
                         k => k,
                         v => handlingEntries
                             .Concat(streamHandlingDisabledEntries) // this is needed to accomodate querying on Concerns.GlobalBlockingRecordId to check if AvailableByDefault
@@ -177,17 +177,12 @@ namespace Naos.Database.Domain
                         .Concat(recordBlockedEntries)
                         .ToList();
 
-                    var existingInternalRecordIdsToConsider = new List<long>();
                     var existingInternalRecordIdsToIgnore = new List<long>();
                     foreach (var groupedByInternalRecordId in mergedEntries.GroupBy(_ => _.InternalRecordId))
                     {
                         var mostRecentEntry = groupedByInternalRecordId.OrderByDescending(_ => _.InternalHandlingEntryId).First();
 
-                        if (mostRecentEntry.Status.IsAvailable())
-                        {
-                            existingInternalRecordIdsToConsider.Add(groupedByInternalRecordId.Key);
-                        }
-                        else
+                        if (!mostRecentEntry.Status.IsAvailable())
                         {
                             existingInternalRecordIdsToIgnore.Add(groupedByInternalRecordId.Key);
                         }

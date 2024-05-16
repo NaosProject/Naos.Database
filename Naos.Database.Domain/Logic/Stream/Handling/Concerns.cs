@@ -46,6 +46,18 @@ namespace Naos.Database.Domain
         public const long GlobalBlockingRecordId = 0;
 
         /// <summary>
+        /// The <see cref="StreamRecordHandlingEntry.InternalHandlingEntryId"/> to use when injecting the
+        /// <see cref="HandlingStatus.AvailableByDefault"/> status when executing a <see cref="GetHandlingHistoryOp"/>.
+        /// </summary>
+        public const long AvailableByDefaultHandlingEntryId = 0;
+
+        /// <summary>
+        /// The <see cref="StreamRecordHandlingEntry.Details"/> to use when injecting the
+        /// <see cref="HandlingStatus.AvailableByDefault"/> status when executing a <see cref="GetHandlingHistoryOp"/>.
+        /// </summary>
+        public const string AvailableByDefaultHandlingEntryDetails = "Available by existence of record.";
+
+        /// <summary>
         /// Throws if the concern specified is invalid or reserved.
         /// </summary>
         /// <param name="concern">The concern to check.</param>

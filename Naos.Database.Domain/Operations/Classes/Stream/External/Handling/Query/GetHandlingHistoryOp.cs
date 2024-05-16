@@ -13,6 +13,11 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets the handling history of a record.
     /// </summary>
+    /// <remarks>
+    /// If there has been any handling history at all (i.e. the record has been try-handled at least one time),
+    /// then it is returned (including an entry for the <see cref="HandlingStatus.AvailableByDefault"/> status).
+    /// Otherwise, an empty set of entries is returned (including when an invalid record id is specified).
+    /// </remarks>
     public partial class GetHandlingHistoryOp : ReturningOperationBase<IReadOnlyList<StreamRecordHandlingEntry>>, IHaveHandleRecordConcern, IHaveInternalRecordId
     {
         /// <summary>

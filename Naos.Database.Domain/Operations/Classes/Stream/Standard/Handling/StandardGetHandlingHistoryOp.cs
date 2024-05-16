@@ -11,7 +11,10 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Gets the handling history of a single record.
+    /// Gets the handling history of a single record if any.
+    /// If there has been any handling history at all (i.e. the record has been try-handled at least one time),
+    /// then it is returned (including an entry for the <see cref="HandlingStatus.AvailableByDefault"/> status).
+    /// Otherwise, an empty set of entries is returned (including when an invalid record id is specified).
     /// </summary>
     /// <remarks>
     /// This is an internal operation; it is designed to honor the contract of an <see cref="IStandardStream"/>.

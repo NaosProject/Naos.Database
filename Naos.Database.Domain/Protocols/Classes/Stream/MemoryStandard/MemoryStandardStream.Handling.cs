@@ -39,6 +39,23 @@ namespace Naos.Database.Domain
                     .Where(_ => _.InternalRecordId == operation.InternalRecordId)
                     .ToList();
 
+                // We only inject the AvailableByDefault status if there has been any handling history at all
+                // (i.e. the record has been try-handled at least one time).
+                // If there is no handling history or there is no record with the specified InternalRecordId, then
+                // the result is allowed to be empty.
+                if (result.Any())
+                {
+                    result.Add(
+                        new StreamRecordHandlingEntry(
+                            Concerns.AvailableByDefaultHandlingEntryId,
+                            operation.InternalRecordId,
+                            operation.Concern,
+                            HandlingStatus.AvailableByDefault,
+                            null,
+                            Concerns.AvailableByDefaultHandlingEntryDetails,
+                            result.Min(_ => _.TimestampUtc)));
+                }
+
                 return result;
             }
         }
@@ -220,23 +237,6 @@ namespace Naos.Database.Domain
                                 .Union(recordToHandle.Metadata.Tags ?? new List<NamedValue<string>>())
                                 .ToList()
                             : operation.RecordFilter.Tags;
-
-                        if (!existingInternalRecordIdsToConsider.Contains(recordToHandle.InternalRecordId))
-                        {
-                            // first time needs a requested record
-                            var requestedTimestamp = DateTime.UtcNow;
-                            var requestedEntryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-                            var requestedMetadata = new StreamRecordHandlingEntry(
-                                requestedEntryId,
-                                recordToHandle.InternalRecordId,
-                                operation.Concern,
-                                HandlingStatus.AvailableByDefault,
-                                handlingTags,
-                                operation.Details,
-                                requestedTimestamp);
-
-                            this.WriteHandlingEntryToMemoryMap(memoryDatabaseLocator, operation.Concern, requestedMetadata);
-                        }
 
                         var runningTimestamp = DateTime.UtcNow;
 

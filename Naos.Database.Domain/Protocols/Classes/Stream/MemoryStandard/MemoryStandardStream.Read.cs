@@ -124,6 +124,7 @@ namespace Naos.Database.Domain
 
             if (record == null)
             {
+                // delegatedOp will honor the RecordNotFoundStrategy, so no need to check here.
                 result = null;
             }
             else
@@ -134,16 +135,7 @@ namespace Naos.Database.Domain
                 }
                 else
                 {
-                    switch (operation.RecordNotFoundStrategy)
-                    {
-                        case RecordNotFoundStrategy.ReturnDefault:
-                            result = null;
-                            break;
-                        case RecordNotFoundStrategy.Throw:
-                            throw new NotSupportedException(Invariant($"record {nameof(SerializationFormat)} not {SerializationFormat.String}, it is {record.Payload.GetSerializationFormat()}, but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
-                        default:
-                            throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
-                    }
+                    throw new InvalidOperationException(Invariant($"record {nameof(SerializationFormat)} not {SerializationFormat.String}, it is {record.Payload.GetSerializationFormat()}."));
                 }
             }
 

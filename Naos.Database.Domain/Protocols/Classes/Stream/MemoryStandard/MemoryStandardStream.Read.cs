@@ -12,6 +12,7 @@ namespace Naos.Database.Domain
     using System.Linq;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Collection.Recipes;
     using OBeautifulCode.Serialization;
     using static System.FormattableString;
 
@@ -54,10 +55,12 @@ namespace Naos.Database.Domain
             {
                 var operationWithLocator = operation.DeepCloneWithSpecifiedResourceLocator(locator);
                 var matchingRecords = this.GetMatchingRecords(operationWithLocator);
-                matchingRecords.ToList()
-                               .ForEach(
-                                    _ => result.Add(
-                                        new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion)));
+
+                var stringSerializedIds = matchingRecords
+                    .Select(_ => new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion))
+                    .ToList();
+
+                result.AddRange(stringSerializedIds);
             }
 
             return result;
@@ -71,9 +74,9 @@ namespace Naos.Database.Domain
 
             var matchingRecords = this.GetMatchingRecords(operation);
 
-            if (matchingRecords != null && matchingRecords.Any())
+            if ((matchingRecords != null) && matchingRecords.Any())
             {
-                var result = matchingRecords.OrderBy(_ => _.InternalRecordId).Last();
+                var result = matchingRecords.OrderByDescending(_ => _.InternalRecordId).First();
                 switch (operation.StreamRecordItemsToInclude)
                 {
                     case StreamRecordItemsToInclude.MetadataAndPayload:

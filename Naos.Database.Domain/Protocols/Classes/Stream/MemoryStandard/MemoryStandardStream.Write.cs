@@ -42,9 +42,7 @@ namespace Naos.Database.Domain
             {
                 var existingRecordIds = new List<long>();
 
-                var exists = this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var recordPartition);
-
-                if (!exists)
+                if (!this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var recordPartition))
                 {
                     recordPartition = new List<StreamRecord>();
 
@@ -52,9 +50,9 @@ namespace Naos.Database.Domain
                 }
 
                 var matchesId =
-                    operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundById
-                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundById
-                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById
+                    (operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundById)
+                 || (operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundById)
+                 || (operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById)
                         ? recordPartition.Where(
                                 _ => _.Metadata.FuzzyMatchTypesAndId(
                                     operation.Metadata.StringSerializedId,
@@ -65,11 +63,11 @@ namespace Naos.Database.Domain
                         : new List<StreamRecord>();
 
                 var matchesIdAndObject =
-                    operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent
-                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType
-                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent
-                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndType
-                 || operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
+                    (operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndTypeAndContent)
+                 || (operation.ExistingRecordStrategy == ExistingRecordStrategy.DoNotWriteIfFoundByIdAndType)
+                 || (operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndTypeAndContent)
+                 || (operation.ExistingRecordStrategy == ExistingRecordStrategy.ThrowIfFoundByIdAndType)
+                 || (operation.ExistingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
                         ? recordPartition.Where(
                                 _ => _.Metadata.FuzzyMatchTypesAndId(
                                     operation.Metadata.StringSerializedId,
@@ -133,22 +131,24 @@ namespace Naos.Database.Domain
 
                         break;
                     case ExistingRecordStrategy.PruneIfFoundById:
-                        if (operation.RecordRetentionCount != null && matchesId.Count > operation.RecordRetentionCount - 1)
+                        // ReSharper disable once PossibleInvalidOperationException - constructor ensures RecordRetentionCount can't be null when ExistingRecordStrategy is PruneIfFoundById
+                        if (matchesId.Count > (int)operation.RecordRetentionCount)
                         {
                             existingRecordIds.AddRange(matchesId.Select(_ => _.InternalRecordId).ToList());
 
-                            var recordsToDeleteById = matchesId.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                            var recordsToDeleteById = matchesId.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount).ToList();
 
                             recordIdsToPrune.AddRange(recordsToDeleteById.Select(_ => _.InternalRecordId));
                         }
 
                         break;
                     case ExistingRecordStrategy.PruneIfFoundByIdAndType:
-                        if (operation.RecordRetentionCount != null && matchesIdAndObject.Count > operation.RecordRetentionCount - 1)
+                        // ReSharper disable once PossibleInvalidOperationException - constructor ensures RecordRetentionCount can't be null when ExistingRecordStrategy is PruneIfFoundByIdAndType
+                        if (matchesIdAndObject.Count > (int)operation.RecordRetentionCount)
                         {
                             existingRecordIds.AddRange(matchesIdAndObject.Select(_ => _.InternalRecordId).ToList());
 
-                            var recordsToDeleteById = matchesIdAndObject.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount - 1).ToList();
+                            var recordsToDeleteById = matchesIdAndObject.OrderByDescending(_ => _.InternalRecordId).Skip((int)operation.RecordRetentionCount).ToList();
 
                             recordIdsToPrune.AddRange(recordsToDeleteById.Select(_ => _.InternalRecordId));
                         }
@@ -169,6 +169,11 @@ namespace Naos.Database.Domain
                     else
                     {
                         id = (long)operation.InternalRecordId;
+
+                        if ((long)operation.InternalRecordId > this.uniqueLongForInMemoryRecords)
+                        {
+                            Interlocked.Exchange(ref this.uniqueLongForInMemoryRecords, id);
+                        }
                     }
                 }
                 else

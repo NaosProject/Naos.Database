@@ -25,12 +25,12 @@ namespace Naos.Database.Domain
         private readonly object streamLock = new object();
         private readonly object singleLocatorLock = new object();
 
-        private readonly Dictionary<MemoryDatabaseLocator, List<StreamRecord>> locatorToRecordPartitionMap = new Dictionary<MemoryDatabaseLocator, List<StreamRecord>>();
-        private readonly Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>> locatorToHandlingEntriesByConcernMap = new Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>>();
-        private bool created = false;
-        private long uniqueLongForExternalProtocol = 0;
-        private long uniqueLongForInMemoryRecords = 0;
-        private long uniqueLongForInMemoryHandlingEntries = 0;
+        private Dictionary<MemoryDatabaseLocator, List<StreamRecord>> locatorToRecordPartitionMap;
+        private Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>> locatorToHandlingEntriesByConcernMap;
+        private bool created;
+        private long uniqueLongForExternalProtocol;
+        private long uniqueLongForInMemoryRecords;
+        private long uniqueLongForInMemoryHandlingEntries;
         private MemoryDatabaseLocator singleLocator;
 
         /// <summary>
@@ -41,15 +41,20 @@ namespace Naos.Database.Domain
         /// <param name="defaultSerializationFormat">The default serialization format.</param>
         /// <param name="serializerFactory">The serializer factory.</param>
         /// <param name="resourceLocatorProtocols">OPTIONAL resource locator protocols.  DEFAULT is to use a single <see cref="MemoryDatabaseLocator"/> named 'Default'.</param>
+        /// <param name="createStreamOnConstruction">OPTIONAL value that indicates whether to create the stream (execute <see cref="StandardCreateStreamOp"/>) upon construction of this object.  DEFAULT is to create the stream.</param>
         public MemoryStandardStream(
             string name,
             SerializerRepresentation defaultSerializerRepresentation,
             SerializationFormat defaultSerializationFormat,
             ISerializerFactory serializerFactory,
-            IResourceLocatorProtocols resourceLocatorProtocols = null)
+            IResourceLocatorProtocols resourceLocatorProtocols = null,
+            bool createStreamOnConstruction = true)
             : base(name, serializerFactory, defaultSerializerRepresentation, defaultSerializationFormat, resourceLocatorProtocols ?? new SingleResourceLocatorProtocols(new MemoryDatabaseLocator("Default")))
         {
             this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
+
+            this.InitializeBackingDataStructures();
+            this.created = createStreamOnConstruction;
         }
 
         /// <inheritdoc />
@@ -87,6 +92,16 @@ namespace Naos.Database.Domain
                     return this.singleLocator;
                 }
             }
+        }
+
+        private void InitializeBackingDataStructures()
+        {
+            this.locatorToRecordPartitionMap = new Dictionary<MemoryDatabaseLocator, List<StreamRecord>>();
+            this.locatorToHandlingEntriesByConcernMap = new Dictionary<MemoryDatabaseLocator, Dictionary<string, List<StreamRecordHandlingEntry>>>();
+            this.uniqueLongForExternalProtocol = 0;
+            this.uniqueLongForInMemoryRecords = 0;
+            this.uniqueLongForInMemoryHandlingEntries = 0;
+            this.singleLocator = null;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Naos.Database.Domain
             {
                 if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
                 {
-                    throw new ArgumentException(Invariant($"This {nameof(MemoryStandardStream)} can only 'create' a stream with the same representation."));
+                    throw new ArgumentException(Invariant($"This {nameof(MemoryStandardStream)} can only 'Create' a stream with the same representation."));
                 }
 
                 if (this.created)
@@ -39,7 +39,7 @@ namespace Naos.Database.Domain
                         case ExistingStreamStrategy.Throw:
                             throw new InvalidOperationException(Invariant($"Expected stream {operation.StreamRepresentation} to not exist, it does and the operation {nameof(operation.ExistingStreamStrategy)} is set to '{operation.ExistingStreamStrategy}'."));
                         case ExistingStreamStrategy.Overwrite:
-                            this.locatorToRecordPartitionMap.Clear();
+                            this.InitializeBackingDataStructures();
                             break;
                         case ExistingStreamStrategy.Skip:
                             wasCreated = false;
@@ -47,6 +47,10 @@ namespace Naos.Database.Domain
                         default:
                             throw new NotSupportedException(Invariant($"{nameof(ExistingStreamStrategy)} '{operation.ExistingStreamStrategy}' is not supported."));
                     }
+                }
+                else
+                {
+                    this.InitializeBackingDataStructures();
                 }
 
                 this.created = true;
@@ -65,17 +69,17 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
-                if (operation == null)
-                {
-                    throw new ArgumentNullException(nameof(operation));
-                }
-
                 if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
                 {
                     throw new ArgumentException(Invariant($"This {nameof(MemoryStandardStream)} can only 'Delete' a stream with the same representation."));
                 }
 
-                if (!this.created)
+                if (this.created)
+                {
+                    this.InitializeBackingDataStructures();
+                    this.created = false;
+                }
+                else
                 {
                     switch (operation.StreamNotFoundStrategy)
                     {
@@ -85,13 +89,6 @@ namespace Naos.Database.Domain
                             break;
                         default:
                             throw new NotSupportedException(Invariant($"{nameof(StreamNotFoundStrategy)} {operation.StreamNotFoundStrategy} is not supported."));
-                    }
-                }
-                else
-                {
-                    foreach (var partition in this.locatorToRecordPartitionMap)
-                    {
-                        partition.Value.Clear();
                     }
                 }
             }

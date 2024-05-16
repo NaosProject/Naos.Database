@@ -21,8 +21,24 @@ namespace Naos.Database.Domain
         public override IReadOnlyCollection<long> Execute(
             StandardGetInternalRecordIdsOp operation)
         {
+            // the Read methods are inconsistent about iterating through locators
             var matchingRecords = this.GetMatchingRecords(operation);
+
+            if (!matchingRecords.Any())
+            {
+                switch (operation.RecordNotFoundStrategy)
+                {
+                    case RecordNotFoundStrategy.ReturnDefault:
+                        return Array.Empty<long>();
+                    case RecordNotFoundStrategy.Throw:
+                        throw new InvalidOperationException(Invariant($"No records were found."));
+                    default:
+                        throw new NotSupportedException(Invariant($"This {nameof(RecordNotFoundStrategy)} is not supported: {operation.RecordNotFoundStrategy}."));
+                }
+            }
+
             var result = matchingRecords.Select(_ => _.InternalRecordId).ToList();
+
             return result;
         }
 

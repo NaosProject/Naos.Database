@@ -62,14 +62,14 @@ namespace Naos.Database.Domain
                         throw new NotImplementedException(Invariant($"Filtering using {nameof(HandlingFilter)}.{nameof(HandlingFilter.Tags)} is not implemented."));
                     }
 
-                    var dictionary = ((operation.HandlingFilter?.CurrentHandlingStatuses == null) ||
+                    var applyFilterResult = ((operation.HandlingFilter.CurrentHandlingStatuses == null) ||
                                       (!operation.HandlingFilter.CurrentHandlingStatuses.Any()))
                         ? handlingStatuses
                         : handlingStatuses
                             .Where(_ => operation.HandlingFilter.CurrentHandlingStatuses.Contains(_.Value))
                             .ToDictionary(k => k.Key, v => v.Value);
 
-                    return dictionary;
+                    return applyFilterResult;
                 }
 
                 // If DisabledForStream is the most recent status for the StreamHandlingDisabledConcern concern
@@ -99,9 +99,7 @@ namespace Naos.Database.Domain
                 var filteredRecords = ApplyRecordFilterToPartition(operation.RecordFilter, records);
                 var internalRecordIdsToConsider = new HashSet<long>(filteredRecords.Select(_ => _.InternalRecordId));
 
-                // todo: Filtering by handling status should be done in conjunction with filtering by record filter
-                // (e.g. FirstOrDefault return some status that is subsequently filtered out, but the second status
-                // would pass the filter).  What do we do in SQL?
+                // Get latest status for each record to consider.
                 var unfilteredResult = internalRecordIdsToConsider
                    .ToDictionary(
                         k => k,
@@ -114,6 +112,7 @@ namespace Naos.Database.Domain
                            ?.Status
                           ?? HandlingStatus.AvailableByDefault);
 
+                // Filter out records that don't match handling status filter.
                 var result = ApplyHandlingFilter(unfilteredResult);
 
                 return result;

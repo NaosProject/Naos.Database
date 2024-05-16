@@ -102,27 +102,30 @@ namespace Naos.Database.Domain
 
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
 
-            bool RecordPredicate(
-                StreamRecord record) => operation.ShouldPrune(record.InternalRecordId, record.Metadata.TimestampUtc);
-
-            bool HandlingPredicate(
-                StreamRecordHandlingEntry handlingEntry) => operation.ShouldPrune(
-                handlingEntry.InternalRecordId,
-                handlingEntry.TimestampUtc);
-
             lock (this.streamLock)
             {
-                var newList = this.locatorToRecordPartitionMap[locator].Where(RecordPredicate);
-                this.locatorToRecordPartitionMap[locator].Clear();
-                this.locatorToRecordPartitionMap[locator].AddRange(newList);
-
-                if (this.locatorToHandlingEntriesByConcernMap.ContainsKey(locator) && this.locatorToHandlingEntriesByConcernMap[locator].Any())
+                if (this.locatorToRecordPartitionMap.TryGetValue(locator, out var partition))
                 {
-                    foreach (var concern in this.locatorToHandlingEntriesByConcernMap[locator].Keys)
+                    var recordsToKeep = partition
+                        .Where(_ => !operation.ShouldPrune(_.InternalRecordId, _.Metadata.TimestampUtc))
+                        .ToList();
+
+                    partition.Clear();
+                    partition.AddRange(recordsToKeep);
+
+                    if (this.locatorToHandlingEntriesByConcernMap.TryGetValue(locator, out var handlingEntriesByConcernMap))
                     {
-                        var newHandlingList = this.locatorToHandlingEntriesByConcernMap[locator][concern].Where(HandlingPredicate);
-                        this.locatorToHandlingEntriesByConcernMap[locator][concern].Clear();
-                        this.locatorToHandlingEntriesByConcernMap[locator][concern].AddRange(newHandlingList);
+                        foreach (var concern in handlingEntriesByConcernMap.Keys)
+                        {
+                            var handlingEntries = handlingEntriesByConcernMap[concern];
+
+                            var handlingEntriesToKeep = handlingEntries
+                                .Where(_ => !operation.ShouldPrune(_.InternalRecordId, _.TimestampUtc))
+                                .ToList();
+
+                            handlingEntries.Clear();
+                            handlingEntries.AddRange(handlingEntriesToKeep);
+                        }
                     }
                 }
             }

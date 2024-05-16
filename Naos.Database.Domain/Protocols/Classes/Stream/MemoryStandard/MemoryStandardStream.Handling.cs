@@ -141,9 +141,7 @@ namespace Naos.Database.Domain
                 {
                     if (!(locator is MemoryDatabaseLocator memoryDatabaseLocator))
                     {
-                        throw new NotSupportedException(
-                            Invariant(
-                                $"{nameof(GetAllResourceLocatorsOp)} must only return locators of type {typeof(MemoryDatabaseLocator).ToStringReadable()}; found {locator?.GetType().ToStringReadable()}."));
+                        throw new NotSupportedException(Invariant($"{nameof(GetAllResourceLocatorsOp)} must only return locators of type {typeof(MemoryDatabaseLocator).ToStringReadable()}; found {locator?.GetType().ToStringReadable()}."));
                     }
 
                     var streamHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(locator, Concerns.StreamHandlingDisabledConcern);
@@ -176,49 +174,40 @@ namespace Naos.Database.Domain
                         }
                     }
 
-                    var recordsToConsiderForHandling =
-                        this.locatorToRecordPartitionMap[memoryDatabaseLocator]
+                    if (!this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var records))
+                    {
+                        return new TryHandleRecordResult(null);
+                    }
+
+                    var recordsToConsiderForHandling = records
                             .Where(_ => !existingInternalRecordIdsToIgnore.Contains(_.InternalRecordId))
                             .ToList();
 
-                    var matchingRecords = recordsToConsiderForHandling
-                                            .Where(
-                                                _ => _.Metadata.FuzzyMatchTypes(
-                                                    operation.RecordFilter.IdTypes,
-                                                    operation.RecordFilter.ObjectTypes,
-                                                    operation.RecordFilter.VersionMatchStrategy))
-                                            .ToList();
-
-                    if ((operation.RecordFilter.Tags != null) && operation.RecordFilter.Tags.Any())
-                    {
-                        matchingRecords = matchingRecords
-                            .Where(_ => _.Metadata.Tags.FuzzyMatchTags(operation.RecordFilter.Tags, operation.RecordFilter.TagMatchStrategy))
-                            .ToList();
-                    }
+                    var matchingRecords = ApplyRecordFilterToPartition(operation.RecordFilter, recordsToConsiderForHandling);
 
                     StreamRecord recordToHandle;
                     switch (operation.OrderRecordsBy)
                     {
                         case OrderRecordsBy.InternalRecordIdAscending:
                             recordToHandle = matchingRecords
-                                            .OrderBy(_ => _.InternalRecordId)
-                                            .FirstOrDefault(
-                                                    _ => operation.MinimumInternalRecordId == null
-                                                    || _.InternalRecordId >= operation.MinimumInternalRecordId);
+                                .OrderBy(_ => _.InternalRecordId)
+                                .FirstOrDefault(
+                                    _ => (operation.MinimumInternalRecordId == null)
+                                         || (_.InternalRecordId >= operation.MinimumInternalRecordId));
                             break;
                         case OrderRecordsBy.InternalRecordIdDescending:
                             recordToHandle = matchingRecords
-                                            .OrderByDescending(_ => _.InternalRecordId)
-                                            .FirstOrDefault(
-                                                    _ => operation.MinimumInternalRecordId == null
-                                                    || _.InternalRecordId >= operation.MinimumInternalRecordId);
+                                .OrderByDescending(_ => _.InternalRecordId)
+                                .FirstOrDefault(
+                                    _ => (operation.MinimumInternalRecordId == null)
+                                         || (_.InternalRecordId >= operation.MinimumInternalRecordId));
                             break;
                         case OrderRecordsBy.Random:
                             recordToHandle = matchingRecords
-                                            .OrderByDescending(_ => Guid.NewGuid())
-                                            .FirstOrDefault(
-                                                    _ => operation.MinimumInternalRecordId == null
-                                                    || _.InternalRecordId >= operation.MinimumInternalRecordId);
+                                .OrderByDescending(_ => Guid.NewGuid())
+                                .FirstOrDefault(
+                                    _ => (operation.MinimumInternalRecordId == null)
+                                         || (_.InternalRecordId >= operation.MinimumInternalRecordId));
                             break;
                         default:
                             throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));

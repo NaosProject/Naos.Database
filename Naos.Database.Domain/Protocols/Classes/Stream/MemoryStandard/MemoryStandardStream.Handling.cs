@@ -130,6 +130,9 @@ namespace Naos.Database.Domain
                           ?? HandlingStatus.AvailableByDefault);
 
                 // Filter out records that don't match handling status filter.
+                // Note that the filter is specifically applied AFTER and not in conjunction with
+                // the above filter.  We are not looking for the most recent entry that passes the status filter
+                // we are determining whether the last entry passes the status filter.
                 var result = ApplyHandlingFilter(unfilteredResult);
 
                 return result;
@@ -257,7 +260,10 @@ namespace Naos.Database.Domain
                             case StreamRecordItemsToInclude.MetadataAndPayload:
                                 break;
                             case StreamRecordItemsToInclude.MetadataOnly:
-                                recordToHandle = recordToHandle.DeepCloneWithPayload(new NullDescribedSerialization(recordToHandle.Payload.PayloadTypeRepresentation, recordToHandle.Payload.SerializerRepresentation));
+                                recordToHandle = recordToHandle.DeepCloneWithPayload(
+                                    new NullDescribedSerialization(
+                                        recordToHandle.Payload.PayloadTypeRepresentation,
+                                        recordToHandle.Payload.SerializerRepresentation));
                                 break;
                             default:
                                 throw new NotSupportedException(Invariant($"This {nameof(StreamRecordItemsToInclude)} is not supported: {operation.StreamRecordItemsToInclude}."));
@@ -280,11 +286,19 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var memoryDatabaseLocator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
+
             lock (this.streamLock)
             {
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var mostRecent = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault(_ => _.InternalRecordId == operation.InternalRecordId);
 
+                // Short-circuit case where there are no records.
+                // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
+                if ((!this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition))
+                    || (!partition.Any(_ => _.InternalRecordId == operation.InternalRecordId)))
+                {
+                    throw new InvalidOperationException(Invariant($"There is no record with the specified {nameof(StandardUpdateHandlingStatusForRecordOp.InternalRecordId)}: {operation.InternalRecordId}."));
+                }
                 var currentHandlingStatus = mostRecent?.Status ?? HandlingStatus.AvailableByDefault;
                 if (!operation.AcceptableCurrentStatuses.Contains(currentHandlingStatus))
                 {

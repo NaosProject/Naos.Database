@@ -26,7 +26,16 @@ namespace Naos.Database.Domain
         /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
         /// <param name="tags">The tags to match or null when not matching on tags.</param>
         /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <see cref="Tags"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="deprecatedIdTypes">
+        /// The object types used in a record that indicates an identifier deprecation.
+        /// If specified, the stream protocols will look for objects having these types.
+        /// Then, the identifiers of these objects will be matched-up with the identifiers of the records
+        /// that have not been filtered out per the other filters.
+        /// For each identifier match, if the object of the specified deprecated type was put into the stream after
+        /// the identifier-matched record(s), then those records will be considered deprecated and will be filtered out.
+        /// A record can be un-deprecated by adding another record into the stream with the same identifier, as this
+        /// record will have been inserted after objects of the specified deprecated types.
+        /// </param>
         public RecordFilter(
             IReadOnlyCollection<long> internalRecordIds = null,
             IReadOnlyCollection<StringSerializedIdentifier> ids = null,

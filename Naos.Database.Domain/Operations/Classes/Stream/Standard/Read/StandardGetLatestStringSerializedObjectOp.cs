@@ -9,7 +9,6 @@ namespace Naos.Database.Domain
     using System.Diagnostics.CodeAnalysis;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>

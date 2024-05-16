@@ -45,7 +45,7 @@ namespace Naos.Database.Domain
             payload.MustForArg(nameof(payload)).NotBeNull();
             existingRecordStrategy.MustForArg(nameof(existingRecordStrategy)).NotBeEqualTo(ExistingRecordStrategy.Unknown);
 
-            if (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType)
+            if ((existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById) || (existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType))
             {
                 recordRetentionCount.MustForArg(nameof(recordRetentionCount)).NotBeNull("Must have a retention count if pruning.").And().BeGreaterThanOrEqualTo((int?)0);
             }

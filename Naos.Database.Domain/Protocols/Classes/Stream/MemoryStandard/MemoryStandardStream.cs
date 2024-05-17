@@ -56,9 +56,12 @@ namespace Naos.Database.Domain
             if (createStreamOnConstruction)
             {
                 this.InitializeBackingDataStructures();
+                this.created = true;
             }
-
-            this.created = createStreamOnConstruction;
+            else
+            {
+                this.created = false;
+            }
         }
 
         /// <inheritdoc />

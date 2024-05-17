@@ -10,6 +10,7 @@ namespace Naos.Database.Domain
     using System.Diagnostics.CodeAnalysis;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -25,12 +26,14 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public GetLatestObjectByTagsOp(
             IReadOnlyCollection<NamedValue<string>> tagsToMatch,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault)
+            RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotBeNullNorEmptyEnumerableNorContainAnyNulls();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
@@ -41,6 +44,7 @@ namespace Naos.Database.Domain
             this.TagMatchStrategy = tagMatchStrategy;
             this.VersionMatchStrategy = versionMatchStrategy;
             this.RecordNotFoundStrategy = recordNotFoundStrategy;
+            this.DeprecatedIdTypes = deprecatedIdTypes;
         }
 
         /// <summary>
@@ -62,5 +66,10 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use when no record(s) are found.
         /// </summary>
         public RecordNotFoundStrategy RecordNotFoundStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the object types used in a record that indicates an identifier deprecation.
+        /// </summary>
+        public IReadOnlyCollection<TypeRepresentation> DeprecatedIdTypes { get; private set; }
     }
 }

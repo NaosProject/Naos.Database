@@ -146,7 +146,8 @@ namespace Naos.Database.Domain
                                  },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     tags: operation.TagsToMatch,
-                    tagMatchStrategy: operation.TagMatchStrategy),
+                    tagMatchStrategy: operation.TagMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
@@ -181,7 +182,8 @@ namespace Naos.Database.Domain
                                  {
                                      typeof(TObject).ToRepresentation(),
                                  },
-                    versionMatchStrategy: operation.VersionMatchStrategy),
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);
@@ -341,7 +343,8 @@ namespace Naos.Database.Domain
                                  {
                                      typeof(TObject).ToRepresentation(),
                                  },
-                    versionMatchStrategy: operation.VersionMatchStrategy),
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
                 specifiedResourceLocator);

@@ -131,7 +131,8 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(serializedObjectId, (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
                          },
-                    versionMatchStrategy: operation.VersionMatchStrategy),
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 locator);
             var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
@@ -265,7 +266,8 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(serializedObjectId, (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
                          },
-                    versionMatchStrategy: operation.VersionMatchStrategy),
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 locator);
             var internalRecordIds = this.stream.Execute(internalRecordIdsOp);

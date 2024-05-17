@@ -1309,6 +1309,56 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void StandardGetLatestRecordOp___Should_return_latest_object___When_some_objects_in_stream_have_been_deprecated()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var objectToPut1 = A.Dummy<MyObject>();
+            var objectToPut2 = A.Dummy<MyObject>();
+
+            stream.PutWithId(objectToPut2.Id, objectToPut2);
+            stream.PutWithId(objectToPut1.Id, objectToPut1);
+            stream.PutWithId(objectToPut1.Id, new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+
+            // Act
+            var actual = stream.Execute(
+                new StandardGetLatestRecordOp(
+                    new RecordFilter(
+                        objectTypes: new[] { typeof(MyObject).ToRepresentation() },
+                        deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() })));
+
+            // Assert
+            actual.AsTest().Must().NotBeNull();
+            actual.Payload.DeserializePayloadUsingSpecificFactory<MyObject>(stream.SerializerFactory).Id.Must().BeEqualTo(objectToPut2.Id);
+        }
+
+        [Fact]
+        public static void StandardGetInternalRecordIdsOp___Should_return_internal_records_ids_of_undeprecated_record___When_object_has_been_deprecated_and_then_undeprecated()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var objectToPut1 = A.Dummy<MyObject>();
+            var objectToPut2 = new MyObject(objectToPut1.Id, A.Dummy<string>());
+
+            stream.PutWithId(objectToPut1.Id, objectToPut1);
+            stream.PutWithId(objectToPut1.Id, new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+            stream.PutWithId(objectToPut1.Id, objectToPut2);
+
+            // Act
+            var actual = stream.Execute(
+                new StandardGetInternalRecordIdsOp(
+                    new RecordFilter(
+                        objectTypes: new[] { typeof(MyObject).ToRepresentation() },
+                        deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() })))
+                .ToArray();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(new long[] { 3 });
+        }
+
+        [Fact]
         public static async Task ExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock_until_action_is_run___When_multiple_callers_require_mutex()
         {
             // Arrange

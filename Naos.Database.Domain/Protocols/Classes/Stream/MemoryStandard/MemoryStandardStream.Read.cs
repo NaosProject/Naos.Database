@@ -294,19 +294,23 @@ namespace Naos.Database.Domain
                 {
                     foreach (var depreciatedIdType in recordFilter.DeprecatedIdTypes)
                     {
-                        var mostRecentRecordMatchingId = partition
+                        // Get all records having the same id as streamRecord but with a greater internal record id.
+                        var moreRecentRecordsMatchingId = partition
                             .OrderByDescending(_ => _.InternalRecordId)
-                            .First(
+                            .Where(
                                 _ => _.Metadata.FuzzyMatchTypesAndId(
                                     streamRecord.Metadata.StringSerializedId,
                                     streamRecord.Metadata.TypeRepresentationOfId.WithVersion,
                                     null,
-                                    recordFilter.VersionMatchStrategy));
+                                    recordFilter.VersionMatchStrategy))
+                            .Where(_ => _.InternalRecordId > streamRecord.InternalRecordId)
+                            .ToList();
 
-                        if (mostRecentRecordMatchingId.Metadata.TypeRepresentationOfObject.WithVersion
-                            .EqualsAccordingToStrategy(
-                                depreciatedIdType,
-                                recordFilter.VersionMatchStrategy))
+                        // If any of those records are of the same type as depreciatedIdType, then the record is deprecated
+                        if (moreRecentRecordsMatchingId.Any(
+                                _ => _.Metadata.TypeRepresentationOfObject.WithVersion.EqualsAccordingToStrategy(
+                                        depreciatedIdType,
+                                        recordFilter.VersionMatchStrategy)))
                         {
                             internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
                             break;

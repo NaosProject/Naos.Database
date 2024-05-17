@@ -53,7 +53,11 @@ namespace Naos.Database.Domain
         {
             this.Id = Guid.NewGuid().ToString().ToUpperInvariant();
 
-            this.InitializeBackingDataStructures();
+            if (createStreamOnConstruction)
+            {
+                this.InitializeBackingDataStructures();
+            }
+
             this.created = createStreamOnConstruction;
         }
 

@@ -835,7 +835,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -885,7 +886,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -937,7 +939,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
                 new JsonSerializerFactory(),
-                resourceLocatorProtocol);
+                resourceLocatorProtocol,
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -1012,7 +1015,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -1052,7 +1056,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -1092,7 +1097,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -1148,7 +1154,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -1188,7 +1195,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 streamName,
                 defaultSerializerRepresentation,
                 defaultSerializationFormat,
-                new JsonSerializerFactory());
+                new JsonSerializerFactory(),
+                createStreamOnConstruction: false);
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
@@ -1250,15 +1258,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 SerializationFormat.String,
                 new JsonSerializerFactory());
 
-            // notes:
-            // - This call is totally unnecessary on a MemoryStream, but if we are using a "real"
-            //   provider (e.g. SQL Server), then we'd need to create the stream which builds-out the
-            //   necessary supporting structures (e.g. tables, indexes, stored procedures).
-            // - Someday we might add extension methods like PutWithId below,
-            //   but we don't create streams that often outside of testing.
-            stream.Execute(
-                new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
-
             var expected = 1000;
             var id = A.Dummy<string>();
 
@@ -1304,7 +1303,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var expectedDetails = new[]
             {
-                nameof(action1),
+                Concerns.AvailableByDefaultHandlingEntryDetails,
                 nameof(action1),
                 nameof(action1),
                 nameof(action2),

@@ -17,7 +17,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Representation.System;
     using Xunit;
 
     using static System.FormattableString;
@@ -43,12 +43,33 @@ namespace Naos.Database.Domain.Test
                                referenceObject.Id,
                                referenceObject.ObjectType,
                                referenceObject.VersionMatchStrategy,
-                               RecordNotFoundStrategy.Unknown);
+                               RecordNotFoundStrategy.Unknown,
+                               referenceObject.DeprecatedIdTypes);
 
                            return result;
                        },
                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                        ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
+                   })
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version>>();
+
+                           var result = new GetLatestRecordByIdOp<Version>(
+                               referenceObject.Id,
+                               referenceObject.ObjectType,
+                               referenceObject.VersionMatchStrategy,
+                               referenceObject.RecordNotFoundStrategy,
+                               new[] { A.Dummy<TypeRepresentation>(), null });
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentException),
+                       ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
                    });
         }
     }

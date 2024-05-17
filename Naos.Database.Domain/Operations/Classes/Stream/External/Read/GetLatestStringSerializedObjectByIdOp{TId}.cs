@@ -39,6 +39,7 @@ namespace Naos.Database.Domain
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
+            deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
 
             this.Id = id;
             this.ObjectType = objectType;

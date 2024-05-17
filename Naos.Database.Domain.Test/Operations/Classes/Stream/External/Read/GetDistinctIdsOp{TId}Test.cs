@@ -108,7 +108,28 @@ namespace Naos.Database.Domain.Test
                                                                {
                                                                    "tagMatchStrategy",
                                                                },
-                        });
+                        })
+               .AddScenario(
+                   () =>
+                       new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
+                       {
+                           Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
+                           ConstructionFunc = () =>
+                           {
+                               var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                               var result = new GetDistinctIdsOp<Version>(
+                                   referenceObject.ObjectTypes,
+                                   referenceObject.VersionMatchStrategy,
+                                   referenceObject.TagsToMatch,
+                                   referenceObject.TagMatchStrategy,
+                                   new[] { A.Dummy<TypeRepresentation>(), null });
+
+                               return result;
+                           },
+                           ExpectedExceptionType = typeof(ArgumentException),
+                           ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
+                       });
         }
     }
 }

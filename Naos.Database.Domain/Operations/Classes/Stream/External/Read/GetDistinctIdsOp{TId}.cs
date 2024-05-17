@@ -35,6 +35,7 @@ namespace Naos.Database.Domain
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
+            deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
 
             this.ObjectTypes = objectTypes;
             this.VersionMatchStrategy = versionMatchStrategy;

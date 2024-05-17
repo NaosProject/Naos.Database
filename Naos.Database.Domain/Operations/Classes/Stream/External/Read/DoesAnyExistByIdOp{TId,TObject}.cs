@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
@@ -29,6 +30,7 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
 
             this.Id = id;
             this.VersionMatchStrategy = versionMatchStrategy;

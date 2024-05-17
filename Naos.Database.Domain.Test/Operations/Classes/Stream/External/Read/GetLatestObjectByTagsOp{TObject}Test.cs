@@ -17,7 +17,8 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using Xunit;
 
     using static System.FormattableString;
@@ -30,6 +31,87 @@ namespace Naos.Database.Domain.Test
         static GetLatestObjectByTagsOpTObjectTest()
         {
             ConstructorArgumentValidationTestScenarios
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                            var result = new GetLatestObjectByTagsOp<Version>(
+                                                 null,
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 referenceObject.DeprecatedIdTypes);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                            var result = new GetLatestObjectByTagsOp<Version>(
+                                                 new List<NamedValue<string>>(),
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 referenceObject.DeprecatedIdTypes);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                            var result = new GetLatestObjectByTagsOp<Version>(
+                                                 new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 referenceObject.DeprecatedIdTypes);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByTagsOp<Version>>();
+
+                            var result = new GetLatestObjectByTagsOp<Version>(
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
+                    })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<GetLatestObjectByTagsOp<Version>>
                     {
@@ -42,7 +124,8 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.TagsToMatch,
                                 TagMatchStrategy.Unknown,
                                 referenceObject.VersionMatchStrategy,
-                                referenceObject.RecordNotFoundStrategy);
+                                referenceObject.RecordNotFoundStrategy,
+                                referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -61,7 +144,8 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.TagsToMatch,
                                 referenceObject.TagMatchStrategy,
                                 referenceObject.VersionMatchStrategy,
-                                RecordNotFoundStrategy.Unknown);
+                                RecordNotFoundStrategy.Unknown,
+                                referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },

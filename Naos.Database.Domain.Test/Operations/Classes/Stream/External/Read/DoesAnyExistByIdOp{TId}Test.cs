@@ -17,7 +17,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Representation.System;
     using Xunit;
 
     using static System.FormattableString;
@@ -31,7 +31,25 @@ namespace Naos.Database.Domain.Test
         {
             ConstructorArgumentValidationTestScenarios
                .RemoveAllScenarios()
-               .AddScenario(ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>.ConstructorCannotThrowScenario);
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                           var result = new DoesAnyExistByIdOp<Version>(
+                               referenceObject.Id,
+                               referenceObject.ObjectType,
+                               referenceObject.VersionMatchStrategy,
+                               new[] { A.Dummy<TypeRepresentation>(), null });
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentException),
+                       ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
+                   });
         }
     }
 }

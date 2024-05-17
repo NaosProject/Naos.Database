@@ -30,6 +30,8 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.ThrowIfStreamNotCreated();
+
                 var entries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var recordBlockedEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
@@ -70,6 +72,8 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.ThrowIfStreamNotCreated();
+
                 Dictionary<long, HandlingStatus> ApplyHandlingFilter(
                     Dictionary<long, HandlingStatus> handlingStatuses)
                 {
@@ -156,6 +160,8 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.ThrowIfStreamNotCreated();
+
                 foreach (var locator in allLocators)
                 {
                     if (!(locator is MemoryDatabaseLocator memoryDatabaseLocator))
@@ -283,6 +289,8 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.ThrowIfStreamNotCreated();
+
                 // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
                 StreamRecord record = null;
                 if (this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var partition))
@@ -338,35 +346,40 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var newStatus = operation.NewStatus;
-            var concern = Concerns.StreamHandlingDisabledConcern;
             var locator = operation.GetSpecifiedLocatorConverted<MemoryDatabaseLocator>() ?? this.TryGetSingleLocator();
-            var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
-            var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
-            var currentStatus = mostRecentEntry?.Status ?? HandlingStatus.AvailableByDefault;
 
-            var expectedStatus = newStatus == HandlingStatus.DisabledForStream
-                ? HandlingStatus.AvailableByDefault
-                : HandlingStatus.DisabledForStream;
-
-            if (currentStatus != expectedStatus)
+            lock (this.streamLock)
             {
-                throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecentEntry?.Status.ToString() ?? "<null entry>"}."));
+                this.ThrowIfStreamNotCreated();
+
+                var concern = Concerns.StreamHandlingDisabledConcern;
+                var entries = this.GetStreamRecordHandlingEntriesForConcern(locator, concern);
+                var mostRecentEntry = entries.OrderByDescending(_ => _.InternalHandlingEntryId).FirstOrDefault();
+                var currentStatus = mostRecentEntry?.Status ?? HandlingStatus.AvailableByDefault;
+
+                var expectedStatus = operation.NewStatus == HandlingStatus.DisabledForStream
+                    ? HandlingStatus.AvailableByDefault
+                    : HandlingStatus.DisabledForStream;
+
+                if (currentStatus != expectedStatus)
+                {
+                    throw new InvalidOperationException(Invariant($"Cannot update status as expected status does not match; expected {expectedStatus} found {mostRecentEntry?.Status.ToString() ?? "<null entry>"}."));
+                }
+
+                var utcNow = DateTime.UtcNow;
+
+                var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
+                var metadata = new StreamRecordHandlingEntry(
+                    entryId,
+                    Concerns.GlobalBlockingRecordId,
+                    concern,
+                    operation.NewStatus,
+                    operation.Tags,
+                    operation.Details,
+                    utcNow);
+
+                this.WriteHandlingEntryToMemoryMap(locator, concern, metadata);
             }
-
-            var utcNow = DateTime.UtcNow;
-
-            var entryId = Interlocked.Increment(ref this.uniqueLongForInMemoryHandlingEntries);
-            var metadata = new StreamRecordHandlingEntry(
-                entryId,
-                Concerns.GlobalBlockingRecordId,
-                concern,
-                newStatus,
-                operation.Tags,
-                operation.Details,
-                utcNow);
-
-            this.WriteHandlingEntryToMemoryMap(locator, concern, metadata);
         }
 
         private List<StreamRecordHandlingEntry> GetStreamRecordHandlingEntriesForConcern(

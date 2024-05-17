@@ -107,5 +107,13 @@ namespace Naos.Database.Domain
             this.uniqueLongForInMemoryHandlingEntries = 0;
             this.singleLocator = null;
         }
+
+        private void ThrowIfStreamNotCreated()
+        {
+            if (!this.created)
+            {
+                throw new InvalidOperationException("The stream has not yet been created.");
+            }
+        }
     }
 }

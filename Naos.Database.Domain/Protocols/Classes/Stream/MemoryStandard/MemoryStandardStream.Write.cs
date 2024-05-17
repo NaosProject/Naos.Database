@@ -23,9 +23,14 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var result = Interlocked.Increment(ref this.uniqueLongForExternalProtocol);
+            lock (this.streamLock)
+            {
+                this.ThrowIfStreamNotCreated();
 
-            return result;
+                var result = Interlocked.Increment(ref this.uniqueLongForExternalProtocol);
+
+                return result;
+            }
         }
 
         /// <inheritdoc />
@@ -40,6 +45,8 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.ThrowIfStreamNotCreated();
+
                 var existingRecordIds = new List<long>();
 
                 if (!this.locatorToRecordPartitionMap.TryGetValue(memoryDatabaseLocator, out var recordPartition))

@@ -22,15 +22,15 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var alreadyExisted = this.created;
-            var wasCreated = true;
-
             lock (this.streamLock)
             {
                 if (!Equals(operation.StreamRepresentation, this.StreamRepresentation))
                 {
                     throw new ArgumentException(Invariant($"This {nameof(MemoryStandardStream)} can only 'Create' a stream with the same representation."));
                 }
+
+                var alreadyExisted = this.created;
+                var wasCreated = true;
 
                 if (this.created)
                 {
@@ -54,11 +54,11 @@ namespace Naos.Database.Domain
                 }
 
                 this.created = true;
+
+                var result = new CreateStreamResult(alreadyExisted, wasCreated);
+
+                return result;
             }
-
-            var result = new CreateStreamResult(alreadyExisted, wasCreated);
-
-            return result;
         }
 
         /// <inheritdoc />
@@ -104,6 +104,8 @@ namespace Naos.Database.Domain
 
             lock (this.streamLock)
             {
+                this.ThrowIfStreamNotCreated();
+
                 if (this.locatorToRecordPartitionMap.TryGetValue(locator, out var partition))
                 {
                     var recordsToKeep = partition

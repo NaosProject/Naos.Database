@@ -22,25 +22,31 @@ namespace Naos.Database.Domain
         public override IReadOnlyCollection<long> Execute(
             StandardGetInternalRecordIdsOp operation)
         {
-            // the Read methods are inconsistent about iterating through locators
-            var matchingRecords = this.GetMatchingRecords(operation);
+            operation.MustForArg(nameof(operation)).NotBeNull();
 
-            if (!matchingRecords.Any())
+            lock (this.streamLock)
             {
-                switch (operation.RecordNotFoundStrategy)
+                this.ThrowIfStreamNotCreated();
+
+                var matchingRecords = this.GetMatchingRecords(operation);
+
+                if (!matchingRecords.Any())
                 {
-                    case RecordNotFoundStrategy.ReturnDefault:
-                        return Array.Empty<long>();
-                    case RecordNotFoundStrategy.Throw:
-                        throw new InvalidOperationException(Invariant($"No records were found."));
-                    default:
-                        throw new NotSupportedException(Invariant($"This {nameof(RecordNotFoundStrategy)} is not supported: {operation.RecordNotFoundStrategy}."));
+                    switch (operation.RecordNotFoundStrategy)
+                    {
+                        case RecordNotFoundStrategy.ReturnDefault:
+                            return Array.Empty<long>();
+                        case RecordNotFoundStrategy.Throw:
+                            throw new InvalidOperationException(Invariant($"No records were found."));
+                        default:
+                            throw new NotSupportedException(Invariant($"This {nameof(RecordNotFoundStrategy)} is not supported: {operation.RecordNotFoundStrategy}."));
+                    }
                 }
+
+                var result = matchingRecords.Select(_ => _.InternalRecordId).ToList();
+
+                return result;
             }
-
-            var result = matchingRecords.Select(_ => _.InternalRecordId).ToList();
-
-            return result;
         }
 
         /// <inheritdoc />
@@ -50,17 +56,24 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var result = new HashSet<StringSerializedIdentifier>();
+
             var allLocators = this.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
-            foreach (var locator in allLocators)
+
+            lock (this.streamLock)
             {
-                var operationWithLocator = operation.DeepCloneWithSpecifiedResourceLocator(locator);
-                var matchingRecords = this.GetMatchingRecords(operationWithLocator);
+                this.ThrowIfStreamNotCreated();
 
-                var stringSerializedIds = matchingRecords
-                    .Select(_ => new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion))
-                    .ToList();
+                foreach (var locator in allLocators)
+                {
+                    var operationWithLocator = operation.DeepCloneWithSpecifiedResourceLocator(locator);
+                    var matchingRecords = this.GetMatchingRecords(operationWithLocator);
 
-                result.AddRange(stringSerializedIds);
+                    var stringSerializedIds = matchingRecords
+                        .Select(_ => new StringSerializedIdentifier(_.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfId.WithVersion))
+                        .ToList();
+
+                    result.AddRange(stringSerializedIds);
+                }
             }
 
             return result;
@@ -72,37 +85,42 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var matchingRecords = this.GetMatchingRecords(operation);
-
-            if ((matchingRecords != null) && matchingRecords.Any())
+            lock (this.streamLock)
             {
-                var result = matchingRecords.OrderByDescending(_ => _.InternalRecordId).First();
-                switch (operation.StreamRecordItemsToInclude)
+                this.ThrowIfStreamNotCreated();
+
+                var matchingRecords = this.GetMatchingRecords(operation);
+
+                if ((matchingRecords != null) && matchingRecords.Any())
                 {
-                    case StreamRecordItemsToInclude.MetadataAndPayload:
-                        return result;
-                    case StreamRecordItemsToInclude.MetadataOnly:
-                        var resultWithoutPayload = result.DeepCloneWithPayload(
-                            new NullDescribedSerialization(
-                                result.Payload.PayloadTypeRepresentation,
-                                result.Payload.SerializerRepresentation));
-                        return resultWithoutPayload;
-                    default:
-                        throw new NotSupportedException(Invariant($"Unsupported {nameof(StreamRecordItemsToInclude)}: {operation.StreamRecordItemsToInclude}."));
+                    var result = matchingRecords.OrderByDescending(_ => _.InternalRecordId).First();
+                    switch (operation.StreamRecordItemsToInclude)
+                    {
+                        case StreamRecordItemsToInclude.MetadataAndPayload:
+                            return result;
+                        case StreamRecordItemsToInclude.MetadataOnly:
+                            var resultWithoutPayload = result.DeepCloneWithPayload(
+                                new NullDescribedSerialization(
+                                    result.Payload.PayloadTypeRepresentation,
+                                    result.Payload.SerializerRepresentation));
+                            return resultWithoutPayload;
+                        default:
+                            throw new NotSupportedException(Invariant($"Unsupported {nameof(StreamRecordItemsToInclude)}: {operation.StreamRecordItemsToInclude}."));
+                    }
                 }
-            }
 
-            switch (operation.RecordNotFoundStrategy)
-            {
-                case RecordNotFoundStrategy.ReturnDefault:
-                    return null;
-                case RecordNotFoundStrategy.Throw:
-                    throw new InvalidOperationException(
-                        Invariant(
-                            $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                default:
-                    throw new NotSupportedException(
-                        Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+                switch (operation.RecordNotFoundStrategy)
+                {
+                    case RecordNotFoundStrategy.ReturnDefault:
+                        return null;
+                    case RecordNotFoundStrategy.Throw:
+                        throw new InvalidOperationException(
+                            Invariant(
+                                $"Expected stream {this.StreamRepresentation} to contain a matching record for {operation}, none was found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
+                    default:
+                        throw new NotSupportedException(
+                            Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+                }
             }
         }
 
@@ -148,8 +166,6 @@ namespace Naos.Database.Domain
             TOperation operation)
             where TOperation : ISpecifyResourceLocator, ISpecifyRecordFilter
         {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
             lock (this.streamLock)
             {
                 var recordFilter = operation.RecordFilter;

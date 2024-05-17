@@ -19,11 +19,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this IReadOnlyStream stream,
@@ -46,11 +46,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="stream">The stream.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this IReadOnlyStream stream,
@@ -73,11 +73,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="protocol">The protocol.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this IStreamReadWithIdProtocols<TId> protocol,
@@ -99,11 +99,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="protocol">The protocol.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this IStreamReadWithIdProtocols<TId> protocol,
@@ -125,11 +125,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="protocol">The protocol.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this ISyncAndAsyncReturningProtocol<GetDistinctIdsOp<TId>, IReadOnlyCollection<TId>> protocol,
@@ -151,11 +151,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="protocol">The protocol.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this ISyncAndAsyncReturningProtocol<GetDistinctIdsOp<TId>, IReadOnlyCollection<TId>> protocol,
@@ -177,11 +177,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="protocol">The protocol.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this IGetDistinctIds<TId> protocol,
@@ -203,11 +203,11 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">Type of the identifier.</typeparam>
         /// <param name="protocol">The protocol.</param>
-        /// <param name="objectTypes">The object types to match on or null when not matching on object type.</param>
-        /// <param name="versionMatchStrategy">The strategy to use to filter on the version of the identifier and/or object type.</param>
-        /// <param name="tagsToMatch">The tags to match or null when not matching on tags.</param>
-        /// <param name="tagMatchStrategy">The strategy to use for comparing tags when <paramref name="tagsToMatch"/> is specified.</param>
-        /// <param name="deprecatedIdTypes">The object types used in a record that indicates an identifier deprecation.</param>
+        /// <param name="objectTypes">OPTIONAL object types to match on or null when not matching on object type.  DEFAULT is not to match on object types.</param>
+        /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
+        /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this IGetDistinctIds<TId> protocol,

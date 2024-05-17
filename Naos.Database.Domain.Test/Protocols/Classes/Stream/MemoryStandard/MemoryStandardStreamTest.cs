@@ -1287,7 +1287,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void GetLatestObjectById___Should_return_latest_object___When_object_has_been_deprecated_and_then_undeprecated()
+        public static void GetLatestObjectById___Should_return_latest_object___When_object_has_been_deprecated_and_then_put_again_with_same_id()
         {
             // Arrange
             var stream = BuildCreatedStream();
@@ -1334,7 +1334,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void StandardGetInternalRecordIdsOp___Should_return_internal_records_ids_of_undeprecated_record___When_object_has_been_deprecated_and_then_undeprecated()
+        public static void StandardGetInternalRecordIdsOp___Should_return_internal_records_ids_of_not_deprecated_records___When_object_has_been_deprecated_and_then_put_again_with_same_id()
         {
             // Arrange
             var stream = BuildCreatedStream();

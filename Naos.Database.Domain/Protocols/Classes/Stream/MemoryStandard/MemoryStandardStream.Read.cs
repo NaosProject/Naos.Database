@@ -292,7 +292,6 @@ namespace Naos.Database.Domain
                 var internalRecordIdsToRemove = new List<long>();
                 foreach (var streamRecord in result)
                 {
-                    // todo: What if the id is un-deprecated?
                     if (
                         recordFilter.DeprecatedIdTypes.Any(
                             d =>

@@ -292,22 +292,25 @@ namespace Naos.Database.Domain
                 var internalRecordIdsToRemove = new List<long>();
                 foreach (var streamRecord in result)
                 {
-                    if (
-                        recordFilter.DeprecatedIdTypes.Any(
-                            d =>
-                                partition
-                                    .OrderBy(_ => _.InternalRecordId)
-                                    .Last(
-                                        _ => _.Metadata.FuzzyMatchTypesAndId(
-                                            streamRecord.Metadata.StringSerializedId,
-                                            streamRecord.Metadata.TypeRepresentationOfId.WithVersion,
-                                            null,
-                                            recordFilter.VersionMatchStrategy))
-                                    .Metadata.TypeRepresentationOfId.WithVersion.EqualsAccordingToStrategy(
-                                        d,
-                                        recordFilter.VersionMatchStrategy)))
+                    foreach (var depreciatedIdType in recordFilter.DeprecatedIdTypes)
                     {
-                        internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
+                        var mostRecentRecordMatchingId = partition
+                            .OrderByDescending(_ => _.InternalRecordId)
+                            .First(
+                                _ => _.Metadata.FuzzyMatchTypesAndId(
+                                    streamRecord.Metadata.StringSerializedId,
+                                    streamRecord.Metadata.TypeRepresentationOfId.WithVersion,
+                                    null,
+                                    recordFilter.VersionMatchStrategy));
+
+                        if (mostRecentRecordMatchingId.Metadata.TypeRepresentationOfObject.WithVersion
+                            .EqualsAccordingToStrategy(
+                                depreciatedIdType,
+                                recordFilter.VersionMatchStrategy))
+                        {
+                            internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
+                            break;
+                        }
                     }
                 }
 

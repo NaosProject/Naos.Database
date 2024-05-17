@@ -30,7 +30,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
     /// <summary>
     /// Tests for <see cref="MemoryStandardStream"/>.
     /// </summary>
-    public partial class MemoryStandardStreamTest
+    public class MemoryStandardStreamTest
     {
         private readonly ITestOutputHelper testOutputHelper;
 
@@ -1249,15 +1249,10 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void PutWithId___Should_get_object_put_into_stream___When_called()
+        public static void GetLatestObjectById___Should_get_object_put_into_stream___When_called()
         {
             // Arrange
-            var stream = new MemoryStandardStream(
-                "test-stream-name",
-                new SerializerRepresentation(SerializationKind.Json),
-                SerializationFormat.String,
-                new JsonSerializerFactory());
-
+            var stream = BuildCreatedStream();
             var expected = 1000;
             var id = A.Dummy<string>();
 
@@ -1272,14 +1267,52 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void GetLatestObjectById___Should_return_null___When_object_has_been_deprecated()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var objectToPut = A.Dummy<MyObject>();
+
+            stream.PutWithId(objectToPut.Id, objectToPut);
+            stream.PutWithId(objectToPut.Id, new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+
+            // Act
+            var actual = stream.GetLatestObjectById<string, MyObject>(
+                objectToPut.Id,
+                deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() });
+
+            // Assert
+            actual.AsTest().Must().BeNull();
+        }
+
+        [Fact]
+        public static void GetLatestObjectById___Should_return_latest_object___When_object_has_been_deprecated_and_then_undeprecated()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var objectToPut1 = A.Dummy<MyObject>();
+            var objectToPut2 = new MyObject(objectToPut1.Id, A.Dummy<string>());
+
+            stream.PutWithId(objectToPut1.Id, objectToPut1);
+            stream.PutWithId(objectToPut1.Id, new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+            stream.PutWithId(objectToPut1.Id, objectToPut2);
+
+            // Act
+            var actual = stream.GetLatestObjectById<string, MyObject>(
+                objectToPut1.Id,
+                deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() });
+
+            // Assert
+            actual.Field.AsTest().Must().BeEqualTo(objectToPut2.Field);
+        }
+
+        [Fact]
         public static async Task ExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock_until_action_is_run___When_multiple_callers_require_mutex()
         {
             // Arrange
-            var stream = new MemoryStandardStream(
-                "test-stream-name",
-                new SerializerRepresentation(SerializationKind.Json),
-                SerializationFormat.String,
-                new JsonSerializerFactory());
+            var stream = BuildCreatedStream();
 
             var mutexId = A.Dummy<string>();
             var mutexProtocol = stream.GetStreamDistributedMutexProtocols();
@@ -1379,6 +1412,17 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             actualDetails.AsTest().Must().BeSequenceEqualTo(expectedDetails);
             actualStatuses.AsTest().Must().BeSequenceEqualTo(expectedStatuses);
+        }
+
+        private static MemoryStandardStream BuildCreatedStream()
+        {
+            var result = new MemoryStandardStream(
+                "test-stream-name",
+                new SerializerRepresentation(SerializationKind.Json),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            return result;
         }
     }
 

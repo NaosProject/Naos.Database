@@ -28,7 +28,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StandardGetInternalRecordIdsOp"/> class.
         /// </summary>
         /// <param name="recordFilter">The <see cref="RecordFilter"/> to use.</param>
-        /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
+        /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StandardGetInternalRecordIdsOp(

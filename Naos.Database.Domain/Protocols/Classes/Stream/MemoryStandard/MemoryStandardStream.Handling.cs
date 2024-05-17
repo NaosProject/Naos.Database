@@ -150,7 +150,6 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var allLocators = operation.SpecifiedResourceLocator != null
             var allLocators = (operation.SpecifiedResourceLocator != null)
                 ? new[]
                 {

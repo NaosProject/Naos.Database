@@ -46,6 +46,7 @@ namespace Naos.Database.Domain
                           {
                               operation.ObjectType,
                           },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 RecordNotFoundStrategy.ReturnDefault,
                 specifiedResourceLocator);
@@ -115,6 +116,7 @@ namespace Naos.Database.Domain
                                  {
                                      typeof(TObject).ToRepresentation(),
                                  },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -224,6 +226,7 @@ namespace Naos.Database.Domain
                                  {
                                      typeof(TObject).ToRepresentation(),
                                  },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -266,6 +269,7 @@ namespace Naos.Database.Domain
                           {
                               operation.ObjectType,
                           },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -308,6 +312,7 @@ namespace Naos.Database.Domain
                           {
                               operation.ObjectType,
                           },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataOnly,

@@ -128,9 +128,14 @@ namespace Naos.Database.Domain
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(serializedObjectId, (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                    },
+                    objectTypes: (operation.ObjectType == null)
+                        ? null
+                        : new[] { operation.ObjectType },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
@@ -263,9 +268,14 @@ namespace Naos.Database.Domain
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(serializedObjectId, (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                    },
+                    objectTypes: (operation.ObjectType == null)
+                        ? null
+                        : new[] { operation.ObjectType },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,

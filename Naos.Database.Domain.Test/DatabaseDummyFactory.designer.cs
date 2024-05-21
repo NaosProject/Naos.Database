@@ -202,6 +202,22 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetAllObjectsByIdOp<Version, Version>(
+                                 A.Dummy<Version>(),
+                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<OrderRecordsBy>(),
+                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetAllObjectsOp<Version>(
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<OrderRecordsBy>(),
+                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetAllRecordsByIdOp<Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
@@ -213,6 +229,14 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetAllRecordsMetadataByIdOp<Version>(
                                  A.Dummy<Version>(),
+                                 A.Dummy<TypeRepresentation>(),
+                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<OrderRecordsBy>(),
+                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetAllRecordsOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),

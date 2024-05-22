@@ -19,6 +19,7 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">The type of the identifier.</typeparam>
     internal class NullStandardStreamReadWriteWithIdProtocols<TId> : IStreamReadWithIdProtocols<TId>, IStreamWriteWithIdProtocols<TId>
     {
+        // ReSharper disable once NotAccessedField.Local
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Keeping for future use.")]
         private NullStandardStream nullStandardStream;
 

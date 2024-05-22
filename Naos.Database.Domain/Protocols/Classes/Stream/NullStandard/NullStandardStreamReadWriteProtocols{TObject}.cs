@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
@@ -18,6 +19,7 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">The type of the object.</typeparam>
     internal class NullStandardStreamReadWriteProtocols<TObject> : IStreamReadProtocols<TObject>, IStreamWriteProtocols<TObject>
     {
+        // ReSharper disable once NotAccessedField.Local
         [SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields", Justification = "Keeping for future use.")]
         private NullStandardStream nullStandardStream;
 
@@ -109,6 +111,44 @@ namespace Naos.Database.Domain
         {
             /* no-op */
             await Task.FromResult(false);
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<TObject> Execute(
+            GetAllObjectsOp<TObject> operation)
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var result = new List<TObject>();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<TObject>> ExecuteAsync(
+            GetAllObjectsOp<TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecord<TObject>> Execute(
+            GetAllRecordsOp<TObject> operation)
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var result = new List<StreamRecord<TObject>>();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecord<TObject>>> ExecuteAsync(
+            GetAllRecordsOp<TObject> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
         }
     }
 }

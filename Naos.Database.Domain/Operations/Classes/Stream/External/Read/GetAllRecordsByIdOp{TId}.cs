@@ -14,6 +14,10 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Gets all records with the specified identifier.
     /// </summary>
+    /// <remarks>
+    /// Returns an empty set if there are no objects meeting the specified filter criteria,
+    /// unless <see cref="GetAllRecordsByIdOp{TId}.RecordNotFoundStrategy"/> instructs protocol to throw.
+    /// </remarks>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public partial class GetAllRecordsByIdOp<TId> : ReturningOperationBase<IReadOnlyList<StreamRecordWithId<TId>>>, IHaveId<TId>
     {

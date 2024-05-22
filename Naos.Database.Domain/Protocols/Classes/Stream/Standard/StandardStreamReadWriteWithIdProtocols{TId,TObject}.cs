@@ -7,9 +7,11 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
     using static System.FormattableString;
@@ -191,6 +193,40 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<bool> ExecuteAsync(
             DoesAnyExistByIdOp<TId, TObject> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<TObject> Execute(
+            GetAllObjectsByIdOp<TId, TObject> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOperation = new GetAllRecordsByIdOp<TId>(
+                operation.Id,
+                typeof(TObject).ToRepresentation(),
+                operation.VersionMatchStrategy,
+                operation.RecordNotFoundStrategy,
+                operation.OrderRecordsBy,
+                operation.DeprecatedIdTypes);
+
+            var records = this.stream.GetStreamReadingWithIdProtocols<TId>().Execute(delegatedOperation);
+
+            // records cannot contain a null element.
+            // A record payload may be null, but it's the serializer's responsibility to deal with that.
+            var result = records
+                .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                .ToList();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<TObject>> ExecuteAsync(
+            GetAllObjectsByIdOp<TId, TObject> operation)
         {
             var result = await Task.FromResult(this.Execute(operation));
 

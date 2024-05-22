@@ -157,8 +157,6 @@ namespace Naos.Database.Domain
                                           locator)))
                          .ToList();
 
-            List<StreamRecordWithId<TId>> result;
-
             StreamRecordWithId<TId> ProcessResultItem(
                 StreamRecord inputStreamRecord)
             {
@@ -176,29 +174,10 @@ namespace Naos.Database.Domain
                 return resultItem;
             }
 
-            switch (operation.OrderRecordsBy)
-            {
-                case OrderRecordsBy.InternalRecordIdAscending:
-                    result = records
-                            .OrderBy(_ => _.InternalRecordId)
-                            .Select(ProcessResultItem)
-                            .ToList();
-                    break;
-                case OrderRecordsBy.InternalRecordIdDescending:
-                    result = records
-                            .OrderByDescending(_ => _.InternalRecordId)
-                            .Select(ProcessResultItem)
-                            .ToList();
-                    break;
-                case OrderRecordsBy.Random:
-                    result = records
-                            .OrderBy(_ => Guid.NewGuid())
-                            .Select(ProcessResultItem)
-                            .ToList();
-                    break;
-                default:
-                    throw new NotSupportedException(Invariant($"Unsupported {nameof(OrderRecordsBy)}: {operation.OrderRecordsBy}."));
-            }
+            var result = StandardStreamReadWriteProtocols.OrderAndConvertToTypedStreamRecords(
+                records,
+                operation.OrderRecordsBy,
+                ProcessResultItem);
 
             return result;
         }
@@ -297,8 +276,6 @@ namespace Naos.Database.Domain
                                           locator)))
                          .ToList();
 
-            List<StreamRecordMetadata<TId>> result;
-
             StreamRecordMetadata<TId> ProcessResultItem(
                 StreamRecord inputRecord)
             {
@@ -314,30 +291,10 @@ namespace Naos.Database.Domain
                 return resultItem;
             }
 
-            switch (operation.OrderRecordsBy)
-            {
-                case OrderRecordsBy.InternalRecordIdAscending:
-                    result = records
-                            .OrderBy(_ => _.InternalRecordId)
-                            .Select(ProcessResultItem)
-                            .ToList();
-                    break;
-                case OrderRecordsBy.InternalRecordIdDescending:
-                    result = records
-                            .OrderByDescending(_ => _.InternalRecordId)
-                            .Select(ProcessResultItem)
-                            .ToList();
-                    break;
-                case OrderRecordsBy.Random:
-                    result = records
-                            .OrderBy(_ => Guid.NewGuid())
-                            .Select(ProcessResultItem)
-                            .ToList();
-                    break;
-                default:
-                    throw new NotSupportedException(
-                        Invariant($"Unsupported {nameof(OrderRecordsBy)}: {operation.OrderRecordsBy}."));
-            }
+            var result = StandardStreamReadWriteProtocols.OrderAndConvertToTypedStreamRecords(
+                records,
+                operation.OrderRecordsBy,
+                ProcessResultItem);
 
             return result;
         }

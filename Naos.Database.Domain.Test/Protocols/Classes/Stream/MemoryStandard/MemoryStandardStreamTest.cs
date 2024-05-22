@@ -1359,6 +1359,97 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void GetAllObjectsById_TId_TObject___Should_return_all_object_of_the_specified_type_having_the_specified_id___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(SerializationKind.Json, typeof(DatabaseJsonSerializationConfiguration).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var id1 = A.Dummy<string>();
+            var object1 = A.Dummy<NamedResourceLocator>();
+            var object2 = A.Dummy<NamedResourceLocator>();
+
+            stream.PutWithId(id1, object1);
+            stream.PutWithId(A.Dummy<string>(), A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id1, object2);
+            stream.PutWithId(A.Dummy<string>(), A.Dummy<string>());
+            stream.PutWithId(id1, A.Dummy<NullResourceLocator>());
+            stream.PutWithId(A.Dummy<string>(), object1);
+
+            var expected = new[] { object2, object1 };
+
+            // Act
+            var actual = stream.GetAllObjectsById<string, NamedResourceLocator>(id1, orderRecordsBy: OrderRecordsBy.InternalRecordIdDescending);
+
+            // Assert
+            actual.AsTest().Must().BeSequenceEqualTo(expected);
+        }
+
+        [Fact]
+        public static void GetAllObjects_TObject___Should_return_all_object_of_the_specified_type___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(SerializationKind.Json, typeof(DatabaseJsonSerializationConfiguration).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var object1 = A.Dummy<NamedResourceLocator>();
+            var object2 = A.Dummy<NamedResourceLocator>();
+
+            stream.Put(object1);
+            stream.Put(object2);
+            stream.Put(A.Dummy<string>());
+            stream.Put(A.Dummy<NullResourceLocator>());
+
+            var expected = new[] { object2, object1 };
+
+            // Act
+            var actual = stream.GetAllObjects<NamedResourceLocator>(orderRecordsBy: OrderRecordsBy.InternalRecordIdDescending);
+
+            // Assert
+            actual.AsTest().Must().BeSequenceEqualTo(expected);
+        }
+
+        [Fact]
+        public static void GetAllRecords_TObject___Should_return_all_records_of_the_specified_object_type___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(SerializationKind.Json, typeof(DatabaseJsonSerializationConfiguration).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var object1 = A.Dummy<NamedResourceLocator>();
+            var object2 = A.Dummy<NamedResourceLocator>();
+
+            stream.Put(object1);
+            stream.Put(object2);
+            stream.Put(A.Dummy<string>());
+            stream.Put(A.Dummy<NullResourceLocator>());
+
+            var expected = new[]
+            {
+                object2,
+                object1,
+            };
+
+            // Act
+            var actual = stream
+                .GetAllRecords<NamedResourceLocator>(orderRecordsBy: OrderRecordsBy.InternalRecordIdDescending)
+                .Select(_ => _.Payload)
+                .ToList();
+
+            // Assert
+            actual.AsTest().Must().BeSequenceEqualTo(expected);
+        }
+
+        [Fact]
         public static async Task ExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock_until_action_is_run___When_multiple_callers_require_mutex()
         {
             // Arrange

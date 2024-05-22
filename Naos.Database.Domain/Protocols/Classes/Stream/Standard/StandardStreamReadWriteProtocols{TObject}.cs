@@ -7,8 +7,11 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
+    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
 
     using static System.FormattableString;
@@ -181,6 +184,109 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<TObject> ExecuteAsync(
             GetLatestObjectByTagsOp<TObject> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecord<TObject>> Execute(
+            GetAllRecordsOp<TObject> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
+                new RecordFilter(
+                    idTypes: (operation.IdentifierType == null)
+                        ? null
+                        : new[] { operation.IdentifierType },
+                    objectTypes: new[] { typeof(TObject).ToRepresentation() },
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
+                operation.RecordNotFoundStrategy);
+
+            var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+            var records = internalRecordIds
+                .Select(_ =>
+                    this.stream.Execute(
+                        new StandardGetLatestRecordOp(
+                            new RecordFilter(
+                                internalRecordIds: new[]
+                                {
+                                    _,
+                                }),
+                            operation.RecordNotFoundStrategy,
+                            streamRecordItemsToInclude: StreamRecordItemsToInclude.MetadataAndPayload)))
+                .ToList();
+
+            StreamRecord<TObject> ProcessResultItem(
+                StreamRecord inputStreamRecord)
+            {
+                var metadata = new StreamRecordMetadata(
+                    inputStreamRecord.Metadata.StringSerializedId,
+                    inputStreamRecord.Metadata.SerializerRepresentation,
+                    inputStreamRecord.Metadata.TypeRepresentationOfId,
+                    inputStreamRecord.Metadata.TypeRepresentationOfObject,
+                    inputStreamRecord.Metadata.Tags,
+                    inputStreamRecord.Metadata.TimestampUtc,
+                    inputStreamRecord.Metadata.ObjectTimestampUtc);
+
+                var payload = inputStreamRecord
+                    .Payload
+                    .DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+
+                var resultItem = new StreamRecord<TObject>(
+                    inputStreamRecord.InternalRecordId,
+                    metadata,
+                    payload);
+
+                return resultItem;
+            }
+
+            var result = StandardStreamReadWriteProtocols.OrderAndConvertToTypedStreamRecords(
+                records,
+                operation.OrderRecordsBy,
+                ProcessResultItem);
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecord<TObject>>> ExecuteAsync(
+            GetAllRecordsOp<TObject> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<TObject> Execute(
+            GetAllObjectsOp<TObject> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            var delegatedOperation = new GetAllRecordsOp<TObject>(
+                operation.IdentifierType,
+                operation.VersionMatchStrategy,
+                operation.RecordNotFoundStrategy,
+                operation.OrderRecordsBy,
+                operation.DeprecatedIdTypes);
+
+            var records = this.stream.GetStreamReadingProtocols<TObject>().Execute(delegatedOperation);
+
+            var result = records
+                .Select(_ => _.Payload)
+                .ToList();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<TObject>> ExecuteAsync(
+            GetAllObjectsOp<TObject> operation)
         {
             var result = await Task.FromResult(this.Execute(operation));
 

@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -15,7 +16,9 @@ namespace Naos.Database.Domain
     public interface IStreamReadProtocols<TObject>
         : IGetLatestObject<TObject>,
           IGetLatestObjectByTags<TObject>,
-          IGetLatestRecord<TObject>
+          IGetLatestRecord<TObject>,
+          IGetAllObjects<TObject>,
+          IGetAllRecords<TObject>
     {
     }
 
@@ -43,6 +46,24 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IGetLatestRecord<TObject> :
         ISyncAndAsyncReturningProtocol<GetLatestRecordOp<TObject>, StreamRecord<TObject>>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="GetAllObjectsOp{TObject}" />.
+    /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    public interface IGetAllObjects<TObject> :
+        ISyncAndAsyncReturningProtocol<GetAllObjectsOp<TObject>, IReadOnlyList<TObject>>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="GetAllRecordsOp{TObject}" />.
+    /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    public interface IGetAllRecords<TObject> :
+        ISyncAndAsyncReturningProtocol<GetAllRecordsOp<TObject>, IReadOnlyList<StreamRecord<TObject>>>
     {
     }
 }

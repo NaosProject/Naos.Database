@@ -206,6 +206,9 @@
     <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllObjectsOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllObjectsByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.DoesNotExistByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
@@ -447,16 +450,28 @@
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetAllObjectsByIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.designer.cs">
+      <DependentUpon>GetAllObjectsOp{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}.designer.cs">
+      <DependentUpon>GetAllRecordsOp{TObject}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}.designer.cs">
       <DependentUpon>GetDistinctIdsOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>

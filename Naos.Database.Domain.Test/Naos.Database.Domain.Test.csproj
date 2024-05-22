@@ -269,6 +269,18 @@
     <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.designer.cs">
       <DependentUpon>ChecksPerformedEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}Test.designer.cs">
+      <DependentUpon>GetAllRecordsOp{TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>GetAllObjectsByIdOp{TId,TObject}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}Test.designer.cs">
+      <DependentUpon>GetAllObjectsOp{TObject}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.cs" />
     <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.designer.cs">
       <DependentUpon>ExpectedRecordWithinThresholdReportTest.cs</DependentUpon>

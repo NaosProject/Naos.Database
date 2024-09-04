@@ -148,14 +148,7 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var metadata = new StreamRecordMetadata<TId>(
-                operation.Id,
-                record.Metadata.SerializerRepresentation,
-                record.Metadata.TypeRepresentationOfId,
-                record.Metadata.TypeRepresentationOfObject,
-                record.Metadata.Tags,
-                record.Metadata.TimestampUtc,
-                record.Metadata.ObjectTimestampUtc);
+            var metadata = record.Metadata.ToStreamRecordMetadata(operation.Id);
 
             var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 

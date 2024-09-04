@@ -12,6 +12,7 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -96,6 +97,84 @@ namespace Naos.Database.Domain
             {
                 result = false;
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="StreamRecordMetadata"/> object to a <see cref="StreamRecordMetadata{TId}"/> object
+        /// given the identifier to use.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="metadata">The stream record metadata to convert.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// A <see cref="StreamRecordMetadata{TId}"/> object converted from the specified <see cref="StreamRecordMetadata"/> object.
+        /// </returns>
+        public static StreamRecordMetadata<TId> ToStreamRecordMetadata<TId>(
+            this StreamRecordMetadata metadata,
+            TId id)
+        {
+            metadata.MustForArg(nameof(metadata)).NotBeNull();
+
+            var result = new StreamRecordMetadata<TId>(
+                id,
+                metadata.SerializerRepresentation,
+                metadata.TypeRepresentationOfId,
+                metadata.TypeRepresentationOfObject,
+                metadata.Tags,
+                metadata.TimestampUtc,
+                metadata.ObjectTimestampUtc);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="StreamRecordMetadata"/> object to a <see cref="StreamRecordMetadata{TId}"/> object
+        /// given a serializer to use to deserialize the identifier.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="metadata">The stream record metadata to convert.</param>
+        /// <param name="identifierDeserializer">The serializer to use to deserialize the identifier.</param>
+        /// <returns>
+        /// A <see cref="StreamRecordMetadata{TId}"/> object converted from the specified <see cref="StreamRecordMetadata"/> object.
+        /// </returns>
+        public static StreamRecordMetadata<TId> ToStreamRecordMetadata<TId>(
+            this StreamRecordMetadata metadata,
+            IStringDeserialize identifierDeserializer)
+        {
+            metadata.MustForArg(nameof(metadata)).NotBeNull();
+            identifierDeserializer.MustForArg(nameof(identifierDeserializer)).NotBeNull();
+
+            var id = identifierDeserializer.Deserialize<TId>(metadata.StringSerializedId);
+
+            var result = metadata.ToStreamRecordMetadata(id);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="StreamRecordMetadata"/> object to a <see cref="StreamRecordMetadata{TId}"/> object
+        /// given a stream to use to deserialize the identifier.
+        /// </summary>
+        /// <typeparam name="TId">The type of the identifier.</typeparam>
+        /// <param name="metadata">The stream record metadata to convert.</param>
+        /// <param name="stream">The stream.</param>
+        /// <returns>
+        /// A <see cref="StreamRecordMetadata{TId}"/> object converted from the specified <see cref="StreamRecordMetadata"/> object.
+        /// </returns>
+        public static StreamRecordMetadata<TId> ToStreamRecordMetadata<TId>(
+            this StreamRecordMetadata metadata,
+            IStream stream)
+        {
+            metadata.MustForArg(nameof(metadata)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
+
+            var identifierSerializer = stream
+                .SerializerFactory
+                .BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var result = metadata.ToStreamRecordMetadata<TId>(identifierSerializer);
 
             return result;
         }

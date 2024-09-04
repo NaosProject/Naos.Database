@@ -58,20 +58,7 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var identifierSerializer = this.stream
-                                           .SerializerFactory
-                                           .BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
-            var id = identifierSerializer.Deserialize<TId>(record.Metadata.StringSerializedId);
-
-            var metadata = new StreamRecordMetadata<TId>(
-                id,
-                record.Metadata.SerializerRepresentation,
-                record.Metadata.TypeRepresentationOfId,
-                record.Metadata.TypeRepresentationOfObject,
-                record.Metadata.Tags,
-                record.Metadata.TimestampUtc,
-                record.Metadata.ObjectTimestampUtc);
+            var metadata = record.Metadata.ToStreamRecordMetadata<TId>(this.stream);
 
             var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
 

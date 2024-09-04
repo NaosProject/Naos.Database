@@ -6,7 +6,6 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -14,9 +13,7 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
-    using static System.FormattableString;
 
     /// <summary>
     /// Set of protocols to execute read and write operations on a stream,
@@ -63,14 +60,7 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var metadata = new StreamRecordMetadata<TId>(
-                operation.Id,
-                record.Metadata.SerializerRepresentation,
-                record.Metadata.TypeRepresentationOfId,
-                record.Metadata.TypeRepresentationOfObject,
-                record.Metadata.Tags,
-                record.Metadata.TimestampUtc,
-                record.Metadata.ObjectTimestampUtc);
+            var metadata = record.Metadata.ToStreamRecordMetadata(operation.Id);
 
             var result = new StreamRecordWithId<TId>(record.InternalRecordId, metadata, record.Payload);
 
@@ -160,14 +150,7 @@ namespace Naos.Database.Domain
             StreamRecordWithId<TId> ProcessResultItem(
                 StreamRecord inputStreamRecord)
             {
-                var metadata = new StreamRecordMetadata<TId>(
-                    operation.Id,
-                    inputStreamRecord.Metadata.SerializerRepresentation,
-                    inputStreamRecord.Metadata.TypeRepresentationOfId,
-                    inputStreamRecord.Metadata.TypeRepresentationOfObject,
-                    inputStreamRecord.Metadata.Tags,
-                    inputStreamRecord.Metadata.TimestampUtc,
-                    inputStreamRecord.Metadata.ObjectTimestampUtc);
+                var metadata = inputStreamRecord.Metadata.ToStreamRecordMetadata(operation.Id);
 
                 var resultItem = new StreamRecordWithId<TId>(inputStreamRecord.InternalRecordId, metadata, inputStreamRecord.Payload);
 
@@ -210,14 +193,7 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var result = new StreamRecordMetadata<TId>(
-                operation.Id,
-                recordWithOnlyMetadata.Metadata.SerializerRepresentation,
-                recordWithOnlyMetadata.Metadata.TypeRepresentationOfId,
-                recordWithOnlyMetadata.Metadata.TypeRepresentationOfObject,
-                recordWithOnlyMetadata.Metadata.Tags,
-                recordWithOnlyMetadata.Metadata.TimestampUtc,
-                recordWithOnlyMetadata.Metadata.ObjectTimestampUtc);
+            var result = recordWithOnlyMetadata.Metadata.ToStreamRecordMetadata(operation.Id);
 
             return result;
         }
@@ -279,14 +255,7 @@ namespace Naos.Database.Domain
             StreamRecordMetadata<TId> ProcessResultItem(
                 StreamRecord inputRecord)
             {
-                var resultItem = new StreamRecordMetadata<TId>(
-                    operation.Id,
-                    inputRecord.Metadata.SerializerRepresentation,
-                    inputRecord.Metadata.TypeRepresentationOfId,
-                    inputRecord.Metadata.TypeRepresentationOfObject,
-                    inputRecord.Metadata.Tags,
-                    inputRecord.Metadata.TimestampUtc,
-                    inputRecord.Metadata.ObjectTimestampUtc);
+                var resultItem = inputRecord.Metadata.ToStreamRecordMetadata(operation.Id);
 
                 return resultItem;
             }

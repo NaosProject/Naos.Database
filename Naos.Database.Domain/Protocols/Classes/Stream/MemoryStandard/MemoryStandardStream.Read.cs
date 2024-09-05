@@ -235,7 +235,8 @@ namespace Naos.Database.Domain
 
                 if (resultInitialized)
                 {
-                    result.RemoveAll(_ => recordsMatchingById.Any(__ => _.InternalRecordId != __.InternalRecordId));
+                    // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
+                    result.RemoveAll(_ => !recordsMatchingById.Any(__ => _.InternalRecordId == __.InternalRecordId));
                 }
                 else
                 {
@@ -275,7 +276,8 @@ namespace Naos.Database.Domain
                     .ToList();
                 if (resultInitialized)
                 {
-                    result.RemoveAll(_ => recordsMatchingByTag.Any(__ => _.InternalRecordId != __.InternalRecordId));
+                    // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
+                    result.RemoveAll(_ => !recordsMatchingByTag.Any(__ => _.InternalRecordId == __.InternalRecordId));
                 }
                 else
                 {

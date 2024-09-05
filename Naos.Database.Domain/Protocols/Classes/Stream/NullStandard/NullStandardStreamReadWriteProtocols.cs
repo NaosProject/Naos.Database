@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
 
@@ -42,6 +43,25 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public async Task<long> ExecuteAsync(
             GetNextUniqueLongOp operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataOp operation)
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var result = new List<StreamRecordMetadata>();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordMetadata>> ExecuteAsync(
+            GetAllRecordsMetadataOp operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

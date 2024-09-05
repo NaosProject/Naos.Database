@@ -41,9 +41,13 @@ namespace OBeautifulCode.Assertion.Recipes
 
         private static readonly MethodInfo IsSequenceEqualToOpenGenericMethodInfo = typeof(EqualityExtensions).GetMethod(nameof(EqualityExtensions.IsSequenceEqualTo))?.GetGenericMethodDefinition();
 
+        private static readonly MethodInfo IsUnorderedEqualToOpenGenericMethodInfo = typeof(EqualityExtensions).GetMethod(nameof(EqualityExtensions.IsUnorderedEqualTo))?.GetGenericMethodDefinition();
+
         private static readonly ConcurrentDictionary<Type, MethodInfo> CachedTypeToIsEqualToMethodInfoMap = new ConcurrentDictionary<Type, MethodInfo>();
 
         private static readonly ConcurrentDictionary<Type, MethodInfo> CachedTypeToIsSequenceEqualToMethodInfoMap = new ConcurrentDictionary<Type, MethodInfo>();
+
+        private static readonly ConcurrentDictionary<Type, MethodInfo> CachedTypeToIsUnorderedEqualToMethodInfoMap = new ConcurrentDictionary<Type, MethodInfo>();
 
         private static readonly MethodInfo CompareUsingDefaultComparerOpenGenericMethodInfo = ((Func<object, object, CompareOutcome>)CompareUsingDefaultComparer).Method.GetGenericMethodDefinition();
 
@@ -100,6 +104,22 @@ namespace OBeautifulCode.Assertion.Recipes
             }
 
             var result = (bool)CachedTypeToIsSequenceEqualToMethodInfoMap[elementType].Invoke(null, new[] { value1, value2, elementComparer });
+
+            return result;
+        }
+
+        private static bool AreUnorderedEqual(
+            Type elementType,
+            object value1,
+            object value2,
+            object elementComparer)
+        {
+            if (!CachedTypeToIsUnorderedEqualToMethodInfoMap.ContainsKey(elementType))
+            {
+                CachedTypeToIsUnorderedEqualToMethodInfoMap.TryAdd(elementType, IsUnorderedEqualToOpenGenericMethodInfo.MakeGenericMethod(elementType));
+            }
+
+            var result = (bool)CachedTypeToIsUnorderedEqualToMethodInfoMap[elementType].Invoke(null, new[] { value1, value2, elementComparer });
 
             return result;
         }

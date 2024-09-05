@@ -723,6 +723,10 @@ namespace OBeautifulCode.String.Recipes
                 {
                     result = dateTimeValue.ToStringInvariantPreferred();
                 }
+                else if (value is Version versionValue)
+                {
+                    result = versionValue.ToStringInvariantPreferred();
+                }
                 else
                 {
                     result = value.ToString();
@@ -1434,6 +1438,27 @@ namespace OBeautifulCode.String.Recipes
             {
                 result = ((DateTime)value).ToStringInvariantPreferred();
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the preferred string representation of a specified value using the invariant culture.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The invariant culture string representation of the specified value.
+        /// </returns>
+        public static string ToStringInvariantPreferred(
+            this Version value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            // We have reviewed and like the default implementation.
+            var result = value.ToString();
 
             return result;
         }

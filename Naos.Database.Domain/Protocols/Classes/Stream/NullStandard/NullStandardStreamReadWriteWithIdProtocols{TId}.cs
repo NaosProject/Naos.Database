@@ -145,5 +145,24 @@ namespace Naos.Database.Domain
             var result = await Task.FromResult(syncResult);
             return result;
         }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordMetadata<TId>> Execute(
+            GetAllRecordsMetadataOp<TId> operation)
+        {
+            // ReSharper disable once CollectionNeverUpdated.Local
+            var result = new List<StreamRecordMetadata<TId>>();
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordMetadata<TId>>> ExecuteAsync(
+            GetAllRecordsMetadataOp<TId> operation)
+        {
+            var syncResult = this.Execute(operation);
+            var result = await Task.FromResult(syncResult);
+            return result;
+        }
     }
 }

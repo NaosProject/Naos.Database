@@ -57,6 +57,76 @@ namespace Naos.Database.Domain
             return result;
         }
 
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordMetadata> Execute(
+            GetAllRecordsMetadataOp operation)
+        {
+            var records = new List<StreamRecord>();
+
+            var allLocators = this.stream.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+
+            foreach (var locator in allLocators)
+            {
+                var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
+                    new RecordFilter(
+                        idTypes: (operation.IdentifierType == null)
+                            ? null
+                            : new[] { operation.IdentifierType },
+                        objectTypes: (operation.ObjectType == null)
+                            ? null
+                            : new[] { operation.ObjectType },
+                        versionMatchStrategy: operation.VersionMatchStrategy,
+                        deprecatedIdTypes: operation.DeprecatedIdTypes,
+                        tags: operation.TagsToMatch,
+                        tagMatchStrategy: operation.TagMatchStrategy),
+                    operation.RecordNotFoundStrategy,
+                    specifiedResourceLocator: locator);
+
+                var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+                var thisLocatorRecords = internalRecordIds
+                    .Select(
+                        _ =>
+                            this.stream.Execute(
+                                new StandardGetLatestRecordOp(
+                                    new RecordFilter(
+                                        internalRecordIds: new[]
+                                        {
+                                            _,
+                                        }),
+                                    operation.RecordNotFoundStrategy,
+                                    StreamRecordItemsToInclude.MetadataOnly,
+                                    specifiedResourceLocator: locator)))
+                    .ToList();
+
+                records.AddRange(thisLocatorRecords);
+            }
+
+            StreamRecordMetadata ProcessResultItem(
+                StreamRecord inputRecord)
+            {
+                var resultItem = inputRecord.Metadata;
+
+                return resultItem;
+            }
+
+            var result = OrderAndConvertToTypedStreamRecords(
+                records,
+                operation.OrderRecordsBy,
+                ProcessResultItem);
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordMetadata>> ExecuteAsync(
+            GetAllRecordsMetadataOp operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
         /// <summary>
         /// Orders the specified collection of <see cref="StreamRecord"/> and converts each to <typeparamref name="TStreamRecord"/>.
         /// </summary>

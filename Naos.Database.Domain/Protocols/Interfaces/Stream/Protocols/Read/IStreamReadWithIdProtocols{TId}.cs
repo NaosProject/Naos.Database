@@ -20,7 +20,8 @@ namespace Naos.Database.Domain
         IGetAllRecordsMetadataById<TId>,
         IDoesAnyExistById<TId>,
         IGetLatestStringSerializedObjectById<TId>,
-        IGetDistinctIds<TId>
+        IGetDistinctIds<TId>,
+        IGetAllRecordsMetadata<TId>
     {
     }
 
@@ -84,6 +85,15 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public interface IGetLatestStringSerializedObjectById<TId> :
         ISyncAndAsyncReturningProtocol<GetLatestStringSerializedObjectByIdOp<TId>, string>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="GetAllRecordsMetadataOp{TId}" />.
+    /// </summary>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    public interface IGetAllRecordsMetadata<TId> :
+        ISyncAndAsyncReturningProtocol<GetAllRecordsMetadataOp<TId>, IReadOnlyList<StreamRecordMetadata<TId>>>
     {
     }
 }

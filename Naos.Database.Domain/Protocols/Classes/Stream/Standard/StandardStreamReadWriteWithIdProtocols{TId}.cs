@@ -328,5 +328,77 @@ namespace Naos.Database.Domain
 
             return result;
         }
+
+        /// <inheritdoc />
+        public IReadOnlyList<StreamRecordMetadata<TId>> Execute(
+            GetAllRecordsMetadataOp<TId> operation)
+        {
+            var records = new List<StreamRecord>();
+
+            var allLocators = this.stream.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+
+            foreach (var locator in allLocators)
+            {
+                var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
+                    new RecordFilter(
+                        idTypes: new[] { typeof(TId).ToRepresentation() },
+                        objectTypes: (operation.ObjectType == null)
+                            ? null
+                            : new[] { operation.ObjectType },
+                        versionMatchStrategy: operation.VersionMatchStrategy,
+                        deprecatedIdTypes: operation.DeprecatedIdTypes,
+                        tags: operation.TagsToMatch,
+                        tagMatchStrategy: operation.TagMatchStrategy),
+                    operation.RecordNotFoundStrategy,
+                    specifiedResourceLocator: locator);
+
+                var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+                var thisLocatorRecords = internalRecordIds
+                    .Select(
+                        _ =>
+                            this.stream.Execute(
+                                new StandardGetLatestRecordOp(
+                                    new RecordFilter(
+                                        internalRecordIds: new[]
+                                        {
+                                            _,
+                                        }),
+                                    operation.RecordNotFoundStrategy,
+                                    StreamRecordItemsToInclude.MetadataOnly,
+                                    specifiedResourceLocator: locator)))
+                    .ToList();
+
+                records.AddRange(thisLocatorRecords);
+            }
+
+            var identifierSerializer = this.stream
+                .SerializerFactory
+                .BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
+            StreamRecordMetadata<TId> ProcessResultItem(
+                StreamRecord inputRecord)
+            {
+                var resultItem = inputRecord.Metadata.ToStreamRecordMetadata<TId>(identifierSerializer);
+
+                return resultItem;
+            }
+
+            var result = StandardStreamReadWriteProtocols.OrderAndConvertToTypedStreamRecords(
+                records,
+                operation.OrderRecordsBy,
+                ProcessResultItem);
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<StreamRecordMetadata<TId>>> ExecuteAsync(
+            GetAllRecordsMetadataOp<TId> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
     }
 }

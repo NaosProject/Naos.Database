@@ -206,6 +206,8 @@
     <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsMetadataOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsMetadataOp.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllRecordsOp{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllObjectsOp{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\ReadOnlyStreamExtensions.GetAllObjectsByIdOp{TId,TObject}.cs" />
@@ -453,6 +455,14 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetAllObjectsByIdOp{TId,TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp{TId}.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.designer.cs">

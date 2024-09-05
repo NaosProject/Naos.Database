@@ -1450,6 +1450,90 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void GetAllRecordsMetadata___Should_return_all_StreamRecordMetadata___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(SerializationKind.Json, typeof(DatabaseJsonSerializationConfiguration).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var objectToPut = A.Dummy<NamedResourceLocator>();
+            var tagToPut = new NamedValue<string>("tag", "tag-value");
+            var id1 = A.Dummy<string>();
+            var id2 = A.Dummy<string>();
+
+            stream.PutWithId(id1, objectToPut, tags: new[] { tagToPut });
+            stream.PutWithId(A.Dummy<int>(), objectToPut, tags: new[] { tagToPut });
+            stream.PutWithId(A.Dummy<string>(), A.Dummy<decimal>(), tags: new[] { tagToPut });
+            stream.PutWithId(A.Dummy<string>(), objectToPut, tags: new[] { A.Dummy<NamedValue<string>>() });
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>(), tags: new[] { tagToPut, A.Dummy<NamedValue<string>>() });
+
+            StreamRecordMetadata ToMetadataWithoutId(StreamRecordMetadata<string> metadata)
+            {
+                var stringSerializedId = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation).SerializeToString(metadata.Id);
+
+                return new StreamRecordMetadata(stringSerializedId, metadata.SerializerRepresentation, metadata.TypeRepresentationOfId, metadata.TypeRepresentationOfObject, metadata.Tags, metadata.TimestampUtc, metadata.ObjectTimestampUtc);
+            }
+
+            var expected = new[]
+            {
+                ToMetadataWithoutId(stream.GetAllRecordsById(id1).Single().Metadata),
+                ToMetadataWithoutId(stream.GetAllRecordsById(id2).Single().Metadata),
+            };
+
+            // Act
+            var actual = stream
+                .GetAllRecordsMetadata(
+                    identifierType: typeof(string).ToRepresentation(),
+                    objectType: typeof(NamedResourceLocator).ToRepresentation(),
+                    tagsToMatch: new[] { tagToPut })
+                .ToArray();
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
+        public static void GetAllRecordsMetadata_TId___Should_return_all_StreamRecordMetadata_TId___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(SerializationKind.Json, typeof(DatabaseJsonSerializationConfiguration).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var objectToPut = A.Dummy<NamedResourceLocator>();
+            var tagToPut = new NamedValue<string>("tag", "tag-value");
+            var id1 = A.Dummy<string>();
+            var id2 = A.Dummy<string>();
+
+            stream.PutWithId(id1, objectToPut, tags: new[] { tagToPut });
+            stream.PutWithId(A.Dummy<int>(), objectToPut, tags: new[] { tagToPut });
+            stream.PutWithId(A.Dummy<string>(), A.Dummy<decimal>(), tags: new[] { tagToPut });
+            stream.PutWithId(A.Dummy<string>(), objectToPut, tags: new[] { A.Dummy<NamedValue<string>>() });
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>(), tags: new[] { tagToPut, A.Dummy<NamedValue<string>>() });
+
+            var expected = new[]
+            {
+                stream.GetAllRecordsById(id1).Single().Metadata,
+                stream.GetAllRecordsById(id2).Single().Metadata,
+            };
+
+            // Act
+            var actual = stream
+                .GetAllRecordsMetadata<string>(
+                    objectType: typeof(NamedResourceLocator).ToRepresentation(),
+                    tagsToMatch: new[] { tagToPut })
+                .ToArray();
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
         public static async Task ExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock_until_action_is_run___When_multiple_callers_require_mutex()
         {
             // Arrange

@@ -1450,7 +1450,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void GetAllRecordsMetadata___Should_return_all_StreamRecordMetadata___When_called()
+        public static void GetAllRecordsMetadata___Should_return_expected_StreamRecordMetadata_objects___When_called()
         {
             // Arrange
             var stream = new MemoryStandardStream(
@@ -1496,7 +1496,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void GetAllRecordsMetadata_TId___Should_return_all_StreamRecordMetadata_TId___When_called()
+        public static void GetAllRecordsMetadata_TId___Should_return_expected_StreamRecordMetadata_TId_objects___When_called()
         {
             // Arrange
             var stream = new MemoryStandardStream(

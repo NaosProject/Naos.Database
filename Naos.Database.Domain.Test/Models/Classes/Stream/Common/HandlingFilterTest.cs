@@ -39,7 +39,7 @@ namespace Naos.Database.Domain.Test
                             var referenceObject = A.Dummy<HandlingFilter>();
 
                             var result = new HandlingFilter(
-                                new[]{ HandlingStatus.Completed, HandlingStatus.Unknown },
+                                new[] { HandlingStatus.Completed, HandlingStatus.Unknown },
                                 referenceObject.Tags,
                                 referenceObject.TagMatchStrategy);
 

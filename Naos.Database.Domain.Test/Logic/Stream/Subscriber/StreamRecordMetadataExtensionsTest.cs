@@ -7,7 +7,9 @@
 namespace Naos.Database.Domain.Test
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using FakeItEasy;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Compression;
     using OBeautifulCode.Serialization;
@@ -69,6 +71,7 @@ namespace Naos.Database.Domain.Test
         }
 
         [Fact]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Deserializer", Justification = NaosSuppressBecause.CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain)]
         public static void ToStreamRecordMetadata_IStringDeserialize___Should_throw_ArgumentNullException___When_parameter_identifierDeserializer_is_null()
         {
             // Arrange

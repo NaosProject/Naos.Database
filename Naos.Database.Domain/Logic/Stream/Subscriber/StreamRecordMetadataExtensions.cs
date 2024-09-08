@@ -139,6 +139,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// A <see cref="StreamRecordMetadata{TId}"/> object converted from the specified <see cref="StreamRecordMetadata"/> object.
         /// </returns>
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Deserializer", Justification = NaosSuppressBecause.CA1704_IdentifiersShouldBeSpelledCorrectly_SpellingIsCorrectInContextOfTheDomain)]
         public static StreamRecordMetadata<TId> ToStreamRecordMetadata<TId>(
             this StreamRecordMetadata metadata,
             IStringDeserialize identifierDeserializer)

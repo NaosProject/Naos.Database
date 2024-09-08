@@ -35,15 +35,33 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
                     {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version, Version>>();
+
+                            var result = new DoesAnyExistByIdOp<Version, Version>(
+                                                 referenceObject.Id,
+                                                 VersionMatchStrategy.Unknown,
+                                                 referenceObject.DeprecatedIdTypes);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
+                    {
                         Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version, Version>>();
 
                             var result = new DoesAnyExistByIdOp<Version, Version>(
-                                referenceObject.Id,
-                                referenceObject.VersionMatchStrategy,
-                                new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+                                                 referenceObject.Id,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
 
                             return result;
                         },

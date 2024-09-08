@@ -29,44 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetHandlingHistoryOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
-
-                            var result = new StandardGetHandlingHistoryOp(
-                                referenceObject.InternalRecordId,
-                                null,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "concern", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetHandlingHistoryOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetHandlingHistoryOp>();
-
-                            var result = new StandardGetHandlingHistoryOp(
-                                referenceObject.InternalRecordId,
-                                Invariant($"  {Environment.NewLine}  "),
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                    });
         }
     }
 }

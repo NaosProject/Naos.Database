@@ -31,67 +31,6 @@ namespace Naos.Database.Domain.Test
         static RecordHandlingAvailableEventTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<RecordHandlingAvailableEvent>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<RecordHandlingAvailableEvent>();
-
-                            var result = new RecordHandlingAvailableEvent(
-                                                 referenceObject.InternalRecordId,
-                                                 null,
-                                                 referenceObject.RecordToHandle,
-                                                 referenceObject.TimestampUtc,
-                                                 referenceObject.Details);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "concern", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<RecordHandlingAvailableEvent>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<RecordHandlingAvailableEvent>();
-
-                            var result = new RecordHandlingAvailableEvent(
-                                                 referenceObject.InternalRecordId,
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.RecordToHandle,
-                                                 referenceObject.TimestampUtc,
-                                                 referenceObject.Details);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<RecordHandlingAvailableEvent>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'recordToHandle' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<RecordHandlingAvailableEvent>();
-
-                            var result = new RecordHandlingAvailableEvent(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.Concern,
-                                                 null,
-                                                 referenceObject.TimestampUtc,
-                                                 referenceObject.Details);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "recordToHandle", },
-                    })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<RecordHandlingAvailableEvent>
                     {

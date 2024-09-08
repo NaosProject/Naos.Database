@@ -30,7 +30,6 @@ namespace Naos.Database.Domain.Test
         static StandardUpdateHandlingStatusForStreamOpTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
                     {
@@ -49,25 +48,6 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "newStatus", "DisabledForStream", "AvailableByDefault" },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardUpdateHandlingStatusForStreamOp>();
-
-                            var result = new StandardUpdateHandlingStatusForStreamOp(
-                                referenceObject.NewStatus,
-                                referenceObject.Details,
-                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element" },
                     });
         }
     }

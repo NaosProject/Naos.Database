@@ -37,6 +37,7 @@ namespace Naos.Database.Domain
             DateTime timestampUtc)
         {
             concern.MustForArg(nameof(concern)).NotBeNullNorWhiteSpace();
+            status.MustForArg(nameof(status)).NotBeEqualTo(HandlingStatus.Unknown);
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 
             if (timestampUtc.Kind != DateTimeKind.Utc)

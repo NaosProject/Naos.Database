@@ -50,6 +50,7 @@ namespace Naos.Database.Domain
             concern.ThrowIfInvalidOrReservedConcern();
             recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
             orderRecordsBy.MustForArg(nameof(orderRecordsBy)).NotBeEqualTo(OrderRecordsBy.Unknown);
+            tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
             streamRecordItemsToInclude.MustForArg(nameof(streamRecordItemsToInclude)).NotBeEqualTo(StreamRecordItemsToInclude.Unknown);
 
             this.Concern = concern;

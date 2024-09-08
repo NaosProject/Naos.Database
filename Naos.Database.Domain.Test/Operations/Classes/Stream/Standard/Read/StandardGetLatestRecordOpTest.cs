@@ -29,27 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetLatestRecordOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetLatestRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetLatestRecordOp>();
-
-                            var result = new StandardGetLatestRecordOp(
-                                referenceObject.RecordFilter,
-                                RecordNotFoundStrategy.Unknown,
-                                referenceObject.StreamRecordItemsToInclude,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
-                    });
         }
     }
 }

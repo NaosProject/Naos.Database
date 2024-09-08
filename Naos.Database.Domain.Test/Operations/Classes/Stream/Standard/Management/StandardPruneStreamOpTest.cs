@@ -30,11 +30,10 @@ namespace Naos.Database.Domain.Test
         static StandardPruneStreamOpTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
                     {
-                        Name = "constructor should throw ArgumentException when parameter 'details' is null scenario",
+                        Name = "constructor should throw ArgumentException when parameters 'internalRecordId' and 'internalRecordDate' are null scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardPruneStreamOp>();
@@ -53,7 +52,7 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
                     {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'details' is null scenario",
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'internalRecordDate' is not in UTC scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardPruneStreamOp>();
@@ -68,44 +67,6 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "internalRecordDate", "Timestamp must be UTC", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardPruneStreamOp>();
-
-                            var result = new StandardPruneStreamOp(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.InternalRecordDate,
-                                                 null,
-                                                 referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "details", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardPruneStreamOp>();
-
-                            var result = new StandardPruneStreamOp(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.InternalRecordDate,
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "details", "white space", },
                     });
         }
     }

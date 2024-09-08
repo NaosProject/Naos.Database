@@ -18,6 +18,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using Xunit;
 
     using static System.FormattableString;
@@ -32,43 +33,62 @@ namespace Naos.Database.Domain.Test
             ConstructorArgumentValidationTestScenarios
                .RemoveAllScenarios()
                .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetLatestObjectByIdOp<Version, Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown null scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
 
-                           var result = new GetLatestObjectByIdOp<Version, Version>(
-                               referenceObject.Id,
-                               referenceObject.VersionMatchStrategy,
-                               RecordNotFoundStrategy.Unknown,
-                               referenceObject.DeprecatedIdTypes);
+                            var result = new GetLatestObjectByIdOp<Version, Version>(
+                                                 referenceObject.Id,
+                                                 VersionMatchStrategy.Unknown,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 referenceObject.DeprecatedIdTypes);
 
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetLatestObjectByIdOp<Version, Version>>
-                   {
-                       Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
 
-                           var result = new GetLatestObjectByIdOp<Version, Version>(
-                               referenceObject.Id,
-                               referenceObject.VersionMatchStrategy,
-                               referenceObject.RecordNotFoundStrategy,
-                               new[] { A.Dummy<TypeRepresentation>(), null });
+                            var result = new GetLatestObjectByIdOp<Version, Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 RecordNotFoundStrategy.Unknown,
+                                                 referenceObject.DeprecatedIdTypes);
 
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentException),
-                       ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
-                   });
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectByIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestObjectByIdOp<Version, Version>>();
+
+                            var result = new GetLatestObjectByIdOp<Version, Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
+                    });
         }
     }
 }

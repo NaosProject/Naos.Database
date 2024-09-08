@@ -30,53 +30,6 @@ namespace Naos.Database.Domain.Test
         static StandardUpdateHandlingStatusForRecordOpTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
-
-                            var result = new StandardUpdateHandlingStatusForRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 null,
-                                                 referenceObject.NewStatus,
-                                                 referenceObject.AcceptableCurrentStatuses,
-                                                 referenceObject.Details,
-                                                 referenceObject.Tags,
-                                                 referenceObject.InheritRecordTags,
-                                                 referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "concern", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
-
-                            var result = new StandardUpdateHandlingStatusForRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.NewStatus,
-                                                 referenceObject.AcceptableCurrentStatuses,
-                                                 referenceObject.Details,
-                                                 referenceObject.Tags,
-                                                 referenceObject.InheritRecordTags,
-                                                 referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                    })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                     {
@@ -103,29 +56,6 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
                     {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'newStatus' is HandlingStatus.Unknown",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
-
-                            var result = new StandardUpdateHandlingStatusForRecordOp(
-                                referenceObject.InternalRecordId,
-                                referenceObject.Concern,
-                                HandlingStatus.Unknown,
-                                referenceObject.AcceptableCurrentStatuses,
-                                referenceObject.Details,
-                                referenceObject.Tags,
-                                referenceObject.InheritRecordTags,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "newStatus", "Unknown", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
-                    {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'newStatus' is HandlingStatus.DisabledForStream",
                         ConstructionFunc = () =>
                         {
@@ -145,52 +75,6 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "newStatus", "DisabledForStream", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'acceptableCurrentStatuses' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
-
-                            var result = new StandardUpdateHandlingStatusForRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.Concern,
-                                                 referenceObject.NewStatus,
-                                                 null,
-                                                 referenceObject.Details,
-                                                 referenceObject.Tags,
-                                                 referenceObject.InheritRecordTags,
-                                                 referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'acceptableCurrentStatuses' is an empty enumerable scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardUpdateHandlingStatusForRecordOp>();
-
-                            var result = new StandardUpdateHandlingStatusForRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.Concern,
-                                                 referenceObject.NewStatus,
-                                                 new List<HandlingStatus>(),
-                                                 referenceObject.Details,
-                                                 referenceObject.Tags,
-                                                 referenceObject.InheritRecordTags,
-                                                 referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "acceptableCurrentStatuses", "is an empty enumerable", },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardUpdateHandlingStatusForRecordOp>

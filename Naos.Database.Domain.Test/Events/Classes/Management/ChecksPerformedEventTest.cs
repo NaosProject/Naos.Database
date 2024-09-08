@@ -31,7 +31,114 @@ namespace Naos.Database.Domain.Test
         static ChecksPerformedEventTest()
         {
             ConstructorArgumentValidationTestScenarios
-               .AddScenario(
+
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'id' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<ChecksPerformedEvent>();
+
+                            var result = new ChecksPerformedEvent(
+                                                 null,
+                                                 referenceObject.TimestampUtc,
+                                                 referenceObject.Status,
+                                                 referenceObject.CheckDrivesReport,
+                                                 referenceObject.CheckJobsReport,
+                                                 referenceObject.CheckStreamsReport);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "id", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'id' is white space scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<ChecksPerformedEvent>();
+
+                            var result = new ChecksPerformedEvent(
+                                                 Invariant($"  {Environment.NewLine}  "),
+                                                 referenceObject.TimestampUtc,
+                                                 referenceObject.Status,
+                                                 referenceObject.CheckDrivesReport,
+                                                 referenceObject.CheckJobsReport,
+                                                 referenceObject.CheckStreamsReport);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "id", "white space", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'checkDrivesReport' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<ChecksPerformedEvent>();
+
+                            var result = new ChecksPerformedEvent(
+                                                 referenceObject.Id,
+                                                 referenceObject.TimestampUtc,
+                                                 referenceObject.Status,
+                                                 null,
+                                                 referenceObject.CheckJobsReport,
+                                                 referenceObject.CheckStreamsReport);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "checkDrivesReport", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'checkJobsReport' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<ChecksPerformedEvent>();
+
+                            var result = new ChecksPerformedEvent(
+                                                 referenceObject.Id,
+                                                 referenceObject.TimestampUtc,
+                                                 referenceObject.Status,
+                                                 referenceObject.CheckDrivesReport,
+                                                 null,
+                                                 referenceObject.CheckStreamsReport);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "checkJobsReport", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
+                    {
+                        Name = "constructor should throw ArgumentNullException when parameter 'checkStreamsReport' is null scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<ChecksPerformedEvent>();
+
+                            var result = new ChecksPerformedEvent(
+                                                 referenceObject.Id,
+                                                 referenceObject.TimestampUtc,
+                                                 referenceObject.Status,
+                                                 referenceObject.CheckDrivesReport,
+                                                 referenceObject.CheckJobsReport,
+                                                 null);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentNullException),
+                        ExpectedExceptionMessageContains = new[] { "checkStreamsReport", },
+                    })
+                .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
                         {
@@ -57,7 +164,7 @@ namespace Naos.Database.Domain.Test
                                                                    "not DateTimeKind.Utc",
                                                                },
                         })
-               .AddScenario(
+                .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<ChecksPerformedEvent>
                         {

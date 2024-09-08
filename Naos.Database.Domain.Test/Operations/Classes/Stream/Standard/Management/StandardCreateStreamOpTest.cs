@@ -22,24 +22,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardCreateStreamOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardCreateStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'existingStreamStrategy' is Unknown",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardCreateStreamOp>();
-
-                            var result = new StandardCreateStreamOp(
-                                referenceObject.StreamRepresentation,
-                                ExistingStreamStrategy.Unknown);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "existingStreamStrategy", "Unknown" },
-                    });
         }
     }
 }

@@ -29,44 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetLatestStringSerializedObjectOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectOp>();
-
-                            var result = new StandardGetLatestStringSerializedObjectOp(
-                                null,
-                                referenceObject.RecordNotFoundStrategy,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "recordFilter" },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardGetLatestStringSerializedObjectOp>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardGetLatestStringSerializedObjectOp>();
-
-                            var result = new StandardGetLatestStringSerializedObjectOp(
-                                referenceObject.RecordFilter,
-                                RecordNotFoundStrategy.Unknown,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
-                    });
         }
     }
 }

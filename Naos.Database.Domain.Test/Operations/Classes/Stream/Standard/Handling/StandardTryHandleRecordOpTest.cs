@@ -35,106 +35,30 @@ namespace Naos.Database.Domain.Test
              */
             ConstructorArgumentValidationTestScenarios
                .RemoveAllScenarios()
-               .AddScenario(
-                    () =>
-                        new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                        {
-                            Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                            ConstructionFunc = () =>
-                                               {
-                                                   var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                                                   var result = new StandardTryHandleRecordOp(
-                                                       null,
-                                                       referenceObject.RecordFilter,
-                                                       referenceObject.OrderRecordsBy,
-                                                       referenceObject.Details,
-                                                       referenceObject.MinimumInternalRecordId,
-                                                       referenceObject.InheritRecordTags,
-                                                       referenceObject.Tags,
-                                                       referenceObject.StreamRecordItemsToInclude,
-                                                       referenceObject.SpecifiedResourceLocator);
-
-                                                   return result;
-                                               },
-                            ExpectedExceptionType = typeof(ArgumentNullException),
-                            ExpectedExceptionMessageContains = new[]
-                                                               {
-                                                                   "concern",
-                                                               },
-                        })
                .AddScenario(() =>
-                                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                                {
-                                    Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
-                                    ConstructionFunc = () =>
-                                                       {
-                                                           var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
+                   new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
+                   {
+                       Name = "constructor should throw ArgumentException when parameter 'concern' is reserved",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
 
-                                                           var result = new StandardTryHandleRecordOp(
-                                                               referenceObject.Concern,
-                                                               null,
-                                                               referenceObject.OrderRecordsBy,
-                                                               referenceObject.Details,
-                                                               referenceObject.MinimumInternalRecordId,
-                                                               referenceObject.InheritRecordTags,
-                                                               referenceObject.Tags,
-                                                               referenceObject.StreamRecordItemsToInclude,
-                                                               referenceObject.SpecifiedResourceLocator);
+                           var result = new StandardTryHandleRecordOp(
+                               Concerns.StreamHandlingDisabledConcern,
+                               referenceObject.RecordFilter,
+                               referenceObject.OrderRecordsBy,
+                               referenceObject.Details,
+                               referenceObject.MinimumInternalRecordId,
+                               referenceObject.InheritRecordTags,
+                               referenceObject.Tags,
+                               referenceObject.StreamRecordItemsToInclude,
+                               referenceObject.SpecifiedResourceLocator);
 
-                                                           return result;
-                                                       },
-                                    ExpectedExceptionType = typeof(ArgumentNullException),
-                                    ExpectedExceptionMessageContains = new[] { "recordFilter", },
-                                })
-               .AddScenario(() =>
-                                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                                {
-                                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is Unknown scenario",
-                                    ConstructionFunc = () =>
-                                                       {
-                                                           var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                                                           var result = new StandardTryHandleRecordOp(
-                                                               referenceObject.Concern,
-                                                               referenceObject.RecordFilter,
-                                                               OrderRecordsBy.Unknown,
-                                                               referenceObject.Details,
-                                                               referenceObject.MinimumInternalRecordId,
-                                                               referenceObject.InheritRecordTags,
-                                                               referenceObject.Tags,
-                                                               referenceObject.StreamRecordItemsToInclude,
-                                                               referenceObject.SpecifiedResourceLocator);
-
-                                                           return result;
-                                                       },
-                                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                                    ExpectedExceptionMessageContains = new[] { "orderRecordsBy", },
-                                })
-               .AddScenario(() =>
-                                new ConstructorArgumentValidationTestScenario<StandardTryHandleRecordOp>
-                                {
-                                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'streamRecordItemsToInclude' is Unknown scenario",
-                                    ConstructionFunc = () =>
-                                                       {
-                                                           var referenceObject = A.Dummy<StandardTryHandleRecordOp>();
-
-                                                           var result = new StandardTryHandleRecordOp(
-                                                               referenceObject.Concern,
-                                                               referenceObject.RecordFilter,
-                                                               referenceObject.OrderRecordsBy,
-                                                               referenceObject.Details,
-                                                               referenceObject.MinimumInternalRecordId,
-                                                               referenceObject.InheritRecordTags,
-                                                               referenceObject.Tags,
-                                                               StreamRecordItemsToInclude.Unknown,
-                                                               referenceObject.SpecifiedResourceLocator);
-
-                                                           return result;
-                                                       },
-                                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                                    ExpectedExceptionMessageContains = new[] { "streamRecordItemsToInclude", },
-                                });
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentException),
+                       ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used", },
+                   });
         }
     }
 }

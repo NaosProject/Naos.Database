@@ -31,50 +31,69 @@ namespace Naos.Database.Domain.Test
         static ExpectedRecordWithinThresholdReportTest()
         {
             ConstructorArgumentValidationTestScenarios
-               .AddScenario(
-                    () =>
+                .RemoveAllScenarios()
+                    .AddScenario(() =>
                         new ConstructorArgumentValidationTestScenario<ExpectedRecordWithinThresholdReport>
                         {
-                            Name = "constructor should throw ArgumentOutOfRangeException when parameter 'status' is 'Invalid' scenario",
+                            Name = "constructor should throw ArgumentNullException when parameter 'expectedRecordWithinThreshold' is null scenario",
                             ConstructionFunc = () =>
-                                               {
-                                                   var referenceObject = A.Dummy<ExpectedRecordWithinThresholdReport>();
+                            {
+                                var referenceObject = A.Dummy<ExpectedRecordWithinThresholdReport>();
 
-                                                   var result = new ExpectedRecordWithinThresholdReport(
-                                                       CheckStatus.Invalid,
-                                                       referenceObject.ExpectedRecordWithinThreshold,
-                                                       referenceObject.LatestMatchingRecordTimestampUtc);
+                                var result = new ExpectedRecordWithinThresholdReport(
+                                    referenceObject.Status,
+                                    null,
+                                    referenceObject.LatestMatchingRecordTimestampUtc);
 
-                                                   return result;
-                                               },
-                            ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                            ExpectedExceptionMessageContains = new[]
-                                                               {
-                                                                   "status",
-                                                               },
+                                return result;
+                            },
+                            ExpectedExceptionType = typeof(ArgumentNullException),
+                            ExpectedExceptionMessageContains = new[] { "expectedRecordWithinThreshold", },
                         })
-               .AddScenario(
-                    () =>
-                        new ConstructorArgumentValidationTestScenario<ExpectedRecordWithinThresholdReport>
-                        {
-                            Name = "constructor should throw ArgumentException when parameter 'latestMatchingRecordTimestampUtc' is not UTC scenario",
-                            ConstructionFunc = () =>
-                                               {
-                                                   var referenceObject = A.Dummy<ExpectedRecordWithinThresholdReport>();
+                   .AddScenario(
+                        () =>
+                            new ConstructorArgumentValidationTestScenario<ExpectedRecordWithinThresholdReport>
+                            {
+                                Name = "constructor should throw ArgumentOutOfRangeException when parameter 'status' is 'Invalid' scenario",
+                                ConstructionFunc = () =>
+                                                   {
+                                                       var referenceObject = A.Dummy<ExpectedRecordWithinThresholdReport>();
 
-                                                   var result = new ExpectedRecordWithinThresholdReport(
-                                                       referenceObject.Status,
-                                                       referenceObject.ExpectedRecordWithinThreshold,
-                                                       referenceObject.LatestMatchingRecordTimestampUtc.ToUnspecified());
+                                                       var result = new ExpectedRecordWithinThresholdReport(
+                                                           CheckStatus.Invalid,
+                                                           referenceObject.ExpectedRecordWithinThreshold,
+                                                           referenceObject.LatestMatchingRecordTimestampUtc);
 
-                                                   return result;
-                                               },
-                            ExpectedExceptionType = typeof(ArgumentException),
-                            ExpectedExceptionMessageContains = new[]
-                                                               {
-                                                                   "latestMatchingRecordTimestampUtc",
-                                                               },
-                        });
+                                                       return result;
+                                                   },
+                                ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                                ExpectedExceptionMessageContains = new[]
+                                                                   {
+                                                                       "status",
+                                                                   },
+                            })
+                   .AddScenario(
+                        () =>
+                            new ConstructorArgumentValidationTestScenario<ExpectedRecordWithinThresholdReport>
+                            {
+                                Name = "constructor should throw ArgumentException when parameter 'latestMatchingRecordTimestampUtc' is not UTC scenario",
+                                ConstructionFunc = () =>
+                                                   {
+                                                       var referenceObject = A.Dummy<ExpectedRecordWithinThresholdReport>();
+
+                                                       var result = new ExpectedRecordWithinThresholdReport(
+                                                           referenceObject.Status,
+                                                           referenceObject.ExpectedRecordWithinThreshold,
+                                                           referenceObject.LatestMatchingRecordTimestampUtc.ToUnspecified());
+
+                                                       return result;
+                                                   },
+                                ExpectedExceptionType = typeof(ArgumentException),
+                                ExpectedExceptionMessageContains = new[]
+                                                                   {
+                                                                       "latestMatchingRecordTimestampUtc",
+                                                                   },
+                            });
         }
     }
 }

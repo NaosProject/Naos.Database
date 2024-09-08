@@ -30,43 +30,6 @@ namespace Naos.Database.Domain.Test
         static GetCompositeHandlingStatusByTagsOpTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                            var result = new GetCompositeHandlingStatusByTagsOp(
-                                                 null,
-                                                 referenceObject.TagsToMatch,
-                                                 referenceObject.TagMatchStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "concern", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                            var result = new GetCompositeHandlingStatusByTagsOp(
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.TagsToMatch,
-                                                 referenceObject.TagMatchStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                    })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
                     {
@@ -84,78 +47,6 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used" },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'tagsToMatch' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                            var result = new GetCompositeHandlingStatusByTagsOp(
-                                                 referenceObject.Concern,
-                                                 null,
-                                                 referenceObject.TagMatchStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' is an empty enumerable scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                            var result = new GetCompositeHandlingStatusByTagsOp(
-                                                 referenceObject.Concern,
-                                                 new List<NamedValue<string>>(),
-                                                 referenceObject.TagMatchStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "is an empty enumerable", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                            var result = new GetCompositeHandlingStatusByTagsOp(
-                                                 referenceObject.Concern,
-                                                 new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
-                                                 referenceObject.TagMatchStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetCompositeHandlingStatusByTagsOp>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetCompositeHandlingStatusByTagsOp>();
-
-                            var result = new GetCompositeHandlingStatusByTagsOp(
-                                referenceObject.Concern,
-                                referenceObject.TagsToMatch,
-                                TagMatchStrategy.Unknown);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
                     });
         }
     }

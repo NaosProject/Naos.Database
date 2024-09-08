@@ -30,7 +30,6 @@ namespace Naos.Database.Domain.Test
         static StandardGetNextUniqueLongOpTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
                 .AddScenario(ConstructorArgumentValidationTestScenario<StandardGetNextUniqueLongOp>.ConstructorCannotThrowScenario);
         }
     }

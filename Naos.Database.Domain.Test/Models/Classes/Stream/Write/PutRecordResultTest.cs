@@ -31,7 +31,6 @@ namespace Naos.Database.Domain.Test
         static PutRecordResultTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
                 .AddScenario(
                     () =>
                         new ConstructorArgumentValidationTestScenario<PutRecordResult>

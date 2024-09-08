@@ -93,45 +93,65 @@ namespace Naos.Database.Domain.Test
                        ExpectedExceptionMessageContains = new[] { "recordRetentionCount", },
                    })
                .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<PutOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentException when parameter 'tags' contains at least one null element",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<PutOp<Version>>();
+                    new ConstructorArgumentValidationTestScenario<PutOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<PutOp<Version>>();
 
-                           var result = new PutOp<Version>(
-                               referenceObject.ObjectToPut,
-                               new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() },
-                               A.Dummy<ExistingRecordStrategy>().ThatIs(_ => _.ToString().ToUpperInvariant().Contains("PRUNE")),
-                               referenceObject.RecordRetentionCount,
-                               referenceObject.VersionMatchStrategy);
+                            var result = new PutOp<Version>(
+                                                 referenceObject.ObjectToPut,
+                                                 new NamedValue<string>[0].Concat(referenceObject.Tags).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.Tags).ToList(),
+                                                 referenceObject.ExistingRecordStrategy,
+                                                 referenceObject.RecordRetentionCount,
+                                                 referenceObject.VersionMatchStrategy);
 
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentException),
-                       ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<PutOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'existingRecordStrategy' is ExistingRecordStrategy.Unknown scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<PutOp<Version>>();
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<PutOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'existingRecordStrategy' is ExistingRecordStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<PutOp<Version>>();
 
-                           var result = new PutOp<Version>(
-                               referenceObject.ObjectToPut,
-                               referenceObject.Tags,
-                               ExistingRecordStrategy.Unknown,
-                               referenceObject.RecordRetentionCount,
-                               referenceObject.VersionMatchStrategy);
+                            var result = new PutOp<Version>(
+                                                 referenceObject.ObjectToPut,
+                                                 referenceObject.Tags,
+                                                 ExistingRecordStrategy.Unknown,
+                                                 referenceObject.RecordRetentionCount,
+                                                 referenceObject.VersionMatchStrategy);
 
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "existingRecordStrategy", "Unknown", },
-                   });
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "existingRecordStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<PutOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<PutOp<Version>>();
+
+                            var result = new PutOp<Version>(
+                                                 referenceObject.ObjectToPut,
+                                                 referenceObject.Tags,
+                                                 referenceObject.ExistingRecordStrategy,
+                                                 referenceObject.RecordRetentionCount,
+                                                 VersionMatchStrategy.Unknown);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
+                    });
 
             EquatableTestScenarios
                 .RemoveAllScenarios()

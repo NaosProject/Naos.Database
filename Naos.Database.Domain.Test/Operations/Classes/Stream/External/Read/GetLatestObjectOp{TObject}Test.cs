@@ -29,46 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static GetLatestObjectOpTObjectTest()
         {
-            ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetLatestObjectOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetLatestObjectOp<Version>>();
-
-                           var result = new GetLatestObjectOp<Version>(
-                               referenceObject.IdentifierType,
-                               referenceObject.VersionMatchStrategy,
-                               RecordNotFoundStrategy.Unknown,
-                               referenceObject.DeprecatedIdTypes);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetLatestObjectOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetLatestObjectOp<Version>>();
-
-                           var result = new GetLatestObjectOp<Version>(
-                               referenceObject.IdentifierType,
-                               referenceObject.VersionMatchStrategy,
-                               referenceObject.RecordNotFoundStrategy,
-                               new[] { A.Dummy<TypeRepresentation>(), null });
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentException),
-                       ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
-                   });
         }
     }
 }

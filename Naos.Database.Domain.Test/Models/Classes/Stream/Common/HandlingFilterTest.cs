@@ -30,8 +30,24 @@ namespace Naos.Database.Domain.Test
         static HandlingFilterTest()
         {
             ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(ConstructorArgumentValidationTestScenario<HandlingFilter>.ForceGeneratedTestsToPassAndWriteMyOwnScenario);
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<HandlingFilter>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'currentHandlingStatuses' contains HandlingStatus.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<HandlingFilter>();
+
+                            var result = new HandlingFilter(
+                                new[]{ HandlingStatus.Completed, HandlingStatus.Unknown },
+                                referenceObject.Tags,
+                                referenceObject.TagMatchStrategy);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "currentHandlingStatuses", "Unknown", },
+                    });
         }
     }
 }

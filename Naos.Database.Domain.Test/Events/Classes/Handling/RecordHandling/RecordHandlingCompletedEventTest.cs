@@ -29,46 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static RecordHandlingCompletedEventTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<RecordHandlingCompletedEvent>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<RecordHandlingCompletedEvent>();
-
-                            var result = new RecordHandlingCompletedEvent(
-                                                 referenceObject.InternalRecordId,
-                                                 null,
-                                                 referenceObject.TimestampUtc,
-                                                 referenceObject.Details);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "concern", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<RecordHandlingCompletedEvent>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<RecordHandlingCompletedEvent>();
-
-                            var result = new RecordHandlingCompletedEvent(
-                                                 referenceObject.InternalRecordId,
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.TimestampUtc,
-                                                 referenceObject.Details);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                    });
         }
     }
 }

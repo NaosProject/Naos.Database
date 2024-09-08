@@ -32,6 +32,7 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
+            objectTypes.MustForArg(nameof(objectTypes)).NotContainAnyNullElementsWhenNotNull();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);

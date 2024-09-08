@@ -29,68 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static GetAllRecordsOpTObjectTest()
         {
-            ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetAllRecordsOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetAllRecordsOp<Version>>();
-
-                           var result = new GetAllRecordsOp<Version>(
-                               referenceObject.IdentifierType,
-                               referenceObject.VersionMatchStrategy,
-                               RecordNotFoundStrategy.Unknown,
-                               referenceObject.OrderRecordsBy,
-                               referenceObject.DeprecatedIdTypes);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown" },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetAllRecordsOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetAllRecordsOp<Version>>();
-
-                           var result = new GetAllRecordsOp<Version>(
-                               referenceObject.IdentifierType,
-                               referenceObject.VersionMatchStrategy,
-                               referenceObject.RecordNotFoundStrategy,
-                               OrderRecordsBy.Unknown,
-                               referenceObject.DeprecatedIdTypes);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "orderRecordsBy", "Unknown" },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetAllRecordsOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetAllRecordsOp<Version>>();
-
-                           var result = new GetAllRecordsOp<Version>(
-                               referenceObject.IdentifierType,
-                               referenceObject.VersionMatchStrategy,
-                               referenceObject.RecordNotFoundStrategy,
-                               referenceObject.OrderRecordsBy,
-                               new[] { A.Dummy<TypeRepresentation>(), null });
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentException),
-                       ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
-                   });
         }
     }
 }

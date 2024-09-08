@@ -31,10 +31,13 @@ namespace Naos.Database.Domain
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardUpdateHandlingStatusForStreamOp(
             HandlingStatus newStatus,
-            string details,
+            string details = null,
             IReadOnlyCollection<NamedValue<string>> tags = null,
             IResourceLocator specifiedResourceLocator = null)
         {
+            // This is redundant, but plays well with code gen:
+            newStatus.MustForArg(nameof(newStatus)).NotBeEqualTo(HandlingStatus.Unknown);
+
             newStatus.MustForArg(nameof(newStatus)).BeElementIn(new[] { HandlingStatus.DisabledForStream, HandlingStatus.AvailableByDefault });
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
 

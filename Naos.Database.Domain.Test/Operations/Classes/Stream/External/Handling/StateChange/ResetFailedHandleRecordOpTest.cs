@@ -30,45 +30,6 @@ namespace Naos.Database.Domain.Test
         static ResetFailedHandleRecordOpTest()
         {
             ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<ResetFailedHandleRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'concern' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<ResetFailedHandleRecordOp>();
-
-                            var result = new ResetFailedHandleRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 null,
-                                                 referenceObject.Details,
-                                                 referenceObject.Tags);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "concern", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<ResetFailedHandleRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'concern' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<ResetFailedHandleRecordOp>();
-
-                            var result = new ResetFailedHandleRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.Details,
-                                                 referenceObject.Tags);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "concern", "white space", },
-                    })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<ResetFailedHandleRecordOp>
                     {
@@ -87,63 +48,6 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "concern", "is reserved for internal use and may not be used", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<ResetFailedHandleRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<ResetFailedHandleRecordOp>();
-
-                            var result = new ResetFailedHandleRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.Concern,
-                                                 null,
-                                                 referenceObject.Tags);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "details", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<ResetFailedHandleRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<ResetFailedHandleRecordOp>();
-
-                            var result = new ResetFailedHandleRecordOp(
-                                                 referenceObject.InternalRecordId,
-                                                 referenceObject.Concern,
-                                                 Invariant($"  {Environment.NewLine}  "),
-                                                 referenceObject.Tags);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<ResetFailedHandleRecordOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<ResetFailedHandleRecordOp>();
-
-                            var result = new ResetFailedHandleRecordOp(
-                                referenceObject.InternalRecordId,
-                                referenceObject.Concern,
-                                referenceObject.Details,
-                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() });
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
                     });
         }
     }

@@ -18,6 +18,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type;
     using Xunit;
 
     using static System.FormattableString;
@@ -30,26 +31,45 @@ namespace Naos.Database.Domain.Test
         static DoesAnyExistByIdOpTIdTest()
         {
             ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element.",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+                .RemoveAllScenarios()
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
 
-                           var result = new DoesAnyExistByIdOp<Version>(
-                               referenceObject.Id,
-                               referenceObject.ObjectType,
-                               referenceObject.VersionMatchStrategy,
-                               new[] { A.Dummy<TypeRepresentation>(), null });
+                            var result = new DoesAnyExistByIdOp<Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.ObjectType,
+                                                 VersionMatchStrategy.Unknown,
+                                                 referenceObject.DeprecatedIdTypes);
 
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentException),
-                       ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element" },
-                   });
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version>>();
+
+                            var result = new DoesAnyExistByIdOp<Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.ObjectType,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
+                    });
         }
     }
 }

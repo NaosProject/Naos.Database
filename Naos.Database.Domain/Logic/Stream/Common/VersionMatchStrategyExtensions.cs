@@ -7,6 +7,7 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
     /// <summary>
@@ -21,6 +22,8 @@ namespace Naos.Database.Domain
         public static void ThrowOnUnsupportedVersionMatchStrategyForType(
             this VersionMatchStrategy versionMatchStrategy)
         {
+            versionMatchStrategy.MustForArg(nameof(versionMatchStrategy)).NotBeEqualTo(VersionMatchStrategy.Unknown);
+
             if ((versionMatchStrategy != VersionMatchStrategy.Any) && (versionMatchStrategy != VersionMatchStrategy.SpecifiedVersion))
             {
                 throw new NotSupportedException(FormattableString.Invariant($"{nameof(VersionMatchStrategy)} {versionMatchStrategy} is not supported."));

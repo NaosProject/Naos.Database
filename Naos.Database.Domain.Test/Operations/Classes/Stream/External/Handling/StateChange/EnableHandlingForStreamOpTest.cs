@@ -29,59 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static EnableHandlingForStreamOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-                .RemoveAllScenarios()
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<EnableHandlingForStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<EnableHandlingForStreamOp>();
-
-                            var result = new EnableHandlingForStreamOp(
-                                null,
-                                referenceObject.Tags);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "details", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<EnableHandlingForStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<EnableHandlingForStreamOp>();
-
-                            var result = new EnableHandlingForStreamOp(
-                                Invariant($"  {Environment.NewLine}  "),
-                                referenceObject.Tags);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<EnableHandlingForStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'tags' contains a null element scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<EnableHandlingForStreamOp>();
-
-                            var result = new EnableHandlingForStreamOp(
-                                referenceObject.Details,
-                                new[] { A.Dummy<NamedValue<string>>(), null, A.Dummy<NamedValue<string>>() });
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "tags", "contains at least one null element", },
-                    });
         }
     }
 }

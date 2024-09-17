@@ -38,7 +38,7 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                                 typeof(TId).ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -110,7 +110,7 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                                 typeof(TId).ToRepresentation()),
                          },
                     objectTypes: new[]
                                  {
@@ -220,7 +220,7 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                                 typeof(TId).ToRepresentation()),
                          },
                     objectTypes: new[]
                                  {
@@ -261,7 +261,7 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                                 typeof(TId).ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -304,7 +304,7 @@ namespace Naos.Database.Domain
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 (operation.Id?.GetType() ?? typeof(TId)).ToRepresentation()),
+                                 typeof(TId).ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null

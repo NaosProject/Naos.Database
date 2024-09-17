@@ -29,7 +29,7 @@ namespace Naos.Database.Domain
 
             var identifierSerializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
             var serializedIdentifier = identifierSerializer.SerializeToString(id);
-            var result = new StringSerializedIdentifier(serializedIdentifier, (id?.GetType() ?? typeof(TId)).ToRepresentation());
+            var result = new StringSerializedIdentifier(serializedIdentifier, typeof(TId).ToRepresentation());
 
             return result;
         }

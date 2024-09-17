@@ -1534,6 +1534,38 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void GetAllObjectsById_TId_TObject___Should_get_all_matching_objects___When_TObject_is_base_class_type()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(
+                    SerializationKind.Json,
+                    typeof(TypesToRegisterJsonSerializationConfiguration<MyBaseClass, MyDerivedClass1, MyDerivedClass2>).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var id = A.Dummy<string>();
+
+            var expected = A.Dummy<MyDerivedClass2>();
+
+            stream.PutWithId<string, MyBaseClass>(id, A.Dummy<MyDerivedClass1>(), existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundByIdAndType, recordRetentionCount: 0);
+            stream.PutWithId<string, MyBaseClass>(id, expected, existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundByIdAndType, recordRetentionCount: 0);
+
+            // Act
+            var actual = stream.GetAllObjectsById<string, MyBaseClass>(id);
+
+            // Assert
+            actual.AsTest().Must().HaveCount(1);
+            var actualBaseClass = actual.Single();
+            actualBaseClass.AsTest().Must().BeOfType<MyDerivedClass2>();
+            var actualDerivedClass = (MyDerivedClass2)actualBaseClass;
+            actualDerivedClass.Id.Must().BeEqualTo(expected.Id);
+            actualDerivedClass.Name.Must().BeEqualTo(expected.Name);
+            actualDerivedClass.Derived2Property.Must().BeEqualTo(expected.Derived2Property);
+        }
+
+        [Fact]
         public static async Task ExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock_until_action_is_run___When_multiple_callers_require_mutex()
         {
             // Arrange
@@ -1667,5 +1699,48 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
         /// <inheritdoc />
         public IReadOnlyCollection<NamedValue<string>> Tags => new List<NamedValue<string>>();
+    }
+
+    public class MyBaseClass
+    {
+        public MyBaseClass(
+            string id,
+            string name)
+        {
+            this.Id = id;
+            this.Name = name;
+        }
+
+        public string Id { get; private set; }
+
+        public string Name { get; private set; }
+    }
+
+    public class MyDerivedClass1 : MyBaseClass
+    {
+        public MyDerivedClass1(
+            string id,
+            string name,
+            string derived1Property)
+        : base(id, name)
+        {
+            this.Derived1Property = derived1Property;
+        }
+
+        public string Derived1Property { get; private set; }
+    }
+
+    public class MyDerivedClass2 : MyBaseClass
+    {
+        public MyDerivedClass2(
+            string id,
+            string name,
+            decimal derived2Property)
+            : base(id, name)
+        {
+            this.Derived2Property = derived2Property;
+        }
+
+        public decimal Derived2Property { get; private set; }
     }
 }

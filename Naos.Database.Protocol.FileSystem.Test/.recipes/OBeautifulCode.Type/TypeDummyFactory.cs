@@ -71,6 +71,19 @@ namespace OBeautifulCode.Type.Test
                 return result;
             });
 
+            // Range<T>
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var start = A.Dummy<Version>();
+
+                    var end = A.Dummy<Version>().ThatIs(_ => _ >= start);
+
+                    var result = new Range<Version>(start, end);
+
+                    return result;
+                });
+
             // Type
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

@@ -115,13 +115,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                     {
                         new StringSerializedIdentifier(
                             serializedObjectId,
-                            typeof(TId).ToRepresentation()),
+                            typeOfId.ToRepresentation()),
                     },
                     objectTypes: (operation.ObjectType == null)
                         ? null
@@ -220,13 +222,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                     {
                         new StringSerializedIdentifier(
                             serializedObjectId,
-                            typeof(TId).ToRepresentation()),
+                            typeOfId.ToRepresentation()),
                     },
                     objectTypes: (operation.ObjectType == null)
                         ? null

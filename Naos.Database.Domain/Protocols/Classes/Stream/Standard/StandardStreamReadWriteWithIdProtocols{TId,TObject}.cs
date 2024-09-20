@@ -55,7 +55,8 @@ namespace Naos.Database.Domain
                 operation.Tags,
                 operation.ExistingRecordStrategy,
                 operation.RecordRetentionCount,
-                operation.VersionMatchStrategy);
+                operation.VersionMatchStrategy,
+                operation.TypeSelectionStrategy);
 
             this.Execute(delegatedOp);
         }
@@ -204,7 +205,8 @@ namespace Naos.Database.Domain
                 operation.VersionMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.OrderRecordsBy,
-                operation.DeprecatedIdTypes);
+                operation.DeprecatedIdTypes,
+                operation.TypeSelectionStrategy);
 
             var records = this.stream.GetStreamReadingWithIdProtocols<TId>().Execute(delegatedOperation);
 

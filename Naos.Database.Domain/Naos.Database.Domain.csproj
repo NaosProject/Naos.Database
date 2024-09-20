@@ -202,6 +202,7 @@
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
     <Compile Include="Logic\Stream\Common\RecordFilterExtensions.cs" />
+    <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.Mutex.cs" />
     <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />

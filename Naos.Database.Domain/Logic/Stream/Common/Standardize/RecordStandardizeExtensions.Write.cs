@@ -94,9 +94,9 @@ namespace Naos.Database.Domain
 
             var serializedStringId = serializer.SerializeToString(operation.Id);
 
-            var identifierTypeRep = typeof(TId).ToRepresentation();
+            var identifierTypeRep = operation.TypeSelectionStrategy.Apply(operation.Id).ToRepresentation();
 
-            var objectTypeRep = typeof(TObject).ToRepresentation();
+            var objectTypeRep = operation.TypeSelectionStrategy.Apply(operation.ObjectToPut).ToRepresentation();
 
             var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
                 stream.DefaultSerializerRepresentation,

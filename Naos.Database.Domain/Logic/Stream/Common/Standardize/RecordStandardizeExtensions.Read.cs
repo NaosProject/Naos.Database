@@ -32,13 +32,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var result = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 typeof(TId).ToRepresentation()),
+                                 typeOfId.ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -76,7 +78,8 @@ namespace Naos.Database.Domain
                 operation.Id,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
-                operation.DeprecatedIdTypes);
+                operation.DeprecatedIdTypes,
+                operation.TypeSelectionStrategy);
 
             var result = delegatedOperation.Standardize(serializer, specifiedResourceLocator);
 
@@ -104,13 +107,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 typeof(TId).ToRepresentation()),
+                                 typeOfId.ToRepresentation()),
                          },
                     objectTypes: new[]
                                  {
@@ -214,13 +219,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 typeof(TId).ToRepresentation()),
+                                 typeOfId.ToRepresentation()),
                          },
                     objectTypes: new[]
                                  {
@@ -255,13 +262,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 typeof(TId).ToRepresentation()),
+                                 typeOfId.ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -298,13 +307,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                          {
                              new StringSerializedIdentifier(
                                  serializedObjectId,
-                                 typeof(TId).ToRepresentation()),
+                                 typeOfId.ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -377,11 +388,15 @@ namespace Naos.Database.Domain
 
             var serializedObjectId = serializer.SerializeToString(operation.Id);
 
+            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+
             var result = new StandardGetLatestStringSerializedObjectOp(
                 new RecordFilter(
                     ids: new[]
                          {
-                             new StringSerializedIdentifier(serializedObjectId, typeof(TId).ToRepresentation()),
+                             new StringSerializedIdentifier(
+                                 serializedObjectId,
+                                 typeOfId.ToRepresentation()),
                          },
                     objectTypes: operation.ObjectType == null
                         ? null

@@ -25,17 +25,19 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = NaosSuppressBecause.CA1004_GenericMethodsShouldProvideTypeParameter_OnlyInputsToMethodAreTypesAndItsMoreConciseToCallMethodUseGenericTypeParameters)]
         public static bool DoesAnyExistById<TId, TObject>(
             this IReadOnlyStream stream,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -51,6 +53,7 @@ namespace Naos.Database.Domain
         /// <param name="objectType">OPTIONAL type of the object to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = NaosSuppressBecause.CA1004_GenericMethodsShouldProvideTypeParameter_OnlyInputsToMethodAreTypesAndItsMoreConciseToCallMethodUseGenericTypeParameters)]
         public static async Task<bool> DoesAnyExistByIdAsync<TId, TObject>(
@@ -58,11 +61,12 @@ namespace Naos.Database.Domain
             TId id,
             TypeRepresentation objectType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -77,16 +81,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId, TObject>(
             this IStreamReadWithIdProtocols<TId, TObject> protocol,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -100,16 +106,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId, TObject>(
             this IStreamReadWithIdProtocols<TId, TObject> protocol,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -123,16 +131,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId, TObject>(
             this ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId, TObject>, bool> protocol,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -146,16 +156,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId, TObject>(
             this ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId, TObject>, bool> protocol,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -169,16 +181,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId, TObject>(
             this IDoesAnyExistById<TId, TObject> protocol,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -192,16 +206,18 @@ namespace Naos.Database.Domain
         /// <param name="id">The identifier of the object.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId, TObject>(
             this IDoesAnyExistById<TId, TObject> protocol,
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes);
+            var operation = new DoesAnyExistByIdOp<TId, TObject>(id, versionMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

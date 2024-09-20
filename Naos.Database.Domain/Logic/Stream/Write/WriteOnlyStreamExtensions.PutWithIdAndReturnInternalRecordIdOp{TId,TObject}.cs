@@ -25,6 +25,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static long? PutWithIdAndReturnInternalRecordId<TId, TObject>(
             this IWriteOnlyStream stream,
@@ -33,11 +34,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -55,6 +57,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static async Task<long?> PutWithIdAndReturnInternalRecordIdAsync<TId, TObject>(
             this IWriteOnlyStream stream,
@@ -63,11 +66,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var protocol = stream.GetStreamWritingWithIdProtocols<TId, TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -85,6 +89,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static long? PutWithIdAndReturnInternalRecordId<TId, TObject>(
             this IStreamWriteWithIdProtocols<TId, TObject> protocol,
@@ -93,11 +98,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -114,6 +120,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static async Task<long?> PutWithIdAndReturnInternalRecordIdAsync<TId, TObject>(
             this IStreamWriteWithIdProtocols<TId, TObject> protocol,
@@ -122,11 +129,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -143,6 +151,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static long? PutWithIdAndReturnInternalRecordId<TId, TObject>(
             this ISyncAndAsyncReturningProtocol<PutWithIdAndReturnInternalRecordIdOp<TId, TObject>, long?> protocol,
@@ -151,11 +160,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -172,6 +182,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static async Task<long?> PutWithIdAndReturnInternalRecordIdAsync<TId, TObject>(
             this ISyncAndAsyncReturningProtocol<PutWithIdAndReturnInternalRecordIdOp<TId, TObject>, long?> protocol,
@@ -180,11 +191,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -201,6 +213,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static long? PutWithIdAndReturnInternalRecordId<TId, TObject>(
             this IPutWithIdAndReturnInternalRecordId<TId, TObject> protocol,
@@ -209,11 +222,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -230,6 +244,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The internal record identifier or null if the object wasn't written.</returns>
         public static async Task<long?> PutWithIdAndReturnInternalRecordIdAsync<TId, TObject>(
             this IPutWithIdAndReturnInternalRecordId<TId, TObject> protocol,
@@ -238,11 +253,12 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy);
+            var operation = new PutWithIdAndReturnInternalRecordIdOp<TId, TObject>(id, objectToPut, tags, existingRecordStrategy, recordRetentionCount, versionMatchStrategy, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

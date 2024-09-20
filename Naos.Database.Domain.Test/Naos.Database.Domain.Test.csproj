@@ -269,6 +269,7 @@
     <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.designer.cs">
       <DependentUpon>ChecksPerformedEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensionsTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOpTest.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOpTest.cs</DependentUpon>

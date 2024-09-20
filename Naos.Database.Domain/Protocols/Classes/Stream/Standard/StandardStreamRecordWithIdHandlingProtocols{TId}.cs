@@ -83,8 +83,6 @@ namespace Naos.Database.Domain
 
             var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
 
-            var identifierType = typeof(TId).ToRepresentation();
-
             var items = new List<Tuple<IResourceLocator, StringSerializedIdentifier>>();
 
             foreach (var id in operation.IdsToMatch)
@@ -92,6 +90,8 @@ namespace Naos.Database.Domain
                 var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(id));
 
                 var stringSerializedId = serializer.SerializeToString(id);
+
+                var identifierType = operation.TypeSelectionStrategy.Apply(id).ToRepresentation();
 
                 var identified = new StringSerializedIdentifier(stringSerializedId, identifierType);
 

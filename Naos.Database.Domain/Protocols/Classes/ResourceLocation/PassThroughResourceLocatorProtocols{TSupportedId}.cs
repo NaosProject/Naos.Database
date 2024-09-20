@@ -18,6 +18,11 @@ namespace Naos.Database.Domain
     /// Generic <see cref="IResourceLocatorProtocols"/> implementation to easily contain sharding logic.
     /// </summary>
     /// <typeparam name="TSupportedId">Supported identifier type.</typeparam>
+    /// <remarks>
+    /// Implementation of <see cref="IResourceLocator"/> protocols to be provided to a stream that satisfies the contract
+    /// while allowing multiple locators of any type to be supplied and a selection function for choosing said locator by id.
+    /// todo: seems like getResourceLocatorByIdOpFunc should just be a protocol, not a func.
+    /// </remarks>
     public class PassThroughResourceLocatorProtocols<TSupportedId>
         : IResourceLocatorProtocols
     {
@@ -55,7 +60,8 @@ namespace Naos.Database.Domain
         public Func<GetResourceLocatorByIdOp<TSupportedId>, IResourceLocator> GetResourceLocatorByIdOpFunc { get; private set; }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<IResourceLocator> Execute(GetAllResourceLocatorsOp operation)
+        public IReadOnlyCollection<IResourceLocator> Execute(
+            GetAllResourceLocatorsOp operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 

@@ -22,18 +22,22 @@ namespace Naos.Database.Domain
         /// <param name="concern">The record handling concern.</param>
         /// <param name="idsToMatch">The object identifiers to match.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         public GetCompositeHandlingStatusByIdsOp(
             string concern,
             IReadOnlyCollection<TId> idsToMatch,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             concern.ThrowIfInvalidOrReservedConcern();
             idsToMatch.MustForArg(nameof(idsToMatch)).NotBeNullNorEmptyEnumerableNorContainAnyNulls();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            typeSelectionStrategy.MustForArg(nameof(typeSelectionStrategy)).NotBeEqualTo(TypeSelectionStrategy.Unknown);
 
             this.Concern = concern;
             this.IdsToMatch = idsToMatch;
             this.VersionMatchStrategy = versionMatchStrategy;
+            this.TypeSelectionStrategy = typeSelectionStrategy;
         }
 
         /// <inheritdoc />
@@ -48,5 +52,10 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).
+        /// </summary>
+        public TypeSelectionStrategy TypeSelectionStrategy { get; private set; }
     }
 }

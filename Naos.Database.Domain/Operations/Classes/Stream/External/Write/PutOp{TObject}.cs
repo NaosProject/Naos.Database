@@ -24,12 +24,14 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         public PutOp(
             TObject objectToPut,
             IReadOnlyCollection<NamedValue<string>> tags = null,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
-            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any)
+            VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             tags.MustForArg(nameof(tags)).NotContainAnyNullElementsWhenNotNull();
             existingRecordStrategy.MustForArg(nameof(existingRecordStrategy)).NotBeEqualTo(ExistingRecordStrategy.Unknown);
@@ -44,12 +46,14 @@ namespace Naos.Database.Domain
             }
 
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            typeSelectionStrategy.MustForArg(nameof(typeSelectionStrategy)).NotBeEqualTo(TypeSelectionStrategy.Unknown);
 
             this.ObjectToPut = objectToPut;
             this.Tags = tags;
             this.ExistingRecordStrategy = existingRecordStrategy;
             this.RecordRetentionCount = recordRetentionCount;
             this.VersionMatchStrategy = versionMatchStrategy;
+            this.TypeSelectionStrategy = typeSelectionStrategy;
         }
 
         /// <summary>
@@ -74,5 +78,10 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).
+        /// </summary>
+        public TypeSelectionStrategy TypeSelectionStrategy { get; private set; }
     }
 }

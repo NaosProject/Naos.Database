@@ -53,7 +53,8 @@ namespace Naos.Database.Domain
                 operation.Tags,
                 operation.ExistingRecordStrategy,
                 operation.RecordRetentionCount,
-                operation.VersionMatchStrategy);
+                operation.VersionMatchStrategy,
+                operation.TypeSelectionStrategy);
 
             this.Execute(delegatedOp);
         }
@@ -79,7 +80,8 @@ namespace Naos.Database.Domain
                 operation.Tags,
                 operation.ExistingRecordStrategy,
                 operation.RecordRetentionCount,
-                operation.VersionMatchStrategy);
+                operation.VersionMatchStrategy,
+                operation.TypeSelectionStrategy);
 
             var result = this.delegatedWithIdProtocols.Execute(delegatedOp);
 

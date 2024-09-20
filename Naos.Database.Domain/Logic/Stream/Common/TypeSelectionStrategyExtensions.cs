@@ -32,6 +32,17 @@ namespace Naos.Database.Domain
 
             Type result;
 
+            // If the declared type is NullIdentifier, then there's no such thing as a runtime type.
+            // The item, at runtime, is always expected to be null and thus GetType() will throw.
+            // NullIdentifier is a placeholder type to be used when you put an object without an id.
+            // In this scenario, you always want to use the declared type for NullIdentifier,
+            // but you may also be using TypeSelectionStrategy.UseRuntimeType to target the type to use for
+            // the object your put putting.
+            if (typeof(TDeclared) == typeof(NullIdentifier))
+            {
+                return typeof(NullIdentifier);
+            }
+
             if (strategy == TypeSelectionStrategy.UseDeclaredType)
             {
                 result = typeof(TDeclared);

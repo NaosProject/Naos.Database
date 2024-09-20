@@ -37,6 +37,18 @@ namespace Naos.Database.Domain.Test
         }
 
         [Fact]
+        public static void Apply___Should_return_type_of_NullIdentifier_regardless_of_strategy___When_parameter_TDeclared_is_NullIdentifier()
+        {
+            // Arrange, Act
+            var actual1 = TypeSelectionStrategy.UseRuntimeType.Apply<NullIdentifier>(null);
+            var actual2 = TypeSelectionStrategy.UseDeclaredType.Apply<NullIdentifier>(null);
+
+            // Assert
+            actual1.AsTest().Must().BeEqualTo(typeof(NullIdentifier));
+            actual2.AsTest().Must().BeEqualTo(typeof(NullIdentifier));
+        }
+
+        [Fact]
         public static void Apply___Should_return_runtime_type_of_item___When_parameter_strategy_is_UseRuntimeType()
         {
             // Arrange, Act

@@ -389,7 +389,7 @@ namespace Naos.Protocol.FileSystem.Test
                 var stopwatch = new Stopwatch();
                 stopwatch.Reset();
                 stopwatch.Start();
-                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(zeroObject.Id, zeroObject));
+                stream.GetStreamWritingWithIdProtocols<string, MyObject>().Execute(new PutWithIdOp<string, MyObject>(zeroObject.Id, zeroObject, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType));
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
@@ -934,8 +934,8 @@ namespace Naos.Protocol.FileSystem.Test
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
-            stream.PutWithId((string)null, (MyObject)null);
-            var result = stream.GetLatestObjectById<string, MyObject>(null);
+            stream.PutWithId((string)null, (MyObject)null, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
+            var result = stream.GetLatestObjectById<string, MyObject>(null, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
             result.MustForTest().BeNull();
 
             var concern = "NullIdentifierAndValueTest";

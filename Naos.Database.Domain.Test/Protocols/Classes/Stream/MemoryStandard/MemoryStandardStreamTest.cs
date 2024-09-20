@@ -379,7 +379,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 var stopwatch = new Stopwatch();
                 stopwatch.Reset();
                 stopwatch.Start();
-                stream.PutWithId(zeroObject.Id, zeroObject);
+                stream.PutWithId(zeroObject.Id, zeroObject, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
                 stopwatch.Stop();
                 this.testOutputHelper.WriteLine(FormattableString.Invariant($"Put: {stopwatch.Elapsed.TotalMilliseconds} ms"));
                 stopwatch.Reset();
@@ -1061,8 +1061,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
-            stream.PutWithId((string)null, (MyObject)null);
-            var result = stream.GetLatestObjectById<string, MyObject>(null);
+            stream.PutWithId((string)null, (MyObject)null, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
+            var result = stream.GetLatestObjectById<string, MyObject>(null, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
             result.MustForTest().BeNull();
 
             var concern = "NullIdentifierAndValueTest";
@@ -1534,7 +1534,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void GetAllObjectsById_TId_TObject___Should_get_all_matching_objects___When_TObject_is_base_class_type()
+        public static void GetAllObjectsById_TId_TObject___Should_get_all_matching_objects___When_TObject_is_base_class_type_and_TypeSelectionStrategy_is_UseDeclaredType()
         {
             // Arrange
             var stream = new MemoryStandardStream(
@@ -1549,8 +1549,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var expected = A.Dummy<MyDerivedClass2>();
 
-            stream.PutWithId<string, MyBaseClass>(id, A.Dummy<MyDerivedClass1>(), existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundByIdAndType, recordRetentionCount: 0);
-            stream.PutWithId<string, MyBaseClass>(id, expected, existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundByIdAndType, recordRetentionCount: 0);
+            stream.PutWithId<string, MyBaseClass>(id, A.Dummy<MyDerivedClass1>(), existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundByIdAndType, recordRetentionCount: 0, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
+            stream.PutWithId<string, MyBaseClass>(id, expected, existingRecordStrategy: ExistingRecordStrategy.PruneIfFoundByIdAndType, recordRetentionCount: 0, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
 
             // Act
             var actual = stream.GetAllObjectsById<string, MyBaseClass>(id);

@@ -38,9 +38,9 @@ namespace Naos.Database.Domain
                 result = internalRecordId <= pruneStreamOp.InternalRecordId;
             }
 
-            if (((result == null) || (result == true)) && (pruneStreamOp.InternalRecordDate != null))
+            if (((result == null) || (result == true)) && (pruneStreamOp.RecordTimestampUtc != null))
             {
-                result = recordTimestampUtc <= pruneStreamOp.InternalRecordDate;
+                result = recordTimestampUtc <= pruneStreamOp.RecordTimestampUtc;
             }
 
             return result ?? false;

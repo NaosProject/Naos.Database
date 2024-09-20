@@ -33,7 +33,7 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
                     {
-                        Name = "constructor should throw ArgumentException when parameters 'internalRecordId' and 'internalRecordDate' are null scenario",
+                        Name = "constructor should throw ArgumentException when parameters 'internalRecordId' and 'recordTimestampUtc' are null scenario",
                         ConstructionFunc = () =>
                         {
                             var referenceObject = A.Dummy<StandardPruneStreamOp>();
@@ -47,26 +47,7 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "Either 'internalRecordId' or 'internalRecordDate' must be specified", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'internalRecordDate' is not in UTC scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<StandardPruneStreamOp>();
-
-                            var result = new StandardPruneStreamOp(
-                                referenceObject.InternalRecordId,
-                                A.Dummy<DateTime>().Whose(_ => _.Kind != DateTimeKind.Utc),
-                                referenceObject.Details,
-                                referenceObject.SpecifiedResourceLocator);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "internalRecordDate", "Timestamp must be UTC", },
+                        ExpectedExceptionMessageContains = new[] { "Either 'internalRecordId' or 'recordTimestampUtc' must be specified", },
                     });
         }
     }

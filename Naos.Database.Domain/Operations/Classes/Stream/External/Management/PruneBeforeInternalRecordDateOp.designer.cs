@@ -69,7 +69,7 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.InternalRecordDate.IsEqualTo(other.InternalRecordDate)
+            var result = this.RecordTimestampUtc.IsEqualTo(other.RecordTimestampUtc)
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal);
 
             return result;
@@ -80,7 +80,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.InternalRecordDate)
+            .Hash(this.RecordTimestampUtc)
             .Hash(this.Details)
             .Value;
 
@@ -88,10 +88,10 @@ namespace Naos.Database.Domain
         public new PruneBeforeInternalRecordDateOp DeepClone() => (PruneBeforeInternalRecordDateOp)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="InternalRecordDate" />.
+        /// Deep clones this object with a new <see cref="RecordTimestampUtc" />.
         /// </summary>
-        /// <param name="internalRecordDate">The new <see cref="InternalRecordDate" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="PruneBeforeInternalRecordDateOp" /> using the specified <paramref name="internalRecordDate" /> for <see cref="InternalRecordDate" /> and a deep clone of every other property.</returns>
+        /// <param name="recordTimestampUtc">The new <see cref="RecordTimestampUtc" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="PruneBeforeInternalRecordDateOp" /> using the specified <paramref name="recordTimestampUtc" /> for <see cref="RecordTimestampUtc" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -109,10 +109,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public PruneBeforeInternalRecordDateOp DeepCloneWithInternalRecordDate(DateTime internalRecordDate)
+        public PruneBeforeInternalRecordDateOp DeepCloneWithRecordTimestampUtc(DateTime recordTimestampUtc)
         {
             var result = new PruneBeforeInternalRecordDateOp(
-                                 internalRecordDate,
+                                 recordTimestampUtc,
                                  this.Details?.DeepClone());
 
             return result;
@@ -143,7 +143,7 @@ namespace Naos.Database.Domain
         public PruneBeforeInternalRecordDateOp DeepCloneWithDetails(string details)
         {
             var result = new PruneBeforeInternalRecordDateOp(
-                                 this.InternalRecordDate.DeepClone(),
+                                 this.RecordTimestampUtc.DeepClone(),
                                  details);
 
             return result;
@@ -154,7 +154,7 @@ namespace Naos.Database.Domain
         protected override OperationBase DeepCloneInternal()
         {
             var result = new PruneBeforeInternalRecordDateOp(
-                                 this.InternalRecordDate.DeepClone(),
+                                 this.RecordTimestampUtc.DeepClone(),
                                  this.Details?.DeepClone());
 
             return result;
@@ -164,7 +164,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: InternalRecordDate = {this.InternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: RecordTimestampUtc = {this.RecordTimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }

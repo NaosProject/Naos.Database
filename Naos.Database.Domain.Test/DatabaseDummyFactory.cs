@@ -186,26 +186,6 @@ namespace Naos.Database.Domain.Test
 
             // ------------------------------- OPERATIONS -------------------------------------
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var result = new PruneAfterInternalRecordDateOp(A.Dummy<UtcDateTime>(), A.Dummy<string>());
-
-                    return result;
-                });
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new PruneBeforeInternalRecordDateOp(
-                    A.Dummy<UtcDateTime>(),
-                    A.Dummy<string>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StandardPruneStreamOp(
-                    A.Dummy<long>(),
-                    A.Dummy<UtcDateTime>(),
-                    A.Dummy<string>(),
-                    A.Dummy<IResourceLocator>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardUpdateHandlingStatusForRecordOp(
                     A.Dummy<long>(),
                     A.Dummy<string>(),

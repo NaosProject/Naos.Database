@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: InternalRecordDate = {systemUnderTest.InternalRecordDate.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.PruneBeforeInternalRecordDateOp: RecordTimestampUtc = {systemUnderTest.RecordTimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -59,13 +59,47 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
                 {
+                    Name = "constructor should throw ArgumentException when parameter 'recordTimestampUtc' is not a UTC DateTime (it's Local)",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
+
+                        var result = new PruneBeforeInternalRecordDateOp(
+                                             DateTime.Now,
+                                             referenceObject.Details);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "recordTimestampUtc", "Kind that is not DateTimeKind.Utc", "DateTimeKind.Local" },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'recordTimestampUtc' is not a UTC DateTime (it's Unspecified)",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
+
+                        var result = new PruneBeforeInternalRecordDateOp(
+                                             DateTime.UtcNow.ToUnspecified(),
+                                             referenceObject.Details);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "recordTimestampUtc", "Kind that is not DateTimeKind.Utc", "DateTimeKind.Unspecified" },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
+                {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                         var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.InternalRecordDate,
+                                             referenceObject.RecordTimestampUtc,
                                              null);
 
                         return result;
@@ -82,7 +116,7 @@ namespace Naos.Database.Domain.Test
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
                         var result = new PruneBeforeInternalRecordDateOp(
-                                             referenceObject.InternalRecordDate,
+                                             referenceObject.RecordTimestampUtc,
                                              Invariant($"  {Environment.NewLine}  "));
 
                         return result;
@@ -95,7 +129,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordDateOp>
                 {
-                    Name = "InternalRecordDate should return same 'internalRecordDate' parameter passed to constructor when getting",
+                    Name = "RecordTimestampUtc should return same 'recordTimestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
@@ -103,14 +137,14 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
-                                                      referenceObject.InternalRecordDate,
+                                                      referenceObject.RecordTimestampUtc,
                                                       referenceObject.Details),
-                            ExpectedPropertyValue = referenceObject.InternalRecordDate,
+                            ExpectedPropertyValue = referenceObject.RecordTimestampUtc,
                         };
 
                         return result;
                     },
-                    PropertyName = "InternalRecordDate",
+                    PropertyName = "RecordTimestampUtc",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<PruneBeforeInternalRecordDateOp>
@@ -123,7 +157,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = new PruneBeforeInternalRecordDateOp(
-                                                      referenceObject.InternalRecordDate,
+                                                      referenceObject.RecordTimestampUtc,
                                                       referenceObject.Details),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
@@ -137,18 +171,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<PruneBeforeInternalRecordDateOp>
                 {
-                    Name = "DeepCloneWithInternalRecordDate should deep clone object and replace InternalRecordDate with the provided internalRecordDate",
-                    WithPropertyName = "InternalRecordDate",
+                    Name = "DeepCloneWithRecordTimestampUtc should deep clone object and replace RecordTimestampUtc with the provided recordTimestampUtc",
+                    WithPropertyName = "RecordTimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<PruneBeforeInternalRecordDateOp>();
 
-                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>().ThatIs(_ => !systemUnderTest.InternalRecordDate.IsEqualTo(_.InternalRecordDate));
+                        var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>().ThatIs(_ => !systemUnderTest.RecordTimestampUtc.IsEqualTo(_.RecordTimestampUtc));
 
                         var result = new SystemUnderTestDeepCloneWithValue<PruneBeforeInternalRecordDateOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.InternalRecordDate,
+                            DeepCloneWithValue = referenceObject.RecordTimestampUtc,
                         };
 
                         return result;
@@ -186,16 +220,16 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new PruneBeforeInternalRecordDateOp[]
                     {
                         new PruneBeforeInternalRecordDateOp(
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new PruneBeforeInternalRecordDateOp[]
                     {
                         new PruneBeforeInternalRecordDateOp(
-                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.InternalRecordDate.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordDate)).InternalRecordDate,
+                                A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.RecordTimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc)).RecordTimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details),
                         new PruneBeforeInternalRecordDateOp(
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc,
                                 A.Dummy<PruneBeforeInternalRecordDateOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -569,7 +603,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "InternalRecordDate", "Details" };
+                var propertyNames = new string[] { "RecordTimestampUtc", "Details" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

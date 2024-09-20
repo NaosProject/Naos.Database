@@ -27,29 +27,25 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StandardPruneStreamOp"/> class.
         /// </summary>
         /// <param name="internalRecordId">The internal record identifier to use; all records older will be pruned.</param>
-        /// <param name="internalRecordDate">The internal record date to use; all records older will be pruned.</param>
+        /// <param name="recordTimestampUtc">The internal record date to use; all records older will be pruned.</param>
         /// <param name="details">Details about the operation.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardPruneStreamOp(
             long? internalRecordId,
-            DateTime? internalRecordDate,
+            DateTime? recordTimestampUtc,
             string details,
             IResourceLocator specifiedResourceLocator = null)
         {
-            if ((internalRecordId == null) && (internalRecordDate == null))
+            if ((internalRecordId == null) && (recordTimestampUtc == null))
             {
-                throw new ArgumentException(Invariant($"Either '{nameof(internalRecordId)}' or '{nameof(internalRecordDate)}' must be specified."));
+                throw new ArgumentException(Invariant($"Either '{nameof(internalRecordId)}' or '{nameof(recordTimestampUtc)}' must be specified."));
             }
 
-            if (internalRecordDate != null)
-            {
-                internalRecordDate.Value.Kind.MustForArg(Invariant($"{nameof(internalRecordDate)}.{nameof(internalRecordDate.Value.Kind)}")).BeEqualTo(DateTimeKind.Utc, "Timestamp must be UTC.");
-            }
-
+            recordTimestampUtc.MustForArg(nameof(recordTimestampUtc)).BeUtcDateTimeWhenNotNull();
             details.MustForArg(nameof(details)).NotBeNullNorWhiteSpace();
 
             this.InternalRecordId = internalRecordId;
-            this.InternalRecordDate = internalRecordDate;
+            this.RecordTimestampUtc = recordTimestampUtc;
             this.Details = details;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
@@ -62,7 +58,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the internal record date to use, all records older will be pruned.
         /// </summary>
-        public DateTime? InternalRecordDate { get; private set; }
+        public DateTime? RecordTimestampUtc { get; private set; }
 
         /// <inheritdoc />
         public string Details { get; private set; }

@@ -29,59 +29,6 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static PruneBeforeInternalRecordDateOpTest()
         {
-            ConstructorArgumentValidationTestScenarios
-               .RemoveAllScenarios()
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'internalRecordDate' is not in UTC",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                           var result = new PruneBeforeInternalRecordDateOp(
-                               A.Dummy<DateTime>().Whose(_ => _.Kind != DateTimeKind.Utc),
-                               referenceObject.Details);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "Timestamp must be UTC", },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
-                   {
-                       Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                           var result = new PruneBeforeInternalRecordDateOp(
-                               referenceObject.InternalRecordDate,
-                               null);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentNullException),
-                       ExpectedExceptionMessageContains = new[] { "details", },
-                   })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<PruneBeforeInternalRecordDateOp>
-                   {
-                       Name = "constructor should throw ArgumentException when parameter 'details' is white space scenario",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<PruneBeforeInternalRecordDateOp>();
-
-                           var result = new PruneBeforeInternalRecordDateOp(
-                               referenceObject.InternalRecordDate,
-                               Invariant($"  {Environment.NewLine}  "));
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentException),
-                       ExpectedExceptionMessageContains = new[] { "details", "white space", },
-                   });
         }
     }
 }

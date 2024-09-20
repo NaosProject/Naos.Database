@@ -26,7 +26,7 @@ namespace Naos.Database.Domain
 
             var result = new StandardPruneStreamOp(
                 null,
-                operation.InternalRecordDate,
+                operation.RecordTimestampUtc,
                 operation.Details,
                 specifiedResourceLocator);
 

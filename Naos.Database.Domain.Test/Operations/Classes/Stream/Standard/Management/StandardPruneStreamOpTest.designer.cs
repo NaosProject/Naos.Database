@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardPruneStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardPruneStreamOp: InternalRecordId = {systemUnderTest.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordDate = {systemUnderTest.InternalRecordDate?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardPruneStreamOp: InternalRecordId = {systemUnderTest.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordTimestampUtc = {systemUnderTest.RecordTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -59,6 +59,44 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
                 {
+                    Name = "constructor should throw ArgumentException when parameter 'recordTimestampUtc' is not a UTC DateTime (it's Local)",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardPruneStreamOp>();
+
+                        var result = new StandardPruneStreamOp(
+                                             referenceObject.InternalRecordId,
+                                             DateTime.Now,
+                                             referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "recordTimestampUtc", "Kind that is not DateTimeKind.Utc", "DateTimeKind.Local" },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
+                {
+                    Name = "constructor should throw ArgumentException when parameter 'recordTimestampUtc' is not a UTC DateTime (it's Unspecified)",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardPruneStreamOp>();
+
+                        var result = new StandardPruneStreamOp(
+                                             referenceObject.InternalRecordId,
+                                             DateTime.UtcNow.ToUnspecified(),
+                                             referenceObject.Details,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "recordTimestampUtc", "Kind that is not DateTimeKind.Utc", "DateTimeKind.Unspecified" },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardPruneStreamOp>
+                {
                     Name = "constructor should throw ArgumentNullException when parameter 'details' is null scenario",
                     ConstructionFunc = () =>
                     {
@@ -66,7 +104,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardPruneStreamOp(
                                              referenceObject.InternalRecordId,
-                                             referenceObject.InternalRecordDate,
+                                             referenceObject.RecordTimestampUtc,
                                              null,
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -85,7 +123,7 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardPruneStreamOp(
                                              referenceObject.InternalRecordId,
-                                             referenceObject.InternalRecordDate,
+                                             referenceObject.RecordTimestampUtc,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.SpecifiedResourceLocator);
 
@@ -108,7 +146,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardPruneStreamOp(
                                                       referenceObject.InternalRecordId,
-                                                      referenceObject.InternalRecordDate,
+                                                      referenceObject.RecordTimestampUtc,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.InternalRecordId,
@@ -121,7 +159,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardPruneStreamOp>
                 {
-                    Name = "InternalRecordDate should return same 'internalRecordDate' parameter passed to constructor when getting",
+                    Name = "RecordTimestampUtc should return same 'recordTimestampUtc' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardPruneStreamOp>();
@@ -130,15 +168,15 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardPruneStreamOp(
                                                       referenceObject.InternalRecordId,
-                                                      referenceObject.InternalRecordDate,
+                                                      referenceObject.RecordTimestampUtc,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.InternalRecordDate,
+                            ExpectedPropertyValue = referenceObject.RecordTimestampUtc,
                         };
 
                         return result;
                     },
-                    PropertyName = "InternalRecordDate",
+                    PropertyName = "RecordTimestampUtc",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardPruneStreamOp>
@@ -152,7 +190,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardPruneStreamOp(
                                                       referenceObject.InternalRecordId,
-                                                      referenceObject.InternalRecordDate,
+                                                      referenceObject.RecordTimestampUtc,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.Details,
@@ -174,7 +212,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardPruneStreamOp(
                                                       referenceObject.InternalRecordId,
-                                                      referenceObject.InternalRecordDate,
+                                                      referenceObject.RecordTimestampUtc,
                                                       referenceObject.Details,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
@@ -209,18 +247,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardPruneStreamOp>
                 {
-                    Name = "DeepCloneWithInternalRecordDate should deep clone object and replace InternalRecordDate with the provided internalRecordDate",
-                    WithPropertyName = "InternalRecordDate",
+                    Name = "DeepCloneWithRecordTimestampUtc should deep clone object and replace RecordTimestampUtc with the provided recordTimestampUtc",
+                    WithPropertyName = "RecordTimestampUtc",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<StandardPruneStreamOp>();
 
-                        var referenceObject = A.Dummy<StandardPruneStreamOp>().ThatIs(_ => !systemUnderTest.InternalRecordDate.IsEqualTo(_.InternalRecordDate));
+                        var referenceObject = A.Dummy<StandardPruneStreamOp>().ThatIs(_ => !systemUnderTest.RecordTimestampUtc.IsEqualTo(_.RecordTimestampUtc));
 
                         var result = new SystemUnderTestDeepCloneWithValue<StandardPruneStreamOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.InternalRecordDate,
+                            DeepCloneWithValue = referenceObject.RecordTimestampUtc,
                         };
 
                         return result;
@@ -279,7 +317,7 @@ namespace Naos.Database.Domain.Test
                     {
                         new StandardPruneStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
@@ -287,22 +325,22 @@ namespace Naos.Database.Domain.Test
                     {
                         new StandardPruneStreamOp(
                                 A.Dummy<StandardPruneStreamOp>().Whose(_ => !_.InternalRecordId.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordId)).InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardPruneStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                A.Dummy<StandardPruneStreamOp>().Whose(_ => !_.InternalRecordDate.IsEqualTo(ReferenceObjectForEquatableTestScenarios.InternalRecordDate)).InternalRecordDate,
+                                A.Dummy<StandardPruneStreamOp>().Whose(_ => !_.RecordTimestampUtc.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc)).RecordTimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardPruneStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc,
                                 A.Dummy<StandardPruneStreamOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardPruneStreamOp(
                                 ReferenceObjectForEquatableTestScenarios.InternalRecordId,
-                                ReferenceObjectForEquatableTestScenarios.InternalRecordDate,
+                                ReferenceObjectForEquatableTestScenarios.RecordTimestampUtc,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<StandardPruneStreamOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
@@ -689,7 +727,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "InternalRecordId", "InternalRecordDate", "Details", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "InternalRecordId", "RecordTimestampUtc", "Details", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

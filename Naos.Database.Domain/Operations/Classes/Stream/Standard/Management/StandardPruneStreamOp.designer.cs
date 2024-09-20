@@ -70,7 +70,7 @@ namespace Naos.Database.Domain
             }
 
             var result = this.InternalRecordId.IsEqualTo(other.InternalRecordId)
-                      && this.InternalRecordDate.IsEqualTo(other.InternalRecordDate)
+                      && this.RecordTimestampUtc.IsEqualTo(other.RecordTimestampUtc)
                       && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
@@ -83,7 +83,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.InternalRecordId)
-            .Hash(this.InternalRecordDate)
+            .Hash(this.RecordTimestampUtc)
             .Hash(this.Details)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
@@ -117,7 +117,7 @@ namespace Naos.Database.Domain
         {
             var result = new StandardPruneStreamOp(
                                  internalRecordId,
-                                 this.InternalRecordDate?.DeepClone(),
+                                 this.RecordTimestampUtc?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -125,10 +125,10 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="InternalRecordDate" />.
+        /// Deep clones this object with a new <see cref="RecordTimestampUtc" />.
         /// </summary>
-        /// <param name="internalRecordDate">The new <see cref="InternalRecordDate" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardPruneStreamOp" /> using the specified <paramref name="internalRecordDate" /> for <see cref="InternalRecordDate" /> and a deep clone of every other property.</returns>
+        /// <param name="recordTimestampUtc">The new <see cref="RecordTimestampUtc" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardPruneStreamOp" /> using the specified <paramref name="recordTimestampUtc" /> for <see cref="RecordTimestampUtc" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -146,11 +146,11 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardPruneStreamOp DeepCloneWithInternalRecordDate(DateTime? internalRecordDate)
+        public StandardPruneStreamOp DeepCloneWithRecordTimestampUtc(DateTime? recordTimestampUtc)
         {
             var result = new StandardPruneStreamOp(
                                  this.InternalRecordId?.DeepClone(),
-                                 internalRecordDate,
+                                 recordTimestampUtc,
                                  this.Details?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -183,7 +183,7 @@ namespace Naos.Database.Domain
         {
             var result = new StandardPruneStreamOp(
                                  this.InternalRecordId?.DeepClone(),
-                                 this.InternalRecordDate?.DeepClone(),
+                                 this.RecordTimestampUtc?.DeepClone(),
                                  details,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -216,7 +216,7 @@ namespace Naos.Database.Domain
         {
             var result = new StandardPruneStreamOp(
                                  this.InternalRecordId?.DeepClone(),
-                                 this.InternalRecordDate?.DeepClone(),
+                                 this.RecordTimestampUtc?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  specifiedResourceLocator);
 
@@ -229,7 +229,7 @@ namespace Naos.Database.Domain
         {
             var result = new StandardPruneStreamOp(
                                  this.InternalRecordId?.DeepClone(),
-                                 this.InternalRecordDate?.DeepClone(),
+                                 this.RecordTimestampUtc?.DeepClone(),
                                  this.Details?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
@@ -240,7 +240,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardPruneStreamOp: InternalRecordId = {this.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, InternalRecordDate = {this.InternalRecordDate?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardPruneStreamOp: InternalRecordId = {this.InternalRecordId?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, RecordTimestampUtc = {this.RecordTimestampUtc?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

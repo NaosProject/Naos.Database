@@ -517,12 +517,12 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneAfterInternalRecordDateOp(
-                                 A.Dummy<DateTime>(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new PruneBeforeInternalRecordDateOp(
-                                 A.Dummy<DateTime>(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -817,7 +817,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardPruneStreamOp(
                                  A.Dummy<long?>(),
-                                 A.Dummy<DateTime?>(),
+                                 A.Dummy<UtcDateTime>(),
                                  A.Dummy<string>(),
                                  A.Dummy<IResourceLocator>()));
 

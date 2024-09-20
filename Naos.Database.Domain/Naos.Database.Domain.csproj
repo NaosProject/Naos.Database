@@ -373,6 +373,9 @@
     <Compile Include="Operations\Classes\ResourceLocation\ThrowIfResourceUnavailableOp.designer.cs">
       <DependentUpon>ThrowIfResourceUnavailableOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp{TId}.designer.cs">
+      <DependentUpon>GetCompositeHandlingStatusByIdsOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByTagsOp.designer.cs">
       <DependentUpon>GetCompositeHandlingStatusByTagsOp.cs</DependentUpon>
     </Compile>
@@ -401,9 +404,6 @@
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp.designer.cs">
       <DependentUpon>GetCompositeHandlingStatusByIdsOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp{TId}.designer.cs">
-      <DependentUpon>GetCompositeHandlingStatusByIdsOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetHandlingHistoryOp.designer.cs">
       <DependentUpon>GetHandlingHistoryOp.cs</DependentUpon>
@@ -457,6 +457,12 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetAllObjectsByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.designer.cs">
+      <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
+      <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOp.cs</DependentUpon>
     </Compile>
@@ -469,12 +475,6 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.designer.cs">
       <DependentUpon>GetAllObjectsOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.designer.cs">
-      <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
-      <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}.designer.cs">
       <DependentUpon>GetAllRecordsOp{TObject}.cs</DependentUpon>
     </Compile>
@@ -483,15 +483,8 @@
       <DependentUpon>GetDistinctIdsOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectByTagsOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
@@ -501,6 +494,13 @@
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordMetadataByIdOp{TId}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectByTagsOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>

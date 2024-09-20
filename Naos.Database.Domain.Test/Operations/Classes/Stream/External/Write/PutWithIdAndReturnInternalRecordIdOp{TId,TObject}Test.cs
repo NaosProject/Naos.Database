@@ -157,7 +157,29 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
-                    });
+                    })
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>
+                   {
+                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>();
+
+                           var result = new PutWithIdAndReturnInternalRecordIdOp<Version, Version>(
+                               referenceObject.Id,
+                               referenceObject.ObjectToPut,
+                               referenceObject.Tags,
+                               referenceObject.ExistingRecordStrategy,
+                               referenceObject.RecordRetentionCount,
+                               referenceObject.VersionMatchStrategy,
+                               TypeSelectionStrategy.Unknown);
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                       ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
+                   });
 
             EquatableTestScenarios
                 .RemoveAllScenarios()

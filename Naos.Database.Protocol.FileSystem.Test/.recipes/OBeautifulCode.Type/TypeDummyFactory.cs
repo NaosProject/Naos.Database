@@ -57,6 +57,7 @@ namespace OBeautifulCode.Type.Test
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(DateTimeFormatKind.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(MissingProtocolStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(StandardTimeZone.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(TypeSelectionStrategy.Unknown);
 
             // UtcDateTimeRangeInclusive
             AutoFixtureBackedDummyFactory.AddDummyCreator(

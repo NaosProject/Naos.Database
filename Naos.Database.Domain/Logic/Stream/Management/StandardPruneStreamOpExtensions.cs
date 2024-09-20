@@ -19,14 +19,14 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="pruneStreamOp">The prune operation.</param>
         /// <param name="internalRecordId">The internal record identifier of the record to consider for pruning.</param>
-        /// <param name="internalRecordTimestampUtc">The timestamp UTC of the record to consider for pruning.</param>
+        /// <param name="recordTimestampUtc">The timestamp UTC of the record to consider for pruning.</param>
         /// <returns>
         /// <c>true</c> if the record should be pruned, otherwise <c>false</c>.
         /// </returns>
         public static bool ShouldPrune(
             this StandardPruneStreamOp pruneStreamOp,
             long internalRecordId,
-            DateTime internalRecordTimestampUtc)
+            DateTime recordTimestampUtc)
         {
             pruneStreamOp.MustForArg(nameof(pruneStreamOp)).NotBeNull();
 
@@ -40,7 +40,7 @@ namespace Naos.Database.Domain
 
             if (((result == null) || (result == true)) && (pruneStreamOp.InternalRecordDate != null))
             {
-                result = internalRecordTimestampUtc <= pruneStreamOp.InternalRecordDate;
+                result = recordTimestampUtc <= pruneStreamOp.InternalRecordDate;
             }
 
             return result ?? false;

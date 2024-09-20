@@ -115,7 +115,29 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
-                    });
+                    })
+               .AddScenario(() =>
+                   new ConstructorArgumentValidationTestScenario<GetAllRecordsMetadataByIdOp<Version>>
+                   {
+                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
+                       ConstructionFunc = () =>
+                       {
+                           var referenceObject = A.Dummy<GetAllRecordsMetadataByIdOp<Version>>();
+
+                           var result = new GetAllRecordsMetadataByIdOp<Version>(
+                               referenceObject.Id,
+                               referenceObject.ObjectType,
+                               referenceObject.VersionMatchStrategy,
+                               referenceObject.RecordNotFoundStrategy,
+                               referenceObject.OrderRecordsBy,
+                               referenceObject.DeprecatedIdTypes,
+                               TypeSelectionStrategy.Unknown);
+
+                           return result;
+                       },
+                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                       ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
+                   });
         }
     }
 }

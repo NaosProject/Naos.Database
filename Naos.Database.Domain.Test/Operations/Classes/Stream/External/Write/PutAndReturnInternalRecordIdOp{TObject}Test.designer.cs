@@ -308,6 +308,128 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "TypeSelectionStrategy",
                 });
 
+        private static readonly DeepCloneWithTestScenarios<PutAndReturnInternalRecordIdOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<PutAndReturnInternalRecordIdOp<Version>>()
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                {
+                    Name = "DeepCloneWithObjectToPut should deep clone object and replace ObjectToPut with the provided objectToPut",
+                    WithPropertyName = "ObjectToPut",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().ThatIs(_ => !systemUnderTest.ObjectToPut.IsEqualTo(_.ObjectToPut));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutAndReturnInternalRecordIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.ObjectToPut,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                {
+                    Name = "DeepCloneWithTags should deep clone object and replace Tags with the provided tags",
+                    WithPropertyName = "Tags",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().ThatIs(_ => !systemUnderTest.Tags.IsEqualTo(_.Tags));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutAndReturnInternalRecordIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.Tags,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                {
+                    Name = "DeepCloneWithExistingRecordStrategy should deep clone object and replace ExistingRecordStrategy with the provided existingRecordStrategy",
+                    WithPropertyName = "ExistingRecordStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().ThatIs(_ => !systemUnderTest.ExistingRecordStrategy.IsEqualTo(_.ExistingRecordStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutAndReturnInternalRecordIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.ExistingRecordStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                {
+                    Name = "DeepCloneWithRecordRetentionCount should deep clone object and replace RecordRetentionCount with the provided recordRetentionCount",
+                    WithPropertyName = "RecordRetentionCount",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().ThatIs(_ => !systemUnderTest.RecordRetentionCount.IsEqualTo(_.RecordRetentionCount));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutAndReturnInternalRecordIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.RecordRetentionCount,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                {
+                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
+                    WithPropertyName = "VersionMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutAndReturnInternalRecordIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<PutAndReturnInternalRecordIdOp<Version>>
+                {
+                    Name = "DeepCloneWithTypeSelectionStrategy should deep clone object and replace TypeSelectionStrategy with the provided typeSelectionStrategy",
+                    WithPropertyName = "TypeSelectionStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
+
+                        var referenceObject = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>().ThatIs(_ => !systemUnderTest.TypeSelectionStrategy.IsEqualTo(_.TypeSelectionStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<PutAndReturnInternalRecordIdOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TypeSelectionStrategy,
+                        };
+
+                        return result;
+                    },
+                });
+
         private static readonly PutAndReturnInternalRecordIdOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<PutAndReturnInternalRecordIdOp<Version>>();
 
         private static readonly EquatableTestScenarios<PutAndReturnInternalRecordIdOp<Version>> EquatableTestScenarios = new EquatableTestScenarios<PutAndReturnInternalRecordIdOp<Version>>()
@@ -747,6 +869,80 @@ namespace Naos.Database.Domain.Test
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
                     actual.Tags.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Tags);
+                }
+            }
+
+            [Fact]
+            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+            public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
+            {
+                var propertyNames = new string[] { "ObjectToPut", "Tags", "ExistingRecordStrategy", "RecordRetentionCount", "VersionMatchStrategy", "TypeSelectionStrategy" };
+
+                var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
+
+                foreach (var scenario in scenarios)
+                {
+                    // Arrange
+                    if (scenario.WithPropertyName == DeepCloneWithTestScenario.ForceGeneratedTestsToPassAndWriteMyOwnScenarioWithPropertyName)
+                    {
+                        continue;
+                    }
+
+                    // Act
+                    var actual = (PutAndReturnInternalRecordIdOp<Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+
+                    // Assert
+                    foreach(var propertyName in propertyNames)
+                    {
+                        var propertyInfo = typeof(PutAndReturnInternalRecordIdOp<Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+
+                        var actualPropertyValue = propertyInfo.GetValue(actual);
+
+                        var comparisonValue = propertyName == scenario.WithPropertyName
+                            ? scenario.WithValue
+                            : propertyInfo.GetValue(scenario.SystemUnderTest);
+
+                        if (actualPropertyValue == null)
+                        {
+                            comparisonValue.Must().BeNull(because: scenario.Id);
+                        }
+                        else
+                        {
+                            // We use the runtime type here to solve for the case where the object is a boxed value type.
+                            var actualPropertyValueRuntimeType = actualPropertyValue.GetType();
+
+                            if (actualPropertyValueRuntimeType.IsValueType || (actualPropertyValueRuntimeType == typeof(string)))
+                            {
+                                // actualPropertyValue and comparisonValue are declared as typeof(object), but
+                                // BeEqualTo (which uses IsEqualTo), will do the right thing by comparing the
+                                // objects using their runtime type.
+                                actualPropertyValue.AsTest().Must().BeEqualTo(comparisonValue, because: scenario.Id);
+                            }
+                            else
+                            {
+                                if (propertyName == scenario.WithPropertyName)
+                                {
+                                    actualPropertyValue.AsTest().Must().BeSameReferenceAs(comparisonValue, because: scenario.Id);
+                                }
+                                else
+                                {
+                                    actualPropertyValue.AsTest().Must().NotBeSameReferenceAs(comparisonValue, because: scenario.Id);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

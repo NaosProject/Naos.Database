@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class PutWithIdAndReturnInternalRecordIdOp<TId, TObject> : ReturningOperationBase<long?>, IHaveId<TId>, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class PutWithIdAndReturnInternalRecordIdOp<TId, TObject> : ReturningOperationBase<long?>, IHaveId<TId>, IHaveTags
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutWithIdAndReturnInternalRecordIdOp{TId,TObject}"/> class.

@@ -14,7 +14,7 @@ namespace Naos.Database.Domain
     /// Put an object into a stream.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class PutOp<TObject> : VoidOperationBase, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class PutOp<TObject> : VoidOperationBase, IHaveTags
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutOp{TObject}"/> class.

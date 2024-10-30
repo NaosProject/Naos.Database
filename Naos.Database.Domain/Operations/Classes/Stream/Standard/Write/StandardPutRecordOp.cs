@@ -20,7 +20,7 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardPutRecordOp : ReturningOperationBase<PutRecordResult>, ISpecifyResourceLocator, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class StandardPutRecordOp : ReturningOperationBase<PutRecordResult>, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardPutRecordOp"/> class.

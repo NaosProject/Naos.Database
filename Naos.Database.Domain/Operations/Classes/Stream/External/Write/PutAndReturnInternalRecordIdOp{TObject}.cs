@@ -17,7 +17,7 @@ namespace Naos.Database.Domain
     /// There are occasions where this can make sense, i.e. auditing the local identifier that was received when queueing work.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public partial class PutAndReturnInternalRecordIdOp<TObject> : ReturningOperationBase<long?>, IHaveTags, IForsakeDeepCloneWithVariantsViaCodeGen
+    public partial class PutAndReturnInternalRecordIdOp<TObject> : ReturningOperationBase<long?>, IHaveTags
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PutAndReturnInternalRecordIdOp{TObject}"/> class.

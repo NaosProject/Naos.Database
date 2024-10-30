@@ -237,6 +237,10 @@ namespace Naos.Database.Domain.Test
                             A.Dummy<TryHandleRecordWithIdOp<Version>>(),
                         },
                     });
+
+            DeepCloneWithTestScenarios
+                .RemoveAllScenarios()
+                .AddScenario(DeepCloneWithTestScenario<StandardPutRecordOp>.ForceGeneratedTestsToPassAndWriteMyOwnScenario);
         }
     }
 }

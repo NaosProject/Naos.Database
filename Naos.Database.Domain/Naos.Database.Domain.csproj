@@ -203,11 +203,13 @@
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.TryHandle.cs" />
     <Compile Include="Logic\Stream\Common\RecordFilterExtensions.cs" />
     <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensions.cs" />
-    <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.Mutex.cs" />
-    <Compile Include="Logic\Stream\Handling\HandleOnlyStreamExtensions.cs" />
+    <Compile Include="Logic\Stream\Handling\Lambda\ReleaseMutexLambdaProtocol.cs" />
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.cs" />
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\DoesNotExistByIdLambdaProtocol{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Handling\Lambda\WaitOneLambdaProtocol.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\DoesNotExistByIdLambdaProtocol{TId}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetAllObjectsByIdLambdaProtocol{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetAllObjectsLambdaProtocol{TObject}.cs" />

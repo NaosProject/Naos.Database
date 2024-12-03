@@ -597,6 +597,7 @@
     <Compile Include="Protocols\Classes\Stream\Standard\DelegatedStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardRetryStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamDistributedMutexProtocols.cs" />
+    <Compile Include="Protocols\Classes\Stream\Standard\ThrowingStandardStream.cs" />
     <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.cs" />

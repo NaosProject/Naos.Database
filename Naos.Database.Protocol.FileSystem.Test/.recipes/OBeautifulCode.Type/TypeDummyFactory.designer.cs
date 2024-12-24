@@ -116,11 +116,16 @@ namespace OBeautifulCode.Type.Test
                 () => new NullReturningOp<Version>());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new TestVoidOp(
-                                 A.Dummy<string>()));
+                () => new TestVoidOp(A.Dummy<string>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new TestReturningOp<Version>(A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullVoidOp());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetConstValueOp<Version>(A.Dummy<Version>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
@@ -131,8 +136,10 @@ namespace OBeautifulCode.Type.Test
                         typeof(ThrowOpExecutionAbortedExceptionOp<Version>),
                         typeof(GetProtocolOp),
                         typeof(NullReturningOp<Version>),
+                        typeof(TestReturningOp<Version>),
                         typeof(TestVoidOp),
-                        typeof(NullVoidOp)
+                        typeof(NullVoidOp),
+                        typeof(GetConstValueOp<Version>),
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
@@ -150,7 +157,9 @@ namespace OBeautifulCode.Type.Test
                     var availableTypes = new[]
                     {
                         typeof(ThrowOpExecutionAbortedExceptionOp<Version>),
-                        typeof(NullReturningOp<Version>)
+                        typeof(NullReturningOp<Version>),
+                        typeof(TestReturningOp<Version>),
+                        typeof(GetConstValueOp<Version>),
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);

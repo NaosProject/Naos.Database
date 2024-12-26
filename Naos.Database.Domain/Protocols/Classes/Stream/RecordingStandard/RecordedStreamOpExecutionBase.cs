@@ -44,6 +44,11 @@ namespace Naos.Database.Domain
         public abstract IOperation OperationInterface { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the stream operation was executed (did not throw).
+        /// </summary>
+        public bool ExecutionCompleted => this.PostExecutionTimestampUtc != null;
+
+        /// <summary>
         /// Records the post-execution timestamp using the time right now.
         /// </summary>
         public void RecordTimestampPostExecution()

@@ -21,10 +21,9 @@ namespace Naos.Database.Domain
     public class RecordingStandardStream : IStandardStream
     {
         private readonly IStandardStream backingStream;
-
         private readonly List<RecordedStreamOpExecutionBase> recordedStreamOpExecutions = new List<RecordedStreamOpExecutionBase>();
-
         private readonly object recordedStreamOpExecutionsLockObject = new object();
+        private int recordedStreamOpExecutionPosition = -1;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordingStandardStream"/> class.
@@ -372,7 +371,10 @@ namespace Naos.Database.Domain
 
             lock (this.recordedStreamOpExecutionsLockObject)
             {
+                this.recordedStreamOpExecutionPosition++;
+
                 this.recordedStreamOpExecutions.Add(recordedStreamOpExecution);
+                recordedStreamOpExecution.RecordPosition(this.recordedStreamOpExecutionPosition);
             }
         }
     }

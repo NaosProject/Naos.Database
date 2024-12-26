@@ -9,12 +9,15 @@ namespace Naos.Database.Domain
     using System;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
+    using static System.FormattableString;
 
     /// <summary>
     /// Base class for an object that records the execution of a stream operation.
     /// </summary>
     public abstract class RecordedStreamOpExecutionBase
     {
+        private int? position;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RecordedStreamOpExecutionBase"/> class.
         /// </summary>
@@ -49,6 +52,23 @@ namespace Naos.Database.Domain
         public bool ExecutionCompleted => this.PostExecutionTimestampUtc != null;
 
         /// <summary>
+        /// Gets the 0-based position of this object in the
+        /// stream's list of recorded operation executions.
+        /// </summary>
+        public int Position
+        {
+            get
+            {
+                if (this.position == null)
+                {
+                    throw new InvalidOperationException(Invariant($"{nameof(this.Position)} has not been set."));
+                }
+
+                return (int)this.position;
+            }
+        }
+
+        /// <summary>
         /// Records the post-execution timestamp using the time right now.
         /// </summary>
         public void RecordTimestampPostExecution()
@@ -69,6 +89,24 @@ namespace Naos.Database.Domain
             this.PostExecutionTimestampUtc.MustForOp(nameof(this.PostExecutionTimestampUtc)).BeNull();
 
             this.PostExecutionTimestampUtc = postExecutionTimestampUtc;
+        }
+
+        /// <summary>
+        /// Records the position of this object in the
+        /// stream's list of recorded operation executions.
+        /// </summary>
+        /// <param name="value">The 0-based position value.</param>
+        public void RecordPosition(
+            int value)
+        {
+            value.MustForOp(nameof(value)).BeGreaterThanOrEqualTo(0);
+
+            if (this.position != null)
+            {
+                throw new InvalidOperationException(Invariant($"{nameof(this.Position)} is already set."));
+            }
+
+            this.position = (int)value;
         }
     }
 }

@@ -64,6 +64,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the recorded stream operation executions.
         /// </summary>
+        [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "In this case we think the convenience and consistency in naming is a bonus.")]
         public IReadOnlyList<RecordedStreamOpExecutionBase> RecordedStreamOpExecutions
         {
             get

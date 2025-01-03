@@ -12,6 +12,7 @@ namespace Naos.Database.Domain
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
 
     /// <summary>
     /// A stream that records all operations executed against a backing stream.
@@ -72,6 +73,41 @@ namespace Naos.Database.Domain
                     return this.recordedStreamOpExecutions.ToList();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the executed operations of the specified type in the order they were executed.
+        /// </summary>
+        /// <typeparam name="TStreamOp">The type of stream operation.</typeparam>
+        /// <returns>
+        /// The executed operations of the specified type in the order they were executed.
+        /// </returns>
+        public IReadOnlyList<TStreamOp> GetExecutedStreamOps<TStreamOp>()
+            where TStreamOp : IOperation
+        {
+            var result = this.RecordedStreamOpExecutions
+                .OfType<RecordedStreamOpExecution<TStreamOp>>()
+                .Select(_ => _.Operation)
+                .ToList();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the recorded stream operation executions of the specified type in the order they were recorded.
+        /// </summary>
+        /// <typeparam name="TStreamOp">The type of stream operation.</typeparam>
+        /// <returns>
+        /// The recorded stream operation executions of the specified type in the order they were recorded.
+        /// </returns>
+        public IReadOnlyList<RecordedStreamOpExecution<TStreamOp>> GetRecordedStreamOpExecutions<TStreamOp>()
+            where TStreamOp : IOperation
+        {
+            var result = this.RecordedStreamOpExecutions
+                .OfType<RecordedStreamOpExecution<TStreamOp>>()
+                .ToList();
+
+            return result;
         }
 
         /// <inheritdoc />

@@ -180,17 +180,29 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEvent.designer.cs">
       <DependentUpon>RecordHandlingSelfCanceledEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TDetails}.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent.designer.cs">
       <DependentUpon>IdDeprecatedEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TDetails}.designer.cs">
+      <DependentUpon>IdDeprecatedWithDetailsEvent{TDetails}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TId,TObject,TDetails}.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TId,TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TId,TObject,TDetails}.designer.cs">
+      <DependentUpon>IdDeprecatedWithDetailsEvent{TId,TObject,TDetails}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}.designer.cs">
+      <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\Management\ChecksPerformedEvent.cs" />
     <Compile Include="Events\Classes\Management\ChecksPerformedEvent.designer.cs">

@@ -23,15 +23,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class IdDeprecatedEvent : IModel<IdDeprecatedEvent>
+    public partial class IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> : IModel<IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="IdDeprecatedEvent"/> are equal.
+        /// Determines whether two objects of type <see cref="IdDeprecatedWithDetailsEvent{TId, TObject, TDetails}"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(IdDeprecatedEvent left, IdDeprecatedEvent right)
+        public static bool operator ==(IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> left, IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -49,15 +49,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="IdDeprecatedEvent"/> are not equal.
+        /// Determines whether two objects of type <see cref="IdDeprecatedWithDetailsEvent{TId, TObject, TDetails}"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(IdDeprecatedEvent left, IdDeprecatedEvent right) => !(left == right);
+        public static bool operator !=(IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> left, IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(IdDeprecatedEvent other)
+        public bool Equals(IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -70,22 +70,24 @@ namespace Naos.Database.Domain
             }
 
             var result = this.TimestampUtc.IsEqualTo(other.TimestampUtc)
-                      && this.Details.IsEqualTo(other.Details, StringComparer.Ordinal);
+                      && this.Id.IsEqualTo(other.Id)
+                      && this.Details.IsEqualTo(other.Details);
 
             return result;
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as IdDeprecatedEvent);
+        public override bool Equals(object obj) => this == (obj as IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.TimestampUtc)
+            .Hash(this.Id)
             .Hash(this.Details)
             .Value;
 
         /// <inheritdoc />
-        public new IdDeprecatedEvent DeepClone() => (IdDeprecatedEvent)this.DeepCloneInternal();
+        public new IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> DeepClone() => (IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>)this.DeepCloneInternal();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
@@ -107,18 +109,15 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public override EventBase DeepCloneWithTimestampUtc(DateTime timestampUtc)
         {
-            var result = new IdDeprecatedEvent(
+            var result = new IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>(
+                                 this.Id == null ? default : this.Id.DeepClone(),
                                  timestampUtc,
-                                 this.Details?.DeepClone());
+                                 this.Details == null ? default : this.Details.DeepClone());
 
             return result;
         }
 
-        /// <summary>
-        /// Deep clones this object with a new <see cref="Details" />.
-        /// </summary>
-        /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="IdDeprecatedEvent" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -136,9 +135,42 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public IdDeprecatedEvent DeepCloneWithDetails(string details)
+        public override EventBase<TId> DeepCloneWithId(TId id)
         {
-            var result = new IdDeprecatedEvent(
+            var result = new IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>(
+                                 id,
+                                 this.TimestampUtc.DeepClone(),
+                                 this.Details == null ? default : this.Details.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Details" />.
+        /// </summary>
+        /// <param name="details">The new <see cref="Details" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="IdDeprecatedWithDetailsEvent{TId, TObject, TDetails}" /> using the specified <paramref name="details" /> for <see cref="Details" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> DeepCloneWithDetails(TDetails details)
+        {
+            var result = new IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>(
+                                 this.Id == null ? default : this.Id.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
                                  details);
 
@@ -149,9 +181,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override EventBase DeepCloneInternal()
         {
-            var result = new IdDeprecatedEvent(
+            var result = new IdDeprecatedWithDetailsEvent<TId, TObject, TDetails>(
+                                 this.Id == null ? default : this.Id.DeepClone(),
                                  this.TimestampUtc.DeepClone(),
-                                 this.Details?.DeepClone());
+                                 this.Details == null ? default : this.Details.DeepClone());
 
             return result;
         }
@@ -160,7 +193,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.IdDeprecatedEvent: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {this.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: TimestampUtc = {this.TimestampUtc.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Id = {this.Id?.ToString() ?? "<null>"}, Details = {this.Details?.ToString() ?? "<null>"}.");
 
             return result;
         }

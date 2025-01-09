@@ -270,6 +270,18 @@
     <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.designer.cs">
       <DependentUpon>ChecksPerformedEventTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TDetails}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TDetails}Test.designer.cs">
+      <DependentUpon>IdDeprecatedWithDetailsEvent{TDetails}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TId,TObject,TDetails}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TId,TObject,TDetails}Test.designer.cs">
+      <DependentUpon>IdDeprecatedWithDetailsEvent{TId,TObject,TDetails}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.designer.cs">
+      <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensionsTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOpTest.designer.cs">

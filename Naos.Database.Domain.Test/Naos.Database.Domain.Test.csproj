@@ -381,19 +381,19 @@
     <Compile Include="Events\Classes\Handling\HandlingForStreamEnabledEventTest.designer.cs">
       <DependentUpon>HandlingForStreamEnabledEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEventTest.designer.cs">
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEventTest.designer.cs">
       <DependentUpon>IdDeprecatedEventTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}Test.designer.cs">
       <DependentUpon>GetDistinctIdsOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}Test.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}Test.designer.cs">
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}Test.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}Test.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}Test.designer.cs">
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}Test.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}Test.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.cs" />
@@ -641,7 +641,7 @@
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOpTest.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEventTest.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEventTest.cs" />
     <Compile Include="Models\Classes\Stream\Management\CreateStreamResultTest.designer.cs">
       <DependentUpon>CreateStreamResultTest.cs</DependentUpon>
     </Compile>

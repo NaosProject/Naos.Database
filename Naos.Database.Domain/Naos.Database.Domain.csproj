@@ -180,16 +180,16 @@
     <Compile Include="Events\Classes\Handling\RecordHandling\RecordHandlingSelfCanceledEvent.designer.cs">
       <DependentUpon>RecordHandlingSelfCanceledEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent.designer.cs">
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent.designer.cs">
       <DependentUpon>IdDeprecatedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TId,TObject}.designer.cs">
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}.cs" />
-    <Compile Include="Events\Classes\IdDeprecatedEvent{TObject}.designer.cs">
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}.cs" />
+    <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\Management\ChecksPerformedEvent.cs" />

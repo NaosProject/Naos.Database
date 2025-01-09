@@ -7,6 +7,8 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Type;
 
@@ -24,6 +26,7 @@ namespace Naos.Database.Domain
     /// put into a stream, and how these objects ultimately aid in deprecating records.
     /// Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/>.
     /// </remarks>
+    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes", Justification = NaosSuppressBecause.CA1005_AvoidExcessiveParametersOnGenericTypes_SpecifiedParametersRequiredForNeededFunctionality)]
     public partial class IdDeprecatedWithDetailsEvent<TId, TObject, TDetails> : EventBase<TId>
         where TDetails : class
     {

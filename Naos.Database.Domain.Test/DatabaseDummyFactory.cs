@@ -113,6 +113,10 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<FileStreamRepresentation>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetStreamFromRepresentationOp<FileStreamRepresentation, RecordingStandardStream>(
+                    A.Dummy<FileStreamRepresentation>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => (IDatabaseDefinition)new NullDatabaseDefinition(A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

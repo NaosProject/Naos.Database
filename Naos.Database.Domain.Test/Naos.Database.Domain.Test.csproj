@@ -283,25 +283,25 @@
       <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensionsTest.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOpTest.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOpTest.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOpTest.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOpTest.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp{TId}Test.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOp{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\Stream\Subscriber\StreamRecordMetadataExtensionsTest.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}Test.designer.cs">
       <DependentUpon>GetAllRecordsOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetAllObjectsByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}Test.designer.cs">
       <DependentUpon>GetAllObjectsOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.cs" />
@@ -352,8 +352,8 @@
     <Compile Include="Operations\Classes\Management\GetLatestJobInformationOpTest.designer.cs">
       <DependentUpon>GetLatestJobInformationOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\ArchiveFailureToHandleRecordOpTest.cs" />
@@ -396,8 +396,8 @@
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEventTest.designer.cs">
       <DependentUpon>IdDeprecatedEventTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIds\GetDistinctIdsOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIds\GetDistinctIdsOp{TId}Test.designer.cs">
       <DependentUpon>GetDistinctIdsOp{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TId,TObject}Test.cs" />
@@ -408,8 +408,8 @@
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedEvent{TObject}Test.designer.cs">
       <DependentUpon>IdDeprecatedEvent{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Stream\Common\NullIdentifierTest.cs" />
@@ -511,34 +511,34 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\TryHandle\TryHandleRecordWithIdOp{TId}Test.designer.cs">
       <DependentUpon>TryHandleRecordWithIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId}Test.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetAllRecordsByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByTagsOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectByTagsOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}Test.designer.cs">
       <DependentUpon>GetLatestRecordMetadataByIdOp{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}Test.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordOp{TObject}Test.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOpTest.designer.cs">
@@ -640,16 +640,16 @@
     <Compile Include="Models\Classes\Stream\Management\CreateStreamResultTest.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOpTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\DatabaseLocatorBaseTest.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByTagsOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectOp{TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordOp{TObject}Test.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorByIdOp{TId}Test.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetResourceLocatorForUniqueIdentifierOpTest.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOpTest.cs" />

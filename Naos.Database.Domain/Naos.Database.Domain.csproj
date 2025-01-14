@@ -220,33 +220,33 @@
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\DoesNotExistByIdLambdaProtocol{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\DoesAnyExist\DoesAnyExistByIdLambdaProtocol{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Handling\Lambda\WaitOneLambdaProtocol.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\DoesNotExistByIdLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllObjectsByIdLambdaProtocol{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllObjectsLambdaProtocol{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsByIdLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsLambdaProtocol{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadataByIdLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadataLambdaProtocol.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadataLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetDistinctIdsLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObjectByIdLambdaProtocol{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObjectByTagsLambdaProtocol{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObjectLambdaProtocol{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecordByIdLambdaProtocol{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecordByIdLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecordLambdaProtocol{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecordMetadataByIdLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestStringSerializedObjectByIdLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllRecordsMetadataOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllRecordsMetadataOp.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllRecordsOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllObjectsOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllObjectsByIdOp{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.DoesNotExistByIdOp{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\DoesAnyExist\DoesAnyExistByIdLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllObjects\GetAllObjectsByIdLambdaProtocol{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllObjects\GetAllObjectsLambdaProtocol{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecords\GetAllRecordsByIdLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecords\GetAllRecordsLambdaProtocol{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadata\GetAllRecordsMetadataByIdLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadata\GetAllRecordsMetadataLambdaProtocol.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadata\GetAllRecordsMetadataLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetDistinctIds\GetDistinctIdsLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectByIdLambdaProtocol{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectByTagsLambdaProtocol{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectLambdaProtocol{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecord\GetLatestRecordByIdLambdaProtocol{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecord\GetLatestRecordByIdLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecord\GetLatestRecordLambdaProtocol{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecordMetadata\GetLatestRecordMetadataByIdLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdLambdaProtocol{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecordsMetadata\ReadOnlyStreamExtensions.GetAllRecordsMetadataOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecordsMetadata\ReadOnlyStreamExtensions.GetAllRecordsMetadataOp.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecords\ReadOnlyStreamExtensions.GetAllRecordsOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllObjects\ReadOnlyStreamExtensions.GetAllObjectsOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllObjects\ReadOnlyStreamExtensions.GetAllObjectsByIdOp{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\DoesAnyExist\ReadOnlyStreamExtensions.DoesAnyExistById{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetDistinctIds\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestStringSerializedObject\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\GetNextUniqueLongLambdaProtocol.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\PutAndReturnInternalRecordIdLambdaProtocol{TObject}.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\PutLambdaProtocol{TObject}.cs" />
@@ -257,16 +257,16 @@
     <Compile Include="Logic\Stream\Write\StreamExtensions\WriteOnlyStreamExtensions.PutOp{TObject}.cs" />
     <Compile Include="Logic\Stream\Write\StreamExtensions\WriteOnlyStreamExtensions.PutAndReturnInternalRecordIdOp{TObject}.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Write.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestRecordOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestRecordMetadataByIdOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestObjectOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestObjectByTagsOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetLatestObjectByIdOp{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllRecordsMetadataByIdOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.GetAllRecordsByIdOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.DoesNotExistByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestRecord\ReadOnlyStreamExtensions.GetLatestRecordOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestRecordMetadata\ReadOnlyStreamExtensions.GetLatestRecordMetadataByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestRecord\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestRecord\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObject\ReadOnlyStreamExtensions.GetLatestObjectOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObject\ReadOnlyStreamExtensions.GetLatestObjectByTagsOp{TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObject\ReadOnlyStreamExtensions.GetLatestObjectByIdOp{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecordsMetadata\ReadOnlyStreamExtensions.GetAllRecordsMetadataByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecords\ReadOnlyStreamExtensions.GetAllRecordsByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\DoesAnyExist\ReadOnlyStreamExtensions.DoesAnyExistById{TId}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\ReadOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Write\StreamExtensions\WriteOnlyStreamExtensions.GetNextUniqueLongOp.cs" />
     <Compile Include="Logic\Stream\Write\StreamExtensions\WriteOnlyStreamExtensions.cs" />
@@ -483,66 +483,66 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\WaitOneOp.designer.cs">
       <DependentUpon>WaitOneOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId,TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsByIdOp{TId,TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetAllObjectsByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.designer.cs">
       <DependentUpon>GetAllObjectsOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}.designer.cs">
       <DependentUpon>GetAllRecordsOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIdsOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIds\GetDistinctIdsOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIds\GetDistinctIdsOp{TId}.designer.cs">
       <DependentUpon>GetDistinctIdsOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjectsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordMetadataByIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByTagsOp{TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByTagsOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectOp{TObject}.designer.cs">
       <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObjectByIdOp{TId}.designer.cs">
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOp.designer.cs">
@@ -785,12 +785,12 @@
     <Compile Include="Logic\Stream\Subscriber\StreamRecordMetadataExtensions.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}.cs" />
     <Compile Include="Models\Enums\TagMatchStrategy.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExistByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadataByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByTagsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadataByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByTagsOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Read.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Classification\IStandardStream.cs" />
@@ -833,9 +833,9 @@
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamRecordWithIdHandlingProtocols{TId}.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamBase.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetLatestRecordOp.cs" />
     <Compile Include="Events\Classes\Management\PruneRequestCanceledEvent.cs" />
     <Compile Include="Operations\Classes\Stream\External\Management\PruneBeforeInternalRecordIdOp.cs" />
@@ -849,8 +849,8 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\WaitOneOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardDeleteStreamOp.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Management\StandardCreateStreamOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectByIdOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjectOp{TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutAndReturnInternalRecordIdOp{TObject}.cs" />

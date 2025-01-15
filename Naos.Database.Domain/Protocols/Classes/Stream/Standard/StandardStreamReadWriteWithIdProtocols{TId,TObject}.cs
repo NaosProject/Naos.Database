@@ -203,6 +203,8 @@ namespace Naos.Database.Domain
                 operation.Id,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
+                operation.TagsToMatch,
+                operation.TagMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.OrderRecordsBy,
                 operation.DeprecatedIdTypes,

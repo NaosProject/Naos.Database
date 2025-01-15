@@ -161,38 +161,6 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public TObject Execute(
-            GetLatestObjectByTagsOp<TObject> operation)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var standardOp = operation.Standardize();
-
-            var record = this.stream.Execute(standardOp);
-
-            if ((record == null) && (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault))
-            {
-                throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
-            }
-
-            // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
-            var result = record == null
-                ? default(TObject)
-                : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
-
-            return result;
-        }
-
-        /// <inheritdoc />
-        public async Task<TObject> ExecuteAsync(
-            GetLatestObjectByTagsOp<TObject> operation)
-        {
-            var result = await Task.FromResult(this.Execute(operation));
-
-            return result;
-        }
-
-        /// <inheritdoc />
         public IReadOnlyList<StreamRecord<TObject>> Execute(
             GetAllRecordsOp<TObject> operation)
         {
@@ -205,6 +173,8 @@ namespace Naos.Database.Domain
                         : new[] { operation.IdentifierType },
                     objectTypes: new[] { typeof(TObject).ToRepresentation() },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy);
 
@@ -273,6 +243,8 @@ namespace Naos.Database.Domain
             var delegatedOperation = new GetAllRecordsOp<TObject>(
                 operation.IdentifierType,
                 operation.VersionMatchStrategy,
+                operation.TagsToMatch,
+                operation.TagMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.OrderRecordsBy,
                 operation.DeprecatedIdTypes);

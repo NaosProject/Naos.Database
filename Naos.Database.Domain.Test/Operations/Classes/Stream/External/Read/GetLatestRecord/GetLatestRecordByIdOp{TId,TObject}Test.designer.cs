@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetLatestRecordByIdOp<Version, Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestRecordByIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}, TypeSelectionStrategy = {systemUnderTest.TypeSelectionStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestRecordByIdOp<Version, Version>: Id = {systemUnderTest.Id?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}, TypeSelectionStrategy = {systemUnderTest.TypeSelectionStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -67,6 +67,8 @@ namespace Naos.Database.Domain.Test
                         var result = new GetLatestRecordByIdOp<Version, Version>(
                                              null,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy,
                                              referenceObject.DeprecatedIdTypes,
                                              referenceObject.TypeSelectionStrategy);
@@ -87,6 +89,8 @@ namespace Naos.Database.Domain.Test
                         var result = new GetLatestRecordByIdOp<Version, Version>(
                                              referenceObject.Id,
                                              VersionMatchStrategy.Unknown,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy,
                                              referenceObject.DeprecatedIdTypes,
                                              referenceObject.TypeSelectionStrategy);
@@ -99,6 +103,50 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp<Version, Version>>
                 {
+                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version, Version>>();
+
+                        var result = new GetLatestRecordByIdOp<Version, Version>(
+                                             referenceObject.Id,
+                                             referenceObject.VersionMatchStrategy,
+                                             new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.DeprecatedIdTypes,
+                                             referenceObject.TypeSelectionStrategy);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentException),
+                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp<Version, Version>>
+                {
+                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version, Version>>();
+
+                        var result = new GetLatestRecordByIdOp<Version, Version>(
+                                             referenceObject.Id,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             TagMatchStrategy.Unknown,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.DeprecatedIdTypes,
+                                             referenceObject.TypeSelectionStrategy);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                    ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp<Version, Version>>
+                {
                     Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown",
                     ConstructionFunc = () =>
                     {
@@ -107,6 +155,8 @@ namespace Naos.Database.Domain.Test
                         var result = new GetLatestRecordByIdOp<Version, Version>(
                                              referenceObject.Id,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              RecordNotFoundStrategy.Unknown,
                                              referenceObject.DeprecatedIdTypes,
                                              referenceObject.TypeSelectionStrategy);
@@ -127,6 +177,8 @@ namespace Naos.Database.Domain.Test
                         var result = new GetLatestRecordByIdOp<Version, Version>(
                                              referenceObject.Id,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy,
                                              new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList(),
                                              referenceObject.TypeSelectionStrategy);
@@ -147,6 +199,8 @@ namespace Naos.Database.Domain.Test
                         var result = new GetLatestRecordByIdOp<Version, Version>(
                                              referenceObject.Id,
                                              referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
                                              referenceObject.RecordNotFoundStrategy,
                                              referenceObject.DeprecatedIdTypes,
                                              TypeSelectionStrategy.Unknown);
@@ -171,6 +225,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
                                                       referenceObject.Id,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.DeprecatedIdTypes,
                                                       referenceObject.TypeSelectionStrategy),
@@ -194,6 +250,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
                                                       referenceObject.Id,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.DeprecatedIdTypes,
                                                       referenceObject.TypeSelectionStrategy),
@@ -203,6 +261,56 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "VersionMatchStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordByIdOp<Version, Version>>
+                {
+                    Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version, Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
+                                                      referenceObject.Id,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.TypeSelectionStrategy),
+                            ExpectedPropertyValue = referenceObject.TagsToMatch,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TagsToMatch",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetLatestRecordByIdOp<Version, Version>>
+                {
+                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version, Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestRecordByIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
+                                                      referenceObject.Id,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.TypeSelectionStrategy),
+                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "TagMatchStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<GetLatestRecordByIdOp<Version, Version>>
@@ -217,6 +325,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
                                                       referenceObject.Id,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.DeprecatedIdTypes,
                                                       referenceObject.TypeSelectionStrategy),
@@ -240,6 +350,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
                                                       referenceObject.Id,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.DeprecatedIdTypes,
                                                       referenceObject.TypeSelectionStrategy),
@@ -263,6 +375,8 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new GetLatestRecordByIdOp<Version, Version>(
                                                       referenceObject.Id,
                                                       referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
                                                       referenceObject.RecordNotFoundStrategy,
                                                       referenceObject.DeprecatedIdTypes,
                                                       referenceObject.TypeSelectionStrategy),
@@ -310,6 +424,46 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.VersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetLatestRecordByIdOp<Version, Version>>
+                {
+                    Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
+                    WithPropertyName = "TagsToMatch",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetLatestRecordByIdOp<Version, Version>>();
+
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordByIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TagsToMatch,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetLatestRecordByIdOp<Version, Version>>
+                {
+                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
+                    WithPropertyName = "TagMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetLatestRecordByIdOp<Version, Version>>();
+
+                        var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestRecordByIdOp<Version, Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
                         };
 
                         return result;
@@ -389,6 +543,8 @@ namespace Naos.Database.Domain.Test
                         new GetLatestRecordByIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
                                 ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
@@ -398,30 +554,56 @@ namespace Naos.Database.Domain.Test
                         new GetLatestRecordByIdOp<Version, Version>(
                                 A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
                                 ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
                         new GetLatestRecordByIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
                                 ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
                         new GetLatestRecordByIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
+                        new GetLatestRecordByIdOp<Version, Version>(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
+                        new GetLatestRecordByIdOp<Version, Version>(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
                                 ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
                         new GetLatestRecordByIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.DeprecatedIdTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes)).DeprecatedIdTypes,
                                 ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy),
                         new GetLatestRecordByIdOp<Version, Version>(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
                                 ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
                                 A.Dummy<GetLatestRecordByIdOp<Version, Version>>().Whose(_ => !_.TypeSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TypeSelectionStrategy)).TypeSelectionStrategy),
@@ -462,7 +644,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestJobInformationOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestObjectByTagsOp<Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
@@ -792,6 +973,18 @@ namespace Naos.Database.Domain.Test
                     actual.Id.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Id);
                 }
 
+                if (systemUnderTest.TagsToMatch == null)
+                {
+                    actual.TagsToMatch.AsTest().Must().BeNull();
+                }
+                else if (!actual.TagsToMatch.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
+                }
+
                 if (systemUnderTest.DeprecatedIdTypes == null)
                 {
                     actual.DeprecatedIdTypes.AsTest().Must().BeNull();
@@ -821,7 +1014,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "VersionMatchStrategy", "RecordNotFoundStrategy", "DeprecatedIdTypes", "TypeSelectionStrategy" };
+                var propertyNames = new string[] { "Id", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "RecordNotFoundStrategy", "DeprecatedIdTypes", "TypeSelectionStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -44,6 +44,8 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.Id,
                                                  referenceObject.ObjectType,
                                                  VersionMatchStrategy.Unknown,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.DeprecatedIdTypes);
 
@@ -51,6 +53,52 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
+                    })
+               .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
+
+                            var result = new GetLatestRecordMetadataByIdOp<Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.ObjectType,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 referenceObject.DeprecatedIdTypes,
+                                                 referenceObject.TypeSelectionStrategy);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<GetLatestRecordMetadataByIdOp<Version>>();
+
+                            var result = new GetLatestRecordMetadataByIdOp<Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.ObjectType,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 TagMatchStrategy.Unknown,
+                                                 referenceObject.RecordNotFoundStrategy,
+                                                 referenceObject.DeprecatedIdTypes,
+                                                 referenceObject.TypeSelectionStrategy);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<GetLatestRecordMetadataByIdOp<Version>>
@@ -64,6 +112,8 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.Id,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  RecordNotFoundStrategy.Unknown,
                                                  referenceObject.DeprecatedIdTypes);
 
@@ -84,6 +134,8 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.Id,
                                                  referenceObject.ObjectType,
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
 
@@ -104,6 +156,8 @@ namespace Naos.Database.Domain.Test
                                referenceObject.Id,
                                referenceObject.ObjectType,
                                referenceObject.VersionMatchStrategy,
+                               referenceObject.TagsToMatch,
+                               referenceObject.TagMatchStrategy,
                                referenceObject.RecordNotFoundStrategy,
                                referenceObject.DeprecatedIdTypes,
                                TypeSelectionStrategy.Unknown);

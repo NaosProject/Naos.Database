@@ -58,32 +58,6 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public TObject Execute(
-            GetLatestObjectByTagsOp<TObject> operation)
-        {
-            var recording = new RecordedStreamOpExecution<GetLatestObjectByTagsOp<TObject>>(operation);
-            this.recordingStandardStream.RecordStreamOpExecution(recording);
-
-            var result = this.recordingStandardStream.BackingStream.GetStreamReadingProtocols<TObject>().Execute(operation);
-
-            recording.RecordTimestampPostExecution();
-            return result;
-        }
-
-        /// <inheritdoc />
-        public async Task<TObject> ExecuteAsync(
-            GetLatestObjectByTagsOp<TObject> operation)
-        {
-            var recording = new RecordedStreamOpExecution<GetLatestObjectByTagsOp<TObject>>(operation);
-            this.recordingStandardStream.RecordStreamOpExecution(recording);
-
-            var result = await this.recordingStandardStream.BackingStream.GetStreamReadingProtocols<TObject>().ExecuteAsync(operation);
-
-            recording.RecordTimestampPostExecution();
-            return result;
-        }
-
-        /// <inheritdoc />
         public StreamRecord<TObject> Execute(
             GetLatestRecordOp<TObject> operation)
         {

@@ -15,19 +15,9 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IStreamReadProtocols<TObject>
         : IGetLatestObject<TObject>,
-          IGetLatestObjectByTags<TObject>,
           IGetLatestRecord<TObject>,
           IGetAllObjects<TObject>,
           IGetAllRecords<TObject>
-    {
-    }
-
-    /// <summary>
-    /// Convenience interface for protocol that executes a <see cref="GetLatestObjectByTagsOp{TObject}" />.
-    /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IGetLatestObjectByTags<TObject> :
-        ISyncAndAsyncReturningProtocol<GetLatestObjectByTagsOp<TObject>, TObject>
     {
     }
 

@@ -21,6 +21,8 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -28,12 +30,14 @@ namespace Naos.Database.Domain
             this IReadOnlyStream stream,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var protocol = stream.GetStreamReadingProtocols<TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -46,6 +50,8 @@ namespace Naos.Database.Domain
         /// <param name="stream">The stream.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -53,12 +59,14 @@ namespace Naos.Database.Domain
             this IReadOnlyStream stream,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var protocol = stream.GetStreamReadingProtocols<TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -71,6 +79,8 @@ namespace Naos.Database.Domain
         /// <param name="protocol">The protocol.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -78,12 +88,14 @@ namespace Naos.Database.Domain
             this IStreamReadProtocols<TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -95,6 +107,8 @@ namespace Naos.Database.Domain
         /// <param name="protocol">The protocol.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -102,12 +116,14 @@ namespace Naos.Database.Domain
             this IStreamReadProtocols<TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -119,6 +135,8 @@ namespace Naos.Database.Domain
         /// <param name="protocol">The protocol.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -126,12 +144,14 @@ namespace Naos.Database.Domain
             this ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -143,6 +163,8 @@ namespace Naos.Database.Domain
         /// <param name="protocol">The protocol.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -150,12 +172,14 @@ namespace Naos.Database.Domain
             this ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -167,6 +191,8 @@ namespace Naos.Database.Domain
         /// <param name="protocol">The protocol.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -174,12 +200,14 @@ namespace Naos.Database.Domain
             this IGetLatestObject<TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -191,6 +219,8 @@ namespace Naos.Database.Domain
         /// <param name="protocol">The protocol.</param>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <returns>The object.</returns>
@@ -198,12 +228,14 @@ namespace Naos.Database.Domain
             this IGetLatestObject<TObject> protocol,
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
+            var operation = new GetLatestObjectOp<TObject>(identifierType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, deprecatedIdTypes);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

@@ -40,7 +40,6 @@ namespace Naos.Database.Domain
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
-            versionMatchStrategy.MustForArg(nameof(versionMatchStrategy)).NotBeEqualTo(VersionMatchStrategy.Unknown);
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);

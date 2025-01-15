@@ -37,18 +37,20 @@ namespace Naos.Database.Domain
             var result = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(
-                                 serializedObjectId,
-                                 typeOfId.ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            typeOfId.ToRepresentation()),
+                    },
                     objectTypes: operation.ObjectType == null
                         ? null
                         : new[]
-                          {
-                              operation.ObjectType,
-                          },
+                        {
+                            operation.ObjectType,
+                        },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 RecordNotFoundStrategy.ReturnDefault,
                 specifiedResourceLocator);
@@ -78,6 +80,8 @@ namespace Naos.Database.Domain
                 operation.Id,
                 typeof(TObject).ToRepresentation(),
                 operation.VersionMatchStrategy,
+                operation.TagsToMatch,
+                operation.TagMatchStrategy,
                 operation.DeprecatedIdTypes,
                 operation.TypeSelectionStrategy);
 
@@ -112,45 +116,15 @@ namespace Naos.Database.Domain
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(
-                                 serializedObjectId,
-                                 typeOfId.ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            typeOfId.ToRepresentation()),
+                    },
                     objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
-                    versionMatchStrategy: operation.VersionMatchStrategy,
-                    deprecatedIdTypes: operation.DeprecatedIdTypes),
-                operation.RecordNotFoundStrategy,
-                StreamRecordItemsToInclude.MetadataAndPayload,
-                specifiedResourceLocator);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Converts the operation to it's standardized form.
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="operation">The operation.</param>
-        /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
-        /// <returns>
-        /// The standardized operation.
-        /// </returns>
-        public static StandardGetLatestRecordOp Standardize<TObject>(
-            this GetLatestObjectByTagsOp<TObject> operation,
-            IResourceLocator specifiedResourceLocator = null)
-        {
-            operation.MustForArg(nameof(operation)).NotBeNull();
-
-            var result = new StandardGetLatestRecordOp(
-                new RecordFilter(
-                    objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
+                    {
+                        typeof(TObject).ToRepresentation(),
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     tags: operation.TagsToMatch,
                     tagMatchStrategy: operation.TagMatchStrategy,
@@ -182,14 +156,16 @@ namespace Naos.Database.Domain
                     idTypes: operation.IdentifierType == null
                         ? null
                         : new[]
-                          {
-                              operation.IdentifierType,
-                          },
+                        {
+                            operation.IdentifierType,
+                        },
                     objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
+                    {
+                        typeof(TObject).ToRepresentation(),
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -224,16 +200,18 @@ namespace Naos.Database.Domain
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(
-                                 serializedObjectId,
-                                 typeOfId.ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            typeOfId.ToRepresentation()),
+                    },
                     objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
+                    {
+                        typeof(TObject).ToRepresentation(),
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -267,18 +245,20 @@ namespace Naos.Database.Domain
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(
-                                 serializedObjectId,
-                                 typeOfId.ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            typeOfId.ToRepresentation()),
+                    },
                     objectTypes: operation.ObjectType == null
                         ? null
                         : new[]
-                          {
-                              operation.ObjectType,
-                          },
+                        {
+                            operation.ObjectType,
+                        },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -312,18 +292,20 @@ namespace Naos.Database.Domain
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(
-                                 serializedObjectId,
-                                 typeOfId.ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            typeOfId.ToRepresentation()),
+                    },
                     objectTypes: operation.ObjectType == null
                         ? null
                         : new[]
-                          {
-                              operation.ObjectType,
-                          },
+                        {
+                            operation.ObjectType,
+                        },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataOnly,
@@ -352,14 +334,16 @@ namespace Naos.Database.Domain
                     idTypes: operation.IdentifierType == null
                         ? null
                         : new[]
-                          {
-                              operation.IdentifierType,
-                          },
+                        {
+                            operation.IdentifierType,
+                        },
                     objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
+                    {
+                        typeof(TObject).ToRepresentation(),
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 StreamRecordItemsToInclude.MetadataAndPayload,
@@ -393,18 +377,20 @@ namespace Naos.Database.Domain
             var result = new StandardGetLatestStringSerializedObjectOp(
                 new RecordFilter(
                     ids: new[]
-                         {
-                             new StringSerializedIdentifier(
-                                 serializedObjectId,
-                                 typeOfId.ToRepresentation()),
-                         },
+                    {
+                        new StringSerializedIdentifier(
+                            serializedObjectId,
+                            typeOfId.ToRepresentation()),
+                    },
                     objectTypes: operation.ObjectType == null
                         ? null
                         : new[]
-                          {
-                              operation.ObjectType,
-                          },
+                        {
+                            operation.ObjectType,
+                        },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 specifiedResourceLocator);
@@ -425,9 +411,9 @@ namespace Naos.Database.Domain
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(new RecordFilter(
                 idTypes: new[]
-                         {
-                             typeof(TId).ToRepresentation(),
-                         },
+                {
+                    typeof(TId).ToRepresentation(),
+                },
                 objectTypes: operation.ObjectTypes,
                 versionMatchStrategy: operation.VersionMatchStrategy,
                 tags: operation.TagsToMatch,

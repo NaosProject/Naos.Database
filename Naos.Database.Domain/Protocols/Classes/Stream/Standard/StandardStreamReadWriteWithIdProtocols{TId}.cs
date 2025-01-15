@@ -129,6 +129,8 @@ namespace Naos.Database.Domain
                         ? null
                         : new[] { operation.ObjectType },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 locator);
@@ -236,25 +238,27 @@ namespace Naos.Database.Domain
                         ? null
                         : new[] { operation.ObjectType },
                     versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
                 locator);
             var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
 
             var records = internalRecordIds
-                         .Select(
-                              _ =>
-                                  this.stream.Execute(
-                                      new StandardGetLatestRecordOp(
-                                          new RecordFilter(
-                                              internalRecordIds: new[]
-                                                                 {
-                                                                     _,
-                                                                 }),
-                                          operation.RecordNotFoundStrategy,
-                                          StreamRecordItemsToInclude.MetadataOnly,
-                                          locator)))
-                         .ToList();
+                .Select(
+                    _ =>
+                        this.stream.Execute(
+                            new StandardGetLatestRecordOp(
+                                new RecordFilter(
+                                    internalRecordIds: new[]
+                                    {
+                                        _,
+                                    }),
+                                operation.RecordNotFoundStrategy,
+                                StreamRecordItemsToInclude.MetadataOnly,
+                                locator)))
+                .ToList();
 
             StreamRecordMetadata<TId> ProcessResultItem(
                 StreamRecord inputRecord)

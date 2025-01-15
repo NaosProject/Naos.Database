@@ -51,22 +51,6 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public TObject Execute(
-            GetLatestObjectByTagsOp<TObject> operation)
-        {
-            return default;
-        }
-
-        /// <inheritdoc />
-        public async Task<TObject> ExecuteAsync(
-            GetLatestObjectByTagsOp<TObject> operation)
-        {
-            var syncResult = this.Execute(operation);
-            var result = await Task.FromResult(syncResult);
-            return result;
-        }
-
-        /// <inheritdoc />
         public StreamRecord<TObject> Execute(
             GetLatestRecordOp<TObject> operation)
         {

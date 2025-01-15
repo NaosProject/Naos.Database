@@ -152,6 +152,8 @@ namespace Naos.Database.Domain.Test
                 () => new DoesAnyExistByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));
 
@@ -160,6 +162,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));
 
@@ -207,6 +211,8 @@ namespace Naos.Database.Domain.Test
                 () => new GetAllObjectsByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<OrderRecordsBy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
@@ -216,6 +222,8 @@ namespace Naos.Database.Domain.Test
                 () => new GetAllObjectsOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<OrderRecordsBy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
@@ -225,6 +233,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<OrderRecordsBy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
@@ -235,6 +245,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<OrderRecordsBy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
@@ -265,6 +277,8 @@ namespace Naos.Database.Domain.Test
                 () => new GetAllRecordsOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<OrderRecordsBy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
@@ -317,22 +331,18 @@ namespace Naos.Database.Domain.Test
                 () => new GetLatestObjectByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestObjectByTagsOp<Version>(
-                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
-                                 A.Dummy<TagMatchStrategy>(),
-                                 A.Dummy<VersionMatchStrategy>(),
-                                 A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestObjectOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
 
@@ -340,6 +350,8 @@ namespace Naos.Database.Domain.Test
                 () => new GetLatestRecordByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));
@@ -349,6 +361,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));
@@ -358,6 +372,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));
@@ -366,6 +382,8 @@ namespace Naos.Database.Domain.Test
                 () => new GetLatestRecordOp<Version>(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
 
@@ -374,6 +392,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>(),
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
                                  A.Dummy<TypeSelectionStrategy>()));

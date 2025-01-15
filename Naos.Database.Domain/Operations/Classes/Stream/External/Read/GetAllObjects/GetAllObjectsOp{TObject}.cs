@@ -26,23 +26,31 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="identifierType">OPTIONAL type of the identifier to filter on.  DEFAULT is no filter.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is no filter (any version is acceptable).</param>
+        /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
+        /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         public GetAllObjectsOp(
             TypeRepresentation identifierType = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
+            IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
+            TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
+            tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
+            tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
             recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
             orderRecordsBy.MustForArg(nameof(orderRecordsBy)).NotBeEqualTo(OrderRecordsBy.Unknown);
             deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
 
             this.IdentifierType = identifierType;
             this.VersionMatchStrategy = versionMatchStrategy;
+            this.TagsToMatch = tagsToMatch;
+            this.TagMatchStrategy = tagMatchStrategy;
             this.RecordNotFoundStrategy = recordNotFoundStrategy;
             this.OrderRecordsBy = orderRecordsBy;
             this.DeprecatedIdTypes = deprecatedIdTypes;
@@ -57,6 +65,16 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the tags to match or null when not matching on tags.
+        /// </summary>
+        public IReadOnlyCollection<NamedValue<string>> TagsToMatch { get; private set; }
+
+        /// <summary>
+        /// Gets the strategy to use for comparing tags when <see cref="TagsToMatch"/> is specified.
+        /// </summary>
+        public TagMatchStrategy TagMatchStrategy { get; private set; }
 
         /// <summary>
         /// Gets the strategy to use when no record(s) are found.

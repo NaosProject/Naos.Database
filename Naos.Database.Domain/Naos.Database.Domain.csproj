@@ -232,7 +232,6 @@
     <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadata\GetAllRecordsMetadataLambdaProtocol{TId}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetDistinctIds\GetDistinctIdsLambdaProtocol{TId}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectByIdLambdaProtocol{TId,TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectByTagsLambdaProtocol{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectLambdaProtocol{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecord\GetLatestRecordByIdLambdaProtocol{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecord\GetLatestRecordByIdLambdaProtocol{TId}.cs" />
@@ -262,7 +261,6 @@
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestRecord\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestRecord\ReadOnlyStreamExtensions.GetLatestRecordByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObject\ReadOnlyStreamExtensions.GetLatestObjectOp{TObject}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObject\ReadOnlyStreamExtensions.GetLatestObjectByTagsOp{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObject\ReadOnlyStreamExtensions.GetLatestObjectByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecordsMetadata\ReadOnlyStreamExtensions.GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllRecords\ReadOnlyStreamExtensions.GetAllRecordsByIdOp{TId}.cs" />
@@ -494,8 +492,8 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetAllObjectsByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}.designer.cs">
-      <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.designer.cs">
+      <DependentUpon>GetAllObjectsOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataByIdOp{TId}.cs</DependentUpon>
@@ -508,10 +506,10 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOp{TId}.designer.cs">
       <DependentUpon>GetAllRecordsMetadataOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.designer.cs">
-      <DependentUpon>GetAllObjectsOp{TObject}.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}.designer.cs">
+      <DependentUpon>GetAllRecordsByIdOp{TId}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsOp{TObject}.designer.cs">
       <DependentUpon>GetAllRecordsOp{TObject}.cs</DependentUpon>
     </Compile>
@@ -523,25 +521,22 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectOp{TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
+      <DependentUpon>GetLatestRecordMetadataByIdOp{TId}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestRecordByIdOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}.designer.cs">
-      <DependentUpon>GetLatestRecordMetadataByIdOp{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByTagsOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectByTagsOp{TObject}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectOp{TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectOp{TObject}.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecord\GetLatestRecordOp{TObject}.designer.cs">
       <DependentUpon>GetLatestRecordOp{TObject}.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestStringSerializedObject\GetLatestStringSerializedObjectByIdOp{TId}.designer.cs">
       <DependentUpon>GetLatestStringSerializedObjectByIdOp{TId}.cs</DependentUpon>
     </Compile>
@@ -789,7 +784,6 @@
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecords\GetAllRecordsByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByTagsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestRecordMetadata\GetLatestRecordMetadataByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetDistinctStringSerializedIdsOp.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Read.cs" />
@@ -909,6 +903,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".analyzers\dictionary.xml" />
+    <Content Include="Operations\Classes\Stream\External\Read\NEW OPS README.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

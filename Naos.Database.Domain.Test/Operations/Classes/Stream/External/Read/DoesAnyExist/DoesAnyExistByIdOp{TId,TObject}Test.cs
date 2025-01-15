@@ -43,12 +43,56 @@ namespace Naos.Database.Domain.Test
                             var result = new DoesAnyExistByIdOp<Version, Version>(
                                                  referenceObject.Id,
                                                  VersionMatchStrategy.Unknown,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version, Version>>();
+
+                            var result = new DoesAnyExistByIdOp<Version, Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
+                                                 referenceObject.TagMatchStrategy,
+                                                 referenceObject.DeprecatedIdTypes,
+                                                 referenceObject.TypeSelectionStrategy);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentException),
+                        ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown",
+                        ConstructionFunc = () =>
+                        {
+                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version, Version>>();
+
+                            var result = new DoesAnyExistByIdOp<Version, Version>(
+                                                 referenceObject.Id,
+                                                 referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 TagMatchStrategy.Unknown,
+                                                 referenceObject.DeprecatedIdTypes,
+                                                 referenceObject.TypeSelectionStrategy);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
                     })
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
@@ -61,6 +105,8 @@ namespace Naos.Database.Domain.Test
                             var result = new DoesAnyExistByIdOp<Version, Version>(
                                                  referenceObject.Id,
                                                  referenceObject.VersionMatchStrategy,
+                                                 referenceObject.TagsToMatch,
+                                                 referenceObject.TagMatchStrategy,
                                                  new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
 
                             return result;
@@ -79,6 +125,8 @@ namespace Naos.Database.Domain.Test
                             var result = new DoesAnyExistByIdOp<Version, Version>(
                                 referenceObject.Id,
                                 referenceObject.VersionMatchStrategy,
+                                referenceObject.TagsToMatch,
+                                referenceObject.TagMatchStrategy,
                                 referenceObject.DeprecatedIdTypes,
                                 TypeSelectionStrategy.Unknown);
 

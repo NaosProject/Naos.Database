@@ -107,11 +107,6 @@ namespace Naos.Database.Domain
 
             var record = this.stream.Execute(standardOp);
 
-            if ((record == null) && (operation.RecordNotFoundStrategy != RecordNotFoundStrategy.ReturnDefault))
-            {
-                throw new NotSupportedException(Invariant($"record is null but {nameof(RecordNotFoundStrategy)} is not {nameof(RecordNotFoundStrategy.ReturnDefault)}"));
-            }
-
             // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null
                 ? default(TObject)

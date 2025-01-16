@@ -8,8 +8,10 @@ namespace Naos.Database.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
@@ -22,6 +24,7 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
+    [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     public class StandardStreamReadWriteWithIdProtocols<TId, TObject> :
         IStreamReadWithIdProtocols<TId, TObject>,
         IStreamWriteWithIdProtocols<TId, TObject>
@@ -126,6 +129,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public IReadOnlyList<TObject> Execute(
             GetLatestObjectsByIdsOp<TId, TObject> operation)
         {

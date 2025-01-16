@@ -53,7 +53,7 @@ namespace Naos.Database.Domain
                     tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 RecordNotFoundStrategy.ReturnDefault,
-                specifiedResourceLocator);
+                specifiedResourceLocator: specifiedResourceLocator);
 
             return result;
         }

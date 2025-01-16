@@ -59,6 +59,32 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public IReadOnlyList<TObject> Execute(
+            GetLatestObjectsByIdsOp<TId, TObject> operation)
+        {
+            var recording = new RecordedStreamOpExecution<GetLatestObjectsByIdsOp<TId, TObject>>(operation);
+            this.recordingStandardStream.RecordStreamOpExecution(recording);
+
+            var result = this.recordingStandardStream.BackingStream.GetStreamReadingWithIdProtocols<TId, TObject>().Execute(operation);
+
+            recording.RecordTimestampPostExecution();
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<TObject>> ExecuteAsync(
+            GetLatestObjectsByIdsOp<TId, TObject> operation)
+        {
+            var recording = new RecordedStreamOpExecution<GetLatestObjectsByIdsOp<TId, TObject>>(operation);
+            this.recordingStandardStream.RecordStreamOpExecution(recording);
+
+            var result = await this.recordingStandardStream.BackingStream.GetStreamReadingWithIdProtocols<TId, TObject>().ExecuteAsync(operation);
+
+            recording.RecordTimestampPostExecution();
+            return result;
+        }
+
+        /// <inheritdoc />
         public StreamRecordWithId<TId, TObject> Execute(
             GetLatestRecordByIdOp<TId, TObject> operation)
         {

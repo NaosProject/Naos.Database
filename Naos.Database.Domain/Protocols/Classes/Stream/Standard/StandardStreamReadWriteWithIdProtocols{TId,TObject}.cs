@@ -131,6 +131,110 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
+        public IReadOnlyList<TObject> Execute(
+            GetLatestObjectsByIdsOp<TId, TObject> operation)
+        {
+            operation.MustForArg(nameof(operation)).NotBeNull();
+
+            // We are supporting OrderRecordsBy to future-proof the introduction of OrderRecordsBy.RecordTimestamp.
+            // It doesn't make sense to order by internal record id because multiple locators may be used and ids
+            // across locators can't really be compared.
+            // The end user might think they are ordering by time when they are not.
+            if (operation.OrderRecordsBy != OrderRecordsBy.Random)
+            {
+                throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
+            }
+
+            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
+
+            // We have tested and implementations of ResourceLocatorBase will group properly, even though they do
+            // not implement IEquatable<IResourceLocator>.  In practice, its most likely that the same type of
+            // resource locator will be used.  And if folks create a new implementation of IResourceLocator, they
+            // can make it IEquatable<NewImplementation> and the below will work fine.  In the worst case, if they
+            // do not make their implementation IEquatable, then the foreach below will iterate through each id
+            // which is equivalent to calling GetLatestObjectByIdOp<TId, TObject> in a loop.
+            var locatorToIdsMap = operation.Ids
+                .Select(_ => new { Id = _, Locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(_)) })
+                .GroupBy(_ => _.Locator)
+                .ToDictionary(_ => _.Key, _ => _.Select(i => i.Id).ToList());
+
+            var result = new List<TObject>();
+
+            foreach (var locator in locatorToIdsMap.Keys)
+            {
+                var ids = locatorToIdsMap[locator];
+
+                var stringSerializedIdentifiers = ids
+                    .Select(_ => new StringSerializedIdentifier(
+                        serializer.SerializeToString(_),
+                        operation.TypeSelectionStrategy.Apply(_).ToRepresentation()))
+                    .ToList();
+
+                var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
+                    new RecordFilter(
+                        ids: stringSerializedIdentifiers,
+                        objectTypes: new[] { typeof(TObject).ToRepresentation() },
+                        versionMatchStrategy: operation.VersionMatchStrategy,
+                        tags: operation.TagsToMatch,
+                        tagMatchStrategy: operation.TagMatchStrategy,
+                        deprecatedIdTypes: operation.DeprecatedIdTypes),
+                    RecordNotFoundStrategy.ReturnDefault, // Here we are hard coding to ReturnDefault because we cannot evaluate the strategy until we've pulled records from all locators
+                    FilteredRecordsSelectionStrategy.LatestById,
+                    locator);
+
+                var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+                if (internalRecordIds.Any())
+                {
+                    // ReSharper disable once RedundantArgumentDefaultValue - want to be explicit about RecordNotFoundStrategy and also add a comment
+                    var thisLocatorRecords = internalRecordIds
+                        .Select(_ => this.stream.Execute(
+                            new StandardGetLatestRecordOp(
+                                new RecordFilter(
+                                    internalRecordIds: new[]
+                                    {
+                                        _,
+                                    }),
+                                RecordNotFoundStrategy.ReturnDefault, // See comment above.  We specifically do NOT want to chain-thru operation.RecordNotFoundStrategy here.  If that strategy is Throw and all records disappear in-between the call above and this call, then effectively those records don't exist and we should continue looping thru locators.
+                                specifiedResourceLocator: locator)))
+                        .ToList();
+
+                    var thisLocatorObjects = thisLocatorRecords
+                        .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                        .ToList();
+
+                    result.AddRange(thisLocatorObjects);
+                }
+            }
+
+            switch (operation.RecordNotFoundStrategy)
+            {
+                case RecordNotFoundStrategy.ReturnDefault:
+                    break;  // result list starts off empty, so if no records found then the result is correct.
+                case RecordNotFoundStrategy.Throw:
+                    if (!result.Any())
+                    {
+                        throw new InvalidOperationException(Invariant($"Expected stream {this.stream.StreamRepresentation} to contain a matching record(s) for {operation}, none were found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
+                    }
+
+                    break;
+                default:
+                    throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+            }
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<TObject>> ExecuteAsync(
+            GetLatestObjectsByIdsOp<TId, TObject> operation)
+        {
+            var result = await Task.FromResult(this.Execute(operation));
+
+            return result;
+        }
+
+        /// <inheritdoc />
         public StreamRecordWithId<TId, TObject> Execute(
             GetLatestRecordByIdOp<TId, TObject> operation)
         {

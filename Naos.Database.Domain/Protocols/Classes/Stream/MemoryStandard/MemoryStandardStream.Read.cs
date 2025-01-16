@@ -30,7 +30,25 @@ namespace Naos.Database.Domain
 
                 var matchingRecords = this.GetMatchingRecords(operation);
 
-                if (!matchingRecords.Any())
+                IReadOnlyList<StreamRecord> selectedRecords;
+
+                if (operation.FilteredRecordsSelectionStrategy == FilteredRecordsSelectionStrategy.All)
+                {
+                    selectedRecords = matchingRecords;
+                }
+                else if (operation.FilteredRecordsSelectionStrategy == FilteredRecordsSelectionStrategy.LatestById)
+                {
+                    selectedRecords = matchingRecords
+                        .GroupBy(_ => _.Metadata.StringSerializedId)
+                        .Select(_ => _.OrderBy(record => record.InternalRecordId).Last())
+                        .ToList();
+                }
+                else
+                {
+                    throw new NotSupportedException(Invariant($"This {nameof(FilteredRecordsSelectionStrategy)} is not supported: {operation.FilteredRecordsSelectionStrategy}."));
+                }
+
+                if (!selectedRecords.Any())
                 {
                     switch (operation.RecordNotFoundStrategy)
                     {
@@ -43,7 +61,7 @@ namespace Naos.Database.Domain
                     }
                 }
 
-                var result = matchingRecords.Select(_ => _.InternalRecordId).ToList();
+                var result = selectedRecords.Select(_ => _.InternalRecordId).ToList();
 
                 return result;
             }

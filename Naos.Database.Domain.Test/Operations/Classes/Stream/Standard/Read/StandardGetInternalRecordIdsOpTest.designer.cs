@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardGetInternalRecordIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetInternalRecordIdsOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetInternalRecordIdsOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, FilteredRecordsSelectionStrategy = {systemUnderTest.FilteredRecordsSelectionStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -67,6 +67,7 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetInternalRecordIdsOp(
                                              null,
                                              referenceObject.RecordNotFoundStrategy,
+                                             referenceObject.FilteredRecordsSelectionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
@@ -85,12 +86,32 @@ namespace Naos.Database.Domain.Test
                         var result = new StandardGetInternalRecordIdsOp(
                                              referenceObject.RecordFilter,
                                              RecordNotFoundStrategy.Unknown,
+                                             referenceObject.FilteredRecordsSelectionStrategy,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                     ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<StandardGetInternalRecordIdsOp>
+                {
+                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'filteredRecordsSelectionStrategy' is FilteredRecordsSelectionStrategy.Unknown",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
+
+                        var result = new StandardGetInternalRecordIdsOp(
+                                             referenceObject.RecordFilter,
+                                             referenceObject.RecordNotFoundStrategy,
+                                             FilteredRecordsSelectionStrategy.Unknown,
+                                             referenceObject.SpecifiedResourceLocator);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                    ExpectedExceptionMessageContains = new[] { "filteredRecordsSelectionStrategy", "Unknown", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetInternalRecordIdsOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetInternalRecordIdsOp>()
@@ -107,6 +128,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetInternalRecordIdsOp(
                                                       referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.FilteredRecordsSelectionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordFilter,
                         };
@@ -128,6 +150,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetInternalRecordIdsOp(
                                                       referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.FilteredRecordsSelectionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
                         };
@@ -135,6 +158,28 @@ namespace Naos.Database.Domain.Test
                         return result;
                     },
                     PropertyName = "RecordNotFoundStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
+                {
+                    Name = "FilteredRecordsSelectionStrategy should return same 'filteredRecordsSelectionStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
+                        {
+                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
+                                                      referenceObject.RecordFilter,
+                                                      referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.FilteredRecordsSelectionStrategy,
+                                                      referenceObject.SpecifiedResourceLocator),
+                            ExpectedPropertyValue = referenceObject.FilteredRecordsSelectionStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "FilteredRecordsSelectionStrategy",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
@@ -149,6 +194,7 @@ namespace Naos.Database.Domain.Test
                             SystemUnderTest = new StandardGetInternalRecordIdsOp(
                                                       referenceObject.RecordFilter,
                                                       referenceObject.RecordNotFoundStrategy,
+                                                      referenceObject.FilteredRecordsSelectionStrategy,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -202,6 +248,26 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
                 {
+                    Name = "DeepCloneWithFilteredRecordsSelectionStrategy should deep clone object and replace FilteredRecordsSelectionStrategy with the provided filteredRecordsSelectionStrategy",
+                    WithPropertyName = "FilteredRecordsSelectionStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
+
+                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.FilteredRecordsSelectionStrategy.IsEqualTo(_.FilteredRecordsSelectionStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.FilteredRecordsSelectionStrategy,
+                        };
+
+                        return result;
+                    },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
+                {
                     Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
                     WithPropertyName = "SpecifiedResourceLocator",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
@@ -233,6 +299,7 @@ namespace Naos.Database.Domain.Test
                         new StandardGetInternalRecordIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.FilteredRecordsSelectionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StandardGetInternalRecordIdsOp[]
@@ -240,14 +307,22 @@ namespace Naos.Database.Domain.Test
                         new StandardGetInternalRecordIdsOp(
                                 A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.FilteredRecordsSelectionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetInternalRecordIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.FilteredRecordsSelectionStrategy,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetInternalRecordIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
                                 ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.FilteredRecordsSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.FilteredRecordsSelectionStrategy)).FilteredRecordsSelectionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new StandardGetInternalRecordIdsOp(
+                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
+                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
+                                ReferenceObjectForEquatableTestScenarios.FilteredRecordsSelectionStrategy,
                                 A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -287,6 +362,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestJobInformationOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
+                        A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
@@ -644,7 +720,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "RecordFilter", "RecordNotFoundStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "RecordFilter", "RecordNotFoundStrategy", "FilteredRecordsSelectionStrategy", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

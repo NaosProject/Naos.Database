@@ -347,6 +347,17 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new GetLatestObjectsByIdsOp<Version, Version>(
+                                 A.Dummy<IReadOnlyCollection<Version>>(),
+                                 A.Dummy<VersionMatchStrategy>(),
+                                 A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
+                                 A.Dummy<TagMatchStrategy>(),
+                                 A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<OrderRecordsBy>(),
+                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
+                                 A.Dummy<TypeSelectionStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetLatestRecordByIdOp<Version, Version>(
                                  A.Dummy<Version>(),
                                  A.Dummy<VersionMatchStrategy>(),
@@ -830,6 +841,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardGetInternalRecordIdsOp(
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
+                                 A.Dummy<FilteredRecordsSelectionStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

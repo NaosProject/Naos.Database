@@ -29,18 +29,22 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <param name="recordFilter">The <see cref="RecordFilter"/> to use.</param>
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
+        /// <param name="filteredRecordsSelectionStrategy">OPTIONAL strategy for selecting records after applying the <paramref name="recordFilter"/>.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string", Justification = NaosSuppressBecause.CA1720_IdentifiersShouldNotContainTypeNames_TypeNameAddsClarityToIdentifierAndAlternativesDegradeClarity)]
         public StandardGetInternalRecordIdsOp(
             RecordFilter recordFilter,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
+            FilteredRecordsSelectionStrategy filteredRecordsSelectionStrategy = FilteredRecordsSelectionStrategy.All,
             IResourceLocator specifiedResourceLocator = null)
         {
             recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
             recordNotFoundStrategy.MustForArg(nameof(recordNotFoundStrategy)).NotBeEqualTo(RecordNotFoundStrategy.Unknown);
+            filteredRecordsSelectionStrategy.MustForArg(nameof(filteredRecordsSelectionStrategy)).NotBeEqualTo(FilteredRecordsSelectionStrategy.Unknown);
 
             this.RecordFilter = recordFilter;
             this.RecordNotFoundStrategy = recordNotFoundStrategy;
+            this.FilteredRecordsSelectionStrategy = filteredRecordsSelectionStrategy;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
@@ -51,6 +55,11 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use when no record(s) are found.
         /// </summary>
         public RecordNotFoundStrategy RecordNotFoundStrategy { get; private set; }
+
+        /// <summary>
+        /// Gets the strategy for selecting records after applying the <see cref="RecordFilter"/>.
+        /// </summary>
+        public FilteredRecordsSelectionStrategy FilteredRecordsSelectionStrategy { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

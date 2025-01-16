@@ -13,29 +13,11 @@ namespace Naos.Database.Domain
     /// Interface to protocol the basic stream reading operations without a typed identifier and with a typed record payload.
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IStreamReadProtocols<TObject>
-        : IGetLatestObject<TObject>,
-          IGetLatestRecord<TObject>,
-          IGetAllObjects<TObject>,
-          IGetAllRecords<TObject>
-    {
-    }
-
-    /// <summary>
-    /// Convenience interface for protocol that executes a <see cref="GetLatestObjectOp{TObject}" />.
-    /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IGetLatestObject<TObject> :
-        ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>
-    {
-    }
-
-    /// <summary>
-    /// Convenience interface for protocol that executes a <see cref="GetLatestRecordOp{TObject}" />.
-    /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IGetLatestRecord<TObject> :
-        ISyncAndAsyncReturningProtocol<GetLatestRecordOp<TObject>, StreamRecord<TObject>>
+    public interface IStreamReadProtocols<TObject> :
+        IGetAllObjects<TObject>,
+        IGetAllRecords<TObject>,
+        IGetLatestObject<TObject>,
+        IGetLatestRecord<TObject>
     {
     }
 
@@ -54,6 +36,24 @@ namespace Naos.Database.Domain
     /// <typeparam name="TObject">The type of the object.</typeparam>
     public interface IGetAllRecords<TObject> :
         ISyncAndAsyncReturningProtocol<GetAllRecordsOp<TObject>, IReadOnlyList<StreamRecord<TObject>>>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="GetLatestObjectOp{TObject}" />.
+    /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    public interface IGetLatestObject<TObject> :
+        ISyncAndAsyncReturningProtocol<GetLatestObjectOp<TObject>, TObject>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="GetLatestRecordOp{TObject}" />.
+    /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    public interface IGetLatestRecord<TObject> :
+        ISyncAndAsyncReturningProtocol<GetLatestRecordOp<TObject>, StreamRecord<TObject>>
     {
     }
 }

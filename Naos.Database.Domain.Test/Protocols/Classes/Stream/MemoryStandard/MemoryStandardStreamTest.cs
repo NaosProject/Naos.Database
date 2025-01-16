@@ -1566,6 +1566,54 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static async Task GetLatestObjectsByIds_TId_TObject___Should_get_all_matching_objects___When_called()
+        {
+            // Arrange
+            var stream = new MemoryStandardStream(
+                A.Dummy<string>(),
+                new SerializerRepresentation(
+                    SerializationKind.Json,
+                    typeof(DatabaseJsonSerializationConfiguration).ToRepresentation()),
+                SerializationFormat.String,
+                new JsonSerializerFactory());
+
+            var object1A = A.Dummy<NamedResourceLocator>();
+            var object1B = A.Dummy<NamedResourceLocator>();
+            var object2A = A.Dummy<NamedResourceLocator>();
+            var object2B = A.Dummy<NamedResourceLocator>();
+            var object3A = A.Dummy<NamedResourceLocator>();
+            var object3B = A.Dummy<NamedResourceLocator>();
+            var object4A = A.Dummy<NamedResourceLocator>();
+            var object4B = A.Dummy<NamedResourceLocator>();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            await stream.PutWithIdAsync(id1, object1A);
+            await stream.PutWithIdAsync(id2, object2A);
+            await stream.PutWithIdAsync(id3, object3A);
+            await stream.PutWithIdAsync(id4, object4A);
+            await stream.PutWithIdAsync(id2, object2B);
+            await stream.PutWithIdAsync(id3, object3B);
+            await stream.PutWithIdAsync(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            await stream.PutWithIdAsync(id1, object1B);
+            await stream.PutWithIdAsync(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            await stream.PutWithIdAsync(id4, object4B);
+
+            var expected = new[] { object1B, object3B, object4B };
+
+            // Act
+            var actual = await stream.GetLatestObjectsByIdsAsync<string, NamedResourceLocator>(
+                new[] { id4, id3, id2, id1 },
+                deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() });
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
         public static async Task ExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock_until_action_is_run___When_multiple_callers_require_mutex()
         {
             // Arrange

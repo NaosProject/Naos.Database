@@ -133,7 +133,7 @@ namespace Naos.Database.Domain
                     tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
-                locator);
+                specifiedResourceLocator: locator);
             var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
 
             var records = internalRecordIds
@@ -242,7 +242,7 @@ namespace Naos.Database.Domain
                     tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 operation.RecordNotFoundStrategy,
-                locator);
+                specifiedResourceLocator: locator);
             var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
 
             var records = internalRecordIds

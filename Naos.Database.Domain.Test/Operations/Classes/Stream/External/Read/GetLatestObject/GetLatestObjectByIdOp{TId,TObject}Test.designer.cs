@@ -644,6 +644,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetHandlingStatusOp>(),
                         A.Dummy<GetLatestJobInformationOp>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
+                        A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),

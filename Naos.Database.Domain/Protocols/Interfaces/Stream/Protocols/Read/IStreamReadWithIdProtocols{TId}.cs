@@ -14,14 +14,14 @@ namespace Naos.Database.Domain
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public interface IStreamReadWithIdProtocols<TId> :
-        IGetLatestRecordById<TId>,
-        IGetAllRecordsById<TId>,
-        IGetLatestRecordMetadataById<TId>,
-        IGetAllRecordsMetadataById<TId>,
         IDoesAnyExistById<TId>,
-        IGetLatestStringSerializedObjectById<TId>,
+        IGetAllRecordsById<TId>,
+        IGetAllRecordsMetadata<TId>,
+        IGetAllRecordsMetadataById<TId>,
         IGetDistinctIds<TId>,
-        IGetAllRecordsMetadata<TId>
+        IGetLatestRecordById<TId>,
+        IGetLatestRecordMetadataById<TId>,
+        IGetLatestStringSerializedObjectById<TId>
     {
     }
 
@@ -40,6 +40,15 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public interface IGetAllRecordsById<TId> :
         ISyncAndAsyncReturningProtocol<GetAllRecordsByIdOp<TId>, IReadOnlyList<StreamRecordWithId<TId>>>
+    {
+    }
+
+    /// <summary>
+    /// Convenience interface for protocol that executes a <see cref="GetAllRecordsMetadataOp{TId}" />.
+    /// </summary>
+    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
+    public interface IGetAllRecordsMetadata<TId> :
+        ISyncAndAsyncReturningProtocol<GetAllRecordsMetadataOp<TId>, IReadOnlyList<StreamRecordMetadata<TId>>>
     {
     }
 
@@ -85,15 +94,6 @@ namespace Naos.Database.Domain
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     public interface IGetLatestStringSerializedObjectById<TId> :
         ISyncAndAsyncReturningProtocol<GetLatestStringSerializedObjectByIdOp<TId>, string>
-    {
-    }
-
-    /// <summary>
-    /// Convenience interface for protocol that executes a <see cref="GetAllRecordsMetadataOp{TId}" />.
-    /// </summary>
-    /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
-    public interface IGetAllRecordsMetadata<TId> :
-        ISyncAndAsyncReturningProtocol<GetAllRecordsMetadataOp<TId>, IReadOnlyList<StreamRecordMetadata<TId>>>
     {
     }
 }

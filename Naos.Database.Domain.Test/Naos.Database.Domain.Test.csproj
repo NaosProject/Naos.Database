@@ -282,6 +282,7 @@
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.designer.cs">
       <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensionsTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdsOp{TId,TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdsOp{TId,TObject}Test.designer.cs">
       <DependentUpon>GetLatestObjectsByIdsOp{TId,TObject}Test.cs</DependentUpon>
@@ -712,6 +713,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Protocols\Classes\Stream\MemoryStandard\MemoryStandardStreamTest.cs" />
+    <Compile Include="Protocols\Classes\Stream\MemoryStandard\LegacyMemoryStandardStreamTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\NamedResourceLocatorTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\NullResourceLocatorTest.cs" />
     <Compile Include="Models\Classes\Stream\Write\PutRecordResultTest.cs" />

@@ -368,7 +368,7 @@
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.designer.cs">
       <DependentUpon>MutexObject.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Enums\FilteredRecordsSelectionStrategy.cs" />
+    <Compile Include="Models\Enums\RecordsToFilterSelectionStrategy.cs" />
     <Compile Include="Models\Enums\StreamAccessKinds.cs" />
     <Compile Include="Models\Enums\CompositeHandlingStatus.cs" />
     <Compile Include="Models\Enums\ExistingDatabaseStrategy.cs" />
@@ -376,6 +376,7 @@
     <Compile Include="Models\Interfaces\Management\IJobInformation.cs" />
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
+    <Compile Include="Models\Interfaces\Stream\ISpecifyRecordsToFilterSelectionStrategy.cs" />
     <Compile Include="Models\Interfaces\Stream\IStreamConfig.cs" />
     <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />

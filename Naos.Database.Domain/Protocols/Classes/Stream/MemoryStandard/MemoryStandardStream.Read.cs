@@ -30,25 +30,7 @@ namespace Naos.Database.Domain
 
                 var matchingRecords = this.GetMatchingRecords(operation);
 
-                IReadOnlyList<StreamRecord> selectedRecords;
-
-                if (operation.FilteredRecordsSelectionStrategy == FilteredRecordsSelectionStrategy.All)
-                {
-                    selectedRecords = matchingRecords;
-                }
-                else if (operation.FilteredRecordsSelectionStrategy == FilteredRecordsSelectionStrategy.LatestById)
-                {
-                    selectedRecords = matchingRecords
-                        .GroupBy(_ => _.Metadata.StringSerializedId)
-                        .Select(_ => _.OrderBy(record => record.InternalRecordId).Last())
-                        .ToList();
-                }
-                else
-                {
-                    throw new NotSupportedException(Invariant($"This {nameof(FilteredRecordsSelectionStrategy)} is not supported: {operation.FilteredRecordsSelectionStrategy}."));
-                }
-
-                if (!selectedRecords.Any())
+                if (!matchingRecords.Any())
                 {
                     switch (operation.RecordNotFoundStrategy)
                     {
@@ -61,7 +43,7 @@ namespace Naos.Database.Domain
                     }
                 }
 
-                var result = selectedRecords.Select(_ => _.InternalRecordId).ToList();
+                var result = matchingRecords.Select(_ => _.InternalRecordId).ToList();
 
                 return result;
             }
@@ -194,7 +176,11 @@ namespace Naos.Database.Domain
                     return new List<StreamRecord>();
                 }
 
-                var result = ApplyRecordFilterToPartition(recordFilter, partition);
+                var recordsToFilterSelectionStrategy = operation is ISpecifyRecordsToFilterSelectionStrategy recordsToFilterSelectionStrategySpecified
+                    ? recordsToFilterSelectionStrategySpecified.RecordsToFilterSelectionStrategy
+                    : RecordsToFilterSelectionStrategy.All;
+
+                var result = ApplyRecordFilterToPartition(recordFilter, partition, recordsToFilterSelectionStrategy);
 
                 return result;
             }
@@ -204,35 +190,44 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = NaosSuppressBecause.CA1502_AvoidExcessiveComplexity_DisagreeWithAssessment)]
         private static List<StreamRecord> ApplyRecordFilterToPartition(
             RecordFilter recordFilter,
-            List<StreamRecord> partition)
+            List<StreamRecord> partition,
+            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy)
         {
-            // Short-circuit empty record filter to return all records.
-            if (recordFilter.IsEmptyRecordFilter())
-            {
-                return partition;
-            }
+            List<StreamRecord> result;
+            bool filterApplied;
 
-            var result = new List<StreamRecord>();
-            var resultInitialized = false;
+            if (recordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.All)
+            {
+                result = new List<StreamRecord>();
+
+                filterApplied = false;
+            }
+            else if (recordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.LatestById)
+            {
+                result = partition
+                    .GroupBy(_ => _.Metadata.StringSerializedId)
+                    .Select(_ => _.OrderByDescending(streamRecord => streamRecord.InternalRecordId).First())
+                    .ToList();
+
+                filterApplied = true;
+            }
+            else
+            {
+                throw new NotSupportedException($"This {nameof(RecordsToFilterSelectionStrategy)} is not supported: {recordsToFilterSelectionStrategy}.");
+            }
 
             // Internal Record Identifier
             if ((recordFilter.InternalRecordIds != null) && recordFilter.InternalRecordIds.Any())
             {
-                // This is using the same pattern as the subsequent filters, even though it's not necessary it enables
-                // us to re-order the filters with no negative consequences.
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                // ReSharper disable HeuristicUnreachableCode
-                if (resultInitialized)
+                if (filterApplied)
                 {
                     result.RemoveAll(_ => !recordFilter.InternalRecordIds.Contains(_.InternalRecordId));
                 }
                 else
                 {
                     result.AddRange(partition.Where(_ => recordFilter.InternalRecordIds.Contains(_.InternalRecordId)));
-                    resultInitialized = true;
+                    filterApplied = true;
                 }
-
-                // ReSharper restore HeuristicUnreachableCode
             }
 
             // String Serialized Identifier
@@ -251,7 +246,7 @@ namespace Naos.Database.Domain
                                 recordFilter.VersionMatchStrategy)))
                     .ToList();
 
-                if (resultInitialized)
+                if (filterApplied)
                 {
                     // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
                     result.RemoveAll(_ => !recordsMatchingById.Any(__ => _.InternalRecordId == __.InternalRecordId));
@@ -259,7 +254,7 @@ namespace Naos.Database.Domain
                 else
                 {
                     result.AddRange(recordsMatchingById);
-                    resultInitialized = true;
+                    filterApplied = true;
                 }
             }
 
@@ -274,7 +269,7 @@ namespace Naos.Database.Domain
                             recordFilter.VersionMatchStrategy))
                     .ToList();
 
-                if (resultInitialized)
+                if (filterApplied)
                 {
                     // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
                     result.RemoveAll(_ => !recordsMatchingByType.Any(__ => __.InternalRecordId == _.InternalRecordId));
@@ -282,7 +277,7 @@ namespace Naos.Database.Domain
                 else
                 {
                     result.AddRange(recordsMatchingByType);
-                    resultInitialized = true;
+                    filterApplied = true;
                 }
             }
 
@@ -292,7 +287,7 @@ namespace Naos.Database.Domain
                 var recordsMatchingByTag = partition
                     .Where(_ => _.Metadata.Tags.FuzzyMatchTags(recordFilter.Tags, recordFilter.TagMatchStrategy))
                     .ToList();
-                if (resultInitialized)
+                if (filterApplied)
                 {
                     // ReSharper disable once SimplifyLinqExpressionUseAll - prefer the !Any for readability
                     result.RemoveAll(_ => !recordsMatchingByTag.Any(__ => _.InternalRecordId == __.InternalRecordId));
@@ -300,11 +295,11 @@ namespace Naos.Database.Domain
                 else
                 {
                     result.AddRange(recordsMatchingByTag);
-                    resultInitialized = true;
+                    filterApplied = true;
                 }
             }
 
-            if (!resultInitialized)
+            if (!filterApplied)
             {
                 result.AddRange(partition);
             }

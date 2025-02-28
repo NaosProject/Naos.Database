@@ -163,7 +163,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingDatabaseStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingRecordStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(ExistingStreamStrategy.Unknown);
-            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(FilteredRecordsSelectionStrategy.Unknown);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(RecordsToFilterSelectionStrategy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(HandlingStatus.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(OrderRecordsBy.Unknown);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(RecordNotFoundStrategy.Unknown);

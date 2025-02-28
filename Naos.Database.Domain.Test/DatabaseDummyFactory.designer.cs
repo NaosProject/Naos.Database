@@ -841,7 +841,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardGetInternalRecordIdsOp(
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<FilteredRecordsSelectionStrategy>(),
+                                 A.Dummy<RecordsToFilterSelectionStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

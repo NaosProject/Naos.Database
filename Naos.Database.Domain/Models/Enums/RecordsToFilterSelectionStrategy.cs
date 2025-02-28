@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilteredRecordsSelectionStrategy.cs" company="Naos Project">
+// <copyright file="RecordsToFilterSelectionStrategy.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,9 +7,9 @@
 namespace Naos.Database.Domain
 {
     /// <summary>
-    /// Strategy for selecting records after applying a <see cref="RecordFilter"/>.
+    /// Strategy for selecting records before applying a <see cref="RecordFilter"/>.
     /// </summary>
-    public enum FilteredRecordsSelectionStrategy
+    public enum RecordsToFilterSelectionStrategy
     {
         /// <summary>
         /// Unknown (default).

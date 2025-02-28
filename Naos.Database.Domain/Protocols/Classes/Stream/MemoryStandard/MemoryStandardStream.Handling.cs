@@ -116,7 +116,10 @@ namespace Naos.Database.Domain
                 var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var recordHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
-                var filteredRecords = ApplyRecordFilterToPartition(operation.RecordFilter, records);
+                var filteredRecords = ApplyRecordFilterToPartition(
+                    operation.RecordFilter,
+                    records,
+                    RecordsToFilterSelectionStrategy.All);
 
                 // Get latest status for each record to consider.
                 var unfilteredResult = filteredRecords
@@ -202,7 +205,10 @@ namespace Naos.Database.Domain
                             .Where(_ => !existingInternalRecordIdsToIgnore.Contains(_.InternalRecordId))
                             .ToList();
 
-                    var matchingRecords = ApplyRecordFilterToPartition(operation.RecordFilter, recordsToConsiderForHandling);
+                    var matchingRecords = ApplyRecordFilterToPartition(
+                        operation.RecordFilter,
+                        recordsToConsiderForHandling,
+                        RecordsToFilterSelectionStrategy.All);
 
                     StreamRecord recordToHandle;
                     switch (operation.OrderRecordsBy)

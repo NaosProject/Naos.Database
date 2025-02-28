@@ -18,25 +18,6 @@ namespace Naos.Database.Domain
     public static class RecordFilterExtensions
     {
         /// <summary>
-        /// Determines whether [is empty record filter] [the specified record filter].
-        /// </summary>
-        /// <param name="recordFilter">The record filter.</param>
-        /// <returns><c>true</c> if [is empty record filter] [the specified record filter]; otherwise, <c>false</c>.</returns>
-        public static bool IsEmptyRecordFilter(
-            this RecordFilter recordFilter)
-        {
-            recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
-
-            var result = recordFilter.Ids.IsNullOrEmpty()
-                      && recordFilter.IdTypes.IsNullOrEmpty()
-                      && recordFilter.InternalRecordIds.IsNullOrEmpty()
-                      && recordFilter.ObjectTypes.IsNullOrEmpty()
-                      && recordFilter.Tags.IsNullOrEmpty()
-                      && recordFilter.DeprecatedIdTypes.IsNullOrEmpty();
-            return result;
-        }
-
-        /// <summary>
         /// Constructs a <see cref="RecordFilter"/> that filters on the specified object type.
         /// </summary>
         /// <param name="objectType">The object type.</param>
@@ -67,19 +48,6 @@ namespace Naos.Database.Domain
 
             var result = new RecordFilter(objectTypes: objectTypes.Select(_ => _.ToRepresentation()).ToList());
 
-            return result;
-        }
-
-        /// <summary>
-        /// Determines whether [is null or empty] [the specified values].
-        /// </summary>
-        /// <typeparam name="T">The type of the item.</typeparam>
-        /// <param name="values">The values.</param>
-        /// <returns><c>true</c> if [is null or empty] [the specified values]; otherwise, <c>false</c>.</returns>
-        public static bool IsNullOrEmpty<T>(
-            this IEnumerable<T> values)
-        {
-            var result = values == null || !values.Any();
             return result;
         }
     }

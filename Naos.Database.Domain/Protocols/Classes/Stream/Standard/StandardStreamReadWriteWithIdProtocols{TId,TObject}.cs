@@ -178,7 +178,7 @@ namespace Naos.Database.Domain
                         tagMatchStrategy: operation.TagMatchStrategy,
                         deprecatedIdTypes: operation.DeprecatedIdTypes),
                     RecordNotFoundStrategy.ReturnDefault, // Here we are hard coding to ReturnDefault because we cannot evaluate the strategy until we've pulled records from all locators
-                    FilteredRecordsSelectionStrategy.LatestById,
+                    RecordsToFilterSelectionStrategy.LatestById,
                     locator);
 
                 var internalRecordIds = this.stream.Execute(internalRecordIdsOp);

@@ -314,6 +314,18 @@ namespace Naos.Database.Domain
                 var internalRecordIdsToRemove = new List<long>();
                 foreach (var streamRecord in result)
                 {
+                    // Is the stream record's object type in the set of DeprecatedIdTypes?
+                    // If so, then it deprecates itself and should be removed.
+                    if (recordFilter.DeprecatedIdTypes.Any(_ =>
+                            streamRecord.Metadata.TypeRepresentationOfObject.WithVersion.EqualsAccordingToStrategy(
+                                _,
+                                recordFilter.VersionMatchStrategy)))
+                    {
+                        internalRecordIdsToRemove.Add(streamRecord.InternalRecordId);
+
+                        continue;
+                    }
+
                     foreach (var depreciatedIdType in recordFilter.DeprecatedIdTypes)
                     {
                         // Get all records having the same id as streamRecord but with a greater internal record id.

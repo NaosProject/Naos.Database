@@ -115,6 +115,64 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void StandardGetInternalRecordIds___Should_not_return_id_of_DeprecatedIdTypes___When_record_filter_specifies_DeprecatedIdsTypes()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            stream.PutWithId("id-1", new MyObject(A.Dummy<string>(), A.Dummy<string>()));
+            stream.PutWithId("id-2", new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var operation = new StandardGetInternalRecordIdsOp(
+                new RecordFilter(
+                    ids: new[]
+                    {
+                        new StringSerializedIdentifier(serializer.SerializeToString("id-1"), typeof(string).ToRepresentation()),
+                        new StringSerializedIdentifier(serializer.SerializeToString("id-2"), typeof(string).ToRepresentation()),
+                    },
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() }));
+
+            var expected = new[] { 1L };
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
+        public static void StandardGetDistinctStringSerializedIds___Should_not_return_id_of_DeprecatedIdTypes___When_record_filter_specifies_DeprecatedIdsTypes()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            stream.PutWithId("id-1", new MyObject(A.Dummy<string>(), A.Dummy<string>()));
+            stream.PutWithId("id-2", new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var operation = new StandardGetDistinctStringSerializedIdsOp(
+                new RecordFilter(
+                    ids: new[]
+                    {
+                        new StringSerializedIdentifier(serializer.SerializeToString("id-1"), typeof(string).ToRepresentation()),
+                        new StringSerializedIdentifier(serializer.SerializeToString("id-2"), typeof(string).ToRepresentation()),
+                    },
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() }));
+
+            var expected = new[] { new StringSerializedIdentifier(serializer.SerializeToString("id-1"), typeof(string).ToRepresentation()) };
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
         public static void StandardGetLatestRecord___Should_return_latest_object___When_some_objects_in_stream_have_been_deprecated()
         {
             // Arrange
@@ -137,6 +195,65 @@ namespace Naos.Database.Domain.Test.MemoryStream
             // Assert
             actual.AsTest().Must().NotBeNull();
             actual.Payload.DeserializePayloadUsingSpecificFactory<MyObject>(stream.SerializerFactory).Id.Must().BeEqualTo(objectToPut2.Id);
+        }
+
+        [Fact]
+        public static void StandardGetLatestRecord___Should_return_latest_record_whose_object_type_is_not_in_DepreciatedIdTypes___When_object_type_of_latest_record_in_stream_is_contained_within_record_filter_DeprecatedIdsTypes()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            stream.PutWithId("id-1", new MyObject(A.Dummy<string>(), A.Dummy<string>()));
+            stream.PutWithId("id-2", new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+
+            var operation = new StandardGetLatestRecordOp(
+                new RecordFilter(
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() }));
+
+            var expectedStreamRecord = stream.GetLatestRecordById("id-1");
+            var expectedMetadata = expectedStreamRecord.Metadata;
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var expected = new StreamRecord(
+                expectedStreamRecord.InternalRecordId,
+                new StreamRecordMetadata(
+                    serializer.SerializeToString(expectedMetadata.Id),
+                    stream.DefaultSerializerRepresentation,
+                    expectedMetadata.TypeRepresentationOfId,
+                    expectedMetadata.TypeRepresentationOfObject,
+                    expectedMetadata.Tags,
+                    expectedMetadata.TimestampUtc,
+                    expectedMetadata.ObjectTimestampUtc),
+                expectedStreamRecord.Payload);
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void StandardGetLatestStringSerializedObject___Should_return_latest_string_serialized_object_whose_type_is_not_in_DepreciatedIdTypes___When_object_type_of_latest_record_in_stream_is_contained_within_record_filter_DeprecatedIdsTypes()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            stream.PutWithId("id-1", new MyObject(A.Dummy<string>(), A.Dummy<string>()));
+            stream.PutWithId("id-2", new IdDeprecatedEvent<MyObject>(DateTime.UtcNow));
+
+            var operation = new StandardGetLatestStringSerializedObjectOp(
+                new RecordFilter(
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<MyObject>).ToRepresentation() }));
+
+            var expected = stream.GetLatestStringSerializedObjectById("id-1");
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
         }
 
         [Fact]

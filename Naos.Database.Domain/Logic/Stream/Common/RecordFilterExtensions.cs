@@ -31,7 +31,8 @@ namespace Naos.Database.Domain
                       && recordFilter.IdTypes.IsNullOrEmpty()
                       && recordFilter.InternalRecordIds.IsNullOrEmpty()
                       && recordFilter.ObjectTypes.IsNullOrEmpty()
-                      && recordFilter.Tags.IsNullOrEmpty();
+                      && recordFilter.Tags.IsNullOrEmpty()
+                      && recordFilter.DeprecatedIdTypes.IsNullOrEmpty();
             return result;
         }
 

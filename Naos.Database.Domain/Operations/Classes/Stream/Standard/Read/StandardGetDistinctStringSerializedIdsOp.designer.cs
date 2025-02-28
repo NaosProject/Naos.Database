@@ -70,6 +70,7 @@ namespace Naos.Database.Domain
             }
 
             var result = this.RecordFilter.IsEqualTo(other.RecordFilter)
+                      && this.RecordsToFilterSelectionStrategy.IsEqualTo(other.RecordsToFilterSelectionStrategy)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -81,6 +82,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.RecordFilter)
+            .Hash(this.RecordsToFilterSelectionStrategy)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -113,6 +115,39 @@ namespace Naos.Database.Domain
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
                                  recordFilter,
+                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
+                                 this.SpecifiedResourceLocator?.DeepClone());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deep clones this object with a new <see cref="RecordsToFilterSelectionStrategy" />.
+        /// </summary>
+        /// <param name="recordsToFilterSelectionStrategy">The new <see cref="RecordsToFilterSelectionStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetDistinctStringSerializedIdsOp" /> using the specified <paramref name="recordsToFilterSelectionStrategy" /> for <see cref="RecordsToFilterSelectionStrategy" /> and a deep clone of every other property.</returns>
+        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
+        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
+        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
+        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
+        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
+        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
+        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
+        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
+        public StandardGetDistinctStringSerializedIdsOp DeepCloneWithRecordsToFilterSelectionStrategy(RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy)
+        {
+            var result = new StandardGetDistinctStringSerializedIdsOp(
+                                 this.RecordFilter?.DeepClone(),
+                                 recordsToFilterSelectionStrategy,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -144,6 +179,7 @@ namespace Naos.Database.Domain
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
                                  this.RecordFilter?.DeepClone(),
+                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -155,6 +191,7 @@ namespace Naos.Database.Domain
         {
             var result = new StandardGetDistinctStringSerializedIdsOp(
                                  this.RecordFilter?.DeepClone(),
+                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -164,7 +201,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, RecordsToFilterSelectionStrategy = {this.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

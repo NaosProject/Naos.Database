@@ -822,6 +822,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetDistinctStringSerializedIdsOp(
                                  A.Dummy<RecordFilter>(),
+                                 A.Dummy<RecordsToFilterSelectionStrategy>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

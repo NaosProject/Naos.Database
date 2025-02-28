@@ -173,6 +173,49 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void StandardGetDistinctStringSerializedIds___Should_return_latest_ids_that_survive_filtering___When_RecordsToFilterSelectionStrategy_LatestById_used_with_tag_based_RecordFilter()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var object1 = A.Dummy<NamedResourceLocator>();
+            var object2 = A.Dummy<NamedResourceLocator>();
+            var object3 = A.Dummy<NamedResourceLocator>();
+            var object4 = A.Dummy<NamedResourceLocator>();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id1, object1, tags: tags);
+            stream.PutWithId(id2, object2);
+            stream.PutWithId(id3, object3, tags: tags);
+            stream.PutWithId(id4, object4, tags: tags);
+            stream.PutWithId(id1, object1);
+            stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var expected = new[] { new StringSerializedIdentifier(serializer.SerializeToString(id3), typeof(string).ToRepresentation()) };
+
+            var operation = new StandardGetDistinctStringSerializedIdsOp(
+                new RecordFilter(
+                    tags: tags,
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() }),
+                RecordsToFilterSelectionStrategy.LatestById);
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
         public static void StandardGetLatestRecord___Should_return_latest_object___When_some_objects_in_stream_have_been_deprecated()
         {
             // Arrange

@@ -155,7 +155,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
-                                 A.Dummy<TypeSelectionStrategy>()));
+                                 A.Dummy<TypeSelectionStrategy>(),
+                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new DoesAnyExistByIdOp<Version>(
@@ -165,7 +166,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
-                                 A.Dummy<TypeSelectionStrategy>()));
+                                 A.Dummy<TypeSelectionStrategy>(),
+                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new EnableHandlingForStreamOp(
@@ -311,7 +313,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
-                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
+                                 A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
+                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingHistoryOp(

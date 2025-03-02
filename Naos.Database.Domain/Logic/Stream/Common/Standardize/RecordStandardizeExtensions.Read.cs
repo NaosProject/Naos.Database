@@ -53,7 +53,8 @@ namespace Naos.Database.Domain
                     tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 RecordNotFoundStrategy.ReturnDefault,
-                specifiedResourceLocator: specifiedResourceLocator);
+                operation.RecordsToFilterSelectionStrategy,
+                specifiedResourceLocator);
 
             return result;
         }
@@ -83,7 +84,8 @@ namespace Naos.Database.Domain
                 operation.TagsToMatch,
                 operation.TagMatchStrategy,
                 operation.DeprecatedIdTypes,
-                operation.TypeSelectionStrategy);
+                operation.TypeSelectionStrategy,
+                operation.RecordsToFilterSelectionStrategy);
 
             var result = delegatedOperation.Standardize(serializer, specifiedResourceLocator);
 
@@ -409,16 +411,18 @@ namespace Naos.Database.Domain
         public static StandardGetDistinctStringSerializedIdsOp Standardize<TId>(
             this GetDistinctIdsOp<TId> operation)
         {
-            var result = new StandardGetDistinctStringSerializedIdsOp(new RecordFilter(
-                idTypes: new[]
-                {
-                    typeof(TId).ToRepresentation(),
-                },
-                objectTypes: operation.ObjectTypes,
-                versionMatchStrategy: operation.VersionMatchStrategy,
-                tags: operation.TagsToMatch,
-                tagMatchStrategy: operation.TagMatchStrategy,
-                deprecatedIdTypes: operation.DeprecatedIdTypes));
+            var result = new StandardGetDistinctStringSerializedIdsOp(
+                new RecordFilter(
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
+                    },
+                    objectTypes: operation.ObjectTypes,
+                    versionMatchStrategy: operation.VersionMatchStrategy,
+                    tags: operation.TagsToMatch,
+                    tagMatchStrategy: operation.TagMatchStrategy,
+                    deprecatedIdTypes: operation.DeprecatedIdTypes),
+                operation.RecordsToFilterSelectionStrategy);
 
             return result;
         }

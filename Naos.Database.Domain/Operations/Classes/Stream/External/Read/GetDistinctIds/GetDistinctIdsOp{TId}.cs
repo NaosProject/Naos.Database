@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// Gets the distinct identifiers for the supplied filters.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the objects to query.</typeparam>
-    public partial class GetDistinctIdsOp<TId> : ReturningOperationBase<IReadOnlyCollection<TId>>
+    public partial class GetDistinctIdsOp<TId> : ReturningOperationBase<IReadOnlyCollection<TId>>, ISpecifyRecordsToFilterSelectionStrategy
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GetDistinctIdsOp{TId}"/> class.
@@ -25,24 +25,28 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
+        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         public GetDistinctIdsOp(
             IReadOnlyCollection<TypeRepresentation> objectTypes = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
+            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
         {
             objectTypes.MustForArg(nameof(objectTypes)).NotContainAnyNullElementsWhenNotNull();
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
             deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
+            recordsToFilterSelectionStrategy.MustForArg(nameof(recordsToFilterSelectionStrategy)).NotBeEqualTo(RecordsToFilterSelectionStrategy.Unknown);
 
             this.ObjectTypes = objectTypes;
             this.VersionMatchStrategy = versionMatchStrategy;
             this.TagsToMatch = tagsToMatch;
             this.TagMatchStrategy = tagMatchStrategy;
             this.DeprecatedIdTypes = deprecatedIdTypes;
+            this.RecordsToFilterSelectionStrategy = recordsToFilterSelectionStrategy;
         }
 
         /// <summary>
@@ -69,5 +73,8 @@ namespace Naos.Database.Domain
         /// Gets the object types used in a record that indicates an identifier deprecation.
         /// </summary>
         public IReadOnlyCollection<TypeRepresentation> DeprecatedIdTypes { get; private set; }
+
+        /// <inheritdoc />
+        public RecordsToFilterSelectionStrategy RecordsToFilterSelectionStrategy { get; private set; }
     }
 }

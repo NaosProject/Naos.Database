@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<GetDistinctIdsOp<Version>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetDistinctIdsOp<Version>: ObjectTypes = {systemUnderTest.ObjectTypes?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetDistinctIdsOp<Version>: ObjectTypes = {systemUnderTest.ObjectTypes?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}, RecordsToFilterSelectionStrategy = {systemUnderTest.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -69,7 +69,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.DeprecatedIdTypes);
+                                             referenceObject.DeprecatedIdTypes,
+                                             referenceObject.RecordsToFilterSelectionStrategy);
 
                         return result;
                     },
@@ -89,7 +90,8 @@ namespace Naos.Database.Domain.Test
                                              VersionMatchStrategy.Unknown,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.DeprecatedIdTypes);
+                                             referenceObject.DeprecatedIdTypes,
+                                             referenceObject.RecordsToFilterSelectionStrategy);
 
                         return result;
                     },
@@ -109,7 +111,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.VersionMatchStrategy,
                                              new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
                                              referenceObject.TagMatchStrategy,
-                                             referenceObject.DeprecatedIdTypes);
+                                             referenceObject.DeprecatedIdTypes,
+                                             referenceObject.RecordsToFilterSelectionStrategy);
 
                         return result;
                     },
@@ -129,7 +132,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              TagMatchStrategy.Unknown,
-                                             referenceObject.DeprecatedIdTypes);
+                                             referenceObject.DeprecatedIdTypes,
+                                             referenceObject.RecordsToFilterSelectionStrategy);
 
                         return result;
                     },
@@ -149,12 +153,34 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.VersionMatchStrategy,
                                              referenceObject.TagsToMatch,
                                              referenceObject.TagMatchStrategy,
-                                             new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
+                                             new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList(),
+                                             referenceObject.RecordsToFilterSelectionStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentException),
                     ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordsToFilterSelectionStrategy' is RecordsToFilterSelectionStrategy.Unknown",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var result = new GetDistinctIdsOp<Version>(
+                                             referenceObject.ObjectTypes,
+                                             referenceObject.VersionMatchStrategy,
+                                             referenceObject.TagsToMatch,
+                                             referenceObject.TagMatchStrategy,
+                                             referenceObject.DeprecatedIdTypes,
+                                             RecordsToFilterSelectionStrategy.Unknown);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                    ExpectedExceptionMessageContains = new[] { "recordsToFilterSelectionStrategy", "Unknown", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<GetDistinctIdsOp<Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetDistinctIdsOp<Version>>()
@@ -173,7 +199,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.DeprecatedIdTypes),
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
                             ExpectedPropertyValue = referenceObject.ObjectTypes,
                         };
 
@@ -196,7 +223,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.DeprecatedIdTypes),
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
                             ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
                         };
 
@@ -219,7 +247,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.DeprecatedIdTypes),
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
                             ExpectedPropertyValue = referenceObject.TagsToMatch,
                         };
 
@@ -242,7 +271,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.DeprecatedIdTypes),
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
                             ExpectedPropertyValue = referenceObject.TagMatchStrategy,
                         };
 
@@ -265,13 +295,38 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.VersionMatchStrategy,
                                                       referenceObject.TagsToMatch,
                                                       referenceObject.TagMatchStrategy,
-                                                      referenceObject.DeprecatedIdTypes),
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
                             ExpectedPropertyValue = referenceObject.DeprecatedIdTypes,
                         };
 
                         return result;
                     },
                     PropertyName = "DeprecatedIdTypes",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "RecordsToFilterSelectionStrategy should return same 'recordsToFilterSelectionStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<GetDistinctIdsOp<Version>>
+                        {
+                            SystemUnderTest = new GetDistinctIdsOp<Version>(
+                                                      referenceObject.ObjectTypes,
+                                                      referenceObject.VersionMatchStrategy,
+                                                      referenceObject.TagsToMatch,
+                                                      referenceObject.TagMatchStrategy,
+                                                      referenceObject.DeprecatedIdTypes,
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
+                            ExpectedPropertyValue = referenceObject.RecordsToFilterSelectionStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "RecordsToFilterSelectionStrategy",
                 });
 
         private static readonly DeepCloneWithTestScenarios<GetDistinctIdsOp<Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetDistinctIdsOp<Version>>()
@@ -374,6 +429,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<GetDistinctIdsOp<Version>>
+                {
+                    Name = "DeepCloneWithRecordsToFilterSelectionStrategy should deep clone object and replace RecordsToFilterSelectionStrategy with the provided recordsToFilterSelectionStrategy",
+                    WithPropertyName = "RecordsToFilterSelectionStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<GetDistinctIdsOp<Version>>();
+
+                        var referenceObject = A.Dummy<GetDistinctIdsOp<Version>>().ThatIs(_ => !systemUnderTest.RecordsToFilterSelectionStrategy.IsEqualTo(_.RecordsToFilterSelectionStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<GetDistinctIdsOp<Version>>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.RecordsToFilterSelectionStrategy,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly GetDistinctIdsOp<Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetDistinctIdsOp<Version>>();
@@ -391,7 +466,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new GetDistinctIdsOp<Version>[]
                     {
@@ -400,31 +476,43 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
                         new GetDistinctIdsOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
                         new GetDistinctIdsOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
                         new GetDistinctIdsOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
                         new GetDistinctIdsOp<Version>(
                                 ReferenceObjectForEquatableTestScenarios.ObjectTypes,
                                 ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
                                 ReferenceObjectForEquatableTestScenarios.TagsToMatch,
                                 ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.DeprecatedIdTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes)).DeprecatedIdTypes),
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.DeprecatedIdTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes)).DeprecatedIdTypes,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
+                        new GetDistinctIdsOp<Version>(
+                                ReferenceObjectForEquatableTestScenarios.ObjectTypes,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
+                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
+                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes,
+                                A.Dummy<GetDistinctIdsOp<Version>>().Whose(_ => !_.RecordsToFilterSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy)).RecordsToFilterSelectionStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -833,7 +921,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "ObjectTypes", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "DeprecatedIdTypes" };
+                var propertyNames = new string[] { "ObjectTypes", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "DeprecatedIdTypes", "RecordsToFilterSelectionStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

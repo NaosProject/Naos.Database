@@ -178,11 +178,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
             // Arrange
             var stream = BuildCreatedStream();
 
-            var object1 = A.Dummy<NamedResourceLocator>();
-            var object2 = A.Dummy<NamedResourceLocator>();
-            var object3 = A.Dummy<NamedResourceLocator>();
-            var object4 = A.Dummy<NamedResourceLocator>();
-
             var id1 = "id-1";
             var id2 = "id-2";
             var id3 = "id-3";
@@ -190,11 +185,11 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var tags = new[] { A.Dummy<NamedValue<string>>() };
 
-            stream.PutWithId(id1, object1, tags: tags);
-            stream.PutWithId(id2, object2);
-            stream.PutWithId(id3, object3, tags: tags);
-            stream.PutWithId(id4, object4, tags: tags);
-            stream.PutWithId(id1, object1);
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>());
             stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
             stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
 
@@ -297,6 +292,56 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             // Assert
             actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void DoesAnyExistById___Should_return_true___When_RecordsToFilterSelectionStrategy_All_and_latest_object_does_not_contain_tags_but_prior_one_does()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id = "id";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id, A.Dummy<MyObject>(), tags: tags);
+            stream.PutWithId(id, A.Dummy<MyObject>());
+
+            var operation = new DoesAnyExistByIdOp<string>(
+                id,
+                tagsToMatch: tags,
+                recordsToFilterSelectionStrategy: RecordsToFilterSelectionStrategy.All);
+
+            // Act
+            var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeTrue();
+        }
+
+        [Fact]
+        public static void DoesAnyExistById___Should_return_false___When_RecordsToFilterSelectionStrategy_LatestById_and_latest_object_does_not_contain_tagsToMatch()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id = "id";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id, A.Dummy<MyObject>(), tags: tags);
+            stream.PutWithId(id, A.Dummy<MyObject>());
+
+            var operation = new DoesAnyExistByIdOp<string>(
+                id,
+                tagsToMatch: tags,
+                recordsToFilterSelectionStrategy: RecordsToFilterSelectionStrategy.LatestById);
+
+            // Act
+            var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeFalse();
         }
 
         [Fact]
@@ -515,6 +560,41 @@ namespace Naos.Database.Domain.Test.MemoryStream
             // Assert
             actual1.AsTest().Must().BeEqualTo((IReadOnlyCollection<string>)new[] { item2.Id, item5.Id });
             actual2.AsTest().Must().BeEqualTo((IReadOnlyCollection<string>)new[] { item3.Id, item6.Id });
+        }
+
+        [Fact]
+        public static void GetDistinctIds___Should_return_latest_ids_that_survive_filtering___When_RecordsToFilterSelectionStrategy_LatestById_used_with_tag_based_RecordFilter()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
+
+            var expected = new[] { id3 };
+
+            var operation = new GetDistinctIdsOp<string>(
+                tagsToMatch: tags,
+                deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() },
+                recordsToFilterSelectionStrategy: RecordsToFilterSelectionStrategy.LatestById);
+
+            // Act
+            var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
         }
 
         [Fact]

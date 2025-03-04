@@ -213,7 +213,7 @@ namespace Naos.Database.Domain
             }
             else
             {
-                throw new NotSupportedException($"This {nameof(RecordsToFilterSelectionStrategy)} is not supported: {recordsToFilterSelectionStrategy}.");
+                throw new NotSupportedException(Invariant($"This {nameof(RecordsToFilterSelectionStrategy)} is not supported: {recordsToFilterSelectionStrategy}."));
             }
 
             // Internal Record Identifier

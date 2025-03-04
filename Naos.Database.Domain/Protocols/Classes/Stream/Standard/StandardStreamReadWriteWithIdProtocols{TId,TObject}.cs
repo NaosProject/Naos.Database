@@ -131,7 +131,7 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
         public IReadOnlyList<TObject> Execute(
-            GetLatestObjectsByIdsOp<TId, TObject> operation)
+            GetLatestObjectsByIdOp<TId, TObject> operation)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
@@ -144,49 +144,102 @@ namespace Naos.Database.Domain
                 throw new NotSupportedException(Invariant($"{nameof(OrderRecordsBy)} {operation.OrderRecordsBy} is not supported."));
             }
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
-            // We have tested and implementations of ResourceLocatorBase will group properly, even though they do
-            // not implement IEquatable<IResourceLocator>.  In practice, its most likely that the same type of
-            // resource locator will be used.  And if folks create a new implementation of IResourceLocator, they
-            // can make it IEquatable<NewImplementation> and the below will work fine.  In the worst case, if they
-            // do not make their implementation IEquatable, then the foreach below will iterate through each id
-            // which is equivalent to calling GetLatestObjectByIdOp<TId, TObject> in a loop.
-            var locatorToIdsMap = operation.Ids
-                .Select(_ => new { Id = _, Locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(_)) })
-                .GroupBy(_ => _.Locator)
-                .ToDictionary(_ => _.Key, _ => _.Select(i => i.Id).ToList());
-
             var result = new List<TObject>();
 
-            foreach (var locator in locatorToIdsMap.Keys)
+            if ((operation.Ids != null) && operation.Ids.Any())
             {
-                var ids = locatorToIdsMap[locator];
+                var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
 
-                var stringSerializedIdentifiers = ids
-                    .Select(_ => new StringSerializedIdentifier(
-                        serializer.SerializeToString(_),
-                        operation.TypeSelectionStrategy.Apply(_).ToRepresentation()))
-                    .ToList();
+                // We have tested and implementations of ResourceLocatorBase will group properly, even though they do
+                // not implement IEquatable<IResourceLocator>.  In practice, its most likely that the same type of
+                // resource locator will be used.  And if folks create a new implementation of IResourceLocator, they
+                // can make it IEquatable<NewImplementation> and the below will work fine.  In the worst case, if they
+                // do not make their implementation IEquatable, then the foreach below will iterate through each id
+                // which is equivalent to calling GetLatestObjectByIdOp<TId, TObject> in a loop.
+                var locatorToIdsMap = operation.Ids
+                    .Select(_ => new { Id = _, Locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(_)) })
+                    .GroupBy(_ => _.Locator)
+                    .ToDictionary(_ => _.Key, _ => _.Select(i => i.Id).ToList());
 
+                foreach (var locator in locatorToIdsMap.Keys)
+                {
+                    var ids = locatorToIdsMap[locator];
+
+                    var stringSerializedIdentifiers = ids
+                        .Select(_ => new StringSerializedIdentifier(
+                            serializer.SerializeToString(_),
+                            operation.TypeSelectionStrategy.Apply(_).ToRepresentation()))
+                        .ToList();
+
+                    var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
+                        new RecordFilter(
+                            ids: stringSerializedIdentifiers,
+                            objectTypes: new[] { typeof(TObject).ToRepresentation() },
+                            versionMatchStrategy: operation.VersionMatchStrategy,
+                            tags: operation.TagsToMatch,
+                            tagMatchStrategy: operation.TagMatchStrategy,
+                            deprecatedIdTypes: operation.DeprecatedIdTypes),
+                        RecordNotFoundStrategy.ReturnDefault, // Here we are hard coding to ReturnDefault because we cannot evaluate the strategy until we've pulled records from all locators
+                        RecordsToFilterSelectionStrategy.LatestById,
+                        locator);
+
+                    var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+
+                    if (internalRecordIds.Any())
+                    {
+                        // ReSharper disable once RedundantArgumentDefaultValue - want to be explicit about RecordNotFoundStrategy and also add a comment
+                        var thisLocatorRecords = internalRecordIds
+                            .Select(_ => this.stream.Execute(
+                                new StandardGetLatestRecordOp(
+                                    new RecordFilter(
+                                        internalRecordIds: new[]
+                                        {
+                                        _,
+                                        }),
+                                    RecordNotFoundStrategy.ReturnDefault, // See comment above.  We specifically do NOT want to chain-thru operation.RecordNotFoundStrategy here.  If that strategy is Throw and all records disappear in-between the call above and this call, then effectively those records don't exist and we should continue looping thru locators.
+                                    specifiedResourceLocator: locator)))
+                            .ToList();
+
+                        var thisLocatorObjects = thisLocatorRecords
+                            .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                            .ToList();
+
+                        result.AddRange(thisLocatorObjects);
+                    }
+                }
+
+                switch (operation.RecordNotFoundStrategy)
+                {
+                    case RecordNotFoundStrategy.ReturnDefault:
+                        break;  // result list starts off empty, so if no records found then the result is correct.
+                    case RecordNotFoundStrategy.Throw:
+                        if (!result.Any())
+                        {
+                            throw new InvalidOperationException(Invariant($"Expected stream {this.stream.StreamRepresentation} to contain a matching record(s) for {operation}, none were found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
+                        }
+
+                        break;
+                    default:
+                        throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
+                }
+            }
+            else
+            {
                 var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
-                    new RecordFilter(
-                        ids: stringSerializedIdentifiers,
-                        objectTypes: new[] { typeof(TObject).ToRepresentation() },
-                        versionMatchStrategy: operation.VersionMatchStrategy,
-                        tags: operation.TagsToMatch,
-                        tagMatchStrategy: operation.TagMatchStrategy,
-                        deprecatedIdTypes: operation.DeprecatedIdTypes),
-                    RecordNotFoundStrategy.ReturnDefault, // Here we are hard coding to ReturnDefault because we cannot evaluate the strategy until we've pulled records from all locators
-                    RecordsToFilterSelectionStrategy.LatestById,
-                    locator);
+                        new RecordFilter(
+                            objectTypes: new[] { typeof(TObject).ToRepresentation() },
+                            versionMatchStrategy: operation.VersionMatchStrategy,
+                            tags: operation.TagsToMatch,
+                            tagMatchStrategy: operation.TagMatchStrategy,
+                            deprecatedIdTypes: operation.DeprecatedIdTypes),
+                        operation.RecordNotFoundStrategy,
+                        RecordsToFilterSelectionStrategy.LatestById);
 
                 var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
 
                 if (internalRecordIds.Any())
                 {
-                    // ReSharper disable once RedundantArgumentDefaultValue - want to be explicit about RecordNotFoundStrategy and also add a comment
-                    var thisLocatorRecords = internalRecordIds
+                    var records = internalRecordIds
                         .Select(_ => this.stream.Execute(
                             new StandardGetLatestRecordOp(
                                 new RecordFilter(
@@ -194,31 +247,15 @@ namespace Naos.Database.Domain
                                     {
                                         _,
                                     }),
-                                RecordNotFoundStrategy.ReturnDefault, // See comment above.  We specifically do NOT want to chain-thru operation.RecordNotFoundStrategy here.  If that strategy is Throw and all records disappear in-between the call above and this call, then effectively those records don't exist and we should continue looping thru locators.
-                                specifiedResourceLocator: locator)))
+                                operation.RecordNotFoundStrategy)))
                         .ToList();
 
-                    var thisLocatorObjects = thisLocatorRecords
+                    var objects = records
                         .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
                         .ToList();
 
-                    result.AddRange(thisLocatorObjects);
+                    result.AddRange(objects);
                 }
-            }
-
-            switch (operation.RecordNotFoundStrategy)
-            {
-                case RecordNotFoundStrategy.ReturnDefault:
-                    break;  // result list starts off empty, so if no records found then the result is correct.
-                case RecordNotFoundStrategy.Throw:
-                    if (!result.Any())
-                    {
-                        throw new InvalidOperationException(Invariant($"Expected stream {this.stream.StreamRepresentation} to contain a matching record(s) for {operation}, none were found and {nameof(operation.RecordNotFoundStrategy)} is '{operation.RecordNotFoundStrategy}'."));
-                    }
-
-                    break;
-                default:
-                    throw new NotSupportedException(Invariant($"{nameof(RecordNotFoundStrategy)} {operation.RecordNotFoundStrategy} is not supported."));
             }
 
             return result;
@@ -226,7 +263,7 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public async Task<IReadOnlyList<TObject>> ExecuteAsync(
-            GetLatestObjectsByIdsOp<TId, TObject> operation)
+            GetLatestObjectsByIdOp<TId, TObject> operation)
         {
             var result = await Task.FromResult(this.Execute(operation));
 

@@ -350,7 +350,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new GetLatestObjectsByIdsOp<Version, Version>(
+                () => new GetLatestObjectsByIdOp<Version, Version>(
                                  A.Dummy<IReadOnlyCollection<Version>>(),
                                  A.Dummy<VersionMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),

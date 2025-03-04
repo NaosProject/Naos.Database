@@ -282,11 +282,11 @@
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.designer.cs">
       <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensionsTest.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdsOp{TId,TObject}Test.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdsOp{TId,TObject}Test.designer.cs">
-      <DependentUpon>GetLatestObjectsByIdsOp{TId,TObject}Test.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}Test.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}Test.designer.cs">
+      <DependentUpon>GetLatestObjectsByIdOp{TId,TObject}Test.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensionsTest.cs" />
     <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensionsTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataOpTest.designer.cs">

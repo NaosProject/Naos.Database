@@ -231,7 +231,7 @@
     <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadata\GetAllRecordsMetadataLambdaProtocol.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetAllRecordsMetadata\GetAllRecordsMetadataLambdaProtocol{TId}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetDistinctIds\GetDistinctIdsLambdaProtocol{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObjects\GetLatestObjectsByIdsLambdaProtocol{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\Lambda\GetLatestObjects\GetLatestObjectsByIdLambdaProtocol{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectByIdLambdaProtocol{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestObject\GetLatestObjectLambdaProtocol{TObject}.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\GetLatestRecord\GetLatestRecordByIdLambdaProtocol{TId,TObject}.cs" />
@@ -246,7 +246,7 @@
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetAllObjects\ReadOnlyStreamExtensions.GetAllObjectsByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\DoesAnyExist\ReadOnlyStreamExtensions.DoesAnyExistById{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetDistinctIds\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
-    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObjects\ReadOnlyStreamExtensions.GetLatestObjectsByIdsOp{TId,TObject}.cs" />
+    <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObjects\ReadOnlyStreamExtensions.GetLatestObjectsByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestStringSerializedObject\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\GetNextUniqueLongLambdaProtocol.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\PutAndReturnInternalRecordIdLambdaProtocol{TObject}.cs" />
@@ -522,9 +522,9 @@
       <DependentUpon>GetDistinctIdsOp{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdsOp{TId,TObject}.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdsOp{TId,TObject}.designer.cs">
-      <DependentUpon>GetLatestObjectsByIdsOp{TId,TObject}.cs</DependentUpon>
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}.designer.cs">
+      <DependentUpon>GetLatestObjectsByIdOp{TId,TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObject\GetLatestObjectByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectByIdOp{TId,TObject}.cs</DependentUpon>

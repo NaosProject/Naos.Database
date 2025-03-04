@@ -53,14 +53,14 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IReadOnlyList<TObject> Execute(
-            GetLatestObjectsByIdsOp<TId, TObject> operation)
+            GetLatestObjectsByIdOp<TId, TObject> operation)
         {
             return default;
         }
 
         /// <inheritdoc />
         public async Task<IReadOnlyList<TObject>> ExecuteAsync(
-            GetLatestObjectsByIdsOp<TId, TObject> operation)
+            GetLatestObjectsByIdOp<TId, TObject> operation)
         {
             var syncResult = this.Execute(operation);
             var result = await Task.FromResult(syncResult);

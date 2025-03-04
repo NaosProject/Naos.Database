@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GetLatestObjectsByIdsOp{TId,TObject}Test.cs" company="Naos Project">
+// <copyright file="GetLatestObjectsByIdOp{TId,TObject}Test.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -24,69 +24,23 @@ namespace Naos.Database.Domain.Test
     using static System.FormattableString;
 
     [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
-    public static partial class GetLatestObjectsByIdsOpTIdTObjectTest
+    public static partial class GetLatestObjectsByIdOpTIdTObjectTest
     {
         [SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = ObcSuppressBecause.CA1505_AvoidUnmaintainableCode_DisagreeWithAssessment)]
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
-        static GetLatestObjectsByIdsOpTIdTObjectTest()
+        static GetLatestObjectsByIdOpTIdTObjectTest()
         {
             ConstructorArgumentValidationTestScenarios
                 .RemoveAllScenarios()
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
-                    {
-                        Name = "constructor should throw ArgumentNullException when parameter 'ids' is null scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
-
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
-                                                 null,
-                                                 referenceObject.VersionMatchStrategy,
-                                                 referenceObject.TagsToMatch,
-                                                 referenceObject.TagMatchStrategy,
-                                                 referenceObject.RecordNotFoundStrategy,
-                                                 referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentNullException),
-                        ExpectedExceptionMessageContains = new[] { "ids", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
-                    {
-                        Name = "constructor should throw ArgumentException when parameter 'ids' is an empty enumerable scenario",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
-
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
-                                                 new List<Version>(),
-                                                 referenceObject.VersionMatchStrategy,
-                                                 referenceObject.TagsToMatch,
-                                                 referenceObject.TagMatchStrategy,
-                                                 referenceObject.RecordNotFoundStrategy,
-                                                 referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentException),
-                        ExpectedExceptionMessageContains = new[] { "ids", "is an empty enumerable", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  VersionMatchStrategy.Unknown,
                                                  referenceObject.TagsToMatch,
@@ -102,14 +56,14 @@ namespace Naos.Database.Domain.Test
                         ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
                     })
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  referenceObject.VersionMatchStrategy,
                                                  new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
@@ -125,14 +79,14 @@ namespace Naos.Database.Domain.Test
                         ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
                     })
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,
@@ -148,14 +102,14 @@ namespace Naos.Database.Domain.Test
                         ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
                     })
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,
@@ -171,14 +125,14 @@ namespace Naos.Database.Domain.Test
                         ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
                     })
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,
@@ -194,14 +148,14 @@ namespace Naos.Database.Domain.Test
                         ExpectedExceptionMessageContains = new[] { "orderRecordsBy", "Unknown", },
                     })
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,
@@ -217,14 +171,14 @@ namespace Naos.Database.Domain.Test
                         ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
                     })
                 .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdsOp<Version, Version>>
+                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
                     {
                         Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
                         ConstructionFunc = () =>
                         {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdsOp<Version, Version>>();
+                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
 
-                            var result = new GetLatestObjectsByIdsOp<Version, Version>(
+                            var result = new GetLatestObjectsByIdOp<Version, Version>(
                                                  referenceObject.Ids,
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,

@@ -18,7 +18,7 @@ namespace Naos.Database.Domain
         IDoesAnyExistById<TId, TObject>,
         IGetAllObjectsById<TId, TObject>,
         IGetLatestObjectById<TId, TObject>,
-        IGetLatestObjectsByIds<TId, TObject>,
+        IGetLatestObjectsById<TId, TObject>,
         IGetLatestRecordById<TId, TObject>
     {
     }
@@ -54,12 +54,12 @@ namespace Naos.Database.Domain
     }
 
     /// <summary>
-    /// Convenience interface for protocol that executes a <see cref="GetLatestObjectsByIdsOp{TId, TObject}" />.
+    /// Convenience interface for protocol that executes a <see cref="GetLatestObjectsByIdOp{TId, TObject}" />.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IGetLatestObjectsByIds<TId, TObject> :
-        ISyncAndAsyncReturningProtocol<GetLatestObjectsByIdsOp<TId, TObject>, IReadOnlyList<TObject>>
+    public interface IGetLatestObjectsById<TId, TObject> :
+        ISyncAndAsyncReturningProtocol<GetLatestObjectsByIdOp<TId, TObject>, IReadOnlyList<TObject>>
     {
     }
 

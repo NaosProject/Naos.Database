@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class GetLatestObjectsByIdsOp<TId, TObject> : IModel<GetLatestObjectsByIdsOp<TId, TObject>>
+    public partial class GetLatestObjectsByIdOp<TId, TObject> : IModel<GetLatestObjectsByIdOp<TId, TObject>>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="GetLatestObjectsByIdsOp{TId, TObject}"/> are equal.
+        /// Determines whether two objects of type <see cref="GetLatestObjectsByIdOp{TId, TObject}"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(GetLatestObjectsByIdsOp<TId, TObject> left, GetLatestObjectsByIdsOp<TId, TObject> right)
+        public static bool operator ==(GetLatestObjectsByIdOp<TId, TObject> left, GetLatestObjectsByIdOp<TId, TObject> right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -50,15 +50,15 @@ namespace Naos.Database.Domain
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="GetLatestObjectsByIdsOp{TId, TObject}"/> are not equal.
+        /// Determines whether two objects of type <see cref="GetLatestObjectsByIdOp{TId, TObject}"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(GetLatestObjectsByIdsOp<TId, TObject> left, GetLatestObjectsByIdsOp<TId, TObject> right) => !(left == right);
+        public static bool operator !=(GetLatestObjectsByIdOp<TId, TObject> left, GetLatestObjectsByIdOp<TId, TObject> right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(GetLatestObjectsByIdsOp<TId, TObject> other)
+        public bool Equals(GetLatestObjectsByIdOp<TId, TObject> other)
         {
             if (ReferenceEquals(this, other))
             {
@@ -83,7 +83,7 @@ namespace Naos.Database.Domain
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as GetLatestObjectsByIdsOp<TId, TObject>);
+        public override bool Equals(object obj) => this == (obj as GetLatestObjectsByIdOp<TId, TObject>);
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
@@ -98,13 +98,13 @@ namespace Naos.Database.Domain
             .Value;
 
         /// <inheritdoc />
-        public new GetLatestObjectsByIdsOp<TId, TObject> DeepClone() => (GetLatestObjectsByIdsOp<TId, TObject>)this.DeepCloneInternal();
+        public new GetLatestObjectsByIdOp<TId, TObject> DeepClone() => (GetLatestObjectsByIdOp<TId, TObject>)this.DeepCloneInternal();
 
         /// <summary>
         /// Deep clones this object with a new <see cref="Ids" />.
         /// </summary>
         /// <param name="ids">The new <see cref="Ids" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="ids" /> for <see cref="Ids" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="ids" /> for <see cref="Ids" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -122,9 +122,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithIds(IReadOnlyCollection<TId> ids)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithIds(IReadOnlyCollection<TId> ids)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  ids,
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
@@ -141,7 +141,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="VersionMatchStrategy" />.
         /// </summary>
         /// <param name="versionMatchStrategy">The new <see cref="VersionMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="versionMatchStrategy" /> for <see cref="VersionMatchStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -159,9 +159,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithVersionMatchStrategy(VersionMatchStrategy versionMatchStrategy)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  versionMatchStrategy,
                                  this.TagsToMatch?.DeepClone(),
@@ -178,7 +178,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="TagsToMatch" />.
         /// </summary>
         /// <param name="tagsToMatch">The new <see cref="TagsToMatch" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="tagsToMatch" /> for <see cref="TagsToMatch" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="tagsToMatch" /> for <see cref="TagsToMatch" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -196,9 +196,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithTagsToMatch(IReadOnlyCollection<NamedValue<string>> tagsToMatch)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithTagsToMatch(IReadOnlyCollection<NamedValue<string>> tagsToMatch)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  tagsToMatch,
@@ -215,7 +215,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="TagMatchStrategy" />.
         /// </summary>
         /// <param name="tagMatchStrategy">The new <see cref="TagMatchStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="tagMatchStrategy" /> for <see cref="TagMatchStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="tagMatchStrategy" /> for <see cref="TagMatchStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -233,9 +233,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithTagMatchStrategy(TagMatchStrategy tagMatchStrategy)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
@@ -252,7 +252,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="RecordNotFoundStrategy" />.
         /// </summary>
         /// <param name="recordNotFoundStrategy">The new <see cref="RecordNotFoundStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="recordNotFoundStrategy" /> for <see cref="RecordNotFoundStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="recordNotFoundStrategy" /> for <see cref="RecordNotFoundStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -270,9 +270,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithRecordNotFoundStrategy(RecordNotFoundStrategy recordNotFoundStrategy)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
@@ -289,7 +289,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="OrderRecordsBy" />.
         /// </summary>
         /// <param name="orderRecordsBy">The new <see cref="OrderRecordsBy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="orderRecordsBy" /> for <see cref="OrderRecordsBy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="orderRecordsBy" /> for <see cref="OrderRecordsBy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -307,9 +307,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithOrderRecordsBy(OrderRecordsBy orderRecordsBy)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithOrderRecordsBy(OrderRecordsBy orderRecordsBy)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
@@ -326,7 +326,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="DeprecatedIdTypes" />.
         /// </summary>
         /// <param name="deprecatedIdTypes">The new <see cref="DeprecatedIdTypes" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="deprecatedIdTypes" /> for <see cref="DeprecatedIdTypes" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="deprecatedIdTypes" /> for <see cref="DeprecatedIdTypes" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -344,9 +344,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithDeprecatedIdTypes(IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithDeprecatedIdTypes(IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
@@ -363,7 +363,7 @@ namespace Naos.Database.Domain
         /// Deep clones this object with a new <see cref="TypeSelectionStrategy" />.
         /// </summary>
         /// <param name="typeSelectionStrategy">The new <see cref="TypeSelectionStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="GetLatestObjectsByIdsOp{TId, TObject}" /> using the specified <paramref name="typeSelectionStrategy" /> for <see cref="TypeSelectionStrategy" /> and a deep clone of every other property.</returns>
+        /// <returns>New <see cref="GetLatestObjectsByIdOp{TId, TObject}" /> using the specified <paramref name="typeSelectionStrategy" /> for <see cref="TypeSelectionStrategy" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -381,9 +381,9 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public GetLatestObjectsByIdsOp<TId, TObject> DeepCloneWithTypeSelectionStrategy(TypeSelectionStrategy typeSelectionStrategy)
+        public GetLatestObjectsByIdOp<TId, TObject> DeepCloneWithTypeSelectionStrategy(TypeSelectionStrategy typeSelectionStrategy)
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),
@@ -400,7 +400,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         protected override OperationBase DeepCloneInternal()
         {
-            var result = new GetLatestObjectsByIdsOp<TId, TObject>(
+            var result = new GetLatestObjectsByIdOp<TId, TObject>(
                                  this.Ids?.DeepClone(),
                                  this.VersionMatchStrategy.DeepClone(),
                                  this.TagsToMatch?.DeepClone(),

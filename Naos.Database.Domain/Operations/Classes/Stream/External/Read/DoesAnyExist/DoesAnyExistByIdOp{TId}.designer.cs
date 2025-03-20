@@ -76,8 +76,7 @@ namespace Naos.Database.Domain
                       && this.TagsToMatch.IsEqualTo(other.TagsToMatch)
                       && this.TagMatchStrategy.IsEqualTo(other.TagMatchStrategy)
                       && this.DeprecatedIdTypes.IsEqualTo(other.DeprecatedIdTypes)
-                      && this.TypeSelectionStrategy.IsEqualTo(other.TypeSelectionStrategy)
-                      && this.RecordsToFilterSelectionStrategy.IsEqualTo(other.RecordsToFilterSelectionStrategy);
+                      && this.TypeSelectionStrategy.IsEqualTo(other.TypeSelectionStrategy);
 
             return result;
         }
@@ -94,7 +93,6 @@ namespace Naos.Database.Domain
             .Hash(this.TagMatchStrategy)
             .Hash(this.DeprecatedIdTypes)
             .Hash(this.TypeSelectionStrategy)
-            .Hash(this.RecordsToFilterSelectionStrategy)
             .Value;
 
         /// <inheritdoc />
@@ -131,8 +129,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  this.TagMatchStrategy.DeepClone(),
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -168,8 +165,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  this.TagMatchStrategy.DeepClone(),
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -205,8 +201,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  this.TagMatchStrategy.DeepClone(),
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -242,8 +237,7 @@ namespace Naos.Database.Domain
                                  tagsToMatch,
                                  this.TagMatchStrategy.DeepClone(),
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -279,8 +273,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  tagMatchStrategy,
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -316,8 +309,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  this.TagMatchStrategy.DeepClone(),
                                  deprecatedIdTypes,
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -353,45 +345,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  this.TagMatchStrategy.DeepClone(),
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 typeSelectionStrategy,
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deep clones this object with a new <see cref="RecordsToFilterSelectionStrategy" />.
-        /// </summary>
-        /// <param name="recordsToFilterSelectionStrategy">The new <see cref="RecordsToFilterSelectionStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="DoesAnyExistByIdOp{TId}" /> using the specified <paramref name="recordsToFilterSelectionStrategy" /> for <see cref="RecordsToFilterSelectionStrategy" /> and a deep clone of every other property.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
-        [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-        [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-        [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-        [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-        [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-        [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-        [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public DoesAnyExistByIdOp<TId> DeepCloneWithRecordsToFilterSelectionStrategy(RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy)
-        {
-            var result = new DoesAnyExistByIdOp<TId>(
-                                 this.Id == null ? default : this.Id.DeepClone(),
-                                 this.ObjectType?.DeepClone(),
-                                 this.VersionMatchStrategy.DeepClone(),
-                                 this.TagsToMatch?.DeepClone(),
-                                 this.TagMatchStrategy.DeepClone(),
-                                 this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 recordsToFilterSelectionStrategy);
+                                 typeSelectionStrategy);
 
             return result;
         }
@@ -407,8 +361,7 @@ namespace Naos.Database.Domain
                                  this.TagsToMatch?.DeepClone(),
                                  this.TagMatchStrategy.DeepClone(),
                                  this.DeprecatedIdTypes?.DeepClone(),
-                                 this.TypeSelectionStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone());
+                                 this.TypeSelectionStrategy.DeepClone());
 
             return result;
         }
@@ -417,7 +370,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {this.DeprecatedIdTypes?.ToString() ?? "<null>"}, TypeSelectionStrategy = {this.TypeSelectionStrategy.ToString() ?? "<null>"}, RecordsToFilterSelectionStrategy = {this.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.{this.GetType().ToStringReadable()}: Id = {this.Id?.ToString() ?? "<null>"}, ObjectType = {this.ObjectType?.ToString() ?? "<null>"}, VersionMatchStrategy = {this.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {this.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {this.TagMatchStrategy.ToString() ?? "<null>"}, DeprecatedIdTypes = {this.DeprecatedIdTypes?.ToString() ?? "<null>"}, TypeSelectionStrategy = {this.TypeSelectionStrategy.ToString() ?? "<null>"}.");
 
             return result;
         }

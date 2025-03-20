@@ -53,8 +53,7 @@ namespace Naos.Database.Domain
                     tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
                 RecordNotFoundStrategy.ReturnDefault,
-                operation.RecordsToFilterSelectionStrategy,
-                specifiedResourceLocator);
+                specifiedResourceLocator: specifiedResourceLocator);
 
             return result;
         }
@@ -84,8 +83,7 @@ namespace Naos.Database.Domain
                 operation.TagsToMatch,
                 operation.TagMatchStrategy,
                 operation.DeprecatedIdTypes,
-                operation.TypeSelectionStrategy,
-                operation.RecordsToFilterSelectionStrategy);
+                operation.TypeSelectionStrategy);
 
             var result = delegatedOperation.Standardize(serializer, specifiedResourceLocator);
 

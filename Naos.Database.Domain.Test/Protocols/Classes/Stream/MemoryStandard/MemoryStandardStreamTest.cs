@@ -295,56 +295,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
-        public static void DoesAnyExistById___Should_return_true___When_RecordsToFilterSelectionStrategy_All_and_latest_object_does_not_contain_tags_but_prior_one_does()
-        {
-            // Arrange
-            var stream = BuildCreatedStream();
-
-            var id = "id";
-
-            var tags = new[] { A.Dummy<NamedValue<string>>() };
-
-            stream.PutWithId(id, A.Dummy<MyObject>(), tags: tags);
-            stream.PutWithId(id, A.Dummy<MyObject>());
-
-            var operation = new DoesAnyExistByIdOp<string>(
-                id,
-                tagsToMatch: tags,
-                recordsToFilterSelectionStrategy: RecordsToFilterSelectionStrategy.All);
-
-            // Act
-            var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
-
-            // Assert
-            actual.AsTest().Must().BeTrue();
-        }
-
-        [Fact]
-        public static void DoesAnyExistById___Should_return_false___When_RecordsToFilterSelectionStrategy_LatestById_and_latest_object_does_not_contain_tagsToMatch()
-        {
-            // Arrange
-            var stream = BuildCreatedStream();
-
-            var id = "id";
-
-            var tags = new[] { A.Dummy<NamedValue<string>>() };
-
-            stream.PutWithId(id, A.Dummy<MyObject>(), tags: tags);
-            stream.PutWithId(id, A.Dummy<MyObject>());
-
-            var operation = new DoesAnyExistByIdOp<string>(
-                id,
-                tagsToMatch: tags,
-                recordsToFilterSelectionStrategy: RecordsToFilterSelectionStrategy.LatestById);
-
-            // Act
-            var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
-
-            // Assert
-            actual.AsTest().Must().BeFalse();
-        }
-
-        [Fact]
         public static void GetAllObjects_TObject___Should_return_all_object_of_the_specified_type___When_called()
         {
             // Arrange

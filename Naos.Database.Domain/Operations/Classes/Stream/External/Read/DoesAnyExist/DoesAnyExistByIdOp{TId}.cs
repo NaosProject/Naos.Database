@@ -15,7 +15,7 @@ namespace Naos.Database.Domain
     /// Gets a value indicating whether or not any record by the provided identifier exists.
     /// </summary>
     /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
-    public partial class DoesAnyExistByIdOp<TId> : ReturningOperationBase<bool>, IHaveId<TId>, ISpecifyRecordsToFilterSelectionStrategy
+    public partial class DoesAnyExistByIdOp<TId> : ReturningOperationBase<bool>, IHaveId<TId>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DoesAnyExistByIdOp{TId}"/> class.
@@ -27,7 +27,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         public DoesAnyExistByIdOp(
             TId id,
             TypeRepresentation objectType = null,
@@ -35,15 +34,13 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
             deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
             typeSelectionStrategy.MustForArg(nameof(typeSelectionStrategy)).NotBeEqualTo(TypeSelectionStrategy.Unknown);
-            recordsToFilterSelectionStrategy.MustForArg(nameof(recordsToFilterSelectionStrategy)).NotBeEqualTo(RecordsToFilterSelectionStrategy.Unknown);
 
             this.Id = id;
             this.ObjectType = objectType;
@@ -52,7 +49,6 @@ namespace Naos.Database.Domain
             this.TagMatchStrategy = tagMatchStrategy;
             this.DeprecatedIdTypes = deprecatedIdTypes;
             this.TypeSelectionStrategy = typeSelectionStrategy;
-            this.RecordsToFilterSelectionStrategy = recordsToFilterSelectionStrategy;
         }
 
         /// <inheritdoc />
@@ -87,8 +83,5 @@ namespace Naos.Database.Domain
         /// Gets the strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).
         /// </summary>
         public TypeSelectionStrategy TypeSelectionStrategy { get; private set; }
-
-        /// <inheritdoc />
-        public RecordsToFilterSelectionStrategy RecordsToFilterSelectionStrategy { get; private set; }
     }
 }

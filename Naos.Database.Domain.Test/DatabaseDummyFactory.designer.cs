@@ -155,8 +155,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
-                                 A.Dummy<TypeSelectionStrategy>(),
-                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
+                                 A.Dummy<TypeSelectionStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new DoesAnyExistByIdOp<Version>(
@@ -166,8 +165,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
-                                 A.Dummy<TypeSelectionStrategy>(),
-                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
+                                 A.Dummy<TypeSelectionStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new EnableHandlingForStreamOp(

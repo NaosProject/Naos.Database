@@ -26,7 +26,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId>(
             this IReadOnlyStream stream,
@@ -36,12 +35,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -59,7 +57,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IReadOnlyStream stream,
@@ -69,12 +66,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -92,7 +88,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId>(
             this IStreamReadWithIdProtocols<TId> protocol,
@@ -102,12 +97,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -124,7 +118,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IStreamReadWithIdProtocols<TId> protocol,
@@ -134,12 +127,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -156,7 +148,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId>(
             this ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId>, bool> protocol,
@@ -166,12 +157,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -188,7 +178,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this ISyncAndAsyncReturningProtocol<DoesAnyExistByIdOp<TId>, bool> protocol,
@@ -198,12 +187,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -220,7 +208,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static bool DoesAnyExistById<TId>(
             this IDoesAnyExistById<TId> protocol,
@@ -230,12 +217,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -252,7 +238,6 @@ namespace Naos.Database.Domain
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
         /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
         /// <returns>true if any record exists, otherwise false.</returns>
         public static async Task<bool> DoesAnyExistByIdAsync<TId>(
             this IDoesAnyExistById<TId> protocol,
@@ -262,12 +247,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy, recordsToFilterSelectionStrategy);
+            var operation = new DoesAnyExistByIdOp<TId>(id, objectType, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, typeSelectionStrategy);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

@@ -46,8 +46,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagsToMatch,
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy,
-                                                 referenceObject.RecordsToFilterSelectionStrategy);
+                                                 referenceObject.TypeSelectionStrategy);
 
                             return result;
                         },
@@ -68,8 +67,7 @@ namespace Naos.Database.Domain.Test
                                                  new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy,
-                                                 referenceObject.RecordsToFilterSelectionStrategy);
+                                                 referenceObject.TypeSelectionStrategy);
 
                             return result;
                         },
@@ -90,8 +88,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagsToMatch,
                                                  TagMatchStrategy.Unknown,
                                                  referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy,
-                                                 referenceObject.RecordsToFilterSelectionStrategy);
+                                                 referenceObject.TypeSelectionStrategy);
 
                             return result;
                         },
@@ -112,8 +109,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagsToMatch,
                                                  referenceObject.TagMatchStrategy,
                                                  new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList(),
-                                                 referenceObject.TypeSelectionStrategy,
-                                                 referenceObject.RecordsToFilterSelectionStrategy);
+                                                 referenceObject.TypeSelectionStrategy);
 
                             return result;
                         },
@@ -134,35 +130,12 @@ namespace Naos.Database.Domain.Test
                                 referenceObject.TagsToMatch,
                                 referenceObject.TagMatchStrategy,
                                 referenceObject.DeprecatedIdTypes,
-                                TypeSelectionStrategy.Unknown,
-                                referenceObject.RecordsToFilterSelectionStrategy);
+                                TypeSelectionStrategy.Unknown);
 
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                         ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordsToFilterSelectionStrategy' is RecordsToFilterSelectionStrategy.Unknown",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version, Version>>();
-
-                            var result = new DoesAnyExistByIdOp<Version, Version>(
-                                referenceObject.Id,
-                                referenceObject.VersionMatchStrategy,
-                                referenceObject.TagsToMatch,
-                                referenceObject.TagMatchStrategy,
-                                referenceObject.DeprecatedIdTypes,
-                                referenceObject.TypeSelectionStrategy,
-                                RecordsToFilterSelectionStrategy.Unknown);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "recordsToFilterSelectionStrategy", "Unknown", },
                     });
         }
     }

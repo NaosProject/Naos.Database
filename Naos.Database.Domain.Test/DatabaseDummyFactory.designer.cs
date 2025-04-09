@@ -748,7 +748,8 @@ namespace Naos.Database.Domain.Test
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordsToFilterCriteria(
-                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
+                                 A.Dummy<RecordsToFilterSelectionStrategy>(),
+                                 A.Dummy<VersionMatchStrategy>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordToCheckForExcessiveHandling(

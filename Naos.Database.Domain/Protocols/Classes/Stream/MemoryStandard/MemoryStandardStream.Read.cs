@@ -14,6 +14,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Collection.Recipes;
     using OBeautifulCode.Serialization;
+    using OBeautifulCode.Type;
     using static System.FormattableString;
 
     public partial class MemoryStandardStream
@@ -177,11 +178,11 @@ namespace Naos.Database.Domain
                 }
 
                 // ReSharper disable once RedundantArgumentDefaultValue
-                var recordsToFilterSelectionStrategy = operation is ISpecifyRecordsToFilterCriteria recordsToFilterSelectionStrategySpecified
-                    ? recordsToFilterSelectionStrategySpecified.RecordsToFilterCriteria
+                var recordsToFilterCriteria = operation is ISpecifyRecordsToFilterCriteria recordsToFilterCriteriaSpecified
+                    ? recordsToFilterCriteriaSpecified.RecordsToFilterCriteria
                     : new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All);
 
-                var result = ApplyRecordFilterToPartition(recordFilter, partition, recordsToFilterSelectionStrategy);
+                var result = ApplyRecordFilterToPartition(recordFilter, partition, recordsToFilterCriteria);
 
                 return result;
             }
@@ -196,6 +197,9 @@ namespace Naos.Database.Domain
         {
             List<StreamRecord> result;
             bool filterApplied;
+
+            var versionMatchStrategy = recordsToFilterCriteria.VersionMatchStrategy;
+            new { versionMatchStrategy }.AsOp().Must().BeElementIn(new[] { VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion });
 
             if (recordsToFilterCriteria.RecordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.All)
             {
@@ -215,7 +219,14 @@ namespace Naos.Database.Domain
             else if (recordsToFilterCriteria.RecordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.LatestByIdAndObjectType)
             {
                 result = partition
-                    .GroupBy(_ => new { _.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfObject.WithoutVersion })
+                    .GroupBy(_ =>
+                    {
+                        var objectType = versionMatchStrategy == VersionMatchStrategy.Any
+                            ? _.Metadata.TypeRepresentationOfObject.WithoutVersion
+                            : _.Metadata.TypeRepresentationOfObject.WithVersion;
+
+                        return new { _.Metadata.StringSerializedId, objectType };
+                    })
                     .Select(_ => _.OrderByDescending(streamRecord => streamRecord.InternalRecordId).First())
                     .ToList();
 

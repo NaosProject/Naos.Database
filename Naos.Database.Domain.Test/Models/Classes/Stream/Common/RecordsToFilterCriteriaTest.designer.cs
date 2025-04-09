@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<RecordsToFilterCriteria>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.RecordsToFilterCriteria: RecordsToFilterSelectionStrategy = {systemUnderTest.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.RecordsToFilterCriteria: RecordsToFilterSelectionStrategy = {systemUnderTest.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -62,13 +62,33 @@ namespace Naos.Database.Domain.Test
                     Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordsToFilterSelectionStrategy' is RecordsToFilterSelectionStrategy.Unknown",
                     ConstructionFunc = () =>
                     {
+                        var referenceObject = A.Dummy<RecordsToFilterCriteria>();
+
                         var result = new RecordsToFilterCriteria(
-                                             RecordsToFilterSelectionStrategy.Unknown);
+                                             RecordsToFilterSelectionStrategy.Unknown,
+                                             referenceObject.VersionMatchStrategy);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
                     ExpectedExceptionMessageContains = new[] { "recordsToFilterSelectionStrategy", "Unknown", },
+                })
+            .AddScenario(() =>
+                new ConstructorArgumentValidationTestScenario<RecordsToFilterCriteria>
+                {
+                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
+                    ConstructionFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RecordsToFilterCriteria>();
+
+                        var result = new RecordsToFilterCriteria(
+                                             referenceObject.RecordsToFilterSelectionStrategy,
+                                             VersionMatchStrategy.Unknown);
+
+                        return result;
+                    },
+                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                    ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<RecordsToFilterCriteria> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<RecordsToFilterCriteria>()
@@ -83,13 +103,34 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<RecordsToFilterCriteria>
                         {
                             SystemUnderTest = new RecordsToFilterCriteria(
-                                                      referenceObject.RecordsToFilterSelectionStrategy),
+                                                      referenceObject.RecordsToFilterSelectionStrategy,
+                                                      referenceObject.VersionMatchStrategy),
                             ExpectedPropertyValue = referenceObject.RecordsToFilterSelectionStrategy,
                         };
 
                         return result;
                     },
                     PropertyName = "RecordsToFilterSelectionStrategy",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<RecordsToFilterCriteria>
+                {
+                    Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<RecordsToFilterCriteria>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<RecordsToFilterCriteria>
+                        {
+                            SystemUnderTest = new RecordsToFilterCriteria(
+                                                      referenceObject.RecordsToFilterSelectionStrategy,
+                                                      referenceObject.VersionMatchStrategy),
+                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "VersionMatchStrategy",
                 });
 
         private static readonly DeepCloneWithTestScenarios<RecordsToFilterCriteria> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<RecordsToFilterCriteria>()
@@ -112,6 +153,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<RecordsToFilterCriteria>
+                {
+                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
+                    WithPropertyName = "VersionMatchStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<RecordsToFilterCriteria>();
+
+                        var referenceObject = A.Dummy<RecordsToFilterCriteria>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<RecordsToFilterCriteria>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly RecordsToFilterCriteria ReferenceObjectForEquatableTestScenarios = A.Dummy<RecordsToFilterCriteria>();
@@ -125,12 +186,17 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new RecordsToFilterCriteria[]
                     {
                         new RecordsToFilterCriteria(
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new RecordsToFilterCriteria[]
                     {
                         new RecordsToFilterCriteria(
-                                A.Dummy<RecordsToFilterCriteria>().Whose(_ => !_.RecordsToFilterSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy)).RecordsToFilterSelectionStrategy),
+                                A.Dummy<RecordsToFilterCriteria>().Whose(_ => !_.RecordsToFilterSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy)).RecordsToFilterSelectionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy),
+                        new RecordsToFilterCriteria(
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy,
+                                A.Dummy<RecordsToFilterCriteria>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -429,7 +495,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "RecordsToFilterSelectionStrategy" };
+                var propertyNames = new string[] { "RecordsToFilterSelectionStrategy", "VersionMatchStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

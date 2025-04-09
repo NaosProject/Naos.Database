@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordsToFilterSelectionStrategy = {systemUnderTest.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetDistinctStringSerializedIdsOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordsToFilterCriteria = {systemUnderTest.RecordsToFilterCriteria?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -66,31 +66,13 @@ namespace Naos.Database.Domain.Test
 
                         var result = new StandardGetDistinctStringSerializedIdsOp(
                                              null,
-                                             referenceObject.RecordsToFilterSelectionStrategy,
+                                             referenceObject.RecordsToFilterCriteria,
                                              referenceObject.SpecifiedResourceLocator);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
                     ExpectedExceptionMessageContains = new[] { "recordFilter", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetDistinctStringSerializedIdsOp>
-                {
-                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordsToFilterSelectionStrategy' is RecordsToFilterSelectionStrategy.Unknown",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
-
-                        var result = new StandardGetDistinctStringSerializedIdsOp(
-                                             referenceObject.RecordFilter,
-                                             RecordsToFilterSelectionStrategy.Unknown,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                    ExpectedExceptionMessageContains = new[] { "recordsToFilterSelectionStrategy", "Unknown", },
                 });
 
         private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetDistinctStringSerializedIdsOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetDistinctStringSerializedIdsOp>()
@@ -106,7 +88,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
                                                       referenceObject.RecordFilter,
-                                                      referenceObject.RecordsToFilterSelectionStrategy,
+                                                      referenceObject.RecordsToFilterCriteria,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.RecordFilter,
                         };
@@ -118,7 +100,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetDistinctStringSerializedIdsOp>
                 {
-                    Name = "RecordsToFilterSelectionStrategy should return same 'recordsToFilterSelectionStrategy' parameter passed to constructor when getting",
+                    Name = "RecordsToFilterCriteria should return same 'recordsToFilterCriteria' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
@@ -127,14 +109,14 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
                                                       referenceObject.RecordFilter,
-                                                      referenceObject.RecordsToFilterSelectionStrategy,
+                                                      referenceObject.RecordsToFilterCriteria,
                                                       referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.RecordsToFilterSelectionStrategy,
+                            ExpectedPropertyValue = referenceObject.RecordsToFilterCriteria,
                         };
 
                         return result;
                     },
-                    PropertyName = "RecordsToFilterSelectionStrategy",
+                    PropertyName = "RecordsToFilterCriteria",
                 })
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<StandardGetDistinctStringSerializedIdsOp>
@@ -148,7 +130,7 @@ namespace Naos.Database.Domain.Test
                         {
                             SystemUnderTest = new StandardGetDistinctStringSerializedIdsOp(
                                                       referenceObject.RecordFilter,
-                                                      referenceObject.RecordsToFilterSelectionStrategy,
+                                                      referenceObject.RecordsToFilterCriteria,
                                                       referenceObject.SpecifiedResourceLocator),
                             ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
                         };
@@ -182,18 +164,18 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<StandardGetDistinctStringSerializedIdsOp>
                 {
-                    Name = "DeepCloneWithRecordsToFilterSelectionStrategy should deep clone object and replace RecordsToFilterSelectionStrategy with the provided recordsToFilterSelectionStrategy",
-                    WithPropertyName = "RecordsToFilterSelectionStrategy",
+                    Name = "DeepCloneWithRecordsToFilterCriteria should deep clone object and replace RecordsToFilterCriteria with the provided recordsToFilterCriteria",
+                    WithPropertyName = "RecordsToFilterCriteria",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<StandardGetDistinctStringSerializedIdsOp>();
 
-                        var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>().ThatIs(_ => !systemUnderTest.RecordsToFilterSelectionStrategy.IsEqualTo(_.RecordsToFilterSelectionStrategy));
+                        var referenceObject = A.Dummy<StandardGetDistinctStringSerializedIdsOp>().ThatIs(_ => !systemUnderTest.RecordsToFilterCriteria.IsEqualTo(_.RecordsToFilterCriteria));
 
                         var result = new SystemUnderTestDeepCloneWithValue<StandardGetDistinctStringSerializedIdsOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordsToFilterSelectionStrategy,
+                            DeepCloneWithValue = referenceObject.RecordsToFilterCriteria,
                         };
 
                         return result;
@@ -232,22 +214,22 @@ namespace Naos.Database.Domain.Test
                     {
                         new StandardGetDistinctStringSerializedIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new StandardGetDistinctStringSerializedIdsOp[]
                     {
                         new StandardGetDistinctStringSerializedIdsOp(
                                 A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.RecordsToFilterSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy)).RecordsToFilterSelectionStrategy,
+                                A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.RecordsToFilterCriteria.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria)).RecordsToFilterCriteria,
                                 ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
                         new StandardGetDistinctStringSerializedIdsOp(
                                 ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy,
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
                                 A.Dummy<StandardGetDistinctStringSerializedIdsOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
@@ -616,6 +598,18 @@ namespace Naos.Database.Domain.Test
                     actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
                 }
 
+                if (systemUnderTest.RecordsToFilterCriteria == null)
+                {
+                    actual.RecordsToFilterCriteria.AsTest().Must().BeNull();
+                }
+                else if (!actual.RecordsToFilterCriteria.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.RecordsToFilterCriteria.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordsToFilterCriteria);
+                }
+
                 if (systemUnderTest.SpecifiedResourceLocator == null)
                 {
                     actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
@@ -645,7 +639,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "RecordFilter", "RecordsToFilterSelectionStrategy", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "RecordFilter", "RecordsToFilterCriteria", "SpecifiedResourceLocator" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

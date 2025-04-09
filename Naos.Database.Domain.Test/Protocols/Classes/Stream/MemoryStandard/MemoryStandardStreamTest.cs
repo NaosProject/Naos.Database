@@ -144,6 +144,78 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void StandardGetInternalRecordIds___Should_return_ids_that_survive_filtering___When_RecordsToFilterSelectionStrategy_LatestById_used_with_tag_based_RecordFilter()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id1, A.Dummy<MyObject>());
+            stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
+
+            var operation = new StandardGetInternalRecordIdsOp(
+                new RecordFilter(
+                    tags: tags,
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() }),
+                recordsToFilterCriteria: new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestById));
+
+            var expected = new[] { 3L };
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
+        public static void StandardGetInternalRecordIds___Should_return_latest_ids_that_survive_filtering___When_RecordsToFilterSelectionStrategy_LatestByIdAndObjectType_used_with_tag_based_RecordFilter()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id1, A.Dummy<MyObject>());
+            stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
+
+            var operation = new StandardGetInternalRecordIdsOp(
+                new RecordFilter(
+                    tags: tags,
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() }),
+                recordsToFilterCriteria: new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestByIdAndObjectType));
+
+            var expected = new[] { 1L, 3L };
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
         public static void StandardGetDistinctStringSerializedIds___Should_not_return_id_of_DeprecatedIdTypes___When_record_filter_specifies_DeprecatedIdsTypes()
         {
             // Arrange
@@ -189,19 +261,64 @@ namespace Naos.Database.Domain.Test.MemoryStream
             stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
             stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
             stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
-            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id1, A.Dummy<MyObject>());
             stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
             stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
 
             var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
 
-            var expected = new[] { new StringSerializedIdentifier(serializer.SerializeToString(id3), typeof(string).ToRepresentation()) };
+            var expected = new[]
+            {
+                new StringSerializedIdentifier(serializer.SerializeToString(id3), typeof(string).ToRepresentation()),
+            };
 
             var operation = new StandardGetDistinctStringSerializedIdsOp(
                 new RecordFilter(
                     tags: tags,
                     deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() }),
-                RecordsToFilterSelectionStrategy.LatestById);
+                new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestById));
+
+            // Act
+            var actual = stream.Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
+        public static void StandardGetDistinctStringSerializedIds___Should_return_latest_ids_that_survive_filtering___When_RecordsToFilterSelectionStrategy_LatestByIdAndObjectType_used_with_tag_based_RecordFilter()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id1, A.Dummy<MyObject>());
+            stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
+
+            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
+
+            var expected = new[]
+            {
+                new StringSerializedIdentifier(serializer.SerializeToString(id1), typeof(string).ToRepresentation()),
+                new StringSerializedIdentifier(serializer.SerializeToString(id3), typeof(string).ToRepresentation()),
+            };
+
+            var operation = new StandardGetDistinctStringSerializedIdsOp(
+                new RecordFilter(
+                    tags: tags,
+                    deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() }),
+                new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestByIdAndObjectType));
 
             // Act
             var actual = stream.Execute(operation);
@@ -538,7 +655,42 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var operation = new GetDistinctIdsOp<string>(
                 tagsToMatch: tags,
                 deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() },
-                recordsToFilterSelectionStrategy: RecordsToFilterSelectionStrategy.LatestById);
+                recordsToFilterCriteria: new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestById));
+
+            // Act
+            var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
+
+            // Assert
+            actual.AsTest().Must().BeUnorderedEqualTo(expected);
+        }
+
+        [Fact]
+        public static void GetDistinctIds___Should_return_latest_ids_that_survive_filtering___When_RecordsToFilterSelectionStrategy_LatestByIdAndObjectType_used_with_tag_based_RecordFilter()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var id1 = "id-1";
+            var id2 = "id-2";
+            var id3 = "id-3";
+            var id4 = "id-4";
+
+            var tags = new[] { A.Dummy<NamedValue<string>>() };
+
+            stream.PutWithId(id1, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id2, A.Dummy<NamedResourceLocator>());
+            stream.PutWithId(id3, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id4, A.Dummy<NamedResourceLocator>(), tags: tags);
+            stream.PutWithId(id1, A.Dummy<MyObject>());
+            stream.PutWithId(id4, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
+            stream.PutWithId(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow), tags: tags);
+
+            var expected = new[] { id1, id3 };
+
+            var operation = new GetDistinctIdsOp<string>(
+                tagsToMatch: tags,
+                deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent<NamedResourceLocator>).ToRepresentation() },
+                recordsToFilterCriteria: new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestByIdAndObjectType));
 
             // Act
             var actual = stream.GetStreamReadingWithIdProtocols<string>().Execute(operation);
@@ -637,6 +789,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             await stream.PutWithIdAsync(id1, object1B);
             await stream.PutWithIdAsync(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
             await stream.PutWithIdAsync(id4, object4B);
+            await stream.PutWithIdAsync(id1, A.Dummy<MyObject>());
 
             var expected = new[] { object1B, object4B };
 
@@ -679,6 +832,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             await stream.PutWithIdAsync(id1, object1B);
             await stream.PutWithIdAsync(id2, new IdDeprecatedEvent<NamedResourceLocator>(DateTime.UtcNow));
             await stream.PutWithIdAsync(id4, object4B);
+            await stream.PutWithIdAsync(id4, A.Dummy<MyObject>());
 
             var expected = new[] { object1B, object3B, object4B };
 

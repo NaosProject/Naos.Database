@@ -24,7 +24,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this IReadOnlyStream stream,
@@ -33,11 +33,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = protocol.Execute(operation);
             return result;
@@ -53,7 +53,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this IReadOnlyStream stream,
@@ -62,11 +62,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -82,7 +82,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this IStreamReadWithIdProtocols<TId> protocol,
@@ -91,11 +91,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -110,7 +110,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this IStreamReadWithIdProtocols<TId> protocol,
@@ -119,11 +119,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -138,7 +138,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this ISyncAndAsyncReturningProtocol<GetDistinctIdsOp<TId>, IReadOnlyCollection<TId>> protocol,
@@ -147,11 +147,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -166,7 +166,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this ISyncAndAsyncReturningProtocol<GetDistinctIdsOp<TId>, IReadOnlyCollection<TId>> protocol,
@@ -175,11 +175,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -194,7 +194,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static IReadOnlyCollection<TId> GetDistinctIds<TId>(
             this IGetDistinctIds<TId> protocol,
@@ -203,11 +203,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -222,7 +222,7 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match or null when not matching on tags.  DEFAULT is not to match on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before filtering.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <returns>Distinct identifiers per the filters.</returns>
         public static async Task<IReadOnlyCollection<TId>> GetDistinctIdsAsync<TId>(
             this IGetDistinctIds<TId> protocol,
@@ -231,11 +231,11 @@ namespace Naos.Database.Domain
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All)
+            RecordsToFilterCriteria recordsToFilterCriteria = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterSelectionStrategy);
+            var operation = new GetDistinctIdsOp<TId>(objectTypes, versionMatchStrategy, tagsToMatch, tagMatchStrategy, deprecatedIdTypes, recordsToFilterCriteria);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

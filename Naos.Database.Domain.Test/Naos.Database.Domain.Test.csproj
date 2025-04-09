@@ -816,6 +816,10 @@
     <Compile Include="Operations\Classes\Stream\External\Mutex\ReleaseMutexOpTest.designer.cs">
       <DependentUpon>ReleaseMutexOpTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Common\RecordsToFilterCriteriaTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\RecordsToFilterCriteriaTest.designer.cs">
+      <DependentUpon>RecordsToFilterCriteriaTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="SerializationConfigurationTypes.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DatabaseDummyFactory.cs" />

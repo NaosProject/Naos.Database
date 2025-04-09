@@ -312,7 +312,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<TagMatchStrategy>(),
                                  A.Dummy<IReadOnlyCollection<TypeRepresentation>>(),
-                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
+                                 A.Dummy<RecordsToFilterCriteria>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new GetHandlingHistoryOp(
@@ -747,6 +747,10 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<long>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new RecordsToFilterCriteria(
+                                 A.Dummy<RecordsToFilterSelectionStrategy>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new RecordToCheckForExcessiveHandling(
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
@@ -823,7 +827,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardGetDistinctStringSerializedIdsOp(
                                  A.Dummy<RecordFilter>(),
-                                 A.Dummy<RecordsToFilterSelectionStrategy>(),
+                                 A.Dummy<RecordsToFilterCriteria>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -843,7 +847,7 @@ namespace Naos.Database.Domain.Test
                 () => new StandardGetInternalRecordIdsOp(
                                  A.Dummy<RecordFilter>(),
                                  A.Dummy<RecordNotFoundStrategy>(),
-                                 A.Dummy<RecordsToFilterSelectionStrategy>(),
+                                 A.Dummy<RecordsToFilterCriteria>(),
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(

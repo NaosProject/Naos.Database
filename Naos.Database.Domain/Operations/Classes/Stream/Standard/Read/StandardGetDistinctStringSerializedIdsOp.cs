@@ -20,24 +20,25 @@ namespace Naos.Database.Domain
     /// Most typically, you will use the operations that are exposed via these extension methods
     /// <see cref="ReadOnlyStreamExtensions"/> and <see cref="WriteOnlyStreamExtensions"/>.
     /// </remarks>
-    public partial class StandardGetDistinctStringSerializedIdsOp : ReturningOperationBase<IReadOnlyCollection<StringSerializedIdentifier>>, ISpecifyRecordFilter, ISpecifyRecordsToFilterSelectionStrategy, ISpecifyResourceLocator
+    public partial class StandardGetDistinctStringSerializedIdsOp : ReturningOperationBase<IReadOnlyCollection<StringSerializedIdentifier>>, ISpecifyRecordFilter, ISpecifyRecordsToFilterCriteria, ISpecifyResourceLocator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardGetDistinctStringSerializedIdsOp"/> class.
         /// </summary>
         /// <param name="recordFilter">The filter to apply to the set of records to consider.</param>
-        /// <param name="recordsToFilterSelectionStrategy">OPTIONAL strategy for selecting records before applying the <paramref name="recordFilter"/>.  DEFAULT is to select all records.</param>
+        /// <param name="recordsToFilterCriteria">OPTIONAL object that specifies how to determine the records that are input into <paramref name="recordFilter"/>.  DEFAULT is to use all records in the stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetDistinctStringSerializedIdsOp(
             RecordFilter recordFilter,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy = RecordsToFilterSelectionStrategy.All,
+            RecordsToFilterCriteria recordsToFilterCriteria = null,
             IResourceLocator specifiedResourceLocator = null)
         {
             recordFilter.MustForArg(nameof(recordFilter)).NotBeNull();
-            recordsToFilterSelectionStrategy.MustForArg(nameof(recordsToFilterSelectionStrategy)).NotBeEqualTo(RecordsToFilterSelectionStrategy.Unknown);
+
+            recordsToFilterCriteria = recordsToFilterCriteria ?? new RecordsToFilterCriteria();
 
             this.RecordFilter = recordFilter;
-            this.RecordsToFilterSelectionStrategy = recordsToFilterSelectionStrategy;
+            this.RecordsToFilterCriteria = recordsToFilterCriteria;
             this.SpecifiedResourceLocator = specifiedResourceLocator;
         }
 
@@ -45,7 +46,7 @@ namespace Naos.Database.Domain
         public RecordFilter RecordFilter { get; private set; }
 
         /// <inheritdoc />
-        public RecordsToFilterSelectionStrategy RecordsToFilterSelectionStrategy { get; private set; }
+        public RecordsToFilterCriteria RecordsToFilterCriteria { get; private set; }
 
         /// <inheritdoc />
         public IResourceLocator SpecifiedResourceLocator { get; private set; }

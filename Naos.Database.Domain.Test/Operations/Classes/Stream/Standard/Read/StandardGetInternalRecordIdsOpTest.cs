@@ -12,7 +12,7 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
 
     using FakeItEasy;
-
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
@@ -29,6 +29,18 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static StandardGetInternalRecordIdsOpTest()
         {
+        }
+
+        [Fact]
+        public static void Constructor___Should_coalesce_recordsToFilterCriteria_to_default___When_recordsToFilterCriteria_is_null()
+        {
+            // Arrange
+            var systemUnderTest = new StandardGetInternalRecordIdsOp(new RecordFilter(), recordsToFilterCriteria: null);
+
+            var expected = new RecordsToFilterCriteria();
+
+            // Act, Assert
+            systemUnderTest.RecordsToFilterCriteria.AsTest().Must().BeEqualTo(expected);
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Naos.Database.Domain
 
             var result = this.RecordFilter.IsEqualTo(other.RecordFilter)
                       && this.RecordNotFoundStrategy.IsEqualTo(other.RecordNotFoundStrategy)
-                      && this.RecordsToFilterSelectionStrategy.IsEqualTo(other.RecordsToFilterSelectionStrategy)
+                      && this.RecordsToFilterCriteria.IsEqualTo(other.RecordsToFilterCriteria)
                       && this.SpecifiedResourceLocator.IsEqualTo(other.SpecifiedResourceLocator);
 
             return result;
@@ -84,7 +84,7 @@ namespace Naos.Database.Domain
         public override int GetHashCode() => HashCodeHelper.Initialize()
             .Hash(this.RecordFilter)
             .Hash(this.RecordNotFoundStrategy)
-            .Hash(this.RecordsToFilterSelectionStrategy)
+            .Hash(this.RecordsToFilterCriteria)
             .Hash(this.SpecifiedResourceLocator)
             .Value;
 
@@ -118,7 +118,7 @@ namespace Naos.Database.Domain
             var result = new StandardGetInternalRecordIdsOp(
                                  recordFilter,
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
+                                 this.RecordsToFilterCriteria?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -151,17 +151,17 @@ namespace Naos.Database.Domain
             var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  recordNotFoundStrategy,
-                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
+                                 this.RecordsToFilterCriteria?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
         }
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="RecordsToFilterSelectionStrategy" />.
+        /// Deep clones this object with a new <see cref="RecordsToFilterCriteria" />.
         /// </summary>
-        /// <param name="recordsToFilterSelectionStrategy">The new <see cref="RecordsToFilterSelectionStrategy" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="StandardGetInternalRecordIdsOp" /> using the specified <paramref name="recordsToFilterSelectionStrategy" /> for <see cref="RecordsToFilterSelectionStrategy" /> and a deep clone of every other property.</returns>
+        /// <param name="recordsToFilterCriteria">The new <see cref="RecordsToFilterCriteria" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardGetInternalRecordIdsOp" /> using the specified <paramref name="recordsToFilterCriteria" /> for <see cref="RecordsToFilterCriteria" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -179,12 +179,12 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public StandardGetInternalRecordIdsOp DeepCloneWithRecordsToFilterSelectionStrategy(RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy)
+        public StandardGetInternalRecordIdsOp DeepCloneWithRecordsToFilterCriteria(RecordsToFilterCriteria recordsToFilterCriteria)
         {
             var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 recordsToFilterSelectionStrategy,
+                                 recordsToFilterCriteria,
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -217,7 +217,7 @@ namespace Naos.Database.Domain
             var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
+                                 this.RecordsToFilterCriteria?.DeepClone(),
                                  specifiedResourceLocator);
 
             return result;
@@ -230,7 +230,7 @@ namespace Naos.Database.Domain
             var result = new StandardGetInternalRecordIdsOp(
                                  this.RecordFilter?.DeepClone(),
                                  this.RecordNotFoundStrategy.DeepClone(),
-                                 this.RecordsToFilterSelectionStrategy.DeepClone(),
+                                 this.RecordsToFilterCriteria?.DeepClone(),
                                  this.SpecifiedResourceLocator?.DeepClone());
 
             return result;
@@ -240,7 +240,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StandardGetInternalRecordIdsOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, RecordsToFilterSelectionStrategy = {this.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.StandardGetInternalRecordIdsOp: RecordFilter = {this.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {this.RecordNotFoundStrategy.ToString() ?? "<null>"}, RecordsToFilterCriteria = {this.RecordsToFilterCriteria?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {this.SpecifiedResourceLocator?.ToString() ?? "<null>"}.");
 
             return result;
         }

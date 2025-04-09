@@ -420,7 +420,7 @@ namespace Naos.Database.Domain
                     tags: operation.TagsToMatch,
                     tagMatchStrategy: operation.TagMatchStrategy,
                     deprecatedIdTypes: operation.DeprecatedIdTypes),
-                operation.RecordsToFilterSelectionStrategy);
+                operation.RecordsToFilterCriteria);
 
             return result;
         }

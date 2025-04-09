@@ -34,277 +34,103 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StandardGetInternalRecordIdsOpTest
+    public static partial class RecordsToFilterCriteriaTest
     {
-        private static readonly StringRepresentationTestScenarios<StandardGetInternalRecordIdsOp> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardGetInternalRecordIdsOp>()
+        private static readonly StringRepresentationTestScenarios<RecordsToFilterCriteria> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<RecordsToFilterCriteria>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StandardGetInternalRecordIdsOp>
+                new StringRepresentationTestScenario<RecordsToFilterCriteria>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
+                        var systemUnderTest = A.Dummy<RecordsToFilterCriteria>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StandardGetInternalRecordIdsOp>
+                        var result = new SystemUnderTestExpectedStringRepresentation<RecordsToFilterCriteria>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardGetInternalRecordIdsOp: RecordFilter = {systemUnderTest.RecordFilter?.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, RecordsToFilterCriteria = {systemUnderTest.RecordsToFilterCriteria?.ToString() ?? "<null>"}, SpecifiedResourceLocator = {systemUnderTest.SpecifiedResourceLocator?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.RecordsToFilterCriteria: RecordsToFilterSelectionStrategy = {systemUnderTest.RecordsToFilterSelectionStrategy.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StandardGetInternalRecordIdsOp> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardGetInternalRecordIdsOp>()
+        private static readonly ConstructorArgumentValidationTestScenarios<RecordsToFilterCriteria> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<RecordsToFilterCriteria>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetInternalRecordIdsOp>
+                new ConstructorArgumentValidationTestScenario<RecordsToFilterCriteria>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'recordFilter' is null scenario",
+                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordsToFilterSelectionStrategy' is RecordsToFilterSelectionStrategy.Unknown",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var result = new StandardGetInternalRecordIdsOp(
-                                             null,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.RecordsToFilterCriteria,
-                                             referenceObject.SpecifiedResourceLocator);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "recordFilter", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var result = new StandardGetInternalRecordIdsOp(
-                                             referenceObject.RecordFilter,
-                                             RecordNotFoundStrategy.Unknown,
-                                             referenceObject.RecordsToFilterCriteria,
-                                             referenceObject.SpecifiedResourceLocator);
+                        var result = new RecordsToFilterCriteria(
+                                             RecordsToFilterSelectionStrategy.Unknown);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                    ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
+                    ExpectedExceptionMessageContains = new[] { "recordsToFilterSelectionStrategy", "Unknown", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardGetInternalRecordIdsOp> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardGetInternalRecordIdsOp>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<RecordsToFilterCriteria> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<RecordsToFilterCriteria>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
+                new ConstructorPropertyAssignmentTestScenario<RecordsToFilterCriteria>
                 {
-                    Name = "RecordFilter should return same 'recordFilter' parameter passed to constructor when getting",
+                    Name = "RecordsToFilterSelectionStrategy should return same 'recordsToFilterSelectionStrategy' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
+                        var referenceObject = A.Dummy<RecordsToFilterCriteria>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
+                        var result = new SystemUnderTestExpectedPropertyValue<RecordsToFilterCriteria>
                         {
-                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.RecordsToFilterCriteria,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.RecordFilter,
+                            SystemUnderTest = new RecordsToFilterCriteria(
+                                                      referenceObject.RecordsToFilterSelectionStrategy),
+                            ExpectedPropertyValue = referenceObject.RecordsToFilterSelectionStrategy,
                         };
 
                         return result;
                     },
-                    PropertyName = "RecordFilter",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "RecordNotFoundStrategy should return same 'recordNotFoundStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
-                        {
-                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.RecordsToFilterCriteria,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "RecordNotFoundStrategy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "RecordsToFilterCriteria should return same 'recordsToFilterCriteria' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
-                        {
-                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.RecordsToFilterCriteria,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.RecordsToFilterCriteria,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "RecordsToFilterCriteria",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "SpecifiedResourceLocator should return same 'specifiedResourceLocator' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<StandardGetInternalRecordIdsOp>
-                        {
-                            SystemUnderTest = new StandardGetInternalRecordIdsOp(
-                                                      referenceObject.RecordFilter,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.RecordsToFilterCriteria,
-                                                      referenceObject.SpecifiedResourceLocator),
-                            ExpectedPropertyValue = referenceObject.SpecifiedResourceLocator,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "SpecifiedResourceLocator",
+                    PropertyName = "RecordsToFilterSelectionStrategy",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StandardGetInternalRecordIdsOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardGetInternalRecordIdsOp>()
+        private static readonly DeepCloneWithTestScenarios<RecordsToFilterCriteria> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<RecordsToFilterCriteria>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
+                new DeepCloneWithTestScenario<RecordsToFilterCriteria>
                 {
-                    Name = "DeepCloneWithRecordFilter should deep clone object and replace RecordFilter with the provided recordFilter",
-                    WithPropertyName = "RecordFilter",
+                    Name = "DeepCloneWithRecordsToFilterSelectionStrategy should deep clone object and replace RecordsToFilterSelectionStrategy with the provided recordsToFilterSelectionStrategy",
+                    WithPropertyName = "RecordsToFilterSelectionStrategy",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
+                        var systemUnderTest = A.Dummy<RecordsToFilterCriteria>();
 
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordFilter.IsEqualTo(_.RecordFilter));
+                        var referenceObject = A.Dummy<RecordsToFilterCriteria>().ThatIs(_ => !systemUnderTest.RecordsToFilterSelectionStrategy.IsEqualTo(_.RecordsToFilterSelectionStrategy));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
+                        var result = new SystemUnderTestDeepCloneWithValue<RecordsToFilterCriteria>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordFilter,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "DeepCloneWithRecordNotFoundStrategy should deep clone object and replace RecordNotFoundStrategy with the provided recordNotFoundStrategy",
-                    WithPropertyName = "RecordNotFoundStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordNotFoundStrategy.IsEqualTo(_.RecordNotFoundStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordNotFoundStrategy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "DeepCloneWithRecordsToFilterCriteria should deep clone object and replace RecordsToFilterCriteria with the provided recordsToFilterCriteria",
-                    WithPropertyName = "RecordsToFilterCriteria",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.RecordsToFilterCriteria.IsEqualTo(_.RecordsToFilterCriteria));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordsToFilterCriteria,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<StandardGetInternalRecordIdsOp>
-                {
-                    Name = "DeepCloneWithSpecifiedResourceLocator should deep clone object and replace SpecifiedResourceLocator with the provided specifiedResourceLocator",
-                    WithPropertyName = "SpecifiedResourceLocator",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
-
-                        var referenceObject = A.Dummy<StandardGetInternalRecordIdsOp>().ThatIs(_ => !systemUnderTest.SpecifiedResourceLocator.IsEqualTo(_.SpecifiedResourceLocator));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<StandardGetInternalRecordIdsOp>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.SpecifiedResourceLocator,
+                            DeepCloneWithValue = referenceObject.RecordsToFilterSelectionStrategy,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly StandardGetInternalRecordIdsOp ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardGetInternalRecordIdsOp>();
+        private static readonly RecordsToFilterCriteria ReferenceObjectForEquatableTestScenarios = A.Dummy<RecordsToFilterCriteria>();
 
-        private static readonly EquatableTestScenarios<StandardGetInternalRecordIdsOp> EquatableTestScenarios = new EquatableTestScenarios<StandardGetInternalRecordIdsOp>()
+        private static readonly EquatableTestScenarios<RecordsToFilterCriteria> EquatableTestScenarios = new EquatableTestScenarios<RecordsToFilterCriteria>()
             .AddScenario(() =>
-                new EquatableTestScenario<StandardGetInternalRecordIdsOp>
+                new EquatableTestScenario<RecordsToFilterCriteria>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardGetInternalRecordIdsOp[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new RecordsToFilterCriteria[]
                     {
-                        new StandardGetInternalRecordIdsOp(
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
+                        new RecordsToFilterCriteria(
+                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StandardGetInternalRecordIdsOp[]
+                    ObjectsThatAreNotEqualToReferenceObject = new RecordsToFilterCriteria[]
                     {
-                        new StandardGetInternalRecordIdsOp(
-                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordFilter.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordFilter)).RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetInternalRecordIdsOp(
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetInternalRecordIdsOp(
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.RecordsToFilterCriteria.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria)).RecordsToFilterCriteria,
-                                ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator),
-                        new StandardGetInternalRecordIdsOp(
-                                ReferenceObjectForEquatableTestScenarios.RecordFilter,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordsToFilterCriteria,
-                                A.Dummy<StandardGetInternalRecordIdsOp>().Whose(_ => !_.SpecifiedResourceLocator.IsEqualTo(ReferenceObjectForEquatableTestScenarios.SpecifiedResourceLocator)).SpecifiedResourceLocator),
+                        new RecordsToFilterCriteria(
+                                A.Dummy<RecordsToFilterCriteria>().Whose(_ => !_.RecordsToFilterSelectionStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordsToFilterSelectionStrategy)).RecordsToFilterSelectionStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -313,80 +139,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<int>(),
                         A.Dummy<int?>(),
                         A.Dummy<Guid>(),
-                        A.Dummy<ArchiveFailureToHandleRecordOp>(),
-                        A.Dummy<CancelRunningHandleRecordOp>(),
-                        A.Dummy<CheckJobsOp>(),
-                        A.Dummy<CheckStreamsOp>(),
-                        A.Dummy<CompleteRunningHandleRecordOp>(),
-                        A.Dummy<CreateDatabaseOp>(),
-                        A.Dummy<DeleteDatabaseOp>(),
-                        A.Dummy<DisableHandlingForRecordOp>(),
-                        A.Dummy<DisableHandlingForStreamOp>(),
-                        A.Dummy<DoesAnyExistByIdOp<Version, Version>>(),
-                        A.Dummy<DoesAnyExistByIdOp<Version>>(),
-                        A.Dummy<EnableHandlingForStreamOp>(),
-                        A.Dummy<FailRunningHandleRecordOp>(),
-                        A.Dummy<GetAllObjectsByIdOp<Version, Version>>(),
-                        A.Dummy<GetAllObjectsOp<Version>>(),
-                        A.Dummy<GetAllRecordsByIdOp<Version>>(),
-                        A.Dummy<GetAllRecordsMetadataByIdOp<Version>>(),
-                        A.Dummy<GetAllRecordsMetadataOp>(),
-                        A.Dummy<GetAllRecordsMetadataOp<Version>>(),
-                        A.Dummy<GetAllRecordsOp<Version>>(),
-                        A.Dummy<GetAllResourceLocatorsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusByIdsOp>(),
-                        A.Dummy<GetCompositeHandlingStatusByIdsOp<Version>>(),
-                        A.Dummy<GetCompositeHandlingStatusByTagsOp>(),
-                        A.Dummy<GetDistinctIdsOp<Version>>(),
-                        A.Dummy<GetHandlingHistoryOp>(),
-                        A.Dummy<GetHandlingStatusOp>(),
-                        A.Dummy<GetLatestJobInformationOp>(),
-                        A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestObjectOp<Version>>(),
-                        A.Dummy<GetLatestObjectsByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
-                        A.Dummy<GetLatestRecordByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
-                        A.Dummy<GetLatestRecordOp<Version>>(),
-                        A.Dummy<GetLatestStringSerializedObjectByIdOp<Version>>(),
-                        A.Dummy<GetNextUniqueLongOp>(),
-                        A.Dummy<GetResourceLocatorByIdOp<Version>>(),
-                        A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp>(),
-                        A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, RecordingStandardStream>>(),
-                        A.Dummy<HandleRecordOp>(),
-                        A.Dummy<HandleRecordOp<Version>>(),
-                        A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<HandleRecordWithIdOp<Version>>(),
-                        A.Dummy<PruneAfterInternalRecordDateOp>(),
-                        A.Dummy<PruneBeforeInternalRecordDateOp>(),
-                        A.Dummy<PruneBeforeInternalRecordIdOp>(),
-                        A.Dummy<PutAndReturnInternalRecordIdOp<Version>>(),
-                        A.Dummy<PutOp<Version>>(),
-                        A.Dummy<PutWithIdAndReturnInternalRecordIdOp<Version, Version>>(),
-                        A.Dummy<PutWithIdOp<Version, Version>>(),
-                        A.Dummy<ReleaseMutexOp>(),
-                        A.Dummy<ResetCompletedHandleRecordOp>(),
-                        A.Dummy<ResetFailedHandleRecordOp>(),
-                        A.Dummy<SelfCancelRunningHandleRecordOp>(),
-                        A.Dummy<StandardCreateStreamOp>(),
-                        A.Dummy<StandardDeleteStreamOp>(),
-                        A.Dummy<StandardGetDistinctStringSerializedIdsOp>(),
-                        A.Dummy<StandardGetHandlingHistoryOp>(),
-                        A.Dummy<StandardGetHandlingStatusOp>(),
-                        A.Dummy<StandardGetLatestRecordOp>(),
-                        A.Dummy<StandardGetLatestStringSerializedObjectOp>(),
-                        A.Dummy<StandardGetNextUniqueLongOp>(),
-                        A.Dummy<StandardPruneStreamOp>(),
-                        A.Dummy<StandardPutRecordOp>(),
-                        A.Dummy<StandardTryHandleRecordOp>(),
-                        A.Dummy<StandardUpdateHandlingStatusForRecordOp>(),
-                        A.Dummy<StandardUpdateHandlingStatusForStreamOp>(),
-                        A.Dummy<ThrowIfResourceUnavailableOp>(),
-                        A.Dummy<TryHandleRecordOp<Version>>(),
-                        A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
-                        A.Dummy<TryHandleRecordWithIdOp<Version>>(),
-                        A.Dummy<WaitOneOp>(),
                     },
                 });
 
@@ -408,12 +160,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardGetInternalRecordIdsOp___Should_implement_IModel_of_StandardGetInternalRecordIdsOp___When_reflecting()
+            public static void RecordsToFilterCriteria___Should_implement_IModel_of_RecordsToFilterCriteria___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetInternalRecordIdsOp);
+                var type = typeof(RecordsToFilterCriteria);
 
-                var expectedModelMethods = typeof(IModel<StandardGetInternalRecordIdsOp>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<RecordsToFilterCriteria>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -423,7 +175,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardGetInternalRecordIdsOp>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<RecordsToFilterCriteria>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -441,10 +193,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void StandardGetInternalRecordIdsOp___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void RecordsToFilterCriteria___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StandardGetInternalRecordIdsOp);
+                var type = typeof(RecordsToFilterCriteria);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -624,10 +376,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
+                var systemUnderTest = A.Dummy<RecordsToFilterCriteria>();
 
                 // Act
-                var actual = (StandardGetInternalRecordIdsOp)systemUnderTest.Clone();
+                var actual = (RecordsToFilterCriteria)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -651,7 +403,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StandardGetInternalRecordIdsOp>();
+                var systemUnderTest = A.Dummy<RecordsToFilterCriteria>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -659,42 +411,6 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
-
-                if (systemUnderTest.RecordFilter == null)
-                {
-                    actual.RecordFilter.AsTest().Must().BeNull();
-                }
-                else if (!actual.RecordFilter.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.RecordFilter.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordFilter);
-                }
-
-                if (systemUnderTest.RecordsToFilterCriteria == null)
-                {
-                    actual.RecordsToFilterCriteria.AsTest().Must().BeNull();
-                }
-                else if (!actual.RecordsToFilterCriteria.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.RecordsToFilterCriteria.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RecordsToFilterCriteria);
-                }
-
-                if (systemUnderTest.SpecifiedResourceLocator == null)
-                {
-                    actual.SpecifiedResourceLocator.AsTest().Must().BeNull();
-                }
-                else if (!actual.SpecifiedResourceLocator.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.SpecifiedResourceLocator.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.SpecifiedResourceLocator);
-                }
             }
 
             [Fact]
@@ -713,7 +429,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "RecordFilter", "RecordNotFoundStrategy", "RecordsToFilterCriteria", "SpecifiedResourceLocator" };
+                var propertyNames = new string[] { "RecordsToFilterSelectionStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -726,12 +442,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StandardGetInternalRecordIdsOp)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (RecordsToFilterCriteria)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StandardGetInternalRecordIdsOp).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(RecordsToFilterCriteria).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -793,7 +509,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
+                var expected = A.Dummy<RecordsToFilterCriteria>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -822,7 +538,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
+                var expected = A.Dummy<RecordsToFilterCriteria>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -851,7 +567,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
+                var expected = A.Dummy<RecordsToFilterCriteria>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -880,7 +596,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StandardGetInternalRecordIdsOp>();
+                var expected = A.Dummy<RecordsToFilterCriteria>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -914,8 +630,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetInternalRecordIdsOp systemUnderTest1 = null;
-                StandardGetInternalRecordIdsOp systemUnderTest2 = null;
+                RecordsToFilterCriteria systemUnderTest1 = null;
+                RecordsToFilterCriteria systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -945,7 +661,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetInternalRecordIdsOp systemUnderTest = null;
+                    RecordsToFilterCriteria systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1094,8 +810,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StandardGetInternalRecordIdsOp systemUnderTest1 = null;
-                StandardGetInternalRecordIdsOp systemUnderTest2 = null;
+                RecordsToFilterCriteria systemUnderTest1 = null;
+                RecordsToFilterCriteria systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1125,7 +841,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StandardGetInternalRecordIdsOp systemUnderTest = null;
+                    RecordsToFilterCriteria systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1271,300 +987,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_RecordsToFilterCriteria___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    OperationBase systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((OperationBase)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_OperationBase___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((OperationBase)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_long___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    ReturningOperationBase<IReadOnlyCollection<long>> systemUnderTest = null;
-
-                    // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<long>>)systemUnderTest);
-
-                    // Assert
-                    actual.AsTest().Must().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_long___Should_return_true___When_parameter_other_is_same_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<long>>)scenario.ReferenceObject);
-
-                    // Assert
-                    actual.AsTest().Must().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_long___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<long>>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_long___Should_return_false___When_objects_being_compared_have_different_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<long>>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyCollection_of_long___Should_return_true___When_objects_being_compared_have_same_property_values()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyCollection<long>>)_)).ToList();
-
-                    // Assert
-                    actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
-                }
-            }
-
-            [Fact]
-            [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]
-            [SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix")]
-            [SuppressMessage("Microsoft.Naming", "CA1715:IdentifiersShouldHaveCorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords")]
-            [SuppressMessage("Microsoft.Naming", "CA1719:ParameterNamesShouldNotMatchMemberNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames")]
-            [SuppressMessage("Microsoft.Naming", "CA1722:IdentifiersShouldNotHaveIncorrectPrefix")]
-            [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
-            [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
-            [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetInternalRecordIdsOp___Should_return_false___When_parameter_other_is_null()
-            {
-                var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
-
-                foreach (var scenario in scenarios)
-                {
-                    // Arrange
-                    StandardGetInternalRecordIdsOp systemUnderTest = null;
+                    RecordsToFilterCriteria systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1588,7 +1018,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetInternalRecordIdsOp___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_RecordsToFilterCriteria___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1616,7 +1046,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetInternalRecordIdsOp___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_RecordsToFilterCriteria___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1644,7 +1074,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetInternalRecordIdsOp___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_RecordsToFilterCriteria___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1672,7 +1102,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_StandardGetInternalRecordIdsOp___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_RecordsToFilterCriteria___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1833,7 +1263,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
+            [Fact]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

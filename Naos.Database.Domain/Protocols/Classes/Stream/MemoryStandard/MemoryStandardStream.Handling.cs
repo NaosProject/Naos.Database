@@ -116,10 +116,11 @@ namespace Naos.Database.Domain
                 var handlingEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, operation.Concern);
                 var recordHandlingDisabledEntries = this.GetStreamRecordHandlingEntriesForConcern(memoryDatabaseLocator, Concerns.RecordHandlingDisabledConcern);
 
+                // ReSharper disable once RedundantArgumentDefaultValue
                 var filteredRecords = ApplyRecordFilterToPartition(
                     operation.RecordFilter,
                     records,
-                    RecordsToFilterSelectionStrategy.All);
+                    new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All));
 
                 // Get latest status for each record to consider.
                 var unfilteredResult = filteredRecords
@@ -205,10 +206,11 @@ namespace Naos.Database.Domain
                             .Where(_ => !existingInternalRecordIdsToIgnore.Contains(_.InternalRecordId))
                             .ToList();
 
+                    // ReSharper disable once RedundantArgumentDefaultValue
                     var matchingRecords = ApplyRecordFilterToPartition(
                         operation.RecordFilter,
                         recordsToConsiderForHandling,
-                        RecordsToFilterSelectionStrategy.All);
+                        new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All));
 
                     StreamRecord recordToHandle;
                     switch (operation.OrderRecordsBy)

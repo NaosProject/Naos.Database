@@ -348,6 +348,10 @@
     <Compile Include="Models\Classes\Stream\Common\HandlingFilter.designer.cs">
       <DependentUpon>HandlingFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Common\RecordsToFilterCriteria.cs" />
+    <Compile Include="Models\Classes\Stream\Common\RecordsToFilterCriteria.designer.cs">
+      <DependentUpon>RecordsToFilterCriteria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\Stream\Common\StreamConfig.cs" />
     <Compile Include="Models\Classes\Stream\Common\StreamConfig.designer.cs">
       <DependentUpon>StreamConfig.cs</DependentUpon>
@@ -376,7 +380,7 @@
     <Compile Include="Models\Interfaces\Management\IJobInformation.cs" />
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
-    <Compile Include="Models\Interfaces\Stream\ISpecifyRecordsToFilterSelectionStrategy.cs" />
+    <Compile Include="Models\Interfaces\Stream\ISpecifyRecordsToFilterCriteria.cs" />
     <Compile Include="Models\Interfaces\Stream\IStreamConfig.cs" />
     <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />
@@ -518,10 +522,10 @@
       <DependentUpon>GetAllRecordsOp{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIds\GetDistinctIdsOp{TId}.cs" />
+    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetDistinctIds\GetDistinctIdsOp{TId}.designer.cs">
       <DependentUpon>GetDistinctIdsOp{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Read\GetAllObjects\GetAllObjectsOp{TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>GetLatestObjectsByIdOp{TId,TObject}.cs</DependentUpon>

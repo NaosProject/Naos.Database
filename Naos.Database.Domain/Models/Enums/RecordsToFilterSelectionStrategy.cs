@@ -7,7 +7,7 @@
 namespace Naos.Database.Domain
 {
     /// <summary>
-    /// Strategy for selecting records before applying a <see cref="RecordFilter"/>.
+    /// Strategy for selecting records that are input into a <see cref="RecordFilter"/>.
     /// </summary>
     public enum RecordsToFilterSelectionStrategy
     {
@@ -25,5 +25,10 @@ namespace Naos.Database.Domain
         /// Groups by identifier and selects the latest record within each group.
         /// </summary>
         LatestById,
+
+        /// <summary>
+        /// Groups by identifier and object type and selects the latest record within each group.
+        /// </summary>
+        LatestByIdAndObjectType,
     }
 }

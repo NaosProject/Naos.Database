@@ -176,9 +176,10 @@ namespace Naos.Database.Domain
                     return new List<StreamRecord>();
                 }
 
-                var recordsToFilterSelectionStrategy = operation is ISpecifyRecordsToFilterSelectionStrategy recordsToFilterSelectionStrategySpecified
-                    ? recordsToFilterSelectionStrategySpecified.RecordsToFilterSelectionStrategy
-                    : RecordsToFilterSelectionStrategy.All;
+                // ReSharper disable once RedundantArgumentDefaultValue
+                var recordsToFilterSelectionStrategy = operation is ISpecifyRecordsToFilterCriteria recordsToFilterSelectionStrategySpecified
+                    ? recordsToFilterSelectionStrategySpecified.RecordsToFilterCriteria
+                    : new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All);
 
                 var result = ApplyRecordFilterToPartition(recordFilter, partition, recordsToFilterSelectionStrategy);
 
@@ -191,18 +192,18 @@ namespace Naos.Database.Domain
         private static List<StreamRecord> ApplyRecordFilterToPartition(
             RecordFilter recordFilter,
             List<StreamRecord> partition,
-            RecordsToFilterSelectionStrategy recordsToFilterSelectionStrategy)
+            RecordsToFilterCriteria recordsToFilterCriteria)
         {
             List<StreamRecord> result;
             bool filterApplied;
 
-            if (recordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.All)
+            if (recordsToFilterCriteria.RecordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.All)
             {
                 result = new List<StreamRecord>();
 
                 filterApplied = false;
             }
-            else if (recordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.LatestById)
+            else if (recordsToFilterCriteria.RecordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.LatestById)
             {
                 result = partition
                     .GroupBy(_ => _.Metadata.StringSerializedId)
@@ -211,9 +212,18 @@ namespace Naos.Database.Domain
 
                 filterApplied = true;
             }
+            else if (recordsToFilterCriteria.RecordsToFilterSelectionStrategy == RecordsToFilterSelectionStrategy.LatestByIdAndObjectType)
+            {
+                result = partition
+                    .GroupBy(_ => new { _.Metadata.StringSerializedId, _.Metadata.TypeRepresentationOfObject.WithoutVersion })
+                    .Select(_ => _.OrderByDescending(streamRecord => streamRecord.InternalRecordId).First())
+                    .ToList();
+
+                filterApplied = true;
+            }
             else
             {
-                throw new NotSupportedException(Invariant($"This {nameof(RecordsToFilterSelectionStrategy)} is not supported: {recordsToFilterSelectionStrategy}."));
+                throw new NotSupportedException(Invariant($"This {nameof(RecordsToFilterSelectionStrategy)} is not supported: {recordsToFilterCriteria.RecordsToFilterSelectionStrategy}."));
             }
 
             // Internal Record Identifier

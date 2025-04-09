@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ISpecifyRecordsToFilterSelectionStrategy.cs" company="Naos Project">
+// <copyright file="ISpecifyRecordsToFilterCriteria.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -7,13 +7,13 @@
 namespace Naos.Database.Domain
 {
     /// <summary>
-    /// Interface to expose the <see cref="RecordsToFilterSelectionStrategy"/> to use.
+    /// Interface to expose the <see cref="RecordsToFilterCriteria"/> to use.
     /// </summary>
-    public interface ISpecifyRecordsToFilterSelectionStrategy
+    public interface ISpecifyRecordsToFilterCriteria
     {
         /// <summary>
-        /// Gets the strategy for selecting records before applying the <see cref="RecordFilter"/>.
+        /// Gets an object that specifies how to determine the records that are input into a <see cref="RecordFilter"/>.
         /// </summary>
-        RecordsToFilterSelectionStrategy RecordsToFilterSelectionStrategy { get; }
+        RecordsToFilterCriteria RecordsToFilterCriteria { get; }
     }
 }

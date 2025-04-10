@@ -175,6 +175,7 @@ namespace Naos.Database.Domain
                     var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                         new RecordFilter(
                             ids: stringSerializedIdentifiers,
+                            idTypes: new[] { typeof(TId).ToRepresentation() },
                             objectTypes: new[] { typeof(TObject).ToRepresentation() },
                             versionMatchStrategy: operation.VersionMatchStrategy,
                             tags: operation.TagsToMatch,
@@ -229,6 +230,7 @@ namespace Naos.Database.Domain
                 var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                         new RecordFilter(
                             objectTypes: new[] { typeof(TObject).ToRepresentation() },
+                            idTypes: new[] { typeof(TId).ToRepresentation() },
                             versionMatchStrategy: operation.VersionMatchStrategy,
                             tags: operation.TagsToMatch,
                             tagMatchStrategy: operation.TagMatchStrategy,

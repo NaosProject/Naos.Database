@@ -125,6 +125,10 @@ namespace Naos.Database.Domain
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
                     },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
+                    },
                     objectTypes: (operation.ObjectType == null)
                         ? null
                         : new[] { operation.ObjectType },
@@ -137,19 +141,19 @@ namespace Naos.Database.Domain
             var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
 
             var records = internalRecordIds
-                         .Select(
-                              _ =>
-                                  this.stream.Execute(
-                                      new StandardGetLatestRecordOp(
-                                          new RecordFilter(
-                                              internalRecordIds: new[]
-                                                                 {
-                                                                     _,
-                                                                 }),
-                                          operation.RecordNotFoundStrategy,
-                                          StreamRecordItemsToInclude.MetadataAndPayload,
-                                          locator)))
-                         .ToList();
+                .Select(
+                    _ =>
+                        this.stream.Execute(
+                            new StandardGetLatestRecordOp(
+                                new RecordFilter(
+                                    internalRecordIds: new[]
+                                    {
+                                        _,
+                                    }),
+                                operation.RecordNotFoundStrategy,
+                                StreamRecordItemsToInclude.MetadataAndPayload,
+                                locator)))
+                .ToList();
 
             StreamRecordWithId<TId> ProcessResultItem(
                 StreamRecord inputStreamRecord)
@@ -233,6 +237,10 @@ namespace Naos.Database.Domain
                         new StringSerializedIdentifier(
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
+                    },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
                     },
                     objectTypes: (operation.ObjectType == null)
                         ? null

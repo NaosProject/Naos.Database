@@ -34,6 +34,7 @@ namespace Naos.Database.Domain
 
             var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
 
+            // ReSharper disable once RedundantArgumentDefaultValue
             var result = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
@@ -41,6 +42,10 @@ namespace Naos.Database.Domain
                         new StringSerializedIdentifier(
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
+                    },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
                     },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -120,6 +125,10 @@ namespace Naos.Database.Domain
                         new StringSerializedIdentifier(
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
+                    },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
                     },
                     objectTypes: new[]
                     {
@@ -205,6 +214,10 @@ namespace Naos.Database.Domain
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
                     },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
+                    },
                     objectTypes: new[]
                     {
                         typeof(TObject).ToRepresentation(),
@@ -249,6 +262,10 @@ namespace Naos.Database.Domain
                         new StringSerializedIdentifier(
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
+                    },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
                     },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -296,6 +313,10 @@ namespace Naos.Database.Domain
                         new StringSerializedIdentifier(
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
+                    },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
                     },
                     objectTypes: operation.ObjectType == null
                         ? null
@@ -381,6 +402,10 @@ namespace Naos.Database.Domain
                         new StringSerializedIdentifier(
                             serializedObjectId,
                             typeOfId.ToRepresentation()),
+                    },
+                    idTypes: new[]
+                    {
+                        typeof(TId).ToRepresentation(),
                     },
                     objectTypes: operation.ObjectType == null
                         ? null

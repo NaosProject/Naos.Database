@@ -36,7 +36,7 @@ namespace Naos.Database.Domain
         public RecordsToFilterSelectionStrategy RecordsToFilterSelectionStrategy { get; private set; }
 
         /// <summary>
-        /// OPTIONAL strategy on how to treat the version of the types being grouped on
+        /// Gets the strategy on how to treat the version of the types being grouped on
         /// (e.g. object type when <see cref="RecordsToFilterSelectionStrategy"/> is <see cref="Domain.RecordsToFilterSelectionStrategy.LatestByIdAndObjectType"/>).
         /// </summary>
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }

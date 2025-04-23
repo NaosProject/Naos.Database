@@ -180,7 +180,7 @@ namespace Naos.Database.Domain
                 // ReSharper disable once RedundantArgumentDefaultValue
                 var recordsToFilterCriteria = operation is ISpecifyRecordsToFilterCriteria recordsToFilterCriteriaSpecified
                     ? recordsToFilterCriteriaSpecified.RecordsToFilterCriteria
-                    : new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All);
+                    : new RecordsToFilterCriteria();
 
                 var result = ApplyRecordFilterToPartition(recordFilter, partition, recordsToFilterCriteria);
 

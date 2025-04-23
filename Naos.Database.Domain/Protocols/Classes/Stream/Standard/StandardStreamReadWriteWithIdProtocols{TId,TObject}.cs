@@ -182,7 +182,9 @@ namespace Naos.Database.Domain
                             tagMatchStrategy: operation.TagMatchStrategy,
                             deprecatedIdTypes: operation.DeprecatedIdTypes),
                         RecordNotFoundStrategy.ReturnDefault, // Here we are hard coding to ReturnDefault because we cannot evaluate the strategy until we've pulled records from all locators
-                        new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestByIdAndObjectType),
+                        new RecordsToFilterCriteria(
+                            RecordsToFilterSelectionStrategy.LatestByIdAndObjectType,
+                            operation.VersionMatchStrategy),
                         locator);
 
                     var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
@@ -227,7 +229,11 @@ namespace Naos.Database.Domain
             }
             else
             {
-                var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
+                var allLocators = this.stream.ResourceLocatorProtocols.Execute(new GetAllResourceLocatorsOp());
+
+                foreach (var locator in allLocators)
+                {
+                    var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                         new RecordFilter(
                             objectTypes: new[] { typeof(TObject).ToRepresentation() },
                             idTypes: new[] { typeof(TId).ToRepresentation() },
@@ -236,28 +242,33 @@ namespace Naos.Database.Domain
                             tagMatchStrategy: operation.TagMatchStrategy,
                             deprecatedIdTypes: operation.DeprecatedIdTypes),
                         operation.RecordNotFoundStrategy,
-                        new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.LatestByIdAndObjectType));
+                        new RecordsToFilterCriteria(
+                            RecordsToFilterSelectionStrategy.LatestByIdAndObjectType,
+                            operation.VersionMatchStrategy),
+                        specifiedResourceLocator: locator);
 
-                var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
+                    var internalRecordIds = this.stream.Execute(internalRecordIdsOp);
 
-                if (internalRecordIds.Any())
-                {
-                    var records = internalRecordIds
-                        .Select(_ => this.stream.Execute(
-                            new StandardGetLatestRecordOp(
-                                new RecordFilter(
-                                    internalRecordIds: new[]
-                                    {
-                                        _,
-                                    }),
-                                operation.RecordNotFoundStrategy)))
-                        .ToList();
+                    if (internalRecordIds.Any())
+                    {
+                        var records = internalRecordIds
+                            .Select(_ => this.stream.Execute(
+                                new StandardGetLatestRecordOp(
+                                    new RecordFilter(
+                                        internalRecordIds: new[]
+                                        {
+                                            _,
+                                        }),
+                                    operation.RecordNotFoundStrategy,
+                                    specifiedResourceLocator: locator)))
+                            .ToList();
 
-                    var objects = records
-                        .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
-                        .ToList();
+                        var objects = records
+                            .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                            .ToList();
 
-                    result.AddRange(objects);
+                        result.AddRange(objects);
+                    }
                 }
             }
 

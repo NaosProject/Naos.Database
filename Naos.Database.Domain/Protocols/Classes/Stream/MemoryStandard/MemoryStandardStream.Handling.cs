@@ -120,7 +120,7 @@ namespace Naos.Database.Domain
                 var filteredRecords = ApplyRecordFilterToPartition(
                     operation.RecordFilter,
                     records,
-                    new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All));
+                    new RecordsToFilterCriteria());
 
                 // Get latest status for each record to consider.
                 var unfilteredResult = filteredRecords
@@ -210,7 +210,7 @@ namespace Naos.Database.Domain
                     var matchingRecords = ApplyRecordFilterToPartition(
                         operation.RecordFilter,
                         recordsToConsiderForHandling,
-                        new RecordsToFilterCriteria(RecordsToFilterSelectionStrategy.All));
+                        new RecordsToFilterCriteria());
 
                     StreamRecord recordToHandle;
                     switch (operation.OrderRecordsBy)

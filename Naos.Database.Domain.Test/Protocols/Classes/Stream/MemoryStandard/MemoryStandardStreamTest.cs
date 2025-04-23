@@ -328,6 +328,77 @@ namespace Naos.Database.Domain.Test.MemoryStream
         }
 
         [Fact]
+        public static void StandardGetDistinctStringSerializedIds___Should_return_latest_ids_that_survive_filtering___When_id_and_object_and_deprecated_id_types_specified()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var expected1 = Guid.NewGuid().ToString().Replace("-", ",");
+            var expected2 = Guid.NewGuid().ToString().Replace("-", ",");
+
+            IReadOnlyCollection<string> GetActual() => stream
+                .Execute(
+                    new StandardGetDistinctStringSerializedIdsOp(
+                        new RecordFilter(
+                            idTypes: new[] { typeof(string).ToRepresentation() },
+                            objectTypes: new[] { typeof(string).ToRepresentation(), },
+                            deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent).ToRepresentation() })))
+                .Select(_ => stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation).Deserialize<string>(_.StringSerializedId))
+                .ToList();
+
+            IReadOnlyCollection<string> GetActualWrongObjectType() => stream
+                .Execute(
+                    new StandardGetDistinctStringSerializedIdsOp(
+                        new RecordFilter(
+                            idTypes: new[] { typeof(string).ToRepresentation() },
+                            objectTypes: new[] { typeof(long).ToRepresentation(), },
+                            deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent).ToRepresentation() })))
+                .Select(_ => stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation).Deserialize<string>(_.StringSerializedId))
+                .ToList();
+
+            IReadOnlyCollection<string> GetActualWrongIdType() => stream
+                .Execute(
+                    new StandardGetDistinctStringSerializedIdsOp(
+                        new RecordFilter(
+                            idTypes: new[] { typeof(long).ToRepresentation() },
+                            objectTypes: new[] { typeof(string).ToRepresentation(), },
+                            deprecatedIdTypes: new[] { typeof(IdDeprecatedEvent).ToRepresentation() })))
+                .Select(_ => stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation).Deserialize<string>(_.StringSerializedId))
+                .ToList();
+
+            // Act, Assert
+            stream.PutWithIdAndReturnInternalRecordId(expected1, A.Dummy<string>());
+            var actual = GetActual();
+            actual.MustForTest().BeUnorderedEqualTo(new[] { expected1 });
+
+            stream.PutWithIdAndReturnInternalRecordId(expected1, A.Dummy<string>());
+            actual = GetActual();
+            actual.MustForTest().BeUnorderedEqualTo(new[] { expected1 });
+
+            stream.PutWithIdAndReturnInternalRecordId(expected2, A.Dummy<short>());
+            actual = GetActual();
+            actual.MustForTest().BeUnorderedEqualTo(new[] { expected1 });
+
+            stream.PutWithIdAndReturnInternalRecordId(expected2, A.Dummy<string>());
+            actual = GetActual();
+            actual.MustForTest().BeUnorderedEqualTo(new[] { expected1, expected2 });
+
+            stream.PutWithIdAndReturnInternalRecordId(expected2, new IdDeprecatedEvent(DateTime.UtcNow));
+            actual = GetActual();
+            actual.MustForTest().BeUnorderedEqualTo(new[] { expected1 });
+
+            stream.PutWithIdAndReturnInternalRecordId(expected2, A.Dummy<string>());
+            actual = GetActual();
+            actual.MustForTest().BeUnorderedEqualTo(new[] { expected1, expected2 });
+
+            actual = GetActualWrongIdType();
+            actual.MustForTest().BeEmptyEnumerable();
+
+            actual = GetActualWrongObjectType();
+            actual.MustForTest().BeEmptyEnumerable();
+        }
+
+        [Fact]
         public static void StandardGetLatestRecord___Should_return_latest_object___When_some_objects_in_stream_have_been_deprecated()
         {
             // Arrange

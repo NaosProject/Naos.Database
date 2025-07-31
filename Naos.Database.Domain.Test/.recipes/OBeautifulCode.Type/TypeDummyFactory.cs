@@ -145,6 +145,24 @@ namespace OBeautifulCode.Type.Test
                     return result;
                 });
 
+            // IValue
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = (IValue)A.Dummy<SimpleValue<Version>>();
+
+                    return result;
+                });
+
+            // INamedValue
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = (INamedValue)A.Dummy<NamedValue<Version>>();
+
+                    return result;
+                });
+
             // NullEvent
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullEvent(

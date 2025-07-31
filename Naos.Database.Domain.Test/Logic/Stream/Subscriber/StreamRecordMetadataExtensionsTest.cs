@@ -203,7 +203,6 @@ namespace Naos.Database.Domain.Test
 
             public SpecifiedSerializerFactory(
                 ISerializer serializerToUse)
-                : base(null)
             {
                 this.serializerToUse = serializerToUse;
             }

@@ -82,7 +82,7 @@ namespace Naos.Database.Domain.Test
                     A.Dummy<PositiveInteger>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamConfig(
+                () => new StandardStreamConfig(
                     A.Dummy<string>(),
                     A.Dummy<StreamAccessKinds>().ThatIsNot(StreamAccessKinds.None),
                     A.Dummy<SerializerRepresentation>(),

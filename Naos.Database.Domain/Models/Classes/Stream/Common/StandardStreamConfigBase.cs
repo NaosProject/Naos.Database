@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StreamConfigBase.cs" company="Naos Project">
+// <copyright file="StandardStreamConfigBase.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,19 +12,19 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Base class for <see cref="IStreamConfig"/>.
+    /// Base class for <see cref="IStandardStreamConfig"/>.
     /// </summary>
-    public abstract partial class StreamConfigBase : IStreamConfig, IModelViaCodeGen
+    public abstract partial class StandardStreamConfigBase : IStandardStreamConfig, IModelViaCodeGen
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamConfigBase"/> class.
+        /// Initializes a new instance of the <see cref="StandardStreamConfigBase"/> class.
         /// </summary>
-        /// <param name="name">Name of the stream.</param>
-        /// <param name="accessKinds">Access the stream has.</param>
-        /// <param name="defaultSerializerRepresentation">Default <see cref="SerializerRepresentation"/> to use (used for identifier serialization).</param>
-        /// <param name="defaultSerializationFormat">Default <see cref="SerializationFormat"/> to use.</param>
+        /// <param name="name">The name of the stream.</param>
+        /// <param name="accessKinds">The kind of access that the stream has.</param>
+        /// <param name="defaultSerializerRepresentation">The serializer representation to use to get a serializer to use when serializing objects (not identifiers) into record payloads to put.</param>
+        /// <param name="defaultSerializationFormat">The serialization format to use when serializing objects (not identifiers) into record payloads to put.</param>
         /// <param name="allLocators">All <see cref="IResourceLocator"/>'s.</param>
-        protected StreamConfigBase(
+        protected StandardStreamConfigBase(
             string name,
             StreamAccessKinds accessKinds,
             SerializerRepresentation defaultSerializerRepresentation,
@@ -44,29 +44,19 @@ namespace Naos.Database.Domain
             this.AllLocators = allLocators;
         }
 
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
+        /// <inheritdoc />
         public string Name { get; private set; }
 
-        /// <summary>
-        /// Gets the access the stream has.
-        /// </summary>
+        /// <inheritdoc />
         public StreamAccessKinds AccessKinds { get; private set; }
 
-        /// <summary>
-        /// Gets the default <see cref="SerializerRepresentation"/> (used for identifier serialization).
-        /// </summary>
+        /// <inheritdoc />
         public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
 
-        /// <summary>
-        /// Gets the default <see cref="SerializationFormat"/>.
-        /// </summary>
+        /// <inheritdoc />
         public SerializationFormat DefaultSerializationFormat { get; private set; }
 
-        /// <summary>
-        /// Gets all <see cref="IResourceLocator"/>'s.
-        /// </summary>
+        /// <inheritdoc />
         public IReadOnlyCollection<IResourceLocator> AllLocators { get; private set; }
     }
 }

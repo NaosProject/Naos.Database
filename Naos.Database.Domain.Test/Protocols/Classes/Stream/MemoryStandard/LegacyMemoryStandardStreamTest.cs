@@ -105,10 +105,6 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var thirdObject = "RecordThree";
 
             var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
-            var zeroObjectStringSerializedId = serializer.SerializeToString(zeroObject.Id);
-            var firstObjectStringSerializedId = serializer.SerializeToString(firstObject.Id);
-            var secondObjectStringSerializedId = serializer.SerializeToString(secondObject.Id);
-            var thirdObjectStringSerializedId = serializer.SerializeToString(thirdObjectId);
 
             for (int idx = 0;
                 idx < 10;
@@ -118,7 +114,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                 stream.Execute(
                     new StandardPutRecordOp(
                         new StreamRecordMetadata(
-                            zeroObjectStringSerializedId,
+                            zeroObject.Id,
                             stream.DefaultSerializerRepresentation,
                             typeof(decimal?).ToRepresentation().ToWithAndWithoutVersion(),
                             zeroObject.GetType().ToRepresentation().ToWithAndWithoutVersion(),
@@ -162,10 +158,10 @@ namespace Naos.Database.Domain.Test.MemoryStream
                        .BeEqualTo(
                             new List<string>
                             {
-                                zeroObjectStringSerializedId,
-                                firstObjectStringSerializedId,
-                                secondObjectStringSerializedId,
-                                thirdObjectStringSerializedId,
+                                zeroObject.Id,
+                                firstObject.Id,
+                                secondObject.Id,
+                                thirdObjectId,
                             });
 
             var objectObjectDistinct = stream.Execute(
@@ -180,9 +176,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                        .BeEqualTo(
                             new List<string>
                             {
-                                zeroObjectStringSerializedId,
-                                firstObjectStringSerializedId,
-                                secondObjectStringSerializedId,
+                                zeroObject.Id,
+                                firstObject.Id,
+                                secondObject.Id,
                             });
 
             var stringIdDistinct = stream.Execute(
@@ -197,9 +193,9 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             .BeEqualTo(
                                  new List<string>
                                  {
-                                     firstObjectStringSerializedId,
-                                     secondObjectStringSerializedId,
-                                     thirdObjectStringSerializedId,
+                                     firstObject.Id,
+                                     secondObject.Id,
+                                     thirdObjectId,
                                  });
 
             var stringIdObjectObjectDistinct = stream.Execute(
@@ -217,8 +213,8 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             .BeEqualTo(
                                  new List<string>
                                  {
-                                     firstObjectStringSerializedId,
-                                     secondObjectStringSerializedId,
+                                     firstObject.Id,
+                                     secondObject.Id,
                                  });
 
             var tagDistinct = stream.Execute(
@@ -233,7 +229,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             .BeEqualTo(
                                  new List<string>
                                  {
-                                     firstObjectStringSerializedId,
+                                     firstObject.Id,
                                  });
 
             var tagDistinctWrongIdType = stream.Execute(
@@ -943,8 +939,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             var objectId = Guid.NewGuid();
             var objectPayload = A.Dummy<string>();
 
-            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
-            string serializedStringId = serializer.SerializeToString(objectId);
+            var serializedStringId = stream.IdSerializer.SerializeToString(objectId);
 
             var identifierTypeRep = objectId.GetType().ToRepresentation();
             var objectTypeRep = objectPayload.GetType().ToRepresentation();

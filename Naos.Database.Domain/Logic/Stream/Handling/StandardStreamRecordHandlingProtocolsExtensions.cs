@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StandardRecordHandlingStreamExtensions.cs" company="Naos Project">
+// <copyright file="StandardStreamRecordHandlingProtocolsExtensions.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Extension methods on <see cref="IStandardStreamRecordHandlingProtocols"/>.
     /// </summary>
-    public static partial class StandardHandlingOnlyStreamExtensions
+    public static partial class StandardStreamRecordHandlingProtocolsExtensions
     {
         /// <summary>
         /// Gets a value that indicates whether or not record handling is disabled on the specified stream.

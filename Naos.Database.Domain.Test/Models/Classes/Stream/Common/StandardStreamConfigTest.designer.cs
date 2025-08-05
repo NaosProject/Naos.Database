@@ -34,37 +34,37 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StreamConfigTest
+    public static partial class StandardStreamConfigTest
     {
-        private static readonly StringRepresentationTestScenarios<StreamConfig> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StreamConfig>()
+        private static readonly StringRepresentationTestScenarios<StandardStreamConfig> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<StandardStreamConfig>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<StreamConfig>
+                new StringRepresentationTestScenario<StandardStreamConfig>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamConfig>();
+                        var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<StreamConfig>
+                        var result = new SystemUnderTestExpectedStringRepresentation<StandardStreamConfig>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StreamConfig: Name = {systemUnderTest.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, AccessKinds = {systemUnderTest.AccessKinds.ToString() ?? "<null>"}, DefaultSerializerRepresentation = {systemUnderTest.DefaultSerializerRepresentation?.ToString() ?? "<null>"}, DefaultSerializationFormat = {systemUnderTest.DefaultSerializationFormat.ToString() ?? "<null>"}, AllLocators = {systemUnderTest.AllLocators?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.StandardStreamConfig: Name = {systemUnderTest.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, AccessKinds = {systemUnderTest.AccessKinds.ToString() ?? "<null>"}, DefaultSerializerRepresentation = {systemUnderTest.DefaultSerializerRepresentation?.ToString() ?? "<null>"}, DefaultSerializationFormat = {systemUnderTest.DefaultSerializationFormat.ToString() ?? "<null>"}, AllLocators = {systemUnderTest.AllLocators?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<StreamConfig> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StreamConfig>()
+        private static readonly ConstructorArgumentValidationTestScenarios<StandardStreamConfig> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<StandardStreamConfig>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamConfig>
+                new ConstructorArgumentValidationTestScenario<StandardStreamConfig>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'name' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new StreamConfig(
+                        var result = new StandardStreamConfig(
                                              null,
                                              referenceObject.AccessKinds,
                                              referenceObject.DefaultSerializerRepresentation,
@@ -77,14 +77,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "name", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamConfig>
+                new ConstructorArgumentValidationTestScenario<StandardStreamConfig>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'name' is white space scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new StreamConfig(
+                        var result = new StandardStreamConfig(
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.AccessKinds,
                                              referenceObject.DefaultSerializerRepresentation,
@@ -97,14 +97,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "name", "white space", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamConfig>
+                new ConstructorArgumentValidationTestScenario<StandardStreamConfig>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'defaultSerializerRepresentation' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new StreamConfig(
+                        var result = new StandardStreamConfig(
                                              referenceObject.Name,
                                              referenceObject.AccessKinds,
                                              null,
@@ -117,14 +117,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "defaultSerializerRepresentation", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamConfig>
+                new ConstructorArgumentValidationTestScenario<StandardStreamConfig>
                 {
                     Name = "constructor should throw ArgumentNullException when parameter 'allLocators' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new StreamConfig(
+                        var result = new StandardStreamConfig(
                                              referenceObject.Name,
                                              referenceObject.AccessKinds,
                                              referenceObject.DefaultSerializerRepresentation,
@@ -137,14 +137,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "allLocators", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamConfig>
+                new ConstructorArgumentValidationTestScenario<StandardStreamConfig>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'allLocators' is an empty enumerable scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new StreamConfig(
+                        var result = new StandardStreamConfig(
                                              referenceObject.Name,
                                              referenceObject.AccessKinds,
                                              referenceObject.DefaultSerializerRepresentation,
@@ -157,14 +157,14 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "allLocators", "is an empty enumerable", },
                 })
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<StreamConfig>
+                new ConstructorArgumentValidationTestScenario<StandardStreamConfig>
                 {
                     Name = "constructor should throw ArgumentException when parameter 'allLocators' contains a null element scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new StreamConfig(
+                        var result = new StandardStreamConfig(
                                              referenceObject.Name,
                                              referenceObject.AccessKinds,
                                              referenceObject.DefaultSerializerRepresentation,
@@ -177,18 +177,18 @@ namespace Naos.Database.Domain.Test
                     ExpectedExceptionMessageContains = new[] { "allLocators", "contains at least one null element", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<StreamConfig> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StreamConfig>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<StandardStreamConfig> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<StandardStreamConfig>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamConfig>
+                new ConstructorPropertyAssignmentTestScenario<StandardStreamConfig>
                 {
                     Name = "Name should return same 'name' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamConfig>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardStreamConfig>
                         {
-                            SystemUnderTest = new StreamConfig(
+                            SystemUnderTest = new StandardStreamConfig(
                                                       referenceObject.Name,
                                                       referenceObject.AccessKinds,
                                                       referenceObject.DefaultSerializerRepresentation,
@@ -202,16 +202,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "Name",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamConfig>
+                new ConstructorPropertyAssignmentTestScenario<StandardStreamConfig>
                 {
                     Name = "AccessKinds should return same 'accessKinds' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamConfig>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardStreamConfig>
                         {
-                            SystemUnderTest = new StreamConfig(
+                            SystemUnderTest = new StandardStreamConfig(
                                                       referenceObject.Name,
                                                       referenceObject.AccessKinds,
                                                       referenceObject.DefaultSerializerRepresentation,
@@ -225,16 +225,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "AccessKinds",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamConfig>
+                new ConstructorPropertyAssignmentTestScenario<StandardStreamConfig>
                 {
                     Name = "DefaultSerializerRepresentation should return same 'defaultSerializerRepresentation' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamConfig>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardStreamConfig>
                         {
-                            SystemUnderTest = new StreamConfig(
+                            SystemUnderTest = new StandardStreamConfig(
                                                       referenceObject.Name,
                                                       referenceObject.AccessKinds,
                                                       referenceObject.DefaultSerializerRepresentation,
@@ -248,16 +248,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "DefaultSerializerRepresentation",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamConfig>
+                new ConstructorPropertyAssignmentTestScenario<StandardStreamConfig>
                 {
                     Name = "DefaultSerializationFormat should return same 'defaultSerializationFormat' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamConfig>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardStreamConfig>
                         {
-                            SystemUnderTest = new StreamConfig(
+                            SystemUnderTest = new StandardStreamConfig(
                                                       referenceObject.Name,
                                                       referenceObject.AccessKinds,
                                                       referenceObject.DefaultSerializerRepresentation,
@@ -271,16 +271,16 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "DefaultSerializationFormat",
                 })
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<StreamConfig>
+                new ConstructorPropertyAssignmentTestScenario<StandardStreamConfig>
                 {
                     Name = "AllLocators should return same 'allLocators' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<StreamConfig>();
+                        var referenceObject = A.Dummy<StandardStreamConfig>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<StreamConfig>
+                        var result = new SystemUnderTestExpectedPropertyValue<StandardStreamConfig>
                         {
-                            SystemUnderTest = new StreamConfig(
+                            SystemUnderTest = new StandardStreamConfig(
                                                       referenceObject.Name,
                                                       referenceObject.AccessKinds,
                                                       referenceObject.DefaultSerializerRepresentation,
@@ -294,19 +294,19 @@ namespace Naos.Database.Domain.Test
                     PropertyName = "AllLocators",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<StreamConfig> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StreamConfig>()
+        private static readonly DeepCloneWithTestScenarios<StandardStreamConfig> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<StandardStreamConfig>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamConfig>
+                new DeepCloneWithTestScenario<StandardStreamConfig>
                 {
                     Name = "DeepCloneWithName should deep clone object and replace Name with the provided name",
                     WithPropertyName = "Name",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamConfig>();
+                        var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
-                        var referenceObject = A.Dummy<StreamConfig>().ThatIs(_ => !systemUnderTest.Name.IsEqualTo(_.Name));
+                        var referenceObject = A.Dummy<StandardStreamConfig>().ThatIs(_ => !systemUnderTest.Name.IsEqualTo(_.Name));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamConfig>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardStreamConfig>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.Name,
@@ -316,17 +316,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamConfig>
+                new DeepCloneWithTestScenario<StandardStreamConfig>
                 {
                     Name = "DeepCloneWithAccessKinds should deep clone object and replace AccessKinds with the provided accessKinds",
                     WithPropertyName = "AccessKinds",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamConfig>();
+                        var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
-                        var referenceObject = A.Dummy<StreamConfig>().ThatIs(_ => !systemUnderTest.AccessKinds.IsEqualTo(_.AccessKinds));
+                        var referenceObject = A.Dummy<StandardStreamConfig>().ThatIs(_ => !systemUnderTest.AccessKinds.IsEqualTo(_.AccessKinds));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamConfig>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardStreamConfig>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.AccessKinds,
@@ -336,17 +336,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamConfig>
+                new DeepCloneWithTestScenario<StandardStreamConfig>
                 {
                     Name = "DeepCloneWithDefaultSerializerRepresentation should deep clone object and replace DefaultSerializerRepresentation with the provided defaultSerializerRepresentation",
                     WithPropertyName = "DefaultSerializerRepresentation",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamConfig>();
+                        var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
-                        var referenceObject = A.Dummy<StreamConfig>().ThatIs(_ => !systemUnderTest.DefaultSerializerRepresentation.IsEqualTo(_.DefaultSerializerRepresentation));
+                        var referenceObject = A.Dummy<StandardStreamConfig>().ThatIs(_ => !systemUnderTest.DefaultSerializerRepresentation.IsEqualTo(_.DefaultSerializerRepresentation));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamConfig>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardStreamConfig>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.DefaultSerializerRepresentation,
@@ -356,17 +356,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamConfig>
+                new DeepCloneWithTestScenario<StandardStreamConfig>
                 {
                     Name = "DeepCloneWithDefaultSerializationFormat should deep clone object and replace DefaultSerializationFormat with the provided defaultSerializationFormat",
                     WithPropertyName = "DefaultSerializationFormat",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamConfig>();
+                        var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
-                        var referenceObject = A.Dummy<StreamConfig>().ThatIs(_ => !systemUnderTest.DefaultSerializationFormat.IsEqualTo(_.DefaultSerializationFormat));
+                        var referenceObject = A.Dummy<StandardStreamConfig>().ThatIs(_ => !systemUnderTest.DefaultSerializationFormat.IsEqualTo(_.DefaultSerializationFormat));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamConfig>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardStreamConfig>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.DefaultSerializationFormat,
@@ -376,17 +376,17 @@ namespace Naos.Database.Domain.Test
                     },
                 })
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<StreamConfig>
+                new DeepCloneWithTestScenario<StandardStreamConfig>
                 {
                     Name = "DeepCloneWithAllLocators should deep clone object and replace AllLocators with the provided allLocators",
                     WithPropertyName = "AllLocators",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<StreamConfig>();
+                        var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
-                        var referenceObject = A.Dummy<StreamConfig>().ThatIs(_ => !systemUnderTest.AllLocators.IsEqualTo(_.AllLocators));
+                        var referenceObject = A.Dummy<StandardStreamConfig>().ThatIs(_ => !systemUnderTest.AllLocators.IsEqualTo(_.AllLocators));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<StreamConfig>
+                        var result = new SystemUnderTestDeepCloneWithValue<StandardStreamConfig>
                         {
                             SystemUnderTest = systemUnderTest,
                             DeepCloneWithValue = referenceObject.AllLocators,
@@ -396,55 +396,55 @@ namespace Naos.Database.Domain.Test
                     },
                 });
 
-        private static readonly StreamConfig ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamConfig>();
+        private static readonly StandardStreamConfig ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardStreamConfig>();
 
-        private static readonly EquatableTestScenarios<StreamConfig> EquatableTestScenarios = new EquatableTestScenarios<StreamConfig>()
+        private static readonly EquatableTestScenarios<StandardStreamConfig> EquatableTestScenarios = new EquatableTestScenarios<StandardStreamConfig>()
             .AddScenario(() =>
-                new EquatableTestScenario<StreamConfig>
+                new EquatableTestScenario<StandardStreamConfig>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamConfig[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardStreamConfig[]
                     {
-                        new StreamConfig(
+                        new StandardStreamConfig(
                                 ReferenceObjectForEquatableTestScenarios.Name,
                                 ReferenceObjectForEquatableTestScenarios.AccessKinds,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat,
                                 ReferenceObjectForEquatableTestScenarios.AllLocators),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StreamConfig[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardStreamConfig[]
                     {
-                        new StreamConfig(
-                                A.Dummy<StreamConfig>().Whose(_ => !_.Name.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Name)).Name,
+                        new StandardStreamConfig(
+                                A.Dummy<StandardStreamConfig>().Whose(_ => !_.Name.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Name)).Name,
                                 ReferenceObjectForEquatableTestScenarios.AccessKinds,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat,
                                 ReferenceObjectForEquatableTestScenarios.AllLocators),
-                        new StreamConfig(
+                        new StandardStreamConfig(
                                 ReferenceObjectForEquatableTestScenarios.Name,
-                                A.Dummy<StreamConfig>().Whose(_ => !_.AccessKinds.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AccessKinds)).AccessKinds,
+                                A.Dummy<StandardStreamConfig>().Whose(_ => !_.AccessKinds.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AccessKinds)).AccessKinds,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat,
                                 ReferenceObjectForEquatableTestScenarios.AllLocators),
-                        new StreamConfig(
+                        new StandardStreamConfig(
                                 ReferenceObjectForEquatableTestScenarios.Name,
                                 ReferenceObjectForEquatableTestScenarios.AccessKinds,
-                                A.Dummy<StreamConfig>().Whose(_ => !_.DefaultSerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation)).DefaultSerializerRepresentation,
+                                A.Dummy<StandardStreamConfig>().Whose(_ => !_.DefaultSerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation)).DefaultSerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat,
                                 ReferenceObjectForEquatableTestScenarios.AllLocators),
-                        new StreamConfig(
+                        new StandardStreamConfig(
                                 ReferenceObjectForEquatableTestScenarios.Name,
                                 ReferenceObjectForEquatableTestScenarios.AccessKinds,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation,
-                                A.Dummy<StreamConfig>().Whose(_ => !_.DefaultSerializationFormat.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat)).DefaultSerializationFormat,
+                                A.Dummy<StandardStreamConfig>().Whose(_ => !_.DefaultSerializationFormat.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat)).DefaultSerializationFormat,
                                 ReferenceObjectForEquatableTestScenarios.AllLocators),
-                        new StreamConfig(
+                        new StandardStreamConfig(
                                 ReferenceObjectForEquatableTestScenarios.Name,
                                 ReferenceObjectForEquatableTestScenarios.AccessKinds,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation,
                                 ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat,
-                                A.Dummy<StreamConfig>().Whose(_ => !_.AllLocators.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AllLocators)).AllLocators),
+                                A.Dummy<StandardStreamConfig>().Whose(_ => !_.AllLocators.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AllLocators)).AllLocators),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -477,9 +477,9 @@ namespace Naos.Database.Domain.Test
             public static void StreamConfig___Should_implement_IModel_of_StreamConfig___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamConfig);
+                var type = typeof(StandardStreamConfig);
 
-                var expectedModelMethods = typeof(IModel<StreamConfig>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardStreamConfig>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -489,7 +489,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamConfig>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardStreamConfig>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -510,7 +510,7 @@ namespace Naos.Database.Domain.Test
             public static void StreamConfig___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamConfig);
+                var type = typeof(StandardStreamConfig);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -690,10 +690,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamConfig>();
+                var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
                 // Act
-                var actual = (StreamConfig)systemUnderTest.Clone();
+                var actual = (StandardStreamConfig)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -717,7 +717,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamConfig>();
+                var systemUnderTest = A.Dummy<StandardStreamConfig>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -780,12 +780,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (StreamConfig)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (StandardStreamConfig)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(StreamConfig).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(StandardStreamConfig).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -847,7 +847,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfig>();
+                var expected = A.Dummy<StandardStreamConfig>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -876,7 +876,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfig>();
+                var expected = A.Dummy<StandardStreamConfig>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -905,7 +905,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfig>();
+                var expected = A.Dummy<StandardStreamConfig>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -934,7 +934,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfig>();
+                var expected = A.Dummy<StandardStreamConfig>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -968,8 +968,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamConfig systemUnderTest1 = null;
-                StreamConfig systemUnderTest2 = null;
+                StandardStreamConfig systemUnderTest1 = null;
+                StandardStreamConfig systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -999,7 +999,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfig systemUnderTest = null;
+                    StandardStreamConfig systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1148,8 +1148,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamConfig systemUnderTest1 = null;
-                StreamConfig systemUnderTest2 = null;
+                StandardStreamConfig systemUnderTest1 = null;
+                StandardStreamConfig systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1179,7 +1179,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfig systemUnderTest = null;
+                    StandardStreamConfig systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1332,10 +1332,10 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfigBase systemUnderTest = null;
+                    StandardStreamConfigBase systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((StreamConfigBase)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((StandardStreamConfigBase)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1363,7 +1363,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((StreamConfigBase)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((StandardStreamConfigBase)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1391,7 +1391,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((StreamConfigBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((StandardStreamConfigBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1419,7 +1419,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((StreamConfigBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((StandardStreamConfigBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1447,7 +1447,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((StreamConfigBase)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((StandardStreamConfigBase)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1475,7 +1475,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfig systemUnderTest = null;
+                    StandardStreamConfig systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

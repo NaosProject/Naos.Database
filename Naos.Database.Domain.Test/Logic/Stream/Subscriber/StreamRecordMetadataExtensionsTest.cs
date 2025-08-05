@@ -14,6 +14,7 @@ namespace Naos.Database.Domain.Test
     using OBeautifulCode.Compression;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Serialization.Json;
+    using OBeautifulCode.String.Recipes;
     using OBeautifulCode.Type;
     using Xunit;
 
@@ -140,13 +141,13 @@ namespace Naos.Database.Domain.Test
         }
 
         [Fact]
-        public static void ToStreamRecordMetadata_IStream___Should_throw_ArgumentNullException___When_parameter_stream_is_null()
+        public static void ToStreamRecordMetadata_IStandardStream___Should_throw_ArgumentNullException___When_parameter_stream_is_null()
         {
             // Arrange
             var metadata = A.Dummy<StreamRecordMetadata>();
 
             // Act
-            var actual = Record.Exception(() => metadata.ToStreamRecordMetadata<string>((IStream)null));
+            var actual = Record.Exception(() => metadata.ToStreamRecordMetadata<string>((IStandardStream)null));
 
             // Assert
             actual.AsTest().Must().BeOfType<ArgumentNullException>();
@@ -157,23 +158,10 @@ namespace Naos.Database.Domain.Test
         public static void ToStreamRecordMetadata_IStream___Should_return_metadata_converted_to_StreamRecordMetadata_TId___When_called()
         {
             // Arrange
-            var metadata = A.Dummy<StreamRecordMetadata>();
+            var id = A.Dummy<long>();
+            var metadata = A.Dummy<StreamRecordMetadata>().DeepCloneWithStringSerializedId(id.ToStringInvariantPreferred());
 
-            var id = A.Dummy<string>();
-
-            var backingStringSerializer = new ObcLambdaBackedStringSerializer(
-                _ => A.Dummy<string>(),
-                (_, t) =>
-                {
-                    if (_ != metadata.StringSerializedId)
-                    {
-                        throw new InvalidOperationException("should not get here");
-                    }
-
-                    return id;
-                });
-
-            var serializer = new ObcStringSerializerBackedSerializer(backingStringSerializer);
+            var serializer = new ObcAlwaysThrowingSerializer();
 
             var stream = new MemoryStandardStream(
                 "test-stream-name",
@@ -181,7 +169,7 @@ namespace Naos.Database.Domain.Test
                 SerializationFormat.String,
                 new SpecifiedSerializerFactory(serializer));
 
-            var expected = new StreamRecordMetadata<string>(
+            var expected = new StreamRecordMetadata<long>(
                 id,
                 metadata.SerializerRepresentation,
                 metadata.TypeRepresentationOfId,
@@ -191,7 +179,7 @@ namespace Naos.Database.Domain.Test
                 metadata.ObjectTimestampUtc);
 
             // Act
-            var actual = metadata.ToStreamRecordMetadata<string>(stream);
+            var actual = metadata.ToStreamRecordMetadata<long>(stream);
 
             // Assert
             actual.AsTest().Must().BeEqualTo(expected);

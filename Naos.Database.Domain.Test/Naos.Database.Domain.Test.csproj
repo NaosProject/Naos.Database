@@ -95,17 +95,17 @@
     <Reference Include="OBeautifulCode.Representation.System, Version=1.0.67.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Representation.System.1.0.67\lib\net462\OBeautifulCode.Representation.System.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Serialization, Version=1.0.145.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Serialization.1.0.145\lib\net462\OBeautifulCode.Serialization.dll</HintPath>
+    <Reference Include="OBeautifulCode.Serialization, Version=1.0.146.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Serialization.1.0.146\lib\net462\OBeautifulCode.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Serialization.Bson, Version=1.0.145.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Serialization.Bson.1.0.145\lib\net462\OBeautifulCode.Serialization.Bson.dll</HintPath>
+    <Reference Include="OBeautifulCode.Serialization.Bson, Version=1.0.146.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Serialization.Bson.1.0.146\lib\net462\OBeautifulCode.Serialization.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Serialization.Json, Version=1.0.145.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Serialization.Json.1.0.145\lib\net462\OBeautifulCode.Serialization.Json.dll</HintPath>
+    <Reference Include="OBeautifulCode.Serialization.Json, Version=1.0.146.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Serialization.Json.1.0.146\lib\net462\OBeautifulCode.Serialization.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Serialization.PropertyBag, Version=1.0.145.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Serialization.PropertyBag.1.0.145\lib\net462\OBeautifulCode.Serialization.PropertyBag.dll</HintPath>
+    <Reference Include="OBeautifulCode.Serialization.PropertyBag, Version=1.0.146.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Serialization.PropertyBag.1.0.146\lib\net462\OBeautifulCode.Serialization.PropertyBag.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Type, Version=1.0.139.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Type.1.0.139\lib\net462\OBeautifulCode.Type.dll</HintPath>
@@ -852,13 +852,13 @@
     <Compile Include="Operations\Classes\Stream\Standard\Read\StandardGetInternalRecordIdsOpTest.designer.cs">
       <DependentUpon>StandardGetInternalRecordIdsOpTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Common\StreamConfigBaseTest.cs" />
-    <Compile Include="Models\Classes\Stream\Common\StreamConfigBaseTest.designer.cs">
-      <DependentUpon>StreamConfigBaseTest.cs</DependentUpon>
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigBaseTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigBaseTest.designer.cs">
+      <DependentUpon>StandardStreamConfigBaseTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Common\StreamConfigTest.cs" />
-    <Compile Include="Models\Classes\Stream\Common\StreamConfigTest.designer.cs">
-      <DependentUpon>StreamConfigTest.cs</DependentUpon>
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigTest.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigTest.designer.cs">
+      <DependentUpon>StandardStreamConfigTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Mutex\WaitOneOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Mutex\WaitOneOpTest.designer.cs">

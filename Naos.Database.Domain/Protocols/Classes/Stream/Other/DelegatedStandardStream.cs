@@ -6,8 +6,10 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Serialization;
 
@@ -25,12 +27,8 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegatedStandardStream"/> class.
         /// </summary>
-        /// <param name="name">The name.</param>
+        /// <param name="name">The name of the stream.</param>
         /// <param name="streamRepresentation">The stream representation.</param>
-        /// <param name="resourceLocatorProtocols">The resource locator protocols.</param>
-        /// <param name="serializerFactory">The serializer factory.</param>
-        /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
-        /// <param name="defaultSerializationFormat">The default serialization format.</param>
         /// <param name="readStream">The read stream to delegate read operations to.</param>
         /// <param name="writeStream">The write stream to delegate write operations to.</param>
         /// <param name="handleStream">The handle stream to delegate handle operations to.</param>
@@ -38,10 +36,6 @@ namespace Naos.Database.Domain
         public DelegatedStandardStream(
             string name,
             IStreamRepresentation streamRepresentation,
-            IResourceLocatorProtocols resourceLocatorProtocols,
-            ISerializerFactory serializerFactory,
-            SerializerRepresentation defaultSerializerRepresentation,
-            SerializationFormat defaultSerializationFormat,
             IStandardStream readStream,
             IStandardStream writeStream,
             IStandardStream handleStream,
@@ -49,45 +43,80 @@ namespace Naos.Database.Domain
         {
             name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
             streamRepresentation.MustForArg(nameof(streamRepresentation)).NotBeNull();
-            resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
-            serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
-            defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
-            defaultSerializationFormat.MustForArg(nameof(defaultSerializationFormat)).NotBeEqualTo(SerializationFormat.Invalid);
             readStream.MustForArg(nameof(readStream)).NotBeNull();
             writeStream.MustForArg(nameof(writeStream)).NotBeNull();
             handleStream.MustForArg(nameof(handleStream)).NotBeNull();
             managementStream.MustForArg(nameof(managementStream)).NotBeNull();
 
+            var streams = new[]
+            {
+                readStream,
+                writeStream,
+                handleStream,
+                managementStream,
+            };
+
+            var notNullNorThrowingStreams = streams.Where(_ =>
+                    (_.GetType() != typeof(NullStandardStream)) &&
+                    (_.GetType() != typeof(AlwaysThrowingStandardStream)))
+                .ToList();
+
+            if (notNullNorThrowingStreams.Any())
+            {
+                // There is at least one non-null, non-throwing stream.  Make sure all of them
+                // have the same factory and id serializer using reference equality.
+                this.SerializerFactory = notNullNorThrowingStreams.Select(_ => _.SerializerFactory).Single();
+                this.IdSerializer = notNullNorThrowingStreams.Select(_ => _.IdSerializer).Single();
+            }
+            else
+            {
+                // All of the streams are null or throwing streams.
+                var nullStandardStream = streams.FirstOrDefault(_ => _.GetType() == typeof(NullStandardStream));
+
+                if (nullStandardStream == null)
+                {
+                    // All of the streams are throwing.  Use the first throwing stream's factory and id serializer
+                    // (which will be the same across all throwing  streams and hence why we just choose the first).
+                    this.SerializerFactory = streams.First().SerializerFactory;
+                    this.IdSerializer = streams.First().IdSerializer;
+                }
+                else
+                {
+                    // At least one stream is null.  Use the first null stream's factory and id serializer
+                    // (which will be the same across all null streams and hence why we just choose the first).
+                    this.SerializerFactory = nullStandardStream.SerializerFactory;
+                    this.IdSerializer = nullStandardStream.IdSerializer;
+                }
+            }
+
+            this.Name = name;
+            this.StreamRepresentation = streamRepresentation;
             this.readStream = readStream;
             this.writeStream = writeStream;
             this.handleStream = handleStream;
             this.managementStream = managementStream;
-
-            this.Name = name;
-            this.StreamRepresentation = streamRepresentation;
-            this.ResourceLocatorProtocols = resourceLocatorProtocols;
-            this.SerializerFactory = serializerFactory;
-            this.DefaultSerializerRepresentation = defaultSerializerRepresentation;
-            this.DefaultSerializationFormat = defaultSerializationFormat;
         }
 
         /// <inheritdoc />
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <inheritdoc />
-        public IStreamRepresentation StreamRepresentation { get; private set; }
+        public IStreamRepresentation StreamRepresentation { get; }
 
         /// <inheritdoc />
-        public IResourceLocatorProtocols ResourceLocatorProtocols { get; private set; }
+        public ISerializerFactory SerializerFactory { get; }
 
         /// <inheritdoc />
-        public ISerializerFactory SerializerFactory { get; private set; }
+        public IStringSerializeAndDeserialize IdSerializer { get; }
 
         /// <inheritdoc />
-        public SerializerRepresentation DefaultSerializerRepresentation { get; private set; }
+        public IResourceLocatorProtocols ResourceLocatorProtocols => throw new NotSupportedException("You can have different resource locator configurations based on the access kind and there's no good way to choose among the locators.  We could possibly return all the locators across all the streams, but waiting for this scenario to come up so we can further discuss.");
 
         /// <inheritdoc />
-        public SerializationFormat DefaultSerializationFormat { get; private set; }
+        public SerializerRepresentation DefaultSerializerRepresentation => this.writeStream.DefaultSerializerRepresentation;
+
+        /// <inheritdoc />
+        public SerializationFormat DefaultSerializationFormat => this.writeStream.DefaultSerializationFormat;
 
         /// <inheritdoc />
         public IStreamReadProtocols GetStreamReadingProtocols()

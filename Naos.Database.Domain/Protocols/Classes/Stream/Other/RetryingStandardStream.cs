@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StandardRetryStream.cs" company="Naos Project">
+// <copyright file="RetryingStandardStream.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -17,19 +17,19 @@ namespace Naos.Database.Domain
     /// Wrapping stream to execute each operation against the backing stream with retry logic per the specified inputs.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = NaosSuppressBecause.CA1711_IdentifiersShouldNotHaveIncorrectSuffix_TypeNameAddedAsSuffixForTestsWhereTypeIsPrimaryConcern)]
-    public class StandardRetryStream : StandardStreamBase
+    public class RetryingStandardStream : StandardStreamBase
     {
         private readonly IStandardStream backingStream;
         private readonly int retryCount;
         private readonly TimeSpan backOffDelay;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StandardRetryStream"/> class.
+        /// Initializes a new instance of the <see cref="RetryingStandardStream"/> class.
         /// </summary>
         /// <param name="backingStream">The backing stream.</param>
         /// <param name="retryCount">The retry count.</param>
         /// <param name="backOffDelay">The back off delay.</param>
-        public StandardRetryStream(
+        public RetryingStandardStream(
             IStandardStream backingStream,
             int retryCount,
             TimeSpan backOffDelay)

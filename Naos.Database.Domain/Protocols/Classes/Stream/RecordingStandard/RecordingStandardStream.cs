@@ -56,6 +56,9 @@ namespace Naos.Database.Domain
         /// <inheritdoc />
         public SerializationFormat DefaultSerializationFormat => this.backingStream.DefaultSerializationFormat;
 
+        /// <inheritdoc />
+        public IStringSerializeAndDeserialize IdSerializer => this.backingStream.IdSerializer;
+
         /// <summary>
         /// Gets the backing stream.
         /// </summary>

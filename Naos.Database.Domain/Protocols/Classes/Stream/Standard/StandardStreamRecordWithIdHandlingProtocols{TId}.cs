@@ -81,21 +81,17 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var items = new List<Tuple<IResourceLocator, StringSerializedIdentifier>>();
 
             foreach (var id in operation.IdsToMatch)
             {
                 var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(id));
 
-                var stringSerializedId = serializer.SerializeToString(id);
+                var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(
+                    id,
+                    operation.TypeSelectionStrategy);
 
-                var identifierType = operation.TypeSelectionStrategy.Apply(id).ToRepresentation();
-
-                var identified = new StringSerializedIdentifier(stringSerializedId, identifierType);
-
-                items.Add(new Tuple<IResourceLocator, StringSerializedIdentifier>(locator, identified));
+                items.Add(new Tuple<IResourceLocator, StringSerializedIdentifier>(locator, stringSerializedIdentifier));
             }
 
             var handlingStatues = new List<HandlingStatus>();

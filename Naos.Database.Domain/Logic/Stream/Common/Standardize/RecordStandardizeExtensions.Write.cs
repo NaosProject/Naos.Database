@@ -90,9 +90,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
-
-            var serializedStringId = serializer.SerializeToString(operation.Id);
+            var serializedStringId = stream.IdSerializer.SerializeToString(operation.Id);
 
             var identifierTypeRep = operation.TypeSelectionStrategy.Apply(operation.Id).ToRepresentation();
 

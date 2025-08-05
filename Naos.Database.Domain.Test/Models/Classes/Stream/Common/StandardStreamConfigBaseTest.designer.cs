@@ -34,31 +34,31 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class StreamConfigBaseTest
+    public static partial class StandardStreamConfigBaseTest
     {
-        private static readonly StreamConfigBase ReferenceObjectForEquatableTestScenarios = A.Dummy<StreamConfigBase>();
+        private static readonly StandardStreamConfigBase ReferenceObjectForEquatableTestScenarios = A.Dummy<StandardStreamConfigBase>();
 
-        private static readonly EquatableTestScenarios<StreamConfigBase> EquatableTestScenarios = new EquatableTestScenarios<StreamConfigBase>()
+        private static readonly EquatableTestScenarios<StandardStreamConfigBase> EquatableTestScenarios = new EquatableTestScenarios<StandardStreamConfigBase>()
             .AddScenario(() =>
-                new EquatableTestScenario<StreamConfigBase>
+                new EquatableTestScenario<StandardStreamConfigBase>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StreamConfigBase[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new StandardStreamConfigBase[]
                     {
                         ReferenceObjectForEquatableTestScenarios.DeepClone(),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new StreamConfigBase[]
+                    ObjectsThatAreNotEqualToReferenceObject = new StandardStreamConfigBase[]
                     {
                         // DeepCloneWith___() methods implemented in concrete derivates throw NotSupportedException
                         // when the derivative's constructor in-use (by code gen) does not have a parameter that
                         // corresponds with the property who's value is provided in the DeepCloneWith___() method.
                         // We do not know in advance if this will happen.  As such, the following objects are commented out.
-                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithName(A.Dummy<StreamConfigBase>().Whose(_ => !_.Name.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Name)).Name),
-                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithAccessKinds(A.Dummy<StreamConfigBase>().Whose(_ => !_.AccessKinds.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AccessKinds)).AccessKinds),
-                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithDefaultSerializerRepresentation(A.Dummy<StreamConfigBase>().Whose(_ => !_.DefaultSerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation)).DefaultSerializerRepresentation),
-                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithDefaultSerializationFormat(A.Dummy<StreamConfigBase>().Whose(_ => !_.DefaultSerializationFormat.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat)).DefaultSerializationFormat),
-                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithAllLocators(A.Dummy<StreamConfigBase>().Whose(_ => !_.AllLocators.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AllLocators)).AllLocators),
+                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithName(A.Dummy<StandardStreamConfigBase>().Whose(_ => !_.Name.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Name)).Name),
+                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithAccessKinds(A.Dummy<StandardStreamConfigBase>().Whose(_ => !_.AccessKinds.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AccessKinds)).AccessKinds),
+                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithDefaultSerializerRepresentation(A.Dummy<StandardStreamConfigBase>().Whose(_ => !_.DefaultSerializerRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializerRepresentation)).DefaultSerializerRepresentation),
+                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithDefaultSerializationFormat(A.Dummy<StandardStreamConfigBase>().Whose(_ => !_.DefaultSerializationFormat.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DefaultSerializationFormat)).DefaultSerializationFormat),
+                        // ReferenceObjectForEquatableTestScenarios.DeepCloneWithAllLocators(A.Dummy<StandardStreamConfigBase>().Whose(_ => !_.AllLocators.IsEqualTo(ReferenceObjectForEquatableTestScenarios.AllLocators)).AllLocators),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -91,9 +91,9 @@ namespace Naos.Database.Domain.Test
             public static void StreamConfigBase___Should_implement_IModel_of_StreamConfigBase___When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamConfigBase);
+                var type = typeof(StandardStreamConfigBase);
 
-                var expectedModelMethods = typeof(IModel<StreamConfigBase>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<StandardStreamConfigBase>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -103,7 +103,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StreamConfigBase>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<StandardStreamConfigBase>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -124,7 +124,7 @@ namespace Naos.Database.Domain.Test
             public static void StreamConfigBase___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(StreamConfigBase);
+                var type = typeof(StandardStreamConfigBase);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -155,10 +155,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamConfigBase>();
+                var systemUnderTest = A.Dummy<StandardStreamConfigBase>();
 
                 // Act
-                var actual = (StreamConfigBase)systemUnderTest.Clone();
+                var actual = (StandardStreamConfigBase)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -182,7 +182,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<StreamConfigBase>();
+                var systemUnderTest = A.Dummy<StandardStreamConfigBase>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -238,7 +238,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfigBase>();
+                var expected = A.Dummy<StandardStreamConfigBase>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -267,7 +267,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfigBase>();
+                var expected = A.Dummy<StandardStreamConfigBase>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -296,7 +296,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfigBase>();
+                var expected = A.Dummy<StandardStreamConfigBase>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -325,7 +325,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<StreamConfigBase>();
+                var expected = A.Dummy<StandardStreamConfigBase>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -359,8 +359,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamConfigBase systemUnderTest1 = null;
-                StreamConfigBase systemUnderTest2 = null;
+                StandardStreamConfigBase systemUnderTest1 = null;
+                StandardStreamConfigBase systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -390,7 +390,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfigBase systemUnderTest = null;
+                    StandardStreamConfigBase systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -539,8 +539,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                StreamConfigBase systemUnderTest1 = null;
-                StreamConfigBase systemUnderTest2 = null;
+                StandardStreamConfigBase systemUnderTest1 = null;
+                StandardStreamConfigBase systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -570,7 +570,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfigBase systemUnderTest = null;
+                    StandardStreamConfigBase systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -723,7 +723,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    StreamConfigBase systemUnderTest = null;
+                    StandardStreamConfigBase systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);

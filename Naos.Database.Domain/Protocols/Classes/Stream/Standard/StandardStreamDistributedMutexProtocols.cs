@@ -10,7 +10,6 @@ namespace Naos.Database.Domain
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Serialization;
 
     /// <summary>
     /// Set of protocols to use a stream to manage a distributed mutex.
@@ -18,10 +17,8 @@ namespace Naos.Database.Domain
     public class StandardStreamDistributedMutexProtocols :
         IStreamDistributedMutexProtocols
     {
-        private static readonly TypeRepresentation StringTypeRepresentation = typeof(string).ToRepresentation();
         private static readonly TypeRepresentation MutexObjectTypeRepresentation = typeof(MutexObject).ToRepresentation();
         private readonly IStandardStream stream;
-        private readonly IStringSerialize serializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamDistributedMutexProtocols"/> class.
@@ -33,7 +30,6 @@ namespace Naos.Database.Domain
             stream.MustForArg(nameof(stream)).NotBeNull();
 
             this.stream = stream;
-            this.serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
         }
 
         /// <inheritdoc />
@@ -42,15 +38,14 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var id = new StringSerializedIdentifier(
-                this.serializer.SerializeToString(operation.Id),
-                StringTypeRepresentation);
+            var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(
+                operation.Id);
 
             var tryHandleOp = new StandardTryHandleRecordOp(
                 operation.Concern,
                 new RecordFilter(
-                    ids: new[] { id },
-                    idTypes: new[] { StringTypeRepresentation },
+                    ids: new[] { stringSerializedIdentifier },
+                    idTypes: new[] { stringSerializedIdentifier.IdentifierType },
                     objectTypes: new[] { MutexObjectTypeRepresentation }),
                 details: operation.Details);
 

@@ -47,11 +47,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var record = this.stream.Execute(standardOp);
 
@@ -82,11 +80,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var result = this.stream.Execute(standardOp);
 
@@ -109,21 +105,17 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -188,11 +180,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var recordWithOnlyMetadata = this.stream.Execute(standardOp);
 
@@ -222,21 +212,17 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var serializedIdentifier = this.stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        serializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -299,11 +285,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var result = this.stream.Execute(standardOp);
 
@@ -325,13 +309,11 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var standardOp = operation.Standardize();
 
             var standardResult = this.stream.Execute(standardOp);
 
-            var result = standardResult.Select(_ => serializer.Deserialize<TId>(_.StringSerializedId)).ToList();
+            var result = standardResult.Select(_ => this.stream.IdSerializer.Deserialize<TId>(_.StringSerializedId)).ToList();
 
             return result;
         }
@@ -388,14 +370,10 @@ namespace Naos.Database.Domain
                 records.AddRange(thisLocatorRecords);
             }
 
-            var identifierSerializer = this.stream
-                .SerializerFactory
-                .BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             StreamRecordMetadata<TId> ProcessResultItem(
                 StreamRecord inputRecord)
             {
-                var resultItem = inputRecord.Metadata.ToStreamRecordMetadata<TId>(identifierSerializer);
+                var resultItem = inputRecord.Metadata.ToStreamRecordMetadata<TId>(this.stream.IdSerializer);
 
                 return resultItem;
             }

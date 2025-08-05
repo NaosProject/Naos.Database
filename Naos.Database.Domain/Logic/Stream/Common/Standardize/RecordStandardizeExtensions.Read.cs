@@ -8,7 +8,6 @@ namespace Naos.Database.Domain
 {
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
-    using OBeautifulCode.Serialization;
 
     public static partial class RecordStandardizeExtensions
     {
@@ -17,31 +16,29 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetInternalRecordIdsOp Standardize<TId>(
             this DoesAnyExistByIdOp<TId> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            serializer.MustForArg(nameof(serializer)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             // ReSharper disable once RedundantArgumentDefaultValue
             var result = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -69,14 +66,14 @@ namespace Naos.Database.Domain
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetInternalRecordIdsOp Standardize<TId, TObject>(
             this DoesAnyExistByIdOp<TId, TObject> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
@@ -90,7 +87,7 @@ namespace Naos.Database.Domain
                 operation.DeprecatedIdTypes,
                 operation.TypeSelectionStrategy);
 
-            var result = delegatedOperation.Standardize(serializer, specifiedResourceLocator);
+            var result = delegatedOperation.Standardize(stream, specifiedResourceLocator);
 
             return result;
         }
@@ -101,30 +98,28 @@ namespace Naos.Database.Domain
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetLatestRecordOp Standardize<TId, TObject>(
             this GetLatestObjectByIdOp<TId, TObject> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            serializer.MustForArg(nameof(serializer)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -189,30 +184,28 @@ namespace Naos.Database.Domain
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetLatestRecordOp Standardize<TId, TObject>(
             this GetLatestRecordByIdOp<TId, TObject> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            serializer.MustForArg(nameof(serializer)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -238,30 +231,28 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetLatestRecordOp Standardize<TId>(
             this GetLatestRecordByIdOp<TId> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            serializer.MustForArg(nameof(serializer)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -289,30 +280,28 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetLatestRecordOp Standardize<TId>(
             this GetLatestRecordMetadataByIdOp<TId> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            serializer.MustForArg(nameof(serializer)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {
@@ -378,30 +367,28 @@ namespace Naos.Database.Domain
         /// </summary>
         /// <typeparam name="TId">The type of the identifier of the object.</typeparam>
         /// <param name="operation">The operation.</param>
-        /// <param name="serializer">The serializer for the identifier.</param>
+        /// <param name="stream">The stream.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         /// <returns>
         /// The standardized operation.
         /// </returns>
         public static StandardGetLatestStringSerializedObjectOp Standardize<TId>(
             this GetLatestStringSerializedObjectByIdOp<TId> operation,
-            IStringSerialize serializer,
+            IStandardStream stream,
             IResourceLocator specifiedResourceLocator = null)
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
-            serializer.MustForArg(nameof(serializer)).NotBeNull();
+            stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var serializedObjectId = serializer.SerializeToString(operation.Id);
-
-            var typeOfId = operation.TypeSelectionStrategy.Apply(operation.Id);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
+                operation.Id,
+                operation.TypeSelectionStrategy);
 
             var result = new StandardGetLatestStringSerializedObjectOp(
                 new RecordFilter(
                     ids: new[]
                     {
-                        new StringSerializedIdentifier(
-                            serializedObjectId,
-                            typeOfId.ToRepresentation()),
+                        stringSerializedIdentifier,
                     },
                     idTypes: new[]
                     {

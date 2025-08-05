@@ -37,9 +37,9 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="MemoryStandardStream"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
-        /// <param name="defaultSerializationFormat">The default serialization format.</param>
-        /// <param name="serializerFactory">The serializer factory.</param>
+        /// <param name="defaultSerializerRepresentation">The serializer representation to use to get a serializer to use when serializing objects (not identifiers) into record payloads to put.</param>
+        /// <param name="defaultSerializationFormat">The serialization format to use when serializing objects (not identifiers) into record payloads to put.</param>
+        /// <param name="serializerFactory">The serializer factory to use to get serializers for objects (not identifiers), regardless of putting new or getting existing records.</param>
         /// <param name="resourceLocatorProtocols">OPTIONAL resource locator protocols.  DEFAULT is to use a single <see cref="MemoryDatabaseLocator"/> named 'Default'.</param>
         /// <param name="createStreamOnConstruction">OPTIONAL value that indicates whether to create the stream (execute <see cref="StandardCreateStreamOp"/>) upon construction of this object.  DEFAULT is to create the stream.</param>
         public MemoryStandardStream(

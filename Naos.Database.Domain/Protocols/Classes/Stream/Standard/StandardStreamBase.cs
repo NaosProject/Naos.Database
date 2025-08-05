@@ -18,13 +18,15 @@ namespace Naos.Database.Domain
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = NaosSuppressBecause.CA1506_AvoidExcessiveClassCoupling_DisagreeWithAssessment)]
     public abstract class StandardStreamBase : IStandardStream
     {
+        private static readonly IStringSerializeAndDeserialize IdentifierSerializer = new ObcSimplifyingSerializer(new ObcAlwaysThrowingSerializer());
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardStreamBase"/> class.
         /// </summary>
         /// <param name="name">The name of the stream.</param>
-        /// <param name="serializerFactory">The serializer factory to get serializers of existing records or to put new ones.</param>
-        /// <param name="defaultSerializerRepresentation">The default serializer representation.</param>
-        /// <param name="defaultSerializationFormat">The default serialization format.</param>
+        /// <param name="serializerFactory">The serializer factory to use to get serializers for objects (not identifiers), regardless of putting new or getting existing records.</param>
+        /// <param name="defaultSerializerRepresentation">The serializer representation to use to get a serializer to use when serializing objects (not identifiers) into record payloads to put.</param>
+        /// <param name="defaultSerializationFormat">The serialization format to use when serializing objects (not identifiers) into record payloads to put.</param>
         /// <param name="resourceLocatorProtocols">Protocol to get appropriate resource locator(s).</param>
         protected StandardStreamBase(
             string name,
@@ -36,8 +38,8 @@ namespace Naos.Database.Domain
             name.MustForArg(nameof(name)).NotBeNullNorWhiteSpace();
             serializerFactory.MustForArg(nameof(serializerFactory)).NotBeNull();
             defaultSerializerRepresentation.MustForArg(nameof(defaultSerializerRepresentation)).NotBeNull();
-            resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
             defaultSerializationFormat.MustForArg(nameof(defaultSerializationFormat)).NotBeEqualTo(SerializationFormat.Invalid);
+            resourceLocatorProtocols.MustForArg(nameof(resourceLocatorProtocols)).NotBeNull();
 
             this.Name = name;
             this.SerializerFactory = serializerFactory;
@@ -60,6 +62,13 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public IResourceLocatorProtocols ResourceLocatorProtocols { get; private set; }
+
+        /// <summary>
+        /// Gets the serializer to use for identifiers.
+        /// Unless overriden, returns <see cref="ObcSimplifyingSerializer"/> whose fallback serializer always throws.
+        /// As such, only "simple" types can be used for identifiers (e.g. string, guid).
+        /// </summary>
+        public virtual IStringSerializeAndDeserialize IdSerializer => IdentifierSerializer;
 
         /// <inheritdoc />
         public IStreamReadWithIdProtocols<TId> GetStreamReadingWithIdProtocols<TId>() => new StandardStreamReadWriteWithIdProtocols<TId>(this);

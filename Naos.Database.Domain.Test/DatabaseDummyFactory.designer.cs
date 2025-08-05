@@ -917,7 +917,7 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new StreamConfig(
+                () => new StandardStreamConfig(
                                  A.Dummy<string>(),
                                  A.Dummy<StreamAccessKinds>(),
                                  A.Dummy<SerializerRepresentation>(),
@@ -929,14 +929,14 @@ namespace Naos.Database.Domain.Test
                 {
                     var availableTypes = new[]
                     {
-                        typeof(StreamConfig)
+                        typeof(StandardStreamConfig)
                     };
 
                     var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
 
                     var randomType = availableTypes[randomIndex];
 
-                    var result = (StreamConfigBase)AD.ummy(randomType);
+                    var result = (StandardStreamConfigBase)AD.ummy(randomType);
 
                     return result;
                 });

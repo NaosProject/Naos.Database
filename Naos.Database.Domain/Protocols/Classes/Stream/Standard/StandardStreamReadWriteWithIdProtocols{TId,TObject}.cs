@@ -103,11 +103,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var record = this.stream.Execute(standardOp);
 
@@ -149,8 +147,6 @@ namespace Naos.Database.Domain
 
             if ((operation.Ids != null) && operation.Ids.Any())
             {
-                var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
                 // We have tested and implementations of ResourceLocatorBase will group properly, even though they do
                 // not implement IEquatable<IResourceLocator>.  In practice, its most likely that the same type of
                 // resource locator will be used.  And if folks create a new implementation of IResourceLocator, they
@@ -167,9 +163,7 @@ namespace Naos.Database.Domain
                     var ids = locatorToIdsMap[locator];
 
                     var stringSerializedIdentifiers = ids
-                        .Select(_ => new StringSerializedIdentifier(
-                            serializer.SerializeToString(_),
-                            operation.TypeSelectionStrategy.Apply(_).ToRepresentation()))
+                        .Select(_ => this.stream.GetStringSerializedIdentifier(_, operation.TypeSelectionStrategy))
                         .ToList();
 
                     var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
@@ -290,11 +284,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var record = this.stream.Execute(standardOp);
 
@@ -327,11 +319,9 @@ namespace Naos.Database.Domain
         {
             operation.MustForArg(nameof(operation)).NotBeNull();
 
-            var serializer = this.stream.SerializerFactory.BuildSerializer(this.stream.DefaultSerializerRepresentation);
-
             var locator = this.locatorProtocol.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var standardOp = operation.Standardize(serializer, locator);
+            var standardOp = operation.Standardize(this.stream, locator);
 
             var result = this.stream.Execute(standardOp);
 

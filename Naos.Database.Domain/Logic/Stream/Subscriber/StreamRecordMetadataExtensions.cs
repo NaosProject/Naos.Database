@@ -166,16 +166,12 @@ namespace Naos.Database.Domain
         /// </returns>
         public static StreamRecordMetadata<TId> ToStreamRecordMetadata<TId>(
             this StreamRecordMetadata metadata,
-            IStream stream)
+            IStandardStream stream)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var identifierSerializer = stream
-                .SerializerFactory
-                .BuildSerializer(stream.DefaultSerializerRepresentation);
-
-            var result = metadata.ToStreamRecordMetadata<TId>(identifierSerializer);
+            var result = metadata.ToStreamRecordMetadata<TId>(stream.IdSerializer);
 
             return result;
         }

@@ -48,8 +48,8 @@
     <Reference Include="OBeautifulCode.Representation.System, Version=1.0.67.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Representation.System.1.0.67\lib\net462\OBeautifulCode.Representation.System.dll</HintPath>
     </Reference>
-    <Reference Include="OBeautifulCode.Serialization, Version=1.0.145.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OBeautifulCode.Serialization.1.0.145\lib\net462\OBeautifulCode.Serialization.dll</HintPath>
+    <Reference Include="OBeautifulCode.Serialization, Version=1.0.146.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OBeautifulCode.Serialization.1.0.146\lib\net462\OBeautifulCode.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="OBeautifulCode.Type, Version=1.0.139.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OBeautifulCode.Type.1.0.139\lib\net462\OBeautifulCode.Type.dll</HintPath>
@@ -208,7 +208,7 @@
     <Compile Include="Events\Classes\Management\ChecksPerformedEvent.designer.cs">
       <DependentUpon>ChecksPerformedEvent.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logic\Stream\Common\StreamExtensions.cs" />
+    <Compile Include="Logic\Stream\Common\StandardStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Handling.StateChange.cs" />
     <Compile Include="Logic\Stream\Common\Standardize\RecordStandardizeExtensions.Management.cs" />
@@ -218,7 +218,7 @@
     <Compile Include="Logic\Stream\Handling\Lambda\ReleaseMutexLambdaProtocol.cs" />
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.cs" />
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.cs" />
-    <Compile Include="Logic\Stream\Handling\StandardRecordHandlingStreamExtensions.cs" />
+    <Compile Include="Logic\Stream\Handling\StandardStreamRecordHandlingProtocolsExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
     <Compile Include="Logic\Stream\Read\Lambda\DoesAnyExist\DoesAnyExistByIdLambdaProtocol{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Handling\Lambda\WaitOneLambdaProtocol.cs" />
@@ -352,11 +352,11 @@
     <Compile Include="Models\Classes\Stream\Common\RecordsToFilterCriteria.designer.cs">
       <DependentUpon>RecordsToFilterCriteria.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Common\StreamConfig.cs" />
-    <Compile Include="Models\Classes\Stream\Common\StreamConfig.designer.cs">
-      <DependentUpon>StreamConfig.cs</DependentUpon>
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfig.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfig.designer.cs">
+      <DependentUpon>StandardStreamConfig.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Common\StreamConfigBase.cs" />
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigBase.cs" />
     <Compile Include="Models\Classes\Stream\Common\RecordFilter.cs" />
     <Compile Include="Models\Classes\Stream\Common\RecordFilter.designer.cs">
       <DependentUpon>RecordFilter.cs</DependentUpon>
@@ -365,8 +365,8 @@
     <Compile Include="Models\Classes\Stream\Common\RecordLocator.designer.cs">
       <DependentUpon>RecordLocator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Common\StreamConfigBase.designer.cs">
-      <DependentUpon>StreamConfigBase.cs</DependentUpon>
+    <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigBase.designer.cs">
+      <DependentUpon>StandardStreamConfigBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.cs" />
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.designer.cs">
@@ -381,7 +381,7 @@
     <Compile Include="Models\Interfaces\Representation\IHaveStreamRepresentation.cs" />
     <Compile Include="Models\Interfaces\Stream\IHaveInternalRecordId.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordsToFilterCriteria.cs" />
-    <Compile Include="Models\Interfaces\Stream\IStreamConfig.cs" />
+    <Compile Include="Models\Interfaces\Stream\IStandardStreamConfig.cs" />
     <Compile Include="Models\Interfaces\Stream\IRecordLocator.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyRecordFilter.cs" />
     <Compile Include="Operations\Classes\Management\CheckJobsOp.designer.cs">
@@ -404,6 +404,7 @@
     <Compile Include="Operations\Classes\Management\GetLatestJobInformationOp.designer.cs">
       <DependentUpon>GetLatestJobInformationOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>
     </Compile>
@@ -606,6 +607,8 @@
     <Compile Include="Operations\Interfaces\IPruneOp.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Protocols\Classes\Management\CheckStreamsProtocol.cs" />
+    <Compile Include="Protocols\Classes\Representation\GetStreamFromRepresentationByNameProtocol{TStream}.cs" />
+    <Compile Include="Protocols\Classes\Representation\GetStreamFromRepresentationByNameProtocol{TStreamRepresentation,TStream}.cs" />
     <Compile Include="Protocols\Classes\ResourceLocation\PassThroughResourceLocatorProtocols{TSupportedId}.cs" />
     <Compile Include="Models\Interfaces\Stream\ISpecifyResourceLocator.cs" />
     <Compile Include="Models\Interfaces\ResourceLocation\IResourceLocator.cs" />
@@ -613,6 +616,9 @@
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId}.cs" />
+    <Compile Include="Protocols\Classes\Stream\Other\AlwaysThrowingStandardStream.cs" />
+    <Compile Include="Protocols\Classes\Stream\Other\DelegatedStandardStream.cs" />
+    <Compile Include="Protocols\Classes\Stream\Other\RetryingStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordedStreamOpExecutionBase.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordedStreamOpExecution{TStreamOp}.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordingStandardStream.cs" />
@@ -626,10 +632,7 @@
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordingStandardStreamReadWriteProtocols{TObject}.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordingStandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordingStandardStreamReadWriteWithIdProtocols{TId}.cs" />
-    <Compile Include="Protocols\Classes\Stream\Standard\DelegatedStandardStream.cs" />
-    <Compile Include="Protocols\Classes\Stream\Standard\StandardRetryStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Standard\StandardStreamDistributedMutexProtocols.cs" />
-    <Compile Include="Protocols\Classes\Stream\Standard\ThrowingStandardStream.cs" />
     <Compile Include="Protocols\Interfaces\ResourceLocation\IResourceLocatorProtocols.cs" />
     <Compile Include="Models\Classes\ResourceLocation\ResourceLocatorBase.cs" />
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.cs" />
@@ -899,7 +902,7 @@
     <Compile Include="Models\Interfaces\Representation\IStreamRepresentation.cs" />
     <Compile Include="Models\Classes\Representation\MemoryStreamRepresentation.cs" />
     <Compile Include="Models\Classes\Stream\Common\TypeRepresentationWithAndWithoutVersion.cs" />
-    <Compile Include="Protocols\Classes\Representation\GetStreamFromRepresentationByNameProtocolFactory.cs" />
+    <Compile Include="Protocols\Classes\Representation\GetStreamFromRepresentationByNameProtocol.cs" />
     <Compile Include="Models\Classes\Representation\StreamRepresentation.cs" />
     <Compile Include="Models\Classes\Representation\StreamRepresentationBase.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata.cs" />

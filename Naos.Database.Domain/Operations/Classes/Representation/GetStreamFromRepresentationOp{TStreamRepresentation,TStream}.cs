@@ -10,7 +10,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Type;
 
     /// <summary>
-    /// Gets an <see cref="IStream"/> by the specified <see cref="IStreamRepresentation"/>.
+    /// Gets a <typeparamref name="TStream"/> by the specified <typeparamref name="TStreamRepresentation"/>.
     /// </summary>
     /// <typeparam name="TStreamRepresentation">Type of <see cref="IStreamRepresentation"/> to use.</typeparam>
     /// <typeparam name="TStream">Type of <see cref="IStream"/> to get.</typeparam>

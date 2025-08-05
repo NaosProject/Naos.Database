@@ -24,15 +24,15 @@ namespace Naos.Database.Domain
     using static global::System.FormattableString;
 
     [Serializable]
-    public partial class StreamConfig : IModel<StreamConfig>
+    public partial class StandardStreamConfigBase : IModel<StandardStreamConfigBase>
     {
         /// <summary>
-        /// Determines whether two objects of type <see cref="StreamConfig"/> are equal.
+        /// Determines whether two objects of type <see cref="StandardStreamConfigBase"/> are equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are equal; otherwise false.</returns>
-        public static bool operator ==(StreamConfig left, StreamConfig right)
+        public static bool operator ==(StandardStreamConfigBase left, StandardStreamConfigBase right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -44,57 +44,47 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = left.Equals(right);
+            var result = left.Equals((object)right);
 
             return result;
         }
 
         /// <summary>
-        /// Determines whether two objects of type <see cref="StreamConfig"/> are not equal.
+        /// Determines whether two objects of type <see cref="StandardStreamConfigBase"/> are not equal.
         /// </summary>
         /// <param name="left">The object to the left of the equality operator.</param>
         /// <param name="right">The object to the right of the equality operator.</param>
         /// <returns>true if the two items are not equal; otherwise false.</returns>
-        public static bool operator !=(StreamConfig left, StreamConfig right) => !(left == right);
+        public static bool operator !=(StandardStreamConfigBase left, StandardStreamConfigBase right) => !(left == right);
 
         /// <inheritdoc />
-        public bool Equals(StreamConfig other)
+        public bool Equals(StandardStreamConfigBase other) => this == other;
+
+        /// <inheritdoc />
+        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
+        public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            if (ReferenceEquals(other, null))
-            {
-                return false;
-            }
-
-            var result = this.Name.IsEqualTo(other.Name, StringComparer.Ordinal)
-                      && this.AccessKinds.IsEqualTo(other.AccessKinds)
-                      && this.DefaultSerializerRepresentation.IsEqualTo(other.DefaultSerializerRepresentation)
-                      && this.DefaultSerializationFormat.IsEqualTo(other.DefaultSerializationFormat)
-                      && this.AllLocators.IsEqualTo(other.AllLocators);
-
-            return result;
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) => this == (obj as StreamConfig);
+        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
+        }
 
         /// <inheritdoc />
-        public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.Name)
-            .Hash(this.AccessKinds)
-            .Hash(this.DefaultSerializerRepresentation)
-            .Hash(this.DefaultSerializationFormat)
-            .Hash(this.AllLocators)
-            .Value;
+        public object Clone() => this.DeepClone();
 
         /// <inheritdoc />
-        public new StreamConfig DeepClone() => (StreamConfig)this.DeepCloneInternal();
+        public StandardStreamConfigBase DeepClone() => this.DeepCloneInternal();
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Deep clones this object with a new <see cref="Name" />.
+        /// </summary>
+        /// <param name="name">The new <see cref="Name" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardStreamConfigBase" /> using the specified <paramref name="name" /> for <see cref="Name" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -112,19 +102,16 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override StreamConfigBase DeepCloneWithName(string name)
+        public virtual StandardStreamConfigBase DeepCloneWithName(string name)
         {
-            var result = new StreamConfig(
-                                 name,
-                                 this.AccessKinds.DeepClone(),
-                                 this.DefaultSerializerRepresentation?.DeepClone(),
-                                 this.DefaultSerializationFormat.DeepClone(),
-                                 this.AllLocators?.DeepClone());
-
-            return result;
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Deep clones this object with a new <see cref="AccessKinds" />.
+        /// </summary>
+        /// <param name="accessKinds">The new <see cref="AccessKinds" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardStreamConfigBase" /> using the specified <paramref name="accessKinds" /> for <see cref="AccessKinds" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -142,19 +129,16 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override StreamConfigBase DeepCloneWithAccessKinds(StreamAccessKinds accessKinds)
+        public virtual StandardStreamConfigBase DeepCloneWithAccessKinds(StreamAccessKinds accessKinds)
         {
-            var result = new StreamConfig(
-                                 this.Name?.DeepClone(),
-                                 accessKinds,
-                                 this.DefaultSerializerRepresentation?.DeepClone(),
-                                 this.DefaultSerializationFormat.DeepClone(),
-                                 this.AllLocators?.DeepClone());
-
-            return result;
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Deep clones this object with a new <see cref="DefaultSerializerRepresentation" />.
+        /// </summary>
+        /// <param name="defaultSerializerRepresentation">The new <see cref="DefaultSerializerRepresentation" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardStreamConfigBase" /> using the specified <paramref name="defaultSerializerRepresentation" /> for <see cref="DefaultSerializerRepresentation" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -172,19 +156,16 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override StreamConfigBase DeepCloneWithDefaultSerializerRepresentation(SerializerRepresentation defaultSerializerRepresentation)
+        public virtual StandardStreamConfigBase DeepCloneWithDefaultSerializerRepresentation(SerializerRepresentation defaultSerializerRepresentation)
         {
-            var result = new StreamConfig(
-                                 this.Name?.DeepClone(),
-                                 this.AccessKinds.DeepClone(),
-                                 defaultSerializerRepresentation,
-                                 this.DefaultSerializationFormat.DeepClone(),
-                                 this.AllLocators?.DeepClone());
-
-            return result;
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Deep clones this object with a new <see cref="DefaultSerializationFormat" />.
+        /// </summary>
+        /// <param name="defaultSerializationFormat">The new <see cref="DefaultSerializationFormat" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardStreamConfigBase" /> using the specified <paramref name="defaultSerializationFormat" /> for <see cref="DefaultSerializationFormat" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -202,19 +183,16 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override StreamConfigBase DeepCloneWithDefaultSerializationFormat(SerializationFormat defaultSerializationFormat)
+        public virtual StandardStreamConfigBase DeepCloneWithDefaultSerializationFormat(SerializationFormat defaultSerializationFormat)
         {
-            var result = new StreamConfig(
-                                 this.Name?.DeepClone(),
-                                 this.AccessKinds.DeepClone(),
-                                 this.DefaultSerializerRepresentation?.DeepClone(),
-                                 defaultSerializationFormat,
-                                 this.AllLocators?.DeepClone());
-
-            return result;
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Deep clones this object with a new <see cref="AllLocators" />.
+        /// </summary>
+        /// <param name="allLocators">The new <see cref="AllLocators" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="StandardStreamConfigBase" /> using the specified <paramref name="allLocators" /> for <see cref="AllLocators" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -232,39 +210,27 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public override StreamConfigBase DeepCloneWithAllLocators(IReadOnlyCollection<IResourceLocator> allLocators)
+        public virtual StandardStreamConfigBase DeepCloneWithAllLocators(IReadOnlyCollection<IResourceLocator> allLocators)
         {
-            var result = new StreamConfig(
-                                 this.Name?.DeepClone(),
-                                 this.AccessKinds.DeepClone(),
-                                 this.DefaultSerializerRepresentation?.DeepClone(),
-                                 this.DefaultSerializationFormat.DeepClone(),
-                                 allLocators);
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
+        }
 
-            return result;
+        /// <summary>
+        /// Creates a new object that is a deep clone of this instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a deep clone of this instance.
+        /// </returns>
+        protected virtual StandardStreamConfigBase DeepCloneInternal()
+        {
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
 
         /// <inheritdoc />
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        protected override StreamConfigBase DeepCloneInternal()
-        {
-            var result = new StreamConfig(
-                                 this.Name?.DeepClone(),
-                                 this.AccessKinds.DeepClone(),
-                                 this.DefaultSerializerRepresentation?.DeepClone(),
-                                 this.DefaultSerializationFormat.DeepClone(),
-                                 this.AllLocators?.DeepClone());
-
-            return result;
-        }
-
-        /// <inheritdoc />
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.StreamConfig: Name = {this.Name?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, AccessKinds = {this.AccessKinds.ToString() ?? "<null>"}, DefaultSerializerRepresentation = {this.DefaultSerializerRepresentation?.ToString() ?? "<null>"}, DefaultSerializationFormat = {this.DefaultSerializationFormat.ToString() ?? "<null>"}, AllLocators = {this.AllLocators?.ToString() ?? "<null>"}.");
-
-            return result;
+            throw new NotImplementedException("This method should be abstract.  It was generated as virtual so that you aren't forced to override it when you create a new model that derives from this model.  It will be overridden in the generated designer file.");
         }
     }
 }

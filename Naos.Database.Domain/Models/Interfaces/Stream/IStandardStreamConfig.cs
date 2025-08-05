@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IStreamConfig.cs" company="Naos Project">
+// <copyright file="IStandardStreamConfig.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -12,25 +12,27 @@ namespace Naos.Database.Domain
     /// <summary>
     /// Interface to expose necessary general items to create an implementation of <see cref="IStandardStream"/>.
     /// </summary>
-    public interface IStreamConfig
+    public interface IStandardStreamConfig
     {
         /// <summary>
-        /// Gets the name.
+        /// Gets the name of the stream.
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        /// Gets the access the stream has.
+        /// Gets the kind of access that the stream has.
         /// </summary>
         StreamAccessKinds AccessKinds { get; }
 
         /// <summary>
-        /// Gets the default <see cref="SerializerRepresentation"/> (used for identifier serialization).
+        /// Gets the serializer representation to use to get a serializer to use
+        /// when serializing objects (not identifiers) into record payloads to put.
         /// </summary>
         SerializerRepresentation DefaultSerializerRepresentation { get; }
 
         /// <summary>
-        /// Gets the default <see cref="SerializationFormat"/>.
+        /// Gets the serialization format to use
+        /// when serializing objects (not identifiers) into record payloads to put.
         /// </summary>
         SerializationFormat DefaultSerializationFormat { get; }
 

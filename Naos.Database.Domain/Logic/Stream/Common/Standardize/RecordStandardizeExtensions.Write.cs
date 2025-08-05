@@ -92,7 +92,7 @@ namespace Naos.Database.Domain
 
             var serializedStringId = stream.IdSerializer.SerializeToString(operation.Id);
 
-            var identifierTypeRep = operation.TypeSelectionStrategy.Apply(operation.Id).ToRepresentation();
+            var identifierTypeRep = typeof(TId).ToRepresentation();
 
             var objectTypeRep = operation.TypeSelectionStrategy.Apply(operation.ObjectToPut).ToRepresentation();
 

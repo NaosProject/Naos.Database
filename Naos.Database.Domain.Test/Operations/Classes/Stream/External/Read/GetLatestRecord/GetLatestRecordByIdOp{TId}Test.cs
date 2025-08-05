@@ -69,8 +69,7 @@ namespace Naos.Database.Domain.Test
                                                  new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -92,8 +91,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagsToMatch,
                                                  TagMatchStrategy.Unknown,
                                                  referenceObject.RecordNotFoundStrategy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -143,30 +141,7 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
-                    })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetLatestRecordByIdOp<Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetLatestRecordByIdOp<Version>>();
-
-                           var result = new GetLatestRecordByIdOp<Version>(
-                               referenceObject.Id,
-                               referenceObject.ObjectType,
-                               referenceObject.VersionMatchStrategy,
-                               referenceObject.TagsToMatch,
-                               referenceObject.TagMatchStrategy,
-                               referenceObject.RecordNotFoundStrategy,
-                               referenceObject.DeprecatedIdTypes,
-                               TypeSelectionStrategy.Unknown);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
-                   });
+                    });
         }
     }
 }

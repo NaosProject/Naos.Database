@@ -29,9 +29,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(operation.Id);
 
             // ReSharper disable once RedundantArgumentDefaultValue
             var result = new StandardGetInternalRecordIdsOp(
@@ -84,8 +82,7 @@ namespace Naos.Database.Domain
                 operation.VersionMatchStrategy,
                 operation.TagsToMatch,
                 operation.TagMatchStrategy,
-                operation.DeprecatedIdTypes,
-                operation.TypeSelectionStrategy);
+                operation.DeprecatedIdTypes);
 
             var result = delegatedOperation.Standardize(stream, specifiedResourceLocator);
 
@@ -111,9 +108,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(operation.Id);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
@@ -197,9 +192,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(operation.Id);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
@@ -244,9 +237,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(operation.Id);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
@@ -293,9 +284,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(operation.Id);
 
             var result = new StandardGetLatestRecordOp(
                 new RecordFilter(
@@ -380,9 +369,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = stream.GetStringSerializedIdentifier(operation.Id);
 
             var result = new StandardGetLatestStringSerializedObjectOp(
                 new RecordFilter(

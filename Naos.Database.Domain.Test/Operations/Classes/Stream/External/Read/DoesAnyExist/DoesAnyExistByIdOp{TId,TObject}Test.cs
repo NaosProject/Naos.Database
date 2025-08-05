@@ -45,8 +45,7 @@ namespace Naos.Database.Domain.Test
                                                  VersionMatchStrategy.Unknown,
                                                  referenceObject.TagsToMatch,
                                                  referenceObject.TagMatchStrategy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -66,8 +65,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.VersionMatchStrategy,
                                                  new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
                                                  referenceObject.TagMatchStrategy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -87,8 +85,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,
                                                  TagMatchStrategy.Unknown,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -108,34 +105,12 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.VersionMatchStrategy,
                                                  referenceObject.TagsToMatch,
                                                  referenceObject.TagMatchStrategy,
-                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList(),
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
 
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<DoesAnyExistByIdOp<Version, Version>>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<DoesAnyExistByIdOp<Version, Version>>();
-
-                            var result = new DoesAnyExistByIdOp<Version, Version>(
-                                referenceObject.Id,
-                                referenceObject.VersionMatchStrategy,
-                                referenceObject.TagsToMatch,
-                                referenceObject.TagMatchStrategy,
-                                referenceObject.DeprecatedIdTypes,
-                                TypeSelectionStrategy.Unknown);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
                     });
         }
     }

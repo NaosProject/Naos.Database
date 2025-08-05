@@ -163,7 +163,7 @@ namespace Naos.Database.Domain
                     var ids = locatorToIdsMap[locator];
 
                     var stringSerializedIdentifiers = ids
-                        .Select(_ => this.stream.GetStringSerializedIdentifier(_, operation.TypeSelectionStrategy))
+                        .Select(_ => this.stream.GetStringSerializedIdentifier(_))
                         .ToList();
 
                     var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
@@ -351,8 +351,7 @@ namespace Naos.Database.Domain
                 operation.TagMatchStrategy,
                 operation.RecordNotFoundStrategy,
                 operation.OrderRecordsBy,
-                operation.DeprecatedIdTypes,
-                operation.TypeSelectionStrategy);
+                operation.DeprecatedIdTypes);
 
             var records = this.stream.GetStreamReadingWithIdProtocols<TId>().Execute(delegatedOperation);
 

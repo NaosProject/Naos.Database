@@ -34,623 +34,103 @@ namespace Naos.Database.Domain.Test
 
     using static global::System.FormattableString;
 
-    public static partial class GetLatestObjectsByIdOpTIdTObjectTest
+    public static partial class GetStreamFromRepresentationOpTStreamTest
     {
-        private static readonly StringRepresentationTestScenarios<GetLatestObjectsByIdOp<Version, Version>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetLatestObjectsByIdOp<Version, Version>>()
+        private static readonly StringRepresentationTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>> StringRepresentationTestScenarios = new StringRepresentationTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>>()
             .AddScenario(() =>
-                new StringRepresentationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
+                new StringRepresentationTestScenario<GetStreamFromRepresentationOp<RecordingStandardStream>>
                 {
                     Name = "Default Code Generated Scenario",
                     SystemUnderTestExpectedStringRepresentationFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
-                        var result = new SystemUnderTestExpectedStringRepresentation<GetLatestObjectsByIdOp<Version, Version>>
+                        var result = new SystemUnderTestExpectedStringRepresentation<GetStreamFromRepresentationOp<RecordingStandardStream>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetLatestObjectsByIdOp<Version, Version>: Ids = {systemUnderTest.Ids?.ToString() ?? "<null>"}, VersionMatchStrategy = {systemUnderTest.VersionMatchStrategy.ToString() ?? "<null>"}, TagsToMatch = {systemUnderTest.TagsToMatch?.ToString() ?? "<null>"}, TagMatchStrategy = {systemUnderTest.TagMatchStrategy.ToString() ?? "<null>"}, RecordNotFoundStrategy = {systemUnderTest.RecordNotFoundStrategy.ToString() ?? "<null>"}, OrderRecordsBy = {systemUnderTest.OrderRecordsBy.ToString() ?? "<null>"}, DeprecatedIdTypes = {systemUnderTest.DeprecatedIdTypes?.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.GetStreamFromRepresentationOp<RecordingStandardStream>: StreamRepresentation = {systemUnderTest.StreamRepresentation?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly ConstructorArgumentValidationTestScenarios<GetLatestObjectsByIdOp<Version, Version>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetLatestObjectsByIdOp<Version, Version>>()
+        private static readonly ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>> ConstructorArgumentValidationTestScenarios = new ConstructorArgumentValidationTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>>()
             .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
+                new ConstructorArgumentValidationTestScenario<GetStreamFromRepresentationOp<RecordingStandardStream>>
                 {
-                    Name = "constructor should throw ArgumentNullException when parameter 'ids' is null scenario",
+                    Name = "constructor should throw ArgumentNullException when parameter 'streamRepresentation' is null scenario",
                     ConstructionFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             null,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
+                        var result = new GetStreamFromRepresentationOp<RecordingStandardStream>(
+                                             null);
 
                         return result;
                     },
                     ExpectedExceptionType = typeof(ArgumentNullException),
-                    ExpectedExceptionMessageContains = new[] { "ids", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'ids' is an empty enumerable scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             new List<Version>(),
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "ids", "is an empty enumerable", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'ids' contains a null element scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             new Version[0].Concat(referenceObject.Ids).Concat(new Version[] { null }).Concat(referenceObject.Ids).ToList(),
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "ids", "contains at least one null element", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'versionMatchStrategy' is VersionMatchStrategy.Unknown",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             referenceObject.Ids,
-                                             VersionMatchStrategy.Unknown,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                    ExpectedExceptionMessageContains = new[] { "versionMatchStrategy", "Unknown", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'tagsToMatch' contains a null element scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             referenceObject.Ids,
-                                             referenceObject.VersionMatchStrategy,
-                                             new NamedValue<string>[0].Concat(referenceObject.TagsToMatch).Concat(new NamedValue<string>[] { null }).Concat(referenceObject.TagsToMatch).ToList(),
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "tagsToMatch", "contains at least one null element", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'tagMatchStrategy' is TagMatchStrategy.Unknown",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             referenceObject.Ids,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             TagMatchStrategy.Unknown,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                    ExpectedExceptionMessageContains = new[] { "tagMatchStrategy", "Unknown", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'recordNotFoundStrategy' is RecordNotFoundStrategy.Unknown",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             referenceObject.Ids,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             RecordNotFoundStrategy.Unknown,
-                                             referenceObject.OrderRecordsBy,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                    ExpectedExceptionMessageContains = new[] { "recordNotFoundStrategy", "Unknown", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentOutOfRangeException when parameter 'orderRecordsBy' is OrderRecordsBy.Unknown",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             referenceObject.Ids,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             OrderRecordsBy.Unknown,
-                                             referenceObject.DeprecatedIdTypes);
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                    ExpectedExceptionMessageContains = new[] { "orderRecordsBy", "Unknown", },
-                })
-            .AddScenario(() =>
-                new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "constructor should throw ArgumentException when parameter 'deprecatedIdTypes' contains a null element scenario",
-                    ConstructionFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                             referenceObject.Ids,
-                                             referenceObject.VersionMatchStrategy,
-                                             referenceObject.TagsToMatch,
-                                             referenceObject.TagMatchStrategy,
-                                             referenceObject.RecordNotFoundStrategy,
-                                             referenceObject.OrderRecordsBy,
-                                             new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
-
-                        return result;
-                    },
-                    ExpectedExceptionType = typeof(ArgumentException),
-                    ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
+                    ExpectedExceptionMessageContains = new[] { "streamRepresentation", },
                 });
 
-        private static readonly ConstructorPropertyAssignmentTestScenarios<GetLatestObjectsByIdOp<Version, Version>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetLatestObjectsByIdOp<Version, Version>>()
+        private static readonly ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>> ConstructorPropertyAssignmentTestScenarios = new ConstructorPropertyAssignmentTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>>()
             .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
+                new ConstructorPropertyAssignmentTestScenario<GetStreamFromRepresentationOp<RecordingStandardStream>>
                 {
-                    Name = "Ids should return same 'ids' parameter passed to constructor when getting",
+                    Name = "StreamRepresentation should return same 'streamRepresentation' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
+                        var result = new SystemUnderTestExpectedPropertyValue<GetStreamFromRepresentationOp<RecordingStandardStream>>
                         {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.Ids,
+                            SystemUnderTest = new GetStreamFromRepresentationOp<RecordingStandardStream>(
+                                                      referenceObject.StreamRepresentation),
+                            ExpectedPropertyValue = referenceObject.StreamRepresentation,
                         };
 
                         return result;
                     },
-                    PropertyName = "Ids",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "VersionMatchStrategy should return same 'versionMatchStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.VersionMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "VersionMatchStrategy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "TagsToMatch should return same 'tagsToMatch' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.TagsToMatch,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TagsToMatch",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "TagMatchStrategy should return same 'tagMatchStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.TagMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "TagMatchStrategy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "RecordNotFoundStrategy should return same 'recordNotFoundStrategy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.RecordNotFoundStrategy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "RecordNotFoundStrategy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "OrderRecordsBy should return same 'orderRecordsBy' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.OrderRecordsBy,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "OrderRecordsBy",
-                })
-            .AddScenario(() =>
-                new ConstructorPropertyAssignmentTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeprecatedIdTypes should return same 'deprecatedIdTypes' parameter passed to constructor when getting",
-                    SystemUnderTestExpectedPropertyValueFunc = () =>
-                    {
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var result = new SystemUnderTestExpectedPropertyValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = new GetLatestObjectsByIdOp<Version, Version>(
-                                                      referenceObject.Ids,
-                                                      referenceObject.VersionMatchStrategy,
-                                                      referenceObject.TagsToMatch,
-                                                      referenceObject.TagMatchStrategy,
-                                                      referenceObject.RecordNotFoundStrategy,
-                                                      referenceObject.OrderRecordsBy,
-                                                      referenceObject.DeprecatedIdTypes),
-                            ExpectedPropertyValue = referenceObject.DeprecatedIdTypes,
-                        };
-
-                        return result;
-                    },
-                    PropertyName = "DeprecatedIdTypes",
+                    PropertyName = "StreamRepresentation",
                 });
 
-        private static readonly DeepCloneWithTestScenarios<GetLatestObjectsByIdOp<Version, Version>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetLatestObjectsByIdOp<Version, Version>>()
+        private static readonly DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>>()
             .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
+                new DeepCloneWithTestScenario<GetStreamFromRepresentationOp<RecordingStandardStream>>
                 {
-                    Name = "DeepCloneWithIds should deep clone object and replace Ids with the provided ids",
-                    WithPropertyName = "Ids",
+                    Name = "DeepCloneWithStreamRepresentation should deep clone object and replace StreamRepresentation with the provided streamRepresentation",
+                    WithPropertyName = "StreamRepresentation",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                        var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.Ids.IsEqualTo(_.Ids));
+                        var referenceObject = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>().ThatIs(_ => !systemUnderTest.StreamRepresentation.IsEqualTo(_.StreamRepresentation));
 
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
+                        var result = new SystemUnderTestDeepCloneWithValue<GetStreamFromRepresentationOp<RecordingStandardStream>>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.Ids,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithVersionMatchStrategy should deep clone object and replace VersionMatchStrategy with the provided versionMatchStrategy",
-                    WithPropertyName = "VersionMatchStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.VersionMatchStrategy.IsEqualTo(_.VersionMatchStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.VersionMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithTagsToMatch should deep clone object and replace TagsToMatch with the provided tagsToMatch",
-                    WithPropertyName = "TagsToMatch",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.TagsToMatch.IsEqualTo(_.TagsToMatch));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TagsToMatch,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithTagMatchStrategy should deep clone object and replace TagMatchStrategy with the provided tagMatchStrategy",
-                    WithPropertyName = "TagMatchStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.TagMatchStrategy.IsEqualTo(_.TagMatchStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.TagMatchStrategy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithRecordNotFoundStrategy should deep clone object and replace RecordNotFoundStrategy with the provided recordNotFoundStrategy",
-                    WithPropertyName = "RecordNotFoundStrategy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.RecordNotFoundStrategy.IsEqualTo(_.RecordNotFoundStrategy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RecordNotFoundStrategy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithOrderRecordsBy should deep clone object and replace OrderRecordsBy with the provided orderRecordsBy",
-                    WithPropertyName = "OrderRecordsBy",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.OrderRecordsBy.IsEqualTo(_.OrderRecordsBy));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.OrderRecordsBy,
-                        };
-
-                        return result;
-                    },
-                })
-            .AddScenario(() =>
-                new DeepCloneWithTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                {
-                    Name = "DeepCloneWithDeprecatedIdTypes should deep clone object and replace DeprecatedIdTypes with the provided deprecatedIdTypes",
-                    WithPropertyName = "DeprecatedIdTypes",
-                    SystemUnderTestDeepCloneWithValueFunc = () =>
-                    {
-                        var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                        var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().ThatIs(_ => !systemUnderTest.DeprecatedIdTypes.IsEqualTo(_.DeprecatedIdTypes));
-
-                        var result = new SystemUnderTestDeepCloneWithValue<GetLatestObjectsByIdOp<Version, Version>>
-                        {
-                            SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.DeprecatedIdTypes,
+                            DeepCloneWithValue = referenceObject.StreamRepresentation,
                         };
 
                         return result;
                     },
                 });
 
-        private static readonly GetLatestObjectsByIdOp<Version, Version> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+        private static readonly GetStreamFromRepresentationOp<RecordingStandardStream> ReferenceObjectForEquatableTestScenarios = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
-        private static readonly EquatableTestScenarios<GetLatestObjectsByIdOp<Version, Version>> EquatableTestScenarios = new EquatableTestScenarios<GetLatestObjectsByIdOp<Version, Version>>()
+        private static readonly EquatableTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>> EquatableTestScenarios = new EquatableTestScenarios<GetStreamFromRepresentationOp<RecordingStandardStream>>()
             .AddScenario(() =>
-                new EquatableTestScenario<GetLatestObjectsByIdOp<Version, Version>>
+                new EquatableTestScenario<GetStreamFromRepresentationOp<RecordingStandardStream>>
                 {
                     Name = "Default Code Generated Scenario",
                     ReferenceObject = ReferenceObjectForEquatableTestScenarios,
-                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetLatestObjectsByIdOp<Version, Version>[]
+                    ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new GetStreamFromRepresentationOp<RecordingStandardStream>[]
                     {
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
+                        new GetStreamFromRepresentationOp<RecordingStandardStream>(
+                                ReferenceObjectForEquatableTestScenarios.StreamRepresentation),
                     },
-                    ObjectsThatAreNotEqualToReferenceObject = new GetLatestObjectsByIdOp<Version, Version>[]
+                    ObjectsThatAreNotEqualToReferenceObject = new GetStreamFromRepresentationOp<RecordingStandardStream>[]
                     {
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.Ids.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Ids)).Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.VersionMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy)).VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.TagsToMatch.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagsToMatch)).TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.TagMatchStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.TagMatchStrategy)).TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.RecordNotFoundStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy)).RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.OrderRecordsBy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.OrderRecordsBy)).OrderRecordsBy,
-                                ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes),
-                        new GetLatestObjectsByIdOp<Version, Version>(
-                                ReferenceObjectForEquatableTestScenarios.Ids,
-                                ReferenceObjectForEquatableTestScenarios.VersionMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.TagsToMatch,
-                                ReferenceObjectForEquatableTestScenarios.TagMatchStrategy,
-                                ReferenceObjectForEquatableTestScenarios.RecordNotFoundStrategy,
-                                ReferenceObjectForEquatableTestScenarios.OrderRecordsBy,
-                                A.Dummy<GetLatestObjectsByIdOp<Version, Version>>().Whose(_ => !_.DeprecatedIdTypes.IsEqualTo(ReferenceObjectForEquatableTestScenarios.DeprecatedIdTypes)).DeprecatedIdTypes),
+                        new GetStreamFromRepresentationOp<RecordingStandardStream>(
+                                A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>().Whose(_ => !_.StreamRepresentation.IsEqualTo(ReferenceObjectForEquatableTestScenarios.StreamRepresentation)).StreamRepresentation),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -689,6 +169,7 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetLatestJobInformationOp>(),
                         A.Dummy<GetLatestObjectByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestObjectOp<Version>>(),
+                        A.Dummy<GetLatestObjectsByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version, Version>>(),
                         A.Dummy<GetLatestRecordByIdOp<Version>>(),
                         A.Dummy<GetLatestRecordMetadataByIdOp<Version>>(),
@@ -699,7 +180,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<GetResourceLocatorForUniqueIdentifierOp>(),
                         A.Dummy<GetStreamFromRepresentationOp>(),
                         A.Dummy<GetStreamFromRepresentationOp<FileStreamRepresentation, RecordingStandardStream>>(),
-                        A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>(),
                         A.Dummy<HandleRecordOp>(),
                         A.Dummy<HandleRecordOp<Version>>(),
                         A.Dummy<HandleRecordWithIdOp<Version, Version>>(),
@@ -755,12 +235,12 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetLatestObjectsByIdOp_of_Version_Version___Should_implement_IModel_of_GetLatestObjectsByIdOp_of_Version_Version___When_reflecting()
+            public static void GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_implement_IModel_of_GetStreamFromRepresentationOp_of_RecordingStandardStream___When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetLatestObjectsByIdOp<Version, Version>);
+                var type = typeof(GetStreamFromRepresentationOp<RecordingStandardStream>);
 
-                var expectedModelMethods = typeof(IModel<GetLatestObjectsByIdOp<Version, Version>>).GetInterfaceDeclaredAndImplementedMethods();
+                var expectedModelMethods = typeof(IModel<GetStreamFromRepresentationOp<RecordingStandardStream>>).GetInterfaceDeclaredAndImplementedMethods();
 
                 var expectedModelMethodHashes = expectedModelMethods.Select(_ => _.GetSignatureHash());
 
@@ -770,7 +250,7 @@ namespace Naos.Database.Domain.Test
                 var actualModelMethodHashes = actualModelMethods.Select(_ => _.GetSignatureHash());
 
                 // Assert
-                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetLatestObjectsByIdOp<Version, Version>>));
+                actualInterfaces.AsTest().Must().ContainElement(typeof(IModel<GetStreamFromRepresentationOp<RecordingStandardStream>>));
                 expectedModelMethodHashes.Except(actualModelMethodHashes).AsTest().Must().BeEmptyEnumerable();
             }
 
@@ -788,10 +268,10 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void GetLatestObjectsByIdOp_of_Version_Version___Should_be_attributed_with_Serializable____When_reflecting()
+            public static void GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_be_attributed_with_Serializable____When_reflecting()
             {
                 // Arrange
-                var type = typeof(GetLatestObjectsByIdOp<Version, Version>);
+                var type = typeof(GetStreamFromRepresentationOp<RecordingStandardStream>);
 
                 // Act
                 var actualAttributes = type.GetCustomAttributes(typeof(SerializableAttribute), false);
@@ -971,10 +451,10 @@ namespace Naos.Database.Domain.Test
             public static void Clone___Should_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
                 // Act
-                var actual = (GetLatestObjectsByIdOp<Version, Version>)systemUnderTest.Clone();
+                var actual = (GetStreamFromRepresentationOp<RecordingStandardStream>)systemUnderTest.Clone();
 
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
@@ -998,7 +478,7 @@ namespace Naos.Database.Domain.Test
             public static void DeepClone___Should_deep_clone_object___When_called()
             {
                 // Arrange
-                var systemUnderTest = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                var systemUnderTest = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
                 // Act
                 var actual = systemUnderTest.DeepClone();
@@ -1007,40 +487,16 @@ namespace Naos.Database.Domain.Test
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
 
-                if (systemUnderTest.Ids == null)
+                if (systemUnderTest.StreamRepresentation == null)
                 {
-                    actual.Ids.AsTest().Must().BeNull();
+                    actual.StreamRepresentation.AsTest().Must().BeNull();
                 }
-                else if (!actual.Ids.GetType().IsValueType)
+                else if (!actual.StreamRepresentation.GetType().IsValueType)
                 {
                     // When the declared type is a reference type, we still have to check the runtime type.
                     // The object could be a boxed value type, which will fail this asseration because
                     // a deep clone of a value type object is the same object.
-                    actual.Ids.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.Ids);
-                }
-
-                if (systemUnderTest.TagsToMatch == null)
-                {
-                    actual.TagsToMatch.AsTest().Must().BeNull();
-                }
-                else if (!actual.TagsToMatch.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.TagsToMatch.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.TagsToMatch);
-                }
-
-                if (systemUnderTest.DeprecatedIdTypes == null)
-                {
-                    actual.DeprecatedIdTypes.AsTest().Must().BeNull();
-                }
-                else if (!actual.DeprecatedIdTypes.GetType().IsValueType)
-                {
-                    // When the declared type is a reference type, we still have to check the runtime type.
-                    // The object could be a boxed value type, which will fail this asseration because
-                    // a deep clone of a value type object is the same object.
-                    actual.DeprecatedIdTypes.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.DeprecatedIdTypes);
+                    actual.StreamRepresentation.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.StreamRepresentation);
                 }
             }
 
@@ -1060,7 +516,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Ids", "VersionMatchStrategy", "TagsToMatch", "TagMatchStrategy", "RecordNotFoundStrategy", "OrderRecordsBy", "DeprecatedIdTypes" };
+                var propertyNames = new string[] { "StreamRepresentation" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1073,12 +529,12 @@ namespace Naos.Database.Domain.Test
                     }
 
                     // Act
-                    var actual = (GetLatestObjectsByIdOp<Version, Version>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
+                    var actual = (GetStreamFromRepresentationOp<RecordingStandardStream>)scenario.DeepCloneWithMethod.Invoke(scenario.SystemUnderTest, new[] { scenario.WithValue });
 
                     // Assert
                     foreach(var propertyName in propertyNames)
                     {
-                        var propertyInfo = typeof(GetLatestObjectsByIdOp<Version, Version>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
+                        var propertyInfo = typeof(GetStreamFromRepresentationOp<RecordingStandardStream>).GetPropertyFiltered(propertyName, MemberRelationships.DeclaredOrInherited, MemberOwners.Instance, MemberAccessModifiers.Public);
 
                         var actualPropertyValue = propertyInfo.GetValue(actual);
 
@@ -1140,7 +596,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1169,7 +625,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcBsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.BsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1198,7 +654,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_string_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1227,7 +683,7 @@ namespace Naos.Database.Domain.Test
             public static void Deserialize___Should_roundtrip_object___When_serializing_to_and_deserializing_from_bytes_using_ObcJsonSerializer()
             {
                 // Arrange
-                var expected = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
+                var expected = A.Dummy<GetStreamFromRepresentationOp<RecordingStandardStream>>();
 
                 var serializationConfigurationType = SerializationConfigurationTypes.JsonSerializationConfigurationType.ConcreteSerializationConfigurationDerivativeType;
 
@@ -1261,8 +717,8 @@ namespace Naos.Database.Domain.Test
             public static void EqualsOperator___Should_return_true___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetLatestObjectsByIdOp<Version, Version> systemUnderTest1 = null;
-                GetLatestObjectsByIdOp<Version, Version> systemUnderTest2 = null;
+                GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest1 = null;
+                GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 == systemUnderTest2;
@@ -1292,7 +748,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetLatestObjectsByIdOp<Version, Version> systemUnderTest = null;
+                    GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest == scenario.ReferenceObject;
@@ -1441,8 +897,8 @@ namespace Naos.Database.Domain.Test
             public static void NotEqualsOperator___Should_return_false___When_both_sides_of_operator_are_null()
             {
                 // Arrange
-                GetLatestObjectsByIdOp<Version, Version> systemUnderTest1 = null;
-                GetLatestObjectsByIdOp<Version, Version> systemUnderTest2 = null;
+                GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest1 = null;
+                GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest2 = null;
 
                 // Act
                 var actual = systemUnderTest1 != systemUnderTest2;
@@ -1472,7 +928,7 @@ namespace Naos.Database.Domain.Test
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetLatestObjectsByIdOp<Version, Version> systemUnderTest = null;
+                    GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest = null;
 
                     // Act
                     var actual1 = systemUnderTest != scenario.ReferenceObject;
@@ -1761,17 +1217,17 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_Version___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_ReturningOperationBase_of_RecordingStandardStream___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    ReturningOperationBase<IReadOnlyList<Version>> systemUnderTest = null;
+                    ReturningOperationBase<RecordingStandardStream> systemUnderTest = null;
 
                     // Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<Version>>)systemUnderTest);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<RecordingStandardStream>)systemUnderTest);
 
                     // Assert
                     actual.AsTest().Must().BeFalse(because: scenario.Id);
@@ -1792,14 +1248,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_Version___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_ReturningOperationBase_of_RecordingStandardStream___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<Version>>)scenario.ReferenceObject);
+                    var actual = scenario.ReferenceObject.Equals((ReturningOperationBase<RecordingStandardStream>)scenario.ReferenceObject);
 
                     // Assert
                     actual.AsTest().Must().BeTrue(because: scenario.Id);
@@ -1820,14 +1276,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_Version___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_ReturningOperationBase_of_RecordingStandardStream___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<Version>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatDeriveFromScenarioTypeButAreNotOfTheSameTypeAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<RecordingStandardStream>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1848,14 +1304,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_Version___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_ReturningOperationBase_of_RecordingStandardStream___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<Version>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreNotEqualToReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<RecordingStandardStream>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeFalse(because: scenario.Id);
@@ -1876,14 +1332,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_ReturningOperationBase_of_IReadOnlyList_of_Version___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_ReturningOperationBase_of_RecordingStandardStream___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange, Act
-                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<IReadOnlyList<Version>>)_)).ToList();
+                    var actuals = scenario.ObjectsThatAreEqualToButNotTheSameAsReferenceObject.Select(_ => scenario.ReferenceObject.Equals((ReturningOperationBase<RecordingStandardStream>)_)).ToList();
 
                     // Assert
                     actuals.AsTest().Must().Each().BeTrue(because: scenario.Id);
@@ -1904,14 +1360,14 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectsByIdOp_of_Version_Version___Should_return_false___When_parameter_other_is_null()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_return_false___When_parameter_other_is_null()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
                 foreach (var scenario in scenarios)
                 {
                     // Arrange
-                    GetLatestObjectsByIdOp<Version, Version> systemUnderTest = null;
+                    GetStreamFromRepresentationOp<RecordingStandardStream> systemUnderTest = null;
 
                     // Act
                     var actual = scenario.ReferenceObject.Equals(systemUnderTest);
@@ -1935,7 +1391,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectsByIdOp_of_Version_Version___Should_return_true___When_parameter_other_is_same_object()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_return_true___When_parameter_other_is_same_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1963,7 +1419,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectsByIdOp_of_Version_Version___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_return_false___When_parameter_other_is_derived_from_the_same_type_but_is_not_of_the_same_type_as_this_object()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -1991,7 +1447,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectsByIdOp_of_Version_Version___Should_return_false___When_objects_being_compared_have_different_property_values()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_return_false___When_objects_being_compared_have_different_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -2019,7 +1475,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration")]
             [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
-            public static void Equals_with_GetLatestObjectsByIdOp_of_Version_Version___Should_return_true___When_objects_being_compared_have_same_property_values()
+            public static void Equals_with_GetStreamFromRepresentationOp_of_RecordingStandardStream___Should_return_true___When_objects_being_compared_have_same_property_values()
             {
                 var scenarios = EquatableTestScenarios.ValidateAndPrepareForTesting();
 
@@ -2180,7 +1636,7 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
         public static class Hashing
         {
-            [Fact(Skip = "It's possible (and even probable after a few runs of this test) that two dummy, unequal models will have the same hash code.  The model being tested contains at least one property who's type (or a type nested within the generic type, or a property of the IModel type) is a dictionary with keys that are not comparable or an unordered collection with elements that are not comparable.  In these cases the hashing method cannot hash the elements and must resort to hashing the element count.  Two dummies could easily have the same element count for such a type.")]
+            [Fact]
             [SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly")]
             [SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly")]

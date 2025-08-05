@@ -87,9 +87,7 @@ namespace Naos.Database.Domain
             {
                 var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(id));
 
-                var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(
-                    id,
-                    operation.TypeSelectionStrategy);
+                var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(id);
 
                 items.Add(new Tuple<IResourceLocator, StringSerializedIdentifier>(locator, stringSerializedIdentifier));
             }

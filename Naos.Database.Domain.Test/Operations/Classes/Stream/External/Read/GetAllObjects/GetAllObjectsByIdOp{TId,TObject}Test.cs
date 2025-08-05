@@ -69,8 +69,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -92,8 +91,7 @@ namespace Naos.Database.Domain.Test
                                                  TagMatchStrategy.Unknown,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -165,30 +163,7 @@ namespace Naos.Database.Domain.Test
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
-                    })
-               .AddScenario(() =>
-                   new ConstructorArgumentValidationTestScenario<GetAllObjectsByIdOp<Version, Version>>
-                   {
-                       Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
-                       ConstructionFunc = () =>
-                       {
-                           var referenceObject = A.Dummy<GetAllObjectsByIdOp<Version, Version>>();
-
-                           var result = new GetAllObjectsByIdOp<Version, Version>(
-                               referenceObject.Id,
-                               referenceObject.VersionMatchStrategy,
-                               referenceObject.TagsToMatch,
-                               referenceObject.TagMatchStrategy,
-                               referenceObject.RecordNotFoundStrategy,
-                               referenceObject.OrderRecordsBy,
-                               referenceObject.DeprecatedIdTypes,
-                               TypeSelectionStrategy.Unknown);
-
-                           return result;
-                       },
-                       ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                       ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
-                   });
+                    });
         }
     }
 }

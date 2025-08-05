@@ -47,8 +47,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -70,8 +69,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -93,8 +91,7 @@ namespace Naos.Database.Domain.Test
                                                  TagMatchStrategy.Unknown,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -116,8 +113,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagMatchStrategy,
                                                  RecordNotFoundStrategy.Unknown,
                                                  referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -139,8 +135,7 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  OrderRecordsBy.Unknown,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 referenceObject.DeprecatedIdTypes);
 
                             return result;
                         },
@@ -162,36 +157,12 @@ namespace Naos.Database.Domain.Test
                                                  referenceObject.TagMatchStrategy,
                                                  referenceObject.RecordNotFoundStrategy,
                                                  referenceObject.OrderRecordsBy,
-                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList(),
-                                                 referenceObject.TypeSelectionStrategy);
+                                                 new TypeRepresentation[0].Concat(referenceObject.DeprecatedIdTypes).Concat(new TypeRepresentation[] { null }).Concat(referenceObject.DeprecatedIdTypes).ToList());
 
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentException),
                         ExpectedExceptionMessageContains = new[] { "deprecatedIdTypes", "contains at least one null element", },
-                    })
-                .AddScenario(() =>
-                    new ConstructorArgumentValidationTestScenario<GetLatestObjectsByIdOp<Version, Version>>
-                    {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'typeSelectionStrategy' is TypeSelectionStrategy.Unknown",
-                        ConstructionFunc = () =>
-                        {
-                            var referenceObject = A.Dummy<GetLatestObjectsByIdOp<Version, Version>>();
-
-                            var result = new GetLatestObjectsByIdOp<Version, Version>(
-                                                 referenceObject.Ids,
-                                                 referenceObject.VersionMatchStrategy,
-                                                 referenceObject.TagsToMatch,
-                                                 referenceObject.TagMatchStrategy,
-                                                 referenceObject.RecordNotFoundStrategy,
-                                                 referenceObject.OrderRecordsBy,
-                                                 referenceObject.DeprecatedIdTypes,
-                                                 TypeSelectionStrategy.Unknown);
-
-                            return result;
-                        },
-                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "typeSelectionStrategy", "Unknown", },
                     });
         }
     }

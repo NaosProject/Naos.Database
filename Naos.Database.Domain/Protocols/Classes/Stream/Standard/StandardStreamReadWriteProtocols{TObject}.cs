@@ -6,15 +6,12 @@
 
 namespace Naos.Database.Domain
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
-
-    using static System.FormattableString;
 
     /// <summary>
     /// Set of protocols to execute read and write operations on a stream,
@@ -75,7 +72,7 @@ namespace Naos.Database.Domain
             operation.MustForArg(nameof(operation)).NotBeNull();
 
             var delegatedOp = new PutWithIdAndReturnInternalRecordIdOp<NullIdentifier, TObject>(
-                null, // Since we need a type, we are using NullIdentifier, however we are passing a null NullIdentifier instead of constructing one to reduce runtime complexity and payload size
+                null,
                 operation.ObjectToPut,
                 operation.Tags,
                 operation.ExistingRecordStrategy,

@@ -107,9 +107,7 @@ namespace Naos.Database.Domain
 
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var stringSerializedIdentifier = this.stream.GetStringSerializedIdentifier(operation.Id);
 
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(
@@ -214,9 +212,7 @@ namespace Naos.Database.Domain
 
             var locator = this.locatorProtocols.Execute(new GetResourceLocatorByIdOp<TId>(operation.Id));
 
-            var serializedIdentifier = this.stream.GetStringSerializedIdentifier(
-                operation.Id,
-                operation.TypeSelectionStrategy);
+            var serializedIdentifier = this.stream.GetStringSerializedIdentifier(operation.Id);
 
             var internalRecordIdsOp = new StandardGetInternalRecordIdsOp(
                 new RecordFilter(

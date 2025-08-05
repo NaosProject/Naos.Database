@@ -1052,7 +1052,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
             stream.Execute(new StandardCreateStreamOp(stream.StreamRepresentation, ExistingStreamStrategy.Throw));
 
             stream.PutWithId((string)null, (MyObject)null, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
-            var result = stream.GetLatestObjectById<string, MyObject>(null, typeSelectionStrategy: TypeSelectionStrategy.UseDeclaredType);
+            var result = stream.GetLatestObjectById<string, MyObject>(null);
             result.MustForTest().BeNull();
 
             var concern = "NullIdentifierAndValueTest";

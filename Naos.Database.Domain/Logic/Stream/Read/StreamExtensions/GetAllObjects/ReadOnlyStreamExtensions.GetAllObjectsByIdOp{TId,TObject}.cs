@@ -27,7 +27,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static IReadOnlyList<TObject> GetAllObjectsById<TId, TObject>(
             this IReadOnlyStream stream,
@@ -37,12 +36,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = protocol.Execute(operation);
             return result;
@@ -61,7 +59,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static async Task<IReadOnlyList<TObject>> GetAllObjectsByIdAsync<TId, TObject>(
             this IReadOnlyStream stream,
@@ -71,12 +68,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             stream.MustForArg(nameof(stream)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var protocol = stream.GetStreamReadingWithIdProtocols<TId, TObject>();
             var result = await protocol.ExecuteAsync(operation);
             return result;
@@ -95,7 +91,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static IReadOnlyList<TObject> GetAllObjectsById<TId, TObject>(
             this IStreamReadWithIdProtocols<TId, TObject> protocol,
@@ -105,12 +100,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -128,7 +122,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static async Task<IReadOnlyList<TObject>> GetAllObjectsByIdAsync<TId, TObject>(
             this IStreamReadWithIdProtocols<TId, TObject> protocol,
@@ -138,12 +131,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -161,7 +153,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static IReadOnlyList<TObject> GetAllObjectsById<TId, TObject>(
             this ISyncAndAsyncReturningProtocol<GetAllObjectsByIdOp<TId, TObject>, IReadOnlyList<TObject>> protocol,
@@ -171,12 +162,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -194,7 +184,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static async Task<IReadOnlyList<TObject>> GetAllObjectsByIdAsync<TId, TObject>(
             this ISyncAndAsyncReturningProtocol<GetAllObjectsByIdOp<TId, TObject>, IReadOnlyList<TObject>> protocol,
@@ -204,12 +193,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }
@@ -227,7 +215,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static IReadOnlyList<TObject> GetAllObjectsById<TId, TObject>(
             this IGetAllObjectsById<TId, TObject> protocol,
@@ -237,12 +224,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var result = protocol.Execute(operation);
             return result;
         }
@@ -260,7 +246,6 @@ namespace Naos.Database.Domain
         /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return an empty collection.</param>
         /// <param name="orderRecordsBy">OPTIONAL value that specifies how to order the resulting records.  DEFAULT is ascending by internal record identifier.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         /// <returns>The matching object(s).</returns>
         public static async Task<IReadOnlyList<TObject>> GetAllObjectsByIdAsync<TId, TObject>(
             this IGetAllObjectsById<TId, TObject> protocol,
@@ -270,12 +255,11 @@ namespace Naos.Database.Domain
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
             RecordNotFoundStrategy recordNotFoundStrategy = RecordNotFoundStrategy.ReturnDefault,
             OrderRecordsBy orderRecordsBy = OrderRecordsBy.InternalRecordIdAscending,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             protocol.MustForArg(nameof(protocol)).NotBeNull();
 
-            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes, typeSelectionStrategy);
+            var operation = new GetAllObjectsByIdOp<TId, TObject>(id, versionMatchStrategy, tagsToMatch, tagMatchStrategy, recordNotFoundStrategy, orderRecordsBy, deprecatedIdTypes);
             var result = await protocol.ExecuteAsync(operation);
             return result;
         }

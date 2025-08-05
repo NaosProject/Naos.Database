@@ -266,6 +266,9 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
     <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="DatabaseDummyFactory.designer.cs">
+      <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.cs" />
     <Compile Include="Events\Classes\Management\ChecksPerformedEventTest.designer.cs">
       <DependentUpon>ChecksPerformedEventTest.cs</DependentUpon>
@@ -281,6 +284,10 @@
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.designer.cs">
       <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}Test.cs" />
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}Test.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp{TStream}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetLatestObjects\GetLatestObjectsByIdOp{TId,TObject}Test.designer.cs">
@@ -428,9 +435,6 @@
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CompleteRunningHandleRecordOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Handling\StateChange\CompleteRunningHandleRecordOpTest.designer.cs">
       <DependentUpon>CompleteRunningHandleRecordOpTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseDummyFactory.designer.cs">
-      <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseDummyFactoryTest.designer.cs">
       <DependentUpon>DatabaseDummyFactoryTest.cs</DependentUpon>

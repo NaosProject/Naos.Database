@@ -405,6 +405,9 @@
       <DependentUpon>GetLatestJobInformationOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}.cs" />
+    <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}.designer.cs">
+      <DependentUpon>GetStreamFromRepresentationOp{TStream}.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\ResourceLocation\GetAllResourceLocatorsOp.designer.cs">
       <DependentUpon>GetAllResourceLocatorsOp.cs</DependentUpon>
     </Compile>

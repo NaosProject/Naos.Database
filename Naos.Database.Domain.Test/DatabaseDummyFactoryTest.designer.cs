@@ -16,7 +16,7 @@ namespace Naos.Database.Domain.Test
     using global::Xunit;
 
     [ExcludeFromCodeCoverage]
-    [GeneratedCode("OBeautifulCode.CodeGen.ModelObject", "1.0.192.0")]
+    [GeneratedCode("OBeautifulCode.CodeGen.ModelObject", "1.0.197.0")]
     public static partial class DatabaseDummyFactoryTest
     {
         [Fact]

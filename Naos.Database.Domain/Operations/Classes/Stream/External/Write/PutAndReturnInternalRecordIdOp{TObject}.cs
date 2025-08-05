@@ -27,7 +27,7 @@ namespace Naos.Database.Domain
         /// <param name="existingRecordStrategy">OPTIONAL strategy to use when an existing record is encountered while writing.  DEFAULT is to put a new record regardless of any existing records.</param>
         /// <param name="recordRetentionCount">OPTIONAL number of existing records to retain if <paramref name="existingRecordStrategy"/> is set to prune.  DEFAULT is n/a.</param>
         /// <param name="versionMatchStrategy">OPTIONAL strategy to use to filter on the version of the queried types that are applicable to this operation (e.g. object type, object's identifier type) when looking for existing records.  DEFAULT is no filter (any version is acceptable).</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
+        /// <param name="typeSelectionStrategy">OPTIONAL strategy that specifies how the object's type is determined.  DEFAULT is to use the object's runtime type and throw if the object is null.</param>
         public PutAndReturnInternalRecordIdOp(
             TObject objectToPut,
             IReadOnlyCollection<NamedValue<string>> tags = null,
@@ -83,8 +83,12 @@ namespace Naos.Database.Domain
         public VersionMatchStrategy VersionMatchStrategy { get; private set; }
 
         /// <summary>
-        /// Gets the strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).
+        /// Gets a strategy that specifies how the object's type is determined.
         /// </summary>
+        /// <remarks>
+        /// If <see cref="OBeautifulCode.Type.TypeSelectionStrategy.UseRuntimeType"/>
+        /// is specified and the object is null, then the protocol will throw.
+        /// </remarks>
         public TypeSelectionStrategy TypeSelectionStrategy { get; private set; }
     }
 }

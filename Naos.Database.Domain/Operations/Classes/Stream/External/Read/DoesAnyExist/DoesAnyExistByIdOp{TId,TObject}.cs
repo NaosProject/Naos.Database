@@ -26,27 +26,23 @@ namespace Naos.Database.Domain
         /// <param name="tagsToMatch">OPTIONAL tags to match.  DEFAULT is no matching on tags.</param>
         /// <param name="tagMatchStrategy">OPTIONAL strategy to use for comparing tags.  DEFAULT is to match when a record contains all of the queried tags (with extra tags on the record ignored), when <paramref name="tagsToMatch"/> is specified.</param>
         /// <param name="deprecatedIdTypes">OPTIONAL object types used in a record that indicates an identifier deprecation.  DEFAULT is no deprecated types specified.  Please see notes in the constructor of <see cref="RecordFilter"/> for <see cref="RecordFilter.DeprecatedIdTypes"/> for how deprecation works.</param>
-        /// <param name="typeSelectionStrategy">OPTIONAL strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).  DEFAULT is to use the runtime types and throw if any of them are null.</param>
         public DoesAnyExistByIdOp(
             TId id,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
             IReadOnlyCollection<NamedValue<string>> tagsToMatch = null,
             TagMatchStrategy tagMatchStrategy = TagMatchStrategy.RecordContainsAllQueryTags,
-            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null,
-            TypeSelectionStrategy typeSelectionStrategy = TypeSelectionStrategy.UseRuntimeType)
+            IReadOnlyCollection<TypeRepresentation> deprecatedIdTypes = null)
         {
             versionMatchStrategy.ThrowOnUnsupportedVersionMatchStrategyForType();
             tagsToMatch.MustForArg(nameof(tagsToMatch)).NotContainAnyNullElementsWhenNotNull();
             tagMatchStrategy.MustForArg(nameof(tagMatchStrategy)).NotBeEqualTo(TagMatchStrategy.Unknown);
             deprecatedIdTypes.MustForArg(nameof(deprecatedIdTypes)).NotContainAnyNullElementsWhenNotNull();
-            typeSelectionStrategy.MustForArg(nameof(typeSelectionStrategy)).NotBeEqualTo(TypeSelectionStrategy.Unknown);
 
             this.Id = id;
             this.VersionMatchStrategy = versionMatchStrategy;
             this.TagsToMatch = tagsToMatch;
             this.TagMatchStrategy = tagMatchStrategy;
             this.DeprecatedIdTypes = deprecatedIdTypes;
-            this.TypeSelectionStrategy = typeSelectionStrategy;
         }
 
         /// <inheritdoc />
@@ -71,10 +67,5 @@ namespace Naos.Database.Domain
         /// Gets the object types used in a record that indicates an identifier deprecation.
         /// </summary>
         public IReadOnlyCollection<TypeRepresentation> DeprecatedIdTypes { get; private set; }
-
-        /// <summary>
-        /// Gets the strategy to use to select the types that are applicable to this operation (e.g. object type, object's identifier type).
-        /// </summary>
-        public TypeSelectionStrategy TypeSelectionStrategy { get; private set; }
     }
 }

@@ -132,6 +132,7 @@ namespace Naos.Protocol.FileSystem.Test
                             null),
                         zeroObject.ToDescribedSerializationUsingSpecificFactory(
                             stream.DefaultSerializerRepresentation,
+                            SerializerRepresentationSelectionStrategy.UseSpecifiedRepresentation,
                             stream.SerializerFactory,
                             SerializationFormat.String)
                             .ToStreamRecordPayload(),
@@ -857,6 +858,7 @@ namespace Naos.Protocol.FileSystem.Test
 
             var payload = objectPayload.ToDescribedSerializationUsingSpecificFactory(
                 stream.DefaultSerializerRepresentation,
+                SerializerRepresentationSelectionStrategy.UseSpecifiedRepresentation,
                 stream.SerializerFactory,
                 stream.DefaultSerializationFormat)
                 .ToStreamRecordPayload();

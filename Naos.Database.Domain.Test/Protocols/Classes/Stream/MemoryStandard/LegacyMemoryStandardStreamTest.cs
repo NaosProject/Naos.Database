@@ -124,6 +124,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
                             null),
                         zeroObject.ToDescribedSerializationUsingSpecificFactory(
                             stream.DefaultSerializerRepresentation,
+                            SerializerRepresentationSelectionStrategy.UseSpecifiedRepresentation,
                             stream.SerializerFactory,
                             SerializationFormat.String)
                             .ToStreamRecordPayload(),
@@ -948,6 +949,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             var payload = objectPayload.ToDescribedSerializationUsingSpecificFactory(
                     stream.DefaultSerializerRepresentation,
+                    SerializerRepresentationSelectionStrategy.UseSpecifiedRepresentation,
                     stream.SerializerFactory,
                     stream.DefaultSerializationFormat)
                 .ToStreamRecordPayload();

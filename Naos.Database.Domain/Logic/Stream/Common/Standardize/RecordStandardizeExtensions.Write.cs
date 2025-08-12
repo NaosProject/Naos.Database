@@ -99,6 +99,7 @@ namespace Naos.Database.Domain
 
             var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
                 stream.DefaultSerializerRepresentation,
+                SerializerRepresentationSelectionStrategy.UseSpecifiedRepresentation,
                 stream.SerializerFactory,
                 stream.DefaultSerializationFormat);
 

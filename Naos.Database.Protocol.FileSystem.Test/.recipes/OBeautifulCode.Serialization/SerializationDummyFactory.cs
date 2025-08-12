@@ -29,6 +29,7 @@ namespace OBeautifulCode.Serialization.Test
         {
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(SerializationKind.Invalid, SerializationKind.Proprietary);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(SerializationFormat.Invalid, SerializationFormat.Null);
+            AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(SerializerRepresentationSelectionStrategy.Unknown);
 
             #if OBeautifulCodeSerializationSolution
             AutoFixtureBackedDummyFactory.UseRandomConcreteSubclassForDummy<KeyOrValueObjectHierarchyBase>();

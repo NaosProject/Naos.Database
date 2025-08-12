@@ -194,7 +194,9 @@ namespace Naos.Database.Protocol.FileSystem
                 }
                 else if (streamRecordItemsToInclude == StreamRecordItemsToInclude.MetadataOnly)
                 {
-                    payload = new NullDescribedSerialization(metadata.TypeRepresentationOfObject.WithVersion, metadata.SerializerRepresentation);
+                    payload = new NullDescribedSerialization(
+                        metadata.TypeRepresentationOfObject.WithVersion,
+                        metadata.SerializerRepresentation);
                 }
                 else
                 {
@@ -203,7 +205,7 @@ namespace Naos.Database.Protocol.FileSystem
 
                 var internalRecordId = GetInternalRecordIdFromRecordFilePath(metadataFilePath);
 
-                var result = new StreamRecord(internalRecordId, metadata, payload);
+                var result = new StreamRecord(internalRecordId, metadata, payload.ToStreamRecordPayload());
 
                 return result;
             }

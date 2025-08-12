@@ -268,9 +268,7 @@ namespace Naos.Database.Domain
                                 break;
                             case StreamRecordItemsToInclude.MetadataOnly:
                                 recordToHandle = recordToHandle.DeepCloneWithPayload(
-                                    new NullDescribedSerialization(
-                                        recordToHandle.Payload.PayloadTypeRepresentation,
-                                        recordToHandle.Payload.SerializerRepresentation));
+                                    new NullStreamRecordPayload());
                                 break;
                             default:
                                 throw new NotSupportedException(Invariant($"This {nameof(StreamRecordItemsToInclude)} is not supported: {operation.StreamRecordItemsToInclude}."));

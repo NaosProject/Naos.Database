@@ -112,8 +112,6 @@ namespace Naos.Protocol.FileSystem.Test
             var thirdObjectId = "Three Id";
             var thirdObject = "RecordThree";
 
-            var serializer = stream.SerializerFactory.BuildSerializer(stream.DefaultSerializerRepresentation);
-
             for (int idx = 0;
                 idx < 10;
                 idx++)
@@ -132,7 +130,11 @@ namespace Naos.Protocol.FileSystem.Test
                             },
                             timestampUtc,
                             null),
-                        zeroObject.ToDescribedSerializationUsingSpecificSerializer(serializer, SerializationFormat.String),
+                        zeroObject.ToDescribedSerializationUsingSpecificFactory(
+                            stream.DefaultSerializerRepresentation,
+                            stream.SerializerFactory,
+                            SerializationFormat.String)
+                            .ToStreamRecordPayload(),
                         specifiedResourceLocator: resourceLocatorZero));
                 stream.PutWithId(
                     firstObject.Id,
@@ -856,7 +858,8 @@ namespace Naos.Protocol.FileSystem.Test
             var payload = objectPayload.ToDescribedSerializationUsingSpecificFactory(
                 stream.DefaultSerializerRepresentation,
                 stream.SerializerFactory,
-                stream.DefaultSerializationFormat);
+                stream.DefaultSerializationFormat)
+                .ToStreamRecordPayload();
 
             var metadata = new StreamRecordMetadata(
                 serializedStringId,
@@ -937,7 +940,7 @@ namespace Naos.Protocol.FileSystem.Test
             var concern = "NullIdentifierAndValueTest";
             var record = stream.Execute(new StandardTryHandleRecordOp(concern, new RecordFilter()));
             record?.RecordToHandle.MustForTest().NotBeNull();
-            ((StringDescribedSerialization)record?.RecordToHandle.Payload)?.SerializedPayload.MustForTest().BeEqualTo("null");
+            ((StringStreamRecordPayload)record?.RecordToHandle.Payload)?.SerializedPayload.MustForTest().BeEqualTo("null");
 
             stream.GetStreamRecordHandlingProtocols().Execute(new CompleteRunningHandleRecordOp(record.RecordToHandle.InternalRecordId, concern));
 
@@ -1076,7 +1079,7 @@ namespace Naos.Protocol.FileSystem.Test
                 idx < count;
                 idx++)
             {
-                ((StringDescribedSerialization)allRecords[idx].Payload).SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
+                ((StringStreamRecordPayload)allRecords[idx].Payload).SerializedPayload.MustForTest().BeEqualTo(idx.ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadata[idx].MustForTest().BeEqualTo(allRecords[idx].Metadata);
             }
 
@@ -1089,7 +1092,7 @@ namespace Naos.Protocol.FileSystem.Test
                 idx < count;
                 idx++)
             {
-                ((StringDescribedSerialization)allRecordsReverse[idx].Payload).SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
+                ((StringStreamRecordPayload)allRecordsReverse[idx].Payload).SerializedPayload.MustForTest().BeEqualTo((count - 1 - idx).ToString(CultureInfo.InvariantCulture));
                 allRecordsMetadataReverse[idx].MustForTest().BeEqualTo(allRecordsReverse[idx].Metadata);
             }
 

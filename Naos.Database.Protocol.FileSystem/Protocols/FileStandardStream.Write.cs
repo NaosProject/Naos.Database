@@ -204,7 +204,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                    throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a string payload is being put, this is not supported: '{_.BinaryDataPath}'."));
                                                }
 
-                                               var stringPayload = ((StringDescribedSerialization)operation.Payload).SerializedPayload;
+                                               var stringPayload = ((StringStreamRecordPayload)operation.Payload).SerializedPayload;
                                                var fileStringPayload = File.ReadAllText(_.StringDataPath);
                                                return fileStringPayload.Equals(stringPayload ?? NullToken);
                                            case SerializationFormat.Binary:
@@ -213,7 +213,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                    throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a Binary payload is being put, this is not supported: '{_.BinaryDataPath}'."));
                                                }
 
-                                               var binaryPayload = ((BinaryDescribedSerialization)operation.Payload).SerializedPayload;
+                                               var binaryPayload = ((BinaryStreamRecordPayload)operation.Payload).SerializedPayload;
                                                var fileBinaryPayload = File.ReadAllBytes(_.BinaryDataPath);
                                                return fileBinaryPayload.Equals(binaryPayload);
                                            default:
@@ -265,7 +265,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                    throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a string payload is being put, this is not supported: '{_.BinaryDataPath}'."));
                                                }
 
-                                               var stringPayload = ((StringDescribedSerialization)operation.Payload).SerializedPayload;
+                                               var stringPayload = ((StringStreamRecordPayload)operation.Payload).SerializedPayload;
                                                var fileStringPayload = File.ReadAllText(_.StringDataPath);
                                                return fileStringPayload.Equals(stringPayload ?? NullToken);
                                            case SerializationFormat.Binary:
@@ -274,7 +274,7 @@ namespace Naos.Database.Protocol.FileSystem
                                                    throw new NotSupportedException(Invariant($"Found a file for the id and type in binary when a Binary payload is being put, this is not supported: '{_.BinaryDataPath}'."));
                                                }
 
-                                               var binaryPayload = ((BinaryDescribedSerialization)operation.Payload).SerializedPayload;
+                                               var binaryPayload = ((BinaryStreamRecordPayload)operation.Payload).SerializedPayload;
                                                var fileBinaryPayload = File.ReadAllBytes(_.BinaryDataPath);
                                                return fileBinaryPayload.Equals(binaryPayload);
                                            default:
@@ -374,8 +374,9 @@ namespace Naos.Database.Protocol.FileSystem
                     }
                 }
 
-                var fileExtension = operation.Payload.GetSerializationFormat() == SerializationFormat.Binary ? BinaryFileExtension :
-                    operation.Payload.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
+                var fileExtension = operation.Payload.GetSerializationFormat() == SerializationFormat.Binary
+                    ? BinaryFileExtension
+                    : operation.Metadata.SerializerRepresentation.SerializationKind.ToString().ToLowerFirstCharacter(CultureInfo.InvariantCulture);
                 var filePathIdentifier = operation.Metadata.StringSerializedId?.EncodeForFilePath() ?? NullToken;
                 var fileBaseName = Invariant($"{newId.PadWithLeadingZeros()}___{timestampString}___{filePathIdentifier}");
                 var metadataFileName = Invariant($"{fileBaseName}.{MetadataFileExtension}");
@@ -387,13 +388,13 @@ namespace Naos.Database.Protocol.FileSystem
                 File.WriteAllText(metadataFilePath, stringSerializedMetadata);
                 if (fileExtension == BinaryFileExtension)
                 {
-                    var serializedBytes = ((BinaryDescribedSerialization)operation.Payload).SerializedPayload;
+                    var serializedBytes = ((BinaryStreamRecordPayload)operation.Payload).SerializedPayload;
 
                     File.WriteAllBytes(payloadFilePath, serializedBytes.ToArray());
                 }
                 else
                 {
-                    var serializedString = ((StringDescribedSerialization)operation.Payload).SerializedPayload;
+                    var serializedString = ((StringStreamRecordPayload)operation.Payload).SerializedPayload;
 
                     File.WriteAllText(payloadFilePath, serializedString ?? NullToken);
                 }

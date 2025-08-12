@@ -285,7 +285,7 @@ namespace Naos.Database.Domain.Test
 
                     var result = new StandardPutRecordOp(
                         A.Dummy<StreamRecordMetadata>(),
-                        A.Dummy<DescribedSerializationBase>(),
+                        A.Dummy<StreamRecordPayloadBase>(),
                         existingRecordStrategy,
                         existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundById || existingRecordStrategy == ExistingRecordStrategy.PruneIfFoundByIdAndType
                             ? (int?)A.Dummy<ZeroOrPositiveInteger>()

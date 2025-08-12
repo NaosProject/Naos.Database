@@ -101,9 +101,7 @@ namespace Naos.Database.Domain
                             return result;
                         case StreamRecordItemsToInclude.MetadataOnly:
                             var resultWithoutPayload = result.DeepCloneWithPayload(
-                                new NullDescribedSerialization(
-                                    result.Payload.PayloadTypeRepresentation,
-                                    result.Payload.SerializerRepresentation));
+                                new NullStreamRecordPayload());
                             return resultWithoutPayload;
                         default:
                             throw new NotSupportedException(Invariant($"Unsupported {nameof(StreamRecordItemsToInclude)}: {operation.StreamRecordItemsToInclude}."));
@@ -148,9 +146,9 @@ namespace Naos.Database.Domain
             }
             else
             {
-                if (record.Payload is StringDescribedSerialization stringDescribedSerialization)
+                if (record.Payload is StringStreamRecordPayload stringStreamRecordPayload)
                 {
-                    result = stringDescribedSerialization.SerializedPayload;
+                    result = stringStreamRecordPayload.SerializedPayload;
                 }
                 else
                 {

@@ -30,7 +30,7 @@ namespace Naos.Database.Domain
         public StreamRecord(
             long internalRecordId,
             StreamRecordMetadata metadata,
-            DescribedSerializationBase payload)
+            StreamRecordPayloadBase payload)
         {
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
@@ -51,6 +51,6 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the payload.
         /// </summary>
-        public DescribedSerializationBase Payload { get; private set; }
+        public StreamRecordPayloadBase Payload { get; private set; }
     }
 }

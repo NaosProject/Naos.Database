@@ -11,7 +11,6 @@ namespace Naos.Database.Domain.Test
     using FakeItEasy;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Compression;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Serialization.Json;
     using OBeautifulCode.String.Recipes;

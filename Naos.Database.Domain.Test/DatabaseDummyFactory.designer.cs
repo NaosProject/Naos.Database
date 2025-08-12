@@ -29,7 +29,7 @@ namespace Naos.Database.Domain.Test
     /// Derive from this class to add any overriding or custom registrations.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [GeneratedCode("OBeautifulCode.CodeGen.ModelObject", "1.0.197.0")]
+    [GeneratedCode("OBeautifulCode.CodeGen.ModelObject", "1.0.199.0")]
 #if !NaosDatabaseSolution
     internal
 #else
@@ -46,6 +46,10 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<IReadOnlyCollection<NamedValue<string>>>(),
                                  A.Dummy<bool>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new BinaryStreamRecordPayload(
+                                 A.Dummy<byte[]>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new CancelRunningHandleRecordOp(
@@ -553,6 +557,9 @@ namespace Naos.Database.Domain.Test
                 () => new NullResourceLocator());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new NullStreamRecordPayload());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new NullStreamRepresentation());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -871,7 +878,7 @@ namespace Naos.Database.Domain.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StandardPutRecordOp(
                                  A.Dummy<StreamRecordMetadata>(),
-                                 A.Dummy<DescribedSerializationBase>(),
+                                 A.Dummy<StreamRecordPayloadBase>(),
                                  A.Dummy<ExistingRecordStrategy>(),
                                  A.Dummy<int?>(),
                                  A.Dummy<VersionMatchStrategy>(),
@@ -937,7 +944,7 @@ namespace Naos.Database.Domain.Test
                 () => new StreamRecord(
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata>(),
-                                 A.Dummy<DescribedSerializationBase>()));
+                                 A.Dummy<StreamRecordPayloadBase>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord<Version>(
@@ -976,6 +983,25 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<UtcDateTime>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var availableTypes = new[]
+                    {
+                        typeof(BinaryStreamRecordPayload),
+                        typeof(NullStreamRecordPayload),
+                        typeof(StringStreamRecordPayload)
+                    };
+
+                    var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
+
+                    var randomType = availableTypes[randomIndex];
+
+                    var result = (StreamRecordPayloadBase)AD.ummy(randomType);
+
+                    return result;
+                });
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecordWithId<Version, Version>(
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata<Version>>(),
@@ -985,7 +1011,7 @@ namespace Naos.Database.Domain.Test
                 () => new StreamRecordWithId<Version>(
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata<Version>>(),
-                                 A.Dummy<DescribedSerializationBase>()));
+                                 A.Dummy<StreamRecordPayloadBase>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRepresentation(
@@ -1014,6 +1040,10 @@ namespace Naos.Database.Domain.Test
                 () => new StringSerializedIdentifier(
                                  A.Dummy<string>(),
                                  A.Dummy<TypeRepresentation>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StringStreamRecordPayload(
+                                 A.Dummy<string>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new ThrowIfResourceUnavailableOp(

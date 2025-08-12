@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StreamRecordMetadata{TId}"/> class.
         /// </summary>
         /// <param name="id">The identifier of the object.</param>
-        /// <param name="serializerRepresentation">The representation of the serializer used to serialize the object.</param>
+        /// <param name="serializerRepresentation">The representation of the serializer used to serialize the object (not the identifier).</param>
         /// <param name="typeRepresentationOfId">The type representation of the object's identifier.</param>
         /// <param name="typeRepresentationOfObject">The type representation of the object.</param>
         /// <param name="tags">The tags.</param>
@@ -68,7 +68,7 @@ namespace Naos.Database.Domain
         public TId Id { get; private set; }
 
         /// <summary>
-        /// Gets the representation of the serializer used to serialize the object.
+        /// Gets the representation of the serializer used to serialize the object (not the identifier).
         /// </summary>
         public SerializerRepresentation SerializerRepresentation { get; private set; }
 

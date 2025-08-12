@@ -107,7 +107,8 @@ namespace Naos.Database.Domain
             // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null
                 ? default(TObject)
-                : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+                : record.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                    this.stream.SerializerFactory);
 
             return result;
         }
@@ -136,7 +137,8 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var payload = record.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                this.stream.SerializerFactory);
 
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
 
@@ -198,7 +200,7 @@ namespace Naos.Database.Domain
                     inputStreamRecord.Metadata.ObjectTimestampUtc);
 
                 var payload = inputStreamRecord
-                    .Payload
+                    .GetDescribedSerialization()
                     .DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 
                 var resultItem = new StreamRecord<TObject>(

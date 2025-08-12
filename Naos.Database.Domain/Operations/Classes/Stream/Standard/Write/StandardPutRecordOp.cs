@@ -34,7 +34,7 @@ namespace Naos.Database.Domain
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardPutRecordOp(
             StreamRecordMetadata metadata,
-            DescribedSerializationBase payload,
+            StreamRecordPayloadBase payload,
             ExistingRecordStrategy existingRecordStrategy = ExistingRecordStrategy.None,
             int? recordRetentionCount = null,
             VersionMatchStrategy versionMatchStrategy = VersionMatchStrategy.Any,
@@ -73,7 +73,7 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Gets the payload.
         /// </summary>
-        public DescribedSerializationBase Payload { get; private set; }
+        public StreamRecordPayloadBase Payload { get; private set; }
 
         /// <summary>
         /// Gets the strategy to use when an existing record is encountered while writing.

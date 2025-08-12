@@ -248,6 +248,7 @@
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetDistinctIds\ReadOnlyStreamExtensions.GetDistinctIdsOp{TId}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestObjects\ReadOnlyStreamExtensions.GetLatestObjectsByIdOp{TId,TObject}.cs" />
     <Compile Include="Logic\Stream\Read\StreamExtensions\GetLatestStringSerializedObject\ReadOnlyStreamExtensions.GetLatestStringSerializedObjectByIdOp{TId}.cs" />
+    <Compile Include="Logic\Stream\Subscriber\StreamRecordExtensions.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\GetNextUniqueLongLambdaProtocol.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\PutAndReturnInternalRecordIdLambdaProtocol{TObject}.cs" />
     <Compile Include="Logic\Stream\Write\Lambda\PutLambdaProtocol{TObject}.cs" />
@@ -371,6 +372,31 @@
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.cs" />
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.designer.cs">
       <DependentUpon>MutexObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata.designer.cs">
+      <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\BinaryStreamRecordPayload.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\BinaryStreamRecordPayload.designer.cs">
+      <DependentUpon>BinaryStreamRecordPayload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\NullStreamRecordPayload.designer.cs">
+      <DependentUpon>NullStreamRecordPayload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StreamRecordPayloadBase.designer.cs">
+      <DependentUpon>StreamRecordPayloadBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\NullStreamRecordPayload.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StringStreamRecordPayload.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StreamRecordPayloadBase.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StringStreamRecordPayload.designer.cs">
+      <DependentUpon>StringStreamRecordPayload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecord.designer.cs">
+      <DependentUpon>StreamRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId}.designer.cs">
+      <DependentUpon>StreamRecordWithId{TId}.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\RecordsToFilterSelectionStrategy.cs" />
     <Compile Include="Models\Enums\StreamAccessKinds.cs" />
@@ -603,10 +629,10 @@
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOp.designer.cs">
       <DependentUpon>StandardGetNextUniqueLongOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Interfaces\Management\IDatabaseDefinition.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOp.designer.cs">
       <DependentUpon>StandardPutRecordOp.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Interfaces\Management\IDatabaseDefinition.cs" />
     <Compile Include="Operations\Interfaces\IPruneOp.cs" />
     <Compile Include="Properties\ProjectInfo.cs" />
     <Compile Include="Protocols\Classes\Management\CheckStreamsProtocol.cs" />
@@ -756,22 +782,13 @@
       <DependentUpon>CreateStreamResult.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Enums\StreamAccessModes.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord.designer.cs">
-      <DependentUpon>StreamRecord.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata.designer.cs">
-      <DependentUpon>StreamRecordMetadata.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata{TId}.designer.cs">
       <DependentUpon>StreamRecordMetadata{TId}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId,TObject}.designer.cs">
       <DependentUpon>StreamRecordWithId{TId,TObject}.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}.designer.cs">
-      <DependentUpon>StreamRecordWithId{TId}.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecord{TObject}.designer.cs">
       <DependentUpon>StreamRecord{TObject}.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\Stream\Common\TagMatchExtensions.cs" />
@@ -796,7 +813,7 @@
     <Compile Include="Models\Enums\OrderRecordsBy.cs" />
     <Compile Include="Models\Enums\RecordNotFoundStrategy.cs" />
     <Compile Include="Logic\Stream\Subscriber\StreamRecordMetadataExtensions.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId,TObject}.cs" />
     <Compile Include="Models\Enums\TagMatchStrategy.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\GetAllRecordsMetadata\GetAllRecordsMetadataByIdOp{TId}.cs" />
@@ -888,10 +905,10 @@
     <Compile Include="Models\Classes\Representation\NullStreamRepresentation.cs" />
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStream.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Write\IStreamWriteProtocols.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata{TId}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecord{TObject}.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecord.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Protocols\Read\IStreamReadProtocols{TObject}.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamReadProtocolFactory.cs" />
     <Compile Include="Protocols\Interfaces\Stream\Factory\IStreamWriteProtocolFactory.cs" />
@@ -908,7 +925,7 @@
     <Compile Include="Protocols\Classes\Representation\GetStreamFromRepresentationByNameProtocol.cs" />
     <Compile Include="Models\Classes\Representation\StreamRepresentation.cs" />
     <Compile Include="Models\Classes\Representation\StreamRepresentationBase.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include=".analyzers\stylecop.json" />

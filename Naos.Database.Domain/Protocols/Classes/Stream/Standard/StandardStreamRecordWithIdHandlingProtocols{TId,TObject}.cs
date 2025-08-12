@@ -51,11 +51,8 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var objectSerializer = this.stream
-                                       .SerializerFactory
-                                       .BuildSerializer(record.Payload.SerializerRepresentation);
-
-            var payload = record.Payload.DeserializePayloadUsingSpecificSerializer<TObject>(objectSerializer);
+            var payload = record.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                this.stream.SerializerFactory);
 
             var metadata = record.Metadata.ToStreamRecordMetadata<TId>(this.stream);
 

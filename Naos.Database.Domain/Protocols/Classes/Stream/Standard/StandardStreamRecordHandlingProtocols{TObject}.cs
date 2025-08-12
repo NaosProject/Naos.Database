@@ -49,7 +49,8 @@ namespace Naos.Database.Domain
                 return null;
             }
 
-            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var payload = record.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                this.stream.SerializerFactory);
 
             var result = new StreamRecord<TObject>(record.InternalRecordId, record.Metadata, payload);
 

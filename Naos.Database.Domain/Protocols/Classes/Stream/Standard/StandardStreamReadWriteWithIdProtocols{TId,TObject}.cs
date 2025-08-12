@@ -112,7 +112,8 @@ namespace Naos.Database.Domain
             // ReSharper disable once ArrangeDefaultValueWhenTypeNotEvident
             var result = record == null
                 ? default(TObject)
-                : record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+                : record.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                    this.stream.SerializerFactory);
 
             return result;
         }
@@ -199,7 +200,8 @@ namespace Naos.Database.Domain
                             .ToList();
 
                         var thisLocatorObjects = thisLocatorRecords
-                            .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                            .Select(_ => _.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                                this.stream.SerializerFactory))
                             .ToList();
 
                         result.AddRange(thisLocatorObjects);
@@ -258,7 +260,8 @@ namespace Naos.Database.Domain
                             .ToList();
 
                         var objects = records
-                            .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                            .Select(_ => _.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                                this.stream.SerializerFactory))
                             .ToList();
 
                         result.AddRange(objects);
@@ -297,7 +300,8 @@ namespace Naos.Database.Domain
 
             var metadata = record.Metadata.ToStreamRecordMetadata(operation.Id);
 
-            var payload = record.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
+            var payload = record.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(
+                this.stream.SerializerFactory);
 
             var result = new StreamRecordWithId<TId, TObject>(record.InternalRecordId, metadata, payload);
 
@@ -358,7 +362,7 @@ namespace Naos.Database.Domain
             // records cannot contain a null element.
             // A record payload may be null, but it's the serializer's responsibility to deal with that.
             var result = records
-                .Select(_ => _.Payload.DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
+                .Select(_ => _.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory))
                 .ToList();
 
             return result;

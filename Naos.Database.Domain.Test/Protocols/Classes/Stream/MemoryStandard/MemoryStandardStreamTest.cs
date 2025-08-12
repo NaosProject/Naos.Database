@@ -412,7 +412,7 @@ namespace Naos.Database.Domain.Test.MemoryStream
 
             // Assert
             actual.AsTest().Must().NotBeNull();
-            actual.Payload.DeserializePayloadUsingSpecificFactory<MyObject>(stream.SerializerFactory).Id.Must().BeEqualTo(objectToPut2.Id);
+            actual.GetDescribedSerialization().DeserializePayloadUsingSpecificFactory<MyObject>(stream.SerializerFactory).Id.Must().BeEqualTo(objectToPut2.Id);
         }
 
         [Fact]

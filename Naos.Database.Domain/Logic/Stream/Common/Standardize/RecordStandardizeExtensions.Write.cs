@@ -12,6 +12,7 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
+    using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
 
     public static partial class RecordStandardizeExtensions
@@ -114,9 +115,11 @@ namespace Naos.Database.Domain
                 DateTime.UtcNow,
                 objectTimestamp);
 
+            var payload = describedSerialization.ToStreamRecordPayload();
+
             var result = new StandardPutRecordOp(
                 metadata,
-                describedSerialization,
+                payload,
                 operation.ExistingRecordStrategy,
                 operation.RecordRetentionCount,
                 operation.VersionMatchStrategy,

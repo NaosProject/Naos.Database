@@ -265,6 +265,11 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
+    <Compile Include="Logic\Stream\Subscriber\StreamRecordExtensionsTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\BinaryStreamRecordPayloadTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\BinaryStreamRecordPayloadTest.designer.cs">
+      <DependentUpon>BinaryStreamRecordPayloadTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConsoleAbstraction.cs" />
     <Compile Include="DatabaseDummyFactory.designer.cs">
       <DependentUpon>DatabaseDummyFactory.cs</DependentUpon>
@@ -284,6 +289,10 @@
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs" />
     <Compile Include="Events\Classes\IdDeprecated\IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.designer.cs">
       <DependentUpon>IdDeprecatedWithDetailsEvent{TObject,TDetails}Test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\NullStreamRecordPayloadTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\NullStreamRecordPayloadTest.designer.cs">
+      <DependentUpon>NullStreamRecordPayloadTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}Test.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}Test.designer.cs">
@@ -690,13 +699,13 @@
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryTest.designer.cs">
       <DependentUpon>StreamRecordHandlingEntryTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}Test.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata{TId}Test.designer.cs">
       <DependentUpon>StreamRecordMetadata{TId}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}Test.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId,TObject}Test.designer.cs">
       <DependentUpon>StreamRecordWithId{TId,TObject}Test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}Test.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId}Test.designer.cs">
       <DependentUpon>StreamRecordWithId{TId}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStreamRepresentation,TStream}Test.designer.cs">
@@ -727,13 +736,13 @@
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardGetNextUniqueLongOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\Standard\Write\StandardPutRecordOpTest.cs" />
     <Compile Include="Models\Classes\Stream\Handling\StreamRecordHandlingEntryTest.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadataTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadataTest.designer.cs">
       <DependentUpon>StreamRecordMetadataTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordTest.designer.cs">
       <DependentUpon>StreamRecordTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}Test.designer.cs">
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecord{TObject}Test.designer.cs">
       <DependentUpon>StreamRecord{TObject}Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Stream\Common\TypeRepresentationWithAndWithoutVersionTest.designer.cs">
@@ -770,9 +779,9 @@
     <Compile Include="Logic\Stream\StreamExtensionsTests.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdAndReturnInternalRecordIdOp{TId,TObject}Test.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\PutWithIdOp{TId,TObject}Test.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadata{TId}Test.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId,TObject}Test.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordWithId{TId}Test.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata{TId}Test.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId,TObject}Test.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordWithId{TId}Test.cs" />
     <Compile Include="Models\Classes\Representation\FileStreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\ResourceLocation\Database\FileSystemDatabaseLocatorTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Write\GetNextUniqueLongOpTest.cs" />
@@ -828,9 +837,9 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="DatabaseDummyFactory.cs" />
     <Compile Include="DatabaseDummyFactoryTest.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordMetadataTest.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecordTest.cs" />
-    <Compile Include="Models\Classes\Stream\Subscriber\StreamRecord{TObject}Test.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadataTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecordTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Record\StreamRecord{TObject}Test.cs" />
     <Compile Include="Models\Classes\Representation\StreamRepresentationBaseTest.cs" />
     <Compile Include="Models\Classes\Representation\StreamRepresentationTest.cs" />
     <Compile Include="Models\Classes\Stream\Common\TypeRepresentationWithAndWithoutVersionTest.cs" />
@@ -867,6 +876,14 @@
     <Compile Include="Operations\Classes\Stream\External\Mutex\WaitOneOpTest.cs" />
     <Compile Include="Operations\Classes\Stream\External\Mutex\WaitOneOpTest.designer.cs">
       <DependentUpon>WaitOneOpTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StreamRecordPayloadBaseTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StreamRecordPayloadBaseTest.designer.cs">
+      <DependentUpon>StreamRecordPayloadBaseTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StringStreamRecordPayloadTest.cs" />
+    <Compile Include="Models\Classes\Stream\Subscriber\Payload\StringStreamRecordPayloadTest.designer.cs">
+      <DependentUpon>StringStreamRecordPayloadTest.cs</DependentUpon>
     </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />

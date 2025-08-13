@@ -24,5 +24,29 @@ namespace Naos.Database.Domain
         /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Using method so that extra property isn't serialized.")]
         public abstract SerializationFormat GetSerializationFormat();
+
+        /// <summary>
+        /// Gets the serialized payload encoded as a string.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="StringStreamRecordPayload"/> will pass-through the payload.
+        /// <see cref="BinaryStreamRecordPayload"/> will Base64-encode the bytes.
+        /// </remarks>
+        /// <returns>
+        /// The serialized payload encoded as a string.
+        /// </returns>
+        public abstract string GetSerializedPayloadAsEncodedString();
+
+        /// <summary>
+        /// Gets the serialized payload encoded as a byte array.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="StringStreamRecordPayload"/> will UTF-8 encode the payload.
+        /// <see cref="BinaryStreamRecordPayload"/> will pass-through the payload.
+        /// </remarks>
+        /// <returns>
+        /// The serialized payload encoded as a byte array.
+        /// </returns>
+        public abstract byte[] GetSerializedPayloadAsEncodedBytes();
     }
 }

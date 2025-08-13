@@ -12,12 +12,12 @@ namespace Naos.Database.Domain.Test
     using System.Linq;
 
     using FakeItEasy;
-
+    using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.AutoFakeItEasy;
     using OBeautifulCode.CodeAnalysis.Recipes;
     using OBeautifulCode.CodeGen.ModelObject.Recipes;
     using OBeautifulCode.Math.Recipes;
-
+    using OBeautifulCode.Serialization;
     using Xunit;
 
     using static System.FormattableString;
@@ -29,6 +29,45 @@ namespace Naos.Database.Domain.Test
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = ObcSuppressBecause.CA1810_InitializeReferenceTypeStaticFieldsInline_FieldsDeclaredInCodeGeneratedPartialTestClass)]
         static NullStreamRecordPayloadTest()
         {
+        }
+
+        [Fact]
+        public static void GetSerializationFormat___Should_return_SerializationFormat_Null___When_called()
+        {
+            // Arrange
+            var systemUnderTest = A.Dummy<NullStreamRecordPayload>();
+
+            // Act
+            var actual = systemUnderTest.GetSerializationFormat();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(SerializationFormat.Null);
+        }
+
+        [Fact]
+        public static void GetSerializedPayloadAsEncodedString___Should_return_null___When_called()
+        {
+            // Arrange
+            var systemUnderTest = A.Dummy<NullStreamRecordPayload>();
+
+            // Act
+            var actual = systemUnderTest.GetSerializedPayloadAsEncodedString();
+
+            // Assert
+            actual.AsTest().Must().BeNull();
+        }
+
+        [Fact]
+        public static void GetSerializedPayloadAsEncodedBytes___Should_return_null___When_called()
+        {
+            // Arrange
+            var systemUnderTest = A.Dummy<NullStreamRecordPayload>();
+
+            // Act
+            var actual = systemUnderTest.GetSerializedPayloadAsEncodedBytes();
+
+            // Assert
+            actual.AsTest().Must().BeNull();
         }
     }
 }

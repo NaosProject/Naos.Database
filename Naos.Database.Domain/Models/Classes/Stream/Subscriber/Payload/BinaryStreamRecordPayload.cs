@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Serialization;
@@ -38,6 +39,24 @@ namespace Naos.Database.Domain
         public override SerializationFormat GetSerializationFormat()
         {
             var result = SerializationFormat.Binary;
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override string GetSerializedPayloadAsEncodedString()
+        {
+            var result = this.SerializedPayload == null
+                ? null
+                : Convert.ToBase64String(this.SerializedPayload);
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override byte[] GetSerializedPayloadAsEncodedBytes()
+        {
+            var result = this.SerializedPayload;
 
             return result;
         }

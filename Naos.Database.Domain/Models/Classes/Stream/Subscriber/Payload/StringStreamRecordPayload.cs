@@ -6,6 +6,7 @@
 
 namespace Naos.Database.Domain
 {
+    using System.Text;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
 
@@ -35,6 +36,24 @@ namespace Naos.Database.Domain
         public override SerializationFormat GetSerializationFormat()
         {
             var result = SerializationFormat.String;
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override string GetSerializedPayloadAsEncodedString()
+        {
+            var result = this.SerializedPayload;
+
+            return result;
+        }
+
+        /// <inheritdoc />
+        public override byte[] GetSerializedPayloadAsEncodedBytes()
+        {
+            var result = this.SerializedPayload == null
+                ? null
+                : Encoding.UTF8.GetBytes(this.SerializedPayload);
 
             return result;
         }

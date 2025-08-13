@@ -22,5 +22,17 @@ namespace Naos.Database.Domain
 
             return result;
         }
+
+        /// <inheritdoc />
+        public override string GetSerializedPayloadAsEncodedString()
+        {
+            return null;
+        }
+
+        /// <inheritdoc />
+        public override byte[] GetSerializedPayloadAsEncodedBytes()
+        {
+            return null;
+        }
     }
 }

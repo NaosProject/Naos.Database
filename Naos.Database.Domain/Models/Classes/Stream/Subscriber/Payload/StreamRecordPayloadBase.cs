@@ -35,6 +35,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The serialized payload encoded as a string.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Using method so that extra property isn't serialized.")]
         public abstract string GetSerializedPayloadAsEncodedString();
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// The serialized payload encoded as a byte array.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Using method so that extra property isn't serialized.")]
         public abstract byte[] GetSerializedPayloadAsEncodedBytes();
     }
 }

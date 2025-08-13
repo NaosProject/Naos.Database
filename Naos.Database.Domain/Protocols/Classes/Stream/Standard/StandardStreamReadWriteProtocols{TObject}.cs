@@ -190,22 +190,13 @@ namespace Naos.Database.Domain
             StreamRecord<TObject> ProcessResultItem(
                 StreamRecord inputStreamRecord)
             {
-                var metadata = new StreamRecordMetadata(
-                    inputStreamRecord.Metadata.StringSerializedId,
-                    inputStreamRecord.Metadata.SerializerRepresentation,
-                    inputStreamRecord.Metadata.TypeRepresentationOfId,
-                    inputStreamRecord.Metadata.TypeRepresentationOfObject,
-                    inputStreamRecord.Metadata.Tags,
-                    inputStreamRecord.Metadata.TimestampUtc,
-                    inputStreamRecord.Metadata.ObjectTimestampUtc);
-
                 var payload = inputStreamRecord
                     .GetDescribedSerialization()
                     .DeserializePayloadUsingSpecificFactory<TObject>(this.stream.SerializerFactory);
 
                 var resultItem = new StreamRecord<TObject>(
                     inputStreamRecord.InternalRecordId,
-                    metadata,
+                    inputStreamRecord.Metadata,
                     payload);
 
                 return resultItem;

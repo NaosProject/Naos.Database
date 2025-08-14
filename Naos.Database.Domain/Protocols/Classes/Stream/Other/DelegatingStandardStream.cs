@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DelegatedStandardStream.cs" company="Naos Project">
+// <copyright file="DelegatingStandardStream.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
@@ -14,10 +14,10 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Serialization;
 
     /// <summary>
-    /// A fully delegated version of <see cref="IStandardStream"/>.
+    /// An <see cref="IStandardStream"/> that delegates operations to other <see cref="IStandardStream"/>s.
     /// </summary>
     [SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "'Stream' is the best term we could come up with; it's potential confusion with System.IO.Stream was debated.")]
-    public class DelegatedStandardStream : IStandardStream
+    public class DelegatingStandardStream : IStandardStream
     {
         private readonly IStandardStream readStream;
         private readonly IStandardStream writeStream;
@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         private readonly IStandardStream managementStream;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DelegatedStandardStream"/> class.
+        /// Initializes a new instance of the <see cref="DelegatingStandardStream"/> class.
         /// </summary>
         /// <param name="name">The name of the stream.</param>
         /// <param name="streamRepresentation">The stream representation.</param>
@@ -33,7 +33,7 @@ namespace Naos.Database.Domain
         /// <param name="writeStream">The write stream to delegate write operations to.</param>
         /// <param name="handleStream">The handle stream to delegate handle operations to.</param>
         /// <param name="managementStream">The management stream to delegate management operations to.</param>
-        public DelegatedStandardStream(
+        public DelegatingStandardStream(
             string name,
             IStreamRepresentation streamRepresentation,
             IStandardStream readStream,

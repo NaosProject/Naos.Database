@@ -646,7 +646,7 @@
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId,TObject}.cs" />
     <Compile Include="Protocols\Classes\Stream\NullStandard\NullStandardStreamReadWriteWithIdProtocols{TId}.cs" />
     <Compile Include="Protocols\Classes\Stream\Other\AlwaysThrowingStandardStream.cs" />
-    <Compile Include="Protocols\Classes\Stream\Other\DelegatedStandardStream.cs" />
+    <Compile Include="Protocols\Classes\Stream\Other\DelegatingStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\Other\RetryingStandardStream.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordedStreamOpExecutionBase.cs" />
     <Compile Include="Protocols\Classes\Stream\RecordingStandard\RecordedStreamOpExecution{TStreamOp}.cs" />

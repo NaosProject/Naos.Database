@@ -30,13 +30,13 @@ namespace Naos.Database.Domain
                 operation.Concern,
                 new RecordFilter(
                     idTypes: new[]
-                             {
-                                 operation.IdentifierType,
-                             },
+                    {
+                        operation.IdentifierType,
+                    },
                     objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
+                    {
+                        typeof(TObject).ToRepresentation(),
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     tags: operation.TagsToMatch,
                     tagMatchStrategy: operation.TagMatchStrategy),
@@ -71,13 +71,13 @@ namespace Naos.Database.Domain
                 operation.Concern,
                 new RecordFilter(
                     idTypes: new[]
-                             {
-                                 typeof(TId).ToRepresentation(),
-                             },
+                    {
+                        typeof(TId).ToRepresentation(),
+                    },
                     objectTypes: new[]
-                                 {
-                                     typeof(TObject).ToRepresentation(),
-                                 },
+                    {
+                        typeof(TObject).ToRepresentation(),
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     tags: operation.TagsToMatch,
                     tagMatchStrategy: operation.TagMatchStrategy),
@@ -111,13 +111,13 @@ namespace Naos.Database.Domain
                 operation.Concern,
                 new RecordFilter(
                     idTypes: new[]
-                             {
-                                 typeof(TId).ToRepresentation(),
-                             },
+                    {
+                        typeof(TId).ToRepresentation(),
+                    },
                     objectTypes: new[]
-                                 {
-                                     operation.ObjectType,
-                                 },
+                    {
+                        operation.ObjectType,
+                    },
                     versionMatchStrategy: operation.VersionMatchStrategy,
                     tags: operation.TagsToMatch,
                     tagMatchStrategy: operation.TagMatchStrategy),

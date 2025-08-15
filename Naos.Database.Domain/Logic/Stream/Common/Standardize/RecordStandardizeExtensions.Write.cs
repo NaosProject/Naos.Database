@@ -99,7 +99,7 @@ namespace Naos.Database.Domain
 
             var describedSerialization = operation.ObjectToPut.ToDescribedSerializationUsingSpecificFactory(
                 stream.DefaultSerializerRepresentation,
-                SerializerRepresentationSelectionStrategy.UseSpecifiedRepresentation,
+                SerializerRepresentationSelectionStrategy.UseRepresentationOfSerializerBuiltByFactory,
                 stream.SerializerFactory,
                 stream.DefaultSerializationFormat);
 
@@ -109,7 +109,7 @@ namespace Naos.Database.Domain
 
             var metadata = new StreamRecordMetadata(
                 serializedStringId,
-                stream.DefaultSerializerRepresentation,
+                describedSerialization.SerializerRepresentation,
                 identifierTypeRep.ToWithAndWithoutVersion(),
                 objectTypeRep.ToWithAndWithoutVersion(),
                 operation.Tags,

@@ -96,9 +96,9 @@ namespace Naos.Database.Domain
                 operation.Concern,
                 new RecordFilter(
                     internalRecordIds: new[]
-                                       {
-                                           operation.InternalRecordId,
-                                       }),
+                    {
+                        operation.InternalRecordId,
+                    }),
                 new HandlingFilter(),
                 specifiedResourceLocator);
 

@@ -65,8 +65,8 @@ namespace Naos.Database.Domain
             {
                 // There is at least one non-null, non-throwing stream.  Make sure all of them
                 // have the same factory and id serializer using reference equality.
-                this.SerializerFactory = notNullNorThrowingStreams.Select(_ => _.SerializerFactory).Single();
-                this.IdSerializer = notNullNorThrowingStreams.Select(_ => _.IdSerializer).Single();
+                this.SerializerFactory = notNullNorThrowingStreams.Select(_ => _.SerializerFactory).Distinct().Single();
+                this.IdSerializer = notNullNorThrowingStreams.Select(_ => _.IdSerializer).Distinct().Single();
             }
             else
             {

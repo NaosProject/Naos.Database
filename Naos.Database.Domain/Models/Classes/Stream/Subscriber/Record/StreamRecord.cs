@@ -32,6 +32,26 @@ namespace Naos.Database.Domain
             StreamRecordMetadata metadata,
             StreamRecordPayloadBase payload)
         {
+            // Note: We should rip out SerializerRepresentation from Metadata and put it into StreamRecordPayloadBase.
+            // This would make the StreamRecordPayloadBase a lightweight DescribedSerializationBase.
+            // It would only be missing the Object Type Representation, which already exists in Metadata and we want
+            // it in Metadata so that we can get at that information with Metadata-only queries.
+            // Note We could always create a new Op that returns just a DescribedSerializationBase
+            // (not a record, not metadata, but JUST a DescribedSerializationBase).  In fact we already have the extension
+            // method GetDescribedSerialization on StreamRecord so we utilize that, or if we needed a higher performing
+            // implementation we could add a new Standard op and have implementers like Sql Server only pull the information
+            // required to build the Described Serialization.
+            // When we moved SerializerFactory from IStream to IStandardStream we removed the coupling
+            // of serialization logic to the definition of a Stream.
+            // Keeping SerializerRepresentation in StreamRecordMetadata is now incorrect because it persists
+            // that coupling.  We could not expose any operations that return metadata with this
+            // information but the issue is that if you needed to get a record w/out deserializing
+            // (or decrypting or decompressing, etc) in the case of a message router that is making a
+            // decision on the tags or other metadata and passing the record along without the ability
+            // to interpret the record.  To keep this ability and decouple the serialization logic from
+            // the non standard stream we can move the SerializerRepresentation into the StreamRecordPayloadBase
+            // which would then only expose a serialization contract.
+
             metadata.MustForArg(nameof(metadata)).NotBeNull();
             payload.MustForArg(nameof(payload)).NotBeNull();
 

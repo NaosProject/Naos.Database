@@ -25,7 +25,7 @@ namespace Naos.Database.Domain
         /// Initializes a new instance of the <see cref="StandardGetLatestRecordOp"/> class.
         /// </summary>
         /// <param name="recordFilter">Filter to evaluate on records.</param>
-        /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return the default of object type.</param>
+        /// <param name="recordNotFoundStrategy">OPTIONAL strategy to use when no record(s) are found.  DEFAULT is to return null when no records found.</param>
         /// <param name="streamRecordItemsToInclude">OPTIONAL items to retrieve.  DEFAULT is <see cref="StreamRecordItemsToInclude.MetadataAndPayload"/>.</param>
         /// <param name="specifiedResourceLocator">OPTIONAL locator to use. DEFAULT will assume single locator on stream or throw.</param>
         public StandardGetLatestRecordOp(

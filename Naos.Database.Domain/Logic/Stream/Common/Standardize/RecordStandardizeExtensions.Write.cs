@@ -12,7 +12,6 @@ namespace Naos.Database.Domain
     using OBeautifulCode.Representation.System;
     using OBeautifulCode.Serialization;
     using OBeautifulCode.Type;
-    using OBeautifulCode.Type.Recipes;
     using static System.FormattableString;
 
     public static partial class RecordStandardizeExtensions

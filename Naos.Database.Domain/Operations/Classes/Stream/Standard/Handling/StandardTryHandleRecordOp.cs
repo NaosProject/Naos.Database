@@ -8,7 +8,6 @@ namespace Naos.Database.Domain
 {
     using System.Collections.Generic;
     using OBeautifulCode.Assertion.Recipes;
-    using OBeautifulCode.Representation.System;
     using OBeautifulCode.Type;
 
     /// <summary>

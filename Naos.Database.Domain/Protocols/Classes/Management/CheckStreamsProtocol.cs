@@ -139,7 +139,7 @@ namespace Naos.Database.Domain
                             : new ExpectedRecordWithinThresholdReport(
                                 status,
                                 expectedEventWithinThreshold,
-                                latestRecord?.Metadata.TimestampUtc ?? default);
+                                latestRecord?.Metadata.TimestampUtc ?? new DateTime(0, DateTimeKind.Utc));
 
                         expectedRecordWithinThresholdIdToReportMap.Add(
                             expectedEventWithinThreshold.Id,

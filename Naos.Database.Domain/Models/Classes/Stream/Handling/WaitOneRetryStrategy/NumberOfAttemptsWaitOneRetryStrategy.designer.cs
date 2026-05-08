@@ -69,7 +69,7 @@ namespace Naos.Database.Domain
                 return false;
             }
 
-            var result = this.RetryAttempts.IsEqualTo(other.RetryAttempts);
+            var result = this.Attempts.IsEqualTo(other.Attempts);
 
             return result;
         }
@@ -79,17 +79,17 @@ namespace Naos.Database.Domain
 
         /// <inheritdoc />
         public override int GetHashCode() => HashCodeHelper.Initialize()
-            .Hash(this.RetryAttempts)
+            .Hash(this.Attempts)
             .Value;
 
         /// <inheritdoc />
         public new NumberOfAttemptsWaitOneRetryStrategy DeepClone() => (NumberOfAttemptsWaitOneRetryStrategy)this.DeepCloneInternal();
 
         /// <summary>
-        /// Deep clones this object with a new <see cref="RetryAttempts" />.
+        /// Deep clones this object with a new <see cref="Attempts" />.
         /// </summary>
-        /// <param name="retryAttempts">The new <see cref="RetryAttempts" />.  This object will NOT be deep cloned; it is used as-is.</param>
-        /// <returns>New <see cref="NumberOfAttemptsWaitOneRetryStrategy" /> using the specified <paramref name="retryAttempts" /> for <see cref="RetryAttempts" /> and a deep clone of every other property.</returns>
+        /// <param name="attempts">The new <see cref="Attempts" />.  This object will NOT be deep cloned; it is used as-is.</param>
+        /// <returns>New <see cref="NumberOfAttemptsWaitOneRetryStrategy" /> using the specified <paramref name="attempts" /> for <see cref="Attempts" /> and a deep clone of every other property.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings")]
@@ -107,10 +107,10 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms")]
         [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
-        public NumberOfAttemptsWaitOneRetryStrategy DeepCloneWithRetryAttempts(int retryAttempts)
+        public NumberOfAttemptsWaitOneRetryStrategy DeepCloneWithAttempts(int attempts)
         {
             var result = new NumberOfAttemptsWaitOneRetryStrategy(
-                                 retryAttempts);
+                                 attempts);
 
             return result;
         }
@@ -120,7 +120,7 @@ namespace Naos.Database.Domain
         protected override WaitOneRetryStrategyBase DeepCloneInternal()
         {
             var result = new NumberOfAttemptsWaitOneRetryStrategy(
-                                 this.RetryAttempts.DeepClone());
+                                 this.Attempts.DeepClone());
 
             return result;
         }
@@ -129,7 +129,7 @@ namespace Naos.Database.Domain
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         public override string ToString()
         {
-            var result = Invariant($"Naos.Database.Domain.NumberOfAttemptsWaitOneRetryStrategy: RetryAttempts = {this.RetryAttempts.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
+            var result = Invariant($"Naos.Database.Domain.NumberOfAttemptsWaitOneRetryStrategy: Attempts = {this.Attempts.ToString(CultureInfo.InvariantCulture) ?? "<null>"}.");
 
             return result;
         }
@@ -175,7 +175,7 @@ namespace Naos.Database.Domain
             {
                 IReadOnlyList<ValidationFailure> localValidationFailures;
 
-                localValidationFailures = ValidatableExtensions.GetValidationFailures(this.RetryAttempts, options, propertyPathTracker, nameof(this.RetryAttempts));
+                localValidationFailures = ValidatableExtensions.GetValidationFailures(this.Attempts, options, propertyPathTracker, nameof(this.Attempts));
                 result.AddRange(localValidationFailures);
                 if (stopOnFirstObjectWithFailures && result.Any())
                 {

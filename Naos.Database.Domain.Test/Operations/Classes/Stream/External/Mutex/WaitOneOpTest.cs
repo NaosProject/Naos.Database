@@ -63,5 +63,18 @@ namespace Naos.Database.Domain.Test
             // Assert
             actual.AsTest().Must().BeEqualTo(TimeSpan.FromMilliseconds(200));
         }
+
+        [Fact]
+        public static void Constructor___Should_set_RetryStrategy_to_InfiniteWaitOneRetryStrategy___When_parameter_retryStrategy_is_null()
+        {
+            // Arrange
+            var systemUnderTest = A.Dummy<WaitOneOp>().DeepCloneWithRetryStrategy(null);
+
+            // Act
+            var actual = systemUnderTest.RetryStrategy;
+
+            // Assert
+            actual.AsTest().Must().BeOfType<InfiniteWaitOneRetryStrategy>();
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HandleOnlyStreamExtensions.Mutex.cs" company="Naos Project">
+// <copyright file="HandleOnlyStreamExtensions.Mutex.Execute.cs" company="Naos Project">
 //    Copyright (c) Naos Project 2019. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------

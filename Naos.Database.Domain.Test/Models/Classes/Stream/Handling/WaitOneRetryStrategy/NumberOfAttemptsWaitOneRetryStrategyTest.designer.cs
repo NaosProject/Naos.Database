@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<NumberOfAttemptsWaitOneRetryStrategy>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.NumberOfAttemptsWaitOneRetryStrategy: RetryAttempts = {systemUnderTest.RetryAttempts.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.NumberOfAttemptsWaitOneRetryStrategy: Attempts = {systemUnderTest.Attempts.ToString(CultureInfo.InvariantCulture) ?? "<null>"}."),
                         };
 
                         return result;
@@ -61,7 +61,7 @@ namespace Naos.Database.Domain.Test
             .AddScenario(() =>
                 new ConstructorPropertyAssignmentTestScenario<NumberOfAttemptsWaitOneRetryStrategy>
                 {
-                    Name = "RetryAttempts should return same 'retryAttempts' parameter passed to constructor when getting",
+                    Name = "Attempts should return same 'attempts' parameter passed to constructor when getting",
                     SystemUnderTestExpectedPropertyValueFunc = () =>
                     {
                         var referenceObject = A.Dummy<NumberOfAttemptsWaitOneRetryStrategy>();
@@ -69,31 +69,31 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedPropertyValue<NumberOfAttemptsWaitOneRetryStrategy>
                         {
                             SystemUnderTest = new NumberOfAttemptsWaitOneRetryStrategy(
-                                                      referenceObject.RetryAttempts),
-                            ExpectedPropertyValue = referenceObject.RetryAttempts,
+                                                      referenceObject.Attempts),
+                            ExpectedPropertyValue = referenceObject.Attempts,
                         };
 
                         return result;
                     },
-                    PropertyName = "RetryAttempts",
+                    PropertyName = "Attempts",
                 });
 
         private static readonly DeepCloneWithTestScenarios<NumberOfAttemptsWaitOneRetryStrategy> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<NumberOfAttemptsWaitOneRetryStrategy>()
             .AddScenario(() =>
                 new DeepCloneWithTestScenario<NumberOfAttemptsWaitOneRetryStrategy>
                 {
-                    Name = "DeepCloneWithRetryAttempts should deep clone object and replace RetryAttempts with the provided retryAttempts",
-                    WithPropertyName = "RetryAttempts",
+                    Name = "DeepCloneWithAttempts should deep clone object and replace Attempts with the provided attempts",
+                    WithPropertyName = "Attempts",
                     SystemUnderTestDeepCloneWithValueFunc = () =>
                     {
                         var systemUnderTest = A.Dummy<NumberOfAttemptsWaitOneRetryStrategy>();
 
-                        var referenceObject = A.Dummy<NumberOfAttemptsWaitOneRetryStrategy>().ThatIs(_ => !systemUnderTest.RetryAttempts.IsEqualTo(_.RetryAttempts));
+                        var referenceObject = A.Dummy<NumberOfAttemptsWaitOneRetryStrategy>().ThatIs(_ => !systemUnderTest.Attempts.IsEqualTo(_.Attempts));
 
                         var result = new SystemUnderTestDeepCloneWithValue<NumberOfAttemptsWaitOneRetryStrategy>
                         {
                             SystemUnderTest = systemUnderTest,
-                            DeepCloneWithValue = referenceObject.RetryAttempts,
+                            DeepCloneWithValue = referenceObject.Attempts,
                         };
 
                         return result;
@@ -111,12 +111,12 @@ namespace Naos.Database.Domain.Test
                     ObjectsThatAreEqualToButNotTheSameAsReferenceObject = new NumberOfAttemptsWaitOneRetryStrategy[]
                     {
                         new NumberOfAttemptsWaitOneRetryStrategy(
-                                ReferenceObjectForEquatableTestScenarios.RetryAttempts),
+                                ReferenceObjectForEquatableTestScenarios.Attempts),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new NumberOfAttemptsWaitOneRetryStrategy[]
                     {
                         new NumberOfAttemptsWaitOneRetryStrategy(
-                                A.Dummy<NumberOfAttemptsWaitOneRetryStrategy>().Whose(_ => !_.RetryAttempts.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RetryAttempts)).RetryAttempts),
+                                A.Dummy<NumberOfAttemptsWaitOneRetryStrategy>().Whose(_ => !_.Attempts.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Attempts)).Attempts),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -424,7 +424,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "RetryAttempts" };
+                var propertyNames = new string[] { "Attempts" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

@@ -18,18 +18,18 @@ namespace Naos.Database.Domain
         /// <summary>
         /// Initializes a new instance of the <see cref="NumberOfAttemptsWaitOneRetryStrategy"/> class.
         /// </summary>
-        /// <param name="retryAttempts">The number of retry attempts. Does not include the first/original attempt.</param>
+        /// <param name="attempts">The number of attempts to acquire the mutex before giving up.  Must be &gt;= 1.</param>
         public NumberOfAttemptsWaitOneRetryStrategy(
-            int retryAttempts)
+            int attempts)
         {
-            retryAttempts.MustForArg(nameof(retryAttempts)).NotBeLessThan(0);
+            attempts.MustForArg(nameof(attempts)).BeGreaterThanOrEqualTo(1);
 
-            this.RetryAttempts = retryAttempts;
+            this.Attempts = attempts;
         }
 
         /// <summary>
-        /// Gets the number of retry attempts. Does not include the first/original attempt.
+        /// Gets the number of attempts to acquire the mutex before giving up.
         /// </summary>
-        public int RetryAttempts { get; private set; }
+        public int Attempts { get; private set; }
     }
 }

@@ -1115,7 +1115,8 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
-                                 A.Dummy<TimeSpan>()));
+                                 A.Dummy<TimeSpan>(),
+                                 A.Dummy<WaitOneRetryStrategyBase>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>

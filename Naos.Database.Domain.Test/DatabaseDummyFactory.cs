@@ -161,7 +161,7 @@ namespace Naos.Database.Domain.Test
                 () =>
                 {
                     var result = new NumberOfAttemptsWaitOneRetryStrategy(
-                        A.Dummy<ZeroOrPositiveInteger>());
+                        A.Dummy<PositiveInteger>());
 
                     return result;
                 });
@@ -313,7 +313,8 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<string>(),
                         A.Dummy<string>(),
                         A.Dummy<string>(),
-                        A.Dummy<TimeSpan>().Whose(_=> _.TotalMilliseconds >= 0));
+                        A.Dummy<TimeSpan>().Whose(_=> _.TotalMilliseconds >= 0),
+                        A.Dummy<WaitOneRetryStrategyBase>());
 
                     return result;
                 });

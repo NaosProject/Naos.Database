@@ -48,7 +48,7 @@ namespace Naos.Database.Domain.Test
                         var result = new SystemUnderTestExpectedStringRepresentation<WaitOneOp>
                         {
                             SystemUnderTest = systemUnderTest,
-                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.WaitOneOp: Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, PollingWaitTime = {systemUnderTest.PollingWaitTime.ToString() ?? "<null>"}."),
+                            ExpectedStringRepresentation = Invariant($"Naos.Database.Domain.WaitOneOp: Id = {systemUnderTest.Id?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Details = {systemUnderTest.Details?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, Concern = {systemUnderTest.Concern?.ToString(CultureInfo.InvariantCulture) ?? "<null>"}, PollingWaitTime = {systemUnderTest.PollingWaitTime.ToString() ?? "<null>"}, RetryStrategy = {systemUnderTest.RetryStrategy?.ToString() ?? "<null>"}."),
                         };
 
                         return result;
@@ -68,7 +68,8 @@ namespace Naos.Database.Domain.Test
                                              null,
                                              referenceObject.Details,
                                              referenceObject.Concern,
-                                             referenceObject.PollingWaitTime);
+                                             referenceObject.PollingWaitTime,
+                                             referenceObject.RetryStrategy);
 
                         return result;
                     },
@@ -87,7 +88,8 @@ namespace Naos.Database.Domain.Test
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.Details,
                                              referenceObject.Concern,
-                                             referenceObject.PollingWaitTime);
+                                             referenceObject.PollingWaitTime,
+                                             referenceObject.RetryStrategy);
 
                         return result;
                     },
@@ -106,7 +108,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              null,
                                              referenceObject.Concern,
-                                             referenceObject.PollingWaitTime);
+                                             referenceObject.PollingWaitTime,
+                                             referenceObject.RetryStrategy);
 
                         return result;
                     },
@@ -125,7 +128,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              Invariant($"  {Environment.NewLine}  "),
                                              referenceObject.Concern,
-                                             referenceObject.PollingWaitTime);
+                                             referenceObject.PollingWaitTime,
+                                             referenceObject.RetryStrategy);
 
                         return result;
                     },
@@ -144,7 +148,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Details,
                                              null,
-                                             referenceObject.PollingWaitTime);
+                                             referenceObject.PollingWaitTime,
+                                             referenceObject.RetryStrategy);
 
                         return result;
                     },
@@ -163,7 +168,8 @@ namespace Naos.Database.Domain.Test
                                              referenceObject.Id,
                                              referenceObject.Details,
                                              Invariant($"  {Environment.NewLine}  "),
-                                             referenceObject.PollingWaitTime);
+                                             referenceObject.PollingWaitTime,
+                                             referenceObject.RetryStrategy);
 
                         return result;
                     },
@@ -186,7 +192,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Details,
                                                       referenceObject.Concern,
-                                                      referenceObject.PollingWaitTime),
+                                                      referenceObject.PollingWaitTime,
+                                                      referenceObject.RetryStrategy),
                             ExpectedPropertyValue = referenceObject.Id,
                         };
 
@@ -208,7 +215,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Details,
                                                       referenceObject.Concern,
-                                                      referenceObject.PollingWaitTime),
+                                                      referenceObject.PollingWaitTime,
+                                                      referenceObject.RetryStrategy),
                             ExpectedPropertyValue = referenceObject.Details,
                         };
 
@@ -230,7 +238,8 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Details,
                                                       referenceObject.Concern,
-                                                      referenceObject.PollingWaitTime),
+                                                      referenceObject.PollingWaitTime,
+                                                      referenceObject.RetryStrategy),
                             ExpectedPropertyValue = referenceObject.Concern,
                         };
 
@@ -252,13 +261,37 @@ namespace Naos.Database.Domain.Test
                                                       referenceObject.Id,
                                                       referenceObject.Details,
                                                       referenceObject.Concern,
-                                                      referenceObject.PollingWaitTime),
+                                                      referenceObject.PollingWaitTime,
+                                                      referenceObject.RetryStrategy),
                             ExpectedPropertyValue = referenceObject.PollingWaitTime,
                         };
 
                         return result;
                     },
                     PropertyName = "PollingWaitTime",
+                })
+            .AddScenario(() =>
+                new ConstructorPropertyAssignmentTestScenario<WaitOneOp>
+                {
+                    Name = "RetryStrategy should return same 'retryStrategy' parameter passed to constructor when getting",
+                    SystemUnderTestExpectedPropertyValueFunc = () =>
+                    {
+                        var referenceObject = A.Dummy<WaitOneOp>();
+
+                        var result = new SystemUnderTestExpectedPropertyValue<WaitOneOp>
+                        {
+                            SystemUnderTest = new WaitOneOp(
+                                                      referenceObject.Id,
+                                                      referenceObject.Details,
+                                                      referenceObject.Concern,
+                                                      referenceObject.PollingWaitTime,
+                                                      referenceObject.RetryStrategy),
+                            ExpectedPropertyValue = referenceObject.RetryStrategy,
+                        };
+
+                        return result;
+                    },
+                    PropertyName = "RetryStrategy",
                 });
 
         private static readonly DeepCloneWithTestScenarios<WaitOneOp> DeepCloneWithTestScenarios = new DeepCloneWithTestScenarios<WaitOneOp>()
@@ -341,6 +374,26 @@ namespace Naos.Database.Domain.Test
 
                         return result;
                     },
+                })
+            .AddScenario(() =>
+                new DeepCloneWithTestScenario<WaitOneOp>
+                {
+                    Name = "DeepCloneWithRetryStrategy should deep clone object and replace RetryStrategy with the provided retryStrategy",
+                    WithPropertyName = "RetryStrategy",
+                    SystemUnderTestDeepCloneWithValueFunc = () =>
+                    {
+                        var systemUnderTest = A.Dummy<WaitOneOp>();
+
+                        var referenceObject = A.Dummy<WaitOneOp>().ThatIs(_ => !systemUnderTest.RetryStrategy.IsEqualTo(_.RetryStrategy));
+
+                        var result = new SystemUnderTestDeepCloneWithValue<WaitOneOp>
+                        {
+                            SystemUnderTest = systemUnderTest,
+                            DeepCloneWithValue = referenceObject.RetryStrategy,
+                        };
+
+                        return result;
+                    },
                 });
 
         private static readonly WaitOneOp ReferenceObjectForEquatableTestScenarios = A.Dummy<WaitOneOp>();
@@ -357,7 +410,8 @@ namespace Naos.Database.Domain.Test
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime),
+                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime,
+                                ReferenceObjectForEquatableTestScenarios.RetryStrategy),
                     },
                     ObjectsThatAreNotEqualToReferenceObject = new WaitOneOp[]
                     {
@@ -365,22 +419,32 @@ namespace Naos.Database.Domain.Test
                                 A.Dummy<WaitOneOp>().Whose(_ => !_.Id.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Id)).Id,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime),
+                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime,
+                                ReferenceObjectForEquatableTestScenarios.RetryStrategy),
                         new WaitOneOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 A.Dummy<WaitOneOp>().Whose(_ => !_.Details.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Details)).Details,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime),
+                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime,
+                                ReferenceObjectForEquatableTestScenarios.RetryStrategy),
                         new WaitOneOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 A.Dummy<WaitOneOp>().Whose(_ => !_.Concern.IsEqualTo(ReferenceObjectForEquatableTestScenarios.Concern)).Concern,
-                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime),
+                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime,
+                                ReferenceObjectForEquatableTestScenarios.RetryStrategy),
                         new WaitOneOp(
                                 ReferenceObjectForEquatableTestScenarios.Id,
                                 ReferenceObjectForEquatableTestScenarios.Details,
                                 ReferenceObjectForEquatableTestScenarios.Concern,
-                                A.Dummy<WaitOneOp>().Whose(_ => !_.PollingWaitTime.IsEqualTo(ReferenceObjectForEquatableTestScenarios.PollingWaitTime)).PollingWaitTime),
+                                A.Dummy<WaitOneOp>().Whose(_ => !_.PollingWaitTime.IsEqualTo(ReferenceObjectForEquatableTestScenarios.PollingWaitTime)).PollingWaitTime,
+                                ReferenceObjectForEquatableTestScenarios.RetryStrategy),
+                        new WaitOneOp(
+                                ReferenceObjectForEquatableTestScenarios.Id,
+                                ReferenceObjectForEquatableTestScenarios.Details,
+                                ReferenceObjectForEquatableTestScenarios.Concern,
+                                ReferenceObjectForEquatableTestScenarios.PollingWaitTime,
+                                A.Dummy<WaitOneOp>().Whose(_ => !_.RetryStrategy.IsEqualTo(ReferenceObjectForEquatableTestScenarios.RetryStrategy)).RetryStrategy),
                     },
                     ObjectsThatAreNotOfTheSameTypeAsReferenceObject = new object[]
                     {
@@ -744,6 +808,18 @@ namespace Naos.Database.Domain.Test
                 // Assert
                 actual.AsTest().Must().BeEqualTo(systemUnderTest);
                 actual.AsTest().Must().NotBeSameReferenceAs(systemUnderTest);
+
+                if (systemUnderTest.RetryStrategy == null)
+                {
+                    actual.RetryStrategy.AsTest().Must().BeNull();
+                }
+                else if (!actual.RetryStrategy.GetType().IsValueType)
+                {
+                    // When the declared type is a reference type, we still have to check the runtime type.
+                    // The object could be a boxed value type, which will fail this asseration because
+                    // a deep clone of a value type object is the same object.
+                    actual.RetryStrategy.AsTest().Must().NotBeSameReferenceAs(systemUnderTest.RetryStrategy);
+                }
             }
 
             [Fact]
@@ -762,7 +838,7 @@ namespace Naos.Database.Domain.Test
             [SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly")]
             public static void DeepCloneWith___Should_deep_clone_object_and_replace_the_associated_property_with_the_provided_value___When_called()
             {
-                var propertyNames = new string[] { "Id", "Details", "Concern", "PollingWaitTime" };
+                var propertyNames = new string[] { "Id", "Details", "Concern", "PollingWaitTime", "RetryStrategy" };
 
                 var scenarios = DeepCloneWithTestScenarios.ValidateAndPrepareForTesting();
 

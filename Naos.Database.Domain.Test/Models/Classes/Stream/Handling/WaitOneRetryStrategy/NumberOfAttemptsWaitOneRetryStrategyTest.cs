@@ -33,7 +33,7 @@ namespace Naos.Database.Domain.Test
                 .AddScenario(() =>
                     new ConstructorArgumentValidationTestScenario<NumberOfAttemptsWaitOneRetryStrategy>
                     {
-                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'retryAttempts' is negative",
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'attempts' is negative",
                         ConstructionFunc = () =>
                         {
                             var result = new NumberOfAttemptsWaitOneRetryStrategy(
@@ -42,7 +42,21 @@ namespace Naos.Database.Domain.Test
                             return result;
                         },
                         ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
-                        ExpectedExceptionMessageContains = new[] { "retryAttempts", },
+                        ExpectedExceptionMessageContains = new[] { "attempts", },
+                    })
+                .AddScenario(() =>
+                    new ConstructorArgumentValidationTestScenario<NumberOfAttemptsWaitOneRetryStrategy>
+                    {
+                        Name = "constructor should throw ArgumentOutOfRangeException when parameter 'attempts' is 0",
+                        ConstructionFunc = () =>
+                        {
+                            var result = new NumberOfAttemptsWaitOneRetryStrategy(
+                                0);
+
+                            return result;
+                        },
+                        ExpectedExceptionType = typeof(ArgumentOutOfRangeException),
+                        ExpectedExceptionMessageContains = new[] { "attempts", },
                     });
         }
     }

@@ -124,6 +124,119 @@ namespace Naos.Database.Domain.Test
             actualStatuses.AsTest().Must().BeSequenceEqualTo(expectedStatuses);
         }
 
+        [Fact]
+        public static async Task TryExecuteSynchronouslyUsingStreamMutex___Should_block_other_callers_from_acquiring_lock___When_multiple_callers_require_mutex_and_using_NumberOfAttemptsWaitOneRetryStrategy()
+        {
+            // Arrange
+            var stream = BuildCreatedStream();
+
+            var mutexId = A.Dummy<string>();
+            var mutexProtocol = stream.GetStreamDistributedMutexProtocols();
+
+            var mre = new ManualResetEvent(false);
+
+            var action1Running = false;
+
+            var action1 = new Action(() =>
+            {
+                action1Running = true;
+                mre.WaitOne();
+                Thread.Sleep(2000);
+            });
+
+            var action2 = new Action(() => { });
+
+            await stream.PutWithIdAsync(mutexId, new MutexObject(mutexId));
+
+            var mutexInternalRecordId = stream.GetLatestRecordById(mutexId).InternalRecordId;
+
+            var expectedDetails = new[]
+            {
+                Concerns.AvailableByDefaultHandlingEntryDetails,
+                nameof(action1),
+                nameof(action1),
+            };
+
+            var expectedStatuses = new[]
+            {
+                HandlingStatus.AvailableByDefault,
+                HandlingStatus.Running,
+                HandlingStatus.AvailableAfterSelfCancellation,
+            };
+
+            // Act
+            bool? action1TryResult = null;
+            var threadStart1 = new ThreadStart(() =>
+            {
+                action1TryResult = action1.TryExecuteSynchronouslyUsingStreamMutex(
+                    mutexProtocol,
+                    mutexId,
+                    nameof(action1),
+                    pollingWaitTime: TimeSpan.FromMilliseconds(5),
+                    retryStrategy: new NumberOfAttemptsWaitOneRetryStrategy(1));
+
+                return;
+            });
+
+            var thread1 = new Thread(threadStart1);
+
+            thread1.Start();
+
+            while (!action1Running)
+            {
+                Thread.Sleep(50);
+            }
+
+            var action2AboutToStart = false;
+            bool? action2TryResult = null;
+            var threadStart2 = new ThreadStart(() =>
+            {
+                action2AboutToStart = true;
+
+                action2TryResult = action2.TryExecuteSynchronouslyUsingStreamMutex(
+                    mutexProtocol,
+                    mutexId,
+                    nameof(action2),
+                    pollingWaitTime: TimeSpan.FromMilliseconds(5),
+                    retryStrategy: new NumberOfAttemptsWaitOneRetryStrategy(1));
+            });
+
+            var thread2 = new Thread(threadStart2);
+            thread2.Start();
+
+            while (!action2AboutToStart)
+            {
+                Thread.Sleep(50);
+            }
+
+            // We can't guarantee that action1 has begun to attempt to WaitOne,
+            // so we are just going to give it a bunch of time to try.
+            Thread.Sleep(5000);
+
+            mre.Set();
+            thread2.Join();
+            thread1.Join();
+
+            // Assert
+            var handlingHistory = stream.GetStreamRecordHandlingProtocols().Execute(new GetHandlingHistoryOp(mutexInternalRecordId, Concerns.DefaultMutexConcern));
+
+            var actualDetails = handlingHistory
+                .OrderBy(_ => _.InternalHandlingEntryId)
+                .Select(_ => _.Details)
+                .ToList();
+
+            var actualStatuses = handlingHistory
+                .OrderBy(_ => _.InternalHandlingEntryId)
+                .Select(_ => _.Status)
+                .ToList();
+
+            actualDetails.AsTest().Must().BeSequenceEqualTo(expectedDetails);
+            actualStatuses.AsTest().Must().BeSequenceEqualTo(expectedStatuses);
+
+            action1TryResult.AsTest().Must().BeTrue();
+            action2TryResult.AsTest().Must().BeFalse();
+        }
+
         private static MemoryStandardStream BuildCreatedStream()
         {
             var result = new MemoryStandardStream(

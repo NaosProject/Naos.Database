@@ -6,10 +6,13 @@
 
 namespace Naos.Database.Domain
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using OBeautifulCode.Assertion.Recipes;
     using OBeautifulCode.Representation.System;
+    using OBeautifulCode.Type.Recipes;
+    using static System.FormattableString;
 
     /// <summary>
     /// Set of protocols to use a stream to manage a distributed mutex.
@@ -49,10 +52,11 @@ namespace Naos.Database.Domain
                     objectTypes: new[] { MutexObjectTypeRepresentation }),
                 details: operation.Details);
 
+            var attempts = 0;
+
             while (true)
             {
                 var tryHandleResult = this.stream.Execute(tryHandleOp);
-
                 if (tryHandleResult.RecordToHandle != null)
                 {
                     var result = new ReleaseMutexOp(
@@ -60,6 +64,24 @@ namespace Naos.Database.Domain
                         tryHandleResult.RecordToHandle.InternalRecordId);
 
                     return result;
+                }
+
+                if (operation.RetryStrategy is InfiniteWaitOneRetryStrategy)
+                {
+                    // no-op
+                }
+                else if (operation.RetryStrategy is NumberOfAttemptsWaitOneRetryStrategy numberOfAttemptsWaitOneRetryStrategy)
+                {
+                    attempts++;
+
+                    if (attempts == numberOfAttemptsWaitOneRetryStrategy.Attempts)
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    throw new NotSupportedException(Invariant($"This type of {nameof(WaitOneRetryStrategyBase)} is not supported: {operation.RetryStrategy.GetType().ToStringReadable()}."));
                 }
 
                 Thread.Sleep((int)operation.PollingWaitTime.TotalMilliseconds);

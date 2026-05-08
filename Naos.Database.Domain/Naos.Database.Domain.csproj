@@ -217,7 +217,8 @@
     <Compile Include="Logic\Stream\Common\RecordFilterExtensions.cs" />
     <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\Lambda\ReleaseMutexLambdaProtocol.cs" />
-    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.cs" />
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.Execute.cs" />
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.TryExecute.cs" />
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\StandardStreamRecordHandlingProtocolsExtensions.cs" />
     <Compile Include="Logic\Stream\Management\StandardPruneStreamOpExtensions.cs" />
@@ -459,6 +460,12 @@
     <Compile Include="Operations\Classes\ResourceLocation\ThrowIfResourceUnavailableOp.designer.cs">
       <DependentUpon>ThrowIfResourceUnavailableOp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\ReleaseMutexOp.designer.cs">
+      <DependentUpon>ReleaseMutexOp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\WaitOneOp.designer.cs">
+      <DependentUpon>WaitOneOp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\Query\GetCompositeHandlingStatusByIdsOp{TId}.designer.cs">
       <DependentUpon>GetCompositeHandlingStatusByIdsOp{TId}.cs</DependentUpon>
     </Compile>
@@ -526,12 +533,6 @@
       <DependentUpon>PruneBeforeInternalRecordIdOp.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\ReleaseMutexOp.cs" />
-    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\ReleaseMutexOp.designer.cs">
-      <DependentUpon>ReleaseMutexOp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Operations\Classes\Stream\External\Handling\Mutex\WaitOneOp.designer.cs">
-      <DependentUpon>WaitOneOp.cs</DependentUpon>
-    </Compile>
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId,TObject}.cs" />
     <Compile Include="Operations\Classes\Stream\External\Read\DoesAnyExist\DoesAnyExistByIdOp{TId,TObject}.designer.cs">
       <DependentUpon>DoesAnyExistByIdOp{TId,TObject}.cs</DependentUpon>

@@ -847,7 +847,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<ThrowIfResourceUnavailableOp>(),
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
-                        A.Dummy<TryWaitOneOp>(),
                         A.Dummy<WaitOneOp>(),
                     },
                 });

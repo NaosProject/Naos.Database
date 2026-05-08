@@ -464,7 +464,6 @@ namespace Naos.Database.Domain.Test
                         A.Dummy<TryHandleRecordOp<Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version, Version>>(),
                         A.Dummy<TryHandleRecordWithIdOp<Version>>(),
-                        A.Dummy<TryWaitOneOp>(),
                     },
                 });
 

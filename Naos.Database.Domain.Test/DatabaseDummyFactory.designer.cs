@@ -523,6 +523,9 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<Version>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new InfiniteWaitOneRetryStrategy());
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new MemoryDatabaseLocator(
                                  A.Dummy<string>()));
 
@@ -563,7 +566,7 @@ namespace Naos.Database.Domain.Test
                 () => new NullStreamRepresentation());
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new NumberOfAttemptsTryWaitOneRetryStrategy(
+                () => new NumberOfAttemptsWaitOneRetryStrategy(
                                  A.Dummy<int>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
@@ -1097,31 +1100,6 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<bool>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () => new TryWaitOneOp(
-                                 A.Dummy<string>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<string>(),
-                                 A.Dummy<TryWaitOneRetryStrategyBase>(),
-                                 A.Dummy<TimeSpan>()));
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
-                () =>
-                {
-                    var availableTypes = new[]
-                    {
-                        typeof(NumberOfAttemptsTryWaitOneRetryStrategy)
-                    };
-
-                    var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
-
-                    var randomType = availableTypes[randomIndex];
-
-                    var result = (TryWaitOneRetryStrategyBase)AD.ummy(randomType);
-
-                    return result;
-                });
-
-            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new TypeRepresentationWithAndWithoutVersion(
                                  A.Dummy<TypeRepresentation>(),
                                  A.Dummy<TypeRepresentation>()));
@@ -1138,6 +1116,24 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<string>(),
                                  A.Dummy<string>(),
                                  A.Dummy<TimeSpan>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var availableTypes = new[]
+                    {
+                        typeof(InfiniteWaitOneRetryStrategy),
+                        typeof(NumberOfAttemptsWaitOneRetryStrategy)
+                    };
+
+                    var randomIndex = ThreadSafeRandom.Next(0, availableTypes.Length);
+
+                    var randomType = availableTypes[randomIndex];
+
+                    var result = (WaitOneRetryStrategyBase)AD.ummy(randomType);
+
+                    return result;
+                });
         }
 
         /// <inheritdoc />

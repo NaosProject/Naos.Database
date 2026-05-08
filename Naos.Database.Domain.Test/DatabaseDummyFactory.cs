@@ -157,6 +157,15 @@ namespace Naos.Database.Domain.Test
                     }
                 });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () =>
+                {
+                    var result = new NumberOfAttemptsWaitOneRetryStrategy(
+                        A.Dummy<ZeroOrPositiveInteger>());
+
+                    return result;
+                });
+
             // ------------------------------- ENUMS --------------------------------------
             AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CompositeHandlingStatus.Unknown);

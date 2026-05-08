@@ -273,6 +273,10 @@
     <Compile Include=".recipes\OBeautifulCode.Type\TypeDummyFactory.designer.cs" />
     <Compile Include=".recipes\OBeautifulCode.Type\TypeExtensions.cs" />
     <Compile Include="ConsoleAbstraction.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\InfiniteWaitOneRetryStrategyTest.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\InfiniteWaitOneRetryStrategyTest.designer.cs">
+      <DependentUpon>InfiniteWaitOneRetryStrategyTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\Stream\Subscriber\StreamRecordExtensionsTest.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\Payload\BinaryStreamRecordPayloadTest.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\Payload\BinaryStreamRecordPayloadTest.designer.cs">
@@ -300,6 +304,10 @@
     <Compile Include="Models\Classes\Stream\Subscriber\Payload\NullStreamRecordPayloadTest.cs" />
     <Compile Include="Models\Classes\Stream\Subscriber\Payload\NullStreamRecordPayloadTest.designer.cs">
       <DependentUpon>NullStreamRecordPayloadTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\NumberOfAttemptsWaitOneRetryStrategyTest.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\NumberOfAttemptsWaitOneRetryStrategyTest.designer.cs">
+      <DependentUpon>NumberOfAttemptsWaitOneRetryStrategyTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}Test.cs" />
     <Compile Include="Operations\Classes\Representation\GetStreamFromRepresentationOp{TStream}Test.designer.cs">
@@ -892,6 +900,10 @@
       <DependentUpon>StringStreamRecordPayloadTest.cs</DependentUpon>
     </Compile>
     <AdditionalFiles Include=".analyzers\stylecop.json" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\WaitOneRetryStrategyBaseTest.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\WaitOneRetryStrategyBaseTest.designer.cs">
+      <DependentUpon>WaitOneRetryStrategyBaseTest.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />

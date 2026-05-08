@@ -370,9 +370,21 @@
     <Compile Include="Models\Classes\Stream\Common\StandardStreamConfigBase.designer.cs">
       <DependentUpon>StandardStreamConfigBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\InfiniteWaitOneRetryStrategy.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\InfiniteWaitOneRetryStrategy.designer.cs">
+      <DependentUpon>InfiniteWaitOneRetryStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\NumberOfAttemptsWaitOneRetryStrategy.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\NumberOfAttemptsWaitOneRetryStrategy.designer.cs">
+      <DependentUpon>NumberOfAttemptsWaitOneRetryStrategy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\WaitOneRetryStrategyBase.cs" />
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.cs" />
     <Compile Include="Models\Classes\Stream\Handling\MutexObject.designer.cs">
       <DependentUpon>MutexObject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\WaitOneRetryStrategyBase.designer.cs">
+      <DependentUpon>WaitOneRetryStrategyBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Classes\Stream\Subscriber\Metadata\StreamRecordMetadata.designer.cs">
       <DependentUpon>StreamRecordMetadata.cs</DependentUpon>

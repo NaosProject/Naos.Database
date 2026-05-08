@@ -336,8 +336,8 @@
     <Compile Include="Models\Classes\Management\ExpectedRecordWithinThresholdReportTest.designer.cs">
       <DependentUpon>ExpectedRecordWithinThresholdReportTest.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Classes\Stream\Mutex\MutexObjectTest.cs" />
-    <Compile Include="Models\Classes\Stream\Mutex\MutexObjectTest.designer.cs">
+    <Compile Include="Models\Classes\Stream\Handling\MutexObjectTest.cs" />
+    <Compile Include="Models\Classes\Stream\Handling\MutexObjectTest.designer.cs">
       <DependentUpon>MutexObjectTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Operations\Classes\Management\CheckJobsOpTest.cs" />

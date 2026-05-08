@@ -63,9 +63,10 @@ namespace OBeautifulCode.Type.Test
             AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () =>
             {
-                var startDateTime = A.Dummy<DateTime>();
+                // In case we add int.MaxValue seconds, pick a year that would support that.
+                var startDateTime = A.Dummy<DateTime>().Whose(_ => _.Year <= (9999 - 70));
 
-                var endDateTime = A.Dummy<DateTime>().ThatIs(_ => _ >= startDateTime);
+                var endDateTime = startDateTime.AddSeconds(A.Dummy<PositiveInteger>());
 
                 var result = new UtcDateTimeRangeInclusive(startDateTime.ToUniversalTime(), endDateTime.ToUniversalTime());
 

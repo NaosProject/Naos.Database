@@ -129,6 +129,7 @@ namespace Naos.Database.Domain
             string concern = Concerns.DefaultMutexConcern,
             TimeSpan pollingWaitTime = default)
         {
+            action.MustForArg(nameof(action)).NotBeNull();
             waitOneProtocol.MustForArg(nameof(waitOneProtocol)).NotBeNull();
             releaseMutexProtocol.MustForArg(nameof(releaseMutexProtocol)).NotBeNull();
 
@@ -168,6 +169,7 @@ namespace Naos.Database.Domain
             string concern = Concerns.DefaultMutexConcern,
             TimeSpan pollingWaitTime = default)
         {
+            func.MustForArg(nameof(func)).NotBeNull();
             waitOneProtocol.MustForArg(nameof(waitOneProtocol)).NotBeNull();
             releaseMutexProtocol.MustForArg(nameof(releaseMutexProtocol)).NotBeNull();
 
@@ -324,6 +326,7 @@ namespace Naos.Database.Domain
             string concern = Concerns.DefaultMutexConcern,
             TimeSpan pollingWaitTime = default)
         {
+            func.MustForArg(nameof(func)).NotBeNull();
             waitOneProtocol.MustForArg(nameof(waitOneProtocol)).NotBeNull();
             releaseMutexProtocol.MustForArg(nameof(releaseMutexProtocol)).NotBeNull();
 
@@ -368,6 +371,7 @@ namespace Naos.Database.Domain
             string concern = Concerns.DefaultMutexConcern,
             TimeSpan pollingWaitTime = default)
         {
+            func.MustForArg(nameof(func)).NotBeNull();
             waitOneProtocol.MustForArg(nameof(waitOneProtocol)).NotBeNull();
             releaseMutexProtocol.MustForArg(nameof(releaseMutexProtocol)).NotBeNull();
 

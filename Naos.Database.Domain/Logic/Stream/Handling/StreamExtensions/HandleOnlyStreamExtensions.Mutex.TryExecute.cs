@@ -7,7 +7,9 @@
 namespace Naos.Database.Domain
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading.Tasks;
+    using Naos.CodeAnalysis.Recipes;
     using OBeautifulCode.Assertion.Recipes;
 
     public static partial class HandleOnlyStreamExtensions
@@ -273,6 +275,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// true if the mutex was acquired, otherwise false.  false means that the mutex object doesn't exist or is already being handled and that the delegate was not executed.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "5#", Justification = NaosSuppressBecause.CA1021_AvoidOutParameters_OutParameterRequiredForTryMethod)]
         public static bool TryExecuteSynchronouslyUsingStreamMutex<T>(
             this Func<T> func,
             IRecordHandlingOnlyStream stream,
@@ -352,6 +355,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// true if the mutex was acquired, otherwise false.  false means that the mutex object doesn't exist or is already being handled and that the delegate was not executed.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "5#", Justification = NaosSuppressBecause.CA1021_AvoidOutParameters_OutParameterRequiredForTryMethod)]
         public static bool TryExecuteSynchronouslyUsingStreamMutex<T>(
             this Func<T> func,
             IStreamDistributedMutexProtocols protocol,
@@ -430,6 +434,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// true if the mutex was acquired, otherwise false.  false means that the mutex object doesn't exist or is already being handled and that the delegate was not executed.
         /// </returns>
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "5#", Justification = NaosSuppressBecause.CA1021_AvoidOutParameters_OutParameterRequiredForTryMethod)]
         public static bool TryExecuteSynchronouslyUsingStreamMutex<T>(
             this Func<T> func,
             IWaitOne waitOneProtocol,

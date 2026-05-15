@@ -217,6 +217,7 @@
     <Compile Include="Logic\Stream\Common\RecordFilterExtensions.cs" />
     <Compile Include="Logic\Stream\Common\TypeSelectionStrategyExtensions.cs" />
     <Compile Include="Logic\Stream\Handling\Lambda\ReleaseMutexLambdaProtocol.cs" />
+    <Compile Include="Logic\Stream\Handling\StreamExtensions\TryExecuteSynchronouslyUsingStreamMutexAsyncResult{T}.cs" />
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.Execute.cs" />
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.Mutex.TryExecute.cs" />
     <Compile Include="Logic\Stream\Handling\StreamExtensions\HandleOnlyStreamExtensions.cs" />

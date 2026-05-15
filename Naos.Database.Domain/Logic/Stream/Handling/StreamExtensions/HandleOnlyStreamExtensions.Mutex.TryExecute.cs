@@ -434,7 +434,7 @@ namespace Naos.Database.Domain
         /// <returns>
         /// true if the mutex was acquired, otherwise false.  false means that the mutex object doesn't exist or is already being handled and that the delegate was not executed.
         /// </returns>
-        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "5#", Justification = NaosSuppressBecause.CA1021_AvoidOutParameters_OutParameterRequiredForTryMethod)]
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "6#", Justification = NaosSuppressBecause.CA1021_AvoidOutParameters_OutParameterRequiredForTryMethod)]
         public static bool TryExecuteSynchronouslyUsingStreamMutex<T>(
             this Func<T> func,
             IWaitOne waitOneProtocol,

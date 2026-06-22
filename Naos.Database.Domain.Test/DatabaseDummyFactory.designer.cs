@@ -948,6 +948,13 @@ namespace Naos.Database.Domain.Test
                                  A.Dummy<IResourceLocator>()));
 
             AutoFixtureBackedDummyFactory.AddDummyCreator(
+                () => new StreamPersistedFile(
+                                 A.Dummy<string>(),
+                                 A.Dummy<IStreamRepresentation>(),
+                                 A.Dummy<string>(),
+                                 A.Dummy<long>()));
+
+            AutoFixtureBackedDummyFactory.AddDummyCreator(
                 () => new StreamRecord(
                                  A.Dummy<long>(),
                                  A.Dummy<StreamRecordMetadata>(),

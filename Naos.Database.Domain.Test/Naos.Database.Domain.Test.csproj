@@ -904,6 +904,10 @@
     <Compile Include="Models\Classes\Stream\Handling\WaitOneRetryStrategy\WaitOneRetryStrategyBaseTest.designer.cs">
       <DependentUpon>WaitOneRetryStrategyBaseTest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Classes\Convenience\StreamPersistedFileTest.cs" />
+    <Compile Include="Operations\Classes\Convenience\StreamPersistedFileTest.designer.cs">
+      <DependentUpon>StreamPersistedFileTest.cs</DependentUpon>
+    </Compile>
     <None Include=".analyzers\test.ruleset" />
     <None Include="DummyFactory.recipe-nuspec" />
     <None Include="packages.config" />

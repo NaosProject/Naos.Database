@@ -166,6 +166,17 @@ namespace Naos.Database.Domain.Test
                     return result;
                 });
 
+            AutoFixtureBackedDummyFactory.AddDummyCreator(() =>
+            {
+                var result = new StreamPersistedFile(
+                    A.Dummy<string>(),
+                    A.Dummy<StreamRepresentation>(),
+                    A.Dummy<string>(),
+                    A.Dummy<ZeroOrPositiveInteger>());
+
+                return result;
+            });
+
             // ------------------------------- ENUMS --------------------------------------
             AutoFixtureBackedDummyFactory.ConstrainDummyToBeOneOf(VersionMatchStrategy.Any, VersionMatchStrategy.SpecifiedVersion);
             AutoFixtureBackedDummyFactory.ConstrainDummyToExclude(CompositeHandlingStatus.Unknown);

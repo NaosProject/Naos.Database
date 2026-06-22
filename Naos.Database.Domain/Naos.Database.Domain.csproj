@@ -275,6 +275,10 @@
     <Compile Include="Logic\Stream\Write\StreamExtensions\WriteOnlyStreamExtensions.GetNextUniqueLongOp.cs" />
     <Compile Include="Logic\Stream\Write\StreamExtensions\WriteOnlyStreamExtensions.cs" />
     <Compile Include="Logic\Stream\Common\VersionMatchStrategyExtensions.cs" />
+    <Compile Include="Models\Classes\Convenience\StreamPersistedFile.cs" />
+    <Compile Include="Models\Classes\Convenience\StreamPersistedFile.designer.cs">
+      <DependentUpon>StreamPersistedFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Classes\Management\CheckSingleStreamReport.designer.cs">
       <DependentUpon>CheckSingleStreamReport.cs</DependentUpon>
     </Compile>
